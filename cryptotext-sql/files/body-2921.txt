@@ -1,0 +1,13 @@
+Hi all,
+I am trying to study the performance impact of off-chip bandwidth
+contention on CMP. Currently, I only use the number of L2 misses,
+because the L2 miss goes off-chip. But I have no clear idea about how
+to relate the off-chip bandwidth limitations with L2 misses. Are
+memdepunit.memDep.conflictingLoads and
+memdepunit.memDep.conflictingStores good metrics to use?
+Thanks
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

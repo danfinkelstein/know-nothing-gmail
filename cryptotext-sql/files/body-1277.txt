@@ -1,0 +1,11 @@
+Hello,I am not to sure how to properly warm up caches.So My initial rcs file has the m5_switch instruction, so I can Fast Forward the linux bootup. like this./build/ALPHA_FS/m5.debug  configs/example/fs.py
+-d --caches --fast-forward=75456785 --l2cache -n 4  -b
+BlackHoles_smallNow with the same RCS  (or do I have to change?) I want to warmup caches. (Basically FF then Warm up  then  detailed execution..in that order)are any of these correct?./build/ALPHA_FS/m5.debug --trace-flags=InterConn configs/example/fs.py
+-d --caches --fast-forward=1000 --l2cache -n 4 --warmup-insts=1000 -b
+BlackHoles_small(adding --standard-switch)./build/ALPHA_FS/m5.debug --trace-flags=InterConn configs/example/fs.py
+-d --caches --fast-forward=1000 --l2cache -n 4 --standard-switch --warmup-insts=1000 -b
+BlackHoles_smallDo I need to add standard switch to switch from FF to Warmup?ThanksEhsan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

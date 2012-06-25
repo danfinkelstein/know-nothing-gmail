@@ -1,0 +1,49 @@
+Hi,
+When i set my associativity = l2 size/block size (in my case L2 is 512k and block is 64 so assoc is 8192) I get segmentation fault.
+However assoc of 4096 works. So i am not able to make it fully associative.
+I don't think I specifically need to change anything else. numSets in the builder code gets set to 1 according to the formula above.
+Siddharth
+- Show quoted text -
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Thursday, June 4, 2009 10:25:37 AM GMT -08:00 US/Canada Pacific
+Subject: Re: [m5-users] Fully associative
+Just to be clear.  You have to set the associativity to the number of
+blocks *and* the number of sets to 1.  (Looking at the cache builder
+code  it's the numSets == 1 that selects the FALRU cache).
+  Nate
+On Thu, Jun 4, 2009 at 10:02 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> You can set the associativity of the cache to = number of blocks in the
+> cache.
+> Lisa
+>
+> On Wed, Jun 3, 2009 at 4:46 PM, Siddharth Gupta <sidgupta@stanford.edu>
+> wrote:
+>>
+>> Hi,
+>>
+>> How can I set the L2 cache to be fully associative?
+>>
+>> Thanks,
+>> Siddharth
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

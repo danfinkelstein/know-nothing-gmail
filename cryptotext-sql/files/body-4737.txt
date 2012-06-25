@@ -1,0 +1,133 @@
+Hi Ali,
+    Since I need to change the virtual address to physical address
+translation algorithm implemented in page table, I have to know how
+the page table is build up and how address translation is done in page
+table. But I cannot find the implementation of page table in full
+system. Do you know that?
+- Show quoted text -    Thank you very much!
+Tracy
+> The code in vtophys is for the simulator to be able to translate a
+> virtual address to a physical one for whatever purpose. It manually
+> walks the page table and figures out what the address should be
+> returning it  whatever asked(for example overwriting a value in
+> memory, or reading an in-kernel structure during execution to figure
+> out what thread is currently scheduled).  It is not called during the
+> normal translation process for a tlb miss. Alpha has a software
+> filled TLB (not a HW filled one) so the palcode entry point for a tlb
+> miss (e.g. dtb_miss_single) executes instructions to walk the page
+> table and fill the tlb.
+>
+> Ali
+>
+> On Feb 12, 2007, at 11:17 AM, rlai@mtu.edu wrote:
+>
+>> Hi Ali,
+>>
+>>    Thank you for your patience.
+>>    I have read the section II-B of alpha architecture handbook. I
+>> know alpha
+>> uses multilevel Page Table structure.
+>>    As you said, on a TLB miss the PAL code searches the page table
+>> for the
+>>  missing entry. I found the multilevel page table lookup function is
+>> implemented in vtophys.cc(AlphaISA::kernel_pte_lookup()). But on a TLB
+>> miss, this function is not called. So I am confused about how the PAL
+>> code gets the appropriate entry?
+>>
+>>     Thanks.
+>>
+>> Tracy
+>>
+>>
+>>> Briefly, on a TLB miss the PAL code searches the page table for the
+>>> missing entry, when it finds the appropriate entry it writes to an
+>>> Internal Processor Register (IPR) that causes the entry to be
+>>> inserted into the TLB. Section II-B Chapter 3 of the Alpha
+>>> Architecture Handbook provides the particular details of the process.
+>>>
+>>> Ali
+>>>
+>>> On Feb 5, 2007, at 3:27 PM, rlai@mtu.edu wrote:
+>>>
+>>>> Hi,
+>>>>
+>>>>    Now I am trying to add some new virtual to physical address
+>>>> translation
+>>>> algorithm in full system.I know this functionality is done in
+>>>> tlb.cc,
+>>>> but I don't know how the TLB is build up, which means how TLB
+>>>> entries
+>>>> are added into the table?
+>>>>    I find AlphaRegFile::MiscRegFile::setIpr() is called to insert a
+>>>> new
+>>>> entry. Can anyone explain this process for me?
+>>>>    Thank you very much.
+>>>>
+>>>> Tracy
+>>>>
+>>>>
+>>>>> translate() in tlb.cc implements an alpha like TLB. So it does
+>>>>> virtual to physical translation for the guest.
+>>>>> vtophys() converts a virtual address for the guest into a virtual
+>>>>> address for the host.
+>>>>> Ali
+>>>>>
+>>>>> On Jan 22, 2007, at 2:26 PM, rlai@mtu.edu wrote:
+>>>>>
+>>>>>> Hi all,
+>>>>>>
+>>>>>>     I find two virtual to physical address translation
+>>>>>> functions in
+>>>>>> M5:
+>>>>>>     One is translate() defined in AlphaITB/AlphaDTB class in
+>>>>>> tlb.cc,
+>>>>>>     the other one is vtophys() defined in vtophys.cc.
+>>>>>>
+>>>>>>     Does anyone know which one is for simulated virtual address to
+>>>>>> simulated physical address translation? And which on is for
+>>>>>> simulated
+>>>>>> virutal address to host physical address translation?
+>>>>>>
+>>>>>>     Thanks!
+>>>>>>
+>>>>>> Tracy
+>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

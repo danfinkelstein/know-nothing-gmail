@@ -1,0 +1,12 @@
+Hi,
+   I am trying to running spec2000 in m5 full system(m5_2.0b3).
+   In m5 documentation, "Using linux-dist to Create Disk Images and
+Kernels for M5" talks about how to generate disk image. How to put the
+spec2000 binaries into disk img?
+   Can anyone help me?
+   Thanks.
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

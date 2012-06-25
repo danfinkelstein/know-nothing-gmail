@@ -1,0 +1,12 @@
+> Nate, Steve, if you so desire, I could make the X86_32 alpha cross
+> compiler toolkit available through the M5 page.
+Soumyaroop,
+The M5 page is a wiki.  You should be able to put it up yourself.  Can
+you try?  If the file is too large, I can at least stick it somewhere
+and then you can link to it off the wiki.
+Thanks,
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

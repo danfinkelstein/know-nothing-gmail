@@ -1,0 +1,22 @@
+There is a "max_insts_any_thread" available in the CPU models...If you want it on the command line, you have to add the option to your configuration script. There is an example in the configs/example/se.py in the development repository (m5-dev) that has "--max_insts" available on the command line.
+Note that CPU parameters can be viewed in "src/cpu/BaseCPU.py" (Wouldnt it be nice to view this info. from the command line? Sort of like an extended help menu type thing).So if you were using the se.py, you might edit it to say:
+MyCPU.max_insts_... = X Hope that helps,Korey- Show quoted text -On Fri, Oct 16, 2009 at 5:33 PM, Felix Loh <felixloh@umich.edu> wrote:
+Hello,
+ From the posts I've read so far, I know it is difficult to simulate
+for a fixed (user defined) number of instructions.
+I was wondering though, is it possible to have some counter that
+counts the number of instructions, and when a certain number of
+instructions is reached, call an "M5 exit" so that the simulator
+finishes properly? I hope I'm making sense here.
+Also, is MAX_INST a fixed number?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

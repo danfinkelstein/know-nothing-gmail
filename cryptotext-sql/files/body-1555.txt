@@ -1,0 +1,24 @@
+Hi,
+ 
+I am running SPEC2000 benchmarks. I have gone through the mail archieve and looked for this error. Some of them have come with this error, there is no solution mentioned else where.
+ 
+forrtl: info: Fortran error message number is 24.forrtl: warning: Could not open message catalog: for_msg.cat.forrtl: info: Check environment variable NLSPATH and protection of /usr/lib/nls/msg/en_US.ISO8859-1/for_msg.cat.
+forrtl: severe (24): Message not found
+ 
+From internet I could find some solution like this:
+ 
+The FORRT1 error is as follows:forrtl: info: Fortran error message number is 29.forrtl: warning: Could not open message catalog: for_msg.cat.forrtl: info: Check environment variable NLSPATH and protection of /usr/lib/nls/msg/en_US.ISO8859-1/for_msg.cat.
+forrtl: severe (29): Message not foundThis generally occurs because the benchmark failed to get a current working directory due to permissions disabling the read of the current working directory's root directories.
+What about error message 24?
+ 
+Though I was not getting this error for all the benchmarks, when i run multicore configuration I can't get any results.
+ 
+Any help can be highly appreciated.
+ 
+Thanks
+ 
+Satish.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

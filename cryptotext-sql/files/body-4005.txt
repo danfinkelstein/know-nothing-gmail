@@ -1,0 +1,33 @@
+This is the command I am using:
+build/ALPHA_SE/m5.opt configs/example/runsplash.py  -n 4 -k 4 -b OceanContig
+build/ALPHA_SE/m5.opt configs/example/runsplash.py -d -n 4 -k 4 -b OceanContig
+- Sujay
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, November 12, 2007 11:58 AM
+Subject: Re: [m5-users] detailed CPU error- Show quoted text -
+It means that the application tried to create a thread but there
+wasn't an idle hardware thread context (e.g. a free CPU) to run it on.
+If it works with SimpleCPU I'm not sure why it would fail with O3 though.
+Steve
+On 11/12/07, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Hello,
+       When I try to execute splash2 bemchmarks in SE mode, I get the
+following error if I use the -d (detailed CPU switch)
+nxm_thread_create: no idle contexts available.
+Program aborted at cycle 281737000
+What does this mean?
+The timing or atomic CPU runs fine.
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

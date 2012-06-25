@@ -1,0 +1,7 @@
+Hi folks --This is a fairly minor thing, but I'd suggest making the attached change to src/cpu/base_dyn_inst_impl.hh.  I ran into a problem where I exceeded the maximum live inst count -- but functionally everything was fine (I am keeping dynInstPtrs around for my own purposes and didn't increase the max allowable number of insts appropriately).  Using any of the debug binaries (.debug or .opt), the assert in BaseDynInst::initVars triggered, causing the simulation to core dump, which is fine.  Using m5.fast, however, the simulation just kept running -- and every time a new dynInst was created, initVars called dumpInsts() -- leading to a massive output file.
+Enclosing the call to dumpInsts() in the #ifdef DEBUG should solve the problem.  Since the idea of m5.fast is that there is no debug, I would think this would be fine.  I've attached a diff should you want to make this change to the source tree.  Obviously, this is not a high priority since the scenario is rare, but I figured I'd send it along.
+Cheers,   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

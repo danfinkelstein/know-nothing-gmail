@@ -1,0 +1,6 @@
+Hi, folks,I have a quick question about dumping statistics and terminating the M5 simulation after a predefined number of accesses to the last level cache, during which I would like to characterize the LLC behavior. Can anyone tell me how I can achieve this goal?
+Thanks,Leonard-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

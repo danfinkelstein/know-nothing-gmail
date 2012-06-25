@@ -1,0 +1,28 @@
+Hello,
+  I am running a multi-programmed simulation in SE mode (16 cores, 16
+threads, 1 thread/core).
+I want to simulate each core for a fixed (or atleast) number of
+instructions (say 100million). With this scenario, some cores will
+execute greater number of instructions if the thread executes faster. So
+we may execute 100Mil, 150Mil, 200Mil, and so on.
+I was reading some of the earlier discussions on this issue (2008) and
+there doesn't seem to be a way to do this. The max_inst_all_threads
+works across all threads, but only for 1 cpu. Even if we assign it for
+every cpu using:
+switch_cpu_1[i].max_inst_all_threads = max_insts
+the entire simulation exits when any 1 cpu reaches that count.
+does anyone know how to do this? I was looking at simulate.cc and
+sim_events.cc where the CountedExitEvent object is used. If I understand
+correctly, it decrements the counter when any thread for a given cpu
+terminates, and it signals an M5 exit event when an cpu finishes the
+max_insts count for all its own threads.
+Can you suggest how we can modify this to keep track of threads across
+different cores? Also, is it a realistic model to not let the other
+cores continue after reaching max_inst_all_threads, but to stall them
+till the other cores catch up?
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

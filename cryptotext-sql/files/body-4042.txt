@@ -1,0 +1,8 @@
+Hi Nate,I have, thank you.  I'm using registerExitCallback to do computation at the end, and os.kill to do a dump/reset at the beginning.Cheers,   -Vilas- Show quoted text -On Nov 1, 2007 11:33 AM, Nathan Binkert <
+nate@binkert.org> wrote:Sujay/Vilas,Have you guys figured out your stats problems?  I'm sorry I've been
+unresponsive lately.  I'm trying to catch up.   Nate_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

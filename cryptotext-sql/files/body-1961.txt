@@ -1,0 +1,35 @@
+Hi Giang:
+  Thank you very very very... very much. :)
+  It works, now. I will post the details of how to run SpecOMP on M5.
+I hope that others spend less time to make it work. I have spent too
+much on it. By the way, thank you very much.
+best regards,
+- Show quoted text -  sitos
+> Hello,
+>
+> I got SpecOMP to run on M5 ALPHA_FS, so I can provide some pointers.
+>
+> First, I compiled a cross compiler with crosstool-0.43.  The toolchain version
+> that I use is  gcc-4.2.4-glibc-2.3.6-tls (you need gcc-4.2 for OpenMP support).
+>  It seems to work right away without any tweaking.  To get fortran compiler,
+> just add it to the list of languages in demo-alpha.sh file.
+>
+> You don't need to compile SpecOMP statically, just make sure you include the
+> -fopenmp flag.  Finally, copy the library files from
+> gcc-4.2.4-glibc-2.3.6/alpha-unknown-linux-gnu/alpha-unknown-linux-gnu/lib to the
+> /lib directory on the disk image.
+>
+> I hope that helps.
+>
+> Giang
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

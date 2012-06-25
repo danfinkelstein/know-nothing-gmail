@@ -1,0 +1,45 @@
+I have no idea what singleDefault.py is, however I would guess that
+you're trying to create two caches that have the same name.
+Ali
+- Show quoted text -
+On Jun 24, 2008, at 5:37 PM, Ran Qi wrote:
+> hi!
+> when ever i try to run the singleDefault.py i get the following
+> message
+> how to solve this problem?
+> Thank you.
+>
+>
+>  ../../build/ALPHA_SE/m5.opt -d ./out singleDefault.py
+> M5 Simulator System
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled Jun 23 2008 21:26:16
+> M5 started Tue Jun 24 15:56:58 2008
+> M5 executing on kani.cs.lamar.edu
+> command line: ../../build/ALPHA_SE/m5.opt -d ./out singleDefault.py
+> Traceback (most recent call last):
+>   File "<string>", line 1, in ?
+>   File "build/ALPHA_SE/python/m5/main.py", line 350, in main
+>   File "singleDefault.py", line 6, in ?
+>     from BaseCache import *
+>   File "/space/ranq/download/m5-2.0b5/src/mem/cache/BaseCache.py",
+> line 3, in ?
+>     from MemObject import MemObject
+>   File "/space/ranq/download/m5-2.0b5/src/mem/MemObject.py", line 3,
+> in ?
+>     class MemObject(SimObject):
+>   File "build/ALPHA_SE/python/m5/SimObject.py", line 143, in __new__
+> AssertionError
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

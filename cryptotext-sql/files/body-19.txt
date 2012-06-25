@@ -1,0 +1,125 @@
+Hi Lisa,
+I actually managed to get a new Cache derived from the BaseCache, I am
+not sure of the specifics at the moment, as I am looking to make a
+directory cache (directory protocol extension) for M5, so yes, I will
+need at some point to utilize some sort of tag-store policy, I just
+don't think quite exactly the same way the current Tag-Store policy is
+implemented in M5.
+Malek
+- Show quoted text -
+On Fri, Jun 11, 2010 at 6:07 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> Hi Malek,
+> Building from builder.cc implies deriving from Cache, which derives from
+> BaseCache.  The TagStores are implicit to Cache<TagStore> but are not a part
+> of BaseCache.  Do you not want a tag-store policy associated with your
+> cache?
+> Lisa
+>
+>
+> On Thu, Jun 10, 2010 at 1:22 PM, Malek Musleh <malek.musleh@gmail.com>
+> wrote:
+>>
+>> Hello,
+>>
+>> I am trying to create a new cache SimObject (Snoopcache let's say)
+>> that is derived from the BaseCache. I have looked at the ASPLOS
+>> tutorial for creating new Simobjects, as well as this previous thread:
+>>
+>> http://www.mail-archive.com/m5-users@m5sim.org/msg01791.html for help.
+>>
+>>
+>> At the moment, I have not really added any new functionality, as I am
+>> just trying to get the SimObject created at the moment.
+>>
+>> I made the corresponding snoopcache.hh, snoopcache.cc, and
+>> SnoopCache.py. The snoopcache.cc file is blank (aside from the create
+>> function in which i discuss below), and the snoopcache.hh just defines
+>> the class:
+>>
+>> class SnoopCache : public BaseCache.
+>>
+>>
+>> In the builder.cc file, I have replicated the BUILD_CACHE defines in
+>> order to build the SnoopCache similarly to the way that the BaseCache
+>> is created, but when I try compiling it, I get the following error:
+>>
+>>
+>> scons: Building targets ...
+>> g++ -o build/ALPHA_SE/mem/cache/builder.o -c -Wno-deprecated -pipe
+>> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -g -O3 -Werror
+>> -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/libelf -Iext
+>> -I/usr/include/python2.5 -Ibuild/ALPHA_SE
+>> build/ALPHA_SE/mem/cache/builder.cc
+>> build/ALPHA_SE/mem/cache/builder.cc: In member function 'SnoopCache*
+>> SnoopCacheParams::create()':
+>> build/ALPHA_SE/mem/cache/builder.cc:252: error: cannot convert
+>> 'Cache<FALRU>*' to 'SnoopCache*' in return
+>> build/ALPHA_SE/mem/cache/builder.cc:252: error: cannot convert
+>> 'Cache<LRU>*' to 'SnoopCache*' in return
+>> build/ALPHA_SE/mem/cache/builder.cc:252: error: cannot convert
+>> 'Cache<IIC>*' to 'SnoopCache*' in return
+>>
+>> If I try using the create function thats given in the ASPLOS tutorial
+>> and put it in the snoopcache.cc file:
+>>
+>> SnoopCache
+>> *SnoopCacheParams::create()
+>> {
+>>    return new SnoopCache(this);
+>> }
+>>
+>> I get the following error:
+>>
+>>
+>> cons: Building targets ...
+>> g++ -o build/ALPHA_SE/mem/cache/builder.o -c -Wno-deprecated -pipe
+>> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -g -O3 -Werror
+>> -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/libelf -Iext
+>> -I/usr/include/python2.5 -Ibuild/ALPHA_SE
+>> build/ALPHA_SE/mem/cache/builder.cc
+>> g++ -o build/ALPHA_SE/mem/cache/snoopcache.o -c -Wno-deprecated -pipe
+>> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -g -O3 -Werror
+>> -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/libelf -Iext
+>> -I/usr/include/python2.5 -Ibuild/ALPHA_SE
+>> build/ALPHA_SE/mem/cache/snoopcache.cc
+>> build/ALPHA_SE/mem/cache/snoopcache.cc: In member function
+>> 'SnoopCache* SnoopCacheParams::create()':
+>> build/ALPHA_SE/mem/cache/snoopcache.cc:36: error: cannot allocate an
+>> object of abstract type 'SnoopCache'
+>> build/ALPHA_SE/mem/cache/snoopcache.hh:31: note:   because the
+>> following virtual functions are pure within 'SnoopCache':
+>> build/ALPHA_SE/mem/mem_object.hh:58: note:      virtual Port*
+>> MemObject::getPort(const std::string&, int)
+>> build/ALPHA_SE/mem/cache/base.hh:492: note:     virtual bool
+>> BaseCache::inCache(Addr)
+>> build/ALPHA_SE/mem/cache/base.hh:494: note:     virtual bool
+>> BaseCache::inMissQueue(Addr)
+>>
+>>
+>> It seems that the creating of new SimObjects derived from the
+>> BaseCache would be a little more tricky to do because of the TagStore,
+>> and Prefetching classes, but it seems that it should still be
+>> possible.
+>>
+>> Does anybody have any suggestions or examples of deriving a new cache
+>> module from the BaseCache? I have attached the four files if need be.
+>>
+>> Thanks.
+>>
+>> Malek
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

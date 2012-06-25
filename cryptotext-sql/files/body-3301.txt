@@ -1,0 +1,17 @@
+alright, thanks steve!- Show quoted text -On Thu, Apr 10, 2008 at 10:02 PM, Steve Reinhardt <stever@gmail.com> wrote:
+It's only very loosely based on the 21264.  It's intended primarily to be a generic but realistic out-of-order CPU model and not to model anything specifically.  However, in the cases where we had to pick something concrete (e.g., branch predictor, memory disambiguation mechanism, etc.), we generally used the 21264 for inspiration as it's a very nice design and pretty well documented.  This strategy simplified a lot of our decision making, as it gave us a default answer for any implementation question that came up.
+We only used the 21264 as a model when we needed a specific mechanism though, and didn't go out of our way to make O3CPU look like the 21264 when a more generic model seemed adequate.  Thus it's certainly not intended to be a detailed model of the 21264, and doesn't bother with details like the function unit clustering and replicated register file.
+SteveOn Wed, Apr 9, 2008 at 11:00 PM, nathaniel jones <nathjones01@gmail.com> wrote:
+it was said that the 03cpu was loosely based on the 21264. just how loosely was it based? i know that it got the branch predictors right, but how about the registers for instance? the 21264 has two registers(but they contain the same values), one for each pair of integer execution block. the broadcasting of a value from an execution block to a nonlocal register has some latency. is this modelled in m5? i've read the iew and commit stage, and it looks as if 03cpu has only one register file, and there is no grouping of functional units. is this correct, or did i miss something? thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

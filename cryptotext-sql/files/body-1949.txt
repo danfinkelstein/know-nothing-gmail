@@ -1,0 +1,65 @@
+hello Rick,I  have posted here a part of code. Please let me know is there any way to check whether the threads are assigned to core or not? =====================================================================================
+for i in range(int(count - 1)):  BenchmarkList[i] = "Benchmarks." + Data1[i + 1] print 'num of cpus = %d' %npprint 'num threads per cpu = %d' %num_thrds_per_cpuk = 0
+for i in xrange(np):    expression = "system.cpu[" + str(i) + "].workload = ["    for j in xrange(num_thrds_per_cpu):        expression += BenchmarkList[k]        k = k + 1        if j != (num_thrds_per_cpu - 1):
+                expression += ", "    expression += "]"    print expression    exec(expression)root = Root(system = system)===========================================================================================
+Here, i have used one core with two threads......yes ... i am in ES mode and Is there any way to check whether scheduler assigning a thread to each core in SE mode?please reply me with possible solutions....
+Thanks in advance,devraj- Show quoted text -On Wed, Feb 4, 2009 at 3:04 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+Devraj Chapagain wrote:
+> hi there,
+>
+> I am using 16 copies of SPEC CPU2006 benchmarks for simulation. While
+> simulating for small number of instructions, I got the result as:
+>
+> ===========================================================
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> Exiting @ cycle 62736000 because all threads reached the max
+> instruction count
+> ===========================================================
+>  It seems correct, but the result is incomplete as some cores has void
+> or zero values for all the fields. For clarify, the values like
+> overall_miss_rate :  <err: div-0>. as some core has no reading values
+> (i.e., 0 on all). So, i could not determine the output of simulation.
+This probably means that one (or more) of your cores was not running.
+>
+>
+> When the number of instructions is increased, then i got the following
+> result:
+> ===========================================================
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> Exiting @ cycle 56291500 because target called exit()
+> =============================================================
+This implies that the target application (assuming you are in system
+emulation mode) called exit. Maybe the application finished?
+> The simulation is exit after fixed number(56291500) of cycle whatever
+> be the size of physical memory is increased. Initially, i have
+> assigned 2GB of physical memory and when i got this result "Exiting @
+> cycle 56291500" then i increase the physical memory to 10GB, then to
+> 20GB ..... 40GB but no effect. The simulation is exit after the same
+> number of cycle. After i got this, i checked the result but the result
+> is as on the previous, some core has assigned the values of reading,
+> while some of the cores have error like--> overall_miss_rate :  <err:
+> div-0>.
+Is your scheduler assigning a thread to each core?  You might want to
+try Full System mode as you wont has the physical memory problem and can
+use traditional scripts.
+>
+> devraj
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

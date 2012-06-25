@@ -1,0 +1,76 @@
+The basic idea is that Bus::recvTiming() is called only when the
+packet is actually sent across the bus; if a sender tries to send a
+packet earlier when the bus is busy, it will not be able to (it will
+get a 'false' return value from sendTiming()), and then will have to
+wait on a retry() callback.  So the timing of the successful
+recvTiming() invocation reflects all of the contention delays due to
+other packets (i.e., waiting for the bus to become idle).
+It's true that since there's no additional delay on the sendTiming()
+there's no bus latency being modeled; once the packet gets onto the
+bus, it's transferred instantaneously from the sender to the
+receiver(s).  The firstWordTime and finishTime are provided to allow
+the receiver to properly deal with that latency, including situations
+where critical-word-first transfers are being modeled.  As you note,
+only the cache actually uses those values though, which is arguably a
+bug.
+The reason it's done this way is that we don't want to schedule more
+events than we need to.  For simple devices with a fixed latency,
+you'll be scheduling a response packet anyway, and you should simply
+schedule that response at (finishTime + deviceLatency) instead of just
+deviceLatency.  For more complex devices like the cache where you care
+about timing within the transfer, you can't just notify the cache at
+finishTime, since it needs to know when the first word arrives for
+critical-word-first bypassing.
+Steve
+- Show quoted text -
+On Dec 2, 2007 8:44 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>
+>
+> I noticed that occupyBus() sets pkt->firstWordTime and pkt->finishTime.
+> However, these variables are only utilized
+> by Cache::handleResponse(). What if the packet is a request? I'm just
+> wondering how firstWordTime and finishTime is handled in all cases.
+>
+> Thanks!
+>
+> Jiayuan
+>
+>
+>
+> ----- Original Message -----
+> From: Jiayuan Meng
+> To: M5 users mailing list
+> Sent: 2007年12月3日 12:36 PM
+> Subject: [m5-users] bus latency modeling
+>
+>
+> I have a question regarding  Bus::recvTiming
+>
+> In this function, occupyBus() calculates when the packet is received
+> completely by dest_port (tickNextIdle). However, "sendTiming" is executed
+> instantly afterwards without delay (both to dest_port and snoop ports). I
+> understand the "adding instead of dividing" trick, but for this latency
+> model to be effective, shouldn't the dest_port and snoop ports see the
+> packet at tickNextIdle?  Am I missing something?
+>
+> Thanks!
+>
+> Jiayuan
+>
+>
+>  ________________________________
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

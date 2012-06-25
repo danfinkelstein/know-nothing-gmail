@@ -1,0 +1,15 @@
+Yea, the trace output doesn't get printed until the instruction completes, so it makes sense that if you're having trouble it's with the instruction after the last printed one.The details will depend a lot on which CPU model you're using.  In general you should look for the StaticInst pointer, and if you're using the o3 model, the DynInst pointer too.  You should be able to call the disassemble() method of the StaticInst object to see what the instruction is.  As far as seeing what goes wrong, just regular old setting breakpoints and such with gdb is the main technique.  Depending on what code you've modified, turning on extra trace flags (and maybe adding your own DPRINTFs) is pretty useful too.  Definitely take advantage of the --debug-break option to get to the interesting parts quickly.  There are a few more hints here:
+http://m5sim.org/wiki/index.php/Debugging_M5Steve- Show quoted text -On Sat, Apr 25, 2009 at 7:00 PM, Paul Lee <pl4u@virginia.edu> wrote:
+- Show quoted text -From the debugger, it looks like the panic is for the instruction after the last instruction output which makes sense since the data in the location would be output but there would be problems if the address is bad as in my case.
+Does anyone know how I would be able to get the bad instruction output or where I should look?Thanks,Paul
+On Sat, Apr 25, 2009 at 7:55 PM, Paul Lee <pl4u@virginia.edu> wrote:
+I am debugging an application on a modified version of m5 and am running with --trace-flags=Exec.  I am wondering if the panic that I am getting is for the last instruction in the assembly output, or if it is for the instruction just after the assembly output.
+Thanks,Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

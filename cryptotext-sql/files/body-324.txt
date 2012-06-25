@@ -1,0 +1,12 @@
+> My question is why "sim_insts" is very different from
+> "itb.fetch_hits + itb.fetch_misses". Does anyone know the underlying
+> reasons?
+if I'm not mistaken, the SimpleCPU also models a very light form of
+stalling. Whether that be from TLB misses, branches, etc. you just
+need to double check the "tick()" code to be sure.
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,87 @@
+Hello everybody,
+I am trying to use the Stats package but I am running into compilation
+errors for the following:
+1. Call the sample() method for an element of the VectorDistribution class
+2. Call ysubname(offset, std::string) method for the elements of the
+Vector2d class (ysubnames() works though)
+So, I tried to compile the src/unittest/stattest.cc file and I am
+getting compilation errors for that as well.
+[I did not know how it is supposed to be build the following is enough
+to show the compilation errors]
+% g++ -o build/ALPHA_SE/unittest/stattest.do -c -Wall -Werror
+-Ibuild/gzstream -Ibuild/libelf -Iext -I/usr/include/python2.6
+-Ibuild/ALPHA_SE build/ALPHA_SE/unittest/stattest.cc
+build/ALPHA_SE/unittest/stattest.cc: In function âint main(int, char**)â:
+build/ALPHA_SE/unittest/stattest.cc:252: error: no matching function
+for call to âStats::Vector2d::ysubname(int, const char [3])â
+build/ALPHA_SE/base/statistics.hh:1197: note: candidates are:
+std::string Stats::Vector2dBase<Derived,
+Stor>::ysubname(Stats::off_type) const [with Derived =
+Stats::Vector2d, Stor = Stats::StatStor]
+build/ALPHA_SE/unittest/stattest.cc:307: error: âcheckâ was not
+declared in this scope
+build/ALPHA_SE/unittest/stattest.cc:551: error: âclass Stats::Textâ
+has no member named âcompatâ
+build/ALPHA_SE/base/statistics.hh: In member function
+âStats::DistProxy<Derived> Stats::VectorDistBase<Derived,
+Stor>::operator[](Stats::off_type) [with Derived =
+Stats::VectorAverageDeviation, Stor = Stats::AvgSampleStor]â:
+build/ALPHA_SE/unittest/stattest.cc:324:   instantiated from here
+build/ALPHA_SE/base/statistics.hh:1795: error: invalid conversion from
+âStats::VectorDistBase<Stats::VectorAverageDeviation,
+Stats::AvgSampleStor>* constâ to âStats::VectorAverageDeviation*â
+build/ALPHA_SE/base/statistics.hh:1795: error:   initializing argument
+1 of âStats::DistProxy<Stat>::DistProxy(Stat*, Stats::off_type) [with
+Stat = Stats::VectorAverageDeviation]â
+build/ALPHA_SE/base/statistics.hh: In member function
+âStats::DistProxy<Derived> Stats::VectorDistBase<Derived,
+Stor>::operator[](Stats::off_type) [with Derived =
+Stats::VectorDistribution, Stor = Stats::DistStor]â:
+build/ALPHA_SE/unittest/stattest.cc:350:   instantiated from here
+build/ALPHA_SE/base/statistics.hh:1795: error: invalid conversion from
+âStats::VectorDistBase<Stats::VectorDistribution, Stats::DistStor>*
+constâ to âStats::VectorDistribution*â
+build/ALPHA_SE/base/statistics.hh:1795: error:   initializing argument
+1 of âStats::DistProxy<Stat>::DistProxy(Stat*, Stats::off_type) [with
+Stat = Stats::VectorDistribution]â
+build/ALPHA_SE/base/statistics.hh: In member function
+âStats::DistProxy<Derived> Stats::VectorDistBase<Derived,
+Stor>::operator[](Stats::off_type) [with Derived =
+Stats::VectorStandardDeviation, Stor = Stats::SampleStor]â:
+build/ALPHA_SE/unittest/stattest.cc:375:   instantiated from here
+build/ALPHA_SE/base/statistics.hh:1795: error: invalid conversion from
+âStats::VectorDistBase<Stats::VectorStandardDeviation,
+Stats::SampleStor>* constâ to âStats::VectorStandardDeviation*â
+build/ALPHA_SE/base/statistics.hh:1795: error:   initializing argument
+1 of âStats::DistProxy<Stat>::DistProxy(Stat*, Stats::off_type) [with
+Stat = Stats::VectorStandardDeviation]â
+Line 350 (s13 is an object of the VectorDistribution class)
+350     s13[0].sample(12);
+351     s13[1].sample(29);
+352     s13[2].sample(12);
+353     s13[3].sample(29);
+354     s13[0].sample(42);
+Line 252 (s16 is an object of the Vector2d class)
+245     s16
+246         .init(2, 9)
+247         .name("Stat16")
+248         .desc("this is statistic 16")
+249         .flags(total)
+250         .subname(0, "sub0")
+251         .subname(1, "sub1")
+252         .ysubname(0, "y0")
+253         .ysubname(1, "y1")
+254         ;
+I could not find the above two scenarios in the existing M5 code.
+regards,
+Soumyaroop
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

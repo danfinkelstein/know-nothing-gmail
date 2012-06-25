@@ -1,0 +1,15 @@
+Hi,
+I'm starting research on scheduling for heterogeneous multicore
+I was advised to try M5 simulator, I couldn't find guidance whether it supports
+such architecture or not.
+Can someone help me if it's supported or not?
+TIA
+Best Regards
+--------------------------------------------------
+Amr M. M. Ashmawy
+Doctor Student
+Japan Advanced Institute of Science and Technology
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

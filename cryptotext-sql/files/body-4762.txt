@@ -1,0 +1,21 @@
+I'm not sure what problem you are referring to.  Can you be more specific?- Show quoted text -
+Naoto Fukumoto wrote:
+I'm sorry , E-mail that I sent is mistake.
+I confused "default .py file" and "my .py file"
+This problem is caused by " Prefetch in Multiprocessors".
+According to
+"Adaptive Sequential Prefetching in Multiprocessor Systems Using M5".
+Robert Mullenix, Michael Zajac (University of Michigan)
+, M5 prefeching only supports uniprocessor configuration.
+I'm trying to runnig Splash2 in MultiProcessors with hard ware prefetching.
+Could you tell me how to fix this problem ?
+thanks,
+Naoto Fukumoto  Email: fukumoto@c.csce.kyushu-u.ac.jp
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

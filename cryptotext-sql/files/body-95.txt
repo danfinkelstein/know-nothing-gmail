@@ -1,0 +1,12 @@
+Use the "Exec" flag to trace your progam and possibly other traceflags depending on what CPU Model your using. You can always turn on some traceflags in the memory system too (src/mem/SConscript ...I think 'Cache' will work")...
+But there is initialization code in your binary that gets the arguments ready for the main function as well as setup some libraries so more than likely thats the culprit.- Show quoted text -On Tue, Jun 1, 2010 at 7:11 PM, Qingyuan Deng <ddqqyy@gmail.com> wrote:
+- Show quoted text -Hi,I am trying to figure out the following issue:When I run a "null" program (empty main function without anything), there are still more than 160 dcache misses, and more than 200 icache misses. Is that normal? Or where do they come from?
+I am using SE mode with one core and the version is 1.1Thanks a lot,Qingyuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

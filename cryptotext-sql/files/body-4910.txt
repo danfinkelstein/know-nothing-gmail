@@ -1,0 +1,18 @@
+If you look at the implmentation of uni_coherence.[hh,cc] you will see how the CSHRs (Coherence Status Holding Registers) are used to propogate invalidates from the L2 up to the L1.  You will need to implement some simmilar functionality in the coherence_protocol.
+-Ron- Show quoted text -
+On Mon, 6 Nov 2006, Forum Mangal Parmar wrote:
+Hi,
+I was confused about the following, any help would be appreciated.
+If it is the case that there are private L1 and private L2s in M5 1.0, and
+if L2 snoops and does an invalidates, how do I send this snoop up to L1?
+Does the function slaveAccess(MemReqPtr &req); in bus_bridge.hh do that?
+Thank you,
+Forum
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

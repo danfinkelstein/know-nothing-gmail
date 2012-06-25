@@ -1,0 +1,12 @@
+Hi,You can do this with repeat uses of the max_inst_all_threads parameter. The file configs/common/simulate.py does this for fast forwarding and warmup.Here is part of the script I am using:if options.max_insts:
+    count = 0    while count < options.numcpus:        exit_event = m5.simulate()        cause = exit_event.getCause()        if cause != "all threads reached the max instruction count":            break
+        count += 1Good Luck,MichaelHello,  I am running a multi-programmed simulation in SE mode (16 cores, 16
+threads, 1 thread/core).I want to simulate each core for a fixed (or atleast) number ofinstructions (say 100million). With this scenario, some cores willexecute greater number of instructions if the thread executes faster. So
+we may execute 100Mil, 150Mil, 200Mil, and so on. I was reading some of the earlier discussions on this issue (2008) andthere doesn't seem to be a way to do this. The max_inst_all_threadsworks across all threads, but only for 1 cpu. Even if we assign it for
+every cpu using:switch_cpu_1[i].max_inst_all_threads = max_inststhe entire simulation exits when any 1 cpu reaches that count.does anyone know how to do this? I was looking at simulate.cc andsim_events.cc where the CountedExitEvent object is used. If I understand
+correctly, it decrements the counter when any thread for a given cputerminates, and it signals an M5 exit event when an cpu finishes themax_insts count for all its own threads.Can you suggest how we can modify this to keep track of threads across
+different cores? Also, is it a realistic model to not let the othercores continue after reaching max_inst_all_threads, but to stall themtill the other cores catch up?Thanks,Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

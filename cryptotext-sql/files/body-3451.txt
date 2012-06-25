@@ -1,0 +1,12 @@
+One doubt: as i see from tlb.cc both PDtb_miss_fault
+and NDtb_miss_fault are actually page faults which
+will be served by os. My doubt is why one is called
+dtb_miss_single and another is called dtb_miss_double?
+Is there any specific reason for that?
+      ______________________________________________
+Enviado desde Correo Yahoo!
+El buzón de correo sin límite de almacenamiento. http://es.docs.yahoo.com/mail/overview/index.html
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

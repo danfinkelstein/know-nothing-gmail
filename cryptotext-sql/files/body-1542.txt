@@ -1,0 +1,12 @@
+> It seems fine to me, however I'm surprised that there is a functional
+> request that ends up in the PhysicalMemory that doesn't need a
+> response. The only thing I could imagine falling into this category is
+> a Functional Writeback if you were attempting to flush the caches
+> before a checkpoint or something similar.
+Does a functional write from the debugger or something require a response?
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

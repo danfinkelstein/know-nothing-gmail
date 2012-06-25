@@ -1,0 +1,133 @@
+Hello Ali thanks for the answer.
+Is there anyway to confirm that the software threads that are running
+are the same than the number that I set up in the rcS file?. Also is
+there any way to know what software thread is running the CPU in that
+moment?. I am interested in see the switching between threads.
+In addition can anyone explain the meaning of the parameter numThreads
+that we can define in the CPUs?. Thanks a lot in advance!.
+2009/2/23 Ali Saidi <saidi@umich.edu>:
+- Show quoted text -> the thread that is listed in the request is a hardware thread, not a
+> software thread. All the CPU models only have one hardware thread, so
+> it should be set to 0.
+>
+> Ali
+>
+> On Feb 23, 2009, at 7:09 PM, Bob Nagel wrote:
+>
+>> Hello Steve thanks a lot for your answer,
+>>
+>> I was concern about the few accesses clustered together and you were
+>> right. It was because I was using the TimingSimpleCPU, now with O3
+>> everything looks like much better, thanks a lot for the help. But I
+>> hope you can help with another worry.
+>>
+>> I have been studying the different accesses to the memory, and all the
+>> accesses from the different CPUs come from the thread 0. I am using FS
+>> and I am running the PARSEC benchmarks what according to previous
+>> posts are multithread. In theory I am using 16 threads. Also in the
+>> parameters numThreads for the CPUs I have a value of 4, which I think
+>> that means that that CPU should run 4 threads. Does anyone know why I
+>> get accesses only from the thread 0?.
+>>
+>> I do not know if I am running more than one thread per CPU. I was
+>> trying to trace the creation of the threads with the trace-flags but I
+>> did not see anything. Can anyone please say a way to know how many
+>> threads each CPU is running?.
+>>
+>> Thanks a lot in advance.
+>>
+>> 2009/2/21 Steve Reinhardt <stever@gmail.com>:
+>>> Are you concerned that the total number of accesses is small, or
+>>> just that
+>>> there are few concurrent accesses?  If it's the former, I'm stumped
+>>> too, and
+>>> I wold suggest turning on some tracing (e.g., start with
+>>> --trace-flags=Cache) and you can see what's going on during the
+>>> simulation.
+>>>
+>>> If it's the latter, I think the reason is that you're using
+>>> TimingSimpleCPU
+>>> which models a blocking pipeline, so you're not going to have more
+>>> than one
+>>> outstanding access from each CPU at any point in time.  Thus it's not
+>>> surprising that you rarely see more than two total.  If you want
+>>> non-blocking behavior from the CPUs you'll need to use the O3 CPU
+>>> model.
+>>>
+>>> Steve
+>>>
+>>> On Thu, Feb 19, 2009 at 11:09 PM, Bob Nagel <nasmloe@gmail.com>
+>>> wrote:
+>>>>
+>>>> Hello all,
+>>>>
+>>>> I am testing PARSEC benchmarks in FS along with DRAMSim and I get
+>>>> very
+>>>> few accesses to the memory. Normally I do not have more than 2
+>>>> petitions waiting to be processed. If I increase the latency of the
+>>>> memory I still get very few accesses, and the size of the caches I
+>>>> am
+>>>> using is really small. I consider that this is a problem of my
+>>>> configuration of the simulator. In my rcS I am trying to execute 4
+>>>> benchmarks at the same time using the & operator, I have something
+>>>> like this:
+>>>>
+>>>> ...250k.dat 220 &
+>>>> ...rret/output.txt &
+>>>> ...mate/out.fluid &
+>>>> ...eal/1000.nets
+>>>> /sbin/m5 exit
+>>>> The execution of the benchmarks is right all of them finish
+>>>> successfully. But I do not know if all of them are running at the
+>>>> same
+>>>> time.
+>>>>
+>>>> I do not know if using & will work in M5, if this is not the right
+>>>> way
+>>>> to execute the 4 benchs at the same time. Can anyone please
+>>>> provide a
+>>>> way to do this in FS?.
+>>>>
+>>>>
+>>>> Also regarding the few accesses and my configuration, this are
+>>>> some of
+>>>> the main parameters I have in the FS.py:
+>>>> L2Cache(size = '8kB', assoc = 4, latency = '7.5ns', block_size = 64,
+>>>> mshrs = 64 )
+>>>> SplitL1Caches(L1Cache(size = '4kB', assoc = 2, latency = '0.5ns',
+>>>> block_size = 64, mshrs = 64 ),
+>>>>                     L1Cache(size = '4kB', assoc = 2, latency =
+>>>> '0.5ns', block_size = 64, mshrs = 64 ))
+>>>>
+>>>> As you can see those cache are really small. And I think I should
+>>>> get
+>>>> much more petitions waiting to be processed in DRAMsim. I have tried
+>>>> different benchmarks but in none of them I get a big amount of
+>>>> accesses. Does anyone know what am I missing in the configuration?.
+>>>>
+>>>> Thanks a lot in advance.
+>>>>
+>>>>
+>>>> And finally if someone need this is my config.ini file:
+>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

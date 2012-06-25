@@ -1,0 +1,10 @@
+hi!i modified the 03CPU and and i was able to compile it. it runs hello world on the regression tests too..When i try running eon fron SPEC2000 on it however I getM5 compiled Jun  9 2008 09:05:50M5 started Mon Jun  9 09:09:15 2008
+M5 executing on systemcommand line: ./build/ALPHA_SE/m5.opt tests/run.py long/30.eon/alpha/tru-64/o3-timingGlobal frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 7001
+warn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack size by one page.warn: ignoring syscall sigprocmask(1, 0, ...)Eon, Version 1.1getting pixel output filename pixels_out.cook
+opening control file chair.control.cookopening camera file chair.cameraopening surfaces file chair.surfacesreading datawarn: Increasing stack size by one page.panic: Tried to access unmapped address 0x94.
+ @ cycle 163786500[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]Program aborted at cycle 163786500Abortednate@system:~/data/m5$      i was able to run eon to completion with the default 03CPU. what could be causing this? i also encountered unmapped addresses when trying to run some other benchmarks(like crafty) to completion using the default 03CPU. is there any way to work around this?
+thanks a bunch!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

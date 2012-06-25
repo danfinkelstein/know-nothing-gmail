@@ -1,0 +1,10 @@
+Hi Meng-Ju thanks for your help, it's really appreciable I'm starting these days my work with the M5 simulator and with all of this answer I can advance much faster. Now I can run my own tests, but my problem is that in the output of the simulation (the file m5stats.txt), there is nothing, where I can get the performance results. Thanks.- Show quoted text -
+On Wed, Oct 1, 2008 at 3:49 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+I post a more detailed description about how to build cross-compilerand create the the benchmark processes in the FAQ.
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarksYou can assign the workload to each cpu in the system.cpu.workload parameter.
+for i in xrange(np):   system.cpu[i].workload = [process[i]]Meng-Ju
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

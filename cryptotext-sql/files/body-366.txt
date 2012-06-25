@@ -1,0 +1,102 @@
+Hi,I think this adds on to what you are saying:http://www.gentoo.org/proj/en/base/alpha/doc/alpha-porting-guide.xml#doc_chap4
+There seems to be a real problem with anyone trying to study IPC and Alpha and Floating Point applications. I am not sure where the problem lies exactly at the moment.All I know is that the alpha  cross compiler (ev67 oriented) is using the system call get/set sysinfo (), specifically the syscall  SSI(GSI)_IEEE_FP_CONTROL, which is hammering preformance.
+From my understanding the ev6 has added hard ware to reduce the syscalls being made. I am not sure what solution needs to be added to M5 to fix this problem (perhaps adding additional hardware?), or a bug in the cross compiler?
+ In  this mailing list  I have been focusing on implementing a scoreboard, however if this problem fixed, it looks like a scoreboard is not needed at this time (judging by hand calcuations, it can really give us 2-10% max increase in ipc). As reducing these syscalls would reduce the time spent in palmode (probably around 70-90% reduction).
+Thanks,EF- Show quoted text -On Wed, Mar 31, 2010 at 7:14 PM, Steve Reinhardt <stever@gmail.com> wrote:
+Note that Alpha only implements the common parts of IEEE compliance in
+hardware, and more complex features like precise exceptions require
+software support.  You may be able to get better performance using
+different compiler options that avoid 100% IEEE compliance.  I'm not
+sure about that though.
+Steve
+On Tue, Mar 30, 2010 at 6:23 PM, ef <snorlaxgb@gmail.com> wrote:
+> Let me elaborate a bit more:
+> Lets use PARSEC Blackscholes as an example. This benchmark uses the floating
+> version of exp() math function heavily.
+>
+> Under the glibc/math/s_cexpf.c the floating point version of exp calls
+> the function:
+> if (rcls >= FP_ZERO)
+>     {
+>       /* Real part is finite.  */
+>       if (icls >= FP_ZERO)
+>         {
+>           /* Imaginary part is finite.  */
+>           float exp_val = __ieee754_expf (__real__ x);
+>           float sinix, cosix;
+>
+> __ieee754_expf which is used to calculate e^x.  Each time this function is
+> called 3 system calls are made, which causes us to spend 50% of our
+> execution time in the kernel, we are paying a heavy penalty
+> (http://www.helsinki.fi/atk/unix/dec_manuals/DOC_51/HTML/MAN/MAN3/0388____.HTM).
+>
+>
+> ieee754_expf is under the file sysdeps/ieee754/flt-32/e_expf.c:
+>
+>     static const float THREEp22 = 12582912.0;
+>       /* 1/ln(2).  */
+> #undef M_1_LN2
+>       static const float M_1_LN2 = 1.44269502163f;
+>       /* ln(2) */
+> #undef M_LN2
+>       static const double M_LN2 = .6931471805599452862;
+>
+>       int tval;
+>       double x22, t, result, dx;
+>       float n, delta;
+>       union ieee754_double ex2_u;
+>       fenv_t oldenv;
+>
+>       feholdexcept (&oldenv); <--Two System Calls here
+> #ifdef FE_TONEAREST
+>       fesetround (FE_TONEAREST);
+> #endif
+>
+>       /* Calculate n.  */
+>       n = x * M_1_LN2 + THREEp22;
+>       n -= THREEp22;
+>       dx = x - n*M_LN2;
+> ......
+>   /* Return result.  */
+>       fesetenv (&oldenv); <--System Call Here
+>
+>       result = x22 * ex2_u.d + ex2_u.d;
+>       return (float) result;
+>     }
+>
+> First due to the ieee standard the value of the FCPR is preserved (two
+> systems calls, copy old value then set to 0), then once exponent is
+> calculated the old value is put back (another system call).
+>
+> ____________
+>
+> Anyone have any ideas on solving this solution? im looking for a long term
+> result for parsec benchmarks, one solution that might work is simply
+> removing the saving and restoring of the FCPR which is just erasing those
+> system calls. Anyone know if this is a bad idea? It might work for
+> blackscholes but im worried about long term results on this solution.
+>
+>
+> Thanks,
+> EF
+>
+> On Mon, Mar 29, 2010 at 3:03 PM, ef <snorlaxgb@gmail.com> wrote:
+>>
+>> Is there any particular reason why IEEE floating point is integrated in
+>> the cross compiler on the M5 website. It seems to really kill performance,
+>> since software is responsible for  being ieee compliant.
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

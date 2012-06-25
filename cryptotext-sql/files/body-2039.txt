@@ -1,0 +1,19 @@
+Hi Angela,Your command lines look fine to me - the warnings are normal and nothing to worry about.The
+warmup just means that the statistics will be reset after that many
+instructions, so that your actual simulation statistics will be from a
+warm cache.  That way, all the cold misses from filling up an empty
+cache are not counted in your run.
+Lisa- Show quoted text -On Sun, Jan 11, 2009 at 3:09 PM, Angela Carlsson <calendo@hotmail.com> wrote:- Show quoted text -
+Hello, I am very new to the simulator, and I have some questions about simulations in FS mode. In my simulations what I do is boot linux with the atomic CPU take a checkpoint when the booting is over and after switch to the detailed CPU. I copied the commands from the mailing list, and I´d like that someone can confirm me if I am doing the right thing.
+To take the checkpoint and boot Linux./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b Bench --checkpoint-dir=./checkpoint/   To restore from the checkpoint and switching to detailed CPU
+ ./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b Bench --caches --l2cache -s -w 200000000000 -r 1 --checkpoint-dir=./checkpoint/After the second one I get many warnings with messsage like this:
+"warn: Not unserializing 'system.switch_cpus_10.fuPool.FUList3.opList2': no section found in checkpoint.", is this normal?.And finally I do not understand what is the cache warm up, Can anyone please clarify this?.
+Thanks in advance.Charlas más divertidas con el nuevo  Windows Live Messenger
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

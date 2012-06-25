@@ -1,0 +1,61 @@
+I believe the problem here is that cpu and
+cpu2 need to be part of the system (somewhere) in order to be instantiated by m5’s
+configuration parsing.  The error that it’s giving you means that
+you didn’t have those two CPUs as part of the configuration that actually
+gets instantiated.  Thus when it tries to switch between the CPUs, it
+finds that the CPUs have no corresponding object within the running instance of
+m5.  Try making your switch_cpu_list as a child of either the root object or
+a system object (I believe you should just be able to do “root.switch_cpus
+= switch_cpu_list” or something along those lines).  I’ll try
+to clean up the Wiki to clarify that when I get a better example.
+ 
+Kevin
+ 
+From: m5-users-bounces@m5sim.org
+[mailto:m5-users-bounces@m5sim.org] On Behalf
+Of James Anon
+Sent: Friday, September 01, 2006 2:35 PM
+To: m5-users@m5sim.org
+Subject: [m5-users] Using the
+SwitchCpu function
+ 
+I am trying to use the m5.switchCpus function to quickly simulate pass
+the linux booting stage, and then switch to detailed mode after the full system
+is booted.  I followed the wiki page and have made minor modifications to
+the fs.py example script including:
+cpu = AtomicSimpleCPU()
+cpu2 = DetailedO3CPU()
+mem_mode = 'timing'
+.
+.
+.
+switch_cpu_list = [(cpu,cpu2)]
+m5.simulate(3663496423522) 
+m5.switchCpus(switch_cpu_list) 
+exit_event = m5.simulate(maxtick)
+Most other options I've left the same from the fs.py script, but when I run the
+simulator, it works perfectly until the switch point and then dies with:
+Switching CPUs 
+Traceback (most recent call last):
+  File "<string>", line 1, in ?
+  File "build/ALPHA_FS/python/m5/main.py", line 314, in main
+    execfile(sys.argv[0], scope)
+  File "configs/example/fsSwap.py", line 86, in ? 
+    m5.switchCpus(switch_cpu_list)
+  File "build/ALPHA_FS/python/m5/__init__.py", line 206, in
+switchCpus
+    new_cpu.takeOverFrom(old_cpus[index])
+  File "build/ALPHA_FS/python/m5/config.py", line 570, in
+takeOverFrom 
+    self._ccObject.takeOverFrom(cpu_ptr)
+AttributeError: 'NoneType' object has no attribute 'takeOverFrom'
+Is there something I'm forgetting to instantiate?  Any help would be
+greatly appreciate.
+Ps.  Thanks for setting up the WIKI page.  It has been a tremendous
+help, and in my opinion a great improvement over the documentation that was
+available for the previous version of m5.  I hope the community continues
+to add to it! 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

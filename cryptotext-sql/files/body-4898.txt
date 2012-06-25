@@ -1,0 +1,21 @@
+Ok, so I've tracked down the problem and it's pointing to Objects/longobject.c
+line 599 where it tries to set *p to signbyte. Signbyte is either 0xffU or 0U.
+The value of *p just before it returns is -5034415420011. This value is then
+returned again on line 834 of the same file. Hence the end result is that
+num_cycles in main.cc would take the value of -5034415420011. Is this correct
+or intended? This is the code snippet:
+ /* Fill remaining bytes with copies of the sign bit. */
+        {
+                unsigned char signbyte = do_twos_comp ? 0xffU : 0U;
+                for ( ; j < n; ++j, p += pincr)
+                        *p = signbyte;
+        }
+Another thing is that when I was using GDB to debug this, a pollEvent-like
+interrupt keeps coming in (like 5x per line of code) which makes stepping
+through the debugger really hard. How do I turn this off?
+Regards,
+- Show quoted text -Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

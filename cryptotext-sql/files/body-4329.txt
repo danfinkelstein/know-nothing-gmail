@@ -1,0 +1,183 @@
+A follow up to this:
+In the dram.cc file, various stats are calculated as cycles. For example:
+Tick time_since_last_access = curTick-time_last_access;
+.
+.
+.
+.
+cycles_nCKE[0] += was_idle ? MIN(curTick-busy_until[current_bank], time_since_last_access) : 0;
+so is tick the same as a cpu cycle?
+- Sujay
+----- Original Message ----- From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Tuesday, August 21, 2007 2:52 PM
+Subject: Re: [m5-users] DRAM model in full system- Show quoted text -
+On Aug 21, 2007, at 2:40 PM, rlai@mtu.edu wrote:
+Hi Ali,
+    In PhysicalMemory.py, RAS/CAS latency are all defined as integer:
+    act_lat = Param.Int(2, "RAS to CAS delay")
+    cas_lat = Param.Int(1, "CAS delay")
+    war_lat = Param.Int(2, "write after read delay")
+    pre_lat = Param.Int(2, "precharge delay")
+    dpl_lat = Param.Int(2, "data in to precharge delay")
+    trc_lat = Param.Int(6, "row cycle delay")
+    It seems like these latencies are defined in the unit of memory
+cycles, and it makes sense. When the latency is returning in
+calculateLatency(), this latency is multiplied by the cpu_ratio, so I
+think the final latency returned from calculateLatency() is cpu cycle.
+This i exactly the problem I thought. I don't see any place where the latency is multiplied by cpu_ratio. The values that you listed below should be change from Param.Int to Param.Latency and the values  should be specified as strings (e.g. '3ns').
+    In host.hh, Tick is defined as below:
+   /**
+     * Clock cycle count type.
+     * @note using an unsigned breaks the cache.
+     */
+   typedef int64_t Tick;
+   So I thought Tick is also cpu cycle.
+No, it's not a cpu cycle.
+   But as you said "a tick in M5 by default is a picosecond", then  maybe the
+act_lat/cas_lat defined in the .py file are in wrong unit.
+Yes I believe this is the case.
+   Thanks for giving some suggestion to me. I will use the trace  flags to
+find the right way.
+Please let us know what you find and if you could provide a patch to  fix the problem that would be great too.
+Ali
+On Aug 20, 2007, at 4:52 PM, rlai@mtu.edu wrote:
+Hi,
+   The latency that DRAM model in full system is returning is cpu
+cycle,
+which is defined the same as that in emulation mode. One CPU  cycle may
+be hundreds of 10ps, so I think 20% difference in latency should  bring
+some difference in sim_tick.
+How have you come to this statement? The calculateLatency() function
+is expected to return ticks not cpu cycles. These latencies
+calculated from its parameters which are in ticks and a tick in M5 by
+default is a picosecond. Looking at the statistics your previously
+provided it seems as though you haven't changed the default of 1 tick
+== 1ps.  I would print out the numbers that calculateLatency() is
+returning and look at them. This is the number of ps that that access
+took assuming you haven't changed the 1 tick == 1ps default. I
+imagine you'll find that your accesses are taking a few ps instead of
+a few ns.
+You can also use the traceflags to see when a request is made, the
+dram responds and when the cpu gets the response (--trace-
+flags=Exec,Bus,MemoryAccess,Cache). You also probably want to add
+some trace flags to the DRAM model. Looking at this output will tell
+you how long the cpu is waiting for a response with your various
+statistics and probably lead you to the answer.
+Ali
+   I have tried O3CPU model in my simulation. When I run 10million
+instructions, I can get the simulation done. The simulations results
+also show no difference in sim_tick for difference average DRAM  access
+latency.
+If I run 100million or more instructions, I met this problem:
+warn: This DRAM module has not been tested with the new memory
+system at all!
+0: system.tsunami.io.rtc: Real-time clock set to Sun Jan  1
+00:00:00 2006
+   Listening for console connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port
+7000
+warn: Entering event queue @ 0.  Starting simulation...
+warn: cycle 245000: Quiesce instruction encountered, halting fetch!
+warn: cycle 266000: Quiesce instruction encountered, halting fetch!
+warn: cycle 318500: fault (itbmiss) detected @ PC 0x000000
+panic: Unable to find destination for addr: 80867e50
+ @ cycle 20572 971000
+[findPort:build/ALPHA_FS/mem/bus.cc, line 154]
+    What is the problem?
+Thanks,
+Tracy
+Tracy,
+It seems as though you added some statistics, so one question is  are
+the statistics correct? Another possibility is that the latency  that
+the DRAM device is returning when calculateLatency() is called is
+wrong or in the wrong units (perhaps it's returning nano-seconds?).
+Like the warning says the DRAM model hasn't been tested, and
+therefore hasn't been validated. It's been years since we used  it for
+anything and M5 has gone through quite a few changes since then,
+including a change in what units Ticks are.
+At first glance it worries me that the cas/ras/etc parameters  are all
+defined as Ints and not Ticks in the py file. Quickly running the
+model and printing out the latency returned by calculateLatency()
+seems to confirm this. All the latencies are on the order of 10 and
+I don't think the difference between 10ps-30ps would cause  sim_ticks
+to change much. You probably want to change all the latency
+parameters in the py file to be expressed in Latency and then  define
+them in the correrct number of ns or ps.  Take a look at how the
+latency parameter of PhysicalMemory is set in PhysicalMemory.py for
+an example.
+Ali
+On Aug 7, 2007, at 3:01 PM, rlai@mtu.edu wrote:
+Hi,
+   I run simulations by using TimingSimpleCPU and SDRAM model  for my
+different page placement algorithms. Benchmark is ValStream, and
+running 10 billion instructions for each simulation.
+   Different average  DRAM access latencies cause no difference in
+sim_ticks.
+   Can anybody explain that?
+Thanks,
+Tracy
+Hi,
+   I implement different page allocation algorithms (virtual to
+physical
+address translation algorithm) based on current DRAM model in
+full
+system(m5_2.0b). After running simulations(benchmark is
+ValStream), I
+could see more than 20% difference in average DRAM access
+latency
+within all these algorithms, but almost 0% difference in
+sim_ticks.
+   Is that because the caculated dram latency is not used?  Can
+anybody
+explain that to me?
+   Thanks.
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+I can figure out how many stats I have up front, although that's what I was
+trying to avoid doing by using a hash_map :-).
+As for the unknown size, a Stats::Vector can grow dynamically, right (like
+an STL vector)?  So I could either use the hash_map to index into a Vector
+during simulation, as you suggested, or I could use the hash_map to record
+the data, and just copy it into a Stats::Vector at the end of simulation (by
+iterating through the hash_map and dynamically growing the Vector).  I'd
+prefer the latter, if it's possible.  Is there a defined way to call a
+function after the simulation ends but before the stats are dumped?
+The stats Vector cannot currently be dynamically grown.  There were some old features of the stats package that made it impossible to dynamically change statistics.  Those have largely been removed, but I never went back and made it possible to change the number of stats.  The need just didn't come up all that often for me.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

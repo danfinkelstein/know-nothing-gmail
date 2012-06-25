@@ -1,0 +1,109 @@
+Er, ok, sorry :-\ It's just that I fetched the latest m5-dev tree and
+tried again. If I use this:
+itb = AlphaTLB()
+Then I get this warning:
+fatal: system.cpu.itb.size without default or user set value
+Whereas using 'AlphaITB()' doesn't. Anyway, it doesn't really matter
+since it's obvious what the problem is :-)
+Cheers
+Tim
+- Show quoted text -
+On 18/06/09 16:33, nathan binkert wrote:
+> Your minor correction, for the record, is not correct for the latest
+> m5-dev tree.  We unified the ITB and DTB classes since they were often
+> the same.
+>
+>   Nate
+>
+> On Thu, Jun 18, 2009 at 3:05 AM, Timothy M Jones <tjones1@inf.ed.ac.uk> wrote:
+>> Great, that seems to have worked perfectly :-)  Just one minor
+>> correction for the record:
+>>
+>> itb = AlphaTLB()   ->    itb = AlphaITB()
+>>
+>> Thanks for your help.
+>>
+>> Tim
+>>
+>> On 17/06/09 22:20, nathan binkert wrote:
+>>> I think that everything that you need to do should be in python.
+>>> Basically, you need to connect both CPUs to the same ITB and DTB
+>>> objects.
+>>>
+>>> If you look in src/cpu/BaseCPU.py, you can see that the itb and dtb
+>>> each default to AlphaTLB()
+>>>
+>>> This creates a new TLB and each CPU will end up getting its own.  If
+>>> you want two CPUs to share a TLB, then you need to do this:
+>>>
+>>> itb = AlphaTLB()
+>>> cpu0.itb = itb
+>>> cpu1.itb = itb
+>>>
+>>> The difference here is that they're both pointing to the same object.
+>>>
+>>> This is written assuming that the TLB objects don't carry any per CPU
+>>> state which I think right now is true.  If they were more closely tied
+>>> to the CPU, then you might have to write something like the drain,
+>>> resume, switchOut, and takeOverFrom functions that the CPU uses to
+>>> deal with the movement of the cache object.
+>>>
+>>>   Nate
+>>>
+>>>
+>>> On Tue, Jun 16, 2009 at 5:32 AM, Timothy M Jones <tjones1@inf.ed.ac.uk> wrote:
+>>>> Hi everyone,
+>>>>
+>>>> I'm trying to implement SMARTS-like functionality in the Alpha SE
+>>>> version of m5. So far I have managed to get the simulator to switch
+>>>> between the AtomicSimpleCPU and DerivO3CPU and back again repeatedly.
+>>>> I've also implemented functionality to do the switching after a certain
+>>>> number of instructions (instead of cycles).
+>>>>
+>>>> However, when I switch cpus, I set the new CPU to use the warmed caches
+>>>> from the old cpu. The same doesn't happen for the itb and dtb. In fact,
+>>>> from looking at the code I think that 2 different instances of these get
+>>>> created, one for each cpu.
+>>>>
+>>>> So, how easy would it be to implement this and where would I start?
+>>>> Could I do this in cpu/BaseCPU.py, cpu/base.cc, cpu/base.hh only or do I
+>>>> need to consider other places too?
+>>>>
+>>>> Thanks for your help
+>>>> Tim
+>>>>
+>>>> --
+>>>> The University of Edinburgh is a charitable body, registered in
+>>>> Scotland, with registration number SC005336.
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> --
+>> The University of Edinburgh is a charitable body, registered in
+>> Scotland, with registration number SC005336.
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Show quoted text -The University of Edinburgh is a charitable body, registered in
+Scotland, with registration number SC005336.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

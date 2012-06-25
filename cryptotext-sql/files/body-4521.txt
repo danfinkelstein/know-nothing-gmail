@@ -1,0 +1,21 @@
+Hey all,
+ 
+I’m trying to follow the splash2 example to create
+threads in SE mode. However, I found that the crosstool only cross compiles
+code on linux, while the precompiled splash2 uses tru64. While the system call
+for creating thread is emulated for tru64, the system call is not emulated for
+linux (in the source code, the system call associated with “fork”
+is “unimplemented”).  So, I wonder how the splash2 precompiled
+binary is built. Are they built in a real environment? Or what crosscompiler is
+available to compile code for tru64, so that I can use the implemented emulation?
+ 
+I would also be happy if there are other ways to emulate
+threads in SE mode with linux binary.
+ 
+Thanks!
+ 
+Jiayuan   
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

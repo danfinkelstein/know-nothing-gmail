@@ -1,0 +1,32 @@
+For your fetch policy question,
+I'm unsure why you arent getting a error for bogus input.
+If you look in src/cpu/o3/fetch_impl.hh, you'll see that there should
+be a "fatal()" after the SMT string is compared through the "policy"
+variable.
+Because that code is there, I question if your configuration is
+exactly correct. Try turning on the "Fetch" trace flag and see what is
+getting set at tick 0.
+On Tue, May 26, 2009 at 9:52 PM, Alexander Neckar
+<a-neckar@northwestern.edu> wrote:
+- Show quoted text -> Hi,
+>
+> We're simulating an SMT with ALPHA_FS. When we change the smtFetchPolicy
+> parameter in o3_cpu.py we don't observe any change whatsoever in simulator
+> behavior. Even with a bogus input (like 'smtFetchPolicy =
+> param.string('xyz',"smt fetch policy"') we don't see any warnings or errors.
+> Any insight would be appreciated.
+>
+> Thanks,
+> Alex Neckar
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

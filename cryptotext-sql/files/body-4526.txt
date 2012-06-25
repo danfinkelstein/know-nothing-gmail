@@ -1,0 +1,16 @@
+Hi,
+ 
+I’m using M5 1.1, I wonder whether I can run surge
+specweb which is originally included in the system. I don’t have the specweb
+image file since it is not distributed anymore. I wonder whether I can get the reasonable
+result if I simply run surge specweb without the image file. If it does not give
+the correct result, I would like to run specweb2005 I owned. However, I’m
+not quite familiar with cross compiling, and I only have the binary of specweb2005.
+Could you help to cross compile it, which is based on Java.
+ 
+Thanks a lot.
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

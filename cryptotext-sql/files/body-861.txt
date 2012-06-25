@@ -1,0 +1,6 @@
+Hi All,I am looking for an integrated version of M5 and Wattch. I believe some people have done that already. Is there anyone willing to share that version or his/her ways to integrate these two tools?Thank you very much,
+di 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

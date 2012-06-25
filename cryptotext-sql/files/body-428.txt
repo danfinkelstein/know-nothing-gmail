@@ -1,0 +1,7 @@
+There is a significant number of switches between 0 and 31 (IPL level),I am guessing 0 is User mode, but i have no clue why we are at ipl 31. According to the Alpha Arch Ref Manual II-A around 6-20. IPL 31 is hardware level machine check error, I have no clue why we would enter this mode in a software alpha emulator. Is it possible there is a bug in the alpha cross compiler?
+Any Ideas?Thanks,EF- Show quoted text -On Thu, Feb 18, 2010 at 10:00 PM, ef <snorlaxgb@gmail.com> wrote:
+Hello,I am having trouble understaindg the IPL mechanics. On one of my benchmarks M5 Alpha mode FS detailed keeps switching IPL 0 to 31 back and fourth. Anyone know why?I suspect swpipl instr is killng IPC.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

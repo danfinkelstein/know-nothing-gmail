@@ -1,0 +1,30 @@
+On Mon, May 3, 2010 at 4:22 PM, Ankit Sethia <asethia@eecs.umich.edu> wrote:
+> Hi,
+> I have a couple of questions.
+> 1) What misses are considered as dcache misses? I added an L2 cache and by
+> decreasing the size of the L2 cache, L2 cache hits decreased dramatically
+> but dcache hits had no effect.
+"dcache" is the name of the L1 cache in this case.
+> 2) What is the best way to learn about such stuff? I turned on
+> --trace-flags=all and there were misses in dcache and L2 but i could not
+> make out which stat was getting updated because of that.
+--trace-flags=Cache will give you an idea of what's happening in the
+simulation, but the only way to know exactly which stats get updated
+when is to look in the source code.  The regStats() method tells you
+which fields of an object correspond to stat values, then you can look
+in the code to see where they get updated.
+Steve
+>
+> Any help in this regards is greatly appreciated.
+>
+> - Ankit
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

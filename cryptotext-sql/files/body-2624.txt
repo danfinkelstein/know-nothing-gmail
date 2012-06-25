@@ -1,0 +1,70 @@
+Is this SRAM supposed to be a scratch pad? To work in the memory
+system it needs to have an address range associated with it. In that
+case you could do something like the following, however I haven't
+tested it and I think their may be a problem with hooking up a CPU to
+a l1 cache with a bus in between (even though there shouldn't be).
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+physmem = PhysicalMemory(range=AddrRange("512MB")),
+                 membus = Bus(), mem_mode = test_mem_mode)
+system.physmem.port = system.membus.port
+if options.l2cache:
+        system.l2 = L2Cache(size='2MB')
+        system.tol2bus = Bus()
+        system.l2.cpu_side = system.tol2bus.port
+        system.l2.mem_side = system.membus.port
+for i in xrange(np):
+        system.cpu[i].icache = L1Cache(size = '32kB');
+        system.cpu[i].icache_port = system.cpu[i].icache.cpu_side
+         system.cpu[i].l1_bus = Bus()
+        system.cpu[i].dcache =   L1Cache(size = '64kB')
+        system.cpu[i].dcache_port = system.cpu[i].l1_bus.port
+        system.cpu[i].dcache.cpu_side = system.cpu[i].l1_bus.port
+         system.cpu[i].yoursram = SRAM()
+         system.cpu[i].yoursram_port = system.cpu[i].l1_bus.port
+        if options.l2cache:
+                system.cpu[i].dcache.mem_side = system.tol2bus.port
+                system.cpu[i].icache.mem_side = system.tol2bus.port
+        else:
+                system.cpu[i].dcache.mem_side = system.membus.port
+                system.cpu[i].icache.mem_side = system.membus.port
+        system.cpu[i].workload = process
+Ali
+- Show quoted text -
+On Aug 16, 2008, at 3:23 AM, é‚“å®  wrote:
+hi all,
+i want to make my new sram be recognized by the m5 system, but i am
+newbie in python, i know some thing ought to be add in configs/example/
+se.py, my sram is of the same level with L1 cache .
+then what should be done?
+#this is relative part in se.py i think...
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+physmem = PhysicalMemory(range=AddrRange("512MB")),
+                 membus = Bus(), mem_mode = test_mem_mode)
+system.physmem.port = system.membus.port
+if options.l2cache: system.l2 = L2Cache(size='2MB')
+     system.tol2bus = Bus()
+     system.l2.cpu_side = system.tol2bus.port
+     system.l2.mem_side = system.membus.port
+for i in xrange(np): if options.caches:
+system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '32kB'),
+L1Cache(size = '64kB')) if options.spm: system.cpu[i].
+     if options.l2cache: system.cpu[i].connectMemPorts(system.tol2bus)
+else: system.cpu[i].connectMemPorts(system.membus)
+system.cpu[i].workload = process
+     if options.fastmem: system.cpu[0].physmem_port =
+system.physmem.port
+--
+Regards
+Dengning
+School Of Computer Science and Technology
+Beijng Institute of Technology, China, 100081
+dunning2006@gmail.com
+dnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+that does not help. Private L1/L2 cache hierarchy. 32 cpus. L1 mshrs=10, L2 mshrs=30
+---- Original message ----
+>Date: Fri, 29 May 2009 09:44:35 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Actually this is a hardware coherence protocol issue
+>   and is unrelated to Linux.  You probably need to
+>   increase the number of MSHRs in one of your
+>   downstream caches.  In general the number of MSHRs
+>   in a given cache should be roughly equal to
+>   (probably slightly greater than) the sum of the
+>   MSHRs of all the caches above it (i.e., closer to
+>   the CPU) so that it can handle all possible
+>   outstanding accesses.
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

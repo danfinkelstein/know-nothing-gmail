@@ -1,0 +1,33 @@
+The statements are equivalent.  It is written the way it is because it
+can fail after just one comparison.  In the version that you've shown,
+two comparisons must be made.
+  Nate
+2008/5/13 fractal218 <fractal218@126.com>:
+- Show quoted text ->  Hi,
+> Do you think the following program in function void EventQueue::insert(Event
+> *event) is a bug?
+>
+>  if (event->when() <= curr->when() &&  (event->when() < curr->when() ||
+> event->priority() <= curr->priority()))
+>                 break;
+>
+> I think it should be the following:
+>
+>  if (event->when() < curr->when() ||  (event->when() = curr->when() &&
+> event->priority() <= curr->priority()))
+>                  break;
+>
+>
+>  ________________________________
+>
+>  快来用音乐为奥运加油
+> 得奥运会、演唱会门票
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

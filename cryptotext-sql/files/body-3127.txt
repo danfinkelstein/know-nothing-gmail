@@ -1,0 +1,16 @@
+Hi,
+Can anyone please tell me how to get the return code of a program in SE mode? 
+When my program runs within the simulator, I would like to obtain the resulting return code of the program that the simulator has run.
+Thanks
+David
+-- 
+David R White
+Research Student
+Department of Computer Science
+University of York
+York YO10 5DD
+United Kingdom
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

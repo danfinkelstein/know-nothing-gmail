@@ -1,0 +1,9 @@
+I've been analyzing the IEW stage, and there are a bunch of things that I don't understand.1. What is the difference between issueToExecQueue and instQueue?2. In executeInsts    // Execute/writeback any instructions that are available.
+    int insts_to_execute = fromIssue->size;    int inst_num = 0;    for (; inst_num < insts_to_execute;          ++inst_num) {does this mean that fromIssue->size is the maximum number of instructions that could be issued to the processing units(ALUs, etc) in a cycle?
+3. As I understand it, functional units are equivalent to ALUs, multipliers, processing units. I also know that instructions "execute themselves"(inst->execute()). Thus functional units control the latencies, and the combinations of operations that could be done in a cycle. I've been reading iew_impl.hh and I don't see where they come to the picture. There's 
+fuPool->processFreeUnits();but then that's it. I don't see it in executeInsts and I'm clueless on how it works. Would someone explain how functional units works? And how they interact with the IEW stage? Are they like stages, that instructions pass through(don't think so)? Also, should I want to modify the number of multipliers or adders, I'd be dealing functional units, right? How is that done?
+Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

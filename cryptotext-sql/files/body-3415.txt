@@ -1,0 +1,5 @@
+I tried to run the simulation after fixing the path of benchmarks. I gave the absolute path for every benchmarks but its still showing the instruction executed only in one cpu. configuration with correctedpath is process1 = EioProcess()process1.file = "speccpu2000/perlbmk/perlbmk.eio.gz"process2 = EioProcess()process2.file = "speccpu2000/gap/gap.eio.gz"process3 = EioProcess()process3.file = "speccpu2000/vortex/vortex.eio.gz"process4 = EioProcess()process4.file = "speccpu2000/twolf/twolf.eio.gz"When I used this benchmark in M5_1.1, it works properly but its giving problem in m5_2.0b4.Also, no matter how many CPUs I used, it only shows the eio trace for the single cpu.Could you please help me.Windows Live Hotmail is giving away Zunes.  Enter for your chance to win.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

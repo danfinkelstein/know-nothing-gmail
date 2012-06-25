@@ -1,0 +1,110 @@
+hi Korey,Thank you very much for your great response.Now, i have changed my configuration and have assigned block_size of 64 for all caches (L1, L2 and L3). I changed some other files too and run scons after that i don't have block_size problem.
+Is there any possibilities of using different values for block_size of caches, like L1(16), L2(32) and L3(64)? If not, it's OK. Otherwise, please inform me the way how we can use it.
+Thanks,dev.- Show quoted text -On Mon, May 4, 2009 at 9:13 AM, Korey Sewell <ksewell@umich.edu> wrote:
+I havent really been following this thread *too closely* but it seems
+like if you want to explain the problem in detail you need to answer
+*at minimum* these questions:
+1) What benchmarks are your running?
+2) How many simulations are you running?
+3) What is the exact # of cores, CPU Model, cache size, cache ways,
+block size, etc. for EACH simulation that you are running. Please list
+them. A good way might be:
+- Simulation 1: BENCHMARK=EON, CPU_MODEL=TimingSimpleCPU, 1 core, 1
+thread per core, 1 MB L1 Cache, Block Size = 64
+- Simulation 2: BENCHMARK=EON/GZIP,  CPU_MODEL=O3CPU, 1 core, 2
+threads per core, 1 MB L1 Cache, Block Size = 64
+-etc.
+4) What is the error message you receive for each simulation.
+It sounds like you're having a problem running a SMT O3CPU simulation
+on whatever benchmark. But even if that were the problem, you would
+need to provide the above information so that someone could
+*replicate* the error your getting and suggest a way to solve it.
+On Mon, May 4, 2009 at 12:04 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+> I am extremely sorry for confusing you.
+>
+> I am using the same cache architecture for different simulations. It works
+> for some simulations and gives problem to some others. In precise, It works
+> for single thread per core simulations but gives problem with multi thread
+> per core. (Note! I have used same block size for all the caches).
+>
+> The error message is:
+> .............................................................................................................
+> warn: Increasing stack size by one page.
+> m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool
+> Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&,
+> PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()'
+> failed.
+> Program aborted at cycle 2903472000
+> .............................................................................................................
+> Could you please suggest me any thing possible reasons to this problem.
+>
+> Thanks,
+> devraj
+>
+> On Sun, May 3, 2009 at 2:15 PM, nathan binkert <nate@binkert.org> wrote:
+>>
+>> > Sorry, I think i can't make you clear.
+>> No, you are not being very clear at all.  Be precise.  What *exactly*
+>> are you changing?
+>>
+>> > When i used the same block_size ( 64)  for all caches (L1, L2 and L3), i
+>> > got
+>> > results. But when i changed the configuration, i.e., change the size of
+>> > L1,
+>> > L2 and L3, i got "Assertion `blkSize == pkt->getSize()' failed" problem
+>> > on
+>> > all the simulations (even for the simulations which gave the output
+>> > previously with same block_size).
+>> This isn't clear.  What did you change?  Just the size of the cache?
+>> Nothing about the block size?  Are you changing the block size at all
+>> in the ones that are failing?  What are you changing in the runs that
+>> are failing?
+>>
+>> > My question is:  What will be the reason for getting this assertion
+>> > problem
+>> > when number of threads goes increasing evenif the same architecture is
+>> > working for single threads?
+>> >
+>> > Could you please provide me some suggestions so that i could run all the
+>> > simulations successfully.
+>> You have to give a better bug report if you want help.  Before you
+>> sent us your configuration and all we saw was that you were changing
+>> the block size so that it was not all the same for all caches.  THIS
+>> IS NOT ALLOWED.  Other than that, we have no clue what exactly you're
+>> doing.
+>>
+>> I'm sorry, but we're getting very frustrated at your lack of a
+>> detailed bug report.  Read this article about giving bug reports
+>> before you try again:
+>> http://www.chiark.greenend.org.uk/~sgtatham/bugs.html
+>>
+>> Also, read the m5 page on reporting problems:
+>> http://www.m5sim.org/wiki/index.php/Reporting_Problems
+>>
+>>
+>>  Nate
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+===========
+Korey L Sewell
+PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

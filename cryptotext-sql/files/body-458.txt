@@ -1,0 +1,13 @@
+Hi,  It appears that I have fixed this issue by simply changing the range restriction on CONFIG_NR_CPUS from 2-32 to 2-64 cores in the file `./arch/alpha/Kconfig', and then setting CONFIG_NR_CPUS=64 in the file `.config.m5' before building.
+  I would really appreciate if someone more familiar with M5 kernel modifications could verify that this is a valid correction and fix the M5 linux-patches repo to include this change.  The affected versions of linux-2.6 are v2.6.22 and v2.6.27.
+  Thanks,  Joel- Show quoted text -On Wed, Mar 3, 2010 at 3:50 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+Hi,  I am running into an issue with running applications in ALPHA_FS on more than 32 cores.  The cores of index greater than or equal to 32 sit and spin, as indicated by their uniformly small number of committed instructions, during parallel sections of benchmarks with more than 32 threads.  The problem exists in kernel v2.6.27, which we built using the method described on the M5 site.
+  I have done some testing, and I have identified that our kernels, v2.6.13 and v2.3.16, both schedule threads on all 64 cores.  Further, the file, `.config.m5' contains a line to configure the maximum number of cores, which is different for different linux versions:
+  2.6.13, 2.6.16: CONFIG_NR_CPUS=64  2.6.22, 2.6.27: CONFIG_NR_CPUS=32  I've tried building a few different versions, and each asks "  Use M5 64 Processor Tsumani Modification (BIG_TSUNAMI) [Y/n/?]", but setting this doesn't seem to have an affect on kernels 2.6.22 or 2.6.27.  The config script restricts the CONFIG_NR_CPUS flag to 2-32 cores for kernel versions 2.6.22 and 2.6.26.
+  Can someone give some insight into how to fix this so the v2.6.27 scheduler works with 64 cores?  Thank you,  Joel--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

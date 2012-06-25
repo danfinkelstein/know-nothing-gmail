@@ -1,0 +1,8 @@
+Hello,I am working on implementing a compression technique into M5 (version m5-2.0b6), and I would like to record some statistics for my implementation. I will be making a separate compression folder under src/mem/ and I want to record my statistics in the compression.cc file I add in that folder.
+I've read on the website about adding statistics, but I just want to make sure I understand it correctly.As long as I include the statistics package, add it to the member list, and make the regStats() method in my compression class with my stats initialized in the following format (this is how I intended on doing it, anyway):
+ statname.name(name() + ".statname")                .desc("description");it should include the statistics that I add in m5stats.txt, right?And if so, will I need to call regStats() at any point, or is it done automatically?
+Thanks in advance,Valerie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

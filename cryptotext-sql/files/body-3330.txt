@@ -1,0 +1,250 @@
+Ok, pulled the latest M5, and ported over. Unfortunately TM doesn't work
+again, looks like some the memory model has changed since I last got it
+working.
+But in terms of checkpoints, they still don't work for me.  I have no idea
+why now.  They either fail to load (if I dump a checkpoint running in timing
+mode), or load (atomic cpu dump), but immediately have some form of error
+when simulating.  Could it be all the additions I've made? Extra registers
+and such for TM?  I don't see why that would cause problems with
+serialization, since the point I checkpoint at it doesn't matter whether the
+new stuff is saved or not.
+Geoff
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of nathan binkert
+- Show quoted text -Sent: Tuesday, March 25, 2008 11:02 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Full System Checkpoints
+We'll be happy to have you in the present though.  We'd also love for
+you to keep current and send us diffs!
+On Tue, Mar 25, 2008 at 7:44 PM, Geoffrey Blake <blakeg@umich.edu> wrote:
+> I'll try re-cloning the tree and re-applying the TM patches I have to see
+if
+>  it is just my older version of M5 in a few hours.  Not looking forward to
+>  the merge I'll have to do....
+>
+>  Geoff
+>
+>
+>  -----Original Message-----
+>  From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>
+>
+> Behalf Of nathan binkert
+>  Sent: Tuesday, March 25, 2008 10:40 PM
+>  To: M5 users mailing list
+>  Subject: Re: [m5-users] Full System Checkpoints
+>
+>  I haven't looked at the checkpoint code in the committed M5 scripts in
+>  a while, but there's a chance that things are wrong there. There is
+>  now a requirement to drain the cpus/caches before you checkpoint for
+>  the timing mode stuff.  As for the atomic mode, that's odd.  Can you
+>  give me enough detail to reproduce this myself?  I'd most prefer
+>  something against the head of the tree.
+>
+>  There might have been problems with the tree.  I personally don't recall.
+>
+>
+>   Nate
+>
+>  2008/3/25 Geoffrey Blake <blakeg@umich.edu>:
+>  >
+>  >
+>  >
+>  >
+>  > Hmmmm, something is broken, I've been trying and nothing seems to work.
+I
+>  > can't dump a timing_cpu checkpoint, because reloading it causes M5 to
+>  crash
+>  > on initialization, certain serialization elements are missing.  When I
+>  dump
+>  > an atomic cpu checkpoint of the same benchmark, I can load it, but the
+>  > kernel immediately panics and crashes.  Any ideas?  Was checkpointing
+>  broken
+>  > prior to 2.0b5?
+>  >
+>  >
+>  >
+>  > Thanks,
+>  >
+>  > Geoff
+>  >
+>  >
+>  >
+>  >
+>  >
+>  > From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>  > Behalf Of Geoffrey Blake
+>  >  Sent: Tuesday, March 25, 2008 8:31 PM
+>  >
+>  >  To: 'M5 users mailing list'
+>  >  Subject: RE: [m5-users] Full System Checkpoints
+>  >
+>  >
+>  >
+>  >
+>  >
+>  > I'm pretty sure its loading the correct checkpoints.  What is really
+odd
+>  is
+>  > if I load the atomic CPU checkpoint with Atomic CPU, it still crashed
+with
+>  a
+>  > page handler error. I'll keep fiddling, perhaps the serialization
+routines
+>  > are broken on my build. I'm using a version of M5 from the repository
+that
+>  > is older than 2.0b5, I should probably pull again to get the new
+changes.
+>  >
+>  >
+>  >
+>  > Geoff
+>  >
+>  >
+>  >
+>  >
+>  > From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>  > Behalf Of Lisa Hsu
+>  >  Sent: Tuesday, March 25, 2008 8:19 PM
+>  >  To: M5 users mailing list
+>  >  Subject: Re: [m5-users] Full System Checkpoints
+>  >
+>  >
+>  >
+>  > i had this happen to me when i was dumping atomic && timing checkpoints
+>  into
+>  > the same directory, and specifying checkpoint 1 - but it would read the
+>  > wrong one and give me that exact error because it was reading the first
+>  > checkpoint (an atomic checkpoint) rather than the first timing
+checkpoint.
+>  > if you're doing the same, you'll want to separate them.
+>  >
+>  >  lisa
+>  >
+>  >
+>  > 2008/3/25 Geoffrey Blake <blakeg@umich.edu>:
+>  >
+>  >
+>  >
+>  > I'm trying to dump out a checkpoint of multi-core system using Full
+System
+>  > to allow me to run a profile of the binaries I'm running in M5. I dump
+the
+>  > checkpoint using the m5 pseudo instruction from inside the application.
+>  The
+>  > checkpoint though seems malformed.  If I dump it out running with
+timing
+>  > simple cpu, the checkpoint will not load, the simulator crashes with a
+>  fatal
+>  > error saying it cannot read _status for system.cpuXX.  I've tried
+making
+>  > checkpoints using the atomic CPU, and they seem load fine, but
+immediately
+>  > after starting to run once the checkpoint is loaded, the binary crashes
+>  with
+>  > a kernel page handling error, perhaps due to the fact it does not save
+any
+>  > ITB entries.  Is there something I am forgetting?
+>  >
+>  >
+>  >
+>  > Geoff
+>  >
+>  >
+>  >
+>  >
+>  >
+>  > No virus found in this outgoing message.
+>  >  Checked by AVG.
+>  >  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+>  3/25/2008
+>  > 10:26 AM
+>  >
+>  >
+>  >  _______________________________________________
+>  >  m5-users mailing list
+>  >  m5-users@m5sim.org
+>  >  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>  >
+>  >
+>  >
+>  > No virus found in this incoming message.
+>  >  Checked by AVG.
+>  >  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+>  3/25/2008
+>  > 10:26 AM
+>  >
+>  >
+>  >
+>  > No virus found in this outgoing message.
+>  >  Checked by AVG.
+>  >  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+>  3/25/2008
+>  > 10:26 AM
+>  >
+>  >
+>  >
+>  > No virus found in this incoming message.
+>  >  Checked by AVG.
+>  >  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+>  3/25/2008
+>  > 10:26 AM
+>  >
+>  >
+>  >
+>  >
+>  > No virus found in this outgoing message.
+>  >  Checked by AVG.
+>  >  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+>  3/25/2008
+>  > 10:26 AM
+>  >
+>  > _______________________________________________
+>  >  m5-users mailing list
+>  >  m5-users@m5sim.org
+>  >  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>  >
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>  No virus found in this incoming message.
+>  Checked by AVG.
+>  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+3/25/2008
+>  10:26 AM
+>
+>
+>  No virus found in this outgoing message.
+>  Checked by AVG.
+>  Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date:
+3/25/2008
+>  10:26 AM
+>
+>
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

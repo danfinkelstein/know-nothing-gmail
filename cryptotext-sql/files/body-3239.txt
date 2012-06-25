@@ -1,0 +1,23 @@
+   Did you change the size of the simulated memory? If you made it larger than the memory you have available, I think you can run into this problem. If M5 itself is allocating huge amounts of memory and not just running out of simulated memory, you should use valgrind on M5 and see what it's doing wrong. If you wait until the memory usage gets excessive and then kill M5, I believe valgrind will tell you where the outstanding unfreed memory came from. You may have to turn on a few flags to get that to print out. At that point, there should be (hopefully) one spot with lots and lots of memory and it should be obvious what's not being cleaned up. Try to use a debug build to get the best info from valgrind. If the benchmark uses up all the memory M5 gives it, which I think was the original problem, you should find out what it's doing that's allocating all that memory. Use the "Exec" trace flag and the --trace-start option to see what it's doing around the time it dies. You'll hopefully be able to see a loop it's stuck in or an infinite recursion eating up the stack. Like I mentioned before, it's likely there's a return value it's looking for from a syscall that isn't implemented (or implemented slightly incorrectly), and since it never finds it it loops until it dies.
+Gabe
+Meng-Ju Wu wrote:
+- Show quoted text -
+Thank you very much for your kindly reply.
+I use Valgrind to check the memory leakage of 410.bwaves on Pentium4.
+I use the test dataset. The program allocates 163 Mbytes, and it has
+no memory leakage.
+malloc/free: 355 allocs, 355 frees, 163,570,613 bytes allocated.
+I tried to run the alpha binary on M5.  M5 used  whole memory (2G
+physical memory +  2G swap) and it was killed by the system. What
+should I do to identify the cause of this problem?
+thanks
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

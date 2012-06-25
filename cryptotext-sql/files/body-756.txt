@@ -1,0 +1,9 @@
+Hello,
+I was wondering, what other kinds of benchmarks can be run on m5 in SE
+mode? I was thinking of running perhaps biobench or tpc* benchmarks.
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

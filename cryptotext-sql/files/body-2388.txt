@@ -1,0 +1,48 @@
+Steve, I will send you a quickly-understandable model of system I am implementing in a few days so you can see where this is happening and how changing the order of declaration makes my system work perfectly properly.
+- Show quoted text -
+---- Original message ----
+>Date: Mon, 27 Oct 2008 07:36:26 -0700
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Non-Deterministic Bus Port Id Assignments
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>Bus port IDs are assigned as the connections to the bus are processed,
+>which happens in a fairly arbitrary order... so yes, I can believe
+>that seemingly minor changes to your configuration would affect the
+>bus ID assignments.
+>
+>I don't see how this could cause a problem though... your whole
+>discussion of src and dest fields being the same is confusing to me.
+>If the src and dest fields are the same then a device is sending a
+>message to itself.  This only happens in one scenario that I know of,
+>which is when a cache broadcasts a request up the hierarchy to force
+>an invalidation (e.g., an L2 broadcasts a request from the L2-L3 bus
+>up to the L1-L2 bus)... since it is a request, the lower level cache
+>is the implicit destination, even though it's also the source.  I
+>think there's some explicit code in the bus that deals with this.
+>
+>Other than that, I don't believe you should ever see packets where src
+>== dest (hence the assertion).  If you're talking about IDs across
+>different buses, then that's a bug; the src & dest fields on a packet
+>should be using IDs that are relative to the bus the packet is being
+>sent on.  If a packet is transferred from one bus to another then the
+>src field should get rewritten to reflect the new sender on the second
+>bus.  (Note that this happens implicitly in the bus port code.)
+>
+>Steve
+>
+>On Sun, Oct 26, 2008 at 10:46 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+>> when creating a complex interconnection network where request and response paths are very different, sometimes there is a problem of desta and src have same port id, and thus the failure of dest!=src assertion. However, if the order of declaration of buses is changed, the port ids somehow change, and the assertion failure no more and thus messages are received by nodes who earlier sent them, because src and dest are different. Now, one should be careful about final destination port being same as beginning (src) port, but hte order of declaration changing the bus port-ids look suspicious?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

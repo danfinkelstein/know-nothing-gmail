@@ -1,0 +1,152 @@
+HI Steve,using trace, i found that only one cpu is executing instructions. I didn't find any instruction executed by CPU1. i  think there is no CPU switching. I also tried with 2 threads in each CPU. doing that i found that there occurs Thread switching in CPU0. what may be the reason? Is that because my configuration file is worng, or its a bug in M5 2.0b5? I am not sure... I had posted part of my configuration file in my first mail. - Show quoted text -
+On Sun, Jun 22, 2008 at 9:49 PM, Steve Reinhardt <stever@gmail.com> wrote:
+What does the trace say is happening on cpu1?
+On Sun, Jun 22, 2008 at 5:37 PM, prannav shrestha <prannav@gmail.com> wrote:
+> hi Steve!!
+> As u said, i had tried to run the simulation with the number of instruction
+> 10M, the problem is same excpet that the number of squashed instruction is
+> more for higher number of instructions.
+>
+> Regards
+> Prannav
+>
+> On Sun, Jun 22, 2008 at 5:18 PM, prannav shrestha <prannav@gmail.com> wrote:
+>>
+>> HI meng-ju!!
+>>  Evein if I used two different workloads for tiw CPUs the result is still
+>> the same. Ok Now I have changed the code as:
+>> .............
+>> ............
+>> system.cpu[0].workload = [Benchmarks.SPECGCCEIO()]
+>> system.cpu[1].workload = [Benchmarks.SPECGAPEIO()]
+>> for i in xrange(np):
+>>     system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '16kB'),
+>>                                               L1Cache(size = '8kB'))
+>>     system.cpu[i].connectMemPorts(system.tol2Bus)
+>>     system.cpu[i].max_insts_all_threads = 1000
+>>    ## system.cpu[1].workload = [Benchmarks.SPECGCCEIO()]
+>> root = Root(system = system)
+>> still the result is same. So what mmay be the reason, why M5 2.0b5 is not
+>> able to run simulation for multiple core?
+>>
+>> Regards
+>> Prannav
+>>
+>> Hi all!!
+>> i tried to simulate multi-core system in M5.0b5 with cache upto level
+>> three. I am trying to run O3 cpu in SE. Part of corresponding configuration
+>> file is as below:
+>>
+>> ................
+>> ..............
+>> CPUClass.clock = '2GHz'
+>>
+>> np = 2
+>>
+>> system = System(cpu = [DerivO3CPU(cpu_id=i) for i in xrange(np)],
+>>                 physmem = PhysicalMemory(range=AddrRange("1024MB")),
+>>                 membus = Bus(), mem_mode = test_mem_mode)
+>>
+>> system.physmem.port = system.membus.port
+>>
+>>
+>> system.l3 = L3Cache(size='2MB')
+>> system.tol3Bus = Bus()
+>> system.l3.cpu_side = system.tol3Bus.port
+>> system.l3.mem_side = system.membus.port
+>>
+>>
+>> system.l2 = L2Cache(size='1MB')
+>> system.tol2Bus = Bus()
+>> system.l2.cpu_side = system.tol2Bus.port
+>> system.l2.mem_side = system.tol3Bus.port
+>>
+>>
+>> for i in xrange(np):
+>>     system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '16kB'),
+>>                                               L1Cache(size = '8kB'))
+>>     system.cpu[i].connectMemPorts(system.tol2Bus)
+>>     system.cpu[i].max_insts_all_threads = 1000
+>>     system.cpu[i].workload = [Benchmarks.SPECGCCEIO()]
+>>    ## system.cpu[1].workload = [Benchmarks.SPECGCCEIO()]
+>> root = Root(system = system)
+>>
+>> Simulation.run(options, root, system, FutureClass)
+>>
+>>
+>> .............
+>> I have used 2 core in this example, which runs the same program. The
+>> problem is that, i found that only one of the CPU reaches its maximum
+>> instruction count to 1000 while the instruction count at another CPU remains
+>> zero. The m5stat.txt files shows following :
+>> ......
+>> sim_insts
+>> 1000                       # Number of instructions simulated
+>> sim_seconds
+>> 0.000004                       # Number of seconds simulated
+>> .........
+>> ......
+>> system.cpu0.commit.COM:count
+>> 1067                       # Number of instructions committed
+>> system.cpu0.commit.COM:loads
+>> 265                       # Number of loads committed
+>> system.cpu0.commit.COM:membars
+>> 0                       # Number of memory barriers committed
+>> system.cpu0.commit.COM:refs
+>> 388                       # Number of memory references committed
+>> system.cpu0.commit.COM:swp_count
+>> 0                       # Number of s/w prefetches committed
+>> system.cpu0.commit.branchMispredicts
+>> 61                       # The number of times a branch was mispredicted
+>> system.cpu0.commit.commitCommittedInsts
+>> 1067                       # The number of committed instructions
+>> system.cpu0.commit.commitSquashedInsts
+>> 294                       # The number of squashed insts skipped by commit
+>> system.cpu0.committedInsts
+>> 1000                       # Number of Instructions Simulated
+>> system.cpu0.committedInsts_total
+>> 1000                       # Number of Instructions Simulated
+>>
+>> .....
+>> ...
+>> ...
+>> system.cpu1.commit.COM:count
+>> 0                       # Number of instructions committed
+>> system.cpu1.commit.COM:loads
+>> 0                       # Number of loads committed
+>> system.cpu1.commit.COM:membars
+>> 0                       # Number of memory barriers committed
+>> system.cpu1.commit.COM:refs
+>> 0                       # Number of memory references committed
+>> system.cpu1.commit.COM:swp_count
+>> 0                       # Number of s/w prefetches committed
+>> system.cpu1.commit.commitSquashedInsts
+>> 400                       # The number of squashed insts skipped by commit
+>> system.cpu1.committedInsts
+>> 0                       # Number of Instructions Simulated
+>> system.cpu1.committedInsts_total
+>> 0                       # Number of Instructions Simulated
+>>
+>> ..
+>> why is the instruction count in cpu1 zero.?As I am new in m5, i am not
+>> able to figure out the problem. Suggestion from anyone would be
+>> appreciated..
+>>
+>> regards
+>> prannav
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi,
+Also, if anyone has a script or knows which options to use in M5 to setup checkpoints on existing binaries, that would also be helpful. At this point, it isn't quite clear which CPU type I need to use in order to create a checkpoint. If I want to make checkpoint up to some instruction and then start using a detailed simulation, can I use atomic cpu to make the checkpoint? Also, how do I make a checkpoint up to a certain instruction number? 
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

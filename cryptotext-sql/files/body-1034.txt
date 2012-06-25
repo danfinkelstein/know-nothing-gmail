@@ -1,0 +1,5 @@
+ Hi, I found that the destructor of the class LRU and the class Cache are not called. But my experiment depends on that. So, Is there some method to ensure the destructor to be called? Or else, can we get the information that the execution of the application in the m5 is over?Thank you!   
+中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

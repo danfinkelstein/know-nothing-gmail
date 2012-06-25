@@ -1,0 +1,7 @@
+Hi,
+I was wondering if there is a way to clear access stats in a system. Let's say I want to switch between various cpu models that share an l2 cache, but I want to only have the l2 access for the last cpu. Any functionality to reset this python?
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

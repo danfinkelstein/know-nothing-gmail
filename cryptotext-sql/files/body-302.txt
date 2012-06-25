@@ -1,0 +1,13 @@
+Thank you . Lisa. I will try to see if it works.--- 10年4月15日，周四, Lisa Hsu <hsul@eecs.umich.edu> 写道：
+发件人: Lisa Hsu <hsul@eecs.umich.edu>主题: Re: [m5-users] how to set each thread reach the maximum instruction count收件人: "M5 users mailing list" <m5-users@m5sim.org>日期: 2010年4月15日,周四,上午8:18- Show quoted text -
+Maybe Korey can correct me if I'm wrong, but I think max_insts_all_threads says that each thread within an SMT processor must hit N insts, but doesn't apply across multiple cpus.  There was a thread in the last month or so with advice on how to make all cpus go to a certain limit, see link.
+http://www.mail-archive.com/m5-users@m5sim.org/msg03094.html
+Lisa
+2010/4/14 健勇 张 <yorkzjy@yahoo.com.cn>
+Hi,everyone,I have a question on the definition “system.cpu[i].max_insts_all_threads”.I ran 4core simulation on ALPHA SE mood,each core had 1 thread workload. I set the  system.cpu[i].max_insts_all_threads to 100 milion, after termination ‘normally’, I checked the  m5stats.txt for actual num of instructions ran on each core:/**************************************************************/…..sim_insts    284804592       # Number of instructions simulated…..system.cpu0.committedInsts   39885377    # Number of Instructions Simulated…..system.cpu1.committedInsts   86194454     # Number of Instructions Simulated…..system.cpu2.committedInsts   58724755     # Number of Instructions
+ Simulated…..system.cpu3.committedInsts   100000006    # Number of Instructions Simulated…../*********************************************************************/Well, it seems that only cpu3 reached 100 million instruction counts.And I think the above statistic suggested that the termination of cpu3 cause other cpu terminated(may be the thread in cpu3 was run faster).My question is , if I want each thread run until reaching the maximum instruction count I set, how should I do ?Thanks in advance!York_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users-----下面为附件内容-----
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+       _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

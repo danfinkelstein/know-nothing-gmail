@@ -1,0 +1,10 @@
+Hi Gulay, thanks for your suggestion. IPR_PALtemp23 is sufficient for my current work. As my work may not limit on Alpha architecture in the future, so I have to find out something unique for every thread on other platforms. But right now, it works quite well. Thanks very much !
+RegardsVeydan- Show quoted text -
+Hi Veydan,
+Is it enough to have some unique id belongs to each thread. For example is it enough to use a MiscRegister like IPR_PALtemp23 register value which is unique for each thread.
+Regards
+Gulay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

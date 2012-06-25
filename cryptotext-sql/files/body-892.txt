@@ -1,0 +1,83 @@
+Awesome, thanks for the offer!  All of these sound interesting.  The
+top two that stand out to me are the Parsec simulation scripts and the
+power model support.  (I was just in a meeting this morning where the
+topic of getting Parsec up on M5 came up, so that's very timely.  This
+was in the context of a potential ISCA paper, so time is of the
+essence, and it would be great to find a way not to duplicate effort
+there.)
+I'd say that based on our continuing efforts to integrate the
+GEMS/Ruby memory system, I think there's a little less value in
+putting additional effort into the parts of the M5 memory system that
+are likely to be displaced by Ruby (such as the directory protocol).
+Steve
+- Show quoted text -
+On Fri, Oct 2, 2009 at 12:10 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> I made an indentation error and have resent my list. Note the correct
+> indentation of Memory Debugger.
+>
+> At the encouragement of Nate, I have formed a list of possible
+> contributions that I could make to the M5 community. Like many of you,
+> time is against me so if any of these features sounds interesting to the
+> community, please let me know and give me a relative order of interest.
+> If none of the additions seem interesting, I will not be hurt as that
+> means more development time ... ^_^.
+>
+> *Possible M5 Contributions*
+>
+>   * Parsec Simulation
+>         o shell script for running various workloads
+>         o tips in compiling parsec for alpha while using the general
+>           parsec build manager
+>         o Observed difficulties with the different input sets and
+>           solutions
+>         o Performance numbers to compare against
+>   * Directory Coherence Model -- based on a upgraded version Jiayuan
+>     Meng's work
+>         o MSI directory coherence model
+>         o Supports packet piggy backing for invalidate, fetch,
+>           writeback requests
+>         o Banked model exists -- Based on Jiayuan Meng's work
+>         o Verified to work in both the memory tester and Parsec
+>           benchmarks for simsmall and medium
+>   * Mesh Model --based on Jiayuan Meng's work
+>   * Crossbar model
+>         o Full connected network plugin that is a minor rewrite of the
+>           current bus model.
+>   * Memory Debugger
+>         o Timeout for each memory access
+>         o Each memory access read is verified against a value stored
+>           in atomic memory blog.
+>         o Each memory write is recorded in the atomic memory blog
+>         o Inserts at the cpu_side of each L1 cache.
+>         o A separate memory debugger is plugged into IObus and each
+>           cpu core.          o All memory debuggers connect to the same
+> memory blog:
+>         o Memory blog uses the default PhysicalMemory object already in M5
+>   * New alpha console
+>         o I have not had a large block of time to figure out how to
+>           remake all the regression values.
+>   * Memory check pointing works for 2GB and greater
+>   * McPAT power model support
+>         o New power model replacement for Wattch that offers greater
+>           fidelity and completeness to actual systems.
+>         o You can use output statistics to generate power numbers
+>         o I have a script that generates a structured xml file with
+>           the combined information of config.ini and m5stats.txt that
+>           contains performance counter information and system settings.
+>
+> I am probably forgetting a few things here, but I think this includes
+> most of the interesting changes that I could release. Let me know your
+> thoughts.
+>
+> Thanks in advance,
+> Richard
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

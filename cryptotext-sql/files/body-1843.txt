@@ -1,0 +1,34 @@
+> Thanks for your replay, Ali. I read the file in src/arch/alpha/tlb*.  The
+> only function that related to uncache access seems the checkCacheability()
+> that mark the uncache flag of a request.
+This is correct.  If you pick a memory range that will match for this
+function (or modify the function), you'll get what you want.
+> I used gdb to get to this function, but the req->getPaddr confused me. This
+> function is simply to return the paddr field of a request, but I got this,
+>
+> (gdb) p req->getPaddr()
+> $7 = 608138816306466688
+> (gdb) p req->paddr
+> $8 = 36200
+>
+> The two paddr above seems not mathc. What's the reason? Further, if I want
+> add an small structure in o3 cpu and get it accessed in uncached mode, which
+> part of the cpu is the best to add ? I want this structure to be accessed by
+> application. Thanks !
+This is hard to explain. gdb doesn't always get things right when you
+access  things in functions and it depends a lot on OS, library
+versions, and gdb version as to whether it works or not.  You're best
+off accessing the member variable directly when able.  Things to look
+at are: what does gdb think the type of req is? Are you optimized? Is
+there a reference involved.
+In the case of checkCacheablility, there is a reference involved which
+I'd say is certainly causing the strange behavior.  In this case (and
+in most of the cases of RequestPtr &), I think this is actually a bug
+since I don't think we need to modify the pointer.  I believe that
+Gabe is fixing this in a series of patches that he has, but in
+general, we should fix other improper cases of this.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

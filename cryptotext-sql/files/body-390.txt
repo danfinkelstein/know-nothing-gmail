@@ -1,0 +1,14 @@
+Hi Sujay,
+ 
+I don't think there's any way to keep a stat from being reset when reset() is called, sorry.  You'd have to hack that in.
+ 
+Lisa- Show quoted text -
+On Wed, Mar 17, 2010 at 2:57 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Hello,   If I have an occupancy stat declared as an average. This isincremented or decremented based on the number of objects in my queue.
+however, the objects in this queue will be carried over betweenswitching cpus. Now if I call m5.stats.reset() between switching fromtiming to detailed say, is it possible to prevent this stat from beingreset? Because if I am maintaining the objects in this queue, resetting
+this stat will be incorrect. Please correct me if i am wrong.Sujay_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

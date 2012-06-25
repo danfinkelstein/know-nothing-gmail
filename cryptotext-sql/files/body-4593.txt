@@ -1,0 +1,18 @@
+If I had to guess, I'd say you're not looking at the right call to the translate function.  I haven't messed with the alpha memory layout in a while, but 0x200a3860 may be a valid heap address, while I believe 0x11ff91db0 is a stack address.
+Also all the translation is page-based, so even with translation the addresses ought to be congruent in the bottom 13 bits.
+The translation in SE mode is totally transparent to the CPU, so I don't think it should be relevant for the problem you're trying to solve.  The only time you would see a physical address is if you're in the memory system (e.g. in a cache or in main memory).
+If you're still having problems, please post some specific examples and/or code and maybe that will help us understand what's going on.
+Steve- Show quoted text -
+Nicolas Zea wrote:
+Does anyone have any information on how the conversion from an address visible to a user program to a physical address stored on the simulated physical memory takes place? The page table attached to each process does not appear to use the same address space as the program itself. (for example, the program thinks a variable is at addr 0x200a3860, when in fact the load with the effective address send to the page_table translate function is 0x11ff91db0).
+As I understand it, on alpha the PAL takes care of this memory management. In se mode though, how is this done?
+I'm currently trying to set a thread's pc to the beginning of a function. The address of the function comes from a system call with a function pointer parameter. Any information on how to convert that function pointer to a physical address would be appreciated.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

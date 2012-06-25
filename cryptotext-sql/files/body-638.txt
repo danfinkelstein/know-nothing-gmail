@@ -1,0 +1,27 @@
+One way to get around this is to install a system in a virtual machine
+(using something like VirtualBox or QEMU) and mount the image there,
+since you can give yourself root in the VM.
+Steve
+- Show quoted text -
+On Thu, Dec 10, 2009 at 10:20 AM, zhenyu ye <yezhenyu.sam@gmail.com> wrote:
+> Hello, m5 users,
+>
+> I am using m5sim on a server, where I do not have root privilege.
+> Does anyone know how to add files to disk image as normal user?
+> The m5 wiki only mentions one method, which requires root to mount the
+> image.
+> Thank you very much!
+>
+> Zhenyu Ye
+> Eindhoven University of Technology
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

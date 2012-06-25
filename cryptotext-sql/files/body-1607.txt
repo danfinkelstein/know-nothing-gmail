@@ -1,0 +1,127 @@
+Hi Javier,
+It's not clear what the issue is with your configuration from the
+script you provided.  The first thing I would suggest is to update to
+a much more recent version... get the m5-stable at the very least.
+There have been numerous bug fixes since beta 4.  One of the minor
+changes is that that assertion was expanded to print the name of the
+unconnected port so you can figure out more easily what is going
+wrong.
+Steve
+2009/4/2 Javier Jose <javier.jose@gmail.com>:
+- Show quoted text -> I am trying to configure M5 with multiple processors with private L2 caches
+> and run it in Full System mode. I believe that beta 4 supports this type of
+> configuration with MOESI coherence protocol.
+>
+> I am getting an error when running a benchmark (this example is ALPBench,
+> but it gives the same error no matter which benchmark):
+> ===============================================================================================
+> M5 compiled Mar 25 2009 15:55:52
+> M5 revision 7e310503019e+ 6017+ default tip
+> M5 started Apr  2 2009 20:25:48
+> M5 executing on javier-desktop
+> command line: build/ALPHA_FS/m5.debug -d /home/javier/log/mpgenc2_pvt
+> configs/alpbench/fs_private.py -b MPGenc2
+> CPU type: AtomicSimpleCPU
+> num_cpus: 1
+> Global frequency set at 1000000000000 ticks per second
+> info: kernel located at: /home/javier/disk_images/binaries/vmlinux
+> Listening for system connection on port 3456
+>       0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00
+> 2009
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0.  Starting simulation...
+> fatal: default_port: Unconnected port!                                /*
+> ERROR */
+>  @ cycle 0
+> [blowUp:build/ALPHA_FS/mem/port.cc, line 47]
+> Memory Usage: 188444 KBytes
+> ===============================================================================================
+>
+> The config script is exactly the same as the config/examples/fs.py except
+> for the following code* (changes are in bold):
+>
+> // ======================== CODE BEGINS AS IN fs.py
+> ==============================//
+>
+> //===================== CHANGES ======================================//
+> parser.add_option("--l1size",
+>                   default = "32kB")
+> parser.add_option("--l1latency",
+>                   default = "1ns")
+> parser.add_option("--l2size",
+>                   default = "256kB")
+> parser.add_option("--l2blocksize",
+>                   default = "64")
+> parser.add_option("--l2assoc",
+>                   default = "8")
+> parser.add_option("--l2latency",
+>                   default = "10ns")
+>
+> //======================== CODE CONTINUES AS IN fs.py
+> =========================//
+>
+> //======================== CHANGES ====================================//
+>
+> #------------------------
+> # Define L2 Cache Class
+> #========================
+>
+> class L2Cache(BaseCache):
+>     assoc = options.l2assoc
+>     block_size = options.l2blocksize
+>     latency = options.l2latency
+>     mshrs = 20
+>     tgts_per_mshr = 12
+>
+>
+> test_sys = makeLinuxAlphaSystem(test_mem_mode, bm[0])
+>
+> if options.kernel is not None:
+>     test_sys.kernel = binary(options.kernel)
+>
+> if options.script is not None:
+>     test_sys.readfile = options.script
+>
+> np = options.num_cpus
+>
+> test_sys.cpu = [TestCPUClass(cpu_id=i) for i in xrange(np)]
+>
+> if options.caches:
+>     test_sys.bridge.filter_ranges_a=[AddrRange(0, Addr.max)]
+>     test_sys.bridge.filter_ranges_b=[AddrRange(0, size='8GB')]
+>     test_sys.iocache = IOCache(mem_side_filter_ranges=[AddrRange(0,
+> Addr.max)],
+>                        cpu_side_filter_ranges=[AddrRange(0x8000000000,
+> Addr.max)])
+>     test_sys.iocache.cpu_side = test_sys.iobus.port
+>     test_sys.iocache.mem_side = test_sys.membus.port
+>
+> for i in xrange(np):
+>     if options.caches:
+>         test_sys.cpu[i].addTwoLevelCacheHierarchy(L1Cache(size = '32kB'),
+>                                                 L1Cache(size = '64kB'),
+> L2Cache(size = options.l2size))
+>         test_sys.cpu[i].l2cache.mem_side = test_sys.membus.port
+>
+>     if options.fastmem:
+>         test_sys.cpu[i].physmem_port = test_sys.physmem.port
+>
+> //========================= CODE CONTINUES AS IN fs.py
+> ========================//
+>
+> I appreciate the help,
+>
+> Javier Malavé
+> Texas A&M University
+> Department of Computer Science and Engineering
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

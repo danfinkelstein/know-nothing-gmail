@@ -1,0 +1,40 @@
+Hello,
+I have a question regarding the implementation of M5's Event Queue.
+My current understanding of the simulator's event queue, is that there
+is currently only one main Event Queue in which all the corresponding
+simobjects place their scheduled events into this single queue.
+This is as opposed to having each SimObject have their own
+SelfEventQueue that feeds into the Main Event Queue (something that
+would lead towards parallelizing the simulator, not sure if this is
+currently being worked on?)
+Anyways,
+In reading through the comments of the source code (eventq.hh lines: ~100)
+The comments describe the event queue as a linked list of linked lists
+such that each "bin" (i am assuming by bin it refers to a linked list)
+that is defined by when+priority (where when is the timestamp==cycle)
+in which the scheduled event should be executed.
+From my understanding, the way this is structured is such that
+multiple scheduled events can have the same 'when' timestamp,
+depending on the current cycle time + the latency derived by the
+scheduling SimObject.
+So from a storage perspective, i can see how several events might
+coincidentally have the same 'when' and possibly the same defined
+priority, but in terms of execution, how does the event queue decide
+which to execute? Because theoretically only one event can be set for
+execution per cycle (although many instructions for different events
+may be in execution simultaneously due to Instruction Level
+Parallelism?)
+In the case, that the different events do not have the same 'when'
+timestamp, that means then each bin essentially contains only one
+element (event), and if this latter case is how it is actually set up,
+then what is the need to have multiple linked lists where each
+corresponds to a bin if there is only one element?
+I apologize in advance for the long, detailed, and possibly confusing
+question, and would appreciate any help.
+Thanks.
+Malek
+The event queue is described as a linked list of linked lists.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

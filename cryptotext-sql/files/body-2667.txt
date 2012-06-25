@@ -1,0 +1,68 @@
+Hi Dengning,
+You should take a look at the ASPLOS  tutorial and video. In it we
+describe the process, but in simple terms the py files are processed
+and turned into header files which defile things like
+PhysicalMemoryParams. The actual processed files are in the build
+directory. If you add parameters to PhysicalMemory.py they will be
+automatically added to PhysicalMemoryParams and you'll be able to
+access them from the Params struct. The stub at the bottom is used to
+create an instance of PhysicalMemory passing in the Parameters. In
+this case it does nothing, but it some cases it does more (e.g. Caches).
+Ali
+- Show quoted text -
+On Jul 28, 2008, at 5:13 AM, 邓宁 wrote:
+> hi all,
+> i am quite confused about the mechanism of parameters configuration
+> bw .py and .cc files...
+> i.e. in src/mem/physical.cc
+> PhysicalMemory::PhysicalMemory(const Params *p)
+>     : MemObject(p), pmemAddr(NULL), lat(p->latency)
+> {
+>     if (params()->range.size() % TheISA::PageBytes != 0)
+>         panic("Memory Size not divisible by page size\n");
+>
+>     int map_flags = MAP_ANON | MAP_PRIVATE;
+>     pmemAddr = (uint8_t *)mmap(NULL, params()->range.size(),
+>                                PROT_READ | PROT_WRITE, map_flags,
+> -1, 0);
+>
+>     if (pmemAddr == (void *)MAP_FAILED) {
+>         perror("mmap");
+>         fatal("Could not mmap!\n");
+>     }
+>
+>    ...
+> }
+>
+> i see it is a process to accept some parameters from src/mem/
+> physicalMemory.py, yet i don't know how to...
+> class PhysicalMemory(MemObject): type = 'PhysicalMemory'
+>     port = VectorPort("the access port")
+>     range = Param.AddrRange(AddrRange('128MB'), "Device Address")
+>     file = Param.String('', "memory mapped file")
+>     latency = Param.Latency('1t', "latency of an access")
+>     zero = Param.Bool(False, "zero initialize memory")
+> i haven't find the declaration of PhysicalMemoryParams and what 's
+> the result of this function as follows?
+> PhysicalMemory *
+> PhysicalMemoryParams::create()
+> {
+>     return new PhysicalMemory(this);
+> }
+> can anyone plz show me the path of the maze? thanks a lot...
+> --
+> Regards
+> Dengning
+>
+> School Of Computer Science and Technology
+> Beijng Institute of Technology, China, 100081
+> dunning2006@gmail.com
+> dnenging@bit.edu.cn
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

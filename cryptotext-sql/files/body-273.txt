@@ -1,0 +1,66 @@
+I think that's right. Also, the panic is basically a segfault for the
+simulated program. It's complaining you tried to read from address 0x2
+which doesn't correspond to anything in the process's address space. If
+you do find a specific bug (or implement a GPU!) please let us know.
+There's more information on debugging at
+http://www.m5sim.org/wiki/index.php/Debugging_M5
+Gabe
+- Show quoted text -
+Vince Weaver wrote:
+> On Wed, 21 Apr 2010, Ankit Sethia wrote:
+>
+>
+>> What steps should i take to debug where the problem lies? When does this
+>> panic message show?
+>>
+>
+> x87 floating point support for x86 is incomplete.  Your best bet is to
+> compile with SSE2 support, as that has much better support.
+>
+> although you seem to be running a CUDA binary, which I'm pretty sure is
+> unlikely to work at all unless you've implemented GPU support inside of
+> m5.
+>
+> Vince
+>
+>
+>
+>> M5 Simulator System
+>>
+>> Copyright (c) 2001-2008
+>> The Regents of The University of Michigan
+>> All Rights Reserved
+>>
+>>
+>> M5 compiled Apr 21 2010 11:51:48
+>> M5 revision edde97a6ea7c+ 7069+ default tip
+>> M5 started Apr 21 2010 11:55:40
+>> M5 executing on inferno.eecs.umich.edu
+>> command line: ./build/X86_SE/m5.opt configs/cuda/runcuda.py -n 1 -b cudasde
+>> Global frequency set at 1000000000000 ticks per second
+>> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+>> info: Entering event queue @ 0.  Starting simulation...
+>> warn: instruction 'fnstcw_Mw' unimplemented
+>> For more information see: http://www.m5sim.org/warn/437d5238
+>> warn: instruction 'fldcw_Mw' unimplemented
+>> For more information see: http://www.m5sim.org/warn/437d5238
+>> warn: instruction 'fstp' unimplemented
+>> For more information see: http://www.m5sim.org/warn/437d5238
+>> panic: Tried to read unmapped address 0x2.
+>>  @ cycle 12523000
+>> [translate:build/X86_SE/arch/x86/tlb.cc, line 653]
+>> Memory Usage: 281140 KBytes
+>> For more information see: http://www.m5sim.org/panic/d71dd0bc
+>> Program aborted at cycle 12523000
+>> Aborted
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

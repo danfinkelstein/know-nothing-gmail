@@ -1,0 +1,27 @@
+Hi Ali thanks for your answer, I do not know what you mean. Are you saying that I should create the Disk Image in another machine in which I have root privileges? and after how do I submit that disk image to the machine in which I have m5 installed?, I should run the simulation in that machine because it is much faster than mine. Thank you.
+2008/11/12 Ali Saidi <saidi@umich.edu>- Show quoted text -
+No, you don't need to have root privileges on the machine that you're
+running M5 on, but you do need them on some system because the mount
+requires root privileges. You could run linux inside a VM or with a
+emulator such as Bochs for this purpose.
+Ali
+On Nov 12, 2008, at 3:44 PM, Bob Nagel wrote:
+> Hello,
+>
+> I want to run some of my own tests in FS mode, and I have seen here http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+> , that to create the disk image and to add files to it I need to
+> have root privileges. Is there any way to avoid this?,  I am able to
+> run the benchmarks that comes with the installation of FS, is there
+> any way to add my binaries to that disk image. Thank you so much.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

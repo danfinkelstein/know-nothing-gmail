@@ -1,0 +1,15 @@
+> What unconditional printf?  A print in python main()?  Is it something
+> you've inserted?
+>
+>   Nate
+> _______________________________________________
+>
+>
+This was an unconditional printf in the user application's main. It is
+not related to m5.
+-Rick
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

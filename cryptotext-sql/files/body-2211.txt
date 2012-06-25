@@ -1,0 +1,17 @@
+It runs fine with --l2cache.  Interesting...
+On Wed, Nov 26, 2008 at 1:48 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> Looks like the main difference is that the regression has an L2 cache
+> where just saying --caches only gives you L1s.  I'm rerunning the
+> problematic version with --l2cache to see if that fixes the problem.
+>
+> Steve
+>
+> On Wed, Nov 26, 2008 at 12:59 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> The o3 regression with caches does successfully run. So, what us the
+>> difference between what you're running and what the regressions run?
+>>
+>> Ali
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

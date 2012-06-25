@@ -1,0 +1,27 @@
+I've built ALPHA_FS/m5.debug and have all of my full system files in order.  When I run (from the build directory):
+        ./ALPHA_FS/m5.debug ../configs/fullsys/run.py
+I get the following output:
+        M5 Simulator System
+        Copyright (c) 2001-2005
+        The Regents of The University of Michigan
+        All Rights Reserved
+        This code is part of the M5 simulator, developed by Nathan Binkert,
+        Erik Hallnor, Steve Raasch, and Steve Reinhardt, with contributions
+        from Ron Dreslinski, Dave Greene, Lisa Hsu, Kevin Lim, Ali Saidi,
+        and Andrew Schultz.
+        M5 compiled on Dec  6 2006 15:31:08
+        M5 executing on realgar.engin.umich.edu
+        M5 simulation started Wed Dec  6 16:58:53 2006
+        Listening for console connection on port 3456
+        panic: Error opening /afs/umich.edu/user/d/m/dmass/Private/m5/m5_1.1/m5/system/disks/specweb-fileset.img
+        @ cycle 0
+        [open:m5/dev/disk_image.cc, line 81]
+        Program aborted at cycle 0
+        Abort
+There is no specweb-fileset.img file in the Full System bzip file for 1.1 that I downloaded from m5sim.org.  Is there something I'm missing?  Should I be editing any of the python config files inside of m5/configs/fullsys to fix this?
+Thanks,
+Dave Masselink
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

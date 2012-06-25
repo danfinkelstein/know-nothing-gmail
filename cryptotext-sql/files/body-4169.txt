@@ -1,0 +1,37 @@
+Hi Steve,
+ 
+Thank you very much for your soon answer
+！
+ 
+I am still confused with the use of sendTiming in SimpleTimingPort::recvTIming.
+ 
+I don't want to send the packet from the recvTiming(pkt) immediately, for example, 
+ I want to buffer a lot of packets, schedule them, then select one of them to send to implement out-of-order  memory access. However, when I add some operation in SimpleTimingPort:recvTiming() to control the execution of sendTimng, I find that if sendTiming is not executed, then there is no new packet coming from bus. If that is true, how to implement the out-of-order scheduling?
+ 
+Another question is that I find the sendTiming function can only be called in the SimpleTimingPort::recvTiming other than a class devrived from SimpleTimingPort, such as MemoryPort. If it is called from a member function of MemoryPort, there is no new packet either and the simulation stops. Could you also explain that?
+ 
+Thank you very much!
+ 
+Jun Pang
+- Show quoted text -On 10/9/07, Steve Reinhardt <stever@gmail.com> wrote:
+Hi Jun,Hard to know what's going wrong from your description.  What happens if you take your new code but keep the same fixed latency as the old code?  In that case the execution path should be identical.  Check out the util/tracediff script for a good way to track down differences between two runs that should be doing the same thing but aren't (see the comments at the top of the script for usage info). 
+Also it might be easier to debug an SE-mode program first and make sure that works before trying it under FS mode.  You can use the regression tests for example.Steve
+On 10/8/07, Jun Pang <
+mryld08@gmail.com> wrote:
+Hi,
+ 
+I want to implement an out-of-order memory access scheduling with M5 simulator 2.0.3 edition. First, I will put some packets in a buffer and schedule it, then as soon as a latency of one packet is obtained through my algorithm, it will be sent by calling SimpleTimngPort::sendTiming. 
+ So, instead of called by SimpleTimingPort::recvTiming in the tport.cc, the sendTiming is called in my function and get a latency calculated by the function as an argument of sendTiming However, when I recompile the source and run the simulator in full system mode, the m5term cannot connect the host and shows information as follows: 
+ 
+==== m5 slave console: Console 0 ====
+ 
+What causes m5 to stop here?  What's wrong with my implementation? I wonder if I could put the sendTiming in somewhere else instead of its original SimpleTimingPort::recvTiming. Thank you very much! 
+ 
+Jun Pang_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

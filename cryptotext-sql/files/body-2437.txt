@@ -1,0 +1,6 @@
+Hi everyone,I have implemented a few extra M5 pseudo instructions to insert in the application code and call some special functions in the CPU.  Now I would like to obtain the address of some variables in the application code, then pass them to the CPU.  Could you tell me how to do that?  I think these addresses are not available until runtime, so the compiler will complain if I try to encode those addresses in the pseudo instructions.
+Thank you,Giang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

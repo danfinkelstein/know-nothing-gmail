@@ -1,0 +1,44 @@
+Briefly, on a TLB miss the PAL code searches the page table for the missing entry, when it finds the appropriate entry it writes to an Internal Processor Register (IPR) that causes the entry to be inserted into the TLB. Section II-B Chapter 3 of the Alpha Architecture Handbook provides the particular details of the process.
+Ali- Show quoted text -
+On Feb 5, 2007, at 3:27 PM, rlai@mtu.edu wrote:
+Hi,
+   Now I am trying to add some new virtual to physical address translation
+algorithm in full system.I know this functionality is done in tlb.cc,
+but I don't know how the TLB is build up, which means how TLB entries
+are added into the table?
+   I find AlphaRegFile::MiscRegFile::setIpr() is called to insert a new
+entry. Can anyone explain this process for me?
+   Thank you very much.
+Tracy
+translate() in tlb.cc implements an alpha like TLB. So it does
+virtual to physical translation for the guest.
+vtophys() converts a virtual address for the guest into a virtual
+address for the host.
+Ali
+On Jan 22, 2007, at 2:26 PM, rlai@mtu.edu wrote:
+Hi all,
+    I find two virtual to physical address translation functions in
+M5:
+    One is translate() defined in AlphaITB/AlphaDTB class in tlb.cc,
+    the other one is vtophys() defined in vtophys.cc.
+    Does anyone know which one is for simulated virtual address to
+simulated physical address translation? And which on is for simulated
+virutal address to host physical address translation?
+    Thanks!
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+This is likely because the compiler isn't finding a definition of your CPU class when it goes to compile the execute functions of the instructions. In the case of the simple cpu, the cpu class itself is used as the context to pull register values and the like out of, so you're probably looking at something similar. I don't know the specifics of that mechanism, but I think there's some python code which works through scons to generate a header which gathers up all the appropriate includes and definitions for all the cpu models you're compiling in. My guess is that that isn't set up right for your new model.
+Gabe- Show quoted text -
+On Thu, 27 Dec 2007, jockie lee wrote:
+i'm trying to create my own CPU model, however I keep on running on the
+following error repeatedly
+build/ALPHA_SE/arch/alpha/mycpu_exec.cc:5693: error: invalid use of
+undefined type 'struct MyCPU'
+build/ALPHA_SE/cpu/static_inst.hh:56: error: forward declaration of 'struct
+MyCPU'
+build/ALPHA_SE/arch/alpha/mycpu_exec.cc:5701: error: invalid use of
+undefined type 'struct MyCPU'
+build/ALPHA_SE/cpu/static_inst.hh:56: error: forward declaration of 'struct
+MyCPU'
+...
+any ideas what could be causing this? i just followed the instructions in
+the website...
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

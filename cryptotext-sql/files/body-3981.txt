@@ -1,0 +1,10 @@
+How does one reset all statistics?
+From C++ Stats::reset()
+From python, m5.stats.reset()
+From a benchmark, there's a statreset instruction (see util/m5)
+From outside, kill -USR2 (though that will dump them too)
+There are also similar mechanisms for dumping stats.  Grep for reset in the tree will help you.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

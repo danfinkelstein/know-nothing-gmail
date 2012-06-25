@@ -1,0 +1,31 @@
+2 is a kernel address
+3 is a PAL address
+Ali
+- Show quoted text -
+On Thu, 28 May 2009 12:46:57 +0530, Arun Rangasamy
+<arun.rangasamy@gmail.com> wrote:
+> Hi all,
+> I'm trying to associate each memory access to the PC responsible for
+> generating it. I'm using the Request Class' getPC function for this. I do
+a
+> full system timing simulation. When looking at the results for a simple
+> program, I see some PC's which I can't account for.
+> I'll put three different PC samples below:
+> Sample 1: 0x120000680 (This is the virtual address of a store instruction
+> in
+> the application)
+> Sample 2: 0xfffffc000038758c
+> Sample 3: 0x20000008d40
+> Could someone please inform me which modules are responsible for Sample 2
+> and Sample 3? (OS or any other user process?) And why are the addresses
+of
+> Sample 2 and Sample 3 are very different (if the same module is
+responsible
+> for the misses)?
+> Thank you very much!
+> Best Regards,
+> Arun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

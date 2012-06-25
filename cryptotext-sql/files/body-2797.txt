@@ -1,0 +1,14 @@
+Hello,
+     I am trying to get the 
+dynamic values of the system configuration and use it in a custom .cc file in 
+M5. For example, I would like to get the numcpus, or L2 size, etc. which is 
+either in the .py files or specified in the config files. How do I get these 
+values and use it in my files?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

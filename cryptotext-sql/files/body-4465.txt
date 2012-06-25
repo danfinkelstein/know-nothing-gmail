@@ -1,0 +1,50 @@
+The uniq register typically is used to hold a pointer to the per-thread state.  I'm guessing that as part of creating a new thread you may need to allocate some additional space (or reserve space on the thread's stack) for that per-thread structure and then set the uniq register to that value.
+The Tru64 pthreads code already does this, so you can look in src/kern/tru64 for an example (grep for MISCREG_UNIQ in tru64.hh). Unfortunately you'll probably have to look at the Linux pthreads library source (or maybe the kernel?) to figure out exactly what Linux requires (how much space to allocate, whether the space needs to be initialized, etc.).
+By all means, please keep us posted...
+Steve- Show quoted text -
+Ali Saidi wrote:
+Hi Jiayuan,
+RD Uniq is a PAL code call that the unique field of the Process Control Block (PCB). The PCB describes a process to the pal code. It doesn't really exist for running is syscall emulation mode, however we do implement the read uniq/write uniq call pals. I believe there are two possibilities of what is going wrong. a) The kernel puts some value in the unique area of the PCB that we don't or b) when you copy the thread context for the new thread you don't copy the Runiq register and that is causing the problem.
+You can read about it in the Alpha Architecture Reference Manual. The code is ~718 in decoder.isa and if you look at the system code on m5sim.org you can see the real implementation of rduniq in osfpal.S
+Ali
+On Jun 22, 2007, at 10:31 AM, Jiayuan Meng wrote:
+Hey all,
+continued on the synchronization mail thread...
+I tried gcc-3.4.5-glibc-2.3.5.dat to configure the cross tool. I added in the following options to enable thread local storage(tls):
+GLIBC-EXTRA-CONFIG="GLIBC_EXTRA_CONFIG --with-tls --with-__thread --enable-kernel=2.4.18"
+GLIBC_ADDON_OPTIONS="=nptl"
+It compiles and worked for single threaded program. But when applied to my manually created hardware threads, the malloc craches. I think the problem is at the "call_pal rduniq" instruction. Here is a comparison of what happens in single threaded and what happens in multi-threaded programs:
+======== single threaded ===================
+@__libc_malloc+64 : call_pal   rduniq          : IntAlu :  D=0x00000001200c8690
+@__libc_malloc+68 : ldq        r1,-26600(r29)  : MemRead :  D=0x0000000000000038 A=0x1200b4290
+@__libc_malloc+72 : addq       r0,r1,r0        : IntAlu :  D=0x00000001200c86c8
+@__libc_malloc+76 : ldq        r9,0(r0)        : MemRead :  D=0x00000001200c58b8 A=0x1200c86c8
+@__libc_malloc+80 : beq        r9,0x12001dc40  : IntAlu :
+@__libc_malloc+84 : ldl_l      r1,0(r9)        : MemRead :  D=0x0000000000000000 A=0x1200c58b8
+@__libc_malloc+88 : cmpeq      r1,0,r2         : IntAlu :  D=0x0000000000000001
+@__libc_malloc+92 : beq        r2,0x12001dc38  : IntAlu :
+@__libc_malloc+96 : bis        r31,1,r2        : IntAlu :  D=0x0000000000000001
+@__libc_malloc+100 : stl_c      r2,0(r9)        : MemWrite :  D=0x0000000000000001 A=0x1200c58b8
+.....
+========= hardwared multi-threaded =========
+@__libc_malloc+64 : call_pal   rduniq          : IntAlu :  D=0x0000000000000000
+@__libc_malloc+68 : ldq        r1,-26592(r29)  : MemRead :  D=0x0000000000000038 A=0x1200b42a8
+@__libc_malloc+72 : addq       r0,r1,r0        : IntAlu :  D=0x0000000000000038
+@__libc_malloc+76 : ldq        r9,0(r0)        : MemRead :  A=0x38
+Aborted here: access invalid address 0x38
+------------------------------------------------
+So, the good news is that this version uses LL/SC. but the "call_pal rduniq" becomes the next killer.
+I googled and found call_pal rduniq has something to do with the thread pointer. But I am still hazy on what it does. Maybe you can shed some light on it ? why in the second case, the value it loads to r0 is 0 ? Is it because I am creating hardware threads by just assigning pc and sp, without using pthread calls at the software level? Is there anyway to fix/hack this?
+Thanks!
+Jiayuan_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

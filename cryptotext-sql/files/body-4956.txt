@@ -1,0 +1,7 @@
+Hi - I can't seem to find any information on how to get m5 to load and run an eio trace in SE mode? Can anyone help me with this?
+Thanks,
+Ranjith
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

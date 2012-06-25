@@ -1,0 +1,9 @@
+hi,I am using 16 copies of SPEC CPU2006 benchmarks in SE mode for simulation. I got the error as:
+**********************************************************************************************************warn: Increasing stack size by one page.
+warn: Increasing stack size by one page.m5.opt: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:178: void BaseDynInst<Impl>::initVars() [with Impl = AlphaSimpleImpl]: Assertion `instcount <= 1500' failed.
+Program aborted at cycle 3042000**********************************************************************************************************Could you please inform me what type of error is this and how can i solve it? 
+Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

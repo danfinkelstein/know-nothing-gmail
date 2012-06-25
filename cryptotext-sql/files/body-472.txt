@@ -1,0 +1,69 @@
+Hi Max,
+fastforwarding and checkpointing currently do not work with inorder.
+Check this thread for some discussions about it:
+http://www.mail-archive.com/m5-dev@m5sim.org/msg06154.html
+regards,
+Soumyaroop
+- Show quoted text -
+On Fri, Feb 26, 2010 at 9:38 AM, Maximilien Breughe
+<Maximilien.Breughe@elis.ugent.be> wrote:
+> Hello,
+>
+> I'm experiencing a problem in using the Fast forwarding option of M5.
+> Currently I'm using the InOrderCPU of ALPHA_SE in the dev branch (last
+> updated a couple of weeks ago).
+>
+> Is there anybody else who had problems switching cpu's that use caches?
+>
+>
+> The problem occurs in 2 different ways:
+>
+> 1)When I try adding L1 caches and an L2 cache to my system:
+> -I connect my Detailed cpu to the L2Bus and the L2 cache to the membus
+> and L2Bus
+> -I connect my Atomic cpu to the membus
+> The error message is:
+>
+> info: Entering event queue @ 0.  Starting simulation...
+> panic: AtomicSimpleCPU doesn't expect recvTiming callback!
+>  @ cycle 6000
+> [recvTiming:build/ALPHA_SE/cpu/simple/atomic.cc, line 107]
+>
+> So the Atomic CPU can't even execute normaly.
+> However in case 2 it's the Detailed cpu that gets the problem
+>
+> 2)When I try adding a (splitted) L1 cache to my system:
+> -I connect my Detailed cpu to the membus
+> -I connect my Atomic cpu to the membus
+> The error message is:
+>
+> Switched CPUS @ cycle = 154500
+> Changing memory mode to timing
+> switching cpus
+> panic: Unimplemented!
+>  @ cycle 154500
+> [takeOverFrom:build/ALPHA_SE/sim/sim_object.cc, line 257]
+>
+> Am I doing something very stupid? Or does someone has an idea what could
+> be the problem?
+> I can send you my config-file..
+>
+>
+> Thanks,
+>
+> Max
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

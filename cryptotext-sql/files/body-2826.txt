@@ -1,0 +1,16 @@
+hi all, 
+i add my sram based on the dram.hh/.cc files and modified the latency calculation and address space to my requirement.
+i modified the function of dram.cc into follows:
+Spm*SpmParams::create(){    return new Spm(this);}
+ 
+but some problem arised when i compile it...
+ 
+ 
+build/ALPHA_FS/params/params_wrap.do: In function `_wrap_SpmParams_create':/home/dengning/m5_arm/m5-2.0b5/build/ALPHA_FS/params/params_wrap.cc:33003: undefined reference to `SpmParams::create()'
+collect2: ld returned 1 exit statusscons: *** [build/ALPHA_FS/m5.debug.bin] Error 1scons: building terminated because of errors. i wrote the function just as the same as it is in dram.cc and PhysicalMemory.cc... 
+ 
+thank you -- RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

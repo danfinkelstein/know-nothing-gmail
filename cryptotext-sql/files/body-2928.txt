@@ -1,0 +1,39 @@
+Hi Shoaib,
+I actually had forgotten about the script you sent me, sorry... your
+email reminded me of it so I went back but I cannot reproduce your
+problem.  I had to modify the scripts to get them to work; I'll send
+you the modifications separately and see if they still fail for you.
+If I can reproduce the problem, I will definitely track it down and fix it.
+Steve
+- Show quoted text -
+On Mon, Jun 9, 2008 at 2:40 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> For some benchmarks, it even happen after applying patches though most benchmarks work. I send Steve binary and script files for one case for which it happens so he maybe working on that. For one benchmark, the problem disappears after I increased the MSHR queue size for L3 cache. I never dig myself deeper into debugging the execution traces but I do believe there is a problem. Also, I had this problem for some media benchmarks, I guess epic and gsm, while others (jpeg,mpeg etc) worked fine.
+>
+> ---- Original message ----
+>>Date: Mon, 9 Jun 2008 17:00:56 -0400
+>>From: "Meng-Ju Wu" <mengjuwu@gmail.com>
+>>Subject: Re: [m5-users] unmapped addresses when running eon
+>>To: m5-users <m5-users@m5sim.org>
+>>
+>>Do you apply patches for m5?
+>>
+>>I have the same unmapped addresses problem on SPEC2006. After I
+>>applied the patches, I don't have this problem.
+>>
+>>You can get the patches at this thread.
+>>http://www.mail-archive.com/m5-users@m5sim.org/msg00460.html
+>>
+>>Meng-Ju
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

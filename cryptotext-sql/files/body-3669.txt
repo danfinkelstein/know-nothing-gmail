@@ -1,0 +1,16 @@
+hi, i'm actually using beta3. haven't gotten around to shifting to beta 4. by the way, i found the error already. apparently, i did not follow the instructions "to the letter" after all
+Since we want to change 'AtomicSimpleCPU' to 'MyCPU' we will just
+replace all the names in the atomic.* files and name them mycpu.* files:I did not change text instances of "AtomicSimpleCPU" to "MyCPU" and just proceeded to rename the files. Silly me. It's okay now, I've gotten MyCPU to compile.
+Anyway, thank you so much to those who tried to help me. I'd try to help out with the wiki when and if i could.  =)- Show quoted text -On Dec 28, 2007 2:42 AM, Nathan Binkert <
+nate@binkert.org> wrote:> I created a MyCPU.py, but I placed it in m5/src/python/m5/objects, since all
+> the other Python object files are in there(03CPU.py,, OzoneCPU.py, etc).> There is not even a directory names "objects" under m5/src/python, the> folders under it are m5 and swig. At first I thought this was just an
+> oversight on the part of the tutorial writers, but could this be the> culprit?This makes me think that you're using beta4 and that the tutorial hasn'tbeen updated for it.  In beta4, you put the .py file wherever your .cc or
+.hh files are.  You also have to add it to the SConscript file with aSimObject() callAlso, the way Korey mentioned adding the new CPU object isn't the same inbeta4.  There is a SConsopts file where the new CPU model options are
+added to the build system.Grep for SimpleCPU in all files in the src/cpu/simple directory and you'llsee what I'm talking about.I'm honestly not sure that either issue would manifest itself with your
+error message.  If these things are the problem, would you be willing tofix the tutorial on the wiki?  If not, can you tar up your whole directory(except for the build directory, please don't include that), stick it
+somewhere and send a URL?  If you don't have a webserver that you can putit on, you can send me the tarball in a private mail.Thanks,   Nate_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

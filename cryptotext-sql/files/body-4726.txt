@@ -1,0 +1,200 @@
+Hi Nate,
+Thanks for your reply.
+I have waited for around 30 minutes. Yes,I compiled my
+own kernel from the Linux M5Base 2.6.13 tar.gz file
+provided on the m5 web page and put the "vmlinux"
+generated in the /dist/m5/system/binaries directory.
+Can you please give an estimate of the waiting time
+and a link to the patch?
+Am I doing anything wrong?
+regards-
+Chaitali
+- Show quoted text -
+--- Nathan Binkert <nate@binkert.org> wrote:
+> How long did you wait?  Did you compile your own
+> kernel?  There is a
+> pretty long period of time after this statement that
+> is sucked up by some
+> delay code that needs a patch depending on the
+> kernel version.
+>
+>    Nate
+>
+>
+> > Hi,
+> >
+> >  I would also like to run my own program in M5 2.0
+> FS mode for multiple cores. When I am running my
+> program with 4 cores, the program is not running to
+> completion, but with 2 cores it executes
+> successfully. I am giving the output from the m5term
+> below -
+> >
+> >  "SMP starting up secondaries.
+> > Slave CPU 1 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018400 my_rpb_phys 18400
+> > Slave CPU 2 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018680 my_rpb_phys 18680
+> > Slave CPU 3 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018900 my_rpb_phys 18900
+> > Brought up 4 CPUs
+> > SMP: Total of 4 processors activated (8000.15
+> BogoMIPS).
+> > NET: Registered protocol family 16
+> > EISA bus registered
+> > pci: enabling save/restore of SRM state
+> > SCSI subsystem initialized
+> > srm_env: version 0.0.5 loaded successfully
+> > Installing knfsd (copyright (C) 1996
+> okir@monad.swb.de).
+> > Initializing Cryptographic API
+> > rtc: Standard PC (1900) epoch (1900) detected
+> > Real Time Clock Driver v1.12
+> > Serial: 8250/16550 driver $Revision: 1.90 $ 5
+> ports, IRQ sharing disabled
+> > ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+> > loop: loaded (max 8 devices)
+> > Using anticipatory io scheduler
+> > nbd: registered device at major 43
+> > sinic.c: M5 Simple Integrated NIC driver
+> > ns83820.c: National Semiconductor DP83820
+> 10/100/1000 driver.
+> > eth0: ns83820.c: 0x22c: 00000000, subsystem:
+> 0000:0000
+> > eth0: enabling optical transceiver
+> > eth0: ns83820 v0.20: DP83820 v1.3:
+> 00:90:00:00:00:01 io=0x09000000 irq=30 f=sg
+> > Uniform Multi-Platform E-IDE driver Revision:
+> 7.00alpha2
+> > ide: Assuming 33MHz system bus speed for PIO
+> modes; override with idebus=xx
+> > PIIX4: IDE controller at PCI slot 0000:00:00.0
+> > PIIX4: chipset revision 0
+> > PIIX4: 100% native mode on irq 31
+> >    ide0: BM-DMA at 0x8400-0x8407, BIOS settings:
+> hda:DMA, hdb:DMA
+> >    ide1: BM-DMA at 0x8408-0x840f, BIOS settings:
+> hdc:DMA, hdd:DMA
+> > hda: M5 IDE Disk, ATA DISK drive
+> > hdb: M5 IDE Disk, ATA DISK drive
+> > ide0 at 0x8410-0x8417,0x8422 on irq 31
+> > hda: max request size: 128KiB
+> > hda: 163296 sectors (83 MB), CHS=162/16/63,
+> UDMA(33)
+> > hda: hda1
+> > hdb: max request size: 128KiB
+> > hdb: 4177920 sectors (2139 MB), CHS=4144/16/63,
+> UDMA(33)
+> > hdb: unknown partition table
+> > scsi0 : scsi_m5, version 1.73 [20040518],
+> dev_size_mb=8, opts=0x0
+> >  Vendor: Linux     Model: scsi_m5       Li  Rev:
+> 0004
+> >  Type:   Direct-Access                      ANSI
+> SCSI revision: 03
+> > SCSI device sda: 16384 512-byte hdwr sectors (8
+> MB)
+> > SCSI device sda: drive cache: write back
+> > sda: unknown partition table
+> > Attached scsi disk sda at scsi0, channel 0, id 0,
+> lun 0
+> > mice: PS/2 mouse device common for all mice
+> > NET: Registered protocol family 2
+> > "
+> >
+> >  The console always seem to hang after reaching
+> this particular line -
+> >
+> >  "NET: Registered protocol family 2"
+> >
+> >  I am defining multiple cores in the fs.py file as
+> mentioned below -
+> >
+> >  "system = makeLinuxAlphaSystem(mem_mode, bm[0])
+> >    system.cpu = [AtomicSimpleCPU(),
+> AtomicSimpleCPU(), AtomicSimpleCPU(),
+> AtomicSimpleCPU()]
+> >    system.cpu[0].connectMemPorts(system.membus)
+> >    system.cpu[0].mem = system.physmem
+> >    system.cpu[1].connectMemPorts(system.membus)
+> >    system.cpu[1].mem = system.physmem
+> >    system.cpu[2].connectMemPorts(system.membus)
+> >    system.cpu[2].mem = system.physmem
+> >    system.cpu[3].connectMemPorts(system.membus)
+> >    system.cpu[3].mem = system.physmem
+> >    root = Root(clock = '1GHz', system = system)
+> >  "
+> >
+> >  Any help in this regard is highly appreciated.
+> >
+> >  -Regards
+> >  Chaitali
+> >
+> >
+> > "xiaojun.chen" <chenxiaojun@software.ict.ac.cn>
+> wrote:
+> >  Hi,m5-users，
+> > When I run m5 with 4-over core(6,8,or more),I
+> always got the warning msg:
+> > "warn: clear IPI for CPU=0, but NO IPI "
+> > and this msg seemed like to repeat ceaselessly.
+> >
+> > On the console, the output msg stoped with :
+> > "SMP starting up secondaries.
+> > Slave CPU 1 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018400 my_rpb_phys 18400
+> > Slave CPU 2 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018680 my_rpb_phys 18680
+> > Slave CPU 3 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb
+> FFFFFC0000018900 my_rpb_phys 18900
+> > Slave CPU 4 console command START
+> > SlaveCmd: restart FFFFFC0000310020
+> FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb "
+> > It looks like that just 4 cpus were started up,and
+> warning msg appeared when starting next cpu up.
+> >
+> > Is the warning caused by the kernel?Perhaps I
+> should recompile the 2.6.8.1 kernel with some
+> special options checked.
+> > Anybody have this warning before now and how to
+> resolved it ?
+> >
+> > Thanks and Best Regards!
+> >
+> >
+> > xiaojun.chen
+> > chenxiaojun@software.ict.ac.cn
+> > 2007-01-05
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> >
+> > ---------------------------------
+> > Check out the all-new Yahoo! Mail beta - Fire up a
+> more powerful email and get things done faster.>
+_______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+____________________________________________________________________________________
+Sucker-punch spam with award-winning protection.
+Try the free Yahoo! Mail Beta.
+http://advision.webevents.yahoo.com/mailbeta/features_spam.html
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

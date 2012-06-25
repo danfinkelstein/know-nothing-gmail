@@ -1,0 +1,78 @@
+Hello Nathan,
+I already have the headers in the location that it is searching at
+(/home/phd/sroy/python/include/python2.5). I built Python locally.
+regards,
+Soumyaroop.
+- Show quoted text -
+On Mon, Mar 30, 2009 at 8:04 PM, nathan binkert <nate@binkert.org> wrote:
+> You need to install the python headers.  Often this is called the
+> python development package.
+>
+>  Nate
+>
+> On Mon, Mar 30, 2009 at 4:22 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+>> Hello there,
+>>
+>> I am trying to build M5 on a SunOS running on a SPARC processor.
+>>
+>> % uname -a
+>> SunOS ogre 5.9 Generic_122300-07 sun4u sparc SUNW,Netra-T12
+>>
+>> However, scons gives the following error when I try to build M5 in
+>> ALPHA_SE configuration:
+>> % scons build/ALPHA_SE/tests/debug/quick
+>> scons: Reading SConscript files ...
+>>
+>> scons: warning: The Options class is deprecated; use the Variables
+>> class instead.
+>> File "/home/phd/sroy/m5sim/m5-stable/SConstruct", line 298, in <module>
+>> Checking for leading underscore in global variables...no
+>> Checking for C header file Python.h... no
+>> Error: can't find Python.h header in /home/phd/sroy/python/include/python2.5
+>>
+>> The header file is actually present in that location:
+>> % ls /home/phd/sroy/python/include/python2.5/Python.h
+>> /home/phd/sroy/python/include/python2.5/Python.h
+>>
+>> The error is coming from these lines of the "SConstruct" script at
+>> root directory:
+>>   506  # include path, e.g. /usr/local/include/python2.4
+>>   507  py_header_path = joinpath(sys.exec_prefix, 'include', py_version_name)
+>>   508  env.Append(CPPPATH = py_header_path)
+>>   509  # verify that it works
+>>   510  if not conf.CheckHeader('Python.h', '<>'):
+>>   511      print "Error: can't find Python.h header in", py_header_path
+>>   512      Exit(1)
+>>
+>> Is this error familiar, or is there a some problem at my end?
+>>
+>> regards,
+>> Soumyaroop.
+>>
+>> --
+>> Soumyaroop Roy
+>> Ph.D. Candidate
+>> Department of Computer Science and Engineering
+>> University of South Florida, Tampa
+>> http://www.csee.usf.edu/~sroy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Show quoted text -Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

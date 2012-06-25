@@ -1,0 +1,15 @@
+Unfortunately you must have missed the message where I said I gave up :-).  Basically supporting the native Linux pthreads library in SE-mode is just too much work.  It creates N+1 threads for an N-thread program, using the spare thread for management tasks.  The worker threads then communicate with the management threads through the kernel via a pipe and signals, with the management thread sleeping on its end of the pipe using poll() (IIRC).  Implementing any of signals, pipes, or poll() in m5 is more work than I thought it was worth, much less all three, plus you'd need some sort of thread scheduler inside m5 to figure out what to run when.  It's particularly unnecessary given that you can always use FS mode if you really want faithful modeling of pthreads apps.
+If you really want to run simple multithreaded apps in SE mode (N threads on N CPUs with no scheduling), your best bet is to write a simple thread library with some fake syscalls to create and fork new threads and then do all the synchronization at user level.  You could even use the pthreads API and then bail out if someone tries to create more threads than CPUs or something like that.  This is basically what I ended up doing for Tru64 (though it's much uglier than it needs to be because I got partway through supporting the Tru64 pthreads library before I gave up and fell back on this approach).  See src/kern/tru64/tru64.hh for that code... maybe it will give you some ideas.
+Steve- Show quoted text -
+Nicolas Zea wrote:
+In a previous message Steve Reinhardt mentioned that he was working on support for PARMACS/pthreads for linux in se-mode. I'd really like to take advantage of this for comparing against a complementary architecture I'm working on.
+Is this functionality in any kind of a useable form? Is it something I could help with?
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

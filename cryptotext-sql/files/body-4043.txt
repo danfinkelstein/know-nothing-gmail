@@ -1,0 +1,38 @@
+HI,
+      Ya I figured out how 
+to do it, thanks to Vilas. I used a similar exitcallback function and it gets 
+called at the end and I can write whatever I want to a file.
+ 
+My other doubt is - Can I make this work in FS 
+mode? Currently when I run a simulation in FS mode, its not writing to the file. 
+ 
+- Sujay
+ 
+  ----- Original Message ----- 
+  From: 
+  Vilas Sridharan 
+  To: M5 users mailing list 
+  Sent: Thursday, November 01, 2007 12:56 
+  PM
+  Subject: Re: [m5-users] Float in 
+  stats
+  - Show quoted text -Hi Nate,I have, thank you.  I'm using 
+  registerExitCallback to do computation at the end, and os.kill to do a 
+  dump/reset at the beginning.Cheers,   -Vilas
+  On Nov 1, 2007 11:33 AM, Nathan Binkert < nate@binkert.org> wrote:
+  Sujay/Vilas,Have 
+    you guys figured out your stats problems?  I'm sorry I've been 
+    unresponsive lately.  I'm trying to catch up.
+    
+    
+      
+    Nate_______________________________________________m5-users mailing 
+    listm5-users@m5sim.org http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

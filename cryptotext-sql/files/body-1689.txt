@@ -1,0 +1,22 @@
+Hi Fei,2009/3/20 Fei Hong <tithonus.hf@gmail.com>
+1. The PCEventQueue. I have not figured out 
+what the PCEventQueue class is used for. Specifically, In the 
+"tick()" function of AtomicSimpleCPU I don't know what the 
+"checkPcEventQueue()" is used for. Can you exlpain more detail 
+about PCEventQueue's member function "doService"?
+The PC Event Queue is for events that should occur when you hit a certain PC.  On every tick, you check the queue to see if there are any events that should occur on the same PC as you are currently processing in tick(). 
+ 
+2. I am testing running two identical 
+programs on two AtomicSimpleCPU objects. At anytime during execution, when 
+I find a instruction in CPU1, I want to find the corresponding instruction in 
+CPU2. Can I achieve this by finding the same PC in CPU2, with the tick number 
+curTick? (For the same instructions at the same point of execution line, will 
+the PCs also be  the same during the execution?). Actually what 
+I want to do is to synchronize the two threads and do 
+some data communication work.  
+ If the two programs really are totally identical on an atomic cpu, then every tick should be the same instruction for each, regardless.  While in the program, one CPU's instruction would be executed before the other, in logical time (tick time) they are happening simultaneously.
+Lisa 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

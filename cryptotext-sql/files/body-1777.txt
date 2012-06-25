@@ -1,0 +1,93 @@
+Thank you all.The problem is that the vdi file of the Debian OS in virtual machine is huge， more than 1.7G, and I can't find a good place to make it to be downloaded.The  good news is that one of my friend in my lab compiled it without error so we can move on turning to his machine for a while.
+When I tried the newest version as Ali Saidi's kind suggestion, I encountered  another problem. I think that is because I used the latest unstable(2.0_beta6) version, which is under developing in recent hours.
+However, the errors are following and I don't think they are the same problem as previous ones:liuml07@debian:~/proj/m5-4ed2100efa84$ ild/ALPHA_SE/m5.debug 
+scons: Reading SConscript files ....hg directory not foundChecking for leading underscore in global variables...noChecking for C header file Python.h... yesChecking for C library pthread... yesChecking for C library dl... yes
+Checking for C library util... yesChecking for C library m... yesChecking for C library python2.5... yesChecking for accept(0,0,0) in C++ library None... yesChecking for zlibVersion() in C++ library z... yes
+Checking for C header file fenv.h... yesReading /home/liuml07/proj/m5-4ed2100efa84/src/cpu/ozone/SConsoptsReading /home/liuml07/proj/m5-4ed2100efa84/src/cpu/o3/SConsoptsReading /home/liuml07/proj/m5-4ed2100efa84/src/cpu/inorder/SConsopts
+Reading /home/liuml07/proj/m5-4ed2100efa84/src/cpu/simple/SConsoptsReading /home/liuml07/proj/m5-4ed2100efa84/src/arch/alpha/SConsoptsReading /home/liuml07/proj/m5-4ed2100efa84/src/arch/x86/SConsoptsReading /home/liuml07/proj/m5-4ed2100efa84/src/arch/mips/SConsopts
+Reading /home/liuml07/proj/m5-4ed2100efa84/src/arch/sparc/SConsoptsBuilding in /home/liuml07/proj/m5-4ed2100efa84/build/ALPHA_SEVariables file /home/liuml07/proj/m5-4ed2100efa84/build/variables/ALPHA_SE not found,
+  using defaults in build_opts/ALPHA_SEKeyError: 'HG_INFO':  File "/home/liuml07/proj/m5-4ed2100efa84/SConstruct", line 893:    exports = 'env')  File "/usr/lib/scons/SCons/Script/SConscript.py", line 596:
+    return apply(method, args, kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 533:    return apply(_SConscript, [self.fs,] + files, subst_kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 256:
+    exec _file_ in call_stack[-1].globals  File "/home/liuml07/proj/m5-4ed2100efa84/build/ALPHA_SE/SConscript", line 365:    defines_info = [ Value(build_env), Value(env['HG_INFO']) ]  File "/usr/lib/scons/SCons/Environment.py", line 368:
+    return self._dict[key]I think you guys are kindly, indeed.2009/3/5 nathan binkert <nate@binkert.org>- Show quoted text -
+Another option is, if your virtual machine is indeed just for M5, if
+you're willing, you could tar it up and put it somewhere that I can
+get to it.  Do you have access to somewhere you can stick it?  If not,
+I can make a place you can upload it and we can work out the details
+offline.
+   Nate
+2009/3/4 Mingliang Liu <liuml07@gmail.com>:
+> Thanks you and Ali for your replies. I really appreciate them very much.
+>
+> I installed all the software listed at Compiling_M5 wiki page.
+>
+> g++ --version: g++ 4.3.2
+> python --verion: 2.5.2
+> SCons: scons -v returns 1.0.0
+> SWIG: swig -version returns 1.3.36
+> zlib and m4 installed
+>
+> When I run
+>>
+>> echo $CXX
+>
+> it returns nothing and I suppose I do not set any environment variable about
+> CXX manually. BTW, I installed the Debian OS in a virtual machine,
+> virtualbox2.0; specially for M5 simulator. Clean enough.
+>
+> The version of M5 I tried to compile is: m5-5e7899a2692f.tar.bz2 which
+> should be 2.0_beta6.
+>
+> Thank you!
+>
+>>Somehow your CXX environment variable is messed up.  Do you have it
+>>set to anything? Do you have g++ installed?  (Just checking.)  What
+>>exact version of M5 are you running?
+>>
+>>  Nate
+>>
+>>2009/3/2 Mingliang Liu <liuml07 at gmail.com>:
+>>> When I tried to run
+>>>>
+>>>> scons build/ALPHA_SE/m5.debug
+>>>
+>>> I got error as following:
+>>>
+>>> ----------------------------------------------------------------------------------------------------
+>>> scons: Reading SConscript files ...
+>>> TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':
+>>>   File "/home/liuml07/proj/m5/SConstruct", line 335:
+>>>     env['GCC'] = subprocess.Popen(env['CXX'] + ' --version', shell=True,
+>>>
+>>> ----------------------------------------------------------------------------------------------------
+>>>
+>>> My OS is GUN/Linux Debian 5, scons is 1.0 and gcc version is 4.3.1.
+>>>
+>>> I am a newbie to scons and need your kind help.
+>>>
+>>> Thanks!
+>>> --
+>>> Mingliang Liu (刘明亮 in Chinese)
+>>>
+>>> Dept. of Computer Science & Technology
+>>> Tsinghua University
+>>> Beijing, P.R.China, 100084
+>>> Tel: +86-010-6278 0839 (Office)
+>>> Email: liuml07 at mails.tsinghua.edu.cn
+> - Show quoted text -
+>>> Sent from: Beijing 11 China.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Mingliang Liu (刘明亮 in Chinese)
+Dept. of Computer Science & TechnologyTsinghua UniversityBeijing, P.R.China, 100084Tel: +86-010-6278 0839 (Office)Email: liuml07@mails.tsinghua.edu.cn- Show quoted text -
+Sent from: Beijing 11 China.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

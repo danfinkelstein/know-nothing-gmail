@@ -1,0 +1,31 @@
+I had the same issue with m5 1.1 and I think that I solved it by
+removing something :) from build_opts directory
+maybe it's the scons problem, I really don't know.
+Take a look inside build_opts dir (in config files), there should be a
+variable I think something like CC=
+or something similar. Remove it. Play a little bit :)
+And try to remove the "build" directory - it is auto-generated. There is
+also some configuration inside it.
+good luck,- Show quoted text -
+Ying Xiong wrote:
+Hello everyone,
+ Because the compatibility problem between M5 2.0b2 and g++4.1, I uninstalled gcc4.1 and installed gcc4.0.  After the installation of gcc4.0, scons complains like below:
+ o build/ALPHA_FS/base/annotate.do -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -O0 -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/base/annotate.cc
+sh: o: command not found
+......
+ I have added the path variable and I can use scons to complie helloworld.c. My system is fedora core 5. I thought it may because fedora core deleted some gcc4.1 depentent files and changed some system settings that M5's compilation needs. Is that ture?
+ BTW: If I want to use a different version of gcc, can I just remove the /usr/bin/gcc and make a symbolic link to use gcc4.0 instead of uninstalling the whole gcc4.1. Like this:
+mv /usr/bin/g++ /usr/bin/g++41
+ln -s /home/yx/Program/gcc-4.0.3/bin/g++ /usr/bin/g++
+ Thanks in advance.
+Ying Xiong
+-- 
+Saša Tomić
+BSC - Barcelona SuperComputing Center
+c\ Jordi Girona 29, Nexus I, 08034 Barcelona, España
+Tel.: +34671218062,  +34934054289
+http://www.bsc.es- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+> So I downloaded and attempted a build and it gets pretty far but  I get
+> the following error. Any ideas?
+Must be Friday the 13th.  I think I fixed the problem. Can you update
+(hg pull -u) and recompile?
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

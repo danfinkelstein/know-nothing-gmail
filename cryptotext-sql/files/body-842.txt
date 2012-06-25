@@ -1,0 +1,23 @@
+On Mon, Oct 19, 2009 at 10:57 AM, nathan binkert <nate@binkert.org> wrote:
+On Mon, Oct 19, 2009 at 10:40 AM, Steve Reinhardt <stever@gmail.com> wrote:
+> I think this only works if IPRs do not have side effects.  I'm pretty sure
+> there are IPR writes that need to be serializing because they change things
+> like ASID.  It might be possible to treat IPR writes as serializing but not
+> IPR reads, though there may be IPR reads that have side effects that don't
+> tolerate re-ordering (e.g., if it's a clear-on-read reg where the cleared
+> state is reflected in some other reg).
+>
+> The EV6 PAL code has explicit scoreboard bits to manage these dependences.
+>
+> One easy test would be just to (temporarily) get rid of the IsIprAccess flag
+> on rduniq in arch/alpha/isa/decoder.isa and see if that works and if it
+> improves the IPC.
+Unfortunately, I think this would require a bunch of hacking in the
+decoder because currently callpal is just a single opcode and to do
+this, we'd have to create an opcode for each palcall (which wouldn't
+be all that bad, but would add several dozen instructions.)Ah, yes... I used grep to see that there was a rduniq entry in decoder.isa but failed to realize that that was the SE-mode-only version.
+It does seem that having the serialization decision made based on the particular IPR is necessary.  I see that call_pal is non-speculative, which could cause problems even if the IPR accesses are fixed.Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

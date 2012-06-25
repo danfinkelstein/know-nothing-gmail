@@ -1,0 +1,15 @@
+hi,  I am trying to run SPEC CPU 2006 benchmarks on m5-2.0b6(SPARC_SE mode) on Linux operating system,   I made changes according to the given site ( http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks ) for getcwd , and tried but it didn't work, what else i need to change.
+   And also getting errors for instructions(unimplemented) like "for" and "fpadd32s", how to ignore to bypass the simulation.ThanksPavan.- Show quoted text -On Fri, Feb 6, 2009 at 7:13 AM, Isuru Herath <isuru81@yahoo.com> wrote:
+Dear Pavan,
+Hope this link would help.
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

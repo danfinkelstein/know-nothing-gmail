@@ -1,0 +1,18 @@
+Hi Elliott,I haven't heard of anyone working on this (please speak up if you have), but it's a great idea and we'd be glad to give you a hand it getting it to work.As Geoff pointed out, one straightforward way to do it would be to run under FS mode; then you won't have the problem of emulating additional syscalls.  However if you want to run under SE mode it shouldn't be that hard to get things up either.
+The stat64 call should be pretty straightforward to fix... we implement stat/lstat/fstat and lstat64/fstat64 so triangulating among those to figure out stat64 shouldn't be too hard.  I'm sure the only reason stat64 isn't there is that no one has needed it yet.  Basically you'll need to add a stat64Func in src/sim/syscall_emul.hh that looks like statFunc but calls stat64() instead (basically apply the same diffs as between fstatFunc and fstat64Func), then add a pointer to that function to the Alpha Linux syscall table in src/arch/alpha/linux/process.cc.
+The other core dumps and page table faults should be fixable too (if they're not things we've already fixed since the last release... got to get that public repo access going!, but we'd need more details on what those are to say more.
+Steve- Show quoted text -On 9/7/07, Elliott Cooper-Balis <eeeealmo@yahoo.com> wrote:- Show quoted text -
+M5 Users,  Greetings.  I am a new to both M5 and the list so please forgive me if I say anything stupid.  I am currently trying to get the SPEC CPU2006 benchmarks to run on M5.  I searched the list archive and found absolutely no mention of anyone trying to do this, so if this is futile/not supported, please feel free to ignore the rest of this email.  
+  Under Ubuntu 7.04 (64-bit), I managed to build crosstool's ( http://www.kegel.com/crosstool/
+ ) Alpha gcc/g++/gfortran compilers and subsequently build Alpha binaries for all the SPEC06 benchmarks.  Unfortunately, the only benchmark I could get to run correctly was bzip2.  All the rest either produced a page table fault/core dump or gave me an error due to an unimplemented syscall (stat64).  
+  Is there a trick to getting these benchmarks to work correctly?  Is this even possible at this point?  Any help would be greatly appreciated.  Thanks
+ in advance.Elliott 
+      Yahoo! oneSearch: Finally, 
+ mobile search 
+that gives answers, not web links. 
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

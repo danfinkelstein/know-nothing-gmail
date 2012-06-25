@@ -1,0 +1,39 @@
+On Thu, Jun 26, 2008 at 4:30 AM, Robert Pulumbarit
+<robertpulumbarit@gmail.com> wrote:
+>
+> Hello,
+>
+> In reading through the thread, unless I'm not following correctly, it seems
+> like the EIO trace files that we happen to be using may be a possible
+> culprit.  As a test to try to eliminate those EIO trace files as suspects,
+> just using the default config files and workloads that come with m5-stable, is
+> there a way to run a detailed (O3) multicore system in which all cores have
+> non-zero "# Number of instructions committed" (system.cpux.commit.COM:count)?
+See the quick/01.hello-2T-smt regression test.  Run it with this command line:
+build/ALPHA_SE/m5.debug tests/run.py quick/01.hello-2T-smt/alpha/linux/o3-timing
+>
+> I've tried it using a fresh unmodified installation of m5-stable, using this
+> command line:
+>
+> (run from the /configs/example directory)
+>
+> ../../../m5-stable/build/ALPHA_SE/m5.opt -d se se.py -n 4 --detailed --caches
+>
+> The output file se/m5stats.txt shows that only cpu2 commits instructions.  The
+> three other cpu's commit 0 instructions.
+>
+> What command line options should I use to create a 4 core system and assign
+> each core to run its own separate copy of the default "hello world"?  Can
+> anyone tell me what I am missing in the above command line to do this?
+You can't do this directly from the command line with se.py.  The
+script creates a single workload (stored in the 'process' variable in
+the script) and then assigns that same workload instance to all the
+CPUs.  This is the right thing to do if you have a multithreaded
+program (e.g., SPLASH); when the application forks new threads, they
+will run on the other CPUs.  For a single-threaded program like "hello
+world", it will never fork new threads, so only one CPU gets used.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

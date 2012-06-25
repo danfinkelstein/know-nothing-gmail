@@ -1,0 +1,5 @@
+Hi all,  In LSQUnit template class, methods executeLoad and executeStore, when checking for memory dependency violations, the condition used in the first one is:        if (loadQueue[load_idx]->effAddrValid &&                (loadQueue[load_idx]->effAddr >> 8) ==                (inst->effAddr >> 8)) {  And in the second one:        if (loadQueue[load_idx]->effAddrValid &&            (loadQueue[load_idx]->effAddr >> 8) ==            (store_inst->effAddr >> 8)) {  My doubt is about the right-shift of 8 bits. If memory access is at most to a 8 bytes value (like a 64 bits integer), why not right-shift 3 bits instead of 8?  Thanks,  opfluckerSee all the ways you can stay connected to friends and family
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

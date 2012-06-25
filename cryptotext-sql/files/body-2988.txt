@@ -1,0 +1,10 @@
+I downloaded m5 version b4 and getting this build error:
+build/ALPHA_FS/mem/cache/cache_builder.cc:40:31: error: mem/config/cache.hh: No such file or directory
+build/ALPHA_FS/mem/cache/cache_builder.cc:41:34: error: mem/config/prefetch.hh: No such file or directory
+Is it a problem with scons or g++?
+scons version v0.97.0d20071203.r2509
+g++ version 4.2
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

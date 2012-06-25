@@ -1,0 +1,6 @@
+hi all,i want to set cache parameters like block size, sets, ways, replace policy and so on. how can i do this with m5? if i want to statistic the LLC's hits number, miss number and writeback number, how can i get this? if anyone knows, i will be very appreciated.
+Thanks,Sheng-- Sheng QiuTexas A & M UniversityRoom 302 Wisenbaker    email: herbert1984106@gmail.comCollege Station, TX 77843-3259
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

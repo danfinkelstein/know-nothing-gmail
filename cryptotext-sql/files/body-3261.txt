@@ -1,0 +1,11 @@
+Using the normal SConstruct, it is unable to find my Python.h file (located in /opt/local/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4), despite appearing to check the correct directory. The following error message is printed:
+Checking for C header file Python.h... no
+Error: can't find Python.h header in /opt/local/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4
+Looking into the SConstruct, I found that in b5 some 64bit compilation option was added ("-arch x86_64"). When I comment out the appends done to the environment variables (starting at line 396), I am once again able to build the simulator without error.
+I'm not familiar enough with SCons to know if there is a bug in this code, but this may be an issue.
+Not sure if it matters but I'm using OSX 10.5 on a core 2 duo.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

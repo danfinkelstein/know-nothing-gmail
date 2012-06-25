@@ -1,0 +1,14 @@
+It sounds like your application is jumping through a null function pointer.  If all of your benchmarks works fine in single-thread mode, then it must be something about the multi-thread environment that's causing this.  My first guess would be that by running all the benchmarks together you're running out of memory, and perhaps one of your benchmarks isn't checking the return value from malloc() so it's not noticing that its allocation failed.
+If that's not the problem, then my next step would be to turn on execution tracing to see which function in which benchmark is causing the problem.Steve- Show quoted text -On Mon, Apr 13, 2009 at 11:21 AM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+- Show quoted text -
+hi everyone,I am working on SPEC CPU 2006 in SE mode. While simulation is tested for single thread per core, it works well but when testing with more than one thread per core, I got the panic problem. The error display as:
+warn: Increasing stack size by one page.panic: Tried to execute unmapped address 0. @ cycle 17190562000[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]Program aborted at cycle 17190562000
+Could anyone please help me to guide towards the solution of this problem?Thanks in advance,D.R. Chapagain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

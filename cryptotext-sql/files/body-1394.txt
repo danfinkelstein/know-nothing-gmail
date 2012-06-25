@@ -1,0 +1,34 @@
+Not everywhere, but most places. The bus uses the port interface
+directly without the SimpleTimingPort, however it doesn't derive from
+port.  I'm not sure what a more detailed interface that derived from
+Port would look like. If you assume that the device that uses the
+SimpleTimingPort handles requests serially this model is fine, the
+only issue is when there is contention within a device. If you read
+the page on the wiki about the memory interface the port class
+provides primitives for a more detailed implementation.
+Ali
+- Show quoted text -
+On May 31, 2009, at 7:07 PM, somayeh@cs.wisc.edu wrote:
+> Hi,
+>
+> Is SimpleTimingPort used everywhere when sendTiming is required? is
+> there
+> any other derived class from port class which implements timing? It
+> seems
+> that this class uses recvAtomic to get an timing estimate and uses
+> this
+> estimate to schedule a response. So, how we can have more accurate
+> timing
+> model? Is there any available implementation now in M5?
+>
+> Thanks
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

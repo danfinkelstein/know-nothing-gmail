@@ -1,0 +1,26 @@
+I imagine the O3 cpu model wasn't compiled in to your binary. Take a look at build/options/ALPHA_FS. What is the value of CPU_MODELS? Is O3 in there?
+If not try running scons and Add CPU_MODELS=AtomicSimpleCPU,O3CPU,TimingSimpleCPU
+Ali- Show quoted text -
+On Aug 7, 2007, at 4:15 PM, rlai@mtu.edu wrote:
+Hello,
+   I tried to use DetailedO3CPU(which is defined in
+m5_2.0b/m5/configs/common/FullO3Config.py) in my simulation, but it
+failed.
+In the .err file:
+    warn: This DRAM module has not been tested with the new memory system at
+    all!
+    panic: Simulator object type 'DerivO3CPU' not found.
+    @ cycle 0
+    [createObject:build/ALPHA_FS/sim/builder.cc, line 121]
+   DerivO3CPU is defined in phthon/m5/objects/O3CPU.py. Why the error
+message says this object type is not found? How to solve this problem?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

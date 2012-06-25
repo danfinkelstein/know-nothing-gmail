@@ -1,0 +1,10 @@
+If you mean taking a snapshot of a multithreaded SE workload, I'm guessing that--like SE checkpoints in general--this is another thing that "should work" but may not have been tested much.  If you want to take snapshots of individual threads within a multithreaded workload, that's probably not so easy, as the snapshots are more system-wide things.  (Not that it couldn't be done with some work.)
+Steve- Show quoted text -On 10/12/07, Ali Saidi <saidi@umich.edu> wrote:
+I don't know what you mean by multi-threaded in this context, but acheckpoint can save state from multiple cpu at once.AliOn Oct 12, 2007, at 7:39 PM, Rick Strong wrote:> Hi,>> I was also wondering if it is possible to make multi-threaded
+> checkpoints?>> -Richard>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,23 @@
+Hi Nate,Thank you very much for informing me about this.I was using suif (running on Tru64/OSF machines) to generate SUIF2 IR. I implemented some profiling passes in machsuif, which take in SUIF2 IR programs.
+The problem is, suif uses target specific header files to generate SUIF2 IR, and therefore, even if I compile the machsuif output (assembly files) with the gcc (crosstool) targeting m5, I get incorrect results. machsuif does not need target specific files.
+I tried getting suif use the include files of the gcc (crosstool) for m5, but I have not been succesful. The only other option that I can think of is reimplementing all my profiling passes in gcc :(, and switch to gcc.
+If someone has found a way to get suif generated code targeting Alpha work with m5 [or have an easier solution to my problem], could you please help me?Thank you very much!Regards,Arun- Show quoted text -
+On Fri, Aug 8, 2008 at 10:10 PM, nathan binkert <nate@binkert.org> wrote:
+> Can I get Tru64 image that m5 can boot? Has anyone tried running splash2 or
+> ALP  benchmarks using that image?
+I don't know that we can distribute the Tru64 image since it is
+licensed code.  Furthermore, it has probably been nearly 4 years since
+anyone has booted Tru64 and there are several known issues with trying
+to do so again. Is there some reason that you want to run Tru64
+instead of linux?
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 'There is no good or evil; there is only power, and those too weak to seek it.'-Voldemort'It is our choices, Harry, that show what we truly are, far more than our abilities.'
+-Prof. Albus Dumbledore
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

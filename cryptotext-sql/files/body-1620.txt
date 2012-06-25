@@ -1,0 +1,61 @@
+Hi,
+I've had this problem before - I was running 8 copies of M5 on the same
+machine and occasionally one would die.
+I just added:
+m5.disableAllListeners()
+to my se.py script to avoid this problem.
+Thanks to Alex Wood for suggesting that solution.
+David
+>
+> Message: 9
+> Date: Thu, 2 Apr 2009 23:46:26 -0700
+> From: nathan binkert <nate@binkert.org>
+> Subject: Re: [m5-users] panic: ListenSocket(listen):
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+>       <217accd40904022346s17217771t77352d3e7f705daa@mail.gmail.com>
+> Content-Type: text/plain; charset=ISO-8859-1
+- Show quoted text ->
+> I'll admit that it's odd that listen can fail in that instance, but my
+> guess is that it's some sort of race due to running multiple copies of
+> M5 and both of them trying to bind the same port.  That said, you
+> haven't posted enough information to debug the problem.  i.e. what's
+> the stack trace at the panic?  Another thing to do would be to add
+> strerror(errno) to the panic message.  In reality, it should work just
+> fine to return failure instead of invoking panic in that instance.
+>
+>   Nate
+>
+> On Thu, Apr 2, 2009 at 3:41 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+>> Whats the possible reason for this?
+>>
+>> panic: ListenSocket(listen): listen() failed!
+>> ?@ cycle 0
+>> [listen:build/ALPHA_SE/base/socket.cc, line 91]
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 33, Issue 3
+> ***************************************
+--
+David R White
+Research Student
+Dept. of Computer Science
+University of York,
+Heslington, YO10 5DD
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

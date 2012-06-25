@@ -1,0 +1,31 @@
+I don't think you're missing anything... it doesn't appear that the
+replacement algorithm does anything special for invalidated blocks.
+Of course, once the cache is warmed up, blocks will be invalidated
+only due to coherence action, so there would have to be a lot of data
+sharing for these blocks to cause a significant impact.
+Steve
+- Show quoted text -
+On Mon, Mar 8, 2010 at 7:41 PM, sheng qiu <herbert1984106@gmail.com> wrote:
+> hi all,
+>
+> i see the M5's cache replace policy of LRU, it seems that it will always
+> choose from the tail of the LRU list and if it's valid block then refresh
+> the relevant stats parameters? but i have a doubt that most modern systems
+> will consider the invalid blocks when looking for blocks for allocating. if
+> there're no invalid blocks then go to the LRU list and choose from the tail.
+> Is M5 violating this mechanism? or I miss something?
+>
+> Thanks,
+> Sheng
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

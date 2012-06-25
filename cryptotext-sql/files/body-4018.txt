@@ -1,0 +1,18 @@
+Yes, the cache coherence protocol is largely rewritten, and is no
+longer configurable (it's hardwired as MOESI).  The primary goal was
+to allow multi-level coherence in some workable form, and once you get
+past simple single-bus snooping you can't really parameterize things
+very easily (not that it worked all that well in the old version,
+actually).
+- Show quoted text -
+On 11/6/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> The new version seem to have reimplemented the cache structure. Looks like in the BaseCache object, there is no parameter protocol. Specifically, how does coherence protocol works in the new version, if different protocols need to be selected like in the previous version, or not to specify one at all.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

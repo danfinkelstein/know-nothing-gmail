@@ -1,0 +1,6 @@
+Hi, guys,When I was reading the source code of src/mem/cache/blk.hh, I found that there might be a potential problem with the overloading "const CacheBlk& CacheBlk::operator=(const CacheBlk& rhs)". In line 145, "data = rhs.data" may mess up "data" 's original space assignment since "data" is a pointer. So, I suggest that we assign the new value in such a way as follows:
+if (!data)    std::memcpy(data, rha.data, size);I don't think it is complete. I just want to bring up the problem for our discussion.Thanks,Leonard-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

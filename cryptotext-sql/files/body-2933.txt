@@ -1,0 +1,21 @@
+No, it's not generally need. It's used to load symbols of benchmarks
+for debugging.
+Ali
+- Show quoted text -
+On Jun 9, 2008, at 2:40 PM, Sujay Phadke wrote:
+> Some of the rcs files contain the loadsymbol command. Are
+> the .symbol files like a table between the source code on the
+> debugger host side and the addresses on the target? What exactly
+> does it do? I can see symbol files only for some of the spec2K
+> benchmarks, not for others. Is it required only if running m5.debug?
+>
+> - Sujay
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

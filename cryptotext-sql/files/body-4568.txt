@@ -1,0 +1,16 @@
+Hi,
+ 
+I’d like to get the information of memory traffic
+for an application. However, when I use command –MemoryTrace.trace=<filename>,
+there is no trace file dumped. For a single core processor and only one
+application is running, the default thread is 0, isn’t it? So, I don’t
+need to specify the parameter “MemoryTrace.thread”, which is 0 by
+default. I wonder why the MemoryTrace doesn’t work. BTW: I’m using
+M5_1.1.
+ 
+Thanks,
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

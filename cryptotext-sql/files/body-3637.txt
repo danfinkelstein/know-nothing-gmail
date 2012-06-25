@@ -1,0 +1,30 @@
+I don't know of anyone porting BBV code, but it is true that the Alpha
+instruction decoder in M5 is bug-for-bug compatible with SimpleScalar,
+if you compile with the SS_COMPATIBLE_FP flag.  We need(ed) that to be
+able to run SS EIO traces (not sure how much people use that feature
+anymore, but initially we used it a fair amount).
+Steve
+- Show quoted text -
+On Jan 10, 2008 8:14 PM, dean michael ancajas <dbancajas@gmail.com> wrote:
+>   Hi everybody,
+>     I know this email seems a little off-topic but has anyone here tried
+> porting a Basic Block Vector Generator in M5 for use in Simpoints? Would
+> appreciate if you can provide diff files. Also, If I use the BBV
+> generator from SimpleScalar(sim-fast)[1] will I get the same
+> results(since it has been said in the documentation that M5 is based on
+> SimpleScalar,and also considering I use the ALPHA ISA)?
+>
+>
+> thanks,
+> -dean
+>
+> [1]http://www.cs.ucsd.edu/~calder/simpoint/simplescalar-bbv.htm
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

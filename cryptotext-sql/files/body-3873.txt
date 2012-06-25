@@ -1,0 +1,97 @@
+That code is for Tru64, not Linux. See
+http://www.m5sim.org/wiki/index.php/Splash_benchmarks.
+Steve
+- Show quoted text -
+On Nov 27, 2007 3:38 AM, Panayiotis Petridis <p_tottis@hotmail.com> wrote:
+>
+> btw when i try to build the pthreads folder i get this message:
+>
+> make
+> cc -c -O2  -I. -D_REENTRANT -DPARMACS_INTERNALS                      parmacs_support.c
+> cc -c -O2  -I. -D_REENTRANT -DPARMACS_INTERNALS                      parmacs_sync.c
+> cc -c -O2  -I. -D_REENTRANT -DPARMACS_INTERNALS                      m5.c
+> as m5_asm.s -o m5_asm.o
+> m5_asm.s: Assembler messages:
+> m5_asm.s:14: Error: unknown pseudo-op: `.ent'
+> m5_asm.s:15: Error: unknown pseudo-op: `.frame'
+> m5_asm.s:16: Error: no such instruction: `ldiq $v0,SYS_ x'
+> m5_asm.s:17: Error: expected comma after "noat"
+> m5_asm.s:18: Error: invalid character '_' in mnemonic
+> m5_asm.s:19: Error: expected comma after "at"
+> make: *** [m5_asm.o] Error 1
+>
+> How did you build this folder of pthreads beacaus obviously i am doing something wrong.
+>
+> Thanks
+>
+>
+>
+> ________________________________
+> > Date: Mon, 26 Nov 2007 21:40:46 -0500
+> > From: julianbui@gmail.com
+>
+> > To: m5-users@m5sim.org
+> > Subject: Re: [m5-users] Running SPLASH2 on SE mode
+> >
+> > Panayiotis,
+> >
+> > I've gotten this error before too.  One thing you could check is to make sure that the processors parameter (-p) on your FMM command is what you think it is.  I had mine set to 4 when my simulated system only had 2 processors.
+> >
+> > Hope this helps.
+> >
+> > Julian
+> >
+> > On Nov 26, 2007 6:26 PM, Panayiotis Petridis <p_tottis@hotmail.com> wrote:
+> >
+> > Sorry for contacting again the error was solved but now i get this:
+> >
+> > command line: build/ALPHA_SE/m5.debug run.py -n4 --rootdir=/home/sfin/m5/splash2/codes --benchmark=FMM
+> > Global frequency set at 1000000000000 ticks per second
+> > 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> > 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+> > 0: system.remote_gdb.listener: listening for remote gdb #2 on port 7002
+> > 0: system.remote_gdb.listener: listening for remote gdb #3 on port 7003
+> > warn: Entering event queue @ 0.  Starting simulation...
+> > Exiting @ tick 9223372036854775807 because simulate() limit reached
+> >
+> > do you have any idea what the problem might be?
+> >
+> > Thanks
+> >
+> > ----------------------------------------
+> >> From: saidi@umich.edu
+> >> To: m5-users@m5sim.org
+> >> Subject: Re: [m5-users] Running SPLASH2 on SE mode
+> >> Date: Mon, 26 Nov 2007 17:11:00 -0600
+> >>
+> >> Here is an updated version of the splash2 configuration file and it
+> >> should solve your problem.
+> >>
+> >>
+> >> Ali
+> >>
+> >
+> > _________________________________________________________________
+> > Explore the seven wonders of the world
+> > http://search.msn.com/results.aspx?q=7+wonders+world&mkt=en-US&form=QBRE_______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> >
+> >
+> > --
+> > Julian Bui
+> > julianbui@gmail.com
+>
+> _________________________________________________________________
+> Explore the seven wonders of the world
+> http://search.msn.com/results.aspx?q=7+wonders+world&mkt=en-US&form=QBRE_______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

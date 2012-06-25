@@ -1,0 +1,46 @@
+hi,I am trying to solve the problem but can't... Where to change 12 ?... please specify the file name where this values (opcode latency of square root) is stored .thank you,
+devrajOn Tue, Nov 18, 2008 at 11:48 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:- Show quoted text -
+ From my experience, this error implies that the simulation has no event
+to schedule and rapidly proceeds to its simulation limit (maxtick)
+without anything to do. I have encountered this problem when the opcode
+latency of square root is set too high (24 cycles) on OOO cpu model. You
+might try reducing sqrt root latency to 12. If that doesn't work, I
+suggest comparing the debug output of Exec for a system using all atomic
+cpus and a system using all O3 (or timing depending on what you used for
+your simulation).
+Best,
+-Rick
+Devraj Chapagain wrote:
+>
+> hi there,
+>
+> We are using 16 copies of SPEC CPU2000 benchmarks for one simulation
+> with 2GB physical memory in the configuration file. While simulating,
+> we face the following error,
+>
+> =======================================================
+> warn: Entering event queue @ 0.  Starting simulation...
+> Exiting @ cycle 9223372036854775807 because simulate() limit reached
+> ======================================================
+>
+> Could you please inform me what type of error is this and what would
+> be the solution???
+>
+> Thanking you,
+> devraj
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

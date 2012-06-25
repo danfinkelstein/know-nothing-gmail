@@ -1,0 +1,27 @@
+In SE mode, that's controlled entirely by how you assign thread
+contexts to Process objects in your python simulation script (via the
+CPU object's 'workload' parameter).  In FS mode, that's controlled
+entirely by the OS you're running.
+Steve
+2008/5/23 fractal218 <fractal218@126.com>:
+- Show quoted text ->  Hi,
+>  Suppose there are four processors and only one multi-thread program run in
+> the first processor. Why does the simulator assign some threads to the other
+> three processors which are free.
+>
+> Thank you!
+>
+>
+>
+>
+> ________________________________
+> 中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

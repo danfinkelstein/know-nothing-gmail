@@ -1,0 +1,10 @@
+Hi everyone,   I am trying to run MPI programs on full system mode. I am doing by the following steps:  1:download a pre-compiled cross compiler name it gcc-alpha, set the path environment for it2:install MPICH with the compiler gcc-alpha.
+3:compiler the mpi programs using mpich:       mpicc -c --static mpi_scatter.c -o scatter4:copy the binaries into disk image . make a  .rcS file called scatter.rcS:    #! /bin/sh    echo "executing mpi_scatter.c"
+    eval /benchmark/scatter    echo "mpi_scatter done.Ready to exit"   /sbin/m5 exit5: and run in full system mode : build/ALPHA_FS/m5.opt -d /home/junligu/output configs/example/fs.py --script configs/mybenchmark/scatter.rcS
+ Then I got the output from m5term:   loading script...   executing mpi_scatter.c   modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directory    modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directory
+   /tmp/script: line 3: /benchmark/scatter: cannot execute binary file   mpi_scatter done.Ready to exit  Has anyone done the similar work? Shall I copy the MPI lib into the disk image?  Please help! Thank you!  
+-- ************************************************Gu Junli--谷俊丽PHD Candidate of Tsinghua UniversityBeijing 100084,ChinaTel: 86-10-62795139************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

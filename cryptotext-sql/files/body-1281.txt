@@ -1,0 +1,8 @@
+1) On a multiprocessor system, when a upgradeReq hits the global bus, the owner sends a UpgradeResp and all sharers invalidate their copy. The invalidation by sharers and UpgradeResp happens as a single transaction?
+2) I observe some WriteReq packets on the global bus. on a Write miss ina last-level cache, does not the cache make a ReqReq packet and send it over the global bus. Are the WriteReq packets possibly from the I/O subsystem?
+3) In the presence of UpgradeReq and UpgradeResp, why are the commands WriteInvalidateReq and WriteInvalidateResp needed in packt.hh?
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

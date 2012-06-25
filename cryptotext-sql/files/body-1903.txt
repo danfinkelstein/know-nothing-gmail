@@ -1,0 +1,30 @@
+Hi,
+I have compiled the SPECcpu2000 v1.2 natively on an Alpha machine
+running Linux. All C benchmarks seem to be executing without any problem
+in m5 SE mode. However, when I try to execute any fortran benchmark, I
+get an error like the one below:
+M5 compiled Feb 16 2009 19:27:08
+M5 revision 5591:be93223fd0c3c8faabbd337db9e5e576c8905397
+M5 commit date Mon Dec 15 18:10:21 2008 +0100
+M5 started Feb 18 2009 12:36:33
+M5 executing on nikolas-dac
+command line: ../build/ALPHA_SE/m5.debug ../tests/myrun.py
+cpu2000/galgel/ref/alpha/linux/se_o3_detailed
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Increasing stack size by one page.
+panic: Tried to access unmapped address 0x3ffc0096ce0.
+ @ cycle 317500
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+Program aborted at cycle 317500
+Aborted
+I am using the "ref" inputs for all benchmarks.
+I have compiled the benchmarks using the script provided with the v1.2
+distribution adding only the -static flag.
+Am I missing something?
+Thanks in advance,
+Nikolas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

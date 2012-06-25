@@ -1,0 +1,24 @@
+I'm trying to create a configuration hierarchy between some custom
+SimObjects. To simplify things, let's assume I have two custom
+SimObjects, called Father and Daughter (to avoid later confusion with
+Parent and Child). The python code for Father instantiates a Daughter
+and from my C++ code I can do things like father->daughter and
+everything is happy. What I'd like to do is add a pointer in the
+opposite direction, such that I can use daughter->father in the C++
+code.
+After a few unsuccessful attempts using "Parent" in the Python code, I'm
+now trying to do:
+# construct Father
+# contruct Daughter
+root.daughter.father = root.father
+but this results in the configuration parsing code to go into a
+recursive loop. Is there a simple way to set up such a pointer?
+Thanks,
+James
+--
+James.Srinivasan@cl.cam.ac.uk
+http://www.cl.cam.ac.uk/~jrs53/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

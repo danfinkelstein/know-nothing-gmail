@@ -1,0 +1,24 @@
+Hi Paul,
+I just put up another linux-dist.tgz where the link to the nfs-utils
+tarball is from our own server - we have a copy.  the only other
+difference between your tarball and the latest is the addition of a
+little load-locked store-conditional test benchmark, so alternatively,
+you could just change the make rules on your installation to point to:
+http://www.m5sim.org/dist/m5_benchmarks/nfs-utils-1.0.6-ptx4.tar.gz
+however, i'm not positive that's your problem, i remember seeing that
+error before but i can't remember exactly what caused it - if you still
+have a problem after you get nfs-utils into your image, write back and
+attach a copy of your ptxconfig file.
+lisa- Show quoted text -
+On 11/9/06, Paul West <west@cs.fsu.edu> wrote:
+I'm trying to build a image for ALPHA_FS on M5.  I've build a kernelthat boots up fine with the image provided on the M5 website.  When Ibuild my own image the kernel seems to boot, but then at the end I get this:
+...Initializing IPsec netlink socketNET: Registered protocol family 1NET: Registered protocol family 17NET: Registered protocol family 15Bridge firewalling registered802.1Q VLAN Support v1.8 Ben Greear <
+greearb@candelatech.com>All bugs added by David S. Miller <davem@redhat.com>VFS: Mounted root (ext2 filesystem) readonly.
+Freeing unused kernel memory: 160k freedWarning: unable to open an initial console.Then the system hangs with no shell.  Now, the only deviation from theinstructions on the website to build the image was that I had to
+disabled NFS because 'nfs-utils-1.0.6-ptx4.tar.gz' could not bedownloaded.  When I googled for the file, the only place that I couldfind had it at one point, but no longer.  I'm assuming the lack of NFSis causing the problem.  Does anyone have a copy?
+Thanks,~Paul_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

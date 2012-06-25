@@ -1,0 +1,18 @@
+Hi Reza,
+M5 doesn't is only single-threaded at this point. One of our goals is to allow multi-core workloads to run faster on a multi-threaded machine, but that hasn't been developed yet. The best you can do is run 8 copies each one running a different experiment at this point  (or help make it parallel).
+Ali- Show quoted text -
+On Apr 24, 2008, at 5:39 PM, Reza Farivar wrote:
+- Show quoted text -
+Hi everyone
+I was introduced to m5 in the ASPLOS 08 workshop, and now we're using it for a project here at UIUC.
+I have a Newbie question. We have an 8 core server. Is there any way to run m5 on it so that it uses all CPUs? (m5 is kind of slow as it is right now, and we are using full system simulation).
+Thanks,
+Reza
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,219 @@
+It's not clear what the problem is, but it might be something with the
+binaries you've compiled.  What is the output of running 'file' on
+your binary?
+- Show quoted text -
+On Sun, Mar 21, 2010 at 9:55 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+> Hi
+> I am getting the stack traceback as:
+> ---------------------------------------------
+> (gdb) where
+> #0  ElfObject::tryFile (fname=@0x7fff537dcc40, fd=7, len=157111,
+>     data=0x2b9dc366d000 "\177ELF\002\001\001")
+>     at build/ALPHA_SE/base/loader/elf_object.cc:146
+> #1  0x00000000006fcedb in createObjectFile (fname=@0x7fff537dcc40,
+>     raw=false) at build/ALPHA_SE/base/loader/object_file.cc:141
+> #2  0x00000000007558b5 in LiveProcess::create (params=0x99cde10)
+>     at build/ALPHA_SE/sim/process.cc:655
+> #3  0x000000000087a3ab in _wrap_LiveProcessParams_create (
+>     args=<value optimized out>)
+>     at build/ALPHA_SE/params/params_wrap.cc:24974
+> #4  0x0000003ac00360f0 in PyObject_Call ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #5  0x0000003ac009352c in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #6  0x0000003ac0095fe5 in PyEval_EvalCodeEx ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #7  0x0000003ac009473f in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #8  0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #9  0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #10 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #11 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #12 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #13 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #14 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #15 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #16 0x0000003ac0094b66 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #17 0x0000003ac0095fe5 in PyEval_EvalCodeEx ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #18 0x0000003ac0096032 in PyEval_EvalCode ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #19 0x0000003ac0095237 in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #20 0x0000003ac0095fe5 in PyEval_EvalCodeEx ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> ---Type <return> to continue, or q <return> to quit---
+> #21 0x0000003ac009473f in PyEval_EvalFrame ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #22 0x0000003ac0095fe5 in PyEval_EvalCodeEx ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #23 0x0000003ac0096032 in PyEval_EvalCode ()
+>    from /usr/lib64/libpython2.4.so.1.0
+> #24 0x0000003ac00b2729 in ?? () from /usr/lib64/libpython2.4.so.1.0
+> #25 0x000000000071e178 in m5Main (argc=<value optimized out>,
+>     argv=<value optimized out>) at build/ALPHA_SE/sim/init.cc:194
+> #26 0x00000000004089f2 in main (argc=2, argv=0x7fff537df798)
+>     at build/ALPHA_SE/sim/main.cc:57
+> --------------------------------------------------------------
+> On Sun, Mar 21, 2010 at 11:35 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>> Just run m5.debug under gdb, and when you hit the segfault, type
+>> 'where' at the gdb prompt.
+>>
+>> On Sun, Mar 21, 2010 at 9:33 PM, Ashutosh Jain <ashujain7@gmail.com>
+>> wrote:
+>> > Hi
+>> > How can I do stack backtrace in M5?
+>> >
+>> > On Sun, Mar 21, 2010 at 11:32 PM, Steve Reinhardt <stever@gmail.com>
+>> > wrote:
+>> >>
+>> >> OK; can you provide a stack backtrace for the segfault?
+>> >>
+>> >> On Sun, Mar 21, 2010 at 9:25 PM, Ashutosh Jain <ashujain7@gmail.com>
+>> >> wrote:
+>> >> > Hi
+>> >> > Yes I have compiled the benchmarks and got the binaries..
+>> >> > Ashutosh
+>> >> >
+>> >> > On Sun, Mar 21, 2010 at 9:45 PM, Steve Reinhardt <stever@gmail.com>
+>> >> > wrote:
+>> >> >>
+>> >> >> We'd need a stack backtrace from the segfault to begin to guess
+>> >> >> what's
+>> >> >> going on...
+>> >> >>
+>> >> >> Where did you get the binaries from?  Did you compile them yourself?
+>> >> >>
+>> >> >> Steve
+>> >> >>
+>> >> >> On Sun, Mar 21, 2010 at 4:53 PM, Ashutosh Jain <ashujain7@gmail.com>
+>> >> >> wrote:
+>> >> >> > Hi
+>> >> >> > I am working on the updated M5 from the repository. I would like
+>> >> >> > to
+>> >> >> > run
+>> >> >> > simulations with SPEC CPU 2006 benchmarks; but every
+>> >> >> > time the simulation
+>> >> >> > ends with segmentation fault. Is this the problem with M5 or SPEC
+>> >> >> > CPU
+>> >> >> > 2006
+>> >> >> > or am I missing something.
+>> >> >> >
+>> >> >> > Consider the case of benchmark bzip2. I have set it like:
+>> >> >> > -------------------
+>> >> >> > specbzip2 = os.path.join(test_base,
+>> >> >> > '/home/ashutoshj/newm5/configs/cpu2006/speccpu2006/bzip2/')
+>> >> >> > specbzip2out = os.path.join(test_base,
+>> >> >> > '/home/ashutoshj/newm5/configs/cpu2006/speccpu2006/bzip2/')
+>> >> >> > class SPECBZIP2(LiveProcess):
+>> >> >> >     executable = os.path.join(specbzip2, 'bzip2_peak.alpha')
+>> >> >> >     cmd = 'bzip2_peak.alpha input.source 280
+>> >> >> >     output = os.path.join(specbzip2out, 'input.source.out')
+>> >> >> > ---------------------------------
+>> >> >> > And used in the se.py file. Then I ran the simulation it gives the
+>> >> >> > output
+>> >> >> > as:
+>> >> >> > ----------------------------------------------
+>> >> >> > M5 Simulator System
+>> >> >> > Copyright (c) 2001-2008
+>> >> >> > The Regents of The University of Michigan
+>> >> >> > All Rights Reserved
+>> >> >> >
+>> >> >> > M5 compiled Mar 10 2010 06:42:32
+>> >> >> > M5 revision 79463f723460+ 6018+ default tip
+>> >> >> > M5 started Mar 21 2010 19:31:14
+>> >> >> > M5 executing on leif.cs.lamar.edu
+>> >> >> > command line: ../../build/ALPHA_SE/m5.opt -d
+>> >> >> > cmp01_thds01_L2cache01
+>> >> >> > cmp01_thds01_L2cache01.py --detailed --caches
+>> >> >> > max_insts_all_threads = 100000
+>> >> >> > SPECBZIP2()
+>> >> >> > system.cpu[0].workload = Benchmarks.SPECBZIP2()
+>> >> >> > Global frequency set at 1000000000000 ticks per second
+>> >> >> > Segmentation fault
+>> >> >> > ---------------------------------------------------
+>> >> >> > Also all the SPEC CPU 2006 benchmarks with their inputs, outputs,
+>> >> >> > and
+>> >> >> > executables in their respective directories are present at :
+>> >> >> >             /home/ashutoshj/newm5/configs/cpu2006/speccpu2006/
+>> >> >> >
+>> >> >> > With exactly the same configurations, SPEC CPU2000 gave me the
+>> >> >> > desired
+>> >> >> > expected results; So  I am unable to find a solution to this
+>> >> >> > problem.
+>> >> >> > Hoping to hear a solution
+>> >> >> > --
+>> >> >> > Ashutosh Jain
+>> >> >> >
+>> >> >> >
+>> >> >> >
+>> >> >> > _______________________________________________
+>> >> >> > m5-users mailing list
+>> >> >> > m5-users@m5sim.org
+>> >> >> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >> >
+>> >> >> _______________________________________________
+>> >> >> m5-users mailing list
+>> >> >> m5-users@m5sim.org
+>> >> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >
+>> >> >
+>> >> >
+>> >> > --
+>> >> > Ashutosh Jain
+>> >> >
+>> >> >
+>> >> >
+>> >> > _______________________________________________
+>> >> > m5-users mailing list
+>> >> > m5-users@m5sim.org
+>> >> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> >
+>> >
+>> > --
+>> > Ashutosh Jain
+>> >
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Ashutosh Jain
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

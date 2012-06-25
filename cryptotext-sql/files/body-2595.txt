@@ -1,0 +1,46 @@
+That is a bug, there should be a function something like this in the
+BPredUnit:
+template <class Impl>
+std::string
+BPredUnit<Impl>::name() const
+{
+     return cpu->name() + ".BPredUnit";
+}
+Although the branch predictor doesn't have a cpu pointer so that would
+have to be added as well. I don't know why it doesn't. Kevin?
+Also, perhaps we could just output the config.ini as an xml file
+rather than doing the conversion. It's probably about as readable and
+much easier to parse since many tools exist to do that. Anyone want to
+comment about this? Nate? Along a similar line it probably wouldn't be
+too difficult to add an xml backend to the statistics package.
+Ali
+- Show quoted text -
+On Aug 29, 2008, at 4:54 PM, Rick Strong wrote:
+> Hi all,
+>
+> I am working on a script that turns the config.ini into xml and then
+> adds all the m5 stats to the correct node in the xml. This is to make
+> things easier for a more detailed power model. However, I noticed
+> something strange. Is there a good reason for BPredUnit statistics
+> to be
+> apart of global? The stats  involved are shown below.
+>
+> -Rick
+>
+>   <stat name="global.BPredUnit.condIncorrect" value="0"/>
+>    <stat name="global.BPredUnit.BTBLookups" value="0"/>
+>    <stat name="global.BPredUnit.BTBHits" value="0"/>
+>    <stat name="global.BPredUnit.condPredicted" value="0"/>
+>    <stat name="global.BPredUnit.BTBCorrect" value="0"/>
+>    <stat name="global.BPredUnit.usedRAS" value="0"/>
+>    <stat name="global.BPredUnit.lookups" value="0"/>
+>    <stat name="global.BPredUnit.RASInCorrect" value="0"/>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

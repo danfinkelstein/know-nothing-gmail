@@ -1,0 +1,7 @@
+Yes this is exactly what I want to do. I want to make, say a 2-core CMP behave as though it was a 2-way superscalar core. I have an idea of what I need to do, but I'm not sure where to start. You also mentioned about hacking the models. Could you elaborate more on that?
+You're going to have to just start hacking on the code in the o3 cpu model (or write your own model).  The code that is there now was not at all written to do what you want, so there's no way around you modifying what's there.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

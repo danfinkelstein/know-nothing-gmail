@@ -1,0 +1,55 @@
+Hi Max,
+Thanks for replying.
+I have just compiled it in both the modes(FS and SE) with binaries as debug
+and ran se.py and fs.py as sample tests.
+However, I am not able to completely understand the slides and handouts on
+the wiki.
+I am at a beginner level. It would be a great help if you point some
+pre-requisites which I need to
+go through or study first before even coming up to using the simulator.
+Thanks,
+Jitendra Singh | Automation COE | 593
+MAVERIC SYSTEMS LIMITED
+5 Floor, Fagun Mansion, 74 Ethiraj Salai, Egmore, Chennai - 600 105
+Ph: +91-44-2820 7690 Fax: +91-44-2820 7691
+DISCLAIMER:
+This message is intended only for the individual or entity to which it is
+addressed. It may contain privileged, confidential information which is
+exempt from disclosure under applicable laws. If you are not the intended
+recipient, please note that you are strictly prohibited from disseminating
+or distributing this information (other than to the intended recipient) or
+copying this information. If you have received this communication in error,
+please notify us immediately by return email.
+- Show quoted text ------Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Maximilien Breughe
+Sent: Monday, February 22, 2010 1:54 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Tutorials on simulation
+Hi,
+Do you have any specific questions?
+To what level of using M5 you get?
+Max
+On 02/21/2010 10:05 AM, jitendras@maveric-systems.com wrote:
+>
+> Hi All,
+>
+> I am completley new to the field of simulation. Please provide me with
+> few links to tutorials and getting started links for simulation. (i
+> have gone through the slides and handouts on the wiki, however I still
+> feel that there is some other resource needed for me to learn the
+> basics)
+>
+> It would be quite helpful if someone can highlight the pre-requisites.
+> Appreciate your efforts .
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+Hi,
+    I added some new files in m5/src/mem directory. In m5_2.0b1 version, I
+ Add the files to the source list in the SConscript in the
+m5/src/SConscript directory to compile these files into m5. But there is
+no source list in this SConscript file in m5_2.0b3 version. What should I
+do?
+     I also got new python Objects defined. In m5_2.0b1 version, I should
+edit src/python/m5/objects/__init__.py to include my Python file.
+But in m5_2.0b3 version, there is __init__.py file in that directory. What
+should I do?
+ Thanks,
+ Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

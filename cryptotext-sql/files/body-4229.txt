@@ -1,0 +1,29 @@
+Hi Jonas,
+The fix has been committed to our main tree. We do look at the bugs on the bug tracker, however we're more likely respond to an e-mail. When we open up the repository we'll add notifications to the developer mailing list when tasks are added/modified/changed/etc.
+Thanks,
+Ali- Show quoted text -
+On Sep 27, 2007, at 9:05 AM, Jonas Diemer wrote:
+Hi,
+I just realized that this bug had already been reported in the bug tracker
+(#287). It seems like the bug tracker is not really used right now though...
+Maybe it would help integrating the tracker with the mailing list?
+- Jonas
+-- 
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,11 @@
+Hi,
+Is SimpleTimingPort used everywhere when sendTiming is required? is there
+any other derived class from port class which implements timing? It seems
+that this class uses recvAtomic to get an timing estimate and uses this
+estimate to schedule a response. So, how we can have more accurate timing
+model? Is there any available implementation now in M5?
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

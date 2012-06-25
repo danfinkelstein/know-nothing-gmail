@@ -1,0 +1,5 @@
+Hello I'm student and I want to use M5 for my research. I'm trying to create a project in NetBeans or Eclipse from the M5 sources and I can't seem to make the IDE see all includes (the paths of the #includes ... are not ok from the IDE point of view). I've tried with NetBeans (using the mercurial plug-in)  , C++ project from sources or new, Python project, Eclipse with mercurial/scons plugin. Thank you very much
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

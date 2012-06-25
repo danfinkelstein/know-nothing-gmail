@@ -1,0 +1,77 @@
+Hello,
+ 
+I am a graduate student working on my research. I am new to
+M5 Simulator. Please if anyone has any idea help me to understand the following
+part.
+ 
+I would like to know what does this file does
+src/cpu/o3/alpha/cpu_builder.c 
+ 
+#include <string>
+#include "config/use_checker.hh"
+#include "cpu/base.hh"
+#include "cpu/o3/alpha/cpu.hh"
+#include "cpu/o3/alpha/impl.hh"
+#include "cpu/o3/fu_pool.hh"
+#include "params/DerivO3CPU.hh"
+ 
+class DerivO3CPU : public AlphaO3CPU<AlphaSimpleImpl>
+{
+  public:
+    DerivO3CPU(DerivO3CPUParams *p)
+        :
+AlphaO3CPU<AlphaSimpleImpl>(p)
+    { }
+};
+ 
+DerivO3CPU *
+DerivO3CPUParams::create()
+{
+#if FULL_SYSTEM
+    // Full-system only supports a single
+thread for the moment.
+    int actual_num_threads = 1;
+#else
+    // In non-full-system mode, we infer the
+number of threads from
+    // the workload if it's not explicitly
+specified.
+    int actual_num_threads =
+        (numThreads >=
+workload.size()) ? numThreads : workload.size();
+ 
+    if (workload.size() == 0) {
+        fatal("Must
+specify at least one workload!");
+    }
+#endif
+ 
+    numThreads = actual_num_threads;
+ 
+    // Default smtFetchPolicy to
+"RoundRobin", if necessary.
+    std::string round_robin_policy =
+"RoundRobin";
+   std::string single_thread =
+"SingleThread";
+ 
+    if (actual_num_threads > 1 &&
+single_thread.compare(smtFetchPolicy) == 0)
+        smtFetchPolicy =
+round_robin_policy;
+    else
+        smtFetchPolicy =
+smtFetchPolicy;
+    instShiftAmt = 2;
+    return new DerivO3CPU(this);
+}
+ 
+Does this creates an O3CPU. I added a print statement in
+this subroutine and this never got printed.
+ 
+Thanks & Regards,
+-Shiva
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

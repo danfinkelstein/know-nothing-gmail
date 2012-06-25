@@ -1,0 +1,27 @@
+The binaries you downloaded will work in SE mode only.  They're compiled against an m5-specific modified version of the Tru64 pthreads library.
+If you want to run the benchmarks in Linux FS mode you'll have to recompile them for Alpha Linux (e.g. with a cross compiler, or on a native Alpha if you have one).  The good news is that you shouldn't need to do anything m5-specific; the same binaries that you run on a real Alpha Linux machine should work under m5 Linux FS mode.
+Steve- Show quoted text -
+Naoto Fukumoto wrote:
+Hi,
+I have successfully installed and run m5v1.1 in full
+system mode. I can run the benchmark (i.e. SPEC2000 bzip2)
+in FS mode.
+But I can't run Splash 2 on M5v1.1_FS_mode, and get the following
+error messege.
+# ./FFT -t -m4 -p2
+%DECthreads bugcheck (version V3.18-037), terminating execution.
+% Reason:  Unable to provide multithreading support (12)
+% Running on Linux 2.6.11.8(#23 SMP Wed Jun 29 01:42:18 EDT ) on , 0Mb; 0 CPUs, pid 895
+I get the Splash2 binary in the following link.
+http://www.m5sim.org/dist/m5_benchmarks/v1-splash-alpha.tgz
+And this binary is copied  on the disk image.
+How can I run the Splash2 benchmark in FS mode ?
+Thanks, Naoto Fukumoto <fukumoto@c.csce.kyushu-u.ac.jp>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+Hi all,
+I'm new to M5. Is there any tutorial or document about how to write the script which is used to configure the system and run the simulation, except http://www.m5sim.org/wiki/index.php/Simulation_Scripts_Explained?
+For example, if I want to configure a multi-core system which 4 cores have their own L1 caches but share a common L2 cache, how to write the script?
+Thanks.
+-- 
+Best Regards,
+Wang, Weixun
+Department of Computer&  Information Science&  Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

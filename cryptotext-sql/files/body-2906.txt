@@ -1,0 +1,41 @@
+Dear M5 Users,
+Today, it is our pleasure to announce the public availability of the
+M5 repository.
+It was quite a bit of work, but we've managed to get the copyright
+holders on M5 code to agree to a single BSD style license for M5.  The
+one major exception to this is the new x86 code.  This code is
+partially owned by Hewlett-Packard and is under a slightly more
+restrictive license than the rest.  I'm no lawyer, but I'd summarize
+the license as this: you can't sell this code or derivative works, but
+you can use it to do research (corporate or academic).  This license
+was largely a byproduct of HP's ownership of some IP that they were
+worried could be compromised by the BSD license.
+The repository uses a revision control system called Mercurial
+(http://selenic.com/mercurial).  Mercurial is a decentralized source
+control system that allows users to do all source operations without
+connecting to a central repository. In brief it allows you to create a
+copy of the m5sim.org repository that is fully functional. Instead of
+having to manually diff/patch your changes when a new version is
+released simply executing a command will "pull" all changes in the
+m5sim.org repository into your local repository launching a merge tool
+whenever necessary. Additionally, sending patches to us for inclusion
+in the m5sim.org repository is a single command. We hope that this
+change will both make using M5 easier as bug fixes can be obtained in
+a much easier fashion and increase the community involvement in
+developing M5.
+For more information about the repository, see:
+http://www.m5sim.org/wiki/index.php/Repository
+In addition we have opened the development mailing list to the public
+(http://www.m5sim.org/mailman/listinfo/m5-dev to subscribe). This list
+is for the day-to-day development of M5.  The whole point of releasing
+the repository is to encourage user participation and allow a path for
+a larger community of people to be able to develop and improve M5.
+Please let us know if there is anything else we can do to make
+contributing patches and features easier.
+We hope this becomes useful for everyone!
+Sincerely,
+The M5 Team
+_______________________________________________
+m5-announce mailing list
+m5-announce@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-announce

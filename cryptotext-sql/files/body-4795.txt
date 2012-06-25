@@ -1,0 +1,33 @@
+Hi,
+I just tried to compile the latest m5 in ALPHA_FS mode using g++ 4.1, but failed. When I use g++-3.4 instead, compilation works just fine. I have attached the compilation errors below.
+Jonas
+$ scons build/ALPHA_FS/m5.debug CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Checking for main() in C library python2.4... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for main() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Building in /home/jonas/Uni/DiplomaThesis/m5-2.0b2/build/ALPHA_FS
+Using saved options file /home/jonas/Uni/DiplomaThesis/m5-2.0b2/build/options/ALPHA_FS
+scons: done reading SConscript files.
+scons: Building targets ...
+g++ -o build/ALPHA_FS/arch/alpha/tlb.do -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -O0 -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/arch/alpha/tlb.cc
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error: specialization of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error: from definition of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]'
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error: specialization of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error: from definition of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]'
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: specialization of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: from definition of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]'
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: specialization of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: from definition of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]'
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: specialization of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: from definition of 'void SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]'
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: specialization of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]' in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: from definition of 'void SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]'
+scons: *** [build/ALPHA_FS/arch/alpha/tlb.do] Error 1
+scons: building terminated because of errors.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

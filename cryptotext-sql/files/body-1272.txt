@@ -1,0 +1,16 @@
+GCC 4.1 generates invalid code. You need to use 4.3. I have a post on the m5 mailing list a few months ago where I discussed the particular issue in detail, but it has to do with dependence analysis across call pal's being completely broken with gcc 4.0-4.2.  Ali- Show quoted text -On May 5, 2009, at 0:48, Steve Reinhardt <stever@gmail.com> wrote:I followed the directions here:http://m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5#Compiling_the_Kernel
+to build a new 2.6.27 kernel (which Ali pushed patches for) using a gcc-4.1.1 cross compiler.  The build goes smoothly, however, trying to boot this kernel via 'm5.opt configs/example/fs.py'gives the error below on the console.  This seems to happen whether or not I enable BIG_TSUNAMI and use tsb_osfpal.  Anyone have any ideas?
+Thanks,SteveSMP: Total of 1 processors activated (4002.20 BogoMIPS).net_namespace: 552 bytesNET: Registered protocol family 16EISA bus registeredpci: enabling save/restore of SRM state
+bus: 00 index 0 io port: [0, 1ffffff]bus: 00 index 1 mmio: [0, 3fffffff]Kernel bug at kernel/posix-cpu-timers.c:1327CPU 0 khelper(7): Kernel Bug 1pc = [<fffffc000035fbc0>]  ra = [<fffffc000034dc84>]  ps = 0000    Not tainted
+pc is at run_posix_cpu_timers+0xa30/0xa40ra is at update_process_times+0x84/0xb0v0 = 0000000000000000  t0 = fffffc0007057c00  t1 = fffffc000088d280t2 = 00000000000000c2  t3 = 0000000000010000  t4 = 0000000000000000
+t5 = fffffc00008412c8  t6 = 0000000000000005  t7 = fffffc0007054000a0 = fffffc000704d880  a1 = 0000000080000000  a2 = fffffc00009e3be0a3 = fffffc0007057ca0  a4 = 0000000000000000  a5 = 0000000000000000t8 = 0000000000000000  t9 = 0000000000000004  t10= 0000000000000000
+t11= fffffc00006d6a68  pv = fffffc000035f190  at = fffffc00009e3b80gp = fffffc000087de90  sp = fffffc0007057bc0Trace:[<fffffc000034dc84>] update_process_times+0x84/0xb0[<fffffc000031bbac>] smp_percpu_timer_interrupt+0x9c/0x100
+[<fffffc000031634c>] do_entInt+0x10c/0x2d0[<fffffc0000310d80>] ret_from_sys_call+0x0/0x10[<fffffc00006d6a68>] schedule+0x288/0x750[<fffffc0000356520>] __call_usermodehelper+0x60/0xd0
+[<fffffc0000356a30>] ____call_usermodehelper+0x0/0x1a0[<fffffc0000311120>] kernel_thread+0x10/0x90[<fffffc0000356d44>] run_workqueue+0x104/0x230[<fffffc00003564c0>] __call_usermodehelper+0x0/0xd0
+[<fffffc00003575a4>] worker_thread+0xb4/0x130[<fffffc000035de90>] cpu_clock_sample_group_locked+0xd0/0x1a0[<fffffc000035c684>] kthread+0x74/0xd0[<fffffc00003574f0>] worker_thread+0x0/0x130
+[<fffffc000035ce90>] autoremove_wake_function+0x0/0x60[<fffffc0000311138>] kernel_thread+0x28/0x90Code: a42c02a8  20ec02a8  40e105a1  e43ffe52  c3ffff9a  00000081 <0000052f> 0076e5b5Kernel panic - not syncing: Aiee, killing interrupt handler!
+(kernel/posix-cpu-timers.c:1327 looks like a simple assertion that interrupts are disabled)
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

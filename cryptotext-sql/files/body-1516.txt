@@ -1,0 +1,6 @@
+I have added new ports in caches. These ports are connected to a bus. This bus receives packets from a bridge. I set the destination of packets to be Packet::Broadcast. However, when the packet intersect the bus, I get "Unable to find destination for addr x". I am trying to use the bus snooping mechanism to send packets to these new cache ports. I presume this is some sort of address range issue? What is the correct way of broadcasting packest to these new cache ports?
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

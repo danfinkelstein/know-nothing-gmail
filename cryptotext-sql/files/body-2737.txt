@@ -1,0 +1,5 @@
+Hi all,I am new to m5. I just installed m5 and trying to run the regression tests. However I fail to run them successfully. I tried searching the archives but couldn't find any relevant posts.  Here is what  i get in the stderr file $ scons build/ALPHA_SE/tests/debugTraceback (most recent call last):  File "<string>", line 1, in <module>  File "build/ALPHA_SE/python/m5/main.py", line 313, in main    execfile(sys.argv[0], scope)  File "tests/run.py", line 65, in <module>    execfile(os.path.join(tests_root, category, name, 'test.py'))  File "tests/long/00.gzip/test.py", line 32, in <module>    workload = gzip_log(isa, opsys, 'smred')  File "/home/faisal/workspace/m5-stable/configs/common/cpu2000.py", line 100, in __init__    raise AttributeError, '%s not found' % executableAttributeError: /dist/m5/cpu2000/binaries/alpha/tru64/gzip not found Thanks for the help.Faisal
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

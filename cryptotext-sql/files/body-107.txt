@@ -1,0 +1,30 @@
+> 1. Is it normal to have only __init__.{py,py.do,py.o,py.s} file in
+> "M5/m5-stable/build/ALPHA_SE/python/m5/objects" while there is no "objects"
+> directory in "M5/m5-stable/src/python/m5"? How to generate the .py files
+> during compilation exactly? Otherwise, "from m5.objects import *" makes not
+> sense...
+Yes, that is normal.  A ton of files are automatically generated, and
+others are pulled from various locations and embedded in the
+m5.objects package.  One thing that you're probably missing is that we
+actually embed all of the python code into the m5 binary itself and
+that is the only location where the actual package exists in its
+entirety.
+> 2. Is ruby also an alternative memory simulator for M5? Or the current
+> version of M5 uses its own implemented memory hierarchy, as I guess?
+It is an alternative, but it's not ready for general usage yet.
+> 3. If ruby is not used, which cache coherence protocol is used? I saw one
+> script has "from m5.objects.CoherenceProtocol import CoherenceProtocol" but
+> as indicated in point 1, I do not have anything in m5.objects....
+There are no coherence protocol options in the current M5 memory model
+(the primary reason for moving to Ruby).  Any CoherenceProtocol object
+in the M5 memory model is old (and doesn't work that well) and has
+been removed from M5.  The existing coherence protocol is MESI I
+believe, but you'll probably need to get a response from Steve if you
+want more details.  (Search the mailing list archives and the
+repository history to find more info about it.)
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

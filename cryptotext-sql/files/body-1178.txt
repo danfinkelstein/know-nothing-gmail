@@ -1,0 +1,26 @@
+They're all bundled in M5, yes.  If you want to know how to do it by cycle, see the config script usage message, e.g. m5.debug configs/example/[se|fs].py --help.
+ 
+If you want to do it from within your rcS scripts (sounds like you are doing FS), see slides from ASPLOS http://www.m5sim.org/dist/tutorials/asplos_pres.pdf.  Just plop the m5 instruction where you want it in your rcS file and it will do it.
+ 
+Lisa- Show quoted text -
+On Mon, Jul 20, 2009 at 2:02 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Do you have the scripts to generate this?
+----- Original Message ----- 
+From: Lisa Hsu 
+To: M5 users mailing list 
+Sent: Monday, July 20, 2009 1:51 PM
+Subject: Re: [m5-users] checkpoints for M5
+I'm not sure exactly what you mean by 'available' - you can generate your own checkpoints, certainly...But we don't provide checkpoints for any benchmarks, just the facility for generating them.
+ 
+Lisa
+On Wed, Jul 8, 2009 at 11:16 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Hello,
+  I am not sure if this has been answered before. Are there checkpoints available in M5 for workloads like web, apache?
+ 
+- Sujay_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

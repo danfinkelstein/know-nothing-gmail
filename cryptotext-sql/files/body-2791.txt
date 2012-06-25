@@ -1,0 +1,5 @@
+Can we use several private L2 caches to replace a shared L2 cache in a multicore mode? thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

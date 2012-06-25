@@ -1,0 +1,180 @@
+I am using timing simple CPU. I have one control cpu 
+and eight slave cpus. The two level memory hierarchy includes for 
+each cpu 8KB icache and 8KB dcache,  and a shared L2 with 1024KB. 
+The coherence protocol is moesi. physical memory size is 256MB.  L1 caches 
+are connected to L2 through the bus.
+ 
+the icache has associativity of 1, and the dcache has 
+associativity of 4. L2 has associativity of 8. And here is the list of other 
+parameters:
+ 
+class L1(BaseCache):    latency = 
+options.l1latency    block_size = 64    
+mshrs = 12    tgts_per_mshr = 8    
+protocol = CoherenceProtocol(protocol=options.protocol)
+ 
+# ----------------------# Base L2 Cache 
+Definition# ----------------------class 
+L2(BaseCache):        block_size = 
+64        latency = 
+options.l2latency        mshrs = 
+92        tgts_per_mshr = 16        write_buffers = 
+8
+ 
+ 
+I've also encountered the error once when the cache 
+size is 4 KB. I feel that this occurs more often when the L1 cache size is 
+small. 
+ 
+Included in the system, I have some additional 
+units under developing (stream buffers). and I am using the ALPHA ISA with 
+my own benchmarks. However, the additional units have simple access 
+instructions and doesn't involve coherence protocol and synchronization 
+instructions like atomic_add. If you think it would be helpful, I can send 
+you the modified m5 that I have with the configuration file and the application 
+binary that triggers this phenomenon.
+ 
+And here is a back trace captured during the infinite 
+events. hope this is helpful.
+ 
+2  0x0000000000855cba in 
+Bus::findSnoopPorts (this=0x116c530, addr=1958720, id=8) at 
+build/ALPHA_SE/mem/bus.cc:366
+#3  0x0000000000859560 in Bus::timingSnoop 
+(this=0x116c530, pkt=0x20137220, responder=0x169f080) at 
+build/ALPHA_SE/mem/bus.cc:419
+#4  0x00000000008602eb in Bus::recvTiming 
+(this=0x116c530, pkt=0x20137220) at 
+build/ALPHA_SE/mem/bus.cc:215
+#5  0x000000000086b10a in 
+Bus::BusPort::recvTiming (this=0x179f460, pkt=0x20137220) at 
+build/ALPHA_SE/mem/bus.hh:174
+#6  0x0000000000496aac in Port::sendTiming 
+(this=0x179f560, pkt=0x20137220) at 
+build/ALPHA_SE/mem/port.hh:189
+#7  0x00000000008a0e08 in 
+BaseCache::RequestEvent::process (this=0x10914a8) at 
+build/ALPHA_SE/mem/cache/base_cache.cc:276
+#8  0x00000000005b88c8 in 
+EventQueue::serviceOne (this=0xd9b4c0) at 
+build/ALPHA_SE/sim/eventq.cc:118
+#9  0x00000000005ecd1e in simulate 
+(num_cycles=9223372036854775807) at 
+build/ALPHA_SE/sim/simulate.cc:111
+#10 0x00000000009a9b7b in 
+_wrap_simulate__SWIG_0 (args=0x2aaaaf4f5950) at 
+build/ALPHA_SE/swig/event_wrap.cc:3331
+#11 0x00000000009a9cad in 
+_wrap_simulate (self=0x0, args=0x2aaaaf4f5950) at 
+build/ALPHA_SE/swig/event_wrap.cc:3381
+#12 0x000000358c436140 in 
+PyObject_Call () from /usr/lib64/libpython2.4.so.1.0
+#13 0x000000358c4933cc in 
+PyEval_EvalFrame () from /usr/lib64/libpython2.4.so.1.0
+#14 0x000000358c495e50 in 
+PyEval_EvalCodeEx () from /usr/lib64/libpython2.4.so.1.0
+#15 0x000000358c494671 in 
+PyEval_EvalFrame () from /usr/lib64/libpython2.4.so.1.0
+#16 0x000000358c495e50 in 
+PyEval_EvalCodeEx () from /usr/lib64/libpython2.4.so.1.0
+#17 0x000000358c495f02 in 
+PyEval_EvalCode () from /usr/lib64/libpython2.4.so.1.0
+#18 0x000000358c4b25c9 in 
+Py_CompileString () from /usr/lib64/libpython2.4.so.1.0
+#19 0x000000358c48c1ad in 
+_PyBuiltin_Init () from /usr/lib64/libpython2.4.so.1.0
+#20 0x000000358c4950a8 in 
+PyEval_EvalFrame () from /usr/lib64/libpython2.4.so.1.0
+#21 0x000000358c495e50 in 
+PyEval_EvalCodeEx () from /usr/lib64/libpython2.4.so.1.0
+#22 0x000000358c494671 in 
+PyEval_EvalFrame () from /usr/lib64/libpython2.4.so.1.0
+#23 0x000000358c495e50 in 
+PyEval_EvalCodeEx () from /usr/lib64/libpython2.4.so.1.0
+#24 0x000000358c495f02 in 
+PyEval_EvalCode () from /usr/lib64/libpython2.4.so.1.0
+#25 0x000000358c4b25c9 in 
+Py_CompileString () from /usr/lib64/libpython2.4.so.1.0
+#26 0x000000358c4b3890 in 
+PyRun_SimpleStringFlags () from 
+/usr/lib64/libpython2.4.so.1.0
+#27 0x00000000005bad60 in main 
+(argc=13, argv=0x7fff31a531b8) at build/ALPHA_SE/sim/main.cc:118 
+ 
+thanks!
+ 
+Jiayuan
+ - Show quoted text -
+  Hi Jiayuan,There may be some bugs with the load locked/store 
+  conditional code.  What version of m5 are you using?  What 
+  configuration are you using (cache levels, coherence protocol, timng vs. 
+  atomic mode, etc.)?Steve
+- Show quoted text -
+  On 8/11/07, Jiayuan 
+  Meng <jerrygonair@hotmail.com> 
+  wrote:
+  
+    
+    Hi all,
+     
+    I encounter an infinte loop when running a 
+    multi-threaded program on a multicore simulator with a control processor and 
+    4 slave cores. This atomic_add, as printed in the trace, seems to keep 
+    accessing the cache forever and I have to aborted the simulation manually. 
+    Any clues on it?
+     
+    Thanks a lot!
+     
+    Jiayuan
+     
+           6 
+    685000250000: system.slaves0 T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+12 : 
+    stl_c      
+    r1,0(r16)       : MemWrite :  
+    D=0x00000       7 685000252000: 
+    system.slaves0 T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+    beq        r1,0x1200e8144  : IntAlu 
+    :       8 685000254000: system.slaves1 T0 
+    : @_ZN9__gnu_cxx12__atomic_addEPVii+8 : 
+    addl       
+    r1,r17,r1       : IntAlu :  
+    D=0x00000000       9 685000244000: 
+    system.master T1 : @_ZN9__gnu_cxx18__exchange_and_addEPVii+4 : 
+    ldl_l      
+    r0,0(r16)       : MemRead :  
+    D=0x00      10 685000255000: system.slaves1 T0 
+    : @_ZN9__gnu_cxx12__atomic_addEPVii+12 : stl_c      
+    r1,0(r16)       : MemWrite :  
+    D=0x00000      11 685000257000: system.slaves1 
+    T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+    beq        r1,0x1200e8144  : IntAlu 
+    :      12 685000245000: system.slaves3 T0 : 
+    @_ZN9__gnu_cxx12__atomic_addEPVii+4 : ldl_l      
+    r1,0(r16)       : MemRead :  
+    D=0x0000000      13 685000257000: system.master 
+    T1 : @_ZN9__gnu_cxx18__exchange_and_addEPVii+8 : 
+    addl       
+    r0,r17,r1       : IntAlu :  
+    D=0x000      14 685000258000: system.slaves3 T0 
+    : @_ZN9__gnu_cxx12__atomic_addEPVii+8 : 
+    addl       
+    r1,r17,r1       : IntAlu :  
+    D=0x00000000      15 685000258000: 
+    system.master T1 : @_ZN9__gnu_cxx18__exchange_and_addEPVii+12 : 
+    stl_c      
+    r1,0(r16)       : MemWrite :  
+    D=0x      16 685000260000: system.master T1 : 
+    @_ZN9__gnu_cxx18__exchange_and_addEPVii+16 : 
+    beq        r1,0x1200e8164  : IntAlu 
+    :      17 685000259000: system.slaves3 T0 : 
+    @_ZN9__gnu_cxx12__atomic_addEPVii+12 : stl_c      
+    r1,0(r16)       : MemWrite :  
+    D=0x00000      18 685000261000: system.slaves3 
+    T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+    beq        r1,0x1200e8144  : IntAlu 
+    :_______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.o

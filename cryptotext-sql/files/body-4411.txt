@@ -1,0 +1,11 @@
+We designed M5 so that any sorts of interconnects would be implementable by those who want it using our API of ports to connect between various elements, but nothing like that has been done before on M5, as far as we know.  Let us know how it goes or what we can do to help.
+Lisa- Show quoted text -On 7/30/07, Dean Michael Ancajas <dbancajas@gmail.com> wrote:- Show quoted text -
+Hello everybody,       I'm planning on studying omega networks as an initial work in using m5 simulator. Is it possible to implement/simulate omega networks using the M5 simulator? Thanks.
+-- 
+Dean Michael B. Ancajas
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

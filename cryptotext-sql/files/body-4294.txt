@@ -1,0 +1,21 @@
+On Friday 07 September 2007 19:27:34 Elliott Cooper-Balis wrote:
+> I took your advice and added support for stat64.
+Great, thanks for sharing! Some of my tests were also failing due to missing
+stat64 (at the very end though, so I didn't bother too much with that yet).
+Is this going to go into the main tree?
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

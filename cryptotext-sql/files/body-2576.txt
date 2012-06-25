@@ -1,0 +1,92 @@
+For echo $CXX i get just a blank line.For g++ --version I getg++ (GCC) 4.2.3 (Ubuntu 4.2.3-2ubuntu7)Copyright (C) 2007 Free Software Foundation, Inc.This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+Message: 2
+Date: Fri, 5 Sep 2008 13:44:59 -0400
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] m5-users Digest, Vol 26, Issue 3
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <32A3C6C3-AE53-45C7-BC00-592C978B4612@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+If you type the following what output do you get?
+echo $CXX
+g++ --version
+Ali
+On Sep 5, 2008, at 1:33 PM, Aaron Williams wrote:
+> I used the package manager to install g++ in ubuntu.  Also when I do
+> a "which g++" it returns /usr/bin/g++.  In my $PATH variable /usr/
+> bin appears.  Do I need to add /usr/bin/g++ to it?
+>
+> Aaron
+>
+>
+> Message: 2
+> Date: Thu, 4 Sep 2008 14:56:33 -0400
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] Question on Compiling M5Stable
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <308E8983-555E-4E94-866B-B276CF7CA7FE@umich.edu>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+> Are you certain you have g++ installed? The only reason CXX could be
+> None is if it wasn't set in the shell you used to execute scons and
+> scons couldn't find g++ in your path. In retrospect we should probably
+> check that the CXX is found by SCons, but either way I imagine that
+> either g++ isn't installed or it's not in your default path.
+>
+> Ali
+>
+> On Sep 4, 2008, at 2:49 PM, Aaron Williams wrote:
+>
+> > Hey,
+> >
+> > I am trying to compile the copy of m5 that I downloaded from the
+> > repository.   I am getting the following error:
+> >
+> > aswilli@aswilli-laptop:~/m5-stable$ scons build/ALPHA_SE/m5.debug
+> > scons: Reading SConscript files ...
+> > TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':
+> >   File "/home/aswilli/m5-stable/SConstruct", line 338:
+> >     env['GCC'] = subprocess.Popen(env['CXX'] + ' --version',
+> > shell=True,
+> >
+> >
+> > I have all of the most current version of the software required.
+> >
+> > There was a previous post by someone with this problem but he said
+> > he did not have g++ or m4 installed in ubuntu.
+> >
+> > I am running ubuntu but have checked for both of these issues.
+> >
+> > Please advise,
+> >
+> > Aaron
+> >
+> > --
+> > Aaron S. Williams
+> > Graduate Student
+> > Arizona State University
+> > Department of Electrical Engineering
+> > aswilli@gmail.com
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 26, Issue 3
+> ***************************************
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

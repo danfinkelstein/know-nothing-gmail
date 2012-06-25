@@ -1,0 +1,13 @@
+I see this warning when running mesa in SE mode in 
+beta5. I havent seen this warning before with any other benchmark, so just want 
+to make sure its fine:
+ 
+warn: cvtts/su   f2,f0: non-standard 
+trapping mode not supported
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

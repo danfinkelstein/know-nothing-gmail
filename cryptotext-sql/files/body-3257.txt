@@ -1,0 +1,81 @@
+Hi Jerry,sorry I can't really get to coding this right now but hopefully I can provide some hints/clues that you need to keep moving.... Given your errors, I am thinking to myself:#1 Are you running two workloads and one is stopping prematurely OR are you running two workloads and only one is running? If it's the latter, that sounds like a config. file problem.
+#2 The update exit() code works because it checks the system for threads right? I am thinking that the system isnt registering threads in SE mode on the O3CPU. I adjusted this for the SimpleCPU in the patch, but I think that it may have to be done for the O3CPU too. There's a "registerThreadContext" function I believe that is in a "#if FULL_SYSTEM" block that I took out to get that to work in SimpleCPU. 
+The exit() probably always returns 1 since the threads are never registered.#3 The error makes me think that after thread 1 exits() the CPU still tries to run. But since you deallocated it, it is no longer on the active thread list. Thus, at that point the CPU should "sleep" since it's done instead of continue to run. 
+This probably doesnt work since this originally got coded for SMT, so if there were more threads in the system they were all on one CPU.I'm thinking in the exit() function there needs to be additional code to 
+- check to see if there are any threads left on that CPU- if not, then deschedule or "sleep" or "suspend" the CPU. Somehow you have to get the CPU to stop or you have to get the fetch stage to stop trying to fetch threads if there are no threads to fetch from (which should eventually put the CPU to sleep due to the activity counter). I think fetch_impl.hh and cpu.hh are the files of choice here...- Show quoted text -
+On Mon, Apr 21, 2008 at 6:47 AM, jerry lrui <jerry.lrui@gmail.com> wrote:
+hi, Korey:
+ 
+According to your suggestion, I changed the exit() codes in src/cpu/o3/alpha/thread_context.hh:
+virtual int exit()    {        this->deallocate();
+        // If there are still threads executing in the system        if (this->cpu->system->numActiveThreadContexts() +            this->cpu->system->numSuspendedThreadContexts() >= 1)
+            return 0; // don't exit simulation        else            return 1; // exit simulation    }
+But when I run two simple workloads on different O3CPUs, only one workload has been run and has the following error:
+ 
+command line: build/ALPHA_SE/m5.debug configs/example/se0.py -d --cache -n2 --cmd=/home/jerry/m5-2.0b5/tests/test-progs/hello/bin/alpha/linux/hello0;/home/jerry/m5-2.0b5/tests/test-progs/hello/bin/alpha/linux/hello1
+Global frequency set at 1000000000000 ticks per secondsystem.remote_gdb.listener: listening for remote gdb #0 on port 7000system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.warn: Increasing stack size by one page.Hello world1! m5.debug: build/ALPHA_SE/cpu/o3/fetch_impl.hh:1323: int DefaultFetch<Impl>::getFetchingThread(DefaultFetch<Impl>::FetchPriority&) [with Impl = AlphaSimpleImpl]: Assertion `thread != activeThreads->end()' failed.
+Program aborted at cycle 11222000Aborted
+ 
+Can you give me some advice or hints to solve it? Thanks!
+ 
+Jerry
+ 
+On 4/21/08, Korey Sewell <ksewell@umich.edu> wrote:
+I'm not quite sure if that'll work with multiple SMT CPUs running but in theory all hardware threads should be registered with the system... 
+On Sun, Apr 20, 2008 at 11:59 AM, Korey Sewell <ksewell@umich.edu> wrote:
+correct, changing that will do the trick in a similar fashion.What you probably want to do is implement the exit function in cpu/o3/thread_context.hh so that it's architecture independent.
+Soon, both exit() functions need to be toggled using some simulation option as well. 
+On Sun, Apr 20, 2008 at 11:42 AM, jerry lrui <jerry.lrui@gmail.com> wrote:
+Yes. There are a little differences in these exit() functions. In o3 exit function only check the  current CPU's active threads but not the whole system. These codes should be also changed to solve this problem. Right?
+ 
+Jerry 
+On 4/20/08, Korey Sewell <ksewell@umich.edu> wrote: 
+Are you trying to run SMT or 2 CPUs?If you are trying to run two CPUs then you have to explicitly assign diff. workloads in your se.py file. 
+I think O3 only checks other SMT threads before returning true on exit.... If so, check the exit() function in in simple_thread.hh and make sure the one in src/cpu/o3/alpha/thread_context.hh resembles the same code... 
+On Sun, Apr 20, 2008 at 9:19 AM, jerry lrui <jerry.lrui@gmail.com> wrote:
+Korey,
+ 
+Thanks a lot! I've patched the program by using the patch you posted. Now the program is running very well on SimpleCPU. But when I change the CPU model to O3CPU there also seems only one workload has been run.
+ 
+system = System(cpu = [DerivO3CPU(cpu_id=0,clock="1GHz"), DerivO3CPU(cpu_id=1,clock="2GHz")], 
+              physmem = PhysicalMemory(range=AddrRange("512MB")),                 membus = Bus(), mem_mode = 'timing')Can you further check the code? I'm using M5 2.0b5 now. Thanks.
+ 
+Jerry 
+On 4/20/08, Korey Sewell <ksewell@umich.edu> wrote: 
+I just sent out a patch that should enforce all threads finishing before ending simulation.
+This hasnt been implemented as a command line option yet. I'll be doing that soon ....Let me know if what I'm doing in the patch makes sense to people (or if I need to explain what I'm doing)....
+-Korey
+On Tue, Apr 15, 2008 at 11:26 AM, Korey Sewell <ksewell@umich.edu> wrote:
+well... it's the exit() syscall and then it's modifying theThreadContext exit() function which is called in the exit() syscall so
+that it looks at the other threads in the system and and returns theright value (1?) only if it is the only thread remaining.Something like this is already done for the O3 CPU, but not forSimpleCPU as of yet (patch outstanding)...
+It might be a little tricky, but definitely do-able if you need it*like now/today* instead of the pretty near future...FYI:exit syscall should be found in syscall_emul.hh/ccthread context is found in cpu/thread_context.hh
+On Tue, Apr 15, 2008 at 11:03 AM, Ali Saidi <saidi@umich.edu> wrote:> You can modify the exit() syscall to not exits until the number of CPUs in
+> the system all have called exit(). That would solve the problem, however> it's not completely clear that's what you want to do. If you're running a> multiprogrammed workload you probably want to capture time when all the
+> programs are running. The only reason I could see doing otherwise was if you> were running all the benchmarks from beginning to end.>>  Ali 
+>>>>>  On Apr 15, 2008, at 5:57 AM, jerry lrui wrote:>> >> >> >> > Thanks for all your help.> >> > Can you give me more details about how to control the system so that all
+> threads were done before system halt?> >> > Regards,> > Jerry> >> > _______________________________________________> > m5-users mailing list
+> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>  _______________________________________________>  m5-users mailing list>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> 
+------------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan -- ----------
+Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan _______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users 
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan _______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ _______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan -- 
+----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan _______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- ----------Korey L SewellGraduate Student - PhD Candidate
+Computer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

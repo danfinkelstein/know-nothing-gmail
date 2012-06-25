@@ -1,0 +1,59 @@
+- Show quoted text -
+On Jun 27, 2008, at 9:16 PM, Rick Strong wrote:
+>
+>>
+>> On Jun 26, 2008, at 7:01 PM, Rick Strong wrote:
+>>
+>>>
+>>> 1) If using just quiesce (without cycles or ns ... etc), m5sim.org
+>>> states that an interrupt is the means of waking up the core. Can any
+>>> interrupt be used or must there be a specific one? Also, for an
+>>> interrupt to schedule the tick() call after the quiesce call, which
+>>> lines of code are actually called after the interrupt is received to
+>>> reschedule the tick event?
+>> Any interrupt will wake the core. You can think of quiesce as an
+>> indication that the CPU has nothing to do. In the case of the Linux
+>> kernel the scheduler has called default_idle() on the cpu where it
+>> either spins of a tight loop or get put into a lower power state
+>> depending on the cpu/architecture. When an interrupt occurs an the
+>> IntrControl object processes it and it calls cpu->post_interrupt()
+>> the
+>> specific CPUs implementation then does the right thing. In the case
+>> of
+>> a simple CPU if it was suspended it calls thread->activate() which
+>> ultimately calls cpu->activateContext() which will reschedule the
+>> tick
+>> event if it's not scheduled.
+>>
+>> Ali
+> So I wish to add a parameter to O3CPU.py that defines a delay in
+> cycles
+> from the time a sleeping cpu wakes up and the time that any  thread
+> can
+> start executing on the cpu. So ideally, when
+> src/cpu/o3/alpha/cpu_impl.hh:post_interrupt is called from the
+> interrupt, I want to pass a delay in cyles to
+> this->threadContexts[0]->activate(). Which would be the best class to
+> add the quiesceWakeupDelay() so that I can set the delay in python,
+> have
+> access to the delay value in post_interrupt, an ideally have a
+> different
+> delay for each cpu.
+>
+> Also,  do I have to pass the delay to wakeCPU() in function
+> src/cpu/o3/alpha/cpu_impl.hh:post_interrupt, or can I wake the cpu and
+> put the delay in the activation of the thread context? My guess of a
+> potential problem is that if I wakeup a cpu but put a delay for the
+> thread, then some other thread from another cpu could startup on the
+> cpu.
+I think you should just be able to replace the activateContex()
+function with a function that created a delay. After the event expired
+you would then execute the what activateContext() currently does.
+However, I'm not an expert at the O3 CPU, so you might have to
+experiment a bit.
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

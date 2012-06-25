@@ -1,0 +1,9 @@
+On Mar 25, 2008, at 2:42 PM, Vilas Sridharan wrote:
+Hi folks --
+Has anyone generated SimPoints using M5?  Specifically, has anyone used M5 to create the BBV files that are needed to run the SimPoint tool?  The ASPLOS tutorial discusses SimPoint support in M5, but this currently appears to be limited to executing a pre-defined set of 100M instructions for each SPEC2k benchmark.  Is that correct?
+That is correct.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

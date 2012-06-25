@@ -1,0 +1,74 @@
+I'm sorry, but you're really getting too far beyond what this mailing
+list is for.  Python is still not set up correctly.  I suggest you
+recompile all of your binaries and just start over.
+- Show quoted text -
+On Wed, Nov 19, 2008 at 12:59 AM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> After re-installing python:
+>
+> EnvironmentError: No module named _md5:
+>  File "/home/data3/sakram3/m5-2.0b5/SConstruct", line 79:
+>    EnsurePythonVersion(2,4)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Script/SConscript.py", line 610:
+>    env = self.factory()
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Script/SConscript.py", line 590:
+>    default_env = SCons.Defaults.DefaultEnvironment()
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Defaults.py", line 90:
+>    _default_env = apply(SCons.Environment.Environment, args, kw)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Environment.py", line 952:
+>    apply_tools(self, tools, toolpath)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Environment.py", line 106:
+>    env.Tool(tool)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Environment.py", line 1632:
+>    tool(self)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 181:
+>    apply(self.generate, ( env, ) + args, kw)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/default.py", line 40:
+>    for t in SCons.Tool.tool_list(env['PLATFORM'], env):
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 661:
+>    env)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 549:
+>    return filter (ToolExists, tools)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 548:
+>    return Tool(tool).exists(env)
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 95:
+>    module = self._tool_module()
+>  File "/home/data3/sakram3/scons/lib/scons-1.1.0.d20081104/SCons/Tool/__init__.py", line 146:
+>    raise SCons.Errors.EnvironmentError, e
+>
+>
+> ---- Original message ----
+>>Date: Tue, 18 Nov 2008 22:59:19 -0800
+>>From: "nathan binkert" <nate@binkert.org>
+>>Subject: Re: [m5-users] install error
+>>To: "M5 users mailing list" <m5-users@m5sim.org>
+>>
+>>If you can't import os, then you've messed up your python installation.
+>>
+>>On Tue, Nov 18, 2008 at 10:04 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+>>> i accidently deleted a lot of data in my home directory and after that I am geting this error if I try to install m5. Any idea what is lost?
+>>>
+>>> 'import site' failed; use -v for traceback
+>>> Traceback (most recent call last):
+>>>  File "/home/data3/scons-0.97/bin/scons", line 39, in ?
+>>>    import os
+>>> ImportError: No module named os
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

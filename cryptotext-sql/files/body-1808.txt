@@ -1,0 +1,15 @@
+> Hmm...it is derived from PhysicalMemory, so from that viewpoint all it
+> needs is to be rebuilt using the same parameters and have the
+> underlying PhysicalMemory data restored correctly. If PhysicalMemory
+> currently works with checkpointing, I am unclear what in my DRAMsim
+> code prevents it from working, since I do not override either
+> serialize or unserialize. Any ideas on what to look for?
+Well, the error isn't with serialize/unserialize actually, it's with
+the drain code that forces the memory system to drain all in flight
+requests.  We do the drain before we take a checkpoint to make sure we
+don't lose any data.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

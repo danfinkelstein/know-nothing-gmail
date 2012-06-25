@@ -1,0 +1,33 @@
+thanks!- Show quoted text -On Mon, Mar 31, 2008 at 10:41 PM, Ali Saidi <saidi@umich.edu> wrote:
+The Fault class wraps up faults, interrupts, and exceptions in one easy to use package that is architecture agnostic. The class wraps up all of the information about the id of the fault, how it's signaled, etc. When a fault is generated the you can call invoke() on it to update the processor state as appropriate.
+Ali
+On Mar 31, 2008, at 10:06 AM, nathaniel jones wrote:
+hi, while studying cpu.hh in m5/build/ALPHA_SE/cpu/o3, I came across the following
+    /** Translates instruction requestion. */
+    Fault translateInstReq(RequestPtr &req, Thread *thread)
+    {
+        return this->itb->translate(req, thread->getTC());
+    }
+    /** Translates data read request. */
+    Fault translateDataReadReq(RequestPtr &req, Thread *thread)
+    {
+        return this->dtb->translate(req, thread->getTC(), false);
+    }
+    /** Translates data write request. */
+    Fault translateDataWriteReq(RequestPtr &req, Thread *thread)
+    {
+        return this->dtb->translate(req, thread->getTC(), true);
+    }
+What exactly does the Fault class do, and what is it for?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

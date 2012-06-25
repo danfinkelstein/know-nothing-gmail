@@ -1,0 +1,10 @@
+Hello,
+I am studying the accesses to the memory and sometimes there are
+packets that come without a valid context id (no CPU origin). Does
+anyone know what is the origin of those packets?. If someone needs
+more details about my question please ask.
+Thanks a lot in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

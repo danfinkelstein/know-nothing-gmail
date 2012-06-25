@@ -1,0 +1,44 @@
+The easiest way I've found is to isolate the address that's causing the problem, then re-run with cache and bus tracing on and grep out the accesses to that cache block.  Sometimes that shows the problem directly, and if not at the very least that should highlight when things start to go awry and give you cycle counts where you can set breakpoints for gdb.
+If you can't easily deduce the problem address from the application (e.g., if you're stuck waiting
+for a lock that never gets released, what's the address of the lock), you should try the memory tester; if it encounters a coherence problem it will print the address out.  (I suggest trying the memory tester anyway as it's much nicer to have it tell you about a coherence problem than to deduce that there's a problem from application misbehavior.)
+There's also a primitive facility for printing out the global state of a cache block that's discussed on pp. 147-148 of our latest tutorial.  (I thought it was described on the wiki too but I can't find it there.)
+Steve- Show quoted text -On Thu, Feb 12, 2009 at 12:07 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+Hi all,
+Recent experience with the mesh+directory coherence patch  and the
+parsec parallel benchmarks has been a coherency nightmare. DMA sometimes
+has weird errors, certain functions get stuck waiting for cache accesses
+and other nightmare-ish scenarios.
+I am wondering if anyone knows of any good ways of debugging memory
+coherency problems for directory coherence + mesh.
+I have two ideas:
+(1) Dump all the accesses out to a trace and then look for the time of
+each cache request and make sure they are all satisfied (you could also
+use a global system cache-coherency class  in the M5 simulator to do
+this verficiation). This makes sure the system isn't getting hung up on
+a memory access. In addition, you look at the access time ranges for a
+given cache line and look for intersections in the ranges for two
+different cpus. This would flag possible coherency scenarios (although
+the false positive rate would be high for detecting a problem). The more
+difficult case is figuring out if a cache entry is modified in a local
+cache, a remote cache does a read and for some reason it gets its copy
+from somewhere else besides the local cache.
+(2) Make a visual display for cache accesses between the various levels
+of the caches like in wireshark flow-model for tcp with time
+(picoseconds, nanoseconds) on the y-axis and different caches on the x
+axis.
+ From my perspective, option 2 is easy but still requires visual
+verification on my part. Option 1 is more difficult but is automated.
+Are there any other methods for verifying a coherency protocol?
+Also, are there any other models for directory coherence available? I
+wouldn't mind if it is an inaccurate hack that roughly mimicks directory
+coherence.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

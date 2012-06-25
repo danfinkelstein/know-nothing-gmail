@@ -1,0 +1,40 @@
+I noticed that occupyBus() sets pkt->firstWordTime and 
+pkt->finishTime. However, these variables are only utilized 
+by Cache::handleResponse(). What if the packet is a request? I'm just 
+wondering how firstWordTime and finishTime is handled in all cases.
+ 
+Thanks!
+ 
+Jiayuan
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Jiayuan 
+  Meng 
+  To: M5 users mailing list 
+  Sent: 2007年12月3日 12:36 PM
+  Subject: [m5-users] bus latency 
+modeling
+  
+  I have a question regarding  Bus::recvTiming
+   
+  In this function, occupyBus() calculates when the packet is received 
+  completely by dest_port (tickNextIdle). However, "sendTiming" is executed 
+  instantly afterwards without delay (both to dest_port and snoop ports). I 
+  understand the "adding instead of dividing" trick, but for this latency model 
+  to be effective, shouldn't the dest_port and snoop ports see the packet at 
+  tickNextIdle?  Am I missing something?
+   
+  Thanks!
+   
+  Jiayuan
+   
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

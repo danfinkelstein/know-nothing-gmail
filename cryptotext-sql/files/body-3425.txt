@@ -1,0 +1,29 @@
+It did. 2GHz == 1 tick every 500ps, so both are telling truth.
+Ali
+On Mar 20, 2008, at 6:12 PM, Daniel Alex Finkelstein wrote:
+Strange thing I noticed on an m5.fast run of galgel: the CPU clock specified in the configuration py file is 2GHz but the clock that appears in config.ini is 500. I've attached the three files: galgel.p, the config.ini that was generated, and the final m5stats.txt. The command line was similar to 'm5.fast galgel.py'. Stranger still was the sim_freq from m5stats.txt, which was   1000000000000 (which matches sim_ticks/sim_seconds from the same output).
+Which is lying and which is telling the truth? And why didn't the 2GHz CPU clock get set? The other files referenced in the config files are unmodified from the m5 2.0b5 distro.
+<config.ini>
+<galgel.py>
+<m5stats.txt>
+Thanks,
+Dan
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

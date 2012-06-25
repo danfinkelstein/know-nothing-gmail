@@ -1,0 +1,28 @@
+There are first some legal issues that I'm working on to get HP to
+release the x86 code (since it was mostly developed at HP).  It's not
+clear how long that will take.  The answer from the lawyers could be
+no in which case it will take a while to argue, but I'm hopeful that
+we'll have a positive answer in a small number of weeks.  As for Xen,
+that more or less requires full-system support and Gabe is a better
+person to comment on that part.
+  Nate
+- Show quoted text -
+On Jan 24, 2008 4:32 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> Hi,
+>
+> Does anyone have an idea of how long it will be till x86 support is good
+> enough to run something like Xen. I haven't tried running any x86
+> applications on M5 and was wondering if anyone has a good idea of when
+> it might good to dive into ....
+>
+> -Rick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

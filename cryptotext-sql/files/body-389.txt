@@ -1,0 +1,14 @@
+Hello,
+    If I have an occupancy stat declared as an average. This is
+incremented or decremented based on the number of objects in my queue.
+however, the objects in this queue will be carried over between
+switching cpus. Now if I call m5.stats.reset() between switching from
+timing to detailed say, is it possible to prevent this stat from being
+reset? Because if I am maintaining the objects in this queue, resetting
+this stat will
+ be incorrect. Please correct me if i am wrong.
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

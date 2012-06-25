@@ -1,0 +1,23 @@
+- Show quoted text -ef wrote:
+> Hello,
+>
+> When you print out:
+> pkt->req
+> cout<<pkt->req;
+> you get a number like: 0x395a5f0
+>
+> What exactly is this value?
+>
+> Thanks
+> EF
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+That field is defined in src/mem/packet.hh.
+Gabe
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

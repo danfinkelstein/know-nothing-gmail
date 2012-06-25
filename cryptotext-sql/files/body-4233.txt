@@ -1,0 +1,6 @@
+I should add that you do need plenty of RAM for the VM approach though... depends on what flavor of Windows you're running under, but with XP I had 1GB on my laptop (with I think 384M, maybe a little more allocated for the VM) and wouldn't want to try it with much less.  Vista is an even bigger memory hog...
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hi,      I would like to implement an in-order multicore architecutre in m5.      Does m5 support in-order single-issue cores ?     Can I implement 3D stack of dies in m5 ?      thanks  Tony  Mar.  24  2008  
+      Looking for last minute shopping deals?  
+Find them fast with Yahoo! Search._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

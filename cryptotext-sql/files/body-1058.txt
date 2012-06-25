@@ -1,0 +1,21 @@
+Great! I tried running a few of the benchmarks and the simulation
+seemed to proceed just fine (except for wupwise, but I think that I can
+resolve that) except that I did not run them long enough to see if the
+outputs were correct.
+Thank you for your response, Steve.
+regards,
+Soumyaroop.- Show quoted text -
+On 8/13/09, Steve Reinhardt <stever@gmail.com> wrote:
+Yes, they have been used regularly in the past, and I don't know of any reason that should have changed.  Steve  On Wed, Aug 12, 2009 at 8:24 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+ > Hello there, > > Do the precompiled spec2000 binaries distributed with Simplescalar work with > M5? The file information for the executables displays: > "COFF format alpha executable paged not stripped - version 3.11-10"
+ > > There seems to have been some discussion regarding this in September of 2007 > but I found out that the emails have been purged from the mail archive that > is available online. > > regards,
+ > Soumyaroop. > > -- > Soumyaroop Roy > Ph.D. Candidate > Department of Computer Science and Engineering > University of South Florida, Tampa > http://www.csee.usf.edu/~sroy
+ > > _______________________________________________ > m5-users mailing list > m5-users@m5sim.org
+ > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ > _______________________________________________ m5-users mailing list m5-users@m5sim.org
+ http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ -- - Show quoted text -Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

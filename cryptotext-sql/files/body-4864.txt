@@ -1,0 +1,30 @@
+You need a cross-compiler to generate an Alpha executable, unless you're compiling on actual Alpha. Cross-tools is the easiest approach
+Ali- Show quoted text -
+On Nov 19, 2006, at 7:04 PM, Christopher Hsiong wrote:
+Hi all,
+I thought of running my own testcase written in C on the M5 (like a really short
+and simple 'hello world'.c). However after I compiled (using gcc -static) and
+ran it, it gave this error message:
+command line: ../build/ALPHA_SE/m5.debug --trace-flags=Fetch
+../configs/example/se.py -c ./a.out
+warn: Unknown architecture: 3
+warn: More than two loadable segments in ELF object.
+warn: Ignoring segment @ 0x0 length 0x0.
+fatal: Object file architecture does not match compiled ISA (Alpha).
+ @ cycle 0
+[create:build/ALPHA_SE/sim/process.cc, line 395]
+Memory Usage: 142992 KBytes
+So I looked up crosstools and tried to d/l. Think it's going to take all night,
+but in the meantime, is there any better way to do this? Is crosstools even the
+right approach?
+Any help is greatly appreciated!
+Thanks,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

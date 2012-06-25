@@ -1,0 +1,40 @@
+I test M5-20.b with EioProcess for all 26 programs from SPEC CPU 2K.  18 of 26 finished 100M instruction without any error.However other 8 has problem, I am attaching the stack trace when 179.art met problem.
+Anyone has clue?Thanks,Jiang-------------------------------[linj@sky 1core]$ /home/linj/nuca_work/prog/m5.opt --outdir=/home/linj/nuca_work/result/1core/179.art --stats-file=/home/linj/nuca_work/result/1core/179.art.stat /home/linj/nuca_work/result/1core/179.art.py
+M5 Simulator SystemCopyright (c) 2001-2006The Regents of The University of MichiganAll Rights ReservedM5 compiled Mar 14 2007 22:27:41M5 started Thu Mar 15 13:04:56 2007M5 executing on 
+sky.ece.uic.educommand line: /home/linj/nuca_work/prog/m5.opt --outdir=/home/linj/nuca_work/result/1core/179.art --stats-file=/home/linj/nuca_work/result/1core/179.art.stat /home/linj/nuca_work/result/1core/179.art.py
+warn: Entering event queue @ 0.  Starting simulation...terminate called after throwing an instance of 'std::bad_alloc'  what():  St9bad_allocProgram aborted at cycle 138115928Aborted[linj@sky
+ 1core]$ gdb -args /home/linj/nuca_work/prog/m5.debug --outdir=/home/linj/nuca_work/result/1core/179.art --stats-file=/home/linj/nuca_work/result/1core/179.art.stat /home/linj/nuca_work/result/1core/179.art.pyGNU gdb Red Hat Linux (
+6.3.0.0-1.132.EL4rh)Copyright 2004 Free Software Foundation, Inc.GDB is free software, covered by the GNU General Public License, and you arewelcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.There is absolutely no warranty for GDB.  Type "show warranty" for details.This GDB was configured as "i386-redhat-linux-gnu"...Using host libthread_db library "/lib/tls/libthread_db.so.1".
+(gdb) runStarting program: /home/linj/nuca_work/prog/m5.debug --outdir=/home/linj/nuca_work/result/1core/179.art --stats-file=/home/linj/nuca_work/result/1core/179.art.stat /home/linj/nuca_work/result/1core/179.art.py
+[Thread debugging using libthread_db enabled][New Thread -1208654144 (LWP 10294)]M5 Simulator SystemCopyright (c) 2001-2006The Regents of The University of MichiganAll Rights Reserved
+M5 compiled Mar 14 2007 22:53:34M5 started Thu Mar 15 13:44:20 2007M5 executing on sky.ece.uic.educommand line: /home/linj/nuca_work/prog/m5.debug --outdir=/home/linj/nuca_work/result/1core/179.art --stats-file=/home/linj/nuca_work/result/1core/179.art.stat /home/linj/nuca_work/result/1core/179.art.py
+warn: Entering event queue @ 0.  Starting simulation...m5.debug: build/ALPHA_SE/cpu/o3/decode_impl.hh:484: void DefaultDecode<Impl>::sortInsts() [with Impl = O3CPUImpl]: Assertion `insts[i].empty()' failed.
+Program received signal SIGABRT, Aborted.[Switching to Thread -1208654144 (LWP 10294)]0x007db7a2 in _dl_sysinfo_int80 () from /lib/ld-linux.so.2(gdb) bt#0  0x007db7a2 in _dl_sysinfo_int80 () from /lib/ld-
+linux.so.2#1  0x0081b7a5 in raise () from /lib/tls/libc.so.6#2  0x0081d209 in abort () from /lib/tls/libc.so.6#3  0x00814d91 in __assert_fail () from /lib/tls/libc.so.6#4  0x083e551c in DefaultDecode<AlphaSimpleImpl>::sortInsts (this=0x97f3348) at build/ALPHA_SE/cpu/o3/decode_impl.hh:484
+#5  0x083e3d0b in DefaultDecode<AlphaSimpleImpl>::tick (this=0x97f3348) at build/ALPHA_SE/cpu/o3/decode_impl.hh:602#6  0x083fdd44 in FullO3CPU<AlphaSimpleImpl>::tick (this=0x97f2bf8) at build/ALPHA_SE/cpu/o3/cpu.cc:427
+#7  0x08402cf2 in FullO3CPU<AlphaSimpleImpl>::TickEvent::process (this=0x97f2c88) at build/ALPHA_SE/cpu/o3/cpu.cc:79#8  0x082db0a1 in EventQueue::serviceOne (this=0x867fbf4) at build/ALPHA_SE/sim/eventq.cc:114
+#9  0x082de761 in simulate (num_cycles=9223372036854775807) at build/ALPHA_SE/sim/main.cc:340#10 0x082d73e4 in _wrap_simulate__SWIG_1 (args=0xb7f1602c) at build/ALPHA_SE/python/swig/main_wrap.cc:3755#11 0x082d749b in _wrap_simulate (self=0x0, args=0xb7f1602c) at build/ALPHA_SE/python/swig/main_wrap.cc:3774
+#12 0x084c7b7f in PyEval_EvalFrameEx (f=0x933a4c4, throwflag=0) at Python/ceval.c:3566#13 0x084c860b in PyEval_EvalFrameEx (f=0x93208e4, throwflag=0) at Python/ceval.c:3652#14 0x084c8dab in PyEval_EvalCodeEx (co=0xb7c65de8, globals=0xb7bded74, locals=0xb7bded74, args=0x0, argcount=0, kws=0x0, kwcount=0, defs=0x0, defcount=0,
+    closure=0x0) at Python/ceval.c:2833#15 0x084c8efa in PyEval_EvalCode (co=0xb7c65de8, globals=0xb7bded74, locals=0xb7bded74) at Python/ceval.c:494#16 0x084e7285 in PyRun_FileExFlags (fp=0x9335310, filename=0xb7edf664 "/home/linj/nuca_work/result/1core/179.art.py", start=257, globals=0xb7bded74,
+    locals=0xb7bded74, closeit=1, flags=0x0) at Python/pythonrun.c:1264#17 0x08525f76 in builtin_execfile (self=0x0, args=0xb7ef1cec) at Python/bltinmodule.c:703#18 0x084c7b7f in PyEval_EvalFrameEx (f=0x92828dc, throwflag=0) at Python/ceval.c:3566
+#19 0x084c8dab in PyEval_EvalCodeEx (co=0xb7efe458, globals=0xb7ef3824, locals=0x0, args=0x92f2be0, argcount=0, kws=0x92f2be0, kwcount=0, defs=0x0,    defcount=0, closure=0x0) at Python/ceval.c:2833#20 0x084c6b2f in PyEval_EvalFrameEx (f=0x92f2aa4, throwflag=0) at Python/ceval.c:3661
+#21 0x084c8dab in PyEval_EvalCodeEx (co=0xb7edf140, globals=0xb7f2ea44, locals=0xb7f2ea44, args=0x0, argcount=0, kws=0x0, kwcount=0, defs=0x0, defcount=0,    closure=0x0) at Python/ceval.c:2833#22 0x084c8efa in PyEval_EvalCode (co=0xb7edf140, globals=0xb7f2ea44, locals=0xb7f2ea44) at Python/ceval.c:494
+#23 0x084e7d05 in PyRun_SimpleStringFlags (command=0x8553ab3 "m5.main.main()", flags=0x0) at Python/pythonrun.c:1264#24 0x082ddaed in main (argc=4, argv=0xbff655a4) at build/ALPHA_SE/sim/main.cc:166(gdb)
+On 3/15/07, Ronald George Dreslinski Jr <rdreslin@engin.umich.edu> wrote:- Show quoted text -
+The error is for the sumulated memory size.  There is a new memory modelfor version 2 of the simulator in which the size of physical memory insyscall emulation must now be specified.  The error comes becasuse the
+size of the physical memory in the machine you are simulating is not largeenough.  The default size is 128 MB if the parameter for the address rangeisn't specified.  You can increase the size by changing the parameter in
+the configuration when the physical memory is instantiated.  For exampleto create a physical memory with 512MB you would do it as follows:PhysicalMemory(range=AddrRange("512MB"))Hope that helps,
+-RonOn Thu, 15 Mar 2007, pretty boy wrote:> I used EioProcess to read EIO traces under M51.1, it was great.>> Currently I am migrating my code to M52.0b2(plus M5 2.0b2 encumbered> files<
+http://www.m5sim.org/dist/current/m5-2.0b2-encumbered.tar.bz2>)> , however I met error below:> ========================================================
+> (gdb) run> Starting program: /home/linj/nuca_work/prog/m5.debug test.py> [Thread debugging using libthread_db enabled]> [New Thread -1209018688 (LWP 7980)]> M5 Simulator System>
+> Copyright (c) 2001-2006> The Regents of The University of Michigan> All Rights Reserved>>> M5 compiled Mar 14 2007 22:53:34> M5 started Wed Mar 14 23:44:50 2007> M5 executing on 
+sky.ece.uic.edu> command line: /home/linj/nuca_work/prog/m5.debug test.py> fatal: Out of memory, please increase size of physical memory.> @ cycle 0> [new_page:build/ALPHA_SE/sim/system.cc, line 223]
+> Memory Usage: 193536 KBytes>> Program exited with code 01.> ============================================================>> When eio file is large( > 400MB) I met the problem, If the eio file is
+> small(<100MB), it is OK.> The machine I use has 8GB memory and since I can run m51.1 with eio traces,> I think it is not a machine problem.> Can any of you help me out? I am not sure if I config something wrong.
+>> Thanks,> Jiang>_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

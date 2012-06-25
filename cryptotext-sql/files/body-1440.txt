@@ -1,0 +1,18 @@
+/dist/m5/system is just a suggestion... you can put the files anywhere you want as long as you set M5_PATH appropriately.  Just put them somewhere that you have write permission.Steve- Show quoted text -
+On Tue, May 26, 2009 at 3:37 PM, Somayeh Sardashti <somayeh@cs.wisc.edu> wrote:
+Hi,
+I have downloaded M5 full-system files and set M5_PATH environment
+variable. Now when I run "sudo mkdir -p /dist/m5/system" command, it
+asks for my password and then report "my id is is not in the sudoers
+file.  This incident will be reported."
+How can I fix this problem?
+Thanks,
+Somayeh
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,62 @@
+No I havent. Could you point me to the patch location?
+thanks,
+Sujay
+----- Original Message ----- From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, February 18, 2008 4:10 PM
+Subject: Re: [m5-users] Memory requests and CPU ID in M5 v2beta4- Show quoted text -
+Have you applied the patch I sent to the list on Dec 16th that fixed  some cpu id problems?
+Ali
+On Feb 18, 2008, at 3:50 PM, Sujay Phadke wrote:
+Hi,
+      I am simulating SPLASH2 bms in beta4. If I try to run FFT,  with n=4, k=4, the config.ini and the output from FFT does report  that its using 4 processors correctly. However, If I put a statement  in the dram.cc file, to print out the bank id and cpu_id everytime  there is a memory access, the requests come only from cpu=0.
+In the m5stats, this is what the bank_access_profile counter looks  like:
+the suffixes _n_m mean cpu_id=n, bank id=m
+system.physmem.bankaccess_0_0                   230616                       # DRAM bank access profile
+system.physmem.bankaccess_0_1                   230558                       # DRAM bank access profile
+system.physmem.bankaccess_0_2                   231061                       # DRAM bank access profile
+system.physmem.bankaccess_0_3                   230305                       # DRAM bank access profile
+system.physmem.bankaccess_1_0                        0                       # DRAM bank access profile
+system.physmem.bankaccess_1_1                        0                       # DRAM bank access profile
+system.physmem.bankaccess_1_2                        0                       # DRAM bank access profile
+system.physmem.bankaccess_1_3                        0                       # DRAM bank access profile
+system.physmem.bankaccess_2_0                        0                       # DRAM bank access profile
+system.physmem.bankaccess_2_1                        0                       # DRAM bank access profile
+system.physmem.bankaccess_2_2                        0                       # DRAM bank access profile
+system.physmem.bankaccess_2_3                        0                       # DRAM bank access profile
+system.physmem.bankaccess_3_0                        0                       # DRAM bank access profile
+system.physmem.bankaccess_3_1                        0                       # DRAM bank access profile
+system.physmem.bankaccess_3_2                        0                       # DRAM bank access profile
+system.physmem.bankaccess_3_3                        1                       # DRAM bank access profile
+Whereas if I use v2beta 3, I get requests from all CPUs as such:
+system.physmem.bankaccess_0_0                    69334                       # DRAM bank access profile
+system.physmem.bankaccess_0_1                    68488                       # DRAM bank access profile
+system.physmem.bankaccess_0_2                    70279                       # DRAM bank access profile
+system.physmem.bankaccess_0_3                    70258                       # DRAM bank access profile
+system.physmem.bankaccess_1_0                    50009                       # DRAM bank access profile
+system.physmem.bankaccess_1_1                    49602                       # DRAM bank access profile
+system.physmem.bankaccess_1_2                    49374                       # DRAM bank access profile
+system.physmem.bankaccess_1_3                    49647                       # DRAM bank access profile
+system.physmem.bankaccess_2_0                    83819                       # DRAM bank access profile
+system.physmem.bankaccess_2_1                    84388                       # DRAM bank access profile
+system.physmem.bankaccess_2_2                    83959                       # DRAM bank access profile
+system.physmem.bankaccess_2_3                    83616                       # DRAM bank access profile
+system.physmem.bankaccess_3_0                    49497                       # DRAM bank access profile
+system.physmem.bankaccess_3_1                    49709                       # DRAM bank access profile
+system.physmem.bankaccess_3_2                    50023                       # DRAM bank access profile
+system.physmem.bankaccess_3_3                    49654                       # DRAM bank access profile
+The cpu_id is obtained from the function getCpuNum() in request.hh
+Any ideas whats happenng here?
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

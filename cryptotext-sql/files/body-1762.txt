@@ -1,0 +1,18 @@
+Hi, Nate, thanks for your reply. I want to add the code in splash2 and get it executed on M5 FS mode.
+ 
+Actually, I want to add an structure in M5 and access it from the user code, something similar to what those user space drivers do,  but I still not clear how to do this on M5 ? I remember that in linux one can access physical memory through mmap() by opening /dev/mem, that is something like:
+ 
+    fd = open(/dev/mem);
+   addr = mmap(0,length, flags, fd, paddr);
+ 
+in which map the physical from paddr to user space, and user code access the paddr from the addr returned by mmap().
+ 
+Does M5 support similar mechanism to allow me to access my own structure from user code? I thought a cacheable address is not suitable for accessing my own structure, so I want an uncached address. Thank you !
+ 
+Where were you trying to execute this code?  In M5 or in the guest?It certainly won't work in M5.  In the guest, it will only work in the
+kernel.  Those directly mapped addresses aren't legal in user code.If you need to read/write to physical addresses in guest user code,it's going to take a lot more work and you're going to need to learn
+more about how to do that in linux.Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

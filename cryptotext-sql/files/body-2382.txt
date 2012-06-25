@@ -1,0 +1,40 @@
+Rick is correct.  Kevin Lim started it, but never finished it.  If
+someone wanted to try to finish it up, that'd be great.
+The idea of the ozone CPU was to create a CPU model that was an out of
+order analog to the simple cpu model.  Adding out of order allows this
+model to get an MLP greater than 1.  The difference between O3 and
+Ozone is that O3 has the goal of being realistic and highly
+configurable.  Ozone would be somewhat configurable, but the goal is
+for it to be fast.  This sort of model would allow you to roughly
+approximate a modern core without paying hugely in simulation time.
+  Nate
+- Show quoted text -
+> I have heard that is an  incomplete implementation of an out-of-order
+> cpu model that aims to have a simpler implementation than O3.
+>
+> Best,
+> -Rick
+>
+> Clint Smullen wrote:
+>> This model is not referenced anywhere on the website, but it appears
+>> to be a fairly detailed model. Is there a reference as to what
+>> microarchitecture it models?
+>>
+>>       - Clint Smullen
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

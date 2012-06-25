@@ -1,0 +1,41 @@
+OK, I figured it out... the apparent sensitivity to tracing being
+enabled wasn't an issue of tracing being on or not, but whether output
+was redirected to a file (which changes whether libc does block- or
+line-buffering, which then changes the code path slightly).  It ended
+up being a legitimate bug in the new coherence protocol.  I've added a
+patch below that fixes the problem, though I haven't run the full
+regressions yet.  See the comment in the patch for an explanation.
+BTW, Joe, would you be willing to contribute your DRAM code back to
+M5?  We'd love to have a more detailed DRAM timing model that we can
+ship.  (Same offer goes out to anyone else with a DRAM timing model,
+or any other cool extensions!)
+Steve
+diff -r 0d521236227c src/mem/cache/miss/mshr.cc
+--- a/src/mem/cache/miss/mshr.cc        Mon Nov 12 17:34:36 2007 -0800
++++ b/src/mem/cache/miss/mshr.cc        Tue Nov 13 06:30:12 2007 -0800
+@@ -330,6 +330,23 @@ MSHR::handleFill(Packet *pkt, CacheBlk *
+         // service... assert shared line on its behalf
+         pkt->assertShared();
+     }
++
++    if (!pkt->sharedAsserted() && !pendingInvalidate
++        && deferredTargets->needsExclusive) {
++        // We got an exclusive response, but we have deferred targets
++        // which are waiting to request an exclusive copy (not because
++        // of a pending invalidate).  This can happen if the original
++        // request was for a read-only (non-exclusive) block, but we
++        // got an exclusive copy anyway because of the E part of the
++        // MOESI/MESI protocol.  Since we got the exclusive copy
++        // there's no need to defer the targets, so move them up to
++        // the regular target list.
++        assert(!targets->needsExclusive);
++        targets->needsExclusive = true;
++        // this clears out deferredTargets too
++        targets->splice(targets->end(), *deferredTargets);
++        deferredTargets->resetFlags();
++    }
+- Show quoted text - }
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

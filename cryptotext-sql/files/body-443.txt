@@ -1,0 +1,12 @@
+> I think these workarounds are fine, but the problem should not
+> exist... Nate's our python guru, so I'll give him the first
+> opportunity respond, but I wanted to confirm that there is a problem
+> and these workarounds should not be necessary.
+I believe that I've fixed it.  SCons does somewhat strange things with
+sys.path, so some sys.path additions in the SConstruct file were being
+lost.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

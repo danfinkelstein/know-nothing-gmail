@@ -1,0 +1,5 @@
+Hello,I have a question about the latencies defined in the PhysicalMemory.py file. What is the latency defined in the PhysicalMemory?, In the DRAM memory the latencies are defined with parameters such as RAS to CAS..., but in the PhysicalMemory I have no idea about what is that latency refering.Only attending to the definition it seems much better use the DRAM Memory (more parameters and it seems much more real), but I read in some older posts, that the DRAM memory it was not tested, how is the state of the DRAM memory in the last version of the simulator?, is working now?.Thanks in advanceDisfruta antes que nadie del nuevo  Windows Live Messenger
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

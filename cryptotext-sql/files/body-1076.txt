@@ -1,0 +1,28 @@
+That assumption is incorrect. Jack Whitham got O3 working with ARM,
+but it's not checked into the main repository.
+Gabe
+- Show quoted text -
+Quoting soumyaroop roy <sroy@cse.usf.edu>:
+> Hello all,
+>
+> There are some email threads discussing the support of O3CPU for ARM
+> primarily from Jack Whitham and Gabriel Black. I was assuming that the
+> development branch has this code checked in. However, I got a bit confused
+> when I saw that the ARM_SE file in <m5-root>/build_opts does not list
+> 'O3CPU' in the CPU_MODELS. Is the code already there and I should just add
+> that to this file for the O3CPU to be built for ARM?
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

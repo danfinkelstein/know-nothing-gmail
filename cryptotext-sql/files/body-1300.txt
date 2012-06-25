@@ -1,0 +1,17 @@
+Hi,I want to trace the address rather than data blocks, is there any methodology in M5 for dump trace the address into a file or i have to hack it too...?Thanks in advance,drc- Show quoted text -
+On Tue, Jun 9, 2009 at 1:00 PM, Steve Reinhardt <stever@gmail.com> wrote:
+Not built in... you would have to hack that in.  You probably want to do it in the bus model (src/mem/bus.cc).SteveOn Tue, Jun 9, 2009 at 10:07 AM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+HiI am interested in performing the trace for the data flow(blocks) between main memory and the L3 cache; between L2 and L3 cache. So is there any methodology in M5 to do that like dump trace the data into a file or to carry out the trace.
+Thanks in advanceAshutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

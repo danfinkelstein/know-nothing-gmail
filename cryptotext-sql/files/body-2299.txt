@@ -1,0 +1,76 @@
+You should be able to just create a function called _start.  Does that
+not work?  What does nm say when you do that?
+I think the thing you're missing here is that you need to tell the
+linker that you're using _start as the entry point for your program.
+The kernel doesn't actually look for _start (you should be able to
+call it whatever you want).  It looks in the elf header for the
+address of an entry point.  Because you've told it not to use the
+stdlib, I'm guessing that the linker might not add the entry point if
+you don't tell it which symbol it is.
+Good luck.
+  Nate
+- Show quoted text -
+On Wed, Nov 12, 2008 at 4:12 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> Kind of not related to m5, but do you know how do I define my own _start symbol in a c program?
+>
+> ---- Original message ----
+>>Date: Tue, 11 Nov 2008 01:05:35 -0800
+>>From: Gabe Black <gblack@eecs.umich.edu>
+>>Subject: Re: [m5-users] statictics
+>>To: M5 users mailing list <m5-users@m5sim.org>
+>>
+>>I believe you use the -nostdlib option to leave out all of the standard
+>>library stuff, including _start which kicks off all the things Ali
+>>mentioned and more and then finally calls main(). In your program you'll
+>>then need to define _start yourself. If you're writing your program in
+>>assembly, then all you need to do is include a label called _start and
+>>put everything you want to run after it. If your program uses any system
+>>calls you'll have to implement stubs for those since those are part of
+>>the standard library too.
+>>
+>>Gabe
+>>
+>>Ali Saidi wrote:
+>>> No it's probably from all the libc _start code that is executed. Even
+>>> if main() is a single line there is much more code that is included in
+>>> the binary to setup the environment properly, get the arguments in
+>>> order, see if the terminal is character or line buffered, etc. You
+>>> should be able to convince the linker to not include all of this -fno-
+>>> builtin, but you'll need to define a _start symbol.
+>>>
+>>> Ali
+>>>
+>>> On Nov 10, 2008, at 11:21 PM, Shoaib Akram wrote:
+>>>
+>>>
+>>>> I wrote a simple program with 3 branches and ran it on m5. The
+>>>> statstics show much more branches and the number of instructions
+>>>> executed are also more than the assembly generated. Is it because of
+>>>> noise from emulated system calls?
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

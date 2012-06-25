@@ -1,0 +1,13 @@
+On 3/15/07, pretty boy <maillistforme@gmail.com> wrote:
+Error 3: E(252.eon)
+fatal: system.cpu0.workload: EIO trace inconsistency: ICNT mismatch
+ @ cycle 31904896
+[read_trace:build/ALPHA_SE/encumbered/eio/eio.cc, line 447]
+This error can occur if you don't build m5 with bug-for-bug FP
+compatitibility with SimpleScalar.  It is a configuration option and
+affects square roots if I remember correctly.
+Michael
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

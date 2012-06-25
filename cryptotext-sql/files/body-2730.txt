@@ -1,0 +1,13 @@
+Hi all,
+Currently, I am working on something like "Coroutines". The basic idea
+is when I have a L2 miss, then I will jump to other functions. Now, I
+am using the simple timing CPU model and CMP configuration. My
+question is  how could I pass the L2 miss information to the
+corresponding CPU. For example, If the CPU0 needs to read the data and
+there is a l2 miss, then how could the CPU0 know this?
+Thanks for your help,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

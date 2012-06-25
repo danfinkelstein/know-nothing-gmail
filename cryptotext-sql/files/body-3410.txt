@@ -1,0 +1,48 @@
+I get this when I patch it the second time:
+sphadke@vm1:~/research/m5/m5-2.0b5> patch -p1 < patches/cache.patch
+patching file src/mem/cache/cache.hh
+patching file src/mem/cache/cache_impl.hh
+Hunk #1 succeeded at 259 (offset -1 lines).
+Hunk #2 succeeded at 308 (offset -1 lines).
+Hunk #3 succeeded at 322 (offset -1 lines).
+Hunk #4 succeeded at 420 (offset -1 lines).
+Hunk #5 succeeded at 443 (offset -1 lines).
+Hunk #6 succeeded at 513 (offset -1 lines).
+Hunk #7 succeeded at 607 (offset -1 lines).
+Hunk #8 succeeded at 640 (offset -1 lines).
+Are the messages OK?
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "Sujay Phadke" <sphadke@eecs.umich.edu>
+Cc: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Tuesday, March 25, 2008 1:05 PM- Show quoted text -
+Subject: Re: [m5-users] error running splash2 in beta 5
+Apply it on top of the earlier patch.  The earlier patch also fixes a
+few legitimate bugs, they just weren't the one you were running into.
+On Tue, Mar 25, 2008 at 8:42 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+should I apply this patch over the one you had already sent before, or on
+ the original files?
+ ----- Original Message -----
+ From: "Steve Reinhardt" <stever@gmail.com>
+ To: "M5 users mailing list" <m5-users@m5sim.org>
+Cc: "Sujay Phadke" <sphadke@eecs.umich.edu>
+ Sent: Tuesday, March 25, 2008 10:18 AM
+ Subject: Re: [m5-users] error running splash2 in beta 5
+> OK, this time I think it's *really* fixed.  The funny thing is that I
+ > always test in timing mode, since that's the much harder case to get
+ > right, and it wasn't until yesterday I realized you were running in
+ > atomic mode.  Turns out there was a rare but simple case where the
+ > common code assumed it was in timing mode so it stuck a writeback in
+ > the writeback buffer to be processed later, except in atomic mode you
+ > never look in the writeback buffer so that writeback got lost.
+ >
+ > Anyway, let me know if this doesn't work, but it works for me (even
+ > with the -t -s options to Radix).
+ >
+ > Thanks for your patience...
+ >
+ > Steve
+ >
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

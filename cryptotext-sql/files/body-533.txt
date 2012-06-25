@@ -1,0 +1,11 @@
+> Thanks. I tried to add the flag, but by doing an "ldd", it still seems
+> m5.fast is dynamically linked. Any clue?
+what libraries is it trying to dynamically load?  libpython.so is
+likely.  Also, the question is, where does scons stick LINKFLAGS on
+the command line?  Is it before the libraries?  If not, I don't know
+that it would try to link them statically.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

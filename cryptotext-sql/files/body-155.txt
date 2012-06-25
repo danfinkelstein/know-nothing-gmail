@@ -1,0 +1,19 @@
+If you're just interested in the ROI rather than the whole benchmark, you could also use checkpointing functionality with the PARSEC hooks.  Run the application with tracing off and checkpoint at the beginning of the ROI, and then rerun the application starting from the checkpoint with tracing enabled.  Its a 2-step process, but it might be easier than writing code to do it.
+  Hope this helps,  Joel- Show quoted text -On Thu, May 20, 2010 at 12:04 PM, Gabriel Michael Black <gblack@eecs.umich.edu> wrote:
+I'm pretty sure there isn't any way to do that with the code as is. After Googling a little, it looks like you could use the PARSEC hooks to run a new M5 pseudo instruction that turned on or off tracing. There are probably other ways to do that, although I expect you'll have to write some code no matter what.
+Gabe
+Quoting sheng qiu <herbert1984106@gmail.com>:
+Hi all,
+I am using PARSEC benchmarks on M5, i want to DPRINT some information of ROI
+of PARSEC applications. But how can i let M5 only DPRINT information of ROI.
+Thanks,
+Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

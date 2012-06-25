@@ -1,0 +1,10 @@
+After grepping through the source of both v 1.1. and 2.0b2 it seems
+that this bit is only checked (to see if a block has been prefetched),
+but it is actually never set. Is this intentional? In any case, where
+should it have been set?
+--
+Marius Grannæs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

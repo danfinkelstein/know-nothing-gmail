@@ -1,0 +1,14 @@
+This has changed recently... the valid trace flags are defined by adding a line like:TraceFlag('Foo')to a SConscript file, typically the one in the same directory where you're using that flag.
+Steve- Show quoted text -On Sun, Aug 3, 2008 at 1:39 AM, 邓宁 <dunning2006@gmail.com> wrote:- Show quoted text -
+hi all
+i've  traced some information of memory access when running m5 by se.py...,i 've add something new into m5 and wanted to trace some information about accessing it, after doing that, i got the error "XXX is not the member of TRACE",  i guess there is a list to maintain all kinds of trace options like 'MemoryAccess, Cache, Bus...' , but i failed to get it... so how can i do that if i want to trace some information what i interested in, but not included in m5 currently...plz show me a light? thank u.
+--RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.com
+dnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

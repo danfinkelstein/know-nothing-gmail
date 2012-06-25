@@ -1,0 +1,38 @@
+I'm trying to implement a version of context switching that involves storing the context of a cpu from one point in time in a hardware storage, then at a later point in time reloading that context, possibly on a different cpu. Previously I had done something similar, where the benchmark on core 1 was restarted on core 2. My method for this was backing up the AlphaLiveProcess ptr until I want to resume that process. At that point I'd start a drain event, clear the registers, attach the process to the cpu and replace the process' thread context with that from the cpu, call startup on the process, then resume the cpu.
+The following code did this (after the drain completed):
+                // reset the registers in cpu (to 0)
+                for(int i=0; i<thecpu->regFile.numPhysicalIntRegs; i++){
+                        thecpu->regFile.intRegFile[i] = 0;
+                }
+                for(int i=0; i<thecpu->regFile.numPhysicalFloatRegs; i++){
+                        thecpu->regFile.floatRegFile[i].d = 0;
+                }
+                for(int i=0; i<AlphaSimpleImpl::MaxThreads; i++){
+                        thecpu->regFile.miscRegs[i].clear();
+                }
+                if(pkt->servo_proc->pTable != NULL){
+                        // reset the page table
+                        delete myproc->pTable;
+                        myproc->pTable = new PageTable(myproc->system);
+                }
+                
+                // make sure to reset the translating port
+                if(((AlphaTC<AlphaSimpleImpl> *)(thecpu->threadContexts[0]))->thread->port != NULL){
+                        // reset the translating port so it uses the new page table
+                        delete ((AlphaTC<AlphaSimpleImpl> *)(thecpu->threadContexts[0]))->thread->port;
+                        ((AlphaTC<AlphaSimpleImpl> *)(thecpu->threadContexts[0]))->thread->port = NULL;
+                }
+                                
+                ((AlphaTC<AlphaSimpleImpl> *)(thecpu->threadContexts[0]))->thread->process = pkt->servo_proc;  // attach the process            
+                thecpu->registerThreadContexts();       // register the process
+                                
+                myproc->replaceThreadContext(thecpu->threadContexts[0], 0);     // attach the thread to the process
+                myproc->startup();      // perform the initial write of program data into memory, and reset the cpu state (PC, NPC, SP, etc.)   
+What I'd like do now is resume from the exact point the process was executing before. I've backed up the register values, as well as PC and NPC in an data container. I assumed that I could simply use the same steps, except instead of using myproc->startup() to set the PC, I'd set it manually (thecpu->setPC()). Additionally, I wouldn't reset the page table, as it would be reused.
+This doesn't appear to work though, as the PC does not appear to get reloaded from commit.PC (which is what I gather setPC modifies), unless I call fetch.takeOverFrom(), at which point other errors in the different pipeline stages arise. Does anyone have some advice on the steps required to do this kind of contextual switch?
+For information, I'm running this on m5 2.0b2 in ALPHA_SE mode, and all the processes are independent single-threaded applications.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

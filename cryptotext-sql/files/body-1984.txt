@@ -1,0 +1,129 @@
+Hello,
+Regarding the question of how to run your own benchmarks in FS, it is
+not necessary that you create a new disk image. You can use the one
+that is provided in the wiki, in this link you can download one
+http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+What you need to do is add your own programs in the disk image
+(linux-latest.img), to see how to do it read this question in the FAQ,
+How do I add files to a disk image?. And after to run your program in
+FS you need to create the rcS file change the directory for the image
+in SysPath.py, and I think that´s all.
+I do not why you say that the SE mode is not suitable for what you
+want, you can run any program in SE mode, the thing that I do not
+quiet sure know is if you can is run multithread programs in SE, I saw
+some patches to do that, but in theory as M5 is provided you cannot.
+I hope it helps.
+-- Eduardo
+- Show quoted text -
+On Wed, Feb 4, 2009 at 8:53 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, Steve, thanks for your reply.
+>
+> After I sent the last email, I found some mails on the list about this
+> problem and I also read the document of how to run splash on M5. Because I
+> need to change some code of splash so I need to recompile them, then the SE
+> mode is not suitable for this job.
+>
+> I don't quite understand how to "get the binaries onto a disk image", does
+> it mean that I should compile an disk image ? I saw the mail on Apr 23, 2008
+> where Ali Saidi said the precompile splash2 binaries uses the PARAMACS
+> threading library not pthread, will that cause any problem when running
+> splash on FS mode?
+>
+>
+>
+>
+>> The configs/splash2 script is only for SE mode, not FS mode.  If you want
+>> to
+>> run programs in FS mode, you first must load them onto a disk image where
+>> the simulated OS can find them.  You should be able to find more guidance
+>> on
+>> the wiki and in the mailing list archives for this.  Feel free to ask the
+>> list if you have specific problems that you can't find answers to
+>> elsewhere.
+>>
+>> Steve
+>>
+>> On Mon, Feb 2, 2009 at 3:57 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>>
+>> > Hi, I am a beginner of M5. I tried to use the run.py in configs/splash2
+>> > to
+>> > run splash2 program on M5 in full system mode, but got an error below:
+>> >
+>> > *command line: build/ALPHA_FS/m5.opt -d result/ configs/splash2/run.py
+>> > -b
+>> > Ocean_contig -n 4
+>> > Traceback (most recent call last):
+>> >   File "<string>", line 1, in <module>
+>> >   File "src/python/m5/main.py", line 355, in main
+>> >     execfile(sys.argv[0], scope)
+>> >   File "configs/splash2/run.py", line 78, in <module>
+>> >     class Cholesky(LiveProcess):
+>> > NameError: name 'LiveProcess' is not defined*
+>> >
+>> > Does anyone encounter such a problem before? What is the LiveProcess?
+>> > Thank
+>> > you!
+>> >
+>> > If I want to write some program myself and get it run on M5 in full
+>> > system
+>> > mode, what should  I do?
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> -------------- next part --------------
+>> An HTML attachment was scrubbed...
+>> URL:
+>> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090203/6da92bd3/attachment.html
+>>
+>> ------------------------------
+>>
+>> Message: 2
+>> Date: Tue, 3 Feb 2009 20:48:03 -0800 (PST)
+>> From: jia wang <jiawang20006@yahoo.com>
+>> Subject: [m5-users] run SPEC00 or SPEC06 on M5 FS
+>> To: m5-users@m5sim.org
+>> Message-ID: <443151.28585.qm@web38503.mail.mud.yahoo.com>
+>> Content-Type: text/plain; charset="iso-8859-1"
+>>
+>> Hi:
+>> ?
+>> I am trying to run SPEC00 and SPEC06 on M5 FS mode (Alpha architecture,
+>> Linux OS). I have the following questions:
+>> ?
+>> (1): Can SPEC00 or SPEC06 be run on M5 FS mode?
+>> (2): Is there any procedure I can follow to do that?
+>> ?
+>> Thanks
+>> ?
+>> Jiao
+>>
+>>
+>>
+>> -------------- next part --------------
+>> An HTML attachment was scrubbed...
+>> URL:
+>> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090203/6119e8e0/attachment-0001.htm
+>>
+>> ------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> End of m5-users Digest, Vol 31, Issue 3
+>> ***************************************
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

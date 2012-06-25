@@ -1,0 +1,14 @@
+> What is the address you're using in the broadcast packet? Broadcast
+> doesn't really mean broadcast as much as it means you figure out where
+> to send the data. In the case of a shared bus in reality this would
+> mean a broadcast, but to make the simulation run more quickly instead
+> it means look up in a table of all the addresses you have and see
+> which one will respond to this address. If you want different behavior
+> than this, you'll probably need to add a different flag to the packet.
+Incidentally, I've felt that this flag should be renamed to something
+like Automatic, though I feel like we've been over that before.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

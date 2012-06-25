@@ -1,0 +1,45 @@
+I agree completely and have one additional comment. You need -ExecTicks to make sure differences in timing don't throw off tracediff and make it think everything is different when it's essentially the same in the way that counts, specifically what instructions are being executed. That can make it difficult, however, to figure out exactly when, in simulated time, a difference occurred so you can find out more about what was going on. If you use the atomic simple CPU which it sounds like you would be anyway, the CPI is nearly one, and you can take the line numbers reported by tracediff and scale them by the period of your CPU clock to get a really good approximation for the time of the difference on the simple CPU. Figuring out the time for the other CPU is a little harder. What I've done before is to use a simple perl script which I unfortunately don't have handy which discards the first n lines from stdin and then prints the n+1th. You can pipe m5's output to that with --trace-flags=Exec and get a line with a tick value corresponding to the line tracediff complained about.
+Gabe- Show quoted text -
+Steve Reinhardt wrote:
+This is a situation where tracediff (in the util directory) is really
+useful.  If you run both the simple and detailed models under
+tracediff with flags like "--trace-flags=Exec,-ExecTicks" then it
+should tell you exactly where the execution of the two models
+diverges.  See the comments at the top of util/tracediff for
+documentation on how to use it.
+Steve
+On Fri, Apr 25, 2008 at 9:27 PM, Ali Saidi <saidi@umich.edu> wrote:
+  
+I've never seen anything like that. We're going to need more information to
+figure out what's going on. An command line, instruction trace, same bit of
+the instruction trace for a timing cpu, etc.
+ Ali
+ On Apr 25, 2008, at 11:11 PM, Shoaib Akram wrote:
+    
+I have run most spec benchmarks using timing mode. However, using detailed
+      
+model I am getting the following error with almost every benchmark very
+early in the simulation. Is there any thing wrong with the parameters of my
+O3CPU. Following is one example for gap. System consist of four cores,
+private L1, pivate l2 and a shared L3 with Physical memory (not DRAM).
+    
+panic: Tried to access unmapped address 0xffffffffffffffe0.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+      
+ _______________________________________________
+ m5-users mailing list
+ m5-users@m5sim.org
+ http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

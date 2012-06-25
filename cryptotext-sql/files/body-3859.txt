@@ -1,0 +1,15 @@
+Hi all,
+   I added several new directories in /src/mem directory. In each new
+directory, I added a SConscript file to declare this new added files.
+Also I added new .py config files in /src/python/m5/objects and declare
+this .py files in /src/python/SConscript.
+   When I did some modification in some files and recompile them, I found
+the whole M5 system was compiled! Did I miss something or make some
+mistakes?
+   Does anyone know what is the problem?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

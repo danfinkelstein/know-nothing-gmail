@@ -1,0 +1,49 @@
+Will Beazley wrote:
+> Folks,
+>
+> I had been working on m5-2.0b6 with 4 cores/2threads and what I found is
+> that it would never complete even after months (runaway).
+>
+> I downloaded and compiled the later versions and then for some reason
+> any attempt at running the benchmarks wouldn't work.
+>
+> So my questions are:
+>
+> 1. Is there a resolution to the runaway problem?
+>
+We'd need a lot more information to be able to tell what the actual
+problem is. We (to my knowledge) haven't seen this happen. What
+benchmarks? What ISA? What mode? Did you make any changes to M5? Do you
+know if M5 itself is stuck, or if it's the simulated code? What is the
+simulated code doing if/when it's stuck? Does the output look ok
+otherwise? Do the statistics, if any, look strange in any way, for
+instance a huge number of, say, cache misses, and only a modest number
+of completed instructions?
+> 2. What are the steps to transition from m5-2.0b6 to newer versions?
+>
+    If you haven't made any changes to M5, you'll just need to download
+the new version using mercurial. If you're copy is managed by mercurial,
+you could try pulling in the changes from the development repository. I
+would suggest backing up your tree first just in case something goes
+wrong or the merge is too complicated. If you're not using mercurial,
+you could create a patch and apply it to an updated repository.
+> 3. A colleague said we need to recompile the benchmarks for the newer
+> version, is that so?
+>
+I don't know of any reason you'd need to, but there might be something
+I'm not thinking of.
+- Show quoted text -
+> (also does anyone have a copy handy of the config/alpha.cfg ?)
+>
+> http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks#Build_the_SPEC2006_alpha_binaries
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

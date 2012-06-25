@@ -1,0 +1,7 @@
+Hi all,
+I have been tracking down a problem with resuming a few benchmarks which include (fma3d, ammp, apsi, mgrid, and others) at certain checkpoints. The culprit appears to be a sqrtt (FloatSqrt) operation that gets stuck at the head of the queue and stalls the detailed model (O3CPU). If I run the benchmark in AtomicSimpleCPU there is no problem.  I have confirmed that sqrtt is at the head of the queue in four samples (two in ammp and two in apsi). The simulation ends with ("Exiting @ cycle 9223372036854775807 because simulate() limit reached.") . The same symptoms are seen in other benchmarks suffering a similar phenomena and I guess that sqrtt may also be the culprit. If anyone has some insight on what might be happening, it would be appreciated.
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+So to Lisa's point, what are the command lines that you are using? and
+what config file (se.py?)??
+--
+===========
+Korey L Sewell
+PhD Candidate
+Computer Science & Engineering
+University of Michigan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

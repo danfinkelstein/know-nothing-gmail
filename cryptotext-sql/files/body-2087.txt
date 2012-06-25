@@ -1,0 +1,59 @@
+Hi~
+ 
+I am trying to put the output in the disk
+image I create in the ALPHA_FS mode. 
+However, I cannot find the output file in
+the disk image on the real cluster. 
+I have read there is similar question
+before, and I follow the instructions and modified the FSconfig.py.
+ 
+ 
+I add the new class RawIdeDisk as follow
+ 
+class RawIdeDisk(IdeDisk):
+    image =
+RawDiskImage(read_only=False)
+ 
+    def childImage(self,
+ci):
+     
+self.image.image_file = ci
+           
+….
+ 
+    self.bridge.side_a =
+self.iobus.port
+    self.bridge.side_b =
+self.membus.port
+    self.physmem.port =
+self.membus.port
+    self.disk0 =
+RawIdeDisk(driveID='master')
+    self.disk3 =
+RawIdeDisk(driveID='slave')
+    self.disk2 =
+RawIdeDisk(driveID='master')
+            
+^^^^^^^^^^ Change this from CowIdeDisk to RawIdeDisk
+   
+self.disk0.childImage(mdesc.disk())
+ 
+After modifying the lines above, I cannot run
+the simulation.
+Here is the error message:
+ 
+panic: Error opening
+/home/r96/Iris/m5-stable-733318abb7b1/disks/linux-bigswap2.img
+ @ cycle 0
+[open:build/ALPHA_FS/dev/disk_image.cc,
+line 77]
+Program aborted at cycle 0
+ 
+Any help would be grateful~
+Thanks~
+ 
+Dennis 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,112 @@
+Hi Ali,
+ 
+Thank you very much for you suggestion.    
+ 
+According to your advice, I have tried to create an event by EventWrapper that calls the function PhysicalMemory::printlat() 
+every num_time picoseconds.  I first declare the EventWrapper class called PhysicalMemoryEvent in 
+physical.hh as follow:
+ 
+protected:
+    Params *_params;
+    void printlat();
+    friend class EventWrapper<PhysicalMemory, &PhysicalMemory::printlat>;
+    EventWrapper<PhysicalMemory, &PhysicalMemory::printlat> PhysicalMemoryEvent;
+ 
+Then, I initialize it by the constructor in physical.cc.
+ 
+PhysicalMemory::PhysicalMemory(Params *p)
+: MemObject(p->name), pmemAddr(NULL), port(NULL), lat(p->latency), _params(p),PhysicalMemoryEvent(this)
+ 
+The body of the function is 
+ 
+void PhysicalMemory::printlat()
+       {
+        cprintf("the latency is good %d\n",num_time);
+     
+        PhysicalMemoryEvent.schedule(curTick+num_time);
+        return;
+        }
+ 
+Then I rebuild the m5.debug and run it, but nothing is printed on the screen. Could you tell me is there anything wrong with my program?
+Thank you very much!
+ 
+Jun Pang
+- Show quoted text -On 9/21/07, Ali Saidi <saidi@umich.edu> wrote:
+- Show quoted text -
+FullO3CPU<Impl>::tick() is not called every cycle. It's only called when the full cpu is busy. You want to create your own function to do this and use an EventWrapper to create an event that calls that function. Every time your function is called you will schedule() at the bottom of the function to tell M5 when you want that function called again. Search the code for EventWrapper and you'll find plenty examples of this being done.
+ 
+Ali
+ 
+On Sep 21, 2007, at 7:32 AM, Jun Pang wrote:
+Thank you very much for your soon answer. I think you mean I could add my algorithm in the function 
+Event::reschedule ( Tick
+ t), 
+so I put a printf in it, but it does not print anything on the screen. But when I add the printf in the 
+FullO3CPU<Impl>::tick() function, it prints a number every cycle. I think 
+the function Event::reschedule( 
+Tick t)
+is not called every cycle but the FullO3CPU<Impl>::tick() is. Maybe I could just add my algorithm here and put 
+a counter here to deal with frequency difference between CPU and SDRAM. If my idea is not feasible or it will 
+have some bad effects, please tell me. 
+ 
+Thank you million times.
+On 9/21/07, Ali Saidi <saidi@umich.edu> wrote:
+ 
+On Sep 20, 2007, at 9:09 AM, Jun Pang wrote:
+Ali,
+ 
+Thank you very much for your detailed reply.
+ 
+The implementation of my algorithm must execute every cycle. In simplescalar, there is a sim-main function with a loop in it to emulate the pipeline
+every cycle. Is there the same function in M5?  I think I should put my algorithm in that function to execute every cycle just like a stage of pipeline. 
+ In that case you should create a function and every time it's called at the end reschedule and event re-call it in x picoseconds.  Unlike Simplescalar M5 normally uses one picosecond as a unit of simulation, so you could convert that to the memory clock frequency or whatever you want. Take a look at the tick() function in one of the simple CPUs to see how it's done. 
+ 
+In any recent version of M5 PhysicalMemory is used for both full system and syscall emulation and the MainMemory object no longer exists.
+ 
+Ali
+In the mail list 2006, Steve said 
+ 
+"MainMemory is used for running applications(like you are doing, via the Process object), while PhysicalMemory is used in full-system mode (when you're booting an operating system)...... 
+Unless you start using full-system 
+mode, you will notuse PhysicalMemory or the MemoryController object (which serves as a switch to direct 
+memory accesses either to a PhysicalMemory module or a memory-mapped device, depending on the physical 
+address)."
+Does that mean the SE mode cannot be configured with a physical memory? And if we want to emulate a SDRAM, I must 
+use the FS mode?
+ 
+Thanks a lot
+ 
+   
+On 9/20/07, Ali Saidi <saidi@umich.edu> wrote: 
+ 
+On Sep 19, 2007, at 12:09 PM, laymanyang wrote:
+Hi all,
+ 
+I am new to M5 and I have some questions. If they look stupid, please forgive me.
+ I want to add an out-of-order scheduling algorithm to physical memory access. I need to deal with the packet to the physical memory every cycle. Where should I add the algorithm to?
+Where ever you want. Derriving from the PhysicalMemory class probably makes sense.
+ Does the PhysicalMemory::MemoryPort::recvTiming(Packet *pkt) Function execute every cycle or just when the packet comes? 
+Just went a packet is received.
+Can I just add the scheduling here?You could, but it would be better to add it somewhere else in the physical memory object. You don't need to be called every cycle, just the cycles where you have work to do. So you should schedule an event that calls you function in n cycles. This is done frequently by the caches and the devices that support DMA. Take a look at dev/nsgige* and mem/caches/* for examples on how to schedule events in the future. 
+ And which kind of simulation model should I choose, Full System or Systemcall Emulation?
+Which ever one you need to do the experiments you want to do.
+ I notice that the latency from 
+memory->calculateLatency(pkt )is sent to EventQueue by  SimpleTimingPort::SendEvent(this, pkt, time).What is the function of the EventQueue? 
+It is a list of all the event the simulator needs to process. The simulator processes the next event in the event queue until there are no more events or the simulator exits. You can schedule events so that you get a call back when a certain amount of time has elapsed (for example to send a response in 100ns). 
+Since only the latency is transferred to the eventqueue but the pkt is not. How do they work collaboratively? What is the relationship between the CPU and the EventQueue? 
+See above.
+ 
+Ali_______________________________________________m5-users mailing listm5-users@m5sim.org 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+ http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+<a onclick="return top.js.OpenExtLink(window,event,this)" href="http://m5sim.org/cgi-bin/mailman/listinfo/m5-users" target="_blank

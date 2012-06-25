@@ -1,0 +1,37 @@
+Everything should be in Ticks (which is ps). If some calculation is not then it's a bug. The warning that is printed when the DRAM object is used says it best: While it doesn't effect functional correctness, the model has not been tested or validated in any way since being integrated in M5 v2.0. There maybe bugs.
+If you specify something like cas_lat = '2ns' M5 does a calculation based on what units Ticks are (normally ps) and would put the appropriate value in cal_lat (2000 if ticks are ps).
+Ali- Show quoted text -
+On Feb 6, 2008, at 1:50 PM, Sujay Phadke wrote:
+- Show quoted text -
+Hello all,
+       I am a little confused about the latency and Tick units used for calculations in the dram.cc, using v2beta4. If I understand correctly, all dram latency parameters (like cas_lat) are in nanoseconds, while variables like time_since_last_access, currTick are of type Tick (which I assume runs at 1THz simticks speed).
+So If we are using these together, shouldnt there be some scaling factor of 1000 in the expression. I am referring to the following calculations done in dram.cc:
+...
+            overlap=(int)(busy_until[current_bank] - curTick);
+...
+...
+            corrected_overlap = overlap*((int)(1/cpu_ratio)); /* floor */
+....
+....
+....
+                            else/*in between case*/
+                              {
+                                lat = cas_lat-corrected_overlap;
+overlap and corrected_overlap are converted to (int) but doesnt the value still represent time in picoseconds? whereas lat is in nanos.
+Or this:
+----------
+ total_arb_latency += (busy_until[current_bank]
+                                - curTick - lat
+                                - timing_correction);
+Again, except lat, it seems like other variables are all in picoseconds.
+I would really appreciate your help on this.
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

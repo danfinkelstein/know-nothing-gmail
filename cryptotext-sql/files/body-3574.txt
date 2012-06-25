@@ -1,0 +1,17 @@
+> The kernel i am using is actually patched. All patched worked correctly
+> without giving any error on 2.6.18.8 source tree. But still bootup is very
+> very slow.
+I was wondering if there was a patch missing.  I'll have to check if I
+forgot to commit something.
+> Actually, if you already have a more recent version of kernel working
+> perfectly with beta 4 version why not have that one in standard download?
+Because none of use use it, so it's harder to ensure that people are
+happy.  I'm content to make 2.6.18 the default.  I'm not so confident
+with 2.6.22 not having slowness hiccups, but it has worked fine for me
+in the past.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

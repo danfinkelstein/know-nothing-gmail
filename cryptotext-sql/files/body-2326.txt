@@ -1,0 +1,6 @@
+Hello All,I am noticing an interesting thing in some simulation results and I was wondering if anyone has an explanation.  I have implemented a short time fourier transform algorithm and mapped it across between 1 and 4 processors and simulated it in the M5 simulator.  I am noticing that one of the processors will have a very large amount of ticks spent in user mode and the other processors have between 10 and 100 times less ticks spent in USER mode.  I am wondering why this time discrepancy is occurring.  The way I have split the algorithm each core should have the same amount work to do on an equal amount of data.  I have implemented it with Pthreads.  Any input?
+Aaron-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+> I'm a new M5 user. I've read that some people have been working on the
+> integration of M5 and McPAT.
+> The README file of McPAT says that Richard Strong is working on a parser for
+> M5, and that its latest version is available on the repository, but I
+> couldn't find it.
+> I'd like to know more about it. Where can I find more info?
+> Thanks in advance.
+You're going to have to contact the authors of McPAT.  Are not
+involved in the development of McPAT.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

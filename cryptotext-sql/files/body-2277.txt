@@ -1,0 +1,49 @@
+You are right that i386 programs won't work right now. There isn't anything
+fundamental about that, but I have to focus my efforts somewhere and that just
+hasn't been where yet. There are a few things that need to be set up
+differently for 32 bit programs in how certain system resources are
+initialized, but the main problem would be that 32 bit support is likely
+incomplete and virtually untested. This will definitely work eventually, but my
+attention is on getting the Linux kernel up in full system. If you'd like to try
+to get it to work yourself, I'd be happy to answer any questions you have.
+Gabe
+- Show quoted text -
+Quoting Jack Whitham <jack-m5ml@cs.york.ac.uk>:
+> Hi,
+>
+> I've been experimenting with the x86 support in M5. What I would like to
+> do is run an i386 program (not x86_64) in syscall emulation mode. For
+> this project, I only want an execution trace (e.g. --trace-flags=Exec),
+> so there's no need for cache simulation or O3.
+>
+> However I seem to be having trouble running i386 binaries. x86_64
+> binaries work, but i386 ones generate this error (with latest M5 and
+> 2.0b6):
+>
+> > command line: build/X86_SE/m5.opt configs/example/se.py -c ./hello
+> > Global frequency set at 1000000000000 ticks per second
+> > warn: Unknown architecture: 3
+> > fatal: Object file architecture does not match compiled ISA (x86).
+>
+> Is this expected? I've looked at the source to see where this error
+> comes from and it seems that only x86_64 is supported, but this is
+> confusing to me, because when I see "x86", I expect x86 (i386) rather
+> than x86_64. Any thoughts?
+>
+> Thanks in advance, and thankyou for all your excellent work on M5,
+>
+> Jack
+>
+> --
+> Jack Whitham
+> jack@cs.york.ac.uk
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

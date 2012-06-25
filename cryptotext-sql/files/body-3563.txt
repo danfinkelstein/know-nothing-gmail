@@ -1,0 +1,23 @@
+Hi,
+I am running a multithreaded application with regular
+linux pthreads.
+I want to bind a single thread to a single simulated
+processor. For this purpose i am using
+sched_setaffinity system call in side the common
+function executed by all threads.
+But while executing the program the sched_setaffinity
+is failing and i get "Function Not implemented"
+message.
+I am using m5 beta 4 and default version for kernel
+(2.6.13).
+If the kernel version is not proper for this feature
+then is there any other recent version available which
+has support for processor affinity system call for
+alpha?
+Any help will be highly appreciated.
+______________________________________________
+¿Con Mascota por primera vez? Sé un mejor Amigo. Entra en Yahoo! Respuestas http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

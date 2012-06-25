@@ -1,0 +1,43 @@
+Hi Lisa,
+ 
+Thanks for you reply! I haven't go into non-blocking 
+caches yet. I'll definitely following your pointer to the FullCPU core and look 
+at how it is implemented.
+ 
+Thanks!
+ 
+Jiayuan
+- Show quoted text -
+  Hi 
+  Jerry,Sorry this is so late - summer can be busy for everyone.  
+  You may have figured this out already, but I'll answer just in 
+  case.Since TimingSimpleCPU is an in-order core, making it non-blocking 
+  doesn't make sense - you will still have to wait for the access can come back 
+  before going on to the next instruction.  However, caches are 
+  non-blocking for our FullCPU OOO core. Lisa
+  On 6/2/07, Jiayuan 
+  <jerrygonair@hotmail.com> 
+  wrote:
+  
+    
+    
+    Hey all,
+     
+    While looking at the cache-CPU 
+    implementation in TimingSimpleCPU, it seems the current cache access is a 
+    blocking access, isn't it? Is non-blocking cache access ever implemented in 
+    any CPUs? If not, do you have any suggestions on how to implement it on M5 
+    and its complexity?
+     
+    Thanks!
+     
+    Jiayuan_______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

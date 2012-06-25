@@ -1,0 +1,13 @@
+Hello,
+Exploring the statistics genreated for the simulator, I do not
+understand the difference between this two outputs:
+system.l2.overall_accesses                        482
+     # number of overall (read+write) accesses
+system.l2.demand_accesses                         482
+     # number of demand (read+write) accesses
+What is the difference between overall and demand, can anyone please
+clarify me this?, thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

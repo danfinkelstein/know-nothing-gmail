@@ -1,0 +1,5 @@
+Does someone have a linux kernel and disk image for SPARC_FS, like the ones for ALPHA_FS?Or, at least, know how to build one?Thanks,--Eberle A. Rambo.Federal University of Santa Catarina (UFSC)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

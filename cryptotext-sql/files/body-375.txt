@@ -1,0 +1,44 @@
+Hi Min,
+I think you are the first person to try the Ruby + OoO cpu combination.  I know I haven't tested and I don't believe the Wisconsin folks have either.  Right now Ruby is not fully integrated with all the features of M5 and I don't recommend transitioning from GEMS to ruby in M5 (GEM5) quite yet.
+Brad
+- Show quoted text -
+> -----Original Message-----
+> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+> Behalf Of Gabe Black
+> Sent: Saturday, March 27, 2010 12:39 AM
+> To: M5 users mailing list
+> Subject: Re: [m5-users] Ruby Hacks for OoO simulation
+>
+> I don't know the answer to your question, but since pretty much
+> everyone
+> on m5-dev is also here, you only need to write to m5-users.
+>
+> Gabe
+>
+> min cai wrote:
+> > Sorry to bother all! I'm transitioning from GEMS to ruby in M5 to
+> > study the memory performance of CMP systems. I've run the simple
+> > timing cpu with ruby enabled (RUBY=1 passed to scons build command)
+> > successfully. But when under the OoO cpu simulation, the system hangs
+> > and has no progress. After some debugging and code reading, I haven't
+> > got any useful information.
+> >
+> > So, my question is, is it possible to make the OoO cpu simulation
+> with
+> > the evolving ruby memory system in the M5 simulator? If it does not
+> > already work, could anybody here do me a favor to provide any hints
+> > about it? Thanks very much.
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

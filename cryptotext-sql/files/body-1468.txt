@@ -1,0 +1,34 @@
+With the bus model, all the devices are probed atomically to determine who
+the responder will be in regards to the coherence model. First all the
+devices that need to be snooped will be probed first(in you're the L2's),
+the responder then sets a flag on the pkt called memInhibit (the L2 that
+will supply the Owned/Modified line to the load miss). When the L3 is probed
+by the bus, it sees the memInhibit flag is set and returns without doing the
+access, so this is how the L3 is informed a cache to cache transfer is being
+done. Hope this helps.
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Shoaib Akram
+Sent: Monday, May 11, 2009 12:15 PM
+To: m5-users@m5sim.org
+Subject: [m5-users] Snooping / Simultaneous Lookups in multiple Levels
+Suppose I have multiple L2 caches connected via shared bus and a single
+shared L3. Also a load miss in one of L2s is served by another L2
+(cache-to-cache transfer). How/when is the L3 informed regarding  the
+cache-to-cache transfer? Is it accessed simultaneously and later inhibited
+after some time?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG - www.avg.com
+Version: 8.5.287 / Virus Database: 270.12.23/2106 - Release Date: 05/11/09
+05:52:00
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

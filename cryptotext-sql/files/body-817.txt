@@ -1,0 +1,12 @@
+I guess if you go through the ASPLOS presentation, there are good examples.
+---- Original message ----
+>Date: Thu, 1 Oct 2009 10:43:14 -0400
+>From: soumyaroop roy <sroy@cse.usf.edu>
+>Subject: [m5-users] Workload Simpoint
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   How does the simpoint attribute work? Is it like
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

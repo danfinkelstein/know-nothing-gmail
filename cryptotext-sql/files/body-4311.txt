@@ -1,0 +1,29 @@
+Hi Yue,
+On Monday 10 September 2007 17:44:03 Yue Li wrote:
+>     Is there anyone can tell me what is the meaning of "--caches" for the
+> sample fs.py? If I didn't specify the option "--caches",does it mean there
+> is no L1 cache for the CPU or it will use another default value?
+If you omit the --caches option, the system will not have any L1 cache. See
+the following lines in fs.py:
+for i in xrange(np):
+    if options.caches:
+        test_sys.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '32kB'),
+                                                L1Cache(size = '64kB'))
+This simply adds split L1 caches to all CPUs if the option --caches was given.
+- Jonas
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi,
+Just to be certain about this before I add support, there is really no way to simulate two threads on a SMT O3CPU with each thread starting at a different offest s(# of instructions into execution). You essentially have to run both threads on the cpu and suffer the different rates of execution of the different threads?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hello,I am exploring the information that I get when I put the option  --trace-flags="bus", but I do not understand the criterium that it is used to assign a src number to the packets. If I do a simulation with 1 core, The src number can have this values: 0,1,2, for 2 cores: 0,1,2,3, for 4 cores:0,1,3,5,7.
+Can anyone explain me what is the criterium to assign a source number for the cores, I am just interested in the packets that come from the cores. Thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

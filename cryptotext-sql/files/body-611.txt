@@ -1,0 +1,138 @@
+Thanks guys,
+Okay, maybe "electric fence" could help us to locate the problem a bit
+more. A strange thing to note is that a colleague of me is not
+experiencing this problem, though is running the same version of M5,
+compiled with the same version of gcc as me.
+Though, for finding the decoded instruction-stream which is actually
+executed I could do it on a different way than using this "Exec"-flags.
+I will add my own statistics to M5 in order to do this.
+Max
+- Show quoted text -On 01/05/2010 07:56 PM, Gabe Black wrote:
+> There isn't enough information to be certain, but it looks similar. The
+> problem was originally seen by Geoff Blake and is talked about in this
+> thread on m5-dev:
+>
+> [m5-dev] Memory corruption in m5 dev repository when using
+> --trace-flags="ExecEnable"
+>
+> The problem here is that sometimes functions in the timing CPU are
+> called by callbacks, and sometimes they're called directly if no delay
+> is necessary. This can lead to "simultaneous" events happening in
+> unpredictable orders, like cleaning up the tracing data structure before
+> an earlier step has finished using it. We talked about how to solve the
+> problem, even so far as to rewrite the simple timing CPU to avoid these
+> sorts of subtle control flow issues (which I support), but in the end it
+> ended up being dropped because of the complexity, unclear idea of what
+> exactly to do, and other demands on everybody's time. The body of the
+> email where I explain the problem is below if you can't find it in the
+> archives. Fortunately this should only be a problem in relatively rare
+> circumstances when using --trace-flags=Exec.
+>
+> Oooooooooooh. I see what's broken. This is a result of my changes to
+> allow delaying translation. What happens is that Stl_c goes into
+> initiateAcc. That function calls write on the CPU which calls into the
+> TLB which calls the translation callback which recognizes a failed store
+> conditional which completes the instruction execution with completeAcc
+> and cleans up. The call stack then collapses back to the initiateAcc
+> which is still waiting to finish and which then tries to call a member
+> function on traceData which was deleted during the cleanup. The problem
+> here is not fundamentally complicated, but the mechanisms involved are.
+> One solution would be to record the fact that we're still in
+> initiateAcc, and if we are wait for the call stack to collapse back down
+> to initiateAcc's caller before calling into completeAcc. That matches
+> the semantics an instruction would expect more, I think, where the
+> initiateAcc/completeAcc pair are called sequentially.
+>
+> One other concern this raises is that the code in the simple timing CPU
+> is not very simple. One thing that would help would be to try to
+> relocate some of the special cases, like failed store conditionals or
+> memory mapped registers, into different bodies of code or at least out
+> of the midst of everything else going on. I haven't thought about this
+> in any depth, but I'll try to put together a flow chart sort of thing to
+> explain what happens to memory instructions as they execute. That would
+> be good for the sake of documentation and also so we have something
+> concrete to talk about.
+>
+>
+>
+> Steve Reinhardt wrote:
+>
+>> I vaguely remember Gabe running into something similar a while ago...
+>> Gabe, does this look like the same bug to you?
+>>
+>> Steve
+>>
+>> On Tue, Jan 5, 2010 at 4:31 AM, Maximilien Breughe
+>> <Maximilien.Breughe@elis.ugent.be>  wrote:
+>>
+>>
+>>> Hello,
+>>>
+>>> I am interested in the decoded instructions for the SimpleCPU for Alpha
+>>> in System Emulation. Therefore I used the tracing flag "Exec". However,
+>>> when I tried to combine trace-flags=Exec with the TimingSimpleCPU I
+>>> received a "Segmentation fault" (even for the hello benchmark).
+>>>
+>>> Does anybody know what's going wrong?
+>>>
+>>> This is the command I use:
+>>> build/ALPHA_SE/m5.debug --trace-flags=Exec configs/example/se.py --timing
+>>>
+>>> The last lines of output I get are:
+>>> 31380000: system.cpu T0 : @_dl_init_paths+72    : ldah
+>>> r19,0(r29)      : IntAlu :  D=0x0000000120092a60
+>>> 31410000: system.cpu T0 : @_dl_init_paths+76    : lda
+>>> r19,-27928(r19) : IntAlu :  D=0x000000012008bd48
+>>> 31440000: system.cpu T0 : @_dl_init_paths+80    : ldq
+>>> r27,-32496(r29) : MemRead :  D=0x0000000120007f74 A=0x12008ab70
+>>> 31500000: system.cpu T0 : @_dl_init_paths+84    : jsr
+>>> r26,(r27)       : IntAlu :  D=0x000000012001bd64
+>>> 31530000: system.cpu T0 : @_dl_important_hwcaps    : ldah
+>>> r29,9(r27)      : IntAlu :  D=0x0000000120097f74
+>>> 31560000: system.cpu T0 : @_dl_important_hwcaps+4    : lda
+>>> r29,-21780(r29) : IntAlu :  D=0x0000000120092a60
+>>> 31590000: system.cpu T0 : @_dl_important_hwcaps+8    : ldah
+>>> r0,0(r29)       : IntAlu :  D=0x0000000120092a60
+>>> 31620000: system.cpu T0 : @_dl_important_hwcaps+12    : ldah
+>>> r1,0(r29)       : IntAlu :  D=0x0000000120092a60
+>>> 31650000: system.cpu T0 : @_dl_important_hwcaps+16    : lda
+>>> r1,-28024(r1)   : IntAlu :  D=0x000000012008bce8
+>>> Segmentation fault
+>>>
+>>> I reinstalled gcc so that I have the recommended version (A colleague
+>>> told me it's v4.2) to compile M5.
+>>> Information about my programs:
+>>> scons v1.2.0.d20090919
+>>> gcc v4.2.4
+>>> swig v1.3.40
+>>> M4 v1.4.5
+>>> Python v2.4.3
+>>> uname -a: Linux madmax 2.6.18-128.4.1.el5 #1 SMP Tue Aug 4 12:51:10 EDT
+>>> 2009 x86_64 x86_64 x86_64 GNU/Linux
+>>>
+>>>
+>>> Thanks,
+>>>
+>>> Max
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+you could maybe make your hash_map a hash *of* stats types (like
+hash_map<whatever, scalar stat>)...that way whenever you update the hash
+map, you're updating the stat and thus will get printed at the end...would
+that fit in with what youe' doing?
+Actually, you can't do that because stats can't be constructed after regStats is called, and they can't be copied.  Do you know ahead of time how many stats you will have?  If you do, you can create a vector and initialized it up front, and use a hash_map to map from whatever to a vector index or a pointer to the stat.  If you need a true mapping with an unknown size up front, I'm afraid that there is currently nothing taht can do that for you.  (Though I've long wanted to implement such a thing.)
+   Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

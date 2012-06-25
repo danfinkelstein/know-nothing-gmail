@@ -1,0 +1,23 @@
+2008/5/23 fractal218 <fractal218@126.com>:
+>
+>
+>  Hi,
+>  I have two questions.
+> (1) I think there is no member variable in the enum CacheBlkStatusBits type that signify the owned state of the MOESI cache coherence.
+The status bits don't individually correspond to coherence states.
+Assuming BlkValid and BlkReadable are set, the states are encoded like
+this:
+Dirty Writable  State
+  0         0          S
+  0         1          E
+  1         0          O
+  1         1          M
+>
+> (2) What is the relationship between the Addr of the class Packet and that of the class Request where the Addr has two different forms, that is: Vaddr and Paddr?
+I updated the wiki to clarify this:
+http://m5sim.org/wiki/index.php/Memory_System#Packet.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

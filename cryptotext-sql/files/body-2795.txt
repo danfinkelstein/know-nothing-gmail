@@ -1,0 +1,8 @@
+hi all, 
+i 've add my spm(sram) model into m5 recently, what i need to do next is to redirect the original access to cache to my spm as a substitute. i 've modified some files such as /src/cpu/o3/lsq.cc(.hh), but i don't know if dcache elsewhere are essential to be noted in my work? 
+how can i do my spm access redirect then?thanks a lot.-- RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.com
+dnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

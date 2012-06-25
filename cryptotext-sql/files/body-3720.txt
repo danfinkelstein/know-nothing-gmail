@@ -1,0 +1,17 @@
+Hey all,
+ 
+While testing my program, I sometimes get the following panic. What 
+can I do about it? By the way, is there anyway to turn off the sockets? 
+Thanks !
+ 
+Global frequency set at 1000000000000 ticks per second0: 
+system.remote_gdb.listener: listening for remote gdb #0 on port 72610: 
+system.remote_gdb.listener: listening for remote gdb #1 on port 72620: 
+system.remote_gdb.listener: listening for remote gdb #2 on port 7263panic: 
+Can't create socket:Too many open files !
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

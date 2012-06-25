@@ -1,0 +1,68 @@
+Thanks Steve!
+By the way, as you said,  in the multithreaded SE mode, each thread is
+allocated a stack space in the physical memory. Will this space be
+deallocated and reused when this thread terminates? I found in tru64.hh that
+stack_createFunc creates a 8M stack, but I haven't found where the stack is
+deallocated.
+Thanks!
+Jiayuan
+- Show quoted text -
+Jiayuan wrote:
+> Hey all,
+>
+>
+>
+> When I am trying to test the scalability of M5, I ran the splash2 FFT
+> benchmark with 16 cores.  M5 will prints out
+>
+>
+>
+> fatal: Out of memory, please increase size of physical memory.
+>
+>
+>
+> and then stop the simulation. I don't know how this could happen since
+> obviously FFT is not that data intensive.
+>
+> My questions are:
+>
+>    1. Do you have any clue about what happened?
+>    2. in SE mode, does M5 support page swapping?  If I have a 128M
+>       physical memory and I am running 16 threads, each of them allocate
+>       more than 8M memory space in the process's VIRTUAL address space,
+>       how does M5 handle this situation in SE mode?
+You've pretty much answered your own question there... since there's no
+OS in SE mode, there's no paging, so if your program tries to allocate
+more space than the physical memory you've allocated it gives you the
+error message you see above.  Even if the FFT program itself doesn't
+allocate that much, the system does allocate a certain amount of memory
+per thread for stack space (I don't recall how much... it could be 8MB).
+  That's why you may run out as you increase the number of threads even
+without changing the program.
+Fortunately it should be easy to fix; as the message says, just increase
+the physical memory size parameter in the configuration file.
+Steve
+>
+>
+>
+> Thanks!
+>
+>
+>
+> Jiayuan
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

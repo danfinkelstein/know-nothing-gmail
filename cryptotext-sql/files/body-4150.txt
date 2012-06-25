@@ -1,0 +1,37 @@
+        Changing the counter type to double is complicated, since it gives
+errors during compilation. It seems I'll have to change it in the
+functions which uses it too.
+I tried using the Stats::Value, but am getting errors. In the stats used
+in src/sim/stat_control.cc, which are of type ::Value, like hostSeconds
+(which prints out a double at the end), the stats have some .functor
+declared in it, which is doing the calculation. I dont know how this
+works, and when it gets called, but I was looking for something simpler.
+If I declare my stat as a Stats::Value mystat
+and then try doing something like mystat += mystat * time_since_access
+it gives an error saying that the operator = cannot be assigned to dump()
+Is there a simpler way, with a static variable or another global variable
+defined in some top level file. I should be able to use that global
+variable to keep storing the values every cycle and finally dump it at the
+end (maybe assign it to some stat at the end?)
+Thanks,
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, October 15, 2007 1:33 PM
+Subject: Re: [m5-users] Float in stats- Show quoted text -
+  I want to have an accumulator to keep track of a particular system property. I need to keep adding values to it of type float. Can I use create a scalar stat, and perform float additions to it?
+eg:
+my_stat += <some float value>;
+Is there a restriction that the stats can only be integers?
+Currently, yes.  The base statistic is of type Counter which is an int64_t.  You could maybe change the typedef to double in src/sim/host.hh. (I've never tried this)
+Or, is there a way that I can create a global variable of type float, add value to it, and output it at the end of the simulation. If golbal variables are not possible, is it possible to create static variables, which will only init to zero the first time and later on retain their values, which I can output at the end of the simulation.
+Check out Stats::Value and the stat simTicks.  I'm not sure if this will output a float in the end though.
+any help is greatly appreciated!
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

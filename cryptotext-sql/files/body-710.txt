@@ -1,0 +1,8 @@
+HiI am collecting some bus traffic. So I have the packet with block size and data present in the packet. Using packet->req->getSize()    ----- For block size AND;
+packet->get<uint64_t>()  -----  For data blockAnalyzing the two things I am getting sometimes block size to be 64; thus assuming that data should be large enough around 64 bytes, but on contrary data I am getting is like 258643139248 or 2575484698855407625. Thats it; seems to be small as compared to 64 bytes block size.
+let me know couple of things1) Am I using the right things(functions) to get  the block size and packet data2) If I am correct; then why the data I am getting is so small.
+-- Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

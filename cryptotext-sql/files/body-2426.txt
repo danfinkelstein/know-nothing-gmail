@@ -1,0 +1,43 @@
+If the L3 has an exclusive copy then it knows that there are no other
+copies in or behind any other L3s, so it can just ack the upgrade
+request.  The request is still needed to make sure that no other L2s
+below that L3 have copies.
+Steve
+- Show quoted text -
+On Thu, Oct 16, 2008 at 2:22 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> Then, in case of uniprocessor, UpgradeResp is just an acknowledgement? Since, say L3 cache and L2 Cache have same version of data.
+>
+> ---- Original message ----
+>>Date: Thu, 16 Oct 2008 16:36:34 -0400
+>>From: Ali Saidi <saidi@umich.edu>
+>>Subject: Re: [m5-users] UpgradeReq
+>>To: M5 users mailing list <m5-users@m5sim.org>
+>>
+>>It's a transition from S->E.
+>>The cache has a block in a shared state and requires an exclusive copy
+>>so it can write to it.
+>>
+>>Ali
+>>
+>>On Oct 16, 2008, at 4:26 PM, Shoaib Akram wrote:
+>>
+>>> what does memory commands UpgradeReq and UpgradeResp correspond to?
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

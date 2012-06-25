@@ -1,0 +1,16 @@
+Hi,
+   I just start to run full-system simulation.
+   Now I have passed the compile and build, and try to run the fs.py
+configuration file in the m5/configs/examples directory.
+   But I got an error:
+   command line: build/ALPHA_FS/m5.opt -d output configs/example/fs.py
+   Error creating object 'system.cpu':
+   parameter 'mem': not found
+   Program aborted at cycle 0
+   Aborted
+   Can anybody help me about it ? Thanks.
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

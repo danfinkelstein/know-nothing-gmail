@@ -1,0 +1,15 @@
+Hi,
+ 
+I am trying to port some application written
+with pthread and OpenMP library on to M5 FS simulator.
+However, the documentation mentioned that
+the crosstool do not support gcc 4.
+Could I use other cross compiler which support
+gcc 4.2 to compiler these application into ALPHA executable to run in FS mode?
+Or if I can find a alpha machine (or
+virtual machine) to do the compilation work?
+Thanks a lot~
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

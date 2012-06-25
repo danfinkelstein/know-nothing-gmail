@@ -1,0 +1,18 @@
+I hesitate to believe its a gcc etc issue because it happens with multiple cpus. Maybe its an issue with sync instructions?
+---- Original message ----
+>Date: Mon, 10 Aug 2009 11:34:56 -0400
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] Kernel Bug
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>
+>There is really no way to know, other than we've never seen it before so
+>it's probably something you've done. I don't know what kernel version
+>you're running so it's a little hard to know the exact line. One other
+>thing to be careful of is that 4.0 < gcc < 4.3 has an issue with some of
+>the pal instructions and preserving their return value. I've run into
+>kernel panics before because of this.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

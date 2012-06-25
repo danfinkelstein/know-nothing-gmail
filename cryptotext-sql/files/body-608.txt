@@ -1,0 +1,44 @@
+Hello,
+I am interested in the decoded instructions for the SimpleCPU for Alpha
+in System Emulation. Therefore I used the tracing flag "Exec". However,
+when I tried to combine trace-flags=Exec with the TimingSimpleCPU I
+received a "Segmentation fault" (even for the hello benchmark).
+Does anybody know what's going wrong?
+This is the command I use:
+build/ALPHA_SE/m5.debug --trace-flags=Exec configs/example/se.py --timing
+The last lines of output I get are:
+31380000: system.cpu T0 : @_dl_init_paths+72    : ldah
+r19,0(r29)      : IntAlu :  D=0x0000000120092a60
+31410000: system.cpu T0 : @_dl_init_paths+76    : lda
+r19,-27928(r19) : IntAlu :  D=0x000000012008bd48
+31440000: system.cpu T0 : @_dl_init_paths+80    : ldq
+r27,-32496(r29) : MemRead :  D=0x0000000120007f74 A=0x12008ab70
+31500000: system.cpu T0 : @_dl_init_paths+84    : jsr
+r26,(r27)       : IntAlu :  D=0x000000012001bd64
+31530000: system.cpu T0 : @_dl_important_hwcaps    : ldah
+r29,9(r27)      : IntAlu :  D=0x0000000120097f74
+31560000: system.cpu T0 : @_dl_important_hwcaps+4    : lda
+r29,-21780(r29) : IntAlu :  D=0x0000000120092a60
+31590000: system.cpu T0 : @_dl_important_hwcaps+8    : ldah
+r0,0(r29)       : IntAlu :  D=0x0000000120092a60
+31620000: system.cpu T0 : @_dl_important_hwcaps+12    : ldah
+r1,0(r29)       : IntAlu :  D=0x0000000120092a60
+31650000: system.cpu T0 : @_dl_important_hwcaps+16    : lda
+r1,-28024(r1)   : IntAlu :  D=0x000000012008bce8
+Segmentation fault
+I reinstalled gcc so that I have the recommended version (A colleague
+told me it's v4.2) to compile M5.
+Information about my programs:
+scons v1.2.0.d20090919
+gcc v4.2.4
+swig v1.3.40
+M4 v1.4.5
+Python v2.4.3
+uname -a: Linux madmax 2.6.18-128.4.1.el5 #1 SMP Tue Aug 4 12:51:10 EDT
+2009 x86_64 x86_64 x86_64 GNU/Linux
+Thanks,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

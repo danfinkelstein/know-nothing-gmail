@@ -1,0 +1,30 @@
+Hello Steve thanks for your answer, I've been looking in the source code of src/mem/bus.hh, but I don't know how to interconnect the caches, now I got this:system.l2 = L2Cache(size='2MB')
+system.tol2bus = Bus()system.l2.cpu_side = system.tol2bus.portsystem.l2.mem_side = system.membus.portsystem.l3 = L2Cache(size='32MB')system.tol3bus = Bus()system.l3.cpu_side = system.tol3bus.port
+system.l3.mem_side = system.membus.portI've tried this but doesn't work:system.tol2bus.port = system.tol3bus.portThanks.- Show quoted text -On Thu, Oct 9, 2008 at 8:07 AM, Steve Reinhardt <stever@gmail.com> wrote:
+Yes, you need a new bus to connect between the L2 and L3 caches (l2.mem_side and l3.cpu_side).
+On Wed, Oct 8, 2008 at 4:52 PM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com> wrote:
+Hi, I'm trying to simulate a system with a Three Level Cache configuration L1 (one per core), L2 shared and L3 shared. This is my code for the cache:
+ 
+ 
+system.l2 = L2Cache(size='2MB')system.tol2bus = Bus()system.l2.cpu_side = system.tol2bus.portsystem.l2.mem_side = system.membus.port
+ 
+system.l3 = L2Cache(size='32MB')system.l3.cpu_side = system.tol2bus.portsystem.l3.mem_side = system.membus.port
+ 
+I define a tol2bus and I connect to them the L2 cpu side and the L3 cpu side and after I connect the L2 mem side and the L3 mem side to the membus.port, and this is the output that I get when I'm trying to simulate the system:
+ 
+fatal: system.tol2bus has two ports with same range:        system.l3-cpu_side_port        system.l2-cpu_side_port
+I imagine that the error is because I'm connecting L2 and L3 to the same bus, but if  I don't do this in this way how can I design my system?, Do I need to define another bus for the L3 cache and after connect that bus with the bus of the L2 Cache?. 
+ 
+Thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+Hi Yue,
+There are several ways to do this:
+1. You can get the blank image script from the Download page, create a new blank image that is the desired size and then mount both images and copy the contents of the 50MB one to your new one.
+2. You can use the 50MB image to boot the system but then mount a second disk image that has your benchmark on it by adding the image to FSConfig.py and then mounting it with an rcS script
+3. You can build an entirely new image of the desired size with PTX dist (also available from the Download page).
+Ali- Show quoted text -
+On Sep 19, 2007, at 2:15 PM, Yue Li wrote:
+Hi there,
+   I am running M5 2.0 beta3 in full system mode and I use the default linux-latest.img file.But I found the capacity is only 50MB which doesn't allow me to copy a large benchmark into it.Is there any other way I can scale the capacity of current image file?
+  Thank you very much for your help.
+                                                                                                    Yue
+                                                                                                    09-19-2007
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

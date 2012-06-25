@@ -1,0 +1,58 @@
+You should look at the tutorial slides/video like Ali suggest, but to get you
+started it sounds like you're expecting output on the terminal where you ran
+m5. Unlike SE mode, the only thing you'll see there are messages from m5 itself
+and not output from the simulation. To see that, you can use the m5term program
+in util/term to connect to the simulation like you were connected to a real
+machine over a serial cable.
+Gabe
+- Show quoted text -
+Quoting Ali Saidi <saidi@umich.edu>:
+> That looks completely standard. You should look at the tutorial slides/
+> video to better understand what is going on here.
+>
+> Ali
+>
+> On Jan 11, 2009, at 10:20 PM, Veydan Wu wrote:
+>
+> > Hi, I am running M5 full-system mode, everything seems ok,
+> >
+> > ......
+> > M5 compiled Jan 10 2009 00:08:03
+> > M5 revision Unknown:Unknown
+> > M5 commit date Unknown
+> > M5 started Jan 12 2009 11:13:10
+> > M5 executing on ubuntu
+> >
+> > command line: build/ALPHA_FS/m5.opt configs/example/fs.py
+> > Global frequency set at 1000000000000 ticks per second
+> > warn: kernel located at: /media/Study/CPU/CPUsource/M5/m5-
+> > stable-733318abb7b1/dist/m5/system/binaries/vmlinux
+> >
+> > Listening for system connection on port 3456
+> >       0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1
+> > 00:00:00 2009
+> > 0: system.remote_gdb.listener: listening for remote gdb #0 on port
+> > 7000
+> > **** REAL SIMULATION ****
+> >
+> > warn: Entering event queue @ 0.  Starting simulation...
+> >
+> > and the simulator stall here, nothing continues. I have to press Ctrl
+> > + c to quit.
+> >
+> > Does anyone encounter similar problem? I have no idea how to deal
+> > with this problem.
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

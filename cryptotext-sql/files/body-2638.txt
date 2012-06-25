@@ -1,0 +1,17 @@
+Hi all:
+I expect the following steps in full system simulation:
+(1) boot linux with atomic cpu and create a checkpoint after linux is
+booted.
+(2) restore from this checkpoint into timing cpu and warm up cache num1
+instructions
+(3) switch to a detailed cpu and run num2 instructions
+(4) record the result of the num2 instrutions
+let simulator: m5.debug
+config file: fs.py
+benchmark: gzip
+Can anyone tell me how to write a command to accomplish the above steps?
+Thank you very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

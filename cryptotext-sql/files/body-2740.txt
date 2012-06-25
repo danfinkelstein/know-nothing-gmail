@@ -1,0 +1,38 @@
+Thanks for tracking this down... it validates with my theory that the
+new SE-mode address translation is the culprit, since before that was
+added you never would have had a fault in SE mode.
+Unfortunately I'm no O3 expert, so I can't give you any pointers on
+how to solve the problem off the top of my head.  I am a little
+curious about why both threads would be fetching in the same cycle
+though; I'd expect the SMT model to choose one thread or the other to
+fetch from but not both.  Is there a policy to enable this behavior?
+I'm more familiar with the SMT that Steve Raasch added to the old
+obsolete SimpleScalar-derived CPU though, and not so much with what
+Korey's done to O3.
+Steve
+On Sun, Jul 6, 2008 at 3:24 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> After diving into this problem more, it seems that there might be a
+> problem in src/cpu/o3/fetch_impl.hh for SMT in general.  At the bottom
+> of function fetch(), if a fault has occurred, a no-op instruction is
+> formed and placed in the toDecode wire. However, the reference that is
+> used is "toDecode->insts[numInst] = instruction;" at line 1256 where
+> numInsts is never incremented. The end result is that if two SMT threads
+> both fault on the fetch tick when using EIO traces, they both write to
+> the same location in the insts field of the toDecode struct.  Attempted
+> to solutions that have not worked.
+>
+> 1) If I increment numInst afterwards, it seems that it is possible to
+> fetch more instructions than the width due to the insertion of the no-ops.
+>
+> 2) If I use toDecode->size value before it is increment on line 1258
+> (approx.), this leads to a null access sometime later down the road.
+>
+> If someone has a good understanding with O3 or SMT implementation, your
+> help would be appreciated.
+>
+> -Rick
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

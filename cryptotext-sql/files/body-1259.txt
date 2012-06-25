@@ -1,0 +1,145 @@
+You need to apply the patches in the linux-patches repository. One of
+them should muck around with some defines that cause a vga adapter to
+not be required.
+Ali
+- Show quoted text -
+On Jun 25, 2009, at 2:58 PM, ef wrote:
+> Hello,
+>
+> Thanks, I finally got it compiling , that is where my problems
+> start, in the repository we get a special config for m5 to build the
+> linux kernel, correct?
+> using the command cp .config.m5  .config, we copy over that
+> specialized config over. Am I suppose to mess with it, or it should
+> work as is? As I am having difficulties succesfully compiling the
+> kernel.
+>
+> As always I type:
+> make mrproper to clear out prior failed compilations
+>
+>
+> Here is my error:
+>
+> WARNING: "saved_config" [vmlinux] is COMMON symbol
+> WARNING: modpost: Found 12 section mismatch(es).
+> To see full details build your kernel with:
+> 'make CONFIG_DEBUG_SECTION_MISMATCH=y'
+>   GEN     .version
+>   CHK     include/linux/compile.h
+>   UPD     include/linux/compile.h
+>   CC      init/version.o
+>   LD      init/built-in.o
+>   LD      .tmp_vmlinux1
+> arch/alpha/kernel/built-in.o: In function `locate_and_init_vga':
+> /home/ef/kernel/linux-2.6/arch/alpha/kernel/console.c:54: undefined
+> reference to `vga_con'
+> /home/ef/kernel/linux-2.6/arch/alpha/kernel/console.c:64: undefined
+> reference to `vga_con'
+> make: *** [.tmp_vmlinux1] Error 1
+>
+> Anyone have any advice on fixing the errors? Should I toy with
+> the .config file?
+>
+> Thanks,
+> EF
+>
+>
+> On Wed, Jun 24, 2009 at 7:17 PM, William George Beazley Jr
+> \
+> <wgbeazley@my.lamar.edu> wrote:
+> You actually need to install the cross-compiler. I don't recall off
+> hand how do it but it was pretty straight forward.
+>
+> The instructions say you should get it from here.
+> http://ymorin.is-a-geek.org/dokuwiki/projects/crosstool#download
+>
+> If you have installed and can't find the binary:
+>
+> try typing this:
+>
+> find ~/ -name "*alpha-unknown-linux-gnu-gcc*" -ls
+>
+> or
+> find ~/ -name "*gcc*" -ls
+>
+> (Presuming you aren't root or sudo) if it exists in your home
+> directory,  you should able to 'find' it that way.
+>
+> Lastly, check your path
+>
+> echo $PATH
+>
+>
+>
+>
+> ef wrote:
+>
+>
+> >Hello,
+> >I am trying to compile the latest version of Linux following the
+> >instructions given on the website. I am stuck at cross compiling. I
+> don't
+> >know much about linux and I dont know how to fix the following
+> problem, any
+> >thoughts?:
+> >
+> >I basically downloaded
+> >http://www.m5sim.org/dist/current/alphaev67-unknown-linux-
+> gnu.tar.bz2,
+> and
+> >then untar-ed it.
+> >
+> >Then I set my path:
+> >set path=(
+> /home/ef/newinstall/Crosscompiler/alphaev67-unknown-linux-gnu/bin
+> >$path  )
+> >(tried path in the front also using tcsh, but the above configuration
+> always
+> >works in my linux distro)
+> >
+> > and type:
+> >~/kernel/linux-2.6>> make ARCH=alpha
+> CROSS_COMPILE=alpha-unknown-linux-gnu-
+> >vmlinux
+> >make: alpha-unknown-linux-gnu-gcc: Command not found
+> >  CHK     include/linux/version.h
+> >  CHK     include/linux/utsrelease.h
+> >  CC      kernel/bounds.s
+> >/bin/sh: alpha-unknown-linux-gnu-gcc: command not found
+> >make[1]: *** [kernel/bounds.s] Error 127
+> >
+> >I don't get it, am I suppose to configure the precompiled binaries
+> (if
+> so
+> >how?) ? Not sure why its not registering at all. Any help is
+> appreciated!
+> >
+> >Thanks,
+> >EF
+> >
+>
+>
+> ------------------------------------------------------------------------
+>
+>
+> _______________________________________________
+> >m5-users mailing list
+> >m5-users@m5sim.org
+> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> -----------------------------------
+> Will Beazley|Sys. Software Analyst
+> 409.880.7847|wgbeazley@my.lamar.edu
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

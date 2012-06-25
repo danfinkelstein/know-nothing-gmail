@@ -1,0 +1,67 @@
+Thanks a lot, Gabe.
+I tried using these pseudoinsts inline in the application code. But I
+don't know if the assembler
+takes the raw instruction as is. For example, I tried the following,
+    long my_m5_op = ( (0x01 << 26) | (16 << 21) | (17 << 16) | 0x40 );
+    asm("my_m5_op");
+I kept getting compile error with it.
+Is there an example how to use this pseudoinst inline?
+If this does not work, I will switch back to the model as you suggested and call
+Stats::StatEvent(false, true,  ,  ) directly.
+john
+- Show quoted text -
+On Sat, Apr 3, 2010 at 5:42 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+> The pseudo instructions are for use inside a program like you said, and
+> are actual assembly instructions recognized by M5. A program is provided
+> in util which, when run from a script, will run the requested assembly
+> instruction. That program is makes it easy to use those instructions
+> from a script, but it's entirely optional. That said, if you actually
+> want to trigger the ops using a particular address instead of using the
+> assembly instructions, then you don't want either of these approaches
+> which are for use from the simulation target. From inside the simulator
+> (ie the cache model) you can just call the functions the assembly
+> instructions end up calling which are in sim/pseudo_inst.cc. Even
+> better, you could use the same underlying mechanisms those functions use
+> directly, avoiding some unnecessary complications.
+>
+> Gabe
+>
+> John Xu wrote:
+>> Hi,
+>>
+>> I am looking for a way to reset/dump stats from the application itself
+>> in ALPHA_FS mode.
+>> As I understood, all the pseudoinsts as part of the m5 util only works
+>> in the rcS script which
+>> does not understand where the program is in a finer granularity.
+>>
+>> Is there a way to do so already in M5?
+>>
+>> The method I am working on is based on a memory mapped variable. And
+>> whenever I see a
+>> write to it, I am trying to reset/dump stats. The  do_reset_stats
+>> functions though are in util directory
+>> instead of src. So the default compilation script is not going to
+>> support that. I have some trouble
+>> calling back to these psudoinsts from the cache mode itself.
+>>
+>> Do you think this is the right way to go or is there is better way?
+>>
+>> Thanks for your help in advance.
+>>
+>> john
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

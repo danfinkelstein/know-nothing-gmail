@@ -1,0 +1,11 @@
+Hi,
+How do I peek into the instruction queue? Basically, I want to get a
+trace that shows the entire stream of instructions (i.e both memory
+and "regular" instructions). That's because I need to know how many
+non-memory instructions are executed between any two memory operations.
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

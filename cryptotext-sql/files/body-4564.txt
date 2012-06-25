@@ -1,0 +1,31 @@
+This should be fixed when release b3.
+Ali- Show quoted text -
+On May 10, 2007, at 1:03 PM, Richard R. Zhang wrote:
+Hi all,
+I use the following command to run a netperf test, and m5 reports an assertion failure.
+        ./build/ALPHA_FS/m5.opt -b NetperfMaerts --l2cache
+Here are the m5 and linux output.
+-----m5 output-----
+        m5.opt: build/ALPHA_FS/dev/ns_gige.cc:1583: void NSGigE::rxKick(): Assertion `rxDescCnt >= rxPktBytes' failed.
+----linux(client) output----
+        mounting filesystems...
+        EXT2-fs warning: checktime reached, running e2fsck is recommended
+        loading script...
+        setting up network...
+        eth0: link now 1000F mbps, full duplex and up.
+        waiting for server...Bogus pci_unmap_single: dma_addr 0  base 800000 size 800000
+If I remove the `--l2cache' option in command, it runs correctly. It seems that there are
+some bugs in l2 cache module. Has anybody notice that? Is there any patches for it?
+Thanks.
+                                
+--------------
+Richard R. Zhang
+2007-05-11
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

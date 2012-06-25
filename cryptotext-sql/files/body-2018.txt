@@ -1,0 +1,6 @@
+hi,i tried to run libquantum benchmark on M5, but it didn't worked.so i looked in libquantum.sh.e18164 , it showed this message.mmap: Cannot allocate memoryfatal: Could not mmap! @ cycle 0
+[PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 71]Memory Usage: 92560 KBytescould you please help me to find out the problemThanks,Pavan 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

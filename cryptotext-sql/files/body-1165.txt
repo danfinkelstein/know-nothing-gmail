@@ -1,0 +1,30 @@
+Thank you sir.- Show quoted text -On Thu, Jul 23, 2009 at 7:50 AM, Steve Reinhardt <stever@gmail.com> wrote:
+There can be only one packet being transmitted on a given bus in a
+given cycle.  However, multiple packets can arrive from different
+sources and be scheduled on the same cycle; the timestamp in which a
+packet is processed is not necessarily the cycle that it is assumed to
+traverse the bus.
+Steve
+On Wed, Jul 22, 2009 at 7:06 PM, Devraj Chapagain<drchapagain@gmail.com> wrote:
+> hi,
+> While tracing the dumped information of the packet, i got the packet_size as
+> 4, 8 and 64 in different tick time. Can the packet size be different in
+> different tick time on the same bus?  I'm really sorry to ask such a
+> question but i want to know it.
+>
+>
+> Thanks in advance,
+> drc
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

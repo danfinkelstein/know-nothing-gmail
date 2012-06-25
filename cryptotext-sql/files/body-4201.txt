@@ -1,0 +1,14 @@
+Hi All,
+   In the answer to "How do I add files to a disk image?" on the FAQ
+website, I found "what you should do to add new binaries to M5 is
+modify linux-dist and place it in that build structure."
+   Can anybody explain these for me in detail? I put my created .img file
+into the "disks" directory which includes linux-latest.img &
+linux-bigswap2.img. I set the disk path in Syspath.py. But when I
+connect to the simulated console, I cannot find the new binaries. Did I
+put the .img file in the wrong place?
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Hello --I'm trying to use a Stats::Formula to multiply two Stats::Vectors, and am having trouble with the reported total (using .flags(total)).Take, for example, the following:
+   Stats::Vector a;  // .init(10), assume a[i] = 2 for all i;   Stats::Vector b;  // .init(10), assume b[0] = 0, b[1] = 1, b[2] = 2, etc
+   Stats::Formula c = a * b;  // a.size() must equal b.size() for this to work;When c is calculated, it does the equivalent of the following:
+  for (int i = 0; i < size(); i++)  {     c[i] = a[i] * b[i];
+  }This implies:   Sum(c[i]) = 90;...which is correct.  But when the total() function is called on c, the following calculation takes place:
+ c.total() = a.total() * b.total();This implies:   c.total() = 20 * 45
+   c.total() = 900...which is incorrect, at least according to what I think should be reported (I think c.total() should be equivalent to Sum(c[i]);  in this case, it's actually Sum(c[i]) * size()).
+Is this desired behavior for the Stats::Formula class, or is this a bug?Thanks,   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

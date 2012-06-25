@@ -1,0 +1,16 @@
+On Sun, Apr 20, 2008 at 10:33 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+I am curious as to why my message was rejected, seeing as I am still a member of the list (I verified this online).I don't get it either... we'll have to look into that.  Let us know if it happens again.
+ On Apr 20, 2008, at 10:29 PM, m5-users-owner@m5sim.org wrote:
+You are not allowed to post to this mailing list, and your message hasbeen automatically rejected.  If you think that your messages arebeing rejected in error, contact the mailing list owner at
+m5-users-owner@m5sim.org.From: Clint Smullen <cws3k@virginia.edu>
+Date: April 20, 2008 10:31:28 PM EDTTo: M5 users mailing list <m5-users@m5sim.org>
+Subject: Re: [m5-users] LoadLockedResp hitting cache assertion
+I have not modified the code except to apply the two patches previously discussed. Looking into it, yes, the cache doesn't ever send a LoadLockedReq as it is the CPU that generates it (this error is coming from a dcache). As shown by the assertion, it is held in a MSHR.
+Tracing from recvTiming to timingAccess to the allocation of MSHR targets, there is nothing preventing a LoadLockedReq from being placed into a MSHR. The assertion is tripped when a response from the lower level contains the invalidate flag set (in particular, it is a ReadRespWithInvalidate).
+Looking at traces, it is a common situation for MSHRs to hold LoadLockedReq messages from the CPU. All cases preceding the assertion failure occur in response to just a ReadResp. I am still very unclear on why this assertion is the way it is, since the code is obviously structured to permit invalidation messages passing back up the cache hierarchy.
+OK, I see, that was my confusion... sorry.  I didn't read the assertion carefully enough and I assumed that it was the response packet itself which was getting flagged for not being a ReadResp (and for being a LoadLockedResp, which a cache response should never be).  It's certainly true that in the case where a CPU issues a LoadLockedReq to the cache then that cmd will be saved in an MSHR.
+Given that, it probably is OK to change the assertion; I think asserting target->pkt->isRead() is probably appropriate.Let me know how it goes...Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,86 @@
+If the bus between the L1s and L2 didn't exist and the L1s were
+directly connected to a single L2, it would work without issue. To do
+what you're proposing, is a bit more difficult. If you want to just
+partition the L2s over memory linearly (not ideal) you should be able
+to do this with the cpu_side_filter_ranges and mem_side_filter_ranges
+parameters on the L2 caches (for each cache you would filter all the
+portions of Physical memory except what that cache was supposed to
+respond to. On the other hand, if you want to interleave the caches
+(e.g. one cache will cache every fourth block), that will be much
+harder and require changes to the RangeTree and all of the range
+propagation functions. The way to go about this is probably by adding
+a mask to the range that and then have lookup function check the mask
+as well. However, I don't immediately see how 4 L2s that interleave
+all the blocks of memory is very different than 1 L2 that is 4x as big
+and can handle 4x the number of requests.
+Ali
+- Show quoted text -
+On Jan 9, 2009, at 6:52 PM, Meng-Ju Wu wrote:
+> Dear All,
+>
+> I tried to configure this kind of architecture in the M5 2.0b6 SE
+> mode,
+>
+>   CPU     CPU ........  CPU
+>     |           |                |
+>    L1        L1   .........  L1
+>     |           |                |
+> ------------------------------------Bus
+>     |           |                |
+>    L2        L2   ........  L2
+>     |           |                |
+> ------------------------------------Bus
+>                 |
+>               MEM
+>
+> Basically, I want to let each L2 can snoop and cache the blocks of
+> different addresses.  In the beginning, I just want to see if I can
+> make this kind of configuration, so I write the python code like:
+>
+> system.bankl2_1=L2(size = options.l2size, assoc = 8);
+> system.bankl2_2=L2(size = options.l2size, assoc = 8);
+>
+> for cpu in smp_cpus:
+>    cpu.addPrivateSplitL1Caches(L1(size = options.l1size), L1(size =
+> options.l1size))
+>    cpu.connectMemPorts(system.toL2net)
+>
+> system.bankl2_1.cpu_side = system.toL2net.port
+> system.bankl2_1.mem_side = system.memnet.port
+> system.bankl2_2.cpu_side = system.toL2net.port
+> system.bankl2_2.mem_side = system.memnet.port
+> system.physmem.port = system.memnet.port
+>
+> But I got the error.
+>
+>      0: system.memnet: received RangeChange from device id 2
+>      0: system.memnet: Adding range 0 - 0xffffffff for id 2
+>      0: system.memnet: received address range request, returning:
+>      0: system.memnet:   -- 0 : 0xffffffff
+>      0: system.memnet: received RangeChange from device id 0
+>      0: system.memnet: Adding id 0 to snoop list
+>      0: system.memnet: received address range request, returning:
+>      0: system.memnet:   -- 0 : 0xffffffff
+>      0: system.memnet: received RangeChange from device id 1
+>      0: system.memnet: Adding id 1 to snoop list
+>      0: system.memnet: Adding range 0 - 0xffffffff for id 1
+> fatal: system.memnet has two ports with same range:
+>       system.bankl2_2-mem_side_port
+>       system.physmem-port0
+>
+> The range.size of system.bankl2_2-mem_side_port is 1, but he
+> range.size of system.bankl2_1-mem_side_port is 0. What does the
+> range.size mean, and how could I configure multiple individual L2s?
+>
+> Thanks a lot,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

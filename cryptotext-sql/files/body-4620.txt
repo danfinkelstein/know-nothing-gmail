@@ -1,0 +1,12 @@
+Hi,
+After updating the SWIG version on the server I keep getting this error when I
+try to compile:
+scons: *** [Errno 2] No such file or directory:
+'build/ALPHA_FS/python/swig/debug.i'
+scons: building terminated because of errors.
+The correct versions of SCONS and SWIG are installed. What is causing this
+error?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

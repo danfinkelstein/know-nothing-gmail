@@ -1,0 +1,13 @@
+      mem_row_access
+      .init((int)((num_rows*num_banks)/32))
+     .name(name() + ".mem_row_access")
+      .desc("row access statistics")
+      ;
+Are you sure that the value that is passed into .init is reasonable?  If it is too large, the allocation will fail and things will break.
+I suggest that you add some print statements or go into the debugger in
+VectorBase::doInit
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+What cycle is it ending at?  If it's a huge number (like 2^63-1) then
+what that really means is that the CPU stalled and stopped scheduling
+events, which causes you to rapidly move forward to the dummy event at
+MAXINT that keeps time from rolling over into negative values.
+Steve
+- Show quoted text -
+On 11/13/07, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> Hi,
+>
+> When I attempt to resume an ammp checkpoint for ALPHA_SE AtomicSimpleCPU
+> at location 59*100E6 instructions into the binary, I am able to run in
+> AtomicSimpleCPU, but if I switch to O3CPU, I am able to run 248,483
+> instructions when suddenly i get the "Exiting @ cycle ... because
+> simulate() limit reached" which is the normal simulator exit event. As I
+> set things up to exit at a particular instruction count of 100E6, I an
+> uncertain what could be causing this early exit. Any ideas?  I looked at
+> a trace of "O3CPUAll" and it seemed fine. (Side note: this seems to be
+> happening with any ammp checkpoint I take, where as others appears to be
+> fine).
+>
+> -Richard
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

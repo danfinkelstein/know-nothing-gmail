@@ -1,0 +1,12 @@
+Dear guys,
+ 
+I am a beginner on M5 and doing a project on cache performance. However, I found M5 seems not supporting banked cache although I found the webs 
+http://article.gmane.org/gmane.comp.emulators.m5.users/5110/match=bank and http://article.gmane.org/gmane.comp.emulators.m5.users/2911/match=bank
+(under the help of Siming Chen, who posted a similar email with the name "About Bank and Crossbar Model" on 04-11-2010 in the email archive). It seems there is a patch for this
+functionality. So, could some one please help me out? Thank you very much.
+Additionally, attached is a pdf published by jiayuan Meng online. I found it via Google and attach it for convenience.
+Best Regards,Hongsheng Lu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

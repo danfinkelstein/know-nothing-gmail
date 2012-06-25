@@ -1,0 +1,26 @@
+Hi all
+I have several questions, can you give me some ideas?
+1) The sampled vmlinux downloaded from m5 website is only suitable for
+the case which has less than 4 cpu. Is this right?
+2) If I hope the number of CPU is more than 4, I need to recompile the
+linux kernel instead of the sampled vmlinux. In this case how can I do
+it? Or there is such new kernel we can download from m5 website?
+3) When I'm trying create a bigger image disk,I do it following the
+instruction "Compiling benchmarks for the image and creating the image
+with linux-dist". But I meet an error as following, how can I fix it?
+--15:13:04--
+ftp://ftp.handhelds.org/packages/ipkg-utils/ipkg-utils-1.7.tar.gz
+  (try:20) =>
+`/home/seasmile/m5/linux-dist/bin/myworkspace/src/ipkg-utils-1.7.tar.gz'
+Connecting to ftp.handhelds.org|128.31.0.22|:21... connected.
+Logging in as anonymous ...
+Error in server response, closing control connection.
+Giving up.
+Could not get packet via ftp!
+URL: ftp://ftp.handhelds.org/packages/ipkg-utils/ipkg-utils-1.7.tar.gz
+I really appreciate your helps.
+Jibang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

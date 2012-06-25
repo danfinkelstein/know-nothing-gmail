@@ -1,0 +1,14 @@
+Hi Ryan,
+One quick solution is put the following line in the Mybench.py
+==============
+from m5.objects import *
+import os, optparse, sys
+binary_dir = 'xxxx/alpha_binary/'
+data_dir = 'xxxx/SPEC06/cpu2006/benchspec/CPU2006/'
+==============
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

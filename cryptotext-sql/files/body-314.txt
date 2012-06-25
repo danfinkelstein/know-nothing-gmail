@@ -1,0 +1,9 @@
+That really makes sense. It helped me to understand things better.
+It even made me able to fix the double delete-bug ;-). 
+Can I send it to you? I'm not sure if sending patches along the users
+mailing list is a proper habit =).yea, if you have patches then send out to the m5-dev list for "patch-review" so to speak.the preferred method is mercurial patchbomb extension (I believe), but even in the event your not 
+using mercurial patchqueues, we're grateful for any patches that we can receive thatwill improve the code.Send away (to m5-dev)! -- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,26 @@
+Jiayuan,
+If you're going to create a new topic on the mailing list please create a new message instead of replying and changing the Subject: of an existing message. If you reply the In-Reply-To: and References: headers are set to the old message ids. Some mail clients use these headers to decide if a message should be displayed as part of an existing thread or as a new topic.
+Thanks,
+Ali- Show quoted text -
+On Feb 7, 2008, at 11:24 AM, jiayuan meng wrote:
+- Show quoted text -
+Hey all,
+I have a formula that need to do calculation based on the sum of a vector. How do I write this ?
+Vector v;
+Formula f;
+regStats()
+{
+  v.init(len);
+  f = constant(9.0)*v.total();
+}
+Thanks!
+Jiayuan
+Shed those extra pounds with MSN and The Biggest Loser! Learn more. _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

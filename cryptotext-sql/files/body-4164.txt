@@ -1,0 +1,7 @@
+Is there a difference in the timing information of using the timing model (IE passing m5 the '-t' flag) and the O3 model (passing the '-d')?
+More specifically, I noticed that Atomic uses different functions in the sending/recieving of packets.  (IE 'snoopProbe' instead of 'snoop') Is there such a difference in O3 versus timing?
+~Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

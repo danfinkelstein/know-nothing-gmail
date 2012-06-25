@@ -1,0 +1,44 @@
+Hi,
+  I have built a couple of the PARSEC benchmarks to run under alpha-linux and have a disk image set up with these binaries and input files to run in M5 ALPHA_FS.  I have run the complete blackscholes benchmark using 4 cores/4 threads with no problems.  Currently, I am trying scale up the number of processors to 64.  Here is my command line:
+ 
+    ------------------------
+    build/ALPHA_FS/m5.opt --outdir=$OUTDIR --trace-flags="Bus" --trace-start=1700000000000 --trace-file=$OUTDIR/tracelog.txt configs/joel/fs.py --detailed --caches --l2cache --num-cpus=64 --fast-forward=80000000 --script=./configs/joel/parsec/blackscholes.rcS
+    ------------------------
+ 
+  The first shot at running this resulted in an assertion failure that is documented in the mailing list thread: http://www.mail-archive.com/m5-users@m5sim.org/msg00107.html.  Based on the recommendation from this thread, I commented the assertion, rebuilt M5 and reran the benchmark (I am not sure if this is related to the next problem that I am having).  Now, the benchmark fails with the following output:
+ 
+    ------------------------
+    Switched CPUS @ cycle = 28289857500
+    warn: Entering event queue @ 28289857500.  Starting simulation...
+    Changing memory mode to timing
+    switching cpus
+    **** REAL SIMULATION ****
+    warn: Entering event queue @ 28289858000.  Starting simulation...
+    panic: Halt not implemented!
+     @ cycle 28289931750
+    [halt:build/ALPHA_FS/cpu/o3/alpha/cpu.hh, line 108]
+    Program aborted at cycle 28289931750
+    Abort
+    ------------------------
+ 
+  Seems this is a result of a kernel panic.  Here are the last few lines of console.system.sim_console (the whole file can be found @ http://www.cs.utexas.edu/~hestness/links/console.system.sim_console):
+ 
+    ------------------------
+    [<fffffc0000311c60>] ret_from_fork+0x0/0x10
+    [<fffffc000033be34>] fork_idle+0x54/0xb0
+    [<fffffc0000345948>] cpu_callback+0xa8/0x1b0
+    [<fffffc000033be08>] fork_idle+0x28/0xb0
+    [<fffffc000031d858>] __cpu_up+0x38/0x360
+    [<fffffc0000310020>] __smp_callin+0x0/0x28
+    [<fffffc0000310020>] __smp_callin+0x0/0x28
+    Code: a4850018  20650018  408305a1  f4200008  a4430008  a43e0050 <b5a40008> b49e0050 
+    Kernel panic - not syncing: Aiee, killing interrupt handler!
+    ------------------------
+ 
+  I have encountered this problem with both the kernel distributed with M5, and the kernel that I have built (linux-2.6.16.53 using gcc-4.0.2).  If anyone has encountered this or something similar, I would really appreciate any help you can offer.
+  Thanks,
+  Joel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,4 @@
+Hi,     I want to use the m5 simulator to learn how multi-threaded matrixmultiplication code will work on a multi-core architecture. Is itpossible for me to specify how the various threads of this code shouldbe mapped to the different cores? Or, does m5 have any special librarycalls to spawn off threads to different cores (eg: equivalent of afork() call).     regards-  Rajdeep __________________________________________________Do You Yahoo!?Tired of spam?  Yahoo! Mail has the best spam protection around http://mail.yahoo.com _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

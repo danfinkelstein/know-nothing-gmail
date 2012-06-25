@@ -1,0 +1,25 @@
+Hey all,
+ 
+When I am trying to test the scalability of M5, I ran the splash2
+FFT benchmark with 16 cores.  M5 will prints out 
+ 
+fatal: Out of memory, please increase size of physical
+memory.
+ 
+and then stop the simulation. I don’t know how this could
+happen since obviously FFT is not that data intensive.
+My questions are:
+ Do you have any clue about what
+     happened?
+ in SE mode, does M5 support
+     page swapping?  If I have a 128M physical memory and I am running 16
+     threads, each of them allocate more than 8M memory space in the process’s
+     VIRTUAL address space, how does M5 handle this situation in SE mode?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

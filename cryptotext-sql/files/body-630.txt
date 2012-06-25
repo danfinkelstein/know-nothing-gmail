@@ -1,0 +1,24 @@
+Good question... it's not clear they need to be.  I think the overall
+motivation is to make sure that lock acquire/release operations are
+properly ordered, but for Alpha that should be enforced via separate
+barrier instructions anyway.  I assume this is happening as a side
+effect of the instructions being marked as "locked"?  Can you point to
+the code you're referring to?
+Steve
+- Show quoted text -
+On Wed, Nov 18, 2009 at 7:03 PM, ef <snorlaxgb@gmail.com> wrote:
+> Hello,
+> Why are stl_c and stq_c serializing instructions in the O3 model
+> during the renaming stage?
+>
+> Thanks
+> EF
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

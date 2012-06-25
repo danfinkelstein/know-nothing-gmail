@@ -1,0 +1,6 @@
+In base_dyn_inst_impl.hh, what is the significance of
+ assert(instcount <= 1500);
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

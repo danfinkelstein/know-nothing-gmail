@@ -1,0 +1,50 @@
+What kernel are you running? Have you modified the configuration in
+any way? If you're using a one of our kernels and haven't modified the
+configuration then the next thing to do would be to enable the trace
+flags for the caches and the o3 cpu a few thousand cycles before the
+panic occurs and see where the address in question is coming from.
+Ali
+- Show quoted text -
+On Apr 9, 2009, at 1:01 AM, Javier Jose wrote:
+> Hi everyone,
+>
+> I am trying to run ALPHA_FS with O3 but it is aborting before
+> finishing regardless of the benchmark.
+>
+> COMMAND LINE:
+>
+>  build/ALPHA_FS/m5.[any] -d /home/javier/log/mpgenc2_pvt configs/
+> example/fs.py -d --caches -b [benchmark]
+>
+> ERROR:
+>
+> info: Entering event queue @ 0.  Starting simulation...
+> panic: Unable to find destination for addr (user set default
+> responder): 0x80c4dbc0
+>  @ cycle 48692311000
+> [findPort:build/ALPHA_FS/mem/bus.cc, line 334]
+> Memory Usage: 197392 KBytes
+> For more information see: http://www.m5sim.org/panic/6c40f6ee
+> Program aborted at cycle 48692311000
+> Aborted
+>
+> Right now I am just trying to run just 1 thread; 1 CPU. I have been
+> using ALPBench and PARSEC with SimpleCPU and it works fine even with
+> CMP configurations with L2 shared and L2 private cache configurations.
+>
+> Also, Is SMT still unsupported on FS? I can't seem to get a clear
+> answer form the m5-user digest.
+>
+> I appreciate the help,
+>
+> Javier
+> Texas A&M University
+> Computer Science and Engineering Department
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

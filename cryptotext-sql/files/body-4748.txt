@@ -1,0 +1,34 @@
+Hi Joe,
+Sounds cool.  A couple quick thoughts:
+1. You really don't want to use SimpleTimingPort at all.  The whole point of that class is to take simple fixed-latency device models and enable them to support the full timing memory transaction interface without burdening the individual models with all the overhead that entails.  For complex variable-latency models like yours it buys you nothing and only gets in the way (as you're noticing).
+2. In order to do your sendTiming() to send the response back to the requestor at some later time you're going to need to create some event objects.  Basically create one or more classes that derive from Event, put the stuff you want to do later (e.g., call sendTiming()) in that class's process() method, and then instantiate and schedule instances of those classes as needed.  You don't want to send packets to yourself just for timing as they will occupy bus bandwidth etc.
+If you have any more questions just let us know.
+Steve- Show quoted text -
+Joe Gross wrote:
+Hello,
+I'm writing a wrapper class for my memory simulator. The class inherits
+the PhysicalMemory class and implements the functions from
+SimpleTimingPort. When recvTiming() is called, the request is taken and
+translated into a transaction for my memory simulator. However, unlike
+the example memory simulator, it's not possible to immediately return a
+result and a latency since the state of the memory system dictates how
+long this will take, as well as subsequent transactions added to the
+system. What I want to do is to send back the result when it is finished
+and allow multiple outstanding memory transactions. To do this, I need
+to have the recvTiming() function be able to send a packet to itself at
+some point in the future to see if any transactions are finished.
+However, there does not seem to be any way to send a packet to myself
+using sendTiming(). Whenever I set the destination to Packet::Broadcast,
+the packet is not routed back to me. Even when I resend an identical
+Packet, which was delivered to me once, I do not receive it back. Is
+there some way to make this work or, alternatively, some other way to
+wake the simulator at specific times? Thanks.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

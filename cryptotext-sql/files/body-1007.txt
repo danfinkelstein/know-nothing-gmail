@@ -1,0 +1,13 @@
+Hi Rick,
+(2) The hw_mfpr and hw_mtpr instructions cause a serialization stall in
+the O3 pipeline. Based on comments from rename_impl.hh (pasted below),
+it appears that these serializations are not strictly necessary, but
+based on limited support. Does someone know how I could could go about
+enabling support to allow the hw_mfpr and hw_mtpr instructions execute
+out of order?If you are convinced those instructions do not nee to be executed serially, then I would hypothesize first to remove the "IsSerializing" flag on the instruction defintion (arch/alpha/isa/decoder.isa) and all should be OK.
+I assume that the those instructions hit registers in the "miscellaneous" register file and hence dont necessarily get renamed since that would be modifying system state. But in your case, it sounds like you want those registers to be renamed and continue to execute so a solution *might* be to allow those registers to be renamed by adding an additional renaming check in rename_impl.hh or scoreboard.hh or whatever exact file is checking to see if int/fp/misc. registers need to be renamed.
+I hope that helps (if I'm understanding your problem correctly)...- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

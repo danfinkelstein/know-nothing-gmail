@@ -1,0 +1,302 @@
+You need to figure out why the m5 panic pseudo instruction is being
+executed. This happens when either the kernel or the console call
+their version of panic, however normally there is some text to
+accompany it. Try enabling some trace flags and see where the panic is
+coming from or recompile your kernel and add a delay before the panic
+is called (perhaps the serial port hasn't had enough time to spit out
+the data yet).
+Ali
+- Show quoted text -
+On Feb 11, 2010, at 7:51 PM, 吴奇 wrote:
+> Hi Ali,
+> I recomplied the console from the alpha-system repository by the
+> following steps:
+> 1. copy access.h from src/dev/alpha.h, since access.h is missing in
+> the original alpha-system/h/ repository.
+> 2. In alpha-system/console/Makefile, change m5op.S to m5op_alpha.S,
+> since this no such file called m5op.S in util/m5/
+> After doing the above steps, I can compile console successfully.
+> However, when I use this new console, I cannot run
+> the simulation even with physical memory smaller than 2GB.
+> Following is the error message I got:
+> [rce-03:~/M5/M6/m5-stable-ebec0a848220]$ ./build/ALPHA_FS/m5.fast -d
+> my_test_result/ myfs_normal_l2.py -n 8
+> M5 Simulator System
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+> M5 compiled Feb 11 2010 16:16:29
+> M5 started Thu Feb 11 16:19:18 2010
+> M5 executing on rce-03.ecse.rpi.edu
+> M5 revision Unknown:Unknown
+> M5 commit date Unknown
+> command line: ./build/ALPHA_FS/m5.fast -d my_test_result/
+> myfs_normal_l2.py -n 8
+> The disk is newimage_1.
+> Global frequency set at 1000000000000 ticks per second
+> warn: This DRAM module has not been tested with the new memory
+> system at all!
+> warn: kernel located at: /home/rhome/wuq3/M5/M6/m5-stable-
+> ebec0a848220/system/binaries/vmlinux
+> Listening for system connection on port 3456
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7006
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7002
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7005
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7003
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7001
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7007
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7004
+> **** REAL SIMULATION ****
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: 261795609: Trying to launch CPU number 1!
+> warn: 263068002: Trying to launch CPU number 2!
+> warn: 264340395: Trying to launch CPU number 3!
+> warn: 265612455: Trying to launch CPU number 4!
+> warn: 266884515: Trying to launch CPU number 5!
+> warn: 268156575: Trying to launch CPU number 6!
+> warn: 269428968: Trying to launch CPU number 7!
+> panic: M5 panic instruction called at pc=0x8e41.
+>  @ cycle 275931792
+> m5term information:
+> ==== m5 slave console: Console 0 ====
+> M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+> Got Configuration 623
+> memsize 7FF00000 pages 3FF80
+> First free page after ROM 0xFFFFFC0000018000
+> HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC000003E000 l2pt
+> 0xFFFFFC0000040000 l3pt_rpb 0xFFFFFC0000042000 l3pt_kernel
+> 0xFFFFFC0000046000 l2reserv 0xFFFFFC0000044000
+> kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC000087CCD8, kentry =
+> 0xFFFFFC0000310000, numCPUs = 0x8
+> CPU Clock at 3003 MHz IntrClockFrequency=1024
+> Booting with 8 processor(s)
+- Show quoted text -> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> KSP: 0x20043FE8 PTBR 0x1F
+> Console Callback at 0x0, fixup at 0x0, crb offset: 0x1690
+> Memory cluster 0 [0 - 392]
+> Memory cluster 1 [392 - 261624]
+> Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 3FF80
+> ConsoleDispatch at virt 100017D8 phys 197D8 val FFFFFC00000100A8
+> Bootstraping CPU 1 with sp=0xFFFFFC0000074000
+> Bootstraping CPU 2 with sp=0xFFFFFC0000076000
+> Bootstraping CPU 3 with sp=0xFFFFFC0000078000
+> Bootstraping CPU 4 with sp=0xFFFFFC000007A000
+> Bootstraping CPU 5 with sp=0xFFFFFC000007C000
+> Bootstraping CPU 6 with sp=0xFFFFFC000007E000
+> Bootstraping CPU 7 with sp=0xFFFFFC0000080000
+> unix_boot_mem ends at FFFFFC0000082000
+> k_argc = 0
+> jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180
+> pfn 1087)
+>
+> Thanks for your help.
+> Qi Wu
+>
+> > Message: 5
+> > Date: Wed, 10 Feb 2010 21:08:33 -0600
+> > From: Ali Saidi <saidi@umich.edu>
+> > Subject: Re: [m5-users] M5 simulation problem with big physical
+> memory
+> > To: M5 users mailing list <m5-users@m5sim.org>
+> > Message-ID: <8E010FFD-56CC-4356-9721-83BA1E50D2EE@umich.edu>
+> > Content-Type: text/plain; charset=GB2312; format=flowed; delsp=yes
+> >
+> >
+> > Try compiling the console from the alpha-system repository and using
+> > it. There was a bug in it a few years ago, but I'm not sure that we
+> > ever updated the binaries in the default tarball.
+> >
+> > Ali
+> >
+> > On Feb 10, 2010, at 8:26 PM, ?? wrote:
+> >
+> > > Hi guys,
+> > >
+> > > I'm trying to run M5 full system simulation with physical memory
+> > > range bigger than 1GB (e.g. 2GB).
+> > >
+> > > The following is the only thing that I changed in fs.py for runing
+> > > M5 with 2GB physical memory:
+> > > - test_sys.physmem.range = AddrRange('1024MB')
+> > > + test_sys.physmem.range = AddrRange('2049MB')
+> > >
+> > > Then I got the following error message:
+> > > Unable to handle kernel paging request at virtual address
+> > > 0000000002bf6740
+> > > I also got this message: memsize FFFFFFFF80100000 pages
+> > > FFFFFFFFFFFC0080
+> > > The value FFFFFFFF80100000 should be 80100000, right?
+> > >
+> > > Does anyone get this error message before?
+> > > Please help me out!
+> > >
+> > > Below is the detailed information:
+> > >
+> > > ==== m5 slave console: Console 0 ====
+> > > M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+- Show quoted text -> > > Got Configuration 623
+> > > memsize FFFFFFFF80100000 pages FFFFFFFFFFFC0080
+> > > First free page after ROM 0xFFFFFC0000018000
+> > > HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt
+> > > 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel
+> > > 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+> > > kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC000087CCD8, kentry =
+> > > 0xFFFFFC0000310000, numCPUs = 0x8
+> > > CPU Clock at 3003 MHz IntrClockFrequency=1024
+> > > Booting with 8 processor(s)
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > KSP: 0x20043FE8 PTBR 0x20
+> > > Console Callback at 0x0, fixup at 0x0, crb offset: 0x1690
+> > > Memory cluster 0 [0 - 392]
+> > > Memory cluster 1 [392 - -262408]
+> > > Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages
+> > > FFFFFFFFFFFC0080
+> > > ConsoleDispatch at virt 100017D8 phys 197D8 val FFFFFC00000100A8
+> > > Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+> > > Bootstraping CPU 2 with sp=0xFFFFFC0000078000
+> > > Bootstraping CPU 3 with sp=0xFFFFFC000007A000
+> > > Bootstraping CPU 4 with sp=0xFFFFFC000007C000
+> > > Bootstraping CPU 5 with sp=0xFFFFFC000007E000
+> > > Bootstraping CPU 6 with sp=0xFFFFFC0000080000
+> > > Bootstraping CPU 7 with sp=0xFFFFFC0000082000
+> > > unix_boot_mem ends at FFFFFC0000084000
+> > > k_argc = 0
+> > > jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180
+> > > pfn 1087)
+> > > Entering slaveloop for cpu 3 my_rpb=FFFFFC0000018900
+> > > Entering slaveloop for cpu 2 my_rpb=FFFFFC0000018680
+> > > Entering slaveloop for cpu 7 my_rpb=FFFFFC0000019300
+> > > Entering slaveloop for cpu 6 my_rpb=FFFFFC0000019080
+> > > Entering slaveloop for cpu 4 my_rpb=FFFFFC0000018B80
+> > > CallbackFixup 0 18000, t7=FFFFFC0000730000
+> > > Entering slaveloop for cpu 5 my_rpb=FFFFFC0000018E00
+> > > Entering slaveloop for cpu 1 my_rpb=FFFFFC0000018400
+> > > Linux version 2.6.13 (wuq3@rce-03.ecse.rpi.edu) (gcc version
+> 3.4.3)
+> > > #1 SMP Tue Feb 9 00:58:20 EST 2010
+> > > Booting GENERIC on Tsunami variation DP264 using machine vector
+> > > DP264 from SRM
+> > > Major Options: SMP LEGACY_START VERBOSE_MCHECK
+> > > Command line: root=/dev/hda1 console=ttyS0
+> > > memcluster 0, usage 1, start 0, end 392
+> > > memcluster 1, usage 0, start 392, end 18446744073709289600
+> > > setup: forcing memory size to 33554432K (from -2096128K).
+> > > freeing pages 1089:4194304
+> > > reserving pages 1089:1153
+> > > SMP: 8 CPUs probed -- cpu_present_mask = ff
+> > > Built 1 zonelists
+> > > Kernel command line: root=/dev/hda1 console=ttyS0
+> > > PID hash table entries: 4096 (order: 12, 131072 bytes)
+> > > Using epoch = 1900
+> > > Console: colour dummy device 80x25
+> > > Dentry cache hash table entries: 8388608 (order: 13, 67108864
+> bytes)
+> > > Inode-cache hash table entries: 4194304 (order: 12, 33554432
+> bytes)
+> > > Memory: 33214040k/33554432k available (3431k kernel code, 336592k
+> > > reserved, 995k data, 232k init)
+> > > Mount-cache hash table entries: 512
+> > > SMP starting up secondaries.
+> > > Slave CPU 1 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000018400 my_rpb_phys 18400
+> > > Slave CPU 2 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000018680 my_rpb_phys 18680
+- Show quoted text -> > > Slave CPU 3 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000018900 my_rpb_phys 18900
+> > > Slave CPU 4 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000018B80 my_rpb_phys 18B80
+> > > Slave CPU 5 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000018E00 my_rpb_phys 18E00
+> > > Slave CPU 6 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000019080 my_rpb_phys 19080
+> > > Slave CPU 7 console command START
+> > > SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+> > > FFFFFFFE00000000 my_rpb FFFFFC0000019300 my_rpb_phys 19300
+> > > Brought up 8 CPUs
+> > > SMP: Total of 8 processors activated (48023.25 BogoMIPS).
+> > > NET: Registered protocol family 16
+> > > EISA bus registered
+> > > pci: enabling save/restore of SRM state
+> > > Unable to handle kernel paging request at virtual address
+> > > 0000000002bf6740
+> > > CPU 0 swapper(1): Oops 1
+> > > pc = [<fffffc0000374098>] ra = [<fffffc0000373f8c>] ps = 0007
+> > > Not tainted
+> > > pc is at cache_alloc_refill+0x198/0x760
+> > > ra is at cache_alloc_refill+0x8c/0x760
+> > > v0 = 0000000000000000 t0 = 0000000000000000 t1 = 0000000002bf6740
+> > > t2 = 0000000002bf6740 t3 = 0000000000000000 t4 = fffffc07ff80006e
+> > > t5 = fffffc07ff800000 t6 = 0000000000000000 t7 = fffffc0014d04000
+> > > s0 = 000000000000003c s1 = fffffc00008de400 s2 = fffffc00008daec0
+> > > s3 = fffffc00008db0c8 s4 = fffffc00008d6000 s5 = fffffc00008db128
+> > > s6 = fffffc07ff800028
+> > > a0 = fffffc00008db128 a1 = fffffc00008daec0 a2 = 0000000000000001
+> > > a3 = 0000000000000000 a4 = 0000000000000000 a5 = 0000000000000000
+> > > t8 = fffffc00008de410 t9 = 000000000000ffff t10= 0000000000100100
+> > > t11= 0000000000200200 pv = fffffc0000669830 at = fffffc00008db0d8
+> > > gp = fffffc000082f000 sp = fffffc0014d07c98
+> > > Trace:
+> > > [<fffffc0000373c80>] kmem_cache_alloc+0x80/0x90
+> > > [<fffffc00003ba3ac>] d_alloc+0x3c/0x240
+> > > [<fffffc00003ad254>] __lookup_hash+0xc4/0x1b0
+> > > [<fffffc00003ad3dc>] lookup_one_len+0x8c/0xb0
+> > > [<fffffc00003e7718>] create_dir+0x88/0x340
+> > > [<fffffc00003e7a34>] sysfs_create_dir+0x44/0xb0
+> > > [<fffffc00004b8acc>] kobject_add+0x6c/0x1f0
+> > > [<fffffc00004b8f58>] subsystem_register+0x28/0x50
+> > > [<fffffc000050816c>] bus_register+0x6c/0x230
+> > > [<fffffc0000573f2c>] scsi_sysfs_register+0x2c/0xa0
+> > > [<fffffc0000310718>] init+0x5f8/0x8b0
+> > > [<fffffc0000311c98>] kernel_thread+0x28/0x90
+> > > Code: 20290001 f43fffde 47ff041f 2ffe0000 a4660008 a4460000
+> > > <b4430000> b4620008
+> > > Kernel panic - not syncing: Attempted to kill init!
+> > >
+> > >
+> > > ????????,???????????-??,????????! ???
+> > > ?? _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> >
+> >
+> > ------------------------------
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > End of m5-users Digest, Vol 43, Issue 7
+> > ***************************************
+>
+> 搜索本应是彩色的,快来体验新一代搜索引擎-必应,精美图片每天换哦! 立即试
+> 用！ _______________________________________________
+- Show quoted text -> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

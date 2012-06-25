@@ -1,0 +1,17 @@
+> In this case, if I want to change the size of physical memory in m5 and then
+> observe the effect on page in/page out, can I do it? Does the m5.stats
+> include such informtion? Thanks.
+M5 doesn't expose statistics about the kernel's paging.  M5 doesn't
+actually know anything about the kernel paging at all, from the
+simulator's perspective, there's just disk accesses and memory
+accesses and there's no notion of what they were for.  You can of
+course add a tiny bit of code to the kernel paging daemon to tell M5
+about paging so it can keep statistics, but unless you really need a
+simulator you're probably better of just running experiments on a real
+machine and restricting the memory.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

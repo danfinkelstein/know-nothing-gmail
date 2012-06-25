@@ -1,0 +1,25 @@
+Hello,
+I have done further investigations on the cache writeback issues I was
+experiencing. It looks like, there are several things unfinished in that part of m5.
+>From the ML archives, I have learnt that the m5 developers are currently working
+on the memory subsystem. I read that a 2.0 release candidate is on its way that
+includes many fixes in the memory subsystem... How far out is that?
+These are the things I found out during debugging:
+1. The Packet::Writeback command is not implemented in
+PhysicalMemory::doFunctionalAccess(Packet *pkt).
+2. The thread context is not set for the Writeback request in
+CacheTags<Tags,Compression>::writebackBlk(BlkType *blk). This can be temporarily
+fixed by setting the CPU/ThreadNum to zero, as it has been done in other places
+in the code:
+writebackReq->setThreadContext(0,0);
+3. In Cache<TagStore,Buffering,Coherence>::handleResponse(Packet * &pkt), there
+is a while loop that calls missQueue->doWriteback(writebacks.front()); until all
+writeback requests have been done. However, the doWriteback does not seem to
+remove the writeback requests from the queue. I added a writebacks.pop_front()
+which fixes it, but I don't know if that fixes the root cause.
+Best regards,
+Jonas.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

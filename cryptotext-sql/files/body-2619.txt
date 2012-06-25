@@ -1,0 +1,8 @@
+Hi, When I tried m5, I am not sure about the meaning of these metrics in m5.stats.Can anybody give me some explanations? In which code are their results calculated?Thanks.system.disk0.dma_read_bytes               
+system.disk0.dma_read_full_pages                   system.disk0.dma_read_txs                         system.disk0.dma_write_bytes                   system.disk0.dma_write_full_pages                   system.disk0.dma_write_txs                        
+system.disk2.dma_read_bytes                       system.disk2.dma_read_full_pages                   system.disk2.dma_read_txs                          system.disk2.dma_write_bytes                      system.disk2.dma_write_full_pages                   
+system.disk2.dma_write_txs       
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

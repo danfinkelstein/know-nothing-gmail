@@ -1,0 +1,43 @@
+taozhao@umich.edu wrote:
+> I use m5-stable-94c016415053 and try to do X86 full system simulation.
+> Although the wiki says X86_FS is not supported, this version does have
+> related files.
+>
+That means X86_FS is available, not that we expect it to work perfectly.
+You're definitely welcome to use it and we appreciate any feedback you
+can give (especially bug fixes), but you may run into problems.
+> I have compiled X86_FS/m5.fast. But I can't find any vmlinux for X86. There
+> is only ALPHA vmlinux.
+>
+> Then I tried to compile a 2.6.27 kernel following the instructions from
+> wiki
+> http://www.m5sim.org/wiki/index.php/Compiling_a_Linux_Kernel
+>
+> I got errors like this:
+> kernel/built-in.o: In function `add_kallsyms':
+> /home/taozhao/course/experiment/simics/linux-2.6/kernel/module.c:1777:
+> undefined reference to `m5_addsymbol'
+> kernel/built-in.o: In function `panic':
+> /home/taozhao/course/experiment/simics/linux-2.6/kernel/panic.c:138:
+> undefined reference to `m5_panic'
+>
+> gcc version 4.3.1, host machine: openSUSE11, kernel 2.6.25.16
+>
+> Is there any version that works for X86? Thank you.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+You don't need to apply any patches to the linux kernel to get it work.
+Like I said above it may not work either way (I'm hopeful it will), but
+those patches are solely to make running the kernel in M5 "nicer" by
+optimizing idle loops, loading symbol tables when kernel modules are
+installed, etc. I believe there are patches specifically for x86 (you
+might already be using them), but I don't remember what state they're in
+or exactly how to set them up.
+Gane
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

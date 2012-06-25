@@ -1,0 +1,69 @@
+Hi Lisa,
+      sorry for bothering 
+you. I hope you could answer another question. In the surge-server.rcs, it 
+mounts the fileset with the command
+ 
+mkdir -p /z/htdocs 
+mount /dev/hdb1 /z/htdocs
+ 
+As I understand, we need a virtual device /dev/hdb1 
+in the virtual system within M5. 
+How do I say that /dev/hdb1 is to point to the 
+surge-fileset.img? I cant see any line in FSconfig.py or Benchmarks.py which 
+sets this.
+ 
+In FSConfig.py, the makeLinuxAlphaSystem creates 
+the base Tsunami system with ethernet and ide. Should there be any changes here 
+to point to the fileset?
+ 
+I can see how linux-latest.img is defined with 
+Benchmarks.py in the class SysConfig:
+ 
+return.env.get('LINUX_IMAGE', 
+disk('linux-latest.img'))
+ 
+Do i need to define something like 
+this?
+ 
+Thanks,
+Sujay
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Lisa Hsu 
+  
+  To: M5 users mailing list 
+  Sent: Tuesday, July 28, 2009 1:11 
+PM
+  Subject: Re: [m5-users] Detailed CPU 
+  model with inorder execution core
+  Either InOrder or TimingCPU.
+  
+  O3 stands for out-of-order, so you definitely don't want that if you want 
+  an in-order core.
+  
+  TimingCPU is a 1CPI machine that can be attached to a timing memory 
+  model.
+  
+  InOrder is new, and Korey can speak more to it, but I believe it is a 
+  mildly pipelined in-order CPU, more realistic than TimingCPU.  However, I 
+  am not positive, nor do I know if it is really production ready - Korey?
+  
+  Lisa
+  On Tue, Jul 28, 2009 at 9:21 AM, soumyaroop roy <sroy@cse.usf.edu> 
+  wrote:
+  Hi there,To be able to perform a detailed timing 
+    on a CPU with an inorder execution core, should I be using the DerivO3CPU 
+    model or the InOrderCPU model?regards,Soumyaroop.-- 
+    Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and 
+    EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy 
+    _______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

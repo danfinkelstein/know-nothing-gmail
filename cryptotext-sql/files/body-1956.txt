@@ -1,0 +1,62 @@
+Hi Isuru:
+  Thanks for your helps. I am doing something like what you are doing.
+However, there is no positive result. It is very frustrating. To be
+honest I am not only a complete newbie to M5, but also a newbie to
+Linux and cross-compiling. I tried to follow the steps provided by
+Meng to build a 4.2.x cross-compiler instead of 4.1.0 (default) to
+support OpenMP. However, after building the cross-compiler and compile
+the benchmark binaries successfully, I found that Meng's multithread
+M5 only supports his own threaded APIs, not all threaded applications.
+I am not sure that this is the reason I cannot execute the compiled
+binaries correctly in M5. Maybe, there are some mistakes when I build
+the cross-compiler or binaries.
+regards,
+  sitos
+2009/1/23 Isuru Herath <isuru81@yahoo.com>:
+- Show quoted text -> Dear Sitos,
+>
+> Well at the moment I am trying the link I gave you. If I am able to get it run,
+> I will post it to the forum. After reading your post, I thought following will
+> be important to you.
+>
+> 1. Meng's multi-threaded M5 version is between beta 4 and 5. So I guess you need
+> to pop all the patches and fetch new updates from M5 repo for beta 6 and push
+> all the patches back to support multi-threaded version[at the moment I am doing
+> it. But getting an error saying multiple heads. trying to figure out why]
+>
+> 2. Regarding the cross tool you can get one from following link rather than
+> using pre-compiled versions..
+> http://www.kegel.com/crosstool/ rather than pre-compiled one and follow how-to
+> link.
+>
+> 3. When you compile compile with -static option.
+>
+> 4. Regarding the non TLS toolchain, in cross tool in the demo-alpha.sh file
+> comment
+> eval `cat alpha.dat gcc-4.1.0-glibc-2.3.6-tls.dat` sh all.sh --notest
+> and uncomment
+> eval `cat alpha.dat gcc-4.1.0-glibc-2.3.6.dat` sh all.sh --notest
+> It will solve that problem. Same thing happen to me.
+>
+> Hope these things will help you at least to a certain extent. Please let me know
+> any improvements as well.To be honest I am a complete newbie to M5. Therefore if
+> anybody found anything written above is incorrect please be kind enough to
+> correct. [Sitos please bear with me]
+>
+> regards,
+> Isuru
+>
+>
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

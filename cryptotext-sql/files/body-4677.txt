@@ -1,0 +1,5 @@
+Hi,     I am configuring 4 cores in the following way -     "  system = makeLinuxAlphaSystem(mem_mode, bm[0])  system.cpu = [AtomicSimpleCPU(), AtomicSimpleCPU(), AtomicSimpleCPU(), AtomicSimpleCPU()]  system.cpu[0].connectMemPorts(system.membus)  system.cpu[0].mem = system.physmem  system.cpu[1].connectMemPorts(system.membus)  system.cpu[1].mem = system.physmem  system.cpu[2].connectMemPorts(system.membus)  system.cpu[2].mem = system.physmem  system.cpu[3].connectMemPorts(system.membus)  system.cpu[3].mem = system.physmem  root = Root(clock = '1GHz', system = system)  "     It would be great if someone can let me know if I am doing the configuration correctly.     regards-  Chaitali 
+ Get your own web address. Have a HUGE year through Yahoo! Small Business._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

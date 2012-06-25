@@ -1,0 +1,48 @@
+Hi all,
+ 
+I am new to M5. I am doing a course project about 
+CMP using M5 simulator and need some help. 
+ 
+I am using a dual-core CPU, each 
+core runs single thread process. From the beginning core[0] runs 
+a program as usual, while core[1] is idle/suspend. During the simulation, I 
+want core[1] to run some of core[0]'s instructions and then compare 
+the execution results (assume they run the same instruction at a given 
+time). 
+ 
+Here are some of my thoughts about the 
+implementation, I am not sure whether they are correct:
+1. Since the two cores are not running 
+the same workload, I want to create only one workloads for 
+core[0] in the script (for example se.py), and do not assign any 
+workload for core[1] ( is that correct?).
+ 
+2. I am not sure how to make core[1] start to run. 
+According to my understanding, when I create a thread context and assign to 
+core[1], then it will run. Is it correct? If there is no instruction for 
+core[1] to execute, what will happen? just idle 
+or exit simulation?
+ 
+3. How to make core[1] run 
+the same instructions. I plan to make core[1] idle at the 
+beginning. If there is any instruction for core[1] to execute, then get PC 
+from core[0] and set it to core[1]'s PC and resume core[1]. 
+After execution core[1] will become idle/suspend again. Is this 
+possible?
+ 
+4. How to compare the execution results of those 
+two cores. After execution I want to get results for the two cores, 
+what is the best way to get the results?
+ 
+Right now I am using Alpha arch 
+and AtomicSimpleCPU in SE mode. Can you give me some 
+hints about the implementation, and what are the source files I 
+should look into. 
+ 
+Thank you very much for your help!
+ 
+Fei  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

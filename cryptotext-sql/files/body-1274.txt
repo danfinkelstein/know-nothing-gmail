@@ -1,0 +1,14 @@
+BTW, this is using ts_osfpal, not tsb_osfpal, which is why I didn't expect BIG_TSUNAMI to be needed.- Show quoted text -On Tue, May 5, 2009 at 8:53 AM, Steve Reinhardt <stever@gmail.com> wrote:
+Thanks, that helps a lot... I must have missed that email.  It works now, but only if I set CONFIG_BIG_TSUNAMI=y.  (The .config.m5 in the patch queue doesn't set this either way, so you have to pick one when you build.)  If I don't set it, the console output ends like this:
+hda: M5 IDE Disk, ATA DISK drivehdb: M5 IDE Disk, ATA DISK drivehda: UDMA/33 mode selected
+hdb: UDMA/33 mode selectedide0 at 0x8410-0x8417,0x8422 on irq 15ide1 at 0x8418-0x841f,0x8426 on irq 15ide_generic: please use "probe_mask=0x3f" module parameter for probing all legacy ISA IDE ports
+ide2: probed IRQ 14 and default IRQ 14 failedide2: failed to initialize IDE interfaceide3: potential IRQ problem with ide1 and ide0ide3 at 0x170-0x177,0x376 on irq 15 (shared with ide0)hda: max request size: 128KiB
+hda: 101808 sectors (52 MB), CHS=101/16/63 hda:<4>hda: lost interrupthda: lost interrupthda: lost interrupthda: dma_timer_expiry: dma status == 0x64hda: DMA interrupt recoveryhda: lost interrupt
+ hda1hdb: max request size: 128KiBhdb: 4177920 sectors (2139 MB), CHS=4144/16/63 hdb:<4>hdb: lost interrupthdb: lost interrupt
+SteveOn Tue, May 5, 2009 at 5:56 AM, Ali Saidi <saidi@umich.edu> wrote:
+GCC 4.1 generates invalid code. You need to use 4.3. I have a post on the m5 mailing list a few months ago where I discussed the particular issue in detail, but it has to do with dependence analysis across call pal's being completely broken with gcc 4.0-4.2.  
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+Veydan,the clock you are talking about refers to the global system clock. The CPU clock setting that you noticed in fs.py is the CPU clock.  The global system clock is fast so that you can have clocks of other components in the system (busses, etc.) set relative to the global clock at a fine granularity.
+Lisa- Show quoted text -On Wed, Mar 10, 2010 at 5:07 AM, Veydan Wu <veydanwu@gmail.com> wrote:- Show quoted text -
+Hi, all, I found that the default simulated CPU clock frequency is 1T, if I do not make any mistake. The running log is as followed:M5 executing on ubuntucommand line: build/ALPHA_FS/m5.fast configs/example/fs.py -n 4 --caches --l2cache
+Global frequency set at 1000000000000 ticks per second                                (1T here)warn: kernel located at: /media/Study/CPU/CPUsource/M5/m5-stable-733318abb7b1/dist/m5/system/binaries/vmlinuxI check the src/cpu/BaseCPU.py, there is one statement here:
+clock = Param.Clock('1t', "clock speed");But the Clock class in src/python/m5/param.py seems only support "t" but not "g", how can I change that? I don't want the CPU run so fast. Besides, in the fs.py, the CPU is set to 1GHZ, what about this? Thank you!
+Weidan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

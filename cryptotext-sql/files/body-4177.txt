@@ -1,0 +1,19 @@
+I want to add some parameters to the DRAM object. Example, if I want to add a 'energy' parameter (float) as an input to the DRAM, can I do the following:
+Add lines:
+EnergyLP1 = Param.Float(1E-6,"Energy in Low Power State 1")
+to the "DRAMMemory.py" and "PhysicalMemory.py" files
+and
+EnergyLP1(p->EnergyLP1)
+to the
+DRAMMemory::DRAMMemory(Params *p)
+BEGIN_DECLARE_SIM_OBJECT_PARAMS(DRAMMemory)
+BEGIN_INIT_SIM_OBJECT_PARAMS(DRAMMemory)
+CREATE_SIM_OBJECT(DRAMMemory)
+sections of the dram.cc file
+Do I have to specify it in all these sections?
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

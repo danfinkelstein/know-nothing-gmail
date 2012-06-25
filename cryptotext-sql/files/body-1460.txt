@@ -1,0 +1,13 @@
+hi everyone,I am testing simulations using SPEC CPU 2006 in SE mode. 
+Here, i have posted two simulations where simulation A works and Simulation B doesn't work (Please see error message attached below  in simulation B).  Simulation A:
+ num of cpus = 2num threads per cpu = 2system.cpu[0].workload = [Mybench.bzip2(), Mybench.libquantum()]system.cpu[1].workload = [Mybench.gobmk(), Mybench.soplex()]
+........L1 I cache:  size= 32KB, L1 D cache: size= 32KB, block size= 64L2   cache: size= 1MB,     block size= 64L3   cache: size= 2MB,     block size= 64 
+Simulation B: num of cpus = 2num threads per cpu = 4system.cpu[0].workload = [Mybench.milc(), Mybench.soplex(), Mybench.gromacs(), Mybench.cactusADM()]
+system.cpu[1].workload = [Mybench.gcc(), Mybench.leslie3d(), Mybench.gobmk(), Mybench.hmmer()].........L1 I cache:  size= 32KB, L1 D cache: size= 32KB, block size= 64L2   cache: size= 1MB,     block size= 64
+L3   cache: size= 2MB,     block size= 64 error message:......................................................................................warn: Increasing stack size by one page.
+panic: Tried to execute unmapped address 0. @ cycle 7515000[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]Program aborted at cycle 7515000........................................................................................  
+Could anyone please help me to figure out how to solve this problem?Thanks in advance,devraj.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

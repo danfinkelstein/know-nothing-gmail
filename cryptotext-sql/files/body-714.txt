@@ -1,0 +1,12 @@
+Junli,Note that the disk image and the linux binary are completely distinct. The linux binary does not reside on the disk image.  I am not sure what version of linux is in that tar, it might be 2.4.* or so.  If you want MPICH to work, that binary will have to go on the disk image.
+Lisa2009/11/17 junli gu <gujunli@gmail.com>- Show quoted text -
+I use the precompiled linux iamge form m5_system_2.0b3.tar. Just wondering what kind of operation system is on it...I wan to install MPICH on the image and run MPI programs with full system mode.Thank you!
+-- ************************************************Junli Gu--谷俊丽PHD Candidate of Tsinghua University************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

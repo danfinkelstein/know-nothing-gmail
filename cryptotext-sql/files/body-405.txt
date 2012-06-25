@@ -1,0 +1,11 @@
+Hi Max,thanks for further investigating. it does look like the mismanagement of that function is a "time sync".
+Take for example instruction 0x12000067c. This one is added to
+addrList, a little bit later a squash occurs and this instruction never
+gets removed!  This never happens in the case of 5 pipeline stages.
+If you want I can give you all instructions that aren't removed..Can you provide the command line you're using as well as the simulation ticks in which you witness the above error?
+I would guess either something is not catching in that squash() function OR somehow the same addresses are getting added to that list more than once. An assertion on some reasonable address list size will eventually be  a good bug catcher as well.
+ - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

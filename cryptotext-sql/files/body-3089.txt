@@ -1,0 +1,31 @@
+Hi Siddharth,
+There is a bug in SCons >= 0.97 that means in doesn't create directory nodes for directories that only have header files in them. It's supposed to be fixed before the 1.0 release. Your two options are to either use an older version 0.97d200709* or older or apply a set of patches I sent to the mailing list about a month ago. Take a look at the gmane archive and you'll probably find them. They just add Dir('xxxxxxx') calls to all the SConscripts below a directory that only has header files in it (e.g. Dir('config') in src/mem/SConscript).
+Ali- Show quoted text -
+On May 12, 2008, at 7:23 PM, Siddharth Choudhuri wrote:
+Hi,
+I am a newbie to m5 trying to build m5. I followed the instructions from the wiki and get the following error (m5-2.0b5):
+% cd m5-2.0b5
+% scons build/ALPHA_FS/m5.debug
+build/ALPHA_FS/mem/cache/cache.cc:39:31: error: mem/config/cache.hh: No such file or directory
+scons: *** [build/ALPHA_FS/mem/cache/cache.o] Error 1
+scons: building terminated because of errors.
+However, cache.hh is present in the same dir as cache.cc. Looks like the compile flags does not have the proper -I option. I am not sure how to set it  in scons.
+% find . -name cache.hh
+./src/mem/config/cache.hh
+./src/mem/cache/cache.hh
+./build/ALPHA_FS/mem/cache/cache.hh /* Symlink to mem/cache/cache.hh */
+My system configuration is as follows: g++ 4.2.3 and scons 0.97 Also, m5-2.0b4 gives the same error and so does any other build target (eg: m5.opt).
+Am I missing something here ?
+thanks in advance,
+-siddharth
+     ____________________________________________________________________________________
+Be a better friend, newshound, and
+know-it-all with Yahoo! Mobile.  Try it now.  http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

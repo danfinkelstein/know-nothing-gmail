@@ -1,0 +1,31 @@
+Actually, I once came across the same problem. I solved it on my CentOS by "sudo yum update python-devel". I guess you can find a similar solution on your machine.Leonard
+2009/12/21 nathan binkert <nate@binkert.org>- Show quoted text -
+http://www.m5sim.org/wiki/index.php/Compiling_M5
+2009/12/21 徐敏超 <xu.minchao@stu.xjtu.edu.cn>:
+> hello
+>         when i compiled m5 ,there is a problem like the following.
+>
+>   [xmc@AIAR-DTV m5]$ scons
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... yes
+> Adding /usr/local/lib to LIBPATH for python2.5
+> Checking for C library python2.5... no
+> Error: can't find Python library python2.5
+>
+>           can you give me some suggestion ?
+>                  thank you
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

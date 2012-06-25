@@ -1,0 +1,5 @@
+In general for MP workloads, is fast-forward=X --max-inst=Y correct way, becasue in an earlier email I mention modification to memory system, but the problem exists otherwise.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

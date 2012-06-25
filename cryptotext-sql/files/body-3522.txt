@@ -1,0 +1,22 @@
+First you might want to talk to Rick Strong about this a little bit, since he has been doing the same thing and he might have added parameters that take an instruction count to checkpoint on (also you should make sure that you've patched your tree with the various patches that have been posted to the list over the last two months as they fix some bugs you might run into).
+The times specified on the command line for m5 are normally (by default) specified in ticks where one tick in 1ps and therefore is not related to the frequency of the simulated cpu at all. Simulating for 3e17 ticks is equivalent to simulating 3.5 days of execution which I believe could take a very long time.
+3e11 will get you 300 million CPU cycles which isn't necessarily 300 million instructions, but look for Rick's thread for a solution to that.
+Ali- Show quoted text -
+On Jan 26, 2008, at 11:31 AM, dean michael ancajas wrote:
+hi everybody,
+ this is my first time to fast forward instructions using AtomicSimpleCPU. I want to fast forward to 300M instructions (for gzip graphic-ref) so I fast forward to (1Ghz * 300M= 3x10^17 ticks), its now been simulating for 29hrs now and I decided to attach 'm5term' and it says "113180285494000: system_remote.gdb: remote gdb attached". My question is, is that number the tick number? If it is and assuming constant ticks/second execution of the simulator, if I divide (3X10^17)/1131180285494000=265. Does this mean the whole simulation will take 265*29hrs?
+this is the command that i invoked:
+[me@mymachine] ./build/ALPHA_SE/m5.opt --stats-file=statsdir/gzip_graphic_stats.txt configs/example/se.py --cmd=/home/m5user/m5/spec2000/binaries/alpha/tru64/gzip --input=
+/home/m5user/m5/spec2000/data/gzip/ref/input/input.graphic --max_checkpoints=1 --take_checkpoints=300000000000000000,10000 --checkpoint_dir=cpt_gzip_gra
+btw,
+i adjusted my clockrate in se.py to be 1Ghz.
+thanks in advance,
+-dean
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

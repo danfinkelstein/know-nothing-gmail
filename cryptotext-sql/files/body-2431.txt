@@ -1,0 +1,87 @@
+It's quite a bit more complicated than that... the port code that
+really does something is all in C++ (see the src/mem/cache directory);
+the python code is only used to set up the connections.  It's a
+non-trivial amount of work since right now all responses just go out
+the single cpu-side port, and you'd have to add code to make sure that
+the responses go back out the same port that the request came in on.
+It's probably easier to continue to use a bus and just change the
+bus's arbitration logic to provide the prioritization you want,
+assuming that that gives you what you need.  See src/mem/bus.* for the
+bus code.
+Steve
+On Wed, Oct 15, 2008 at 12:19 PM, Eduardo Olmedo Sanchez
+- Show quoted text -<eolmsan2@gmail.com> wrote:
+> Hi, I hope that someone can help me, Steve said that to change the policy I
+> have to extend the cache and put multiple CPU-side ports and then put the
+> arbitration logic in the cache between those ports. I have seen that this
+> file /src/mem/cache/BaseCache.py is the configuration file for the cache, so
+> to add more ports, Do I just need to add a code like this?,
+>
+>     #Before
+>     cpu_side = Port("Port on side closer to CPU")
+>     #After
+>     cpu_side = Port("Port on side closer to CPU")
+>     cpu_side_new = Port("New port")
+>
+> And another question, where is the source code associated to the cpu_side
+> port?.  Thanks.
+>
+>
+> On Tue, Oct 14, 2008 at 2:04 PM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com>
+> wrote:
+>>
+>> Hello Steve thanks for your answer, yes I have to do something fancier for
+>> an assignment, can you tell me where is the source code for the policy?,
+>> I've been looking in the cache code and in the cpu code, but I can't still
+>> find it. And another one question is it possible to change the policy or do
+>> that is a complex task?. Thank you.
+>>
+>> On Fri, Oct 10, 2008 at 5:42 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>>
+>>> If you want multiple cores to access a single cache, you'll need to put a
+>>> bus in between them, and the bus arbitration logic will determine the access
+>>> pattern.  Basically it'll be round robin (if they all access at the same
+>>> time), or FCFS if not.
+>>>
+>>> If you want to do something fancier then you could extend the cache to
+>>> have multiple CPU-side ports and put the arbitration logic in the cache
+>>> between those ports.
+>>>
+>>> Steve
+>>>
+>>> On Fri, Oct 10, 2008 at 9:42 AM, Eduardo Olmedo Sanchez
+>>> <eolmsan2@gmail.com> wrote:
+>>>>
+>>>> Hi:
+>>>>
+>>>> I have to change the policy that the simulator uses to access to the
+>>>> cache. And I got several questions for example if there are three cores that
+>>>> want to acces to the shared cache, what policy is used?, hit first, round
+>>>> robin..., where is the code of that policy?, and finally is it possible do
+>>>> this or it's a very complex task?.
+>>>>
+>>>> Thank you so much for answer to all my questions, you guys do an
+>>>> excellent job with this mail list, thanks.
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

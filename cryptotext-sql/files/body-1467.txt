@@ -1,0 +1,5 @@
+Suppose I have multiple L2 caches connected via shared bus and a single shared L3. Also a load miss in one of L2s is served by another L2 (cache-to-cache transfer). How/when is the L3 informed regarding  the cache-to-cache transfer? Is it accessed simultaneously and later inhibited after some time?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

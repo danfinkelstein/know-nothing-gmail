@@ -1,0 +1,18 @@
+Hi,
+It looks as if software prefetch instructions are ignored by the O3 model in the m5 2.0 release (e.g. they 'execute' and 'commit' but do not impact the microarchitectural state). In particular, BaseDynInst<Impl>::prefetch(Addr addr, unsigned flags) does nothing.
+How difficult would it be to re-enable swp?
+Thanks,
+Russ
+-------------------------------------------------------------
+Russ Joseph                           Technological Institute
+Assistant Professor                   2145 Sheridan Road
+Electrical Engineering and            Evanston, IL 60208
+   Computer Science
+Northwestern University               voice: 847-491-3061
+rjoseph@ece.northwestern.edu          fax:   847-467-4144
+           http://www.ece.northwestern.edu/~rjoseph
+-------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

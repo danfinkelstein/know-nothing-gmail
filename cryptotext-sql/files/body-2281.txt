@@ -1,0 +1,50 @@
+Cool.  I suspect that this is your best bet.  Glad you have things
+working.  We appreciate any comments or patches!
+  Nate
+- Show quoted text -
+On Wed, Nov 19, 2008 at 8:55 AM, Jack Whitham <jack-m5ml@cs.york.ac.uk> wrote:
+> On Wed, Nov 19, 2008 at 08:38:04AM -0800, nathan binkert wrote:
+>> Can you explain to us why exactly you want to run i386 instead of x86_64?
+>
+> Certainly.
+>
+> The short answer is compatibility with the C compiler "LCC", which
+> lacks an x86_64 backend. I want to compile programs using LCC and then
+> run them using M5, so that I can experiment with various extensions to
+> the compiler. I've chosen LCC in place of GCC or SUIF, etc., because
+> it is smaller and simpler, and thus it is easier to work with. I
+> only require a basic (but complete) C compiler that I can easily
+> change; I don't care about optimisations or a specific ISA for my
+> current work.
+>
+> LCC supports four ISAs: i386, Alpha, MIPS and SPARC. I know that Alpha
+> and SPARC are well supported by M5, so I began work with the assumption
+> that I would use the Alpha ISA. But I hit a setback yesterday, when
+> I tried the Alpha backend and found that it required a non-GNU assembler
+> in addition to a number of other changes in LCC. This made me suspect
+> that only the i386 backend was working, or at least that I would need
+> exotic software to use the other backends.
+>
+> However, today I have got the SPARC backend working, with some
+> changes to replace "Solaris" with "Linux" settings. This is
+> perfect for my requirements, as I now have a simulator (M5) and a
+> compiler (LCC) that understand a common ISA.
+>
+> I hope this explains what's going on! Thankyou again for all your work
+> on M5!
+>
+>
+> --
+> Jack Whitham
+> jack@cs.york.ac.uk
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

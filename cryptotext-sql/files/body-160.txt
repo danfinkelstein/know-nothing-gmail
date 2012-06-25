@@ -1,0 +1,7 @@
+Hi all,Does anyone know how to check whether PARSEC applications are running
+correctly with M5, for example, generate correct output. I want to know
+whether the simulation results are correct.Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

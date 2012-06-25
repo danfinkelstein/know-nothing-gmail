@@ -1,0 +1,8 @@
+Hi thereI am running my simulation on M5-2.0b5 where i am testing a prediction technique and got the following errorcommand line: /space1/ashutoshj/m5-2.0b5/build/ALPHA_SE/m5.opt -d output /space1/ashutoshj/m5-2.0b5/configs/nn/nc.py --detailed --caches
+num of cpu:1Global frequency set at 1000000000000 ticks per secondpanic: NN Prefetcher not compiled into M5 @ cycle 0[create:/space1/ashutoshj/m5-2.0b5/build/ALPHA_SE/mem/cache/builder.cc, line 266]
+Program aborted at cycle 0./result: line 3: 30429 Aborted   /space1/ashutoshj/m5-2.0b5/build/ALPHA_SE/m5.opt -d output /space1/ashutoshj/m5-2.0b5/configs/nn/nc.py --detailed --cachesWhat is meant by panic. I am not understand that because when I compiled my prefetch code embedded into M5, it gives compiles without producing errors. So wondering when I have setup the configuration simulation .py file and running that file gives the above error. 
+Thanks in Advance..........Please help!!!!!!!-- Ashutosh JainM.S. Computer Science,Lamar University, Texas(c) 518-698-0919
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

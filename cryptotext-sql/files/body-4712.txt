@@ -1,0 +1,14 @@
+Marius Grannæs wrote:
+I can probably get away with inclusion. Do you have support for this in M5? I couldn't find any references to this in BaseCache.py, or do I need
+to hack the c++ code?
+No, there's no support for inclusion; you'd have to hack the c++.
+In the longer run we would really like a more general network-based (not just bus-based) coherence infrastructure; a big part of the v2 memory system rewrite was to make that more feasible.  We haven't really started on actually implementing that though.  There's been talk of integrating Wisconsin's GEMS code but no action as of yet. Contributions are welcome :-).
+Yes, this would be very interesting. Also, I think that multi-level
+cache coherence will become important to more people than just me in the future. I haven't had the time to really look at v2 yet, but I hope
+to move my work to it when it gets out of beta.
+Yes, it's something we really want as well, it just hasn't bubbled to the top of the to-do list yet.  Seems like it's always floating somewhere around #2 or #3...
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

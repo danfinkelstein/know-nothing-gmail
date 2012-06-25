@@ -1,0 +1,22 @@
+You could also modify the TLB and hardwire it to pass a range of virtual addresses through to your physical addresses. I think real MIPS systems do something sort of like this.
+Gabe- Show quoted text -
+Quoting Gabriel Michael Black <gblack@eecs.umich.edu>:
+Basically no, at least not out of the box.. You should be able to add your own entries to the process's page tables, though, and map those physical addresses where you want.
+Gabe
+Quoting Gustavo Henrique Nihei <ghnihei@gmail.com>:
+Hi,
+I added another memory module to my platform in an address space disjoint
+from the memory hierarchy.
+But since the processor (SPARC) has a TLB, I am having some trouble to
+access this new memory module.
+Is there any way to use m5 without virtual addressing?
+--
+Gustavo Henrique Nihei
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

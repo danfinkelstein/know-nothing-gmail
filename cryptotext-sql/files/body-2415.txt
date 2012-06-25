@@ -1,0 +1,5 @@
+I often have this error. The clost I have come to track it is when I remove the book-keeping of outstanding responses in bridge. I dont want packets to be nacked because of no space for responses. I am assuming infinite queues. What possible reasons make the simulate() limit reached, any idea?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

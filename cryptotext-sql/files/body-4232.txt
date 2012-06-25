@@ -1,0 +1,18 @@
+On 9/29/07, julian bui <julianbui@gmail.com> wrote:
+Hi all,I'm new to M5 and also relatively new to linux.  I have a question about an installation problem and about using M5 on VMWare.1) I tried installing M5 with the instructions given.  I have scons-0.97
+, SWIG1.3.31, and Python 2.5.1 and all seemed to install fine.  Here is the output:$ scons build/ALPHA_SE/tests/debug/quickscons: Reading SConscript files ...Checking for C header file Python.h... yes
+Adding /usr/local/lib to LIBPATH for 
+python2.5Checking for C library python2.5... noError: can't find Python library python2.5You probably have the interpreter binary installed but not the shared library.  The way to fix that depends on your distro (or if you compiled Python from scratch).  See the Python section here:
+http://m5sim.org/wiki/index.php/Compiling_M5#Required_Software 
+2) Has anyone installed M5 on a VM? My laptop can't install linux (hpdv6000s have problems w/ linux) and I was thinking to just do it through ubuntu run on VMware player.  Has anyone done something similar?  How is performance?  Are there compatibility issues?
+I do this all the time.  I use VMware Server (also free), but Player should work fine too.  (I think Player is better if you want to use X native in the VM.  I just use a Windows X server (cygwin on xp has been great, but I recently switched to vista and Xming works better there) and open windows "remotely" on the VM, in which case I don't know if it matters which one you use.)
+As far as performance, I think there is a small performance hit for I/O, so compiles are a little slower due to the disk I/O.  The simulator itself is CPU-bound though and as far as I can tell it's just as fast under VMware as native.
+Any help on the two issues would be greatly appreciated.  
+Hope that helps... let us know if you have more questions.Steve Thanks.
+Julian B.
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

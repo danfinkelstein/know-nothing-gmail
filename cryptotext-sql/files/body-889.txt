@@ -1,0 +1,35 @@
+This error message is just a generic sign that your system is
+deadlocked.  It doesn't indicate any particular problem.  See
+http://m5sim.org/wiki/index.php/Reporting_Problems for more steps to
+follow in isolating and reporting problems.
+Steve
+- Show quoted text -
+On Sat, Oct 3, 2009 at 8:42 PM, tithonus <tithonus.hf@gmail.com> wrote:
+> Hi all,
+>
+> I have a problem running the simulation with 64 cores when I use the
+> SimpleTimingCPU model with some benchmarks (for example, JPEG_encode). The
+> simulation works fine with 48 cores, but when I increase the cores' number
+> to 64 it appears the following message:
+>
+> "Exiting @ cycle 9223372036854775807 because simulate() limit reached"
+>
+> I searched the archive and found the solution to this problem in the O3CPU
+> model (which is here
+> http://article.gmane.org/gmane.comp.emulators.m5.users/2348), but I don't
+> know how to fix this problem in the SimpleTimingCPU model. Does anyone know
+> how to fix this problem?
+>
+> Thanks in advance!
+>
+> Fei
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

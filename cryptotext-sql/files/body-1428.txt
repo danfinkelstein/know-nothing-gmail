@@ -1,0 +1,6 @@
+Hi,We're simulating an SMT with ALPHA_FS. When we change the smtFetchPolicy parameter in o3_cpu.py we don't observe any change whatsoever in simulator behavior. Even with a bogus input (like 'smtFetchPolicy = param.string('xyz',"smt fetch policy"') we don't see any warnings or errors. Any insight would be appreciated.
+Thanks,Alex Neckar
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

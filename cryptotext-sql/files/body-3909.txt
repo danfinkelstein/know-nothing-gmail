@@ -1,0 +1,24 @@
+Hi,
+   I have some questions about adding a new SDRAM model with out-of-order
+memory access scheduling into FS mode. This SDRAM model can run
+correctly in SE mode.
+    In SE mode, once a memory access is scheduled, the response time will
+be sent out by calling the callback function -
+slaveInterface->respond().
+    In FS mode, there is no such callback function. Instead,
+sendTiming(pkt, latency) is called to send the latency to EventQueue.
+This function is called every packet and the calculated memory access
+latency is fixed.
+    My questions are :
+    1. Should I derive my SDRAM class from physicalMemory? In SE mode,
+this SDRAM model is derived from SimObject class.
+    2. In our SDRAM model, memory accesses are scheduled every memory
+cycle, could I just call sendTiming(pkt, latency) in my code once the
+latency is obtained?
+    3. How to set the port to my SDRAM model?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

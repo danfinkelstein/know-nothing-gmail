@@ -1,0 +1,12 @@
+Hi Ali,
+Thanks. Now, I am using the M5-stable version that I got by using hg
+clone command about one month ago. I use the patch as a reference and
+add the return instruction in the GDBListener::listen() directly. Up
+to now, everything is fine.
+- Show quoted text -
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,66 @@
+That's definitely a bug.  What SPECFP binaries are you using?  Are
+they ones you compiled yourself?
+Steve
+- Show quoted text -
+On Fri, Oct 17, 2008 at 10:00 AM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> version is beta 5. I have checked using m5.debug. Only for these benchmarks, the following assertion fails.
+>
+> m5.debug: build/ALPHA_SE/mem/cache/mshr_queue.cc:154: MSHR* MSHRQueue::allocate(Addr, int, Packet*&, Tick, Counter): Assertion `!freeList.empty()' failed.
+>
+>
+>
+> ---- Original message ----
+>>Date: Thu, 16 Oct 2008 22:26:39 -0700
+>>From: "nathan binkert" <nate@binkert.org>
+>>Subject: Re: [m5-users] glibc error
+>>To: "M5 users mailing list" <m5-users@m5sim.org>
+>>
+>>That unfortunately doesn't tell us much.  Which version of M5?  Can
+>>you run it again with debug or at least opt so that we can get some
+>>symbols?
+>>
+>>  Nate
+>>
+>>On Thu, Oct 16, 2008 at 10:24 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+>>> The follwoing error while running mgrid,applu,apsi,art...all SPECFP...never happened before...unchanged m5....any idea?
+>>>
+>>> *** glibc detected *** ../../build/ALPHA_SE/m5.fast: free(): invalid pointer: 0x0000000000ece5d8 ***
+>>> ======= Backtrace: =========
+>>> /lib/libc.so.6[0x2aaad847c01d]
+>>> /lib/libc.so.6(cfree+0x76)[0x2aaad847dd26]
+>>> ../../build/ALPHA_SE/m5.fast[0x636ac2]
+>>> ../../build/ALPHA_SE/m5.fast[0x627185]
+>>> ../../build/ALPHA_SE/m5.fast[0x627459]
+>>> ../../build/ALPHA_SE/m5.fast[0x5e517f]
+>>> ../../build/ALPHA_SE/m5.fast[0x62758c]
+>>> ../../build/ALPHA_SE/m5.fast[0x5d3993]
+>>> ../../build/ALPHA_SE/m5.fast[0x46e74d]
+>>> ../../build/ALPHA_SE/m5.fast[0x5cce9d]
+>>> ../../build/ALPHA_SE/m5.fast[0x65b972]
+>>> ../../build/ALPHA_SE/m5.fast[0x68a85c]
+>>> ../../build/ALPHA_SE/m5.fast[0x6ac80c]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0(PyObject_Call+0x13)[0x2aaad770e553]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0(PyEval_EvalFrameEx+0x3f17)[0x2aaad77972b7]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0(PyEval_EvalCodeEx+0x6dd)[0x2aaad7799fed]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0(PyEval_EvalFrameEx+0x53a1)[0x2aaad7798741]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0(PyEval_EvalFrameEx+0x5dea)[0x2aaad779918a]
+>>> /home/data3/sakram3/Python/lib/libpython2.5.so.1.0
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

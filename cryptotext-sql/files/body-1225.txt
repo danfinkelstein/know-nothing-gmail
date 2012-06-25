@@ -1,0 +1,17 @@
+Actually, I dont have multiple Physical memory objects. Just multiple shared buses with each serializing requests from a particular number of processors. All processors connect to same shared memory below. Right now problem is resolved and benchmarks run to completion by just returning if !mshr->hasTargets()....wondering might be due to the ordering issues/coherence, like at any point there might be two owners of a similar line both replying to a request...
+---- Original message ----
+>Date: Thu, 9 Jul 2009 08:21:53 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] Assertion:hasTargets() failed
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   OK, that makes more sense.  My guess is that your
+>   problem is arising because the PhysicalMemory object
+>   is responsible for acknowledging upgrade requests
+>   when there is no cache owner, and if you have
+>   multiple PhysicalMemory objects then they will all
+>   respond.  Although if they have overlapping address
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

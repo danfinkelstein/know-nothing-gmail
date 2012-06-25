@@ -1,0 +1,33 @@
+Hi Joe,
+I'm a little confused... are you simulating the whole memory system or
+just DRAM?  Which object are you overriding recvTiming() on?
+Steve
+- Show quoted text -
+On 11/9/07, Joe Gross <joegross@umd.edu> wrote:
+> Hello,
+>
+> I'm attempting to update my dram simulator to support b4 and am having
+> some troubles. Previously, I would override recvTiming() and do a full
+> memory simulation for that packet. Once it was done, I would then call
+> doFunctionalAccess() and return it to the sender, thus emulating the
+> atomic access but with a simulated delay.
+> However, it seems that doFunctionalAccess() only works for shared
+> reads/writes, so I've had to switch away from that and call
+> doAtomicAccess() instead, which should handle exclusive reads/writes for
+> me. This seems to work until it has gone through several million
+> instructions when I get an assertion error: needsExclusive &&
+> !blk->isWritable() from cache_impl.hh, line 532. Presumably this is an
+> invalid state where a block is writable but exclusive. I'm not sure how
+> this differs from the PhysicalMemory implementation. Any suggestions on
+> how to resolve this issue are appreciated.
+>
+> Joe
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

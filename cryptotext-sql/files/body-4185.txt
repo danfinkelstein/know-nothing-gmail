@@ -1,0 +1,18 @@
+I just realized I created a ConstVectorNode back in the spring but never
+sent out the diff of statistics.hh.  Here it is.  Better late than never I
+guess...
+For sure.
+Note that this diff includes two separate changes to statistics.hh:  the
+ConstVectorNode, and the fix to the BinaryNode total() function (that was
+also discussed on the list at around the same time).  Also note that this is
+a diff from statistics.hh in m5-2.0b2; I know there were some changes in
+this file in m5-2.0b3, but I haven't yet made the switch (sorry about
+that).  Hopefully that won't be too much of an impediment.
+There have not been many changes (at least committed ones) to the stats package in some time, so it applied fine.
+The fix to the total() function had already been committed.
+Do you mind if I put your name and e-mail message into the commit log for the vector node patch?  (I'd prefer the committer of record for any patch to be the person who came up with the patch.)
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

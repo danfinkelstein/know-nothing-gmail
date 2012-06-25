@@ -1,0 +1,29 @@
+thank you very much for your reply
+Can you give any further idea that how to change this configuration?
+BTW: Does m5 support prefetch in uni-core and mulit-core mode?
+- Show quoted text -
+Steve Reinhardt wrote:
+> Sure, the code in m5-stable supports this.
+>
+> Steve
+>
+> On Mon, Jun 30, 2008 at 12:45 AM, claker <iamclaker@gmail.com> wrote:
+>
+>> Can we use several private L2 caches to replace a shared L2 cache in a
+>> multicore mode? thanks.
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,58 @@
+Ah, I don't remember if that option was exposed in beta 2.  The best option is to upgrade to beta 4 (There are lots of improvements since beta2 that would argue for that).  Another option is to backport the code from beta4, finally, you can kill(getpid(), USR1), though I don't promise that that will work perfectly.
+  Nate
+- Show quoted text -
+Yes, m5.stats.dump().....i'm using beta 2
+----- Original Message ----
+From: Nathan Binkert <nate@binkert.org>
+To: M5 users mailing list <m5-users@m5sim.org>
+Sent: Thursday, November 29, 2007 11:58:47 AM
+Subject: Re: [m5-users] Simulation Questions
+when i use m5.simulate.dump() it says "object module has no attribute
+stats"?
+Do you mean m5.stats.dump()?
+----- Original Message ----
+From: Steve Reinhardt <stever@gmail.com>
+To: M5 users mailing list <m5-users@m5sim.org>
+Sent: Tuesday, November 27, 2007 1:28:14 AM
+Subject: Re: [m5-users] Simulation Questions
+On Nov 26, 2007 6:37 PM, Steve Stephen <sstephen66@yahoo.com> wrote:
+Is there a way to simulate for a particular numbe rof instructions just like
+--maxticks option?
+Yes, you can set the max_insts_any_thread or max_insts_all_threads
+params on a CPU object and the simulation will exit once any (or all)
+threads on that CPU have executed that many instructions.
+Is there a get stats. on an interim basis while the
+simulation is running, like stopping teh simulation in middle, noting down
+results and resuming it again?
+I don't see a command-line param for it, but you could roll your own
+by setting up a loop in your simulation script where you call
+m5.simulate(interval) and then m5.stats.dump() and then repeat.  You
+can look in configs/common/Simulation.py to see something similar in
+the code that dumps checkpoints at regular intervals.
+Steve
+ ________________________________
+Get easy, one-click access to your favorites. Make Yahoo! your homepage.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     ____________________________________________________________________________________
+Get easy, one-click access to your favorites.
+Make Yahoo! your homepage.
+http://www.yahoo.com/r/hs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     ____________________________________________________________________________________
+Be a better pen pal.
+Text or chat with friends inside Yahoo! Mail. See how.  http://overview.mail.yahoo.com/
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

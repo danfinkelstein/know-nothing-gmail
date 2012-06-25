@@ -1,0 +1,29 @@
+Sure, you can. Also, if you don't want to run full system, the syscall
+emulation side of M5 will happily run an osf/1 binary.
+Ali
+- Show quoted text -
+On Oct 2, 2008, at 4:32 PM, Hongbin Sun wrote:
+> Ali and Steve:
+>
+>             Thanks a lot for take your timing to answer my
+> question.  Actually , I am a little confused. The Alpha cpu2000
+> benchmarks are download from internet for simplescalar, and they
+> works well on my previous  simplescalar works. As you just said, it
+> may be compiled on OSF/1 system., does that mean  I can  fix this
+> problem by re-compiling the benchmark with crosscompiler for alpha
+> myself?
+>
+>            Thanks again, I am really appreciate your help to
+> continue my research!
+>
+>
+>            Hongbin
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

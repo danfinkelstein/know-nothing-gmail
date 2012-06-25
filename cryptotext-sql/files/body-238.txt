@@ -1,0 +1,14 @@
+Hi Sheng,I'm also using Joel's disk image to run PARSEC on M5 FS mode up to 64 cores. And it's running well with shared L2 caches.I agree with Joel that your problem is caused by using a Linux kernel which only supports upto 4 cores.And here's some details of what I did. Hope it would be helpful:On M5's webside, there's a package with linux patches and PAL code for support up to 64 cores. http://www.m5sim.org/wiki/index.php/Download  --> Full-System StuffAnd there's also a description of why the default M5 kernel only support up to 4 cores in the Frequently_Asked_Questions.http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions --> How many CPUs can M5 runYou could easily find the procedure of how to install the patches on M5's wiki webpage.Besides, the tech report on Joel's website has very clear description about all the problems you might face.http://userweb.cs.utexas.edu/~parsec_m5/TR-09-32.pdfI cannot think of other issues I have met off the top of my head. But I believe your simulation should work well after you follow above steps.Hope this would be helpful to you and other people who are using PARSEC on M5.Good luck,JieOn Apr 27, 2010, at 12:19 PM, Joel Hestness wrote:Hi Sheng,  I'm not exactly sure what the problem is here, but it could be the case that the Linux kernel that you are using will only support 4 cores.  There is a Linux kernel supporting up to 64 cores on our website that you can try to see if that fixes the issue: http://userweb.cs.utexas.edu/~cart/parsec_m5/.
+  Good luck,  JoelOn Mon, Apr 26, 2010 at 3:27 PM, sheng qiu <herbert1984106@gmail.com> wrote:
+hi Joel,now it's ok when the core number is no more than 4. but when i set more than 4 cores, it will show information: clear IPI for CPU #num, but NO IPI all the time. and the system.terminal shows that the booting stopped at this process:
+Slave CPU 4 console command STARTSlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb FFFFFC0000018B80 my_rpb_phys 18B80is there anything wrong? i download the disk image of PARSEC from the website:http://userweb.cs.utexas.edu/~cart/parsec_m5/
+Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

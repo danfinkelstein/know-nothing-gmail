@@ -1,0 +1,67 @@
+Glad it worked... thanks for following up.  That I/O bridge doesn't exist in SE mode so that's why this only shows up with Linux.  Hard to say about real systems... in some cases because a real system design has a hard limit on the number of cores then it is practical to simply design buffering in for the worst case and not worry about specific flow control problems.
+In any case, though m5 has its unrealistic aspects, I'm pretty confident that it has fewer of those than your average academic simulator.  Sadly I can't promise that the ones it does have are irrelevant to whatever you're doing...
+Steve- Show quoted text -On Fri, May 29, 2009 at 1:26 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+Thanks. It was the bridge connected b/w iobus and membus. For a true system evaluation I believe flow-control should be modeled but I guess people just publish data with whatever they have got, anyway thats another story.
+---- Original message ----
+>Date: Fri, 29 May 2009 10:08:54 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   OK... anyway, I'm confident it's a hardware
+>   buffering/BW issue somewhere, related to the memory
+>   system not scaling and not to Linux specifically. 
+>   It would take some more debugging to figure out the
+>   details.  If you're really interested in tracking
+>   it down, I'd start by backing up a few million
+>   cycles from where the assertion failure happens and
+>   turning on the Cache and Bus trace flags at that
+>   point (if you haven't done that already).  That
+>   should help you figure out who is nacking whom.
+>
+>   Steve
+>
+>   On Fri, May 29, 2009 at 10:02 AM, Shoaib Akram
+>   <sakram3@illinois.edu> wrote:
+>
+>     that does not help. Private L1/L2 cache hierarchy.
+>     32 cpus. L1 mshrs=10, L2 mshrs=30
+>     ---- Original message ----
+>     >Date: Fri, 29 May 2009 09:44:35 -0700
+>     >From: Steve Reinhardt <stever@gmail.com>
+>     >Subject: Re: [m5-users] More than 4 cpus in FS
+>     mode
+>     >To: M5 users mailing list <m5-users@m5sim.org>
+>     >
+>     >   Actually this is a hardware coherence
+>     protocol issue
+>     >   and is unrelated to Linux.  You probably
+>     need to
+>     >   increase the number of MSHRs in one of your
+>     >   downstream caches.  In general the number of
+>     MSHRs
+>     >   in a given cache should be roughly equal to
+>     >   (probably slightly greater than) the sum of
+>     the
+>     >   MSHRs of all the caches above it (i.e.,
+>     closer to
+>     >   the CPU) so that it can handle all possible
+>     >   outstanding accesses.
+>     >
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

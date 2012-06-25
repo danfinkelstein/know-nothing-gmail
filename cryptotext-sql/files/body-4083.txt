@@ -1,0 +1,17 @@
+It should be in build/ALPHA_SE/m5.debug just like the previous versions.
+Ali- Show quoted text -
+On Nov 5, 2007, at 9:21 PM, Steve Stephen wrote:
+- Show quoted text -
+I have the new version build using the command , build/ALPHA_SE/m5.debug in the root directory c:\m5_2.0b4 but i dont see any binary file m5.debug. Also, there is actually no build folder in this version but the build completes successfully. where can i find m5.debug?
+__________________________________________________
+Do You Yahoo!?
+Tired of spam? Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

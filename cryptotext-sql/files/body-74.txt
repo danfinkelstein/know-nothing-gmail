@@ -1,0 +1,42 @@
+On Thu, Jun 3, 2010 at 1:15 PM, Weixun Wang <wewang@cise.ufl.edu> wrote:
+> I'm usinig m5.fast now. Everything is OK except the following:
+>
+> 1) Benchmarks from CPU 2000 are still executing very slow in M5 (m5.fast). I
+> tried gcc and mcf. Both of them have taken quite a long time but are still
+> running. I'm sure they are being executed based on the output. Is it normal?
+Define "very slow" :-).  This is an instruction-level simulator, so
+it's going to be a lot slower than native execution.  Mostly it
+depends on how detailed your simulation model is, but at best you're
+still looking at a slowdown on the order of 1000X.  That's life.
+> 2) MiBench benchmarks work well. However, I found output redirection does
+> not work. For example, running toast:
+>
+> ./m5.fast ../../configs/Test_Weixun/se.py --cmd
+> ../../../benchmarks/mibench/gsm/toast --options "-fps -c
+> ../../../benchmarks/mibench/gsm/small.au >
+> ../../../benchmarks/mibench/gsm/output_small.encode.gsm"
+>
+> The redirection part of --options ">
+> ../../../benchmarks/mibench/gsm/output_small.encode.gsm" does not have any
+> effect and the output is to the screen no matter what. How to specify
+> redirection in this scenario?
+That's not how redirection works... there's no shell to interpret '>'
+so you have to do it differently, using the --output option to se.py.
+Run the se.py script with the --help option to see more.
+>
+> 3) gzip from CPU 2000 gives the following error after executing for a
+> certain amount of time:
+>
+> panic: Tried to access unmapped address 0x12014a000.
+>  @ cycle 141067250000
+> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+> Memory Usage: 576044 KBytes
+> For more information see: http://www.m5sim.org/panic/5932f339
+> Program aborted at cycle 141067250000
+> Abort
+That's basically a segfault in gzip, but I don't know why it would be happening.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

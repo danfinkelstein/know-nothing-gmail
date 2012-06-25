@@ -1,0 +1,11 @@
+Hi,m5-users，
+   I want dump the stat data per 1 million cycles.
+   Should I use the "m5 dumpresetstat"? But I don't know how to use it.
+Thanks and BestRegards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2006-11-21
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

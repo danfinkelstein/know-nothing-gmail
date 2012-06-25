@@ -1,0 +1,136 @@
+Conceptually, that's the same as what I am looking for. So, thanks.
+And how much space are we talking about here? I intend to run
+simulations with upto 64 (or even 128) spec 2000 workloads?
+As far as making modifications to the M5 internals is concerned, how
+much effort do you think would be involved in it?
+regards,
+Soumyaroop
+- Show quoted text -
+On Tue, Jan 12, 2010 at 8:49 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> Soumyaroop,
+>
+> No, it's actually more rudimentary than that, but it works.  It's basically
+> a script that takes N checkpoints from single-cpu workloads and aggregates
+> them into another checkpoint with N single-threaded cores so that it looks
+> like a multiprogrammed checkpoint.  So when you do a checkpoint restore, you
+> restore from the aggregated checkpoint.
+>
+> Being this simple has the added side effect of taking up lots of space,
+> unfortunately, because you need a new checkpoint for every benchmark
+> combination, but it was pretty quick, dirty and simple.  It may be possible
+> to hack more into the inner guts so that M5 knows to read from multiple
+> checkpoints and fix up things like asns and page table entries at runtime,
+> but I havne't done that.  If you are interested, that could be a better
+> solution if you want to run a lot of workloads with a lot of benchmarks in
+> each workload and you're concerned about storage.
+>
+> I hope to push the patch in the next few days, it's not that complicated but
+> it's been in my tree and unused a while and I want to make sure the test
+> spin works and have it cleaned up first.
+>
+> Lisa
+>
+> On Tue, Jan 12, 2010 at 5:23 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+>>
+>> Thanks for the reply, Lisa.
+>>
+>> So, if I understand correctly, the patch that you have enables
+>> simulation of 'n' workloads on 'n' single-threaded cores after
+>> restoring them from 'n' checkpoints, right?
+>>
+>> By when do you plan to push the patch to the dev tree? And, I think I
+>> could perform some testing on it. I have some testing infrastructure
+>> set up.
+>>
+>> regards,
+>> Soumyaroop
+>>
+>>
+>> On Tue, Jan 12, 2010 at 4:48 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+>> > Soumyaroop,
+>> >
+>> > I have a patch in my tree which does something similar.  I am cleaning
+>> > it up
+>> > now for public distribution, but even then it won't be totally tested,
+>> > particularly on anything but ALPHA.  Can you wait until I push it?  You
+>> > can
+>> > use it as a reference point to modify for SMT.  Currently, it's only
+>> > good
+>> > for multiprogrammed workloads, but has never been used for
+>> > SMT-situations.
+>> > Shoudl be trivial to fix up though.
+>> >
+>> > Lisa
+>> >
+>> > On Sun, Jan 10, 2010 at 4:25 PM, soumyaroop roy <sroy@cse.usf.edu>
+>> > wrote:
+>> >>
+>> >> Hi,
+>> >>
+>> >> Is it possible to simulate workloads in a multiprocessor system with
+>> >> 'n' cores each with multithreading capability of 'm' threads such that
+>> >> checkpoint restoration points (each checkpoint dump created using a
+>> >> uniprocessor configuration as demonstrated in the ASPLOS tutorial) for
+>> >> each of those workloads can be specified?
+>> >>
+>> >> For e.g., consider a system with 2 cores (each with SMT of 2) running
+>> >> 4 workloads (w0-w3)
+>> >> core0 - [w0 , w1]
+>> >> core1 - [w2 , w3]
+>> >>
+>> >> But those workloads should be restored from separate checkpoints
+>> >> (which may be created using simpoint values).
+>> >>
+>> >> I am working in SE mode. I searched through some past posts on m5 but
+>> >> could not find any discussion that talked about this.
+>> >>
+>> >> regards,
+>> >> Soumyaroop
+>> >>
+>> >> --
+>> >> Soumyaroop Roy
+>> >> Ph.D. Candidate
+>> >> Department of Computer Science and Engineering
+>> >> University of South Florida, Tampa
+>> >> http://www.csee.usf.edu/~sroy
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>>
+>>
+>>
+>> --
+>> Soumyaroop Roy
+>> Ph.D. Candidate
+>> Department of Computer Science and Engineering
+>> University of South Florida, Tampa
+>> http://www.csee.usf.edu/~sroy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

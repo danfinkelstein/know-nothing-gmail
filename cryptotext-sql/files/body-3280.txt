@@ -1,0 +1,62 @@
+Here are a couple of other things I would try under gdb:- set breakpoints at exit and _exit, then run and see where they're being called from- if that doesn't work, set a breakpoint where the "Exiting" message is printed, then use 'next' and 'single-step' from there until you get the exit code message (tedious, but still probably faster than using valgrind)
+Steve- Show quoted text -On Sat, Apr 19, 2008 at 12:24 AM, Gabriel Michael Black <gblack@eecs.umich.edu> wrote:
+    This might be some sort of exit code if the standard library detects
+heap corruption (bad memory management) or something similar. Your
+simulation will take a lot longer, but if you run m5 under valgrind it
+might tell you something useful. There's an error suppression file in
+util that should help get rid of errors from when valgrind is just
+confused by the python interpreter.
+Gabe
+Shoaib Akram wrote:
+> There is no error message else , Exiting at cycle xxx because all threads reached max insts. ABORTED. And under gdb, after the Exiting...message ,it says, program exited with code 03000.
+>
+> For the same configuration, sometimes it happens if I change workload. Sometimes, for same workload and changing system to having L3 cache.
+>
+> I am running separate applications on multiple cores.
+>
+> ---- Original message ----
+>
+>> Date: Sat, 19 Apr 2008 01:31:23 -0400
+>> From: Ali Saidi <saidi@umich.edu>
+>> Subject: Re: [m5-users] m5 Aborted,code 03000
+>> To: M5 users mailing list <m5-users@m5sim.org>
+>>
+>> Dumping the statistics to a file is one of the last things m5 does, so
+>> if M5 terminated abnormally you wouldn't seen any statistics. Do you
+>> have an exact error message?  I don't know of any case where we end
+>> with an error code other than 0,1, or 3 so 03000 seems a bit strange.
+>>
+>> Ali
+>>
+>>
+>> On Apr 19, 2008, at 1:06 AM, Shoaib Akram wrote:
+>>
+>>
+>>> Often times (for some workloads and configurations), my simulations
+>>> end with message Aborted but the benchmarks seems to be working. No
+>>> statistics are collected though. Under gdb it says program ended
+>>> with code 03000.
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

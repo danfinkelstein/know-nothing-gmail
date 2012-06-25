@@ -1,0 +1,5 @@
+I am getting a "Two devices with same range" error. I have never been involved with the Range business. Can some one give hints as to where to look for the problem. I am running fs.py with a few extra bridges. Is this problem need to be resolved at the front-end or tweaking bus.cc?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi,
+Got a quick question about the stats package.
+Is the DRAM stats turned off by default in m5?
+I saw in src/mem/dram.hh files, there are stats such as
+    Stats::Vector accesses;
+    Stats::Vector bytesRequested;
+    Stats::Vector bytesSent;
+    Stats::Vector compressedAccesses;
+In the dram.cc files, the formulas to calculate them are not there.
+Is it true the m5 simply don't dump dram stats at all? Where is the
+switch to turn the DRAM statistics reporting on.
+Or it is because dram.cc stats implementation is not complete?
+thanks for the help in advance.
+john
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

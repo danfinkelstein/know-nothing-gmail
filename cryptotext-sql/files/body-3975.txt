@@ -1,0 +1,13 @@
+Hello,
+      I am using an exit callback 
+function to print out stats in a file. This is working fine. However, if m5 
+aborts for some reason, the function still gets called at the end, printing out 
+garbage values. Can I suppress the calling of this function (based on some error 
+code?)
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

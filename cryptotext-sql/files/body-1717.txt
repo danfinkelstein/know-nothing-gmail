@@ -1,0 +1,191 @@
+Hi Gabe, thanks for your reply.  Do you mean that the image should contain a kernel like vmlinux or something like that ? If it doesn't contain one, then I should compile one myself, is that right ?I downloaded the stage3 from the net, how can I possibly know what kernel they use?  
+Thanks for you guiding on how to replace the init script, I hope that works. Thank you !
+Message: 3
+Date: Fri, 13 Mar 2009 23:41:43 -0700
+From: Gabe Black <gblack@eecs.umich.edu>
+Subject: Re: [m5-users] a question about using gentoo stage3 to boot
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <49BB51A7.3020605@eecs.umich.edu>
+Content-Type: text/plain; charset=ISO-8859-1- Show quoted text -
+The kernel you're using is probably not in the image. It's whatever
+you're passing to m5 with the --kernel option when you start it up. If
+you want to replace the init process in the image, I think it's called
+/sbin/init. Assuming you've got things set up properly I think you can
+use a command line option to select what init script to use, but I'm not
+entirely sure what's required for that to work.
+Gabe
+Veydan Wu wrote:
+> Hi, Gabe, Thanks for you reply.  I still don't quite understand how to
+> solve this.  I download the stage3 from the net and is supposed to be
+> newest version. How can I upgrade the kernel because I use the stage3
+> on M5 not on real systems, I didn't even install gentoo, all I did is
+> create an image and run M5 and I still not be able to boot the system
+> normally so how to upgrade the kernel remain confusing to me.
+>
+> Nate sent an example to the list, I feel that very helpful, I have
+> tried that too but not successful on gentoo, which I have questioned
+> in my last letter.  The /etc/inittab seems not allowed to replace, and
+> the /etc/runlevel/boot or /etc/runlevel/default which is designated in
+> inittab take too long to boot. Where should I place the init script ?
+> Thanks very much !
+>
+>
+>     Most likely what's going on is that the image is put together
+>     expecting
+>     udev to populate /dev for you. Since the kernel you're using is
+>     apparently too old, there's no /dev/hda1 to mount. Upgrading your
+>     kernel
+>     or creating a device node manually may fix the problem. Also, this
+>     output looks like it's from the default init script. Recommended
+>     practice is to use your own init script that skips things you
+>     don't need
+>     for a simulation and gets right to your, for instance, SPEC
+>     benchmarks.
+>     Nate sent an example init script to the list a little while ago
+>     you can
+>     refer to.
+>
+>     Gabe
+>
+>     Veydan Wu wrote:
+>     > Hi, all, has anybody sucessully using a Gentoo stage3 as an image to
+>     > boot M5? I have tried many times, Every time I use it, the following
+>     > error comes up:
+>     > /
+>     >  * Your kernel is too old to work with this version of udev.
+>     >  * Current udev only supports Linux kernel 2.6.15 and newer.
+>     >  * Mounting devpts at /dev/pts ...
+>     >    [
+>     > ok ]
+>     >  * Checking root filesystem ...ext2fs_check_if_mount: No such
+>     file or
+>     > directory while determining whether /dev/hda1 is mounted.
+>     > fsck.ext3: No such file or directory while trying to open /dev/hda1
+>     > /dev/hda1:
+>     > The superblock could not be read or does not describe a correct ext2
+>     > filesystem.  If the device is valid and it really contains an ext2
+>     > filesystem (and not swap or ufs or something else), then the
+>     superblock
+>     > is corrupt, and you might try running e2fsck with an alternate
+>     superblock:
+>     >    e2fsck -b 8193 <device>
+>     >
+>     >
+>     >  * Filesystem couldn't be fixed :(
+>     >                                                                          [
+>     > !! ]
+>     > Give root password for maintenance
+>     > (or type Control-D to continue):/
+>     >
+>     > I have modified the /etc/fstab, and set the following line:
+>     >
+>     >     //dev/hda1  /  ext3  noatime  0 1/
+>     >
+>     > from the initial process of M5term, I can judge that the hard
+>     disk m5
+>     > simulates is IDE disk, that is hda and hdb, and the
+>     > partition table of hdb is unrecognized, so only hda1 works. The
+>     Gentoo
+>     > website suggest using /dev/sda3, but it certainly
+>     > doesn't work in M5, because I have tried both sda1 and sda3 as root.
+>     >
+>     >   The boot option of Linux is also root=/dev/hda1,  so what may
+>     be the
+>     > reason causing this ? Thanks !
+>     >
+>     >   Further, could somebody give an example of replacing gentoo's
+>     > default initial script. The /etc/inittab seems not allowed
+>     > to replace, and the /etc/runlevel/boot or /etc/runlevel/default
+>     which
+>     > is designated in inittab take too long to boot.
+>     > Where should I place mine ?  Thanks!
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------
+Message: 4
+Date: Sat, 14 Mar 2009 22:43:18 +0800
+From: Veydan Wu <veydanwu@gmail.com>
+Subject: [m5-users] a question about adding new class to M5
+To: m5-users@m5sim.org
+Message-ID:
+        <9090a0760903140743o3d5e1893yc850c3a784b8f93f@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Hi, all, I am confused of how to add new class to M5. When I added a new
+class called RaceCache in the src/mem/cache, and modified the SConscript and
+some other files, I got an compile error as followed:
+*build/ALPHA_FS/libm5_opt.a(params_wrap.o): In function
+`_wrap_RaceCacheParams_create':
+/m5-stable-733318abb7b1/build/ALPHA_FS/params/params_wrap.cc:31843:
+undefined reference to `RaceCacheParams::create()'
+collect2: ld returned 1 exit status
+scons: *** [build/ALPHA_FS/m5.opt] Error 1
+*
+I am always confused with anything related to params, I think that may be a
+simple error because of my unfamiliarity of M5, can somebody give me some
+hints on how to deal with this ? Thanks !
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090314/432fa925/attachment-0001.htm
+------------------------------
+Message: 5
+Date: Sat, 14 Mar 2009 11:38:20 -0400
+From: Korey Sewell <ksewell@umich.edu>
+Subject: Re: [m5-users] a question about adding new class to M5
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <93a4bffb0903140838v30919ba2l4b3ab295d4e5280d@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Did this class derive from BaseCache?
+If so, then you are probably creating a new "SimObject" which gets
+instantiated via the swig-python(?)/Params interface.
+Look in src/mem/cache/builder.cc.
+In there, you'll see a BaseCache "create()" function that is used to create
+a cache object with the typical M5 params.
+Somewhere, you are going to need a "create() function for you SimObject if
+you intend to be able to instantiate it through a config file.
+On Sat, Mar 14, 2009 at 10:43 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, all, I am confused of how to add new class to M5. When I added a new
+> class called RaceCache in the src/mem/cache, and modified the SConscript and
+> some other files, I got an compile error as followed:
+>
+> *build/ALPHA_FS/libm5_opt.a(params_wrap.o): In function
+> `_wrap_RaceCacheParams_create':
+> /m5-stable-733318abb7b1/build/ALPHA_FS/params/params_wrap.cc:31843:
+> undefined reference to `RaceCacheParams::create()'
+> collect2: ld returned 1 exit status
+> scons: *** [build/ALPHA_FS/m5.opt] Error 1
+> *
+> I am always confused with anything related to params, I think that may be a
+> simple error because of my unfamiliarity of M5, can somebody give me some
+> hints on how to deal with this ? Thanks !
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090314/fbb86471/attachment-0001.htm
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 32, Issue 21
+****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

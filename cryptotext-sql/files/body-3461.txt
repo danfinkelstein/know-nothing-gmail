@@ -1,0 +1,114 @@
+Hi Ali,
+Thanks for your reply. I have tried using the '&' but found that it is
+not assign one application on one core. The execution is different
+when I use mgrid&bzip and bzip&mgrid. If I need to run different
+benchmark on different core, how to write the rcS file. Thank you very
+much for your help.
+Best wishes,
+Lei Shi
+- Show quoted text -
+On 3/6/08, Ali Saidi <saidi@umich.edu> wrote:
+> Hi Lei,
+>
+> You need to read about bash/sh scripts a little bit. Most operations
+> are blocking so each line is executed and it blocks until the command
+> executes to completion. Look up the '&' usage (e.g. ./foo &)
+>
+>
+> Ali
+>
+> On Mar 5, 2008, at 8:49 AM, Jun Pang wrote:
+>
+> > Hi Ali,
+> >
+> > Thank you very much for your reply. I have some problems when I write
+> > two benchmarks into one rcS file. I use the following file to boot the
+> > two core system, but found that only the benchmark bzip is executed.
+> >
+> > #!/bin/sh
+> > cd /benchmarks/spec2000/CINT2000/256.bzip2
+> > ./exe/bzip2_base.gcc33-high-opt ./data/ref/input/input.graphic
+> >
+> > cd /benchmarks/spec2000/CFP2000/172.mgrid/
+> > /sbin/m5 loadsymbol
+> > /sbin/m5 resetstats
+> > ./exe/mgrid_base.gcc33-high-opt<./data/ref/input/mgrid.in
+> > /sbin/m5 exit
+> >
+> >
+> > I wonder if you could tell me how to write it right. Is there any way
+> > like making LiveProcess in the SE mode. Thank you very much！
+> >
+> > Look forward to your reply.
+> >
+> > Best regards,
+> >
+> > Lei Shi
+> >
+> >
+> > On 2/28/08, Ali Saidi <saidi@umich.edu> wrote:
+> >> Hi,
+> >>
+> >> You do not need to change fs.py at all. You can simply specify the -n
+> >> flag on the command line (e.g. -n 2 for two cpus). To run the
+> >> different benchmarks you'll need to create an rcS file similar to
+> >> those in configs/boot/* that executes you two benchmarks. At that
+> >> point it will be up to the linux schedule to run them.
+> >>
+> >> Ali
+> >>
+> >> On Feb 28, 2008, at 8:16 AM, Jun Pang wrote:
+> >>
+> >>> Hi all,
+> >>>
+> >>> I want to build a multicore system in FS mode without the Ethernet.
+> >>> The number of cores is two and I want to run different benchmarks on
+> >>> different core. How could I change the fs.py ? And what else
+> >>> should I
+> >>> do?
+> >>>
+> >>> I have read the previous content in mailing list and find in Feb,
+> >>> 2007, someone wrote a part of script as follows:
+> >>> "system = makeLinuxAlphaSystem(mem_mode, bm[0])
+> >>>   system.cpu = [AtomicSimpleCPU(), AtomicSimpleCPU(),
+> >>> AtomicSimpleCPU(), AtomicSimpleCPU()]
+> >>>   system.cpu[0].connectMemPorts(system.membus)
+> >>>   system.cpu[0].mem = system.physmem
+> >>>   system.cpu[1].connectMemPorts(system.membus)
+> >>>   system.cpu[1].mem = system.physmem
+> >>>   system.cpu[2].connectMemPorts(system.membus)
+> >>>   system.cpu[2].mem = system.physmem
+> >>>   system.cpu[3].connectMemPorts(system.membus)
+> >>>   system.cpu[3].mem = system.physmem
+> >>> root = Root(clock = '1GHz', system = system)"
+> >>>
+> >>> I wonder if he is right. If he is right, how to run two different
+> >>> benchmarks. I think he just configure the same benchmark for all the
+> >>> cpus.
+> >>>
+> >>> Thank you very much!
+> >>>
+> >>> Best regards,
+> >>>
+> >>> Lei Shi
+> >>> _______________________________________________
+> >>> m5-users mailing list
+> >>> m5-users@m5sim.org
+> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi

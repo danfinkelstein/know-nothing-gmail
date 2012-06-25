@@ -1,0 +1,16 @@
+Thanks for your response.I work on fs simulation. Is there any sample python config file in m5 like example/se.py to tell us how to set SMT? I assume it is a very different way to use SMT workloads in fs and se simulation.- Show quoted text -
+On Thu, Aug 21, 2008 at 12:02 AM, nathan binkert <nate@binkert.org> wrote:
+> I want to run a full system simuation. There are two cores and each core
+> runs 2 thread. Can I run 4 benchmarks simultaneously and allocate one for
+> each thread? Only O3cpu supports SMT? Thanks.
+Yes, and currently only O3 supports SMT.  For examples of how to use
+it, look at the SMT regression test and configs/example/se.py
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

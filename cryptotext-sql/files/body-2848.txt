@@ -1,0 +1,43 @@
+Hi all,
+I discovered that EIO traces could be used to allow single threaded
+checkpoints to be merged into a SMT checkpointed simulation. The formula
+is to simply load two of them as their state is independent per thread
+(at least this is my current half-baked understanding). From this brief
+knowledge I set out to compile the EIO encumbered files with m5-stable
+(pulled just a few minutes ago). The result is an early failure in scons
+given below. Has this support been removed?
+-Rick
+scons -j 2  EXTRAS=../encumbered/eio build/ALPHA_SE/m5.debug
+CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+scons: Reading SConscript files ...
+Checking for C header file Python.h... yes
+Adding /opt/local/lib to LIBPATH for python2.5
+Checking for C library python2.5... yes
+Checking for accept(0,0,0) in C++ library None... yes
+Checking for zlibVersion() in C++ library z... yes
+Checking for C header file fenv.h... yes
+Reading /Users/rickstrong/research/m5/m5-stable/src/arch/alpha/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/arch/mips/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/arch/sparc/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/arch/x86/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/cpu/o3/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/cpu/ozone/SConsopts
+Reading /Users/rickstrong/research/m5/m5-stable/src/cpu/simple/SConsopts
+scons: warning: The env.Copy() method is deprecated; use the env.Clone()
+method instead.
+File "/Users/rickstrong/research/m5/m5-stable/build/libelf/SConscript",
+line 90, in <module>
+Building in /Users/rickstrong/research/m5/m5-stable/build/ALPHA_SE
+Using saved options file
+/Users/rickstrong/research/m5/m5-stable/build/options/ALPHA_SE
+Compiling in ALPHA_SE with MySQL support.
+scons: *** '.' already has a source directory:
+'/Users/rickstrong/research/m5/m5-stable/src'.
+File
+"/Users/rickstrong/research/m5/m5-stable/build/ALPHA_SE/SConscript",
+line 192, in <module>
+make: *** [sedebug] Error 2
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

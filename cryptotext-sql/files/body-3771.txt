@@ -1,0 +1,91 @@
+The correct way is the MAC address, and it's always the mac address. The IEEE 802.1D specification has a section on ethernet switches that describes the process.
+Ali- Show quoted text -
+On Dec 6, 2007, at 7:19 PM, <wangx@umd.edu> wrote:
+Actually, the EtherLink model can be completely replaced
+by the EtherSwitch model. The topology is looked as follows:
+                  -------------------------
+System1--EtherInt1-|-Interface1--Interface2-|-EtherInt2--System2
+                  |    \          /        |
+                  |     \        /         |
+                  |     Interface3         |
+                  |         |              |
+                  ----------|----------------
+                        EtherInt3
+                            |
+                         System3
+The above box is the switch model. The peer of EtherInt(i) is
+set to be Interface(i) and Interfaces in the box are
+interconnected with Links instead of EtherLinks.
+In your switch model, even though there are N EtherInts in
+the box and they are connected via Etherlinks from/to
+outside, some kind of route procedure is still needed.
+When the packet arrive at the EtherInt in the switch model,
+how can you determine which port is appropriate? I think
+the only way is to find the destination information from
+the packet,no matter mac address or ip address.
+So the question is how to get the destination information
+from packet.
+Xin
+---- Original message ----
+Date: Thu, 6 Dec 2007 11:39:27 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] issues on switch model for cluster
+To: M5 users mailing list <m5-users@m5sim.org>
+On Dec 6, 2007, at 11:06 AM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hello,
+I have created an EtherSwitch model to replace the EtherLink.
+However, I got two problems:
+1) In original EtherLink model, each Interface has only one
+ txlink, so when Interface::recvPacket(packet) is called by
+ its peer, txlink->transmit(packet) is returned. But in
+ the EtherSwitch model, each Interface has N-1 txlinks(N is
+ # of systems), so function recvPacket(packet) must
+ determine
+ which txlink is needed to transmit the packet.
+The idea is that each two endpoints should have an EtherInt. So each
+system will have an EtherInt and then the switch should have a
+separate EtherInt for each "port" that exists on the switch. The
+probably should be connected with an EtherLink.
+I tried to
+ find the destination information in the packet. I looked
+ through base/inet.hh and found the function dst() can
+ return
+ the destination address, so I wrote the following codes:
+             IpPtr p = IpPtr(packet);
+             uint32_t ip_address = p->dst();
+ But the simulator exited with error when it ran the
+ above codes. Can anyone know how to get the destination
+ information from the packet?
+You should read the IEEE 802.1D ethernet standard. Not all packets
+transfered across ethernet are IP packets. You need to route based on
+MAC addresses, not on IP addresses. The switch model needs to keep a
+list of MAC addresses behind each port and then when it receives a
+packet it needs to find the appropriate port and send the packet to
+it. To be complete the model also needs to detect when no port exists
+and respond appropriately.
+2) similar to the above problem. In original EtherLink model,
+ when Interface::isBusy() is called, it just returns
+ txlink->busy() since it has only one txlink. But in the
+ EtherSwitch model,  isBusy doesn't know which txlink
+ is needed to transmit the packet and the worse is no packet
+ can be used to determine the destination. One feasible
+ solution is make sure all txlinks are free before a packet
+ is transmitted although only one txlink is used. My
+ question is how to modify the original code in order to
+ replace isBusy() by isBusy(packet).
+I think this will be more clear when you read the above specification,
+but the architecture should look something like this:
+http://zeep.eecs.umich.edu/~saidi/etherswitch.pdf
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

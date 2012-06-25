@@ -1,0 +1,29 @@
+Sorry for contacting again the error was solved but now i get this:
+command line: build/ALPHA_SE/m5.debug run.py -n4 --rootdir=/home/sfin/m5/splash2/codes --benchmark=FMM
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+0: system.remote_gdb.listener: listening for remote gdb #2 on port 7002
+0: system.remote_gdb.listener: listening for remote gdb #3 on port 7003
+warn: Entering event queue @ 0.  Starting simulation...
+Exiting @ tick 9223372036854775807 because simulate() limit reached
+do you have any idea what the problem might be?
+Thanks
+----------------------------------------
+> From: saidi@umich.edu
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] Running SPLASH2 on SE mode
+> Date: Mon, 26 Nov 2007 17:11:00 -0600
+>
+> Here is an updated version of the splash2 configuration file and it
+> should solve your problem.
+>
+>
+> Ali
+>
+_________________________________________________________________
+Explore the seven wonders of the world
+http://search.msn.com/results.aspx?q=7+wonders+world&mkt=en-US&form=QBRE_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

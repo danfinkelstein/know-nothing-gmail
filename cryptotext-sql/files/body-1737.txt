@@ -1,0 +1,551 @@
+You are right that we don't need a two-step process, and this is corrected
+in the new patch. I coded as two-phase first for simplicity so I don't have
+to distinguish whether a ReadEx request contains an evict cmd for replacing
+the L1 copy (it can also be a cold miss that doesn't have to evict). As you
+found out, it has a design flaw. In the new patch, I managed to concatenate
+the two requests together.
+Thanks,
+Jiayuan
+----- Original Message -----
+From: "Rick Strong" <rstrong@cs.ucsd.edu>
+To: "jiayuan meng" <jerrygonair@hotmail.com>
+> One thing that is confusing is why do we have a two step process. What
+> prevents us from have the L1 cache do ReadExReq directly to the L2. The
+> invalidate that occurs under the LRU policy on the remote L1 caches' block
+> will clear all the lock transaction state?
+- Show quoted text ->
+> jiayuan meng wrote:
+>> Hi Rick,
+>>
+>> Thanks for pointing this out! I believe I have found the problem. I have
+>> an updated version that has fixed the bug and I can send it to you if
+>> you'd like. If you'd rather prefer this old version, maybe you can simply
+>> try your method ---- to make loadLink exclusive (by adding NeedExclusive
+>> property to the LoadLinked MemCmd). I'll post a link to the updated patch
+>> in one day or two.
+>>
+>> Here is how this bug is raised:
+>>
+>> Note that when a cpu calls StoreCond and its Dcache has the load-linked
+>> block in shared state, the Dcache wants to upgrade their D-cache block
+>> from shared to modified. In the context of MSI coherence, it is treated
+>> as a replacement, and this is done in two phases: a) Evict:   evict the
+>> current block (each cache sends InvalidateReq to L2, waiting for
+>> InvalidateResp. To avoid naming confusion, let's call this
+>> EvictReq/EvictResp, as opposed to the InvalidateReq that's sent from L2
+>> to L1 upon remote exclusive accesses)
+>>      b) Upgrade: after EvictResp is received, each cache sends a
+>> ReadExReq to L2, waiting for ReadExResp
+>>
+>> If another StoreCond is sent later, we expect it either fails upon miss
+>> in D-cache, or hits but the upgrade fails, so that it is nacked and
+>> resend again (which will eventually miss and fail).
+>> However, this two-phase approach does not meet our expectation because
+>> the two-phases do not happen atomically. Another separate problem of this
+>> two-phase approach is that it may double the miss latency. I've addressed
+>> these issues in the updated version.
+>>
+>> Here is how the store-conditional cheated:
+>>
+>> 1. cpu0 and cpu1 both successfully did a load linked (shared_read)
+>> 2. cpu0 and cpu1 issues store conditional at roughly the same time. (tick
+>> 8070266133500). Both hit but need to be upgraded. They both start phase
+>> (a) to evict the block.
+>> 3. because cpu0(a) and cpu0(b) are not atomically combined, cpu0(a) can
+>> then be followed by cpu1(a). now the L2 block changes from Shared to
+>> Uncached because all the upper level D-caches have evicted their copies.
+>> 4. after that, both cpu(0) and cpu(1) sends a ReadEx to L2, the L2 first
+>> satisfies cpu0(b), making the storeCond from cpu0 successful, it then
+>> invalidates the copy that just sent to cpu0 and then satisfies cpu1(b).
+>> In the end, both store conditionals are successful because they both load
+>> a new block from the L2 and the block records no locks.
+>> The current updated version avoids this problem by combining (a) and (b)
+>> into one packet. So in the same scenario, cpu0(b) will directly follow
+>> cpu0(a) by a Shared_ReadEx transaction at L2, which issues an
+>> InvalidateReq to the copy at cpu1. cpu1's EvictReq+ReadExReq will arrive
+>> before the response (InvalidateResp), and therefore it will conflict with
+>> the on-going Shared_ReadEx transaction. As a result, cpu1(a) will be
+>> nacked and retried again and over again, until the storeConditional is
+>> issued after cpu1's block is invalidated, and the store conditional will
+>> fail correctly.
+>> Regards,
+>>
+>> Jiayuan
+>>
+>>
+>>
+>>
+>> > Date: Fri, 27 Feb 2009 10:21:27 -0800
+>> > From: rstrong@cs.ucsd.edu
+>> > To: jerrygonair@hotmail.com
+>> > Subject: Re: [m5-users] Directory coherence, implementing
+>> uncacheable load-linked/store-conditional
+>> >
+>> > Further, the code that is being excuted in the kernel is at
+>> > include/asm-alpha/spinlock.h given below. The code path for cpu1 should
+>> > have failed and gone from line 71 to 75.
+>> >
+>> > 62
+>> > 63 static inline void __raw_read_lock(raw_rwlock_t *lock)
+>> > 64 {
+>> > 65 long regx;
+>> > 66
+>> > 67 __asm__ __volatile__(
+>> > 68 "1: ldl_l %1,%0\n"
+>> > 69 " blbs %1,6f\n"
+>> > 70 " subl %1,2,%1\n"
+>> > 71 " stl_c %1,%0\n"
+>> > 72 " beq %1,6f\n"
+>> > 73 " mb\n"
+>> > 74 ".subsection 2\n"
+>> > 75 "6: ldl %1,%0\n"
+>> > 76 " blbs %1,6b\n"
+>> > 77 " br 1b\n"
+>> > 78 ".previous"
+>> > 79 : "=m" (*lock), "=&r" (regx)
+>> > 80 : "m" (*lock) : "memory");
+>> > 81 }
+>> >
+>> > jiayuan meng wrote:
+>> >>
+>> >> Hi Rick,
+>> >>
+>> >> Sorry, I made a mistake in the previous explanation. To clarify it,
+>> >> the load link request is not exclusive, so multiple cpus can proceed
+>> >> with load linked. However, store conditional is exclusive. So if a
+>> >> block is replicated at two Dcaches by two load links on two cpus, all
+>> >> the copies will be invalidated except one after one store conditional.
+>> >>
+>> >> So everything is the same except that I should have replaced "load
+>> >> linked" in #1 with "store conditional". The cache trace that you
+>> >> provided is very helpful. While I see what happens on load linked, can
+>> >> you provide the following trace where the store conditional(s) happen?
+>> >>
+>> >> btw, I think what you proposed (exclusive load linked) would also
+>> >> work, you can try that out by include "NeedExclusive" in the load
+>> >> linked MemCmd properties in packet.cc.
+>> >>
+>> >> Thanks!
+>> >>
+>> >> Jiayuan
+>> >>
+>> >> ----------- a revised explanation (only #1 is modified)
+>> >> ---------------------
+>> >>
+>> >> 1. a store conditional is exclusive and it invalidates copies at
+>> >> other peer
+>> >> caches.
+>> >>
+>> >> 2. a load linked keeps a list of accesses (w.r.t. cpu and thread_num)
+>> >> using a lock list, as in CacheBlk::trackLoadLocked() called by
+>> >> Cache<>::satisfyCpuSideRequest()
+>> >>
+>> >> 3. now if there is a store conditional, it checks if it hits in the
+>> >> private L1 cache.
+>> >> a) if this is a hit, it checks to see if the block has been loaded by
+>> >> the same thread context in CacheBlk::checkWrite(). If true, then the
+>> >> store conditional succeed. Otherwise, it fails
+>> >> b) if this is a miss, the store conditional fails directly. (as you
+>> >> may see, in theory, it should succeed if the miss is because the
+>> >> requested block is replaced and spilled to L2. but for simplicity, I
+>> >> assume that the miss is because that the block is invalidated upon
+>> >> remote load linked instructions. This may lead to extra tryLock
+>> >> attempts for the guest program, but usually the program would proceed
+>> >> eventually.
+>> >>
+>> >>
+>> >>
+>> >>> Date: Wed, 25 Feb 2009 17:34:14 -0800
+>> >>> From: rstrong@cs.ucsd.edu
+>> >>> To: jerrygonair@hotmail.com
+>> >>> Subject: Re: [m5-users] Directory coherence, implementing
+>> >> uncacheable load-linked/store-conditional
+>> >>>
+>> >>> This helps, but also creates more confusion. In the instruction
+>> trace I
+>> >>> give below, two ldl_c occur for the same address interleaved. Then
+>> >>> two
+>> >>> stl_c both succed. The stl_c for cpu1 should have failed using your
+>> >>> cacheable system, but it did not.
+>> >>>
+>> >>> On Further investigation, clearLoadLock() is only called in the code
+>> >>> during a conditional_store, regular store, or when the blk is
+>> >>> invalidated. Now, it would be great if on a load-locked, the
+>> >>> directory
+>> >>> coherence sent an invalidate to everyone, waited for the response
+>> >>> from
+>> >>> shared remote directories, and sent the sent a response back to the
+>> >> home
+>> >>> node. However, i see the following below. The point that is
+>> >> confusing to
+>> >>> me is "cpuside: create transition Shared_Read on packet 0x11af2b0,
+>> >>> cmd
+>> >>> LoadLockedReq". Why are we going to state shared_read for a LL
+>> >>> instruction? Something is wrong with the cache system and it is
+>> >>> happening at this point, because I see the atomicity of a read_lock
+>> >>> failing.
+>> >>>
+>> >>> Best,
+>> >>> -Rick
+>> >>> *
+>> >>> Instruction Trace
+>> >>> *8070266028000: server.detail_cpu0 T0 : @ext2_get_branch+152 :
+>> >>> ldq r27,-14856(r29) : MemRead : D=0xfffffc00005e86f8
+>> >>> A=0xfffffc0000787cf8
+>> >>> 8070266029500: server.detail_cpu0 T0 : @ext2_get_branch+156 :
+>> >>> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+>> >>> 8070266045000: server.detail_cpu1 T0 : @ext2_get_branch+152 :
+>> >>> ldq r27,-14856(r29) : MemRead : D=0xfffffc00005e86f8
+>> >>> A=0xfffffc0000787cf8
+>> >>> 8070266046500: server.detail_cpu1 T0 : @ext2_get_branch+156 :
+>> >>> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+>> >>> 8070266129000: server.detail_cpu0 T0 : @_read_lock : ldl_l
+>> >>> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+>> >>> 8070266130500: server.detail_cpu0 T0 : @_read_lock+4 : blbs
+>> >>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>> 8070266130500: server.detail_cpu1 T0 : @_read_lock : ldl_l
+>> >>> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+- Show quoted text ->> >>> 8070266132000: server.detail_cpu0 T0 : @_read_lock+8 : subl
+>> >>> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+>> >>> 8070266132000: server.detail_cpu1 T0 : @_read_lock+4 : blbs
+>> >>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>> 8070266133500: server.detail_cpu1 T0 : @_read_lock+8 : subl
+>> >>> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+>> >>> 8070266166500: server.detail_cpu0 T0 : @_read_lock+12 : stl_c
+>> >>> r1,0(r16) : MemWrite : D=0x0000000000000001 A=0xfffffc001f4aaf28
+>> >>> 8070266168000: server.detail_cpu0 T0 : @_read_lock+16 : beq
+>> >>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>> 8070266169500: server.detail_cpu0 T0 : @_read_lock+20 :
+>> >>> mb : MemRead :
+>> >>> 8070266171000: server.detail_cpu0 T0 : @_read_lock+24 : ret
+>> >>> (r26) : IntAlu :
+>> >>> 8070266172500: server.detail_cpu0 T0 : @ext2_get_branch+160 :
+>> >>> ldah r29,58(r26) : IntAlu : D=0xfffffc000078e62c
+>> >>> 8070266174000: server.detail_cpu0 T0 : @ext2_get_branch+164 :
+>> >>> lda r29,-12076(r29) : IntAlu : D=0xfffffc000078b700
+>> >>> 8070266175500: server.detail_cpu0 T0 : @ext2_get_branch+168 :
+>> >>> bis r31,r11,r16 : IntAlu : D=0xfffffc001f7ffa08
+>> >>> 8070266177000: server.detail_cpu0 T0 : @ext2_get_branch+172 :
+>> >>> bis r31,r12,r17 : IntAlu : D=0xfffffc001f7ffa08
+>> >>> 8070266178500: server.detail_cpu0 T0 : @ext2_get_branch+176 :
+>> >>> bsr r26,verify_chain : IntAlu : D=0xfffffc00003ee640
+>> >>> 8070266180000: server.detail_cpu0 T0 : @verify_chain : br
+>> >>> 0xfffffc00003edbdc : IntAlu :
+>> >>> 8070266181500: server.detail_cpu0 T0 : @verify_chain+8 : cmpule
+>> >>> r16,r17,r1 : IntAlu : D=0x0000000000000001
+>> >>> 8070266183000: server.detail_cpu0 T0 : @verify_chain+12 : beq
+>> >>> r1,0xfffffc00003edc00 : IntAlu :
+>> >>> 8070266183500: server.detail_cpu1 T0 : @_read_lock+12 : stl_c
+>> >>> r1,0(r16) : MemWrite : D=0x0000000000000001 A=0xfffffc001f4aaf28
+>> >>> 8070266185000: server.detail_cpu1 T0 : @_read_lock+16 : beq
+>> >>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>> 8070266186000: server.detail_cpu0 T0 : @verify_chain+16 : ldq
+>> >>> r1,0(r16) : MemRead : D=0xfffffc001f4aaec8 A=0xfffffc001f7ffa08
+>> >>> 8070266186500: server.detail_cpu1 T0 : @_read_lock+20 :
+>> >>> mb : MemRead :
+>> >>> 8070266188000: server.detail_cpu1 T0 : @_read_lock+24 : ret
+>> >>> (r26) : IntAlu :
+>> >>> 8070266189000: server.detail_cpu0 T0 : @verify_chain+20 : ldl
+>> >>> r2,8(r16) : MemRead : D=0x000000000000200c A=0xfffffc001f7ffa10
+>> >>>
+>> >>> *Cache Trace*
+>> >>> 8070266062000: server.cpu0.dcache: LoadLockedReq 1f4aaf28 miss
+>> >>> 8070266062000: server.cpu0.dcache.blkstate-0x37b68d60L#<91>6^L:
+>> >> cpuside:
+>> >>> create transition Shared_Read on packet 0x11af2b0, cmd LoadLockedReq
+>> >>> 8070266062000: server.cpu0.dcache.blkstate-0x37b68d60L#<91>6^L:
+>> >> cpuside:
+>> >>> step 0 upon transition Shared_Read on packet 0x11af2b0, cmd
+>> >>> LoadLockedReq, for block 0x368ab0fc
+>> >>> 8070266062000: server.cpu0.dcache.blkstate-0x37b68d60L#<91>6^L:
+>> >> cpuside:
+>> >>> Shared_Read step 2 resulting 0
+>> >>> 8070266063500: server.l2: InvalidateReq 1f07ff00 hit
+>> >>> 8070266063500: global: server.l2 access directory with blkaddr :
+>> >> 1f07ff00
+>> >>> 8070266063500: server.l2.dirstate-0xde6df0: cpuside: create
+>> >>> transition
+>> >>> Shared_Invalidate on packet 0x11af120, cmd InvalidateReq
+>> >>> 8070266063500: server.l2.dirstate-0xde6df0: memside: step 0 upon
+>> >>> transition Shared_Invalidate on packet 0x11af120, cmd InvalidateResp,
+>> >>> for block 0x36a52320. resulting 1
+>> >>> 8070266064000: server.l2: ReadReq 5e86c0 hit
+>> >>> 8070266064000: server.l2.blkstate-0x366b33a0l\<97>6^L: cpuside:
+>> >>> create
+>> >>> transition Valid_Access on packet 0x11af1c0, cmd ReadReq
+>> >>> 8070266064000: server.l2.blkstate-0x366b33a0l\<97>6^L: cpuside: step
+>> >>> 0
+>> >>> upon transition Valid_Access on packet 0x11af1c0, cmd ReadReq, for
+>> >> block
+>> >>> 0x36a1d6e8
+>> >>> 8070266064000: server.l2.blkstate-0x366b33a0l\<97>6^L: cpuside:
+>> >>> Valid_Access step 0 resulting 1
+>> >>> 8070266064000: global: server.l2 access directory with blkaddr :
+>> 5e86c0
+>> >>> 8070266064000: server.l2.dirstate-0x366ea360l\<97>6^L: cpuside:
+>> >>> create
+>> >>> transition Shared_ReadMiss on packet 0x11af1c0, cmd ReadReq
+>> >>> 8070266064000: server.l2.dirstate-0x366ea360l\<97>6^L: memside: step
+>> >>> 0
+>> >>> upon transition Shared_ReadMiss on packet 0x11af1c0, cmd ReadResp,
+>> >>> for
+>> >>> block 0x36a1d6e8. resulting 1
+>> >>> 8070266077500: server.cpu0.dcache: InvalidateResp addr: 1f07ff00
+>> >>> blk_addr: 1f07ff00
+>> >>> 8070266077500: server.cpu0.dcache.blkstate-0x37b68d60L#<91>6^L:
+>> >> memside:
+>> >>> step 2 upon transition Shared_Read on packet 0x11af120, cmd
+>> >>> InvalidateResp, for block 0
+>> >>> 8070266077500: server.cpu0.dcache: erase block 1f07ff00
+>> >>> 8070266077500: global: server.cpu0.dcache delete directory 1f07ff00
+>> >>> 8070266077500: server.cpu0.dcache.blkstate-0x37b68d60L#<91>6^L:
+>> >> memside:
+>> >>> Shared_Read step 3 return 0
+>> >>> 8070266078000: server.cpu1.icache: ReadResp addr: 5e86c0 blk_addr:
+>> >> 5e86c0
+>> >>> 8070266078000: server.cpu1.icache.blkstate-0x1a0c130: memside: step 3
+>> >>> upon transition Shared_Read on packet 0x11af1c0, cmd ReadResp, for
+>> >> block
+>> >>> 0x368ca31c
+>> >>> 8070266078000: server.cpu1.icache: fills block 0x368ca31c with
+>> blk_addr
+>> >>> = 5e86c0
+>> >>> 8070266078000: global: server.cpu1.icache create directory 5e86c0
+>> >>> 8070266078000: server.cpu1.icache.blkstate-0x1a0c130: memside:
+>> >>> Shared_Read step 3 return 1
+>> >>> 8070266078000: global: server.cpu1.icache access directory with
+>> blkaddr
+>> >>> : 5e86c0
+>> >>> 8070266078000: server.cpu1.icache.dirstate-0x37b54430,5<93>6^L:
+>> >> cpuside:
+>> >>> create transition FulFillAccess on packet 0x11af350, cmd ReadReq
+>> >>> 8070266078000: server.cpu1.icache.dirstate-0x37b54430,5<93>6^L:
+>> >> memside:
+>> >>> step 0 upon transition FulFillAccess on packet 0x11af350, cmd
+>> ReadResp,
+>> >>> for block 0x368ca31c. resul
+>> >>> ting 1
+>> >>> 8070266079500: server.cpu1.dcache: LoadLockedReq 1f4aaf28 miss
+>> >>> 8070266079500: server.cpu1.dcache.blkstate-0xdd7990: cpuside: create
+>> >>> transition Shared_Read on packet 0x11af1c0, cmd LoadLockedReq
+>> >>> 8070266079500: server.cpu1.dcache.blkstate-0xdd7990: cpuside: step 0
+>> >>> upon transition Shared_Read on packet 0x11af1c0, cmd
+>> LoadLockedReq, for
+>> >>> block 0x368f11b0
+>> >>> 8070266079500: server.cpu1.dcache.blkstate-0xdd7990: cpuside:
+>> >>> Shared_Read step 2 resulting 0
+>> >>> 8070266079500: server.l2: ReadReq 1f4aaf00 miss
+>> >>> 8070266079500: server.l2.blkstate-0x141f7510l\<97>6^L: cpuside:
+>> >>> create
+>> >>> transition Valid_Access on packet 0x11af350, cmd ReadReq
+>> >>> 8070266079500: server.l2.blkstate-0x141f7510l\<97>6^L: cpuside: step
+>> >>> 0
+>> >>> upon transition Valid_Access on packet 0x11af350, cmd ReadReq, for
+>> >> block
+>> >>> 0x36a43104
+>> >>> 8070266079500: server.l2.blkstate-0x141f7510l\<97>6^L: cpuside:
+>> >>> Valid_Access step 3 resulting 0
+>> >>> 8070266081000: server.l2: InvalidateReq 787f00 hit
+>> >>> 8070266081000: global: server.l2 access directory with blkaddr :
+>> 787f00
+>> >>> 8070266081000: server.l2.dirstate-0x141e2b00l\<97>6^L: cpuside:
+>> >>> create
+>> >>> transition Shared_Invalidate on packet 0x11af120, cmd InvalidateReq
+>> >>> 8070266081000: server.l2.dirstate-0x141e2b00l\<97>6^L: memside: step
+>> >>> 0
+>> >>> upon transition Shared_Invalidate on packet 0x11af120, cmd
+>> >>> InvalidateResp, for block 0x36a521b8. resu
+>> >>> lting 1
+>> >>> 8070266095000: server.cpu1.dcache: InvalidateResp addr: 787f00
+>> >> blk_addr:
+>> >>> 787f00
+>> >>> 8070266095000: server.cpu1.dcache.blkstate-0xdd7990: memside: step 2
+>> >>> upon transition Shared_Read on packet 0x11af120, cmd InvalidateResp,
+>> >> for
+>> >>> block 0
+>> >>> 8070266095000: server.cpu1.dcache: erase block 787f00
+>> >>> 8070266095000: global: server.cpu1.dcache delete directory 787f00
+>> >>> 8070266095000: server.cpu1.dcache.blkstate-0xdd7990: memside:
+>> >>> Shared_Read step 3 return 0
+>> >>> 8070266096500: server.l2: ReadReq 1f4aaf00 miss
+>> >>> 8070266113500: server.l2: ReadResp addr: 1f4aaf00 blk_addr: 1f4aaf00
+>> >>>
+>> >>>
+>> >>>
+>> >>>
+>> >>> jiayuan meng wrote:
+>> >>>> Hi Rick,
+>> >>>>
+>> >>>> In my implementation of the directory coherence patch, the stl_c and
+>> >>>> ldl_c are implemented as cacheable, as described below:
+>> >>>>
+>> >>>> 1. a load linked is exclusive and it invalidates copies at other
+>> >>>> peer
+>> >>>> caches.
+>> >>>>
+>> >>>> 2. a load linked keeps a list of accesses (w.r.t. cpu and
+>> >>>> thread_num)
+>> >>>> using a lock list, as in CacheBlk::trackLoadLocked() called by
+>> >>>> Cache<>::satisfyCpuSideRequest()
+>> >>>>
+>> >>>> 3. now if there is a store conditional, it checks if it hits in the
+>> >>>> private L1 cache.
+>> >>>> a) if this is a hit, it checks to see if the block has been loaded
+>> >>>> by
+>> >>>> the same thread context in CacheBlk::checkWrite(). If true, then the
+>> >>>> store conditional succeed. Otherwise, it fails
+>> >>>> b) if this is a miss, the store conditional fails directly. (as you
+>> >>>> may see, in theory, it should succeed if the miss is because the
+>> >>>> requested block is replaced and spilled to L2. but for simplicity, I
+>> >>>> assume that the miss is because that the block is invalidated upon
+>> >>>> remote load linked instructions. This may lead to extra tryLock
+>> >>>> attempts for the guest program, but usually the program would
+>> >>>> proceed
+>> >>>> eventually.
+>> >>>>
+>> >>>> Hope this is helpful.
+>> >>>>
+>> >>>> Jiayuan
+>> >>>>
+>> >>>>> Date: Tue, 24 Feb 2009 16:41:52 -0800
+>> >>>>> From: rstrong@cs.ucsd.edu
+>> >>>>> To: m5-users@m5sim.org
+>> >>>>> Subject: [m5-users] Directory coherence, implementing uncacheable
+- Show quoted text ->> >>>> load-linked/store-conditional
+>> >>>>>
+>> >>>>> I believe that currently, the directory coherence implementation is
+>> >>>>> suffering from an incomplete implementation of uncacheable
+>> >>>>> load-linked/store conditional. It appears below that a lock is
+>> >>>>> being
+>> >>>>> grabbed for address A=0xffff-fc00-1f4a-af28 by two cpus
+>> simultaneously
+>> >>>>> at time 8070266129000 in @_read_lock. CPU0 performs stl_c and
+>> returns
+>> >>>>> followed by CPU1 succeeding with its stl_c. On further research
+>> >>>>> into
+>> >>>>> the ALPHA-tlb implementation TLB::checkCacheability(RequestPtr
+>> >>>>> &req,
+>> >>>>> bool itb) sets the req to uncacheable if (req->getPaddr() &
+>> >>>>> PAddrUncachedBit43) or the 43 bit is set in the address. This is
+>> >>>>> the
+>> >>>>> case for A=0xffff-fc00-1f4a-af28 unless I am going blind which is
+>> >>>>> possible. So a few things I wanted to confirm with some expert
+>> sin the
+>> >>>>> memory system:
+>> >>>>>
+>> >>>>> 1) Is this indeed an uncacheable address?
+>> >>>>>
+>> >>>>> 2) Should alpha support stl_c and ldl_c for uncacheable accesses?
+>> >>>>>
+>> >>>>> 3) How should I efficiently implement stl_c and ldl_c for directory
+>> >>>>> coherence without having to maintain a global structure somewhere?
+>> >>>>> Ultimately, I want the directory coherence to work on a mesh in
+>> >>>>> full
+>> >>>>> system, so I can't just sniff the bus. Any ideas?
+>> >>>>>
+>> >>>>>
+>> >>>>> Best,
+>> >>>>> -Rick
+>> >>>>>
+>> >>>>> *The Trace:*
+>> >>>>> 8070266029500: server.detail_cpu0 T0 : @ext2_get_branch+156 :
+>> >>>>> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+>> >>>>> 8070266045000: server.detail_cpu1 T0 : @ext2_get_branch+152 :
+>> >>>>> ldq r27,-14856(r29) : MemRead : D=0xfffffc00005e86f8
+>> >>>>> A=0xfffffc0000787cf8
+>> >>>>> 8070266046500: server.detail_cpu1 T0 : @ext2_get_branch+156 :
+>> >>>>> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+>> >>>>> 8070266129000: server.detail_cpu0 T0 : @_read_lock : ldl_l
+>> >>>>> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+>> >>>>> 8070266130500: server.detail_cpu1 T0 : @_read_lock : ldl_l
+>> >>>>> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+>> >>>>> 8070266130500: server.detail_cpu0 T0 : @_read_lock+4 : blbs
+>> >>>>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>>>> 8070266132000: server.detail_cpu0 T0 : @_read_lock+8 : subl
+>> >>>>> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+>> >>>>> 8070266132000: server.detail_cpu1 T0 : @_read_lock+4 : blbs
+>> >>>>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>>>> 8070266133500: server.detail_cpu1 T0 : @_read_lock+8 : subl
+>> >>>>> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+>> >>>>> 8070266166500: server.detail_cpu0 T0 : @_read_lock+12 : stl_c
+>> >>>>> r1,0(r16) : MemWrite : D=0x0000000000000001 A=0xfffffc001f4aaf28
+>> >>>>> 8070266168000: server.detail_cpu0 T0 : @_read_lock+16 : beq
+>> >>>>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>>>> 8070266169500: server.detail_cpu0 T0 : @_read_lock+20 :
+>> >>>>> mb : MemRead :
+>> >>>>> 8070266171000: server.detail_cpu0 T0 : @_read_lock+24 : ret
+>> >>>>> (r26) : IntAlu :
+>> >>>>> 8070266172500: server.detail_cpu0 T0 : @ext2_get_branch+160 :
+>> >>>>> ldah r29,58(r26) : IntAlu : D=0xfffffc000078e62c
+>> >>>>> 8070266174000: server.detail_cpu0 T0 : @ext2_get_branch+164 :
+>> >>>>> lda r29,-12076(r29) : IntAlu : D=0xfffffc000078b700
+>> >>>>> 8070266175500: server.detail_cpu0 T0 : @ext2_get_branch+168 :
+>> >>>>> bis r31,r11,r16 : IntAlu : D=0xfffffc001f7ffa08
+>> >>>>> 8070266177000: server.detail_cpu0 T0 : @ext2_get_branch+172 :
+>> >>>>> bis r31,r12,r17 : IntAlu : D=0xfffffc001f7ffa08
+>> >>>>> 8070266178500: server.detail_cpu0 T0 : @ext2_get_branch+176 :
+>> >>>>> bsr r26,verify_chain : IntAlu : D=0xfffffc00003ee640
+>> >>>>> 8070266180000: server.detail_cpu0 T0 : @verify_chain : br
+>> >>>>> 0xfffffc00003edbdc : IntAlu :
+>> >>>>> 8070266181500: server.detail_cpu0 T0 : @verify_chain+8 : cmpule
+>> >>>>> r16,r17,r1 : IntAlu : D=0x0000000000000001
+>> >>>>> 8070266183000: server.detail_cpu0 T0 : @verify_chain+12 : beq
+>> >>>>> r1,0xfffffc00003edc00 : IntAlu :
+>> >>>>> 8070266183500: server.detail_cpu1 T0 : @_read_lock+12 : stl_c
+>> >>>>> r1,0(r16) : MemWrite : D=0x0000000000000001 A=0xfffffc001f4aaf28
+>> >>>>> 8070266185000: server.detail_cpu1 T0 : @_read_lock+16 : beq
+>> >>>>> r1,0xfffffc00005e89c4 : IntAlu :
+>> >>>>> 8070266186000: server.detail_cpu0 T0 : @verify_chain+16 : ldq
+>> >>>>> r1,0(r16) : MemRead : D=0xfffffc001f4aaec8 A=0xfffffc001f7ffa08
+>> >>>>> 8070266186500: server.detail_cpu1 T0 : @_read_lock+20 :
+>> >>>>> mb : MemRead :
+>> >>>>> 8070266188000: server.detail_cpu1 T0 : @_read_lock+24 : ret
+>> >>>>> (r26) : IntAlu :
+>> >>>>> 8070266189000: server.detail_cpu0 T0 : @verify_chain+20 : ldl
+>> >>>>> r2,8(r16) : MemRead : D=0x000000000000200c A=0xfffffc001f7ffa10
+>> >>>>> 8070266189500: server.detail_cpu1 T0 : @ext2_get_branch+160 :
+>> >>>>> ldah r29,58(r26) : IntAlu : D=0xfffffc000078e62c
+>> >>>>> 8070266190500: server.detail_cpu0 T0 : @verify_chain+24 : zapnot
+>> >>>>> r2,15,r2 : IntAlu : D=0x000000000000200c
+>> >>>>> 8070266191000: server.detail_cpu1 T0 : @ext2_get_branch+164 :
+>> >>>>> lda r29,-12076(r29) : IntAlu : D=0xfffffc000078b700
+>> >>>>> 8070266192500: server.detail_cpu1 T0 : @ext2_get_branch+168 :
+>> >>>>> bis r31,r11,r16 : IntAlu : D=0xfffffc001f6c3a08
+>> >>>>> 8070266194000: server.detail_cpu1 T0 : @ext2_get_branch+172 :
+>> >>>>> bis r31,r12,r17 : IntAlu : D=0xfffffc001f6c3a08
+>> >>>>> 8070266195500: server.detail_cpu1 T0 : @ext2_get_branch+176 :
+>> >>>>> bsr r26,verify_chain : IntAlu : D=0xfffffc00003ee640
+>> >>>>>
+>> >>>>> _______________________________________________
+>> >>>>> m5-users mailing list
+>> >>>>> m5-users@m5sim.org
+>> >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>>
+>> >>>>
+>> >>
+>> ------------------------------------------------------------------------
+>> >>>> Windows Live™: Discover 10 secrets about the new Windows Live. View
+>> >>>> post.
+>> >>>>
+>> >>
+>> <http://windowslive.com/connect/post/jamiethomson.spaces.live.com-Blog-cns%21550F681DAD532637%217540.entry?ocid=TXT_TAGLM_WL_t2_ugc_post_022009>
+>> >>>
+>> >>
+>> >>
+>> ------------------------------------------------------------------------
+>> >> It’s the same Hotmail®. If by “same” you mean up to 70% faster. Get
+>> >> your account now.
+>> >>
+>> <http://windowslive.com/online/hotmail?ocid=TXT_TAGLM_WL_HM_AE_Same_022009>
+>> >
+>>
+>> ------------------------------------------------------------------------
+>> Windows Live™ Groups: Create an online spot for your favorite groups to
+>> meet. Check it out.
+>> <http://windowslive.com/online/groups?ocid=TXT_TAGLM_WL_groups_032009>
+- Show quoted text ->
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

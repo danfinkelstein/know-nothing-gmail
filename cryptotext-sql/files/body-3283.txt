@@ -1,0 +1,15 @@
+Yea, this is a long-standing issue for any system that does syscall emulation.  At runtime, the I/O library checks the output device to see if it's line-buffered or block buffered (i.e., a tty or not), and that affects whether or not it flushes the output buffer on a newline.  Since SE mode just passes the syscalls through to the underlying host, the target's I/O library can tell whether the output is being sent to the tty or to a pipe, and the code path will change slightly depending on that.
+Ideally for real simulations you'd always redirect the target's I/O to a file and then you'll get consistent results.Steve- Show quoted text -On Thu, Apr 17, 2008 at 6:41 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+I've noticed that the final trace time in a normal run:
+build/ALPHA_SE/m5.opt configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+and a run that pipes the results to a file
+build/ALPHA_SE/m5.opt configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello | tee hello_output
+have different cycle times. In the case of an unmodified m5_b5, they are 3208500 and 2871500 respectively. Any idea what may cause this difference? (or does this not happen for you, in which case something very odd is going on on my end)
+-Nick_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

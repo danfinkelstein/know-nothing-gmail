@@ -1,0 +1,20 @@
+Hello,
+I was wondering what is the exact status of the ISA development for
+X86? Are there specific instructions that have not been implemented?
+If so, which ones?
+Furthermore, I noticed that the se.py file is not configured to handle
+scripts (.rcS) as the fs.py script is. Aside from a few python script
+modifications, is that all that would be required to support script
+file simulation for SE (not to mention X86_SE and possibly sparc isa),
+i notice that it currently only supports alpha.
+In the long run, i am interested in running the parsec benchmarks on
+the X86 ISA, (SE simulation is fine) and would like to know if the
+current stable version requires relatively modest
+modifications/improvements for my studies, and if not, if the current
+dev-repo is a viable alternative.
+Thanks.
+Malek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

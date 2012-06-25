@@ -1,0 +1,15 @@
+One quick question: I want to debug a program which is
+running in the M5. Can i use remote debugger for this?
+As wiki says i have to use this command
+"gdb-linux-alpha arch/alpha/boot/vmlinux". And also i
+should have the kernel source code available
+obviously.
+Now i dont want to debug kernel. So can i give my
+alpha executable name in place of vmlinux? Will it
+work? If not, can you please tell me how to do it?
+      ______________________________________________
+¿Con Mascota por primera vez? Sé un mejor Amigo. Entra en Yahoo! Respuestas http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

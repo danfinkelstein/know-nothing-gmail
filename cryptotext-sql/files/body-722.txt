@@ -1,0 +1,10 @@
+Hi every one! I want to install a MPICH on the disk image. BUt there seems not enough space. So I want to create a new image.I use the mkblankimage.sh in m5/util to do this and get the following output:
+   Do you have sudo access? [y/n] y   How large do you want this disk image (in MB): 200  ./mkblankimage.sh: 99: let: not found  ./mkblankimage.sh: 101: let: not found  ./mkblankimage.sh: 130: let: not found
+  What directory would you like to build the image in? /home/junligu/m5  What would you like to name the image? new.img   dd'ing the blank image (this make take a while)...  Unable to create the blank image new.img in /home/junligu/m5
+I check the mkblankimage.sh, where produces the error is :  eval $DD if=/dev/zero of=$IMAGE_FILE bs=512 count=$BLK_SIZE $OUTPUT  if [ $? -ne 0 ]; then    abort "Unable to create the blank image $IMAGE_NAME in $IMAGE_DIR"
+I tried different image size and the directory for it. All failed. Does anyone know what's the problem?-- ************************************************Gu Junli--谷俊丽PHD Candidate of Tsinghua University
+Beijing 100084,ChinaTel: 86-10-62795139************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

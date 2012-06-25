@@ -1,0 +1,94 @@
+Hello,
+I am getting a simliar error as this person below but I am not
+starting from a check point but rather just starting at the beginning
+of the simulation.  I get the following error.  The input is also show
+below.  I am not sure of the memory size of the machine I am running
+it on.  Could this could be what's preventing the running of the
+program.  What else could be the issue that is causing this MMAP to
+return a fatal error?
+Thanks,
+Aaron
+[aswilliams@localhost m5-2.0b3]$ ./build/ALPHA_SE/m5.opt
+./configs/example/se.py -c
+tests/test-progs/hello/bin/alpha/linux/hello
+M5 Simulator System
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 27 2007 16:52:57
+M5 started Thu Nov  1 13:41:56 2007
+M5 executing on localhost.localdomain
+command line: ./build/ALPHA_SE/m5.opt ./configs/example/se.py -c
+tests/test-progs/hello/bin/alpha/linux/hello
+Global frequency set at 1000000000000 ticks per second
+mmap: Cannot allocate memory
+fatal: Could not mmap!
+ @ cycle 0
+[PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 66]
+Memory Usage: 15060 KBytes
+>The problem is the amount of virtual address space available to M5.
+>On a 32bit system that is only about 3GB. Since the simulated memory
+>is mapped as a contiguous block you need 2GB of contiguous free
+>address space.
+>When starting from a checkpoint the memory in the config file is
+>mmaped, and then when the checkpoint in unserialized, that memory is
+>unmmaped, the gziped memory image is uncompressed and loaded. The
+>problem is probably that the munmap() is before the gzdopen() so
+>gzdopen is probably getting a small chunk of the 2GB space which
+>means that you can't mmap it again. Moving the munmap() to after the
+>gzdopen() will probably fix the problem for you.
+>The other two solutions for being able to have a bigger amount of
+>memory are:
+>1. Use a 64bit system.
+>2. Change physical memory to allocate pages instead of the entire
+>memory at once and read/write them to disk as they are needed (kind
+>of like implementing  VM in M5 for the guest OS).
+>Ali
+On Jul 26, 2006, at 11:32 PM, Adam Kaplan wrote:
+> I noted that on my system I am able to start the full-system
+> simulator and
+> boot Linux successfully with 2047MB of simulated DRAM (not with 2048
+> though...Linux will not load), and yet when I checkpoint and try to
+> start
+> simulation from checkpoint (also with 2047MB of DRAM), I get the
+> following:
+>
+> fatal: Could not mmap physical memory!
+>  @ cycle 607401203386
+> [unserialize:m5/mem/functional/physical.cc, line 335]
+>
+> Anyone know a way around this? (It seems that the problem lies in
+> the amount of mem-alloc attempted on my system.  Is the allocation
+> requirement different if starting from a checkpoint?)
+>
+> Thanks for any help/suggestions you can provide!
+>
+>                                       -Adam
+>
+> ----------------------------------------------------------------------
+> ---
+> Take Surveys. Earn Cash. Influence the Future of IT
+> Join SourceForge.net's Techsay panel and you'll get the chance to
+> share your
+> opinions on IT & business topics through brief surveys -- and earn
+> cash
+> http://www.techsay.com/default.php?
+> page=join.php&p=sourceforge&CID=DEVDEV
+> _______________________________________________
+> m5sim-users mailing list
+> m5sim-users@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/m5sim-users
+>
+-------------------------------------------------------------------------
+Take Surveys. Earn Cash. Influence the Future of IT
+Join SourceForge.net's Techsay panel and you'll get the chance to share your
+opinions on IT & business topics through brief surveys -- and earn cash
+http://www.techsay.com/default.php?page=join.php&p=sourceforge&CID=DEVDEV
+_______________________________________________
+m5sim-users mailing list
+m5sim-users@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/m5sim-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

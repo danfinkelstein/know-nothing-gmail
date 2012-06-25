@@ -1,0 +1,5 @@
+Is it possible for the bus to have 1.5GHz bus frequecy in m5. Given global frequncy of ITHz, probably not?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

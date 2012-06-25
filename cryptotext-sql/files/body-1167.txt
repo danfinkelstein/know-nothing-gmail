@@ -1,0 +1,35 @@
+There is no thread scheduler in SE mode; once a thread starts running
+on a core it never moves.  So thread binding is your only choice,
+really.
+Steve
+- Show quoted text -
+On Wed, Jul 22, 2009 at 11:15 PM, 邓宁<dunning2006@gmail.com> wrote:
+> Dear all,
+>
+> I am using m5 for simulation of multiple threads in multicore environment. I
+> wonder if the SE mode can support thread binding just like the thread
+> affinity API does?
+> For i've checked the archives, which indicate that it can implemented in FS,
+> then how about the SE mode?
+>
+> thanks in advance, sincerely.
+>
+> --
+> Regards
+> Ning Deng
+>
+> School Of Computer Science and Technology
+> Beijng Institute of Technology, China, 100081
+> dunning2006@gmail.com
+> dnenging@bit.edu.cn
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+do you mean different latencies for the same bus depending upon different scenarios?
+---- Original message ----
+>Date: Fri, 16 Oct 2009 12:32:22 -0400
+>From: di wang <diwang@bu.edu>
+>Subject: [m5-users] is it possible to have buses with different delays?
+>To: m5-users@m5sim.org
+>
+>   Hi,
+>
+>   Is it possible to set different latency for buses
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

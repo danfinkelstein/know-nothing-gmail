@@ -1,0 +1,8 @@
+hi,          I am running SPEC CPU 2006 benchmarks on M5-2.0b6, it
+was worked fine. Recently, i updated all the updates on my m5 from m5
+repository. Now, when i am running simulation on M5, it is showing segmentation fault for all the benchmarks.          I am using your Mybench.py and cmp.py files from this website (http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks). it worked fine before, after updating it is giving the above error. 
+Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

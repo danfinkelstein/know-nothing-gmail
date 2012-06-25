@@ -1,0 +1,11 @@
+There is a patch from Jiayuan Meng to let the M5 SE  mode can run the
+multithreaded program.
+http://www.cs.virginia.edu/~jm6dg/fractal/smp.htm
+You can port it to the M5-2.0b6 very easily. You can also find a
+Splash2 p-thread version from the Internet. Then you just change the
+p-threads functions with the M5 system-call emulation functions  in
+the M4 macros.  That's how I run the Splash2 in the M5 SE mode.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

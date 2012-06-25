@@ -1,0 +1,86 @@
+Hmm...it is derived from PhysicalMemory, so from that viewpoint all it
+needs is to be rebuilt using the same parameters and have the
+underlying PhysicalMemory data restored correctly. If PhysicalMemory
+currently works with checkpointing, I am unclear what in my DRAMsim
+code prevents it from working, since I do not override either
+serialize or unserialize. Any ideas on what to look for?
+        - Clint
+- Show quoted text -
+On Feb 18, 2009, at 7:23 PM, nathan binkert wrote:
+> Generally, we don't checkpoint things that are timing related.  Can
+> you use PhysicalMemory to generate your checkpoint and DRAMsim to
+> resume?  Actually, resuming from a checkpoint wouldn't really work
+> then.  Is DRAMsim not derived from PhysicalMemory?
+>
+>  Nate
+>
+> On Wed, Feb 18, 2009 at 4:18 PM, Clint Smullen
+> <cws3k@cs.virginia.edu> wrote:
+>> Ah, um. I do not use checkpointing in M5 and have never tested
+>> doing it with
+>> DRAMsim. I'm not sure that DRAMsim itself has any functionality to
+>> perform
+>> checkpointing, which would be necessary to enable such operation.
+>> On Feb 18, 2009, at 5:44 PM, Angela Carlsson wrote:
+>>
+>> Hello Clint,
+>>
+>> I get an error checkpointing when I am using DRAMSim, this is the
+>> error
+>>
+>> m5.debug: build/ALPHA_FS/python/swig/pyevent.cc:84: void
+>> cleanupCountedDrain(Event*): Assertion `event->getCount() == 0'
+>> failed.
+>>
+>> Program received signal SIGABRT, Aborted.
+>> [Switching to Thread 47618140672304 (LWP 11420)]
+>> 0x0000003175f2f765 in raise () from /lib64/libc.so.6
+>>
+>> I just want to ask you if you experience the same problem when you
+>> are
+>> trying to checkpoint in FS. If you found this problem and you
+>> solved it can
+>> you please post the answer?.
+>>
+>> Thanks a lot in advance.
+>>
+>>
+>>> Date: Fri, 23 Jan 2009 12:41:10 -0500
+>>> From: cws3k@cs.virginia.edu
+>>> To: m5-users@m5sim.org
+>>> Subject: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+>>> implemention
+>>>
+>>> # HG changeset patch
+>>> # User Clint Smullen <cws3k@cs.virginia.edu>
+>>> # Date 1232732406 18000
+>>> # Node ID a95dd3a28ecb82a074de030367fe641d52aaf148
+>>> # Parent 0397aa216e2290a50fb7138bd28563926573c929
+>>> Beta patch for M5 2.0 DRAMsim implemention.
+>>>
+>>> NOTE: None of the DRAMsim files meet the M5 style requirements, so
+>>> if that
+>>> module is enabled, it will present a large series of messages when
+>>> you try
+>>> to apply the patch.
+>>
+>> ________________________________
+>> La cartera, las gafas. ¿te falta algo? Ahora llévate Messenger en tu
+>> móvil _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,98 @@
+Hi Steve,
+I would like to make one thing clear.
+Do the following lines -
+stest1 = Benchmarks.stest1()
+cpu[0].workload = stest1
+cpu[1].workload = stest1
+mean that the two different threads of the program
+stest1 will run on two cores cpu[0] and cpu[1]
+respectively ? Or does it mean that a single copy of
+the program will run on two different CPUs where each
+CPU runs both the threads ?
+Also, if I have a 4 threaded program and two cores,
+then how should I run it  ?
+Regards-
+Rajdeep
+--- Steve Reinhardt <stever@eecs.umich.edu> wrote:
+- Show quoted text -> You still need to set a workload for cpu[1].  That's
+> what it's
+> complaining about: cpu[1] has no workload.
+>
+> In order to have two threads or CPUs cooperate on
+> the same program, they
+> both need to have their workload parameter set to
+> point to the *same*
+> workload object (not two instances of the same
+> class).  Thus this has
+> two CPUs cooperating on one copy of stest1:
+>
+> stest1 = Benchmarks.stest1()
+> cpu[0].workload = stest1
+> cpu[1].workload = stest1
+>
+> while this has each cpu working on its own
+> single-threaded copy:
+>
+> cpu[0].workload = Benchmarks.stest1()
+> cpu[1].workload = Benchmarks.stest1()
+>
+> so you want something that combines them both:
+>
+> stest1 = Benchmarks.stest1()
+> cpu[0].workload = stest1
+> cpu[1].workload = stest1
+> cpu[2].workload = Benchmarks.stest2()
+>
+> Steve
+>
+> Meng-Ju Wu wrote:
+> >>>    Can you tell me the way to run two different
+> programs in two
+> > different cores?
+> >> Set the workload parameter of each cpu to the
+> workload you want to
+> >> run, e.g.:
+> >> cpu[0].workload = Benchmarks.AnagramLongCP()
+> >> cpu[1].workload = Benchmarks.GCCLongCP()
+> >
+> > Is it possible to use the following assignment in
+> M5_1.1 SE mode?
+> >
+> > cpu[0].workload = Benchmarks.stest1()
+> > cpu[2].workload = Benchmarks.stest2()
+> >
+> > I try it, and it gives me the error message, "
+> AttributeError: Can't
+> > resolve proxy 'workload' from 'cpu1' ". I want to
+> know if there has
+> > any way to resolve this kind of assignment.
+> >
+> > The reason is that we want to execute
+> multi-threads programs on M5 SE
+> > mode. The stest1() is a two threads program. We
+> modify M5_1.1, so it
+> > can execute two threads on CPU0 and CPU1. We want
+> to execute the
+> > single thread program stest2() on CPU3 at the same
+> time.
+> >
+> > thanks,
+> > Meng-Ju
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

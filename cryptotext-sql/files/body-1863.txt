@@ -1,0 +1,25 @@
+I just pushed my changes to the development repository.  Note that although these patches fix a number of bugs with the prefetching code, we've focused on the tagged and stride prefetchers, so the ghb prefetcher may or may not work still, and even if there are no bugs there are no guarantees that it does exactly what's described in the ghb paper so you probably want to take a look and check that it seems sane.  But it's certainly in much better shape now than it was before :-).
+Steve- Show quoted text -On Mon, Feb 16, 2009 at 12:22 AM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+Hi Steve It would be a great help for me if you can provide me those patch about the caches and also how to apply that patches so that I can continue my research work without this interruptionThanksAshutosh Jain
+On Sat, Feb 14, 2009 at 6:19 PM, Steve Reinhardt <stever@gmail.com> wrote:
+There are a number of bugs in the prefetcher currently... we received some patches from the list a while ago, and I have applied those patches and fixed several others in my internal tree, but haven't had the chance to push those to the public repository yet.  I'll try and put that higher on my to-do list.
+SteveOn Thu, Feb 12, 2009 at 4:30 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+HiI am trying to run ghb prediction applied over L3 cache. While running the simulation, I have following configuration on L3 cache which is depicted on config.ini which I got after simulation.Part of config.ini  containing info for L3 cache where I have used prefetch_policy to be ghb :::
+type=BaseCacheaddr_range=0:18446744073709551615assoc=16block_size=64cpu_side_filter_ranges=hash_delay=1latency=8000lifo=falsemax_miss_count=0mem_side_filter_ranges=mshrs=30
+prefetch_access=false
+prefetch_cache_check_push=trueprefetch_data_accesses_only=trueprefetch_degree=10prefetch_latency=800000prefetch_miss=trueprefetch_past_page=trueprefetch_policy=ghbprefetch_serial_squash=true
+prefetch_use_cpu_id=trueprefetcher_size=1000prioritizeRequests=falserepl=Nullsize=2097152split=falsesplit_size=0subblock_size=0tgts_per_mshr=12trace_addr=0two_queue=falsewrite_buffers=8
+cpu_side=system.tol3aBus.port[0]mem_side=system.membus.port[1]I am getting the statistics for l3 cache overall miss rate. But the point is its showing the same value unchanges on both the cases - when I have applied ghb prefetch technique and and when I haven't applied any prediction technique. I am in whimsical situation why the two simulations(one with prediction technique and other without the prediction technique) gives the same value for l3 cache miss rate......
+Thanks is advance-- Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

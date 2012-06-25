@@ -1,0 +1,12 @@
+Could you post the command line you use to run the simulation?
+I think there are two directions you can try.
+(1) Write a "Hello World!!!" program, compile it, and see if M5 can
+give you the right output.
+(2) If the m5stats.txt is empty, there must have some things wrong. Do
+you see any error message on screen?
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

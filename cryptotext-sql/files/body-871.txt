@@ -1,0 +1,13 @@
+Hello,
+      I wanted to work 
+with the x86 architecture and modify the micro-op translation. Is it possible to 
+do this withing M5. I was going through the supported architectures page but 
+could not find any information on how micro-ops have been implemented within 
+M5.
+ 
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

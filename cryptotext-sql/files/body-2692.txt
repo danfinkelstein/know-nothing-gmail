@@ -1,0 +1,6 @@
+Hi,  Has anyone tried to run M5 under Condor?  I am getting very basic errors like "ImportError: No module named m5.main" when running a test try.  I am wondering if there are conflicts with the Python interpretter embedded in the simulator since Condor doesn't support running Python scripts directly.
+  Any help is greatly appreciated.  Thanks,  Joel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

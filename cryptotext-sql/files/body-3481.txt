@@ -1,0 +1,9 @@
+Hello everyone,I just got some great news, and I wanted to pass it on to those who may be following M5 development.HP has agreed to release infrastructure changes to M5 under a BSD license.  In addition, I will be allowed to release all of the x86 ISA code that we have developed so far under a non-commercial license.  I'm not sure exactly what the mechanism of the release will be like (hopefully we'll make it transparent and not a separate repository/download), but I have to work out the details with HP lawyers.
+I'd like to also let everyone know that now that we are able to release HP's code, we will be able to clear up all of the license issues in our source repository and make the repository available to all users.  We use a distributed revision control tool called mercurial to manage our repository and we will allow public read access to this repository.  This will likely mean that we will change from our periodic release
+model to a model where we request that most people track our
+development more closely since it will be so much easier to follow our changes more closely.If you have any questions, please feel free to ask.  There are some details of the release of all of this code that we will have to work out over the next two weeks, but we will try to get it all sorted out as soon as possible.
+We'll post more information about the new changes with a detailed list as soon as we can.  Nathan Binkert, HP Labs Researcher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

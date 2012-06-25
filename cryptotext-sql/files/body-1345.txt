@@ -1,0 +1,12 @@
+Hi,
+ 
+I want to use M5 for some Java programs
+simulation. I was wondering if there is a support of JVM on M5 FS? Does anyone
+have an information on how I can execute Java programs on FS mode?
+ 
+Thanks
+Panayiotis
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

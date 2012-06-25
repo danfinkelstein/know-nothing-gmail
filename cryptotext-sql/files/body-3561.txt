@@ -1,0 +1,5 @@
+Thanks :)> Date: Thu, 7 Feb 2008 11:12:09 -0800> From: nate@binkert.org> To: m5-users@m5sim.org> Subject: Re: [m5-users] how to use Stats::Vector in Stats::Formula?- Show quoted text -> > f = constant(9) * sum(v)> > >  I have a formula that need to do calculation based on the sum of a vector.> > How do I write this ?> >> >  Vector v;> >  Formula f;> >> >  regStats()> >  {> >    v.init(len);> >    f = constant(9.0)*v.total();> >  }> >> >  Thanks!> >> >  Jiayuan> >> > ________________________________> > Shed those extra pounds with MSN and The Biggest Loser! Learn more.> >> > _______________________________________________> > m5-users mailing list> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-usersNeed to know the score, the latest news, or you need your Hotmail®-get your "fix". Check it out.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

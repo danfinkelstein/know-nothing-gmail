@@ -1,0 +1,8 @@
+hi,everyone
+ I am a freshman.when i compile m5 in ubuntu, there are some problems like following.My software version requirements are all met.
+xmc@niuzp-desktop:~/桌面/m5-2.0b3$  scons scons: Reading SConscript files ... TypeError: putenv() argument 2 must be string, not instance:   File "/home/xmc/桌面/m5-2.0b3/SConstruct", line 210:  env.Append(ENV = { 'M5_PLY' : Dir('ext/ply') }) File "/usr/lib/scons/SCons/Environment.py", line 1137:   orig[k] = v  File "/usr/lib/python2.5/os.py", line 474: putenv(key, item) xmc@niuzp-desktop:~/桌面/m5-2.0b3$  
+thank you in advance
+ _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

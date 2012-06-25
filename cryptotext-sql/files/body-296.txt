@@ -1,0 +1,8 @@
+On Fri, Apr 16, 2010 at 12:43 AM, abhishek rawat <abhir26@gmail.com> wrote:
+Thanks for the reply. I have a follow up question. So, lets say I am only using one O3 core and If I want to run 2-threaded SMT that means I will have to provide as input for instance 2 FFT  benchmarks. And for 4-threaded SMT similarly I will have to provide as input 4 FFT benchmark. In this case how can I do the comparison as the benchmarks have changed, in size. So my question was can I just provide lets say 1 FFT benchmark as input and then try to run it with 2 threaded-SMT and then with 4 threaded-SMT configuration. And I think you are saying it is not possible.  
+Unless your FFT has pthreads or some other multithreaded software that will spawn threads for you, then no, I dont see it as possible. But, I'll let someone else respond if they have additional thoughts.
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

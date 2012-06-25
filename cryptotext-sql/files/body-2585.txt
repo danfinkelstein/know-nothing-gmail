@@ -1,0 +1,9 @@
+I use the gnu fortran.
+GCC_LANGUAGES="c,c++,fortran"
+For the SPEC2006 benchmarks, there has no problem to compile the
+fortran programs except 465.tonto  and 481.wrf.
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

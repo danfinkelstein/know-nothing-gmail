@@ -1,0 +1,158 @@
+Hello,
+I am having problems with the PARSEC benchmarks, I am getting this
+error running x264, bodytrack, canneal, swaptions in a 4 core system,
+in Full System mode, with 4 threads and with the small workload.
+warn: allocating bonus target for snoop
+m5.opt: build/ALPHA_FS/mem/tport.cc:97: virtual bool
+SimpleTimingPort::recvTiming(Packet*): Assertion `pkt->isResponse()'
+failed.
+Program aborted at cycle 1878100939500
+Aborted
+This is my script:
+#!/bin/sh
+/sbin/m5 checkpoint
+/sbin/m5 switchcpu
+/sbin/m5 dumpstats
+/sbin/m5 resetstats
+cd /parsec/install/bin
+./x264 --quiet --qp 20 --partitions b8x8,i4x4 --bframes 3 --ref 5
+--direct auto --b-pyramid --b-rdo --weightb --bime --mixed-refs
+--no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads 4 -o
+/parsec/install/inputs/x264/eledream.264
+/parsec/install/inputs/x264/eledream_640x360_8.y4m
+./bodytrack /parsec/install/inputs/bodytrack/sequenceB_1 4 1 1000 5 0 4
+./canneal 4 10000 2000 /parsec/install/inputs/canneal/100000.nets
+./swaptions -ns 16 -sm 5000 -nt 4
+echo "Done :D"
+/sbin/m5 exit
+/sbin/m5 exit
+Have anyone experienced the same problem?. Is this a problem of the
+benchmarks or is a problem of the simulator?, when I am running my own
+simple test in the simulator normally I do not have any problems.
+And finally is thre anyone there that have tried to run several of the
+benchmarks together in the same workload?.
+Thanks in advance.
+- Show quoted text -
+On Thu, Nov 20, 2008 at 8:54 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+> Ah yes, how could I forget...
+>   I have also placed a script that generates these scripts on my site.  Note
+> that it requires the command line parameters file also located there:
+>     http://www.cs.utexas.edu/~hestness/links/writescripts.pl
+>     http://www.cs.utexas.edu/~hestness/links/inputsets.txt
+>   You will probably have to do some hacking on the script for your
+> particular arrangement, but hopefully the out-of-box results will be close
+> (no guarantees are written or implied concerning the correctness of these
+> scripts :P).  More information about PARSEC input sets and PARSEC command
+> lines can be found in the benchmark suite itself.
+>   Good luck. Enjoy,
+>   Joel
+>
+>   Joel Hestness
+>   Computer Architecture
+>   Dept. of Computer Science, University of Texas - Austin
+>
+>
+> On Thu, Nov 20, 2008 at 10:31 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>>
+>> Hi Joel,
+>>
+>> I would love to try the parsec benchmarks on a full system model. Do you
+>> have any sehll scripts that run the benchmarks.
+>>
+>> Best,
+>> -Rick
+>>
+>> Joel Hestness wrote:
+>> > Hi,
+>> >   Another member of my research group, Mark Gebhart, and I have been
+>> > working on putting together a disk image for use with M5 that contains
+>> > the PARSEC benchmark binaries.
+>> >   To date, we have compiled all of the benchmarks for ALPHA and placed
+>> > them on a disk image.  We are still ironing out bugs with some of
+>> > them, but the image contains 9+ working benchmarks.  I have placed a
+>> > link to the image on my website:
+>> >
+>> >  http://www.cs.utexas.edu/~hestness/links/linux-parsec-golden.img.bz2
+>> > <http://www.cs.utexas.edu/%7Ehestness/links/linux-parsec-golden.img.bz2>
+>> >   Also, I have placed a README next to it that contains the current
+>> > status of the PARSEC benchmarks on the image:
+>> >
+>> > http://www.cs.utexas.edu/~hestness/links/linux-parsec-golden-status.txt
+>> >
+>> > <http://www.cs.utexas.edu/%7Ehestness/links/linux-parsec-golden-status.txt>
+>> >   Here is the current status:
+>> >
+>> > --------------------------
+>> > The binaries on this disk image are located at /parsec/install/bin
+>> > The input sets on this disk image are located at /parsec/install/inputs
+>> > linux-parsec-golden.img (as of 11/17/08):
+>> > This matrix indicates if the benchmarks complete with many threads
+>> > running on the specified input sets:
+>> >                  simsmall:              simmedium:          simlarge:
+>> > - blackscholes   complete               complete            complete
+>> > - bodytrack      complete               complete
+>> > - canneal        complete               complete
+>> > - dedup          complete
+>> > - facesim
+>> > - ferret         complete               complete
+>> > - fluidanimate   complete               complete
+>> > - freqmine       complete               complete
+>> > - streamcluster  fail-kernel bug
+>> > - swaptions      fail-unaligned trap
+>> > - vips           complete               complete
+>> > - x264           complete
+>> > --------------------------
+>> >
+>> >   If you have fully working binaries for any of the benchmarks that we
+>> > don't currently have working, I will definitely welcome links to them
+>> > and can update the image.  When we get all of the PARSEC benchmarks
+>> > working, we will make this image available through the M5 site.
+>> >   Thanks,
+>> >   Joel
+>> >
+>> >   Joel Hestness
+>> >   Computer Architecture
+>> >   Dept. of Computer Science, University of Texas - Austin
+>> >
+>> >
+>> >
+>> > ---------- Forwarded message ----------
+>> > From: <eduardo.olmedo.sanchez@alumnos.upm.es
+>> > <mailto:eduardo.olmedo.sanchez@alumnos.upm.es>>
+>> > Date: Thu, Nov 20, 2008 at 3:13 PM
+>> > Subject: alpha_fs disk image with the PARSEC benchmarks
+>> > To: hestness@cs.utexas.edu <mailto:hestness@cs.utexas.edu>
+>> > Hello I am doing research with the M5 simulator, and we are planning
+>> > to use
+>> > your benchmarks at our lab here in the Technical University of Madrid, I
+>> > have seen in this message
+>> >
+>> > https://lists.cs.princeton.edu/pipermail/parsec-users/2008-July/000160.html
+>> > that you have a disk image with the binares of some benchmarks on it, it
+>> > will be really appreciable if you can send me the image because in
+>> > that way
+>> > you will save me many time, thank you.
+>> > Best,
+>> > Ed
+>> > ------------------------------------------------------------------------
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

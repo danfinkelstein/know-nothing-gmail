@@ -1,0 +1,6 @@
+Hi all, I am confused about how the build/ALPHA_FS/arch/alpha/decoder.cc generated, it says in its header that the src/arch/alpha/isa/main.isa generate it.  Now I want to add some attributes to some instructions such as Jsr.  In the decoder.cc:4061 there is a define for Jsr and assigne some attribute in the flas. If I want to add an extra one like
+  flags[isJsr] = true;How can I modify the main.isa to let it generate what I want ? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

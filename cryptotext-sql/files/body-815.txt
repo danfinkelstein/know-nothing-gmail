@@ -1,0 +1,48 @@
+On Tue, 27 Oct 2009, Gabriel Michael Black wrote:
+> The "Pagetable Error" issue for 32 bit x86 was fixed, wasn't it?
+yes as far as I know.  I should clean up that 32-bit page, I've been
+concentrating on 64-bit sse instructions.  I've been meaning to re-run
+all the 32-bit benchmarks to make sure that all the pagetable errors were
+in fact mmap related.
+Vince
+- Show quoted text -
+>
+> Gabe
+>
+> Quoting Vince Weaver <vince@csl.cornell.edu>:
+>
+> > On Tue, 27 Oct 2009, CCCP Group wrote:
+> >>
+> >> 1- What is the status of x86 support? Is it robust enough to handle spec2006
+> >> benchmarks compiled with gcc 4.x?
+> >
+> > Not withot a fair number of patches.  See
+> >    http://www.csl.cornell.edu/~vince/projects/m5
+> > to see m5 current x86 status, at least with regard to the spec2k binaries.
+> >
+> > With about 15 different patches applied (I'm slowly getting them merged)
+> > maybe about 1/2 of the spec2k benchmarks will run on the simple atomic
+> > processor in syscall emulation mode.
+> >
+> > Vince
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+/*  Vince Weaver  vince@csl.cornell.edu  http://csl.cornell.edu/~vince  */
+main(){char O,o[66]="|\n\\/_  ",*I=o+7,l[]="B!FhhBHCWE9C?cJFKET$+h'Iq*chT"
+,i=0,_;while(_=l[i++])for(O=0;O++<_>>5;)*I=*(I++-(_&31));*I=0;puts(o+5);}
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

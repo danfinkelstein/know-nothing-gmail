@@ -1,0 +1,14 @@
+Hi Sujay,Another question, which I think has been asked before, but I cant find an
+example. Can I do this by writing a function which would just print out thestats for me in the format I like. I would have to have this function calledat the end of simulation. How do I do this?
+I asked a similar question a while back.  Ali and Nate suggested using the registerExitCallback functionality, which allows you to register a function to be called at the end of simulation.  This worked well for me - the function gets called after simulation gets finished, but before stats are printed (so I was able to update stats values based on the state at the end of simulation).
+   -Vilas----- Original Message -----From: "Nathan Binkert" <
+nate@binkert.org>To: "Sujay Phadke" <sphadke@eecs.umich.edu>Cc: <m5-users@m5sim.org
+>Sent: Wednesday, October 17, 2007 12:06 AMSubject: Re: [m5-users] Float in stats> First, please keep your questions to the list and not to me directly for> everyone else's benefit.
+>>> Another follow up to my previous mail:>>>> I tried using a static variable (float), doing all calculations with it.>> Now I want to dump the value of this at the end, so I tried assigning it
+>> to oa Formula stat so that it is printed out at the end.>>>> Stats:: Formula energy;>>>> in the regStats,>>>> energy = static_variable;>>
+>> Problem is this stat is not being printed at all. Any ideas?> If you don't at least give a stat a name (using the .name() function), it> won't print.>>   Nate>_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

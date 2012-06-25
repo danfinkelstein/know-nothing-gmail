@@ -1,0 +1,5 @@
+when i run some benchmarks using detailed model, I have the error, fault:unalign detected at PC XXX, while it doesnot occur with timing model. Any insight?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

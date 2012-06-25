@@ -1,0 +1,26 @@
+Can you try the new beta 4 that has been released?  All of the compile problems on 7.10 shoudl have been resolved.
+  Nate- Show quoted text -
+Hello all,
+sudo scons build/alpha_fs/m5.opt
+The error is as follows:
+......
+build/alpha_fs/arch/alpha/atomic_simple_cpu_exec.o: In function
+'AlphaISAInst::Cvtqt::execute(AtomicSimpleCPU*, Trace::InstRecord*) const':
+/home/XXX/m5/build/alpha_fs/arch/alpha/atomic_simple_cpu_exec.cc:
+9785: undefined reference to 'm5_fesetround'
+/home/XXX/m5/build/alpha_fs/arch/alpha/atomic_simple_cpu_exec.cc:
+9787: undefined reference to 'm5_fesetround'
+....
+collect2: ld returned 1 exit status
+scons: *** [build/alpha_fs/m5.opt.bin] Error 1
+scons: building terminated because of errors.
+Can anybody tell me how to fix it? Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

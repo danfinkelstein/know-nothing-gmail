@@ -1,0 +1,25 @@
+When I try to compile m5 I get the following error:
+gmake[2]: Entering directory `/Users/Nick/Workspace/m5-2.0b2/build/libelf/build/po'
+gcc -DHAVE_CONFIG_H -I.. -I. -I../lib -I/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po -I/Users/Nick/Workspace/m5-2.0b2/ext/libelf/lib  -g -O2  \
+           /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c   -o /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:28:21: error: libintl.h: No such file or directory
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c: In function 'main':
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error: 'LC_ALL' undeclared (first use in this function)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error: (Each undeclared identifier is reported only once
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error: for each function it appears in.)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:88: error: 'LC_MESSAGES' undeclared (first use in this function)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:89: warning: incompatible implicit declaration of built-in function 'gettext'
+gmake[2]: *** [/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg] Error 1
+gmake[2]: Leaving directory `/Users/Nick/Workspace/m5-2.0b2/build/libelf/build/po'
+gmake[1]: *** [de.msg] Error 2
+gmake[1]: Leaving directory `/Users/Nick/Workspace/m5-2.0b2/build/libelf/build/po'
+gmake: *** [install-recursive] Error 1
+scons: *** [build/libelf/lib/libelf.a] Error 512
+scons: building terminated because of errors.
+Now I know I have libintl.h on my system (its in the gettext's macports directory at /opt/local/include). Is there any way to find out where scons is looking for the file? Has anyone else run into this problem? For info, my python version is 2.4.3 (from macports) and scons is 0.96.95 (compiled myself).
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

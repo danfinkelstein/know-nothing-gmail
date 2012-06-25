@@ -1,0 +1,13 @@
+- Show quoted text -> Sorry but i still can't understand what is the problem or how to solve it...
+> i am not sure if its the memory of my PC that is not enough or physical
+> memory is a variable of the benchmark
+> i cant open any post related to this subject.
+> if anyone could help it would be very helpful
+It's the latter.  The PhysicalMemory object has a range parameter
+which effectively sets its size.  You need to increase this to provide
+more memory to the simulated system.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

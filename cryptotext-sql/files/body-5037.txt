@@ -1,0 +1,67 @@
+Ali Saidi <saidi@umich.edu> writes:
+> We're happy to announce an official beta release of M5 2.0, including
+> all the new features described at our ISCA 2006 tutorial:
+>
+> - A new execute-in-execute detailed out-of-order CPU model
+> - A new memory system
+> - More extensive python integration
+> - Preliminary syscall emulation support for MIPS and SPARC
+Could you clarify the licensing status of the 2.0 release? The
+distribution still has the encumbered directory and eio seems to be
+compiled in from it. I'm still a bit uncomfortable about using M5 in
+commercial context even if I would not use the eio features.
+Below is a quick hack to add dup() to the syscall emu mode. For some
+reason minigzip from zlib wants that.
+While waiting for minigzip to compress rfc-index.txt I was thinking
+whether anyone has considered accelerating the simulation with dynamic
+compilation (QEMU-style)? LLVM looks like a nice C++ based compiler
+framework so using it might be a good fit for M5 :-)
+--- src/arch/alpha/linux/process.cc~    2006-08-18 07:26:53.000000000 +0300
++++ src/arch/alpha/linux/process.cc     2006-08-27 19:47:56.000000000 +0300
+@@ -162,8 +162,8 @@
+     /* 38 */ SyscallDesc("osf_old_stat", unimplementedFunc),
+     /* 39 */ SyscallDesc("setpgid", unimplementedFunc),
+     /* 40 */ SyscallDesc("osf_old_lstat", unimplementedFunc),
+-    /* 41 */ SyscallDesc("dup", unimplementedFunc),
++    /* 41 */ SyscallDesc("dup", dupFunc),
+     /* 42 */ SyscallDesc("pipe", pipePseudoFunc),
+     /* 43 */ SyscallDesc("osf_set_program_attributes", unimplementedFunc),
+     /* 44 */ SyscallDesc("osf_profil", unimplementedFunc),
+--- src/sim/syscall_emul.hh~    2006-08-18 07:26:53.000000000 +0300
++++ src/sim/syscall_emul.hh     2006-08-27 19:50:59.000000000 +0300
+@@ -245,7 +249,11 @@
+ SyscallReturn fchownFunc(SyscallDesc *desc, int num,
+                         Process *p, ThreadContext *tc);
++/// Target dup() handler.
++SyscallReturn dupFunc(SyscallDesc *desc, int num,
++                     Process *process, ThreadContext *tc);
++
+ /// Target fnctl() handler.
+ SyscallReturn fcntlFunc(SyscallDesc *desc, int num,
+                         Process *process, ThreadContext *tc);
+--- src/sim/syscall_emul.cc~    2006-08-18 07:26:55.000000000 +0300
++++ src/sim/syscall_emul.cc     2006-08-27 19:50:15.000000000 +0300
+@@ -301,6 +319,19 @@
+ SyscallReturn
++dupFunc(SyscallDesc *desc, int num, Process *process, ThreadContext *tc)
++{
++    int fd = process->sim_fd(tc->getSyscallArg(0));
++
++    if (fd < 0)
++       return -EBADF;
++
++    int result = dup(fd);
++    return (result == -1) ? -errno : process->alloc_fd(result);
++}
++
++
++SyscallReturn
+ fcntlFunc(SyscallDesc *desc, int num, Process *process,
+           ThreadContext *tc)
+ {
+--
+http://www.iki.fi/~ananaza/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

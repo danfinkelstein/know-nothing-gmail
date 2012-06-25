@@ -1,0 +1,48 @@
+Hi Paul,
+Now your question makes a lot more sense. The bus model was re-written
+for 2.0 since the memory system was completely overhauled and the old
+bus model would no longer work. What started as me hacking together
+something to start testing things grew into the final product with the
+help of a few others. Unfortunately, the statistics for the bus never
+got added, but I'm glad that you're considering adding some.
+First M5 creates a separate bus object for each bus in the system, so
+you don't need to know what bus the data is flowing across, observing
+the calls is all you need to do.  As long as you keep the proper
+statistics they'll be printed out in the stats file as <bus name>
+<statistic> <value>. M5 support two different memory modes http://www.m5sim.org/wiki/index.php/Memory_System
+  so you'll need to record statistics for both the atomic and timing
+modes (recvAtomic and recvTiming + other timing functions).
+The statistics package makes recording the actual data very easy. Take
+a look at http://www.m5sim.org/wiki/index.php/Using_the_Statistics_Package
+  and then look at some objects that use statistics for some example
+about how this is done. The caches are a pretty complex example, but
+the simple cpu (src/cpu/simple) or the etherlink (src/dev/etherlink*)
+are probably reasonable examples.
+Ali
+- Show quoted text -
+On Jun 28, 2008, at 5:37 PM, Paul wrote:
+> I forgot to mention that i am using m5 2.0b5.  i know that in 1.1
+> information about the buses traffic was collected and if it does not
+> exist in the 2.0 line can someone let me know the proper way to do
+> it so i can later submit something up stream if its useful.
+>
+> My current idea is to collect the data in the receiveAtomic function
+> because i believe that this is called each time there is bus
+> traffic.  doing this lets me easily see all the traffic, but i am
+> not sure how to tell which bus the data is flowing across so i can
+> just record the information for all buses as a whole.
+> has anyone had any luck with trying to separate the buses?
+> thanks
+>
+> On Fri, Jun 27, 2008 at 1:54 PM, Paul <stenius@gmail.com> wrote:
+> I am trying to collect some stats related to the bus traffic.  is
+> there a way to collect data similar to the same method for caches.
+> thanks
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

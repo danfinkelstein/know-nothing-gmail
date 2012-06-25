@@ -1,0 +1,11 @@
+dear M5 team,
+I would like to simulate SPEC CPU 2000 benchmark fixed number of instructions in m5-2.0b3 ALPHA_SE mode.
+I fast-forward for 100M instructions and then simulate for 100M instructions.I saw this subject fast-forwarding instructions few times but I can't resolve this probrem.
+Use switchCPU?Sampler?Could you tell me how to fast forward instructions.
+Thanks a lot
+--
+Dojyo Tomoki <dojyo@c.csce.kyushu-u.ac.jp>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

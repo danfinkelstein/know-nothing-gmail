@@ -1,0 +1,8 @@
+thanks ali!I realized that I just have to read the cpu2000.py in order to get things up and running(but that would'nt be possible w/o your explanation). Additional questions though, 1. does it really take a long time for a benchmark (
+i.e. gzip) to run? It's been running for 1 hr now.2. what is the purpose of specifying the output file (input.source.out) in M5? if it's okay can you please point me to a URL detailing the rudimentaries of running benchmarks? the spec2000 documentation is a little bit biased on explaining things when running Spec2000 in an operating system(i'm not surprised).
+3.in the gzip_source class in cpu2000.py, what's the difference between {ref,smred,mdred,lgred} when you just assigned self.args with the same value in all 4 choices?4. what are the differences between the 'ref','test','train' directories in the input directory of each benchmark?(how will i know which one to use)
+(sorry if some of my questions are a bit improper for this list.got no one to ask to :) )-- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,26 @@
+Since different devices can have different clocks, this has to be done
+with respect to the clock of a particular device.  For CPUs, there is
+a tickToCycles() method that does what you want.
+Steve
+- Show quoted text -
+On Mon, Sep 21, 2009 at 3:45 PM, ef <snorlaxgb@gmail.com> wrote:
+> Hello,
+>
+> From my understanding Ticks are independent of cpu clock cycle, I was
+> wondering if their an easy way to normalize CurTicks to be expressed
+> in terms of clock cycle. Are there functions or variables to do that?
+> Like
+> normalize(CurTick), or perhaps a parent-clock variable, where I can
+> make my own functions.
+>
+> Thanks
+> EF
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

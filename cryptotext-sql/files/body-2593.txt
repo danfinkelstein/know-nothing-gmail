@@ -1,0 +1,12 @@
+> Thanks for your response. I do not use any share cache. In my configuration,
+> each processor has private L1 and private L2 cache. Then I want to find
+> which pages are accessed by processor 1 or processor 2. In this case, can
+> you give me some ideas?
+I'd probably just create a big array in the physical memory object
+with two bits per page and just set the bits when memory requests come
+in then.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

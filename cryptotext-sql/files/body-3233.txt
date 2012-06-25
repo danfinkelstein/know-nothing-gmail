@@ -1,0 +1,32 @@
+You're the first person I know of to try and run spec2006 on M5.
+(1) if you ran a Tru64 binary ftruncate would probably work just fine, but the corresponding entry isn't in the linux syscall table. Adding it might make things work, but the parameters may be different. Changing ftruncate in src/arch/alpha/linux/process.cc from unimplementedFunc to ftruncate will probably fix the problem.
+(2) mremap isn't implemented, but you can certainly implement it. Just use the implementation of mmap as a guide.
+(3) You can probably implement this by either just copying some dummy value into the buffer, or simply passing the call to the real os like we do in most places.
+(4) I don't know if perlbench has an unaligned access intentionally or not (e.g. is there something prior to it that we did wrong that caused the fault, or does it actually happen). If it actually happens you would need to handle unaligned faults in SE mode. This wouldn't be too hard. You could look at how we take TLB faults in SE for a starting point, but pretty much when the fault happens just do two reads to grab the data in an aligned fashion, parse the faulting instruction to find the destination register, write it there and skip the faulting instruction (that is what happens in the kernel).
+(5) Did you increase the size of the memory allocated by the Physical Memory object?
+If you fix any of these please send us patches.
+Ali- Show quoted text -
+On Apr 15, 2008, at 9:39 PM, Meng-Ju Wu wrote:
+Hi all,
+I am working on SPEC2006 benchmarks and I got five kinds of errors  on
+M5 2.0b5 SE mode.
+(1) fatal: syscall  ftruncate (#130) unimplemented. (Example: 410.bwaves )
+(2) fatal: syscall mremap (#341) unimplemented. (Example: 429.mcf )
+(3) fatal: syscall getcwd (#367) unimplemented. (Example: 453.povray)
+(4) fatal: fault (unalign) detected @ PC 0x12009cedc (Example: 400.perlbench)
+(5) terminate called after throwing an instance of 'std::bad_alloc'
+(Example: 470.lbm)
+For (1), I remembered that ftruncate() was implemented in M5 1.0.  I
+check the M5 2.0b5 code, and it is only implemented in tru64.
+For (5), I tried to increase the memory size, but it is not helpful.
+I am really appreciate  if you can give me some hints  to solve (1)~(5).
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

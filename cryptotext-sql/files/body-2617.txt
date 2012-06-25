@@ -1,0 +1,7 @@
+Hello, m5users:I wanna use crosscompiler to compile cpu2000 benchmark, which will be used in m5 fs simulation.In the original config file,there are lines about compiler selection. CC           = cc -v
+CXX          = cxx  -vFC           = kf90 -vHere I assume we can use "alpha-unknown-linux-gnu-gcc", "alpha-unknown-linux-gnu-g++" to replace "cc" and "cxx". However, which fortran crosscompiler do you choose to replace "kf90"?  
+Please tell me if I am on the right track to crosscompile benchmark.Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+What's the easiest way to estimate/determine the hit time of different
+levels of a three level cache hierarchy?
+Adam
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

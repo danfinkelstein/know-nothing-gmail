@@ -1,0 +1,7 @@
+Hi everyoneI was introduced to m5 in the ASPLOS 08 workshop, and now we're using it for a project here at UIUC.
+I have a Newbie question. We have an 8 core server. Is there any way to run m5 on it so that it uses all CPUs? (m5 is kind of slow as it is right now, and we are using full system simulation).Thanks,
+Reza
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

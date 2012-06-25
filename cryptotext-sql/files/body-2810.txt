@@ -1,0 +1,8 @@
+I forgot to mention that i am using m5 2.0b5.  i know that in 1.1 information about the buses traffic was collected and if it does not exist in the 2.0 line can someone let me know the proper way to do it so i can later submit something up stream if its useful.
+My current idea is to collect the data in the receiveAtomic function because i believe that this is called each time there is bus traffic.  doing this lets me easily see all the traffic, but i am not sure how to tell which bus the data is flowing across so i can just record the information for all buses as a whole.
+has anyone had any luck with trying to separate the buses?thanks- Show quoted text -On Fri, Jun 27, 2008 at 1:54 PM, Paul <stenius@gmail.com> wrote:
+I am trying to collect some stats related to the bus traffic.  is there a way to collect data similar to the same method for caches.thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+You won't get a prompt if you ran one of the rcS scripts.  If there is
+no script to run, you get to a bash prompt.
+  Nate
+- Show quoted text -
+On Wed, Jun 11, 2008 at 1:51 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> I connect to M5 running in FS mode using m5term. It display all the console
+> output messages but I cannot get the prompt. Is there a special command to
+> get the prompt?
+>
+> - Sujay
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

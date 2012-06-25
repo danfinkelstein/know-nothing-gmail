@@ -1,0 +1,15 @@
+Hi,the inorder model is still under development and the superscalar functionality hasnt been tested yet. However, any feedback and debugging help you can provide would be much appreciated (please send coding questions to m5-dev...)
+In regards to your current question about stagewidth, that is in artifact of hard-coded values being used and the python and C++ not talking to each other correctly at configuration time.Try changing the stageWidth parameter noted in InOrderCPU.py and see what you get. Note that,  the hard-coded values in pipeline_traits.hh,cc are used to defined the interstage buffers and the like so you would also need to adjust that to match your python config OR setup M5 so that the python param "stagewidth" is writing to the namespace visible stagewidth defined in pipeline_traits.hh.
+If you do the latter, please provide the patch to m5-dev :)Also, since it hasnt been tested I'm not terribly confident it will work out the box, but any issues you run into , please send to m5-dev mailing list and we can try to help you sort them out if you are willing to put in a little coding work as well.
+Thanks!-Korey- Show quoted text -On Fri, Apr 23, 2010 at 1:14 PM, abhishek rawat <abhir26@gmail.com> wrote:- Show quoted text -
+Hi,I have been trying to change the stageWidth parameter in inorder CPU model (ALPHA SE mode) and I keep getting the following from the simulation output:Exiting @ cycle 9223372036854775807 because simulate() limit reached
+I am running splash2's Radix benchmark.Also, even after setting "stageWidth" to a value different than 1 in pipeline_traits.hh and re-compiling, the stageWidth in the generated stats.txt remains 1. Is it possible that I could be doing something wrong.
+Thanks,Abhishek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+Uncached accesses are supported, otherwise many i/o device accesses
+would fail to work.
+Ali
+- Show quoted text -
+On Feb 20, 2009, at 4:42 AM, Veydan Wu wrote:
+> Hi all, Does M5 support uncached access ? Or every address finally
+> locate in somewhere of cache? If M5 does not support uncached
+> access, how does some configuration work perform? Thanks !
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

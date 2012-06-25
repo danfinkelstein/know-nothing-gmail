@@ -1,0 +1,33 @@
+The directory is in ALPHA_FS/python/m5/objects, though the only thing in there is __init__.py.  The rest of the contents of the directory are gathered from throughout the M5 source tree.  Anything with a SimObject() call in a SConscript will end up in the objects directory.
+  Nate- Show quoted text -On Mon, Mar 8, 2010 at 2:00 PM, maveric Jiten <jitendras@maveric-systems.com> wrote:
+  
+  
+Hi Nate,
+I am looking post build process directory, but I am not able to find it.
+I have compiled m5.debug an ALPHA_FS target.
+there is no /src/python/m5/objects directory in the source tree.
+I was able to run ALPHA_FS in Full system mode too.
+Thanks ,
+--
+Jitendra Singh | ACOE | 593
+Maveric Systems Ltd. www.maveric-systems.com
+5th Floor, Fagun Mansion, 74, Ethiraj Salai, Egmore, Chennai, Tamil Nadu, India - 600105
+ 
+India Mobile: +919176884834, +919382114572
+India Tel: +9144–28207690 - Extn: 259
+ 
+Disclaimer:
+This message is intended only for the individual or entity to which it is addressed. It may contain privileged, confidential information which is exempt from disclosure under applicable laws. If you are not the intended recipient, please note that you are strictly prohibited from disseminating or distributing this information (other than to the intended recipient) or copying this information. If you have received this communication in error, please notify us immediately by return email at infosec@maveric-systems.com . 
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

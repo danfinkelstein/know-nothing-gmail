@@ -1,0 +1,7 @@
+I would like to integrate M5 with DRAMsim to do DRAM power/timing simulations. It
+will be appreciable if you guys can tell me where to get the required
+patch for this. Also any information about the accuracy of DRAMsim compare to the built in m5 DRAM model?thanks-Raid Ayoub
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

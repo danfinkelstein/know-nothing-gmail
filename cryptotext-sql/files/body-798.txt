@@ -1,0 +1,63 @@
+I've put a link on the d/l page. The file is downloading to m5sim.org right
+now and should be available within 5 minutes.
+Ali
+On Wed, 28 Oct 2009 22:27:11 -0400, soumyaroop roy <sroy@cse.usf.edu>
+- Show quoted text -wrote:
+> Nate,
+>
+> It is available for download here (33 MB):
+>
+http://72.187.222.34/~sroy/m5_tests/alphaev67-unknown-linux-gnu-x86-32.tar.bz2
+>
+> -Soumyaroop
+>
+> On Wed, Oct 28, 2009 at 9:12 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+>> On Wed, Oct 28, 2009 at 9:04 PM, nathan binkert <nate@binkert.org>
+wrote:
+>>>>>> My estimate is that the tar-zipped file should between 250-300 MB.
+>>>>> No problem.
+>>>>
+>>>> Let me host it somewhere and send you the link so that you may
+download
+>>>> it.
+>>> Sure.  Once I get it on the m5 site, you can add the link.
+>>
+>> Is there a way for me to upload it on the M5 wiki directly? Is that
+>> what you were implying all along that I should do?
+>>
+>>>
+>>>> Do you mean providing the link though the wiki? I do not have
+>>>> permissions to edit this page,
+>>>> http://www.m5sim.org/wiki/index.php/Download, which has links to the
+>>>> cross-compilers.
+>>>
+>>> You should be able to, but you have to create an account.
+>>
+>> I already have an account. But it says:
+>>
+>> You do not have permission to edit this page, for the following reason:
+>> This page has been locked to prevent editing.
+>>
+>> You can view and copy the source of this page:
+>>
+>>>
+>>>  Nate
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> -Soumyaroop
+>>
+>> --
+>> Soumyaroop Roy
+>> Ph.D. Candidate
+>> Department of Computer Science and Engineering
+>> University of South Florida, Tampa
+>> http://www.csee.usf.edu/~sroy
+>>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

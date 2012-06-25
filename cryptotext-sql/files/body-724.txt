@@ -1,0 +1,7 @@
+I tried after modified the /bin/bash. The output is like this now:   Do you have sudo access? [y/n] y   How large do you want this disk image (in MB): 200   What directory would you like to build the image in? /mnt/point2
+   What would you like to name the image? new.img   dd'ing the blank image (this make take a while)...   Unable to create the blank image new.img in /mnt/point2Could this be posibe that there is not enough space in the directory? How can I check it?- Show quoted text -
+-- ************************************************Gu Junli--谷俊丽PHD Candidate of Tsinghua UniversityBeijing 100084,ChinaTel: 86-10-62795139************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Yes, you can use your x86 host (Ubuntu works fine), but to use it in full-system emulation mode, you can emulate ALPHA. (Other archs are not completely implemented).
+ 
+-Reza- Show quoted text -
+ 
+ 
+On Thu, May 15, 2008 at 2:41 PM, Jibang Liu <iamjbliu@gmail.com> wrote:
+Hi all:I want to use m5 to be a full system simulator. Now what I have is a x86 machine, so can I install m5 on my x86 host machine to be a full system simulator?
+thanksJibang_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

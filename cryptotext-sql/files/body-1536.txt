@@ -1,0 +1,17 @@
+Hi all,
+I am writing a memory debugger that sits in between L1 and the cpu. It
+maintains a functional memory (like MemTest) that mimics the actions the
+memory actions and tests the values for problems. I would like to be
+able to plug this in right after restoring a checkpoint when the
+physical memory has values (from checkpoint) but the functional memory
+is blank. Is there an easy way to initialize a functional memory from a
+physical memory?
+Also, I see references to MemDebugger class in the cache implementations
+which makes me think someone else has gone down this road before. Any
+one know anything?
+Thanks,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

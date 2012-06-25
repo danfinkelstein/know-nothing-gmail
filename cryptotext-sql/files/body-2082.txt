@@ -1,0 +1,40 @@
+  
+  
+Hi Shoaib,
+Sorry for the slow response, like Steve mentioned I have been working
+on a final draft for a paper.
+Looking at the code I'm fairly certain you're correct, BTB's update()
+should be called in that same update() function.  The BTB functions
+within the bpred_unit.hh (BTBValid, BTBLookup, BTBUpdate) are
+unfortunately deprecated at this point -- they aren't called anywhere
+and don't include a thread id.  I'll look into updating this code, but
+if you want to make local changes in the meantime, I would suggest
+using a call to BTB.update() like the one seen in
+BPredUnit<Impl>::squash().
+Kevin- Show quoted text -
+Steve Reinhardt wrote:
+  Good question.  It looks to me like BTBUpdate should be called from
+BPredUnit<Impl>::update() like BPUpdate is.  I know Kevin's in the
+middle of getting a final version of a paper ready, but perhaps when
+he's done he'll have time to take a look and see if we're both missing
+something.
+Steve
+On Sat, Dec 13, 2008 at 9:56 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+  
+  
+    I have noticed that BTBUpdate in bpred_unit.hh never gets called. Is this supposed to be such or is it that it depends upon certain parameters/type of predictor etc.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+  
+  _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

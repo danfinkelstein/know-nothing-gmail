@@ -1,0 +1,9 @@
+Hi,
+I want to know how M5 event queue works, but I could not find enough
+documents on website. Is there any way to get more information on event
+queue?
+Somayeh
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

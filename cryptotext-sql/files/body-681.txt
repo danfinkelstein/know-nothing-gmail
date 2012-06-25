@@ -1,0 +1,12 @@
+Okay, I figured this out too. Basically the FSConfig.py to point to the new kernel binary. I think someone should mention  this on the website in a more obvious way.Thanks,Amir- Show quoted text -
+On Mon, Nov 23, 2009 at 1:25 PM, Amir Hossein Hormati <hormati@eecs.umich.edu> wrote:
+So, I figured it out. I was doing something wrong. :) so now i have the kernel compiled. How to do I update the kernel in the  disk image that I downloaded form m5's website to the version i just compiled? The tutorial does not say anything about it.
+ThanksAmir
+On Mon, Nov 23, 2009 at 10:49 AM, Amir Hossein Hormati <hormati@eecs.umich.edu> wrote:
+Hi,I am trying to upgrade my kernel from 2.6.13 to 2.6.27 based on the instructions found at http://www.m5sim.org/wiki/index.php/Compiling_a_Linux_Kernel
+One of the steps is :cp .config.m5 .configI can not find .config.m5 or .config files in the checked out directory.  I created my own .config file by running "make menuconfig" but couldn't figure out how to get .config.m5 . Am I missing something? Is there a better way to do this? 
+I was wondering why the disk image on the website does not come with the latest version of kernel supported by m5? That could save a lot of time.Thanks.Amir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

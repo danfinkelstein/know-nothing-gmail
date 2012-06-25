@@ -1,0 +1,49 @@
+    If you want to know about all of the instructions that are being
+executed, you can add --trace-flag=InstExec to your command line after
+the m5 binary and before the configuration script. That will print the
+disassembly for each instruction as it executes, as well as some other
+information including the tick. If you want to change the code that's
+executed for a particular instruction, to, for instance, print out a
+message showing the current tick (curTick), you should look in
+src/arch/alpha/isa/decoder.isa, assuming you're using Alpha. That file,
+like everything else in the "isa" directory, is written in a custom
+language designed for describing ISAs in m5. You should be able to add a
+print statement there without too much trouble.
+Gabe
+- Show quoted text -
+Prabhat Kumar wrote:
+> I am using M5 to do some simulation and I am stuck with the following
+> problem. I want to know what particular instruction is currently executed.
+> Is it possible to do this in M5:
+>
+> e.g.,
+> ADD r1 r1 r3
+> SUB r3 r2 r1
+> ...
+> ...
+> SUB r1 r2 r3
+> ...
+> ...
+> ADD r4 r4 r3
+> ...
+> ...
+>
+> Is it possible to know at which clock tick 'SUB r1 r2 r3' instruction is
+> executed my M5?
+>
+> In other words, how can I find the code which actually executes the
+> instructions in the binary?
+>
+> Thanks,
+> Prabhat
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

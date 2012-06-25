@@ -1,0 +1,125 @@
+I am using the linux-latest image available from the M5 website. Does that
+need to be patched?
+----- Original Message -----
+From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+- Show quoted text -Sent: Monday, August 10, 2009 4:10 PM
+Subject: Re: [m5-users] memory trace and thread ID
+>
+> The patches I'm referring to are in the linux-patches repository
+> http://repo.m5sim.org/linux-patches. Depending on where you got your
+> kernel
+> from you might need to apply them.
+>
+> Ali
+>
+>
+> On Mon, 10 Aug 2009 15:50:38 -0400, "Sujay Phadke"
+> <sphadke@eecs.umich.edu>
+> wrote:
+>> ----- Original Message -----
+>> From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>> To: <saidi@umich.edu>
+>> Sent: Monday, August 10, 2009 3:28 PM
+>> Subject: Re: [m5-users] memory trace and thread ID
+>>
+>>
+>>>I do have the traceflag on. But I dont have the patches applied. On the
+> M5
+>>>
+>>>download page, the patches come under the section "Obsolete Revisions"
+> and
+>>>
+>>>it says not required. I thought these were there in the m5-stable. Do I
+>>>have to manually apply these?
+>>>
+>>> Thanks,
+>>> Sujay
+>>>
+>>> ----- Original Message -----
+>>> From: "Ali Saidi" <saidi@umich.edu>
+>>> To: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>>> Sent: Monday, August 10, 2009 2:04 PM
+>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>
+>>>
+>>>>
+>>>> Are you running with the Thread traceflag on? You must be using a
+> kernel
+>>>> with the thread_info structure annotated correctly. Specifically,
+>>>> m5struct.diff from the linux-patches repository must have been applied.
+>>>>
+>>>>
+>>>> Ali
+>>>>
+>>>> On Mon, 10 Aug 2009 13:40:05 -0400, "Sujay Phadke"
+>>>> <sphadke@eecs.umich.edu>
+>>>> wrote:
+>>>>> Thanks. I tried doing this, but this is all I get running specweb:
+>>>>>
+>>>>> 0: testsys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00
+>>>> 2009
+>>>>> 0: drivesys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00
+>>>> 2009
+>>>>> 4694261844000: drivesys.terminal: attach terminal 0
+>>>>>
+>>>>> nothing more in the file.
+>>>>>
+>>>>> Can any method in threadinfo.hh help?
+>>>>>
+>>>>> - Sujay
+>>>>>
+>>>>> ----- Original Message -----
+>>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>>> Sent: Monday, August 10, 2009 12:48 PM
+>>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> Remove the false condition from src/arch/alpha/linux/system.cc:139
+> and
+>>>>>> Thread should work.
+>>>>>>
+>>>>>> Ali
+>>>>>>
+>>>>>>
+>>>>>> On Mon, 10 Aug 2009 12:10:58 -0400, "Sujay Phadke"
+>>>>>> <sphadke@eecs.umich.edu>
+>>>>>> wrote:
+>>>>>>> Hello,
+>>>>>>>      I want to generate memory traces and associate them with the
+>>>> thread
+>>>>>> ID
+>>>>>>>      or process ID. Is there a way to do this? I am running m5 in FS
+>>>>>>>      mode
+>>>>>>>      and want to differentiate the memory accesses of a particular
+>>>>>> process
+>>>>>>>      from those of others, including the OS. I looked into the
+>>>>>>> "Thread"
+>>>>>> and
+>>>>>>>      "ExecThread" traceflags but they dont help.
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Sujay
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+I've successfully run the surge-specweb benchmark with version 1.1 with the following command line:
+./build/ALPHA_FS/m5.opt -d myout -ETEST=SURGE_SPECWEB -EFREQUENCY=4GHz configs/fullsys/run.py
+./build/ALPHA_FS/m5.opt -d myout -ETEST=SURGE_SPECWEB configs/fullsys/run.py
+However, I'm getting a Segmentation Fault when I attempt the following:
+./build/ALPHA_FS/m5.opt -d myout -ETEST=SURGE_SPECWEB -ENUMCPUS=2 configs/fullsys/run.py
+If it's helpful, here are the console outputs:
+Server:
+M5 console: m5AlphaAccess @ 0xFFFFFD0200000000 Got Configuration 127 memsize 20000000 pages 10000 First free page after ROM 0xFFFFFC0000018000 HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000 kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x2 CPU Clock at 2000 MHz IntrClockFrequency=1024 Booting with 2 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+KSP: 0x20043FE8 PTBR 0x20
+Console Callback at 0x0, fixup at 0x0, crb offset: 0x790 Memory cluster 0 [0 - 392] Memory cluster 1 [392 - 65144] Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 10000 ConsoleDispatch at virt 100008D8 phys 188D8 val FFFFFC00000100A8 Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+Client:
+M5 console: m5AlphaAccess @ 0xFFFFFD0200000000 Got Configuration 127 memsize 10000000 pages 8000 First free page after ROM 0xFFFFFC0000018000 HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000 kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x1 CPU Clock at 2000 MHz IntrClockFrequency=1024 Booting with 1 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+Console Callback at 0x0, fixup at 0x0, crb offset: 0x510 Memory cluster 0 [0 - 392] Memory cluster 1 [392 - 32376] Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 8000 ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8 unix_boot_mem ends at FFFFFC0000076000 k_argc = 0 jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028) CallbackFixup 0 18000, t7=FFFFFC0000700000
+I also had to hack dev/alpha_access.h to change the following:
+#define ALPHA_ACCESS_VERSION (1303)
+...into...
+#define ALPHA_ACCESS_VERSION (1305)
+...because I was getting console version mismatch errors before doing so.
+A final note: I've got the patched version 2.0 beta installed on the same system as version 1.1, but the system paths are different for each (and so also are the binaries, disk images, etc.)
+Chris Stewart
+HP Solutions Alliances Engineering
+Mailcode 140601
+20555 S.H. 249
+Houston, TX 77070
+281-518-6524
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

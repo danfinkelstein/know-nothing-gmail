@@ -1,0 +1,16 @@
+Hey all,
+ 
+If you are interested in running a multi-threaded program in
+SE mode with shared memory CMP, here is my patch for it. Currently, only alpha
+linux binaries are supported. Hope it benefits the M5 community.
+ 
+http://www.cs.virginia.edu/~jm6dg/fractal/smp.htm
+ 
+Thank Steve, Ali, and all M5 group for their great support
+in helping me going through tons of problems. 
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

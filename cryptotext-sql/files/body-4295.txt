@@ -1,0 +1,32 @@
+Yea, if Elliott sends us a diff we'll be happy to commit it. In general we're happy to commit patches as long as they don't break other functionality. The request for a diff, as opposed to changes in the e-mail has a few benefits
+a) It reduces the error involved in transposing the change (it can be automatically applied with patch)
+b) It makes It easier on us, so we'll be more likely to incorporate your fix
+c) It increases the likelihood that we'll understand what you're trying to do
+d) If patches do become frequent it allows patches to be inserted into a patch queue automatically
+When we open up the repository, mailing a change should be as easy as typing a single command line. I hope people will contribute regularly when that happens. Publishing your fixing for a bug or new functionality can save someone the time of repeating the work later and ultimately increase the overall success of M5.
+Ali- Show quoted text -
+On Sep 11, 2007, at 3:09 AM, Jonas Diemer wrote:
+On Friday 07 September 2007 19:27:34 Elliott Cooper-Balis wrote:
+I took your advice and added support for stat64.
+Great, thanks for sharing! Some of my tests were also failing due to missing
+stat64 (at the very end though, so I didn't bother too much with that yet).
+Is this going to go into the main tree?
+-- 
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

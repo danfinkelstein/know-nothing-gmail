@@ -1,0 +1,6 @@
+Hi, I have a problem regarding giving an input file to the binary run in SE mode. The script se.py in configs/example is supposed to get the input file with "-i" option, but apparently it doesn't pass it to the binary.
+ Thanks  Shervin 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

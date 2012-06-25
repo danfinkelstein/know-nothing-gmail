@@ -1,0 +1,47 @@
+> I understand that a mispredicted branch should squash the pipeline when,
+> in the Ex-stage, it is known which path to take. However, when a branch
+> is predicted as "taken" there will allways be an additional squash (see
+> cpu/inorder/resources/fetch_seq_unit.cc, function "execute", case
+> "UpdateTargetPC").
+Two cases for a branch causing squashes:
+1. branch resolution
+2. branch prediction
+For 1, in the EX stage, yea you are correct that a mispredicted branch
+will be squashed.
+For 2,  if the branch is predicted taken, then that means the next
+address to be fetched isnt PC+4.  So at that point you
+want to speculate and start fetching down your predicted path.
+Anything that was fetched before your branch prediction
+needs to be squashed though.
+Also, consider the case where there are multiple stages between where
+fetch and the branch prediction stage (e.g. Decode). There are going
+to be multiple instructions between those stages that need to be
+squashed if predicted taken. Also consider how the issue is
+exacerbated when you are fetching more than 1 instruction at a time.
+Now, for the pipeline that you are executing you may or may not have
+any stages between fetch and branch prediction.
+in terms of a double squash scenario, that situation should happen if
+say you predicted a taken branch but then when you resolved it it was
+really not taken. So you get 2 squashes there. But if a taken branch
+is predicted correctly then you should have no additional squash at
+branch resolution. if it is always happening, that signifies a bug in
+the branch prediction code.
+The branch prediction code was borrowed from the O3 model so it looks
+like in translation for the inorder things broke a bit. Thanks for
+spotting the potential bug.
+Lastly, the commands in "pipeline_traits.cc" should hopefully let you
+model your pipeline in a general way, so if you want to change where
+"updatetargetpc" is done or anything like that, hopefully it will just
+*work*. Let us know if it doesnt though.
+>
+> A couple of weeks ago I posted a patch for the inorderCPU's branch
+> predictor, where I also mentioned a problem with squashing.
+> I mentioned that sometimes there were multiple squashes that tried to
+> remove 2 times the same entry in the predHist-table.
+I believe I updated the development repository with your branch patch.
+I'll double check though.
+- Korey
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

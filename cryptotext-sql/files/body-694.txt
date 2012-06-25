@@ -1,0 +1,34 @@
+This compiles on our systems.  What version of m5 are you running?
+What compiler?  What kind of system?
+  Nate
+2009/11/20 junli gu <gujunli@gmail.com>:
+- Show quoted text -> Hi everyone,
+>
+>   I tried to compile scons build/X86_SE/m5.opt. There is error:
+>
+> build/X86_SE/sim/eventq.hh: In member function 'void
+> BaseCache::CachePort::clearBlocked()':
+> build/X86_SE/sim/eventq.hh:474: error: assuming signed overflow does not
+> occur when assuming that (X + c) < X is always false
+> scons: *** [build/X86_SE/mem/cache/base.o] Error 1
+> scons: building terminated because of errors.
+>
+>
+> Dose M5 support X86_SE Now?
+>
+> --
+> ************************************************
+> Junli Gu--谷俊丽
+> Coordinate Science Lab
+> University of Illinois at Urbana-Champaign
+> ************************************************
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

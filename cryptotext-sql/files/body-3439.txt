@@ -1,0 +1,15 @@
+Hi thanks for the help.........  Yep I am creating a files that call BaseCPU in it. I am attaching my FullCPU.py file that calls BaseCPU.py file. Let me know is this suffice to sort the problem or is this you want from my side.
+ Thanks once again Ashutosh Jain
+ 
+ 
+while running M5 spec cpu 2000 i am getting error ............  [ashutoshj@kani example]$ ../../build/ALPHA_SE/m5.opt runshort.pyM5 Simulator SystemCopyright (c) 2001-2006The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Mar 13 2008 02:14:30M5 started Sat Mar 15 18:32:26 2008M5 executing on kani.cs.lamar.educommand line: ../../build/ALPHA_SE/m5.opt runshort.pyTraceback (most recent call last):
+  File "<string>", line 1, in ?  File "build/ALPHA_SE/python/m5/main.py", line 350, in main  File "runshort.py", line 5, in ?    from DetailedUniConfig import *  File "/space/ashutoshj/m5_2.0b4/configs/test/DetailedUniConfig.py", line 7, in ?
+    from FullCPU import *  File "/space/ashutoshj/m5_2.0b4/configs/test/FullCPU.py", line 4, in ?    from BaseCPU import BaseCPU  File "/space/ashutoshj/m5_2.0b4/configs/test/BaseCPU.py", line 4, in ?
+    class BaseCPU(SimObject):  File "build/ALPHA_SE/python/m5/SimObject.py", line 143, in __new__AssertionError[ashutoshj@kani example]$
+What is this Assertion Error and how to overcome this.............Please help  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

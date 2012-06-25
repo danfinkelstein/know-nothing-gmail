@@ -1,0 +1,252 @@
+Oh I see. Thanks for the information. I think I 
+misunderstood the inside mechanism of cache levels.
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Steve Reinhardt 
+  
+  To: M5 users mailing list 
+  Sent: 2007年9月25日 1:30 PM
+  Subject: Re: [m5-users] mystery on missing L2 
+  write reqs.
+  M5 only models write-allocate caches, so write misses on the L1 
+  show up as read-exclusives (ReadEx) at the L2.Steve
+  On 9/24/07, Jiayuan 
+  Meng < jerrygonair@hotmail.com> 
+  wrote:
+  
+    
+    Hey all,
+     
+    When tracking cache write accesses for the second level 
+    shared cache for a CMP architecture, I found that there is no write access 
+    to it (# demand accesses = # readreq accesses). However, the L1 level 
+    Dcaches have write misses. The first write to any data must result 
+    in a miss in the L2. So I am very much confused. 
+     
+    I followed the output of the m5v2.0 beta3's built-in 
+    statistics printed out in m5stats.txt. My system config 
+    is a CMP structure with private L1 Icaches and Dcaches,  and a shared 
+    L2. The coherence protocol is moesi. 
+     
+    Thanks for any help!
+     
+    Jiayuuan
+     
+    ========== attached stats for l2 =======
+    system.l2.ReadExReq_accesses                    
+    12651                       
+    # number of ReadExReq 
+    accesses(hits+misses)system.l2.ReadExReq_avg_miss_latency     
+    14000.972526                       
+    # average ReadExReq miss 
+    latencysystem.l2.ReadExReq_avg_mshr_miss_latency        
+    11000                       
+    # average ReadExReq mshr miss 
+    latencysystem.l2.ReadExReq_hits                         
+    8538                       
+    # number of ReadExReq 
+    hitssystem.l2.ReadExReq_miss_latency             
+    57586000                       
+    # number of ReadExReq miss 
+    cyclessystem.l2.ReadExReq_miss_rate                
+    0.325113                       
+    # miss rate for ReadExReq 
+    accessessystem.l2.ReadExReq_misses                       
+    4113                       
+    # number of ReadExReq 
+    missessystem.l2.ReadExReq_mshr_miss_latency        
+    45243000                       
+    # number of ReadExReq MSHR miss 
+    cyclessystem.l2.ReadExReq_mshr_miss_rate           
+    0.325113                       
+    # mshr miss rate for ReadExReq 
+    accessessystem.l2.ReadExReq_mshr_misses                  
+    4113                       
+    # number of ReadExReq MSHR 
+    missessystem.l2.ReadReq_accesses                    
+    1389036                       
+    # number of ReadReq 
+    accesses(hits+misses)system.l2.ReadReq_avg_miss_latency       
+    14001.262626                       
+    # average ReadReq miss 
+    latencysystem.l2.ReadReq_avg_mshr_miss_latency  
+    10998.421717                       
+    # average ReadReq mshr miss 
+    latencysystem.l2.ReadReq_hits                        
+    1385868                       
+    # number of ReadReq 
+    hitssystem.l2.ReadReq_miss_latency               
+    44356000                       
+    # number of ReadReq miss 
+    cyclessystem.l2.ReadReq_miss_rate                  
+    0.002281                       
+    # miss rate for ReadReq 
+    accessessystem.l2.ReadReq_misses                         
+    3168                       
+    # number of ReadReq 
+    missessystem.l2.ReadReq_mshr_miss_latency          
+    34843000                       
+    # number of ReadReq MSHR miss 
+    cyclessystem.l2.ReadReq_mshr_miss_rate             
+    0.002281                       
+    # mshr miss rate for ReadReq 
+    accessessystem.l2.ReadReq_mshr_misses                    
+    3168                       
+    # number of ReadReq MSHR 
+    missessystem.l2.Writeback_accesses                    
+    16805                       
+    # number of Writeback 
+    accesses(hits+misses)system.l2.Writeback_hits                        
+    16805                       
+    # number of Writeback 
+    hitssystem.l2.avg_blocked_cycles::no_mshrs       
+    no 
+    value                       
+    # average number of cycles each access was 
+    blockedsystem.l2.avg_blocked_cycles::no_targets     
+    no 
+    value                       
+    # average number of cycles each access was 
+    blockedsystem.l2.avg_refs                           
+    no 
+    value                       
+    # Average number of references to valid 
+    blocks.system.l2.blocked::no_mshrs                         
+    0                       
+    # number of cycles access was 
+    blockedsystem.l2.blocked::no_targets                       
+    0                       
+    # number of cycles access was 
+    blockedsystem.l2.blocked_cycles::no_mshrs                  
+    0                       
+    # number of cycles access was 
+    blockedsystem.l2.blocked_cycles::no_targets                
+    0                       
+    # number of cycles access was 
+    blockedsystem.l2.cache_copies                              
+    0                       
+    # number of cache copies 
+    performedsystem.l2.demand_accesses                     
+    1389036                       
+    # number of demand (read+write) 
+    accessessystem.l2.demand_avg_miss_latency        
+    14001.262626                       
+    # average overall miss 
+    latencysystem.l2.demand_avg_mshr_miss_latency   
+    10998.421717                       
+    # average overall mshr miss 
+    latencysystem.l2.demand_hits                         
+    1385868                       
+    # number of demand (read+write) 
+    hitssystem.l2.demand_miss_latency                
+    44356000                       
+    # number of demand (read+write) miss 
+    cyclessystem.l2.demand_miss_rate                   
+    0.002281                       
+    # miss rate for demand 
+    accessessystem.l2.demand_misses                          
+    3168                       
+    # number of demand (read+write) 
+    missessystem.l2.demand_mshr_hits                          
+    0                       
+    # number of demand (read+write) MSHR 
+    hitssystem.l2.demand_mshr_miss_latency           
+    34843000                       
+    # number of demand (read+write) MSHR miss 
+    cyclessystem.l2.demand_mshr_miss_rate              
+    0.002281                       
+    # mshr miss rate for demand 
+    accessessystem.l2.demand_mshr_misses                     
+    3168                       
+    # number of demand (read+write) MSHR 
+    missessystem.l2.fast_writes                               
+    0                       
+    # number of fast writes 
+    performedsystem.l2.mshr_cap_events                           
+    0                       
+    # number of times MSHR cap was 
+    activatedsystem.l2.no_allocate_misses                        
+    0                       
+    # Number of misses that were 
+    no-allocatesystem.l2.overall_accesses                    
+    1405841                       
+    # number of overall (read+write) 
+    accessessystem.l2.overall_avg_miss_latency       
+    14001.262626                       
+    # average overall miss 
+    latencysystem.l2.overall_avg_mshr_miss_latency  
+    10998.421717                       
+    # average overall mshr miss 
+    latencysystem.l2.overall_avg_mshr_uncacheable_latency     
+    no 
+    value                       
+    # average overall mshr uncacheable 
+    latencysystem.l2.overall_hits                        
+    1402673                       
+    # number of overall 
+    hitssystem.l2.overall_miss_latency               
+    44356000                       
+    # number of overall miss 
+    cyclessystem.l2.overall_miss_rate                  
+    0.002253                       
+    # miss rate for overall 
+    accessessystem.l2.overall_misses                         
+    3168                       
+    # number of overall 
+    missessystem.l2.overall_mshr_hits                         
+    0                       
+    # number of overall MSHR 
+    hitssystem.l2.overall_mshr_miss_latency          
+    34843000                       
+    # number of overall MSHR miss 
+    cyclessystem.l2.overall_mshr_miss_rate             
+    0.002253                       
+    # mshr miss rate for overall 
+    accessessystem.l2.overall_mshr_misses                    
+    3168                       
+    # number of overall MSHR 
+    missessystem.l2.overall_mshr_uncacheable_latency            
+    0                       
+    # number of overall MSHR uncacheable 
+    cyclessystem.l2.overall_mshr_uncacheable_misses            
+    0                       
+    # number of overall MSHR uncacheable 
+    missessystem.l2.prefetcher.num_hwpf_already_in_cache            
+    0                       
+    # number of hwpf that were already in the 
+    cachesystem.l2.prefetcher.num_hwpf_already_in_mshr            
+    0                       
+    # number of hwpf that were already in 
+    mshrsystem.l2.prefetcher.num_hwpf_already_in_prefetcher            
+    0                       
+    # number of hwpf that were already in the 
+    presystem.l2.prefetcher.num_hwpf_evicted               
+    0                       
+    # number of hwpf removed due to no buffer 
+    leftsystem.l2.prefetcher.num_hwpf_identified            
+    0                       
+    # number of hwpf 
+    identifiedsystem.l2.prefetcher.num_hwpf_issued                
+    0                       
+    # number of hwpf 
+    issuedsystem.l2.prefetcher.num_hwpf_removed_MSHR_hit            
+    0                       
+    # number of hwpf removed because MSHR 
+    allocatedsystem.l2.prefetcher.num_hwpf_span_page             
+    0                       
+    # number of hwpf spanning a virtual 
+    pagesystem.l2.prefetcher.num_hwpf_squashed_from_miss            
+    0                       
+    # number of hwpf that got squashed due to a 
+    miss_______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

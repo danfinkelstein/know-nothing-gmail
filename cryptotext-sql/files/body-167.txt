@@ -1,0 +1,124 @@
+It worked! Now the simulation ends correctly.Thanks.- Show quoted text -On Fri, May 14, 2010 at 2:52 AM, Gabe Black <gblack@eecs.umich.edu> wrote:
+Here's a patch to try. It didn't seem to break anything, but I don't
+have a good way to make sure it does what it's supposed to.
+Gabe
+Gustavo Henrique Nihei wrote:
+> Hi Gabe,
+>
+> the instruction at address 0x10b194 is movg, but it is using a FP
+> state register:
+>
+> movg  %fcc3, 0, %g1
+>
+> I was taking a look at the decoder implementation, and it seems the
+> simulation stops when the following function is executed:
+>
+> inline Movccfcc::Movccfcc(ExtMachInst machInst)
+> : Trap("movccfcc", machInst, IntAluOp)
+> {
+>
+>  _numSrcRegs = 0;
+>  _numDestRegs = 0;
+>  _numFPDestRegs = 0;
+>  _numIntDestRegs = 0;;
+> }
+>
+> I don't know much about the SPARC ISA, so any help would be appreciated.
+>
+> I'm using the stable version of m5, and a SPARC_SE platform.
+> The MPGenc from ALPBench was cross-compiled with gcc-4.5.0,
+> binutils-2.20.1 and glibc-2.3.6.
+>
+> Thanks.
+>
+> On Wed, May 12, 2010 at 4:04 AM, Gabe Black <gblack@eecs.umich.edu
+> <mailto:gblack@eecs.umich.edu>> wrote:
+>
+>     Way back when I was first adding SPARC support, I had hoped to get
+>     around providing FP support by making our implementation pretend there
+>     was no FPU and to fault on the instructions that required it like the
+>     spec said I could. That didn't really work out, and most of the
+>     instructions that just faulted were replaced by functional
+>     equivalents.
+>     It seems your workload is trying to use one that was never properly
+>     implemented. If you can identify what instruction it is you could
+>     implement it yourself, or if you're not in a hurry you can give me
+>     a way
+>     to reproduce the problem and I can give it a shot. I can't make any
+>     strong guarantees about when I could take care of it though.
+>
+>     Gabe
+>
+>     Gustavo Henrique Nihei wrote:
+>     > Hi,
+>     >
+>     > This fatal error is happening during the simulation of a SPARC_SE
+>     > platform.
+>     >
+>     > M5 Simulator System
+>     >
+>     > Copyright (c) 2001-2008
+>     > The Regents of The University of Michigan
+>     > All Rights Reserved
+>     >
+>     >
+>     > M5 compiled May  5 2010 14:24:46
+>     > M5 revision 94c016415053+ 6283+ default tip
+>     > M5 started May 11 2010 15:11:44
+>     > M5 executing on nime-desktop
+>     > command line: ../../build/SPARC_SE/m5.fast run.py -n 4 -t
+>     > Global frequency set at 1000000000000 ticks per second
+>     > 0: system.remote_gdb.listener: listening for remote gdb on port 7002
+>     > 0: system.remote_gdb.listener: listening for remote gdb on port 7003
+>     > 0: system.remote_gdb.listener: listening for remote gdb on port 7000
+>     > 0: system.remote_gdb.listener: listening for remote gdb on port 7001
+>     > info: Entering event queue @ 0.  Starting simulation...
+>     > fatal: fault (fp_disabled) detected @ PC 0x10b194
+>     >  @ cycle 37023056000
+>     > [invoke:build/SPARC_SE/sim/faults.cc, line 43]
+>     > Memory Usage: 220052 KBytes
+>     > For more information see: http://www.m5sim.org/fatal/f78c96bc
+>     >
+>     > I'm trying to run the MPGenc software in the platform.
+>     > I suppose the fault "fp_disabled" is related to a floating point
+>     > operation, right?
+>     > Is there some kind of workaround for this problem?
+>     >
+>     > --
+>     > Gustavo Henrique Nihei
+>     >
+>     ------------------------------------------------------------------------
+>     >
+>     > _______________________________________________
+>     > m5-users mailing list
+>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>
+> --
+> Gustavo Henrique Nihei
+> LAPS - Laboratório de Automação do Projeto de Sistemas
+> Universidade Federal de Santa Catarina
+> Florianópolis - Santa Catarina - Brasil
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Gustavo Henrique NiheiLAPS - Laboratório de Automação do Projeto de Sistemas
+Universidade Federal de Santa CatarinaFlorianópolis - Santa Catarina - Brasil
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

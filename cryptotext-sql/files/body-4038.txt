@@ -1,0 +1,39 @@
+Sorry if I wasn't clear. I am using a name. I declared it like:
+energy_access
+       .name(name() + ".energy_access")
+       .desc("Cumulative Energy if always ON")
+       ;
+energy_access = <name of static variable>.;
+in the dram.cc file.
+its declared as:
+Stats::Formula energy_access;
+in the dram.hh file.
+I declared a static global variable in the dram.cc file, and update it in the calculateLatency() function. If I put a printf there, it prints out the values of the static variable correctly, as it changes. Problem is, there are so many memory accesses that printing out so many values into a file makes the file huge. And all I need is the final value at the end of simulations.
+What I am trying to do is:
+I want to calculate the energy spent in memory accesses (or in idle states), given that the memory bank is in some state. This can be calculated roughly as:
+energy_access = idle_time * power(state)
+which, here translates to:
+energy_access = time_since_last_Access * power(state) / 1Thz,   (since the time_since_last_access is in units of 'ticks')
+I will put some if--then conditions to calculate it differently depending on state, so I can't use just the integer value of total "time_since_last_access", and do multiplication later.
+I dont know a way to calculate this without using float.
+Can you suggest some way of doing this?
+thanks,
+- Sujay
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "Sujay Phadke" <sphadke@eecs.umich.edu>
+Cc: <m5-users@m5sim.org>
+Sent: Wednesday, October 17, 2007 12:06 AM
+Subject: Re: [m5-users] Float in stats- Show quoted text -
+First, please keep your questions to the list and not to me directly for everyone else's benefit.
+Another follow up to my previous mail:
+I tried using a static variable (float), doing all calculations with it. Now I want to dump the value of this at the end, so I tried assigning it to oa Formula stat so that it is printed out at the end.
+Stats:: Formula energy;
+in the regStats,
+energy = static_variable;
+Problem is this stat is not being printed at all. Any ideas?
+If you don't at least give a stat a name (using the .name() function), it won't print.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

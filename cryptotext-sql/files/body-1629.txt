@@ -1,0 +1,34 @@
+Is there an easy way for me to swap out tasks between cores or if not
+could someone point me in the direction I need to implement it?
+Weeks ago I tried searching the lists for all the information I need,
+it seems the mailing list was-is corrupted.
+I am studying 'cache reload transients'. I am seeking ways to pollute
+the cache in a CMP with with footprints from other core's tasks and
+context switches; then measure the reload times for loading the
+appropriate cache footprint.
+I believe that the M5 simulator has no built-in scheduler, meaning that
+without running in FS mode that the system can only use one task at
+time per core.  However, since there is a FS mode then it can be done.
+Using Checkpointing/Serialize_UnSerialize I suspect N tasks should be
+able to be swapped, but I have a limited understanding of the memory
+internals of this simulator, even though I have perused quite deeply
+into the code.
+I see the following functions in cpu/simple/atomic.cc, I believe these
+facilities are available for what I would do:
+        resume ()
+        void    switchOut ()
+        void    takeOverFrom (BaseCPU *oldCPU)
+        virtual void    activateContext (int thread_num, int delay)
+        virtual void    suspendContext (int thread_num)
+So ultimately my question is: Is there an easy way for me to swap out
+tasks between cores or if not could someone point me in the direction I
+need to implement it?
+Thanks,
+Will
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

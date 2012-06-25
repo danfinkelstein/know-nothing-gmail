@@ -1,0 +1,17 @@
+There's nothing built in to do that, but it shouldn't be that hard to do.  I'd suggest adding a int field to the Request object and having each cache increment that field if it's a miss.  Then when the response comes back you can look at that field and know how far down it went. (The caches themselves don't know if they're L1 or L2, so trying to have the cache it hits in tell you something isn't as useful.)
+Steve
+Vilas Sridharan wrote:
+- Show quoted text -
+Hello M5 developers --
+Using M5 2.0, is there any way (using the O3 CPU) to track cache level misses?  Given an instruction (memory reference), I'd like to be able to determine in which level of cache (if any) it hit.  I can see how to determine that it's a memory reference, but don't see any way of getting hit/miss information.  I also don't see any way of tracking this in the memory system (to associate a given miss with a particular instruction).  Am I missing something?
+Thanks!
+   -Vilas
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

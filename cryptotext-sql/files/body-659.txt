@@ -1,0 +1,118 @@
+Hi Steve,
+     Here is a run with unmodified m5-stable using se.py
+sphadke@lowpower:~/research/m5/m5-stable$ ./build/ALPHA_SE/m5.opt
+configs/example/se.py -d --caches --l2cache --fast-forward=1
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Nov  8 2009 21:09:22
+M5 revision 15e5581286b6+ 6285+ default tip
+M5 started Nov 10 2009 18:44:15
+M5 executing on lowpower
+command line: ./build/ALPHA_SE/m5.opt configs/example/se.py -d --caches
+--l2cache --fast-forward=1
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+Switch at instruction count:1
+info: Entering event queue @ 0.  Starting simulation...
+hack: be nice to actually delete the event here
+Switched CPUS @ cycle = 1000
+Changing memory mode to timing
+switching cpus
+m5.opt: build/ALPHA_SE/cpu/o3/thread_context_impl.hh:57: void
+O3ThreadContext< <template-parameter-1-1>
+>::takeOverFrom(ThreadContext*) [with Impl = O3CPUImpl]: Assertion
+`getSystemPtr() == old_context->getSystemPtr()' failed.
+Program aborted at cycle 1000
+Aborted
+I get the same error. I also tried giving the "-s" for standard switch
+and changing the value of FF. Any idea why this is happening?
+Thanks,
+Sujay
+- Show quoted text -On Tue, 2009-11-10 at 15:30 -0800, Steve Reinhardt wrote:
+> I don't know any details about what works and what doesn't off the top
+> of my head, but I can tell you that if something "works" in m5.fast
+> but hits an assertion error in m5.opt, that's only because assertions
+> are compiled out in m5.fast.  So either the assertion is asserting
+> something that doesn't necessarily need to be true (which happens) or
+> the assertion is valid and m5.fast is merrily proceeding to do
+> something bogus that just happens not to crash the simulation.
+>
+> That particular assertion looks like it should hold; what it is saying
+> is that you're substituting a detailed CPU in system A for a simple
+> CPU in system B, which would possibly cause problems if the CPU ever
+> did something based on the system it's a member of.  That could be a
+> configuration error.
+>
+> Steve
+>
+> On Tue, Nov 10, 2009 at 12:00 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> > Does any one know about this? Is FF working with the latest m5.opt in SE
+> > mode, and is it possible to FF with multiple CPUS?
+> >
+> > Thanks,
+> > Sujay
+> >
+> > ----- Original Message -----
+> > From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+> > To: <m5-users@m5sim.org>
+> > Sent: Saturday, November 07, 2009 5:41 PM
+> > Subject: [m5-users] fast-forwarding and switching cpus
+> >
+> >
+> >> Hello,
+> >>   I was going through the previous threads about fastforwarding
+> >> support, but couldnt get a clear answer. When we specify
+> >> --fast-forward=FF, is if FF ticks or FF instructions? If it is ticks,
+> >> then is there a new way for FF instructions?
+> >>
+> >> As an aside, I am able to use --fast-forward with m5.fast. With m5.opt,
+> >> it crashes with the error:
+> >>
+> >> M5 compiled Nov  6 2009 17:34:43
+> >> M5 revision 15e5581286b6 6285 default tip
+> >> M5 started Nov  7 2009 17:40:10
+> >> M5 executing on lowpower
+> >> command line: ./build/ALPHA_SE/m5.opt -d ../output/test/
+> >> configs/spec2k6/runspec2k6.py -b bzip2 -d --caches --l2cache
+> >> --fast-forward=5000000 --max-inst=100000
+> >> Global frequency set at 1000000000000 ticks per second
+> >> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> >> Switch at instruction count:5000000
+> >> info: Entering event queue @ 0.  Starting simulation...
+> >> info: Increasing stack size by one page.
+> >> hack: be nice to actually delete the event here
+> >> Switched CPUS @ cycle = 5079299000
+> >> switching cpus
+> >> m5.opt: build/ALPHA_SE/cpu/o3/thread_context_impl.hh:57: void
+> >> O3ThreadContext< <template-parameter-1-1>
+> >>>::takeOverFrom(ThreadContext*) [with Impl = O3CPUImpl]: Assertion
+> >> `getSystemPtr() == old_context->getSystemPtr()' failed.
+> >> Program aborted at cycle 5079299000
+> >> Aborted
+> >>
+> >> Is there still the same bug about no valid threadcontext in o3?
+> >>
+> >> - Sujay
+> >>
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

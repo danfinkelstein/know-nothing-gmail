@@ -1,0 +1,48 @@
+It's part of the implementation of the Alpha "store conditional" (SC)
+instruction, used for synchronization.  It's returning true because in
+this case the access is "satisfied" in the sense that the instruction
+can complete.
+If you have questions about how SC works, please look it up (e.g.,
+it's covered in section 6.7 of the 3rd edition of H&P under
+"synchronization").  If you have more questions about the code
+specifically, please ask.
+Steve
+- Show quoted text -
+On Sun, Mar 14, 2010 at 3:25 PM, Sage <leonard951@gmail.com> wrote:
+> Hi, everyone,
+>
+> I have question about a code block of the function  "bool
+> Cache<TagStore>::access(PacketPtr pkt, BlkType *&blk, int &lat, PacketList
+> &writebacks)" in the file "src/mem/cache/cache_impl.hh". The following is
+> the code block to be ased about.
+>
+> if (blk == NULL && pkt->isLLSC() && pkt->isWrite()) {
+>        // complete miss on store conditional... just give up now
+>        pkt->req->setExtraData(0);
+>        return true;
+> }
+>
+> Although there is a sentence of comments there, the meaning of the code
+> block is still not clear to me at all. What is the significance of the code
+> block? What is it used for? Since "blk" is NULL, why is a "true" still
+> returned finally?
+>
+> Any help would be greatly appreciated!
+>
+> Thanks,
+> Leonard
+>
+>
+>
+> --
+> Give our ability to our work, but our genius to our life!
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

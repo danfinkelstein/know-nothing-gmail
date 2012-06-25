@@ -1,0 +1,47 @@
+Consider the following:
+I believe you can install virtual box with its additions with
+ubuntu/solaris/opensolaris without being root or on a laptop. Copy it
+through your virtual box shared directory.
+Loop mount the image make you changes copy it back through the shared dir.
+Might work.
+Steve Reinhardt wrote:
+>
+>
+> On Wed, Nov 4, 2009 at 8:24 PM, nathan binkert <nate@binkert.org
+- Show quoted text -> <mailto:nate@binkert.org>> wrote:
+>
+>     >   I seem to recall reading in the mailing list about how to
+>     create and
+>     > modify disk images without having sudo or root access on a
+>     machine.  I have
+>     > searched through the archives, and I can't find anything about
+>     it.  Is there
+>     > a way to do this?
+>
+>     Since nobody has responded, I will.
+>
+>     You can create a disk image without root access using dd to create a
+>     file and run fdisk on that file.
+>
+>     As for editing it, you can't mount it if you're not root.  Maybe some
+>     people suggested using the simulator itself or using a virtual
+>     machine.
+>
+>
+> If you can get a one-time assist from someone who is root, you could
+> get them to put a line in /etc/fstab with the 'user' line set, maybe
+> pointing to a symlink that you can point at the image you actually
+> want to mount... I'm not positive this would work, but it's a thought.
+>
+> Steve
+>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

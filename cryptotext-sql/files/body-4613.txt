@@ -1,0 +1,40 @@
+M5 2.0 has a similar problem with gcc 4.1.+ as well. I moved back to gcc 4.0.0
+and everything worked!
+-Mojtaba
+- Show quoted text -
+Quoting Steve Lieberman <lieberm@umich.edu>:
+>
+> Has anyone encountered build problems with gcc 4.1 such as the following?
+>
+>
+> g++ -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g
+> -O5 -m32 -fPIC -Iext/dnet -IALPHA -Im5 -c -o ALPHA/arch/alpha/decoder.os
+> ALPHA/arch/alpha/decoder.cc
+> cc1plus: warnings being treated as errors
+> m5/arch/alpha/isa_traits.hh:296: warning: overflow in implicit constant
+> conversion
+> ALPHA/arch/alpha/decoder.cc:5619: error: definition of
+> 'StaticInstPtr<AlphaISA> AlphaISA::decodeInst(uint32_t)' is not in
+> namespace
+> enclosing 'AlphaISA'
+>
+>
+> I'm still using M5 1.1 -- is this a problem that's already been fixed
+> in M5 2.0? If so, is the solution something I can apply to 1.1 myself?
+>
+>
+>
+> Thanks,
+> Steve Lieberman
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

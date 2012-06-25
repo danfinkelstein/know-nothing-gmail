@@ -1,0 +1,70 @@
+Google for mercurial.  It's a separate project.
+  Nate
+- Show quoted text -
+On Mon, May 12, 2008 at 4:46 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+>
+>  hi,  thanks
+>
+> But I can not find the mercurial  manual  in the m5 download page.
+>
+> It is not in the linux-patches tarball .
+>
+> thanks
+> May  12  2008
+>
+> Message: 4
+>  Date: Mon, 21 Apr 2008 16:03:37 -0500
+>  From: Ali Saidi <saidi@umich.edu>
+>  Subject: Re: [m5-users] about linux kernel
+>  To: M5 users mailing list <m5-users@m5sim.org>
+>  Message-ID: <6CB6F111-60D4-4778-B9A5-338216DBCF7B@umich.edu>
+>  Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+>  Hi ,
+>
+>  There is a linux-patches tarball on the download page.  We've used
+>  2.6.13, 2.6.16, 2.6.18, and 2.6.22. It's a mercurial queue that
+>  patches various versions of the linux kernel each guarded with a
+>  corresponding guard (see the mercurial queues section of the mercurial
+> manual  ).
+>
+>  Ali
+>
+>
+>
+>
+>  On Apr 21, 2008, at 3:39 PM, Andrew Stanely wrote:
+>
+>  > Hi,
+>  >
+>  > I got M5 2.0b4   and I need to implement some thread scheduling
+>  > algorithm in linux kernel
+>  > and make m5 simulator load the linux kernel to run the scheduling
+>  > algorithm.
+>  >
+>  >
+>  > Would you please tell me which version of linux kernel m5 supports ?
+>  >
+>  > How to make m5 work with the linux kernel well ?
+>  >
+>  > Are there some documents ?
+>  >
+>  > thanks.
+>  >
+>  > Tony
+>  >
+>  > April   20  2008
+>
+>
+> ________________________________
+> With Windows Live for mobile, your contacts travel with you. Connect on the
+> go.
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+Yes, it's possible. Basically what this assert is saying is that your block size is too small and it would have to split an access into more than two pieces to work. For instance, if you tried to load a 64 bit floating point value and it was offset by one byte, you'd read three bytes, four bytes and one more before you got the whole thing. To be safe you're block size should be at least the size of the largest access you'll do at a time, which for x86 as implemented I believe is 8 bytes.
+Gabe
+Quoting Ankit Sethia <asethia@eecs.umich.edu>:
+Another problem that i am currently facing is as follow:
+There are only integers and floating point numbers in the application that i
+am trying to run. So when i try to run the app with a dcache block_size of 4
+bytes i get the following assert failure:
+build/X86_SE/cpu/simple/timing.cc:438: Fault TimingSimpleCPU::read(Addr, T&,
+unsigned int) [with T = uint64_t]: Assertion `split_addr <= addr ||
+split_addr - addr < block_size' failed.
+Is it possible to simulate a 32 bit X86 architecture with M5?
+--
+Ankit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

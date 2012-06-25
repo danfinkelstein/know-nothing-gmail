@@ -1,0 +1,30 @@
+On Jun 11, 2008, at 7:49 PM, nathan binkert wrote:
+>> Is it possible to quantify the accuracy of the memory timing model
+>> with a
+>> real piece of hardware? Lets say we put in real numbers for the
+>> various
+>> latencies and other parameters to make it close to a real SDRAM.
+>> Will it be
+>> useful to run memory intensive benchmarks and see how the timing
+>> numbers
+>> match up with those on a real system? (timing correction, batch
+>> latency
+>> calculation, etc. implemented in the dram.cc)
+>
+> We did this in the past.  The trick is to make sure that you test
+> different strides and memory types to make sure that you hit the
+> various cache latencies and devices if you care about those.  Ali, do
+> you still have the code for that stuff?
+The lat_mem_rd benchmark from lmbench can be used to do this. You can
+configure the stride and memory size so you can measure the
+performance of various layers of the memory hierarchy.
+If you are really conserned about the DRAM model I think the best plan
+there would be to get one of the other DRAM models people have written
+but haven't made into the M5 tree and test those (Steve? Nate? do you
+know where they are). The current model is quite a mess.
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

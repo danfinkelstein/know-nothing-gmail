@@ -1,0 +1,105 @@
+I mean output from the benchmarks, not output from the simulator.
+Where this goes is controlled by the 'output' parameter on the Process
+objects.  Look in your config.ini if you don't know what this is set
+to.
+Also, using 60GB of physical memory for your simulation is somewhat
+suspicious... unless you have that much physical memory or swap on the
+actual machine you are running the simulations on I wouldn't expect
+that to work.
+Steve
+- Show quoted text -
+On Tue, Mar 3, 2009 at 10:04 AM, Hari Kiran <harikiran22@gmail.com> wrote:
+>
+> hi!!!
+>
+> I don't find any error messages in the output. I am using 60GB of physical
+> memory which is more than sufficient I guess.
+> The output can be seen in the attached files for two cases.
+>
+>
+> On Wed, Feb 25, 2009 at 9:07 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>> Have you looked at the program outputs to see if there are any error
+>> messages?  I have an inkling that if you're trying to run a large
+>> number of SPEC 2006 benchmarks concurrently you may be running out of
+>> (simulated) memory.  That doesn't explain why it works with one
+>> ordering and not with another, but it's my best hypothesis without any
+>> more data.
+>>
+>> Steve
+>>
+>> On Wed, Feb 25, 2009 at 6:40 PM, Hari Kiran <harikiran22@gmail.com> wrote:
+>> >
+>> >
+>> > hi!
+>> >
+>> > I am running eight-core system simulation for integer benchmarks. I have
+>> > two
+>> > cases mentioned below . In case(a) i have assigned different benchmarks
+>> > for
+>> > different cpu's and in case (b) I changed the order of assignments of
+>> > benchmarks for different cpu's. I got the results for case(a) but in
+>> > case(b)
+>> > I got  some cpu's values to be 0 in m5stats.txt file. What might be the
+>> > problem ?
+>> >
+>> > case (a) :
+>> >
+>> > max_insts_all_threads = 100000000
+>> > num of cpus = 8
+>> > num threads per cpu = 1
+>> > system.cpu[0].workload = [Mybench.perlbench]
+>> > system.cpu[1].workload = [Mybench.h264ref]
+>> > system.cpu[2].workload = [Mybench.gobmk]
+>> > system.cpu[3].workload = [Mybench.h264ref]
+>> > system.cpu[4].workload = [Mybench.bzip2]
+>> > system.cpu[5].workload = [Mybench.h264ref]
+>> > system.cpu[6].workload = [Mybench.gobmk]
+>> > system.cpu[7].workload = [Mybench.libquantum]
+>> >
+>> >
+>> > ***************************************************************************************************
+>> > case (b):
+>> >
+>> > max_insts_all_threads = 100000000
+>> > num of cpus = 8
+>> > num threads per cpu = 1
+>> > system.cpu[0].workload = [Mybench.perlbench]
+>> > system.cpu[1].workload = [Mybench.bzip2]
+>> > system.cpu[2].workload = [Mybench.h264ref]
+>> > system.cpu[3].workload = [Mybench.h264ref]
+>> > system.cpu[4].workload = [Mybench.gobmk]
+>> > system.cpu[5].workload = [Mybench.libquantum]
+>> > system.cpu[6].workload = [Mybench.gobmk]
+>> > system.cpu[7].workload = [Mybench.h264ref]
+>> >
+>> >
+>> > Thanks,
+>> >
+>> > HARI
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Regards
+> H A R I
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

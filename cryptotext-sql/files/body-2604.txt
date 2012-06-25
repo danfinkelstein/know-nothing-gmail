@@ -1,0 +1,16 @@
+> it passes p->max_insts_any_thread which is of Counter type and I'm a little
+> bit confused as to where the translation happens from Counter(which is an
+> instruction count) to Tick(which is in picoseconds). My purpose for this is
+> I'd like to create an Event that will be scheduled when a particular
+> instruction count is reached. And also how do you access the particular
+> thread_id of the thread that has reached the inst count? any help would be
+> appreciated. thanks in advance.
+The comInstEventQueue is all in terms of committed instructions.
+Counter and Tick are actually typedefs for the same type, so it
+doesn't really need a type conversion.  If you schedule an event on
+the comInstEventQueue, it will do what you expect.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

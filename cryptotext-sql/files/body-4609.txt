@@ -1,0 +1,11 @@
+Hi all,
+I have tried m5 2.0b2 FS to setup 8 CPUs, it does not work. Setting up 4
+CPUs is OK. I want to know how many CPUs can m5 2.0b2 support?
+Thanks.
+------------------
+Richard R. Zhang
+2007-04-02
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

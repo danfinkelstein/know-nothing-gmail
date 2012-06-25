@@ -1,0 +1,32 @@
+I was able to successfuly compile my test program without calling pthread_join().But, when I run the executable on the platform with 2 SPARCs, the following happened:command line: ./build/SPARC_SE/m5.fast configs/splash2/teste.py -n 2 -b Helloworld
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb on port 70000: system.remote_gdb.listener: listening for remote gdb on port 7001info: Entering event queue @ 0.  Starting simulation...
+Initiating experiment...                                                                       <- This is the first of my helloworld printed outputs.panic: Tried to execute unmapped address 0. @ cycle 76104000
+[invoke:build/SPARC_SE/arch/sparc/faults.cc, line 629]Memory Usage: 200844 KBytesFor more information see: http://www.m5sim.org/panic/95542d88Program aborted at cycle 76104000
+AbortedI suppose it happens when I try to create a second thread.The teste.py script is the splash2/run.py modified to use my executable file instead.Has someone successfully compiled and ran a multithreaded Sparc software?
+--Eberle A. Rambo.- Show quoted text -
+On Tue, Apr 20, 2010 at 8:51 AM, Eberle <rambo.ufsc@gmail.com> wrote:
+Thanks for the reply.I don't think that is the problem because the first pthread function called in the hello.cpp was correctly found.I was looking inside the pthreads library generated and I noticed that this pthread_join function wasn't listed there. I really can't imagine a reason.
+To create the library I executed the following two lines:
+sparc64-unknown-linux-gnu-gcc -c pthread.c -o m5pthread.osparc64-unknown-linux-gnu-ar csr libm5pthread.a m5pthread.oFunny thing...On Tue, Apr 20, 2010 at 1:13 AM, nathan binkert <nate@binkert.org> wrote:
+> I have created a m5threads static linkable library for Sparc, with the files
+> available in the m5 repository. I used the Sparc compiler available in the
+> m5 website.
+> The thing is: when I link my multithreaded helloworld app with this lib, I
+> get the following error:
+>
+> eberle18@bellatrix:~/UFSC/Wannabe/helloworld$ sparc64-unknown-linux-gnu-g++
+> -static -L. -lm5pthread hello.cpp -o hello
+> /tmp/ccfh1vud.o(.text+0x2b0): In function `main':
+> : undefined reference to `pthread_join'
+> collect2: ld returned 1 exit status
+I think your link order is bad.  generally, -l options need to come
+after object files, otherwise, the linker doesn't know to pull out the
+relevant functions.  (The linker processes files in order.)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+My first guess is that it's some issue with SWIG/gcc. What version of gcc and swig are you using? Swig should be generating code that gcc doesn't complain about, however that is not always the case. The other option is that the error is resulting from some optimization that exposes a bug in our code. Do you get the same error if you compile a debug build?
+What is the  source code to the swig::Py_Sequence_Ref<T>::operator T() function in build/ALPHA_SE/params/params_wrap.cc? My version doesn't have a variable v in it.
+You could compile the source without -Werror and the build would complete since it's only a warning and not an error.
+Ali- Show quoted text -
+On Dec 6, 2007, at 1:48 PM, Nicolas Zea wrote:
+After going through and changing python parameters references to use the "const <object>Params *p" format in the constructor, and removing the preprocessor python things at the bottom of the file, I'm getting the following compile error:
+g++ -o build/ALPHA_SE/params/params_wrap.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/opt/local/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4 -Ibuild/libelf -Ibuild/ALPHA_SE build/ALPHA_SE/params/params_wrap.cc
+cc1plus: warnings being treated as errors
+build/ALPHA_SE/params/params_wrap.cc: In member function ‘swig::PySequence_Ref<T>::operator T() const [with T = int]’:
+build/ALPHA_SE/params/params_wrap.cc:3217: warning: ‘v’ may be used uninitialized in this function
+scons: *** [build/ALPHA_SE/params/params_wrap.o] Error 1
+scons: building terminated because of errors.
+Can anyone shed some light on what may be going wrong here? The simulator compiled fine before I tried to transfer over this custom object, but I'm not familiar with swig so am unsure how to go about finding the source of this problem.
+-Nick_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

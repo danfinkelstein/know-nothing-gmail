@@ -1,0 +1,9 @@
+On Wed, Apr 23, 2008 at 7:01 AM, Ali Saidi <saidi@umich.edu> wrote:
+ However, I'm not sure that the precompiled binaries on the webpage will actually work in full-system mode since they use the PARAMACS threading library and not pthreads.
+Right... just to clarify/reinforce what Ali said, the precompiled SPLASH binaries on the download page and the scripts in configs/splash2 are only for use with the hacked-up Tru64-based syscall-emulation-mode method of running SPLASH (the second method listed on the splash wiki page, http://m5sim.org/wiki/index.php/Splash_benchmarks).  
+Choonghwan, other than trying to use the configs/splash2 scripts, everything else you're doing sounds right on track to me.  If you get things up and running, please update the splash wiki page with anything you learn so that other people can benefit from your experience.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

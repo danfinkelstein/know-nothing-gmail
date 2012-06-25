@@ -1,0 +1,14 @@
+Hi Poorna,  The script that I wrote to generate the bash scripts to run these benchmarks assumes that you are doing fastforward into the simulation with an atomic cpu, and then switching to timing or detailed simulation right before executing the parsec benchmark.
+  The bash script has a line of code (/sbin/m5 switchcpu), which signals the simulator to make the CPU switch, but if you have not specified that you are doing fastforwarding, it will immediately exit with this message.  If you remove this line of code from the rcS, it should not exit before executing the benchmark.
+  Good luck,  JoelOn Tue, Mar 31, 2009 at 4:32 PM, Poornachandran K <kpc84uec@gmail.com> wrote:
+Hi Joel, I am trying to run one of the PARSEC benchmarks on ALPHA_FS/m5.debug using the image and scripts that you have uploaded on your webpage. I get the following error. 
+Exiting @ cycle 1815610267000 because switchcpu
+The rcS script I use is #!/bin/sh# File to run the blackscholes benchmarkcd /parsec/install/bin/sbin/m5 switchcpu/sbin/m5 dumpstats/sbin/m5 resetstats./blackscholes 1 1
+echo "Done :D"
+/sbin/m5 exit/sbin/m5 exitI tried with 2 threads and changed to simsmall and simdev with the corresponding rcS scripts. Still I get the same error.Did you also encounter this error. ? Any help on this issue would be greatly appreciated. 
+Thanks, Poornachandran (Poorna)
+--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

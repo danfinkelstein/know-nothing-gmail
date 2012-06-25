@@ -1,0 +1,7 @@
+Is there a way to simulate for a particular numbe rof instructions just like --maxticks option? Is there a get stats. on an interim basis while the simulation is running, like stopping teh simulation in middle, noting down results and resuming it again?
+      Get easy, one-click access to your favorites. 
+ Make Yahoo! your homepage.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

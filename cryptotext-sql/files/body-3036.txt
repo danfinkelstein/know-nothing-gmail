@@ -1,0 +1,14 @@
+- Show quoted text -> I would like to pass an argument from the python front end to a rcS script
+> and I noticed that the M5ops page
+> (http://www.m5sim.org/wiki/index.php/M5ops) states that the initparam
+> utility is deprecated.  Is  there a functional replacement to initparam?
+Not really.  There is a workaround in that you can add a kernel
+command line option (boot_osflags) and then grab that option from
+/proc/cmdline in linux.
+If you're willing to wait a couple weeks, I have a major upgrade to
+the rcS stuff allowing much more sophisticated stuff.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

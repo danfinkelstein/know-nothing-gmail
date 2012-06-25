@@ -1,0 +1,125 @@
+Actually my question is very simple:
+I want to change L1 hit latency:memory access latency
+from default settings. Which file shall i change?
+I am running  timing simple cpu with all default
+configurations.
+I tried to modify latency option in PhysicalMemory.py
+but looks like it is not changing the execution time
+of the program.
+I measure execution time as  difference of cpu tick
+value between whenever a program starts and when it
+ends ( i capture start and end of the program by a
+different  flag).
+--- Ali Saidi <saidi@umich.edu> escribió:
+- Show quoted text -
+> Please provide as much information about what you're
+> trying to do is
+> as possible, it's really the only way we can help
+> you and prevents
+> large exchanges of e-mails without any resolution.
+>
+> 1. What did you set the parameters to be?
+> 2. Have you tried using a the Physical Memory
+> instead of the DRAM one?
+> 3. What CPU model are you using? If you're using an
+> atomic cpu and
+> haven't change any parameters on it, the access
+> latency it gets back
+> from memory doesn't matter
+>
+> Ali
+>
+> On Nov 26, 2007, at 9:43 AM, abc def wrote:
+>
+> > Can you please tell me where should i change to
+> get
+> > the  effect? I changed in
+> > src/python/m5/objects/PhysicalMemory.py as
+> follows:
+> > "cpu_ratio = Param.Int(10,"ratio between CPU speed
+> and
+> > memory bus speed") "
+> >
+> > Also changed "latency = Param.Latency('1ms',
+> "latency
+> > of an access")" but execution time is remaining
+> > exactly same (by execution time i am referring to
+> tick
+> > value difference between program start and end)
+> >
+> > --- Steve Reinhardt <stever@gmail.com> escribió:
+> >
+> >> Have you looked at the latency settings for the
+> bus
+> >> and main memory?
+> >> The defaults for these are unreasonably low.  If
+> you
+> >> want realistic
+> >> results you'll have to modify these parameters to
+> >> whatever you believe
+> >> to be realistic values.
+> >>
+> >> Steve
+> >>
+> >> On Nov 24, 2007 11:31 AM, abc def
+> >> <jose_6154@yahoo.es> wrote:
+> >>>> From trace files it seems that cache hit
+> latency
+> >> is
+> >>> around 1000 ticks to 2000 ticks, but if it
+> misses
+> >> then
+> >>> the latency is ~6000 cycles but not more. Now in
+> >> the
+> >>> simulation there is no L2 so,how come second
+> >> latency
+> >>> which is the memory access latency is so close
+> of
+> >> L1
+> >>> access latency?
+> >>>
+> >>>
+> >>>
+> >>> ______________________________________________
+> >>> ¿Chef por primera vez?
+> >>> Sé un mejor Cocinillas.
+> >>> http://es.answers.yahoo.com/info/welcome
+> >>> _______________________________________________
+> >>> m5-users mailing list
+> >>> m5-users@m5sim.org
+> >>>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >
+> >
+> >
+> >
+> > ______________________________________________
+> > ¿Chef por primera vez?
+> > Sé un mejor Cocinillas.
+> > http://es.answers.yahoo.com/info/welcome
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+______________________________________________
+- Show quoted text -¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

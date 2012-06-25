@@ -1,0 +1,40 @@
+OK, my mistake; Ali pointed out that the situation I'm recalling is
+true for Specweb99 but not necessarily Specweb05.  So you may actually
+need a JVM.  Unfortunately that doesn't change the fact that there
+isn't a good one for Alpha :-).
+Steve
+- Show quoted text -
+On Nov 14, 2007 9:08 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> There isn't a good Alpha JVM... the architecture basically faded away
+> before that happened.  But you don't really need/want one to run
+> Specweb; the java example code that comes with it is just that (an
+> example).  Real Specweb runs are always done with optimized C plugins
+> and not java.  See the SPEC web site.  We did this a long time ago,
+> but we used some code from IBM that we downloaded from the SPEC web
+> site.  (As part of the SPEC rules, companies have to provide the code
+> they used to generate their Specweb results if it's non-standard.)
+>
+> Steve
+>
+>
+> On Nov 14, 2007 1:57 PM, Giang Hoang <ghoang84@gmail.com> wrote:
+> > Hi,
+> >
+> > I am looking into getting Specweb 2005 to run on M5 with Alpha Full
+> > System.  One of the first steps that I need to do is to build a Java
+> > Virtual Machine to run on M5.  I wonder if anyone has tried compiling
+> > a JVM for Alpha to run on M5?  If so, what JVM do you use?  My current
+> > choices right now are Kaffe and Jikes.  Any other suggestions or tips
+> > on getting these to work would be greatly appreciated.
+> >
+> > Thanks,
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

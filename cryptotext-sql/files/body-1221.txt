@@ -1,0 +1,12 @@
+I am having difficulty tracing the assertion failure in mshr.hh: hasTargets(). While the casue is clear that mshr dont have any more targets but it is happening in the following loop:
+while (mshr->hasTargets()) {
+        MSHR::Target *target = mshr->getTarget();
+        .....
+        .....
+}
+Target *getTarget() { assert(hasTargets());  return &targets->front(); }
+Is it possible the mshr data structure is being worked upon in a distributed manner (by different caches) causing the asertion failure?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

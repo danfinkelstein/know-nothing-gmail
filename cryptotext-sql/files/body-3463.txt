@@ -1,0 +1,60 @@
+Hi Ali,
+Thank you very much for the pointer. I've managed to build the ARM
+target system. Next comes a question. How can I run an ARM program? My
+program contains its own boot code and does not use any library. I
+guess this is a special case of statically linked program. I tried
+several examples under configs, but apparently I didn't use the right
+one.
+Thanks a lot.
+Lu
+On Tue, 11 Mar 2008 00:58:34 -0400
+Ali Saidi <saidi@umich.edu> wrote:
+> You need to get the ARM code and compile M5 with an EXTRAS= flag.
+> Details can be found here:
+> http://ww2.cs.fsu.edu/~hines/m5-arm/
+>
+> Ali
+>
+> On Mar 11, 2008, at 12:51 AM, Lu Zhao wrote:
+>
+> > Hi,
+> >
+> > I tried to build an ARM system but got the following error. Has ARM
+> > been built in? Can I run a barebone ARM binary without any OS
+> > support on M5?
+> >
+> > louis@shark /var/soft/m5-2.0b5$ scons build/ARM_SE/m5.debug
+> > scons: Reading SConscript files ...
+> > Checking for C header file Python.h... yes
+> > Checking for C library python2.4... yes
+> > Checking for accept(0,0,0) in C++ library None... yes
+> > Checking for zlibVersion() in C++ library z... yes
+> > Checking for C header file fenv.h... yes
+> > Reading /var/soft/m5-2.0b5/src/cpu/o3/SConsopts
+> > Reading /var/soft/m5-2.0b5/src/cpu/simple/SConsopts
+> > Reading /var/soft/m5-2.0b5/src/arch/mips/SConsopts
+> > Reading /var/soft/m5-2.0b5/src/arch/alpha/SConsopts
+> > Reading /var/soft/m5-2.0b5/src/arch/sparc/SConsopts
+> > Building in /var/soft/m5-2.0b5/build/ARM_SE
+> > Options file /var/soft/m5-2.0b5/build/options/ARM_SE not found,
+> >  using defaults in build_opts/ARM_SE
+> >
+> > scons: *** Invalid value for option TARGET_ISA: arm
+> > File "/var/soft/m5-2.0b5/SConstruct", line 742, in ?
+> >
+> > Thanks.
+> > Lu
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

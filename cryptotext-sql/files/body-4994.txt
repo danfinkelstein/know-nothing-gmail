@@ -1,0 +1,6 @@
+Hi,     I am new to using m5. I have installed m5_1.1 and have been successful in running in Splash2 benchmarks by downloading them.      I have also downloaded crosstool and have also compiled my cross-compiler. I have written a small program in C and have generated my Alpha binary using the cross compiler. It would be of great help if someone can tell me the steps I have follow to run this program on the m5 simulator.       regards-  Rajdeep 
+		Talk is cheap. Use Yahoo! Messenger to make PC-to-Phone calls.  Great rates starting at 1｢/min.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

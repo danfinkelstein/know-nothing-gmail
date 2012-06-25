@@ -1,0 +1,109 @@
+Thanks Steve. It works with this.
+- Sujay
+--------------------------------------------------
+From: "Steve Reinhardt" <stever@gmail.com>
+Sent: Friday, November 13, 2009 2:41 PM
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Subject: Re: [m5-users] multi-programmed workloads in SE mode andinstruction
+count
+- Show quoted text -
+> I haven't looked at the old thread to see what's covered there, but I
+> believe you're confusing separate instances of a LiveProcess object
+> with copies of a single instance.  If you assign multiple cores to a
+> single instance of a workload then the expectation is that that's a
+> multithreaded workload that will eventually fork threads onto the
+> other cores.  If it's not a multithreaded workload then the other
+> cores will be idle.  If you want multiple cores to run different
+> instances of the same workload you need to assign different instances
+> of the class that describes the workload.
+>
+> So something like this:
+>
+> class Astar(LiveProcess):
+>  astar.executable =  binary_dir + '/astar'
+>  astar.cmd = [astar.executable]+['rivers.cfg']
+>  astar.cwd = data_dir + '/astar/ref/input/'
+>  astar.output = data_dir + '/astar/ref/output/rivers.out'
+>
+> system.cpu[0].workload = Astar()
+> system.cpu[1].workload = Astar()
+>
+> Or if you don't want to change your script as much, you can also use
+> cloning to create new instances from existing instances (hmm, can't
+> find cloning documented on the wiki anywhere, but it's mentioned on
+> slide 99 of the ASPLOS tutorial):
+>
+> system.cpu[0].workload = Mybench.astar()
+> system.cpu[1].workload = Mybench.astar()
+>
+> Steve
+>
+> On Fri, Nov 13, 2009 at 9:59 AM, Sujay Phadke <sphadke@eecs.umich.edu>
+> wrote:
+>> Hello,
+>>   This is similar to the discussion thread  from May 2008. My system
+>> config
+>> had 8 cores. Running M5 in SE mode. If I assign the same benchmark to
+>> multiple cores, only 1 cpu fetches and executes instructions. all others
+>> lock up. Only if I assign different benchmarks do all cpus fetch
+>> instruction
+>> correctly.
+>>
+>> eg: (spec2006)
+>> a. 8 gcc - only 1 cpu executes
+>>
+>> b. 7 gcc, 1 astar - 1 cpu executes astar, and only 1 cpu executes gcc
+>>
+>>
+>> I assign the benchmarks in this way in the modified se.py file:
+>>
+>> ...
+>> newp0 = Mybench.astar
+>> newp1 = Mybench.astar_2
+>> ....
+>>
+>> system.cpu[0].workload = newp0
+>> system.cpu[1].workload = newp1
+>>
+>> I changed the Mybench.py file to include different object names for the
+>> workload objects.
+>>
+>> #473.astar
+>> astar=LiveProcess()
+>> astar.executable =  binary_dir + '/astar'
+>> astar.cmd = [astar.executable]+['rivers.cfg']
+>> astar.cwd = data_dir + '/astar/ref/input/'
+>> astar.output = data_dir + '/astar/ref/output/rivers.out'
+>>
+>> #473.astar_2
+>> astar_2=LiveProcess()
+>> astar_2.executable =  binary_dir + '/astar'
+>> astar_2.cmd = [astar.executable]+['rivers.cfg']
+>> astar_2.cwd = data_dir + '/astar/ref/input/'
+>> astar_2.output = data_dir + '/astar/ref/output/rivers.out'
+>>
+>> ....
+>> ...
+>>
+>> Now if I assign astar and astar_2 , and so on to the 8 cores, they seem
+>> to
+>> execute fine. (o3). all cpus fetch and execute correctly.
+>>
+>> can someone throw some light on this?
+>>
+>> - Sujay
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

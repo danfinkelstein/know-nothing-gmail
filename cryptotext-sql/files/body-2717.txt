@@ -1,0 +1,22 @@
+Hello
+ 
+I am trying to simulate benchmark in M5 ALPHA_FS mode, 
+ 
+and I have finished the installation of M5 and made the image file of benchmark.
+ 
+When running the benchmark on M5,
+ 
+it shows the message as following :
+ 
+# ./facesim -timing -threads 4
+./facesim: /usr/lib/libstdc++.so.6: version 'GLIBCXX_3.4.9' not found (required by ./facesim)
+./facesim: /usr/lib/libstdc++.so.6: version 'GLIBCXX_3.4.6' not found (required by ./facesim)
+#
+ 
+Can anyone teach me how to update the library version on M5? Thanks.
+ 
+Jerry
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

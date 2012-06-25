@@ -1,0 +1,6 @@
+hi all,i have a question that  if i modify the linux kernel on my machine, and make it to get a new version, then how can i apply this modified kernel on M5's full system mode simulation? replace the original vmlinux with the new generated vmlinux? 
+Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

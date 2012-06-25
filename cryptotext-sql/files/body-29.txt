@@ -1,0 +1,18 @@
+Hi,
+I'm working with the InOrderCPU on ALPHA_SE.
+I'm running one core, with one thread, split level 1 caches and physical memory.
+The stats-file gives me a lot of statistics, but nothing about the physical memory. Some statistics are derivable form the cache's statistics, but not all.
+Since I want to use McPAT to get a power estimate I'm more precisely interested in the following two parameters:
+-Number of memory reads
+-Number of memory writes
+Is there somebody who already needed those statistics and came to a solution?
+It would save me a lot of work :-).
+The number of memory reads will probably equal to the number of [data cache ReadReq_misses] plus [instruction cache ReadReq_misses].
+The number of memory writes will be more difficult to calculate: it equals [number of evicted cache lines that were written] plus [number of data cache WriteReq_misses].
+So basically what I need is "the number of evicted cache lines that were written".
+Regards,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

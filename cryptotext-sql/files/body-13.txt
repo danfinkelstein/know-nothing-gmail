@@ -1,0 +1,50 @@
+Yea, that even looks familiar... I feel like I've fixed this once
+already, but obviously if I did it didn't get checked in.  I think
+just changing this conditional to:
+    if (prefetcher && !mshrQueue.isFull()) {
+should take care of it.  Let me know either way, and if it does I'll
+commit the fix.
+Steve
+- Show quoted text -
+On Wed, Jun 16, 2010 at 10:04 AM, Joe Gross <joegross@umd.edu> wrote:
+> Hello,
+>
+> We've modified the cache hierarchy to include private L1, private L2 and a
+> shared L3 cache, but we get a segfault when running certain PARSEC
+> workloads. The prefetcher value is NULL, as we have it turned off because
+> the prefetcher is causing problems lately. Specifically, the problem is at:
+>
+> Program received signal SIGSEGV, Segmentation fault.
+> BasePrefetcher::getPacket (this=0x0) at
+> build/ALPHA_FS/mem/cache/prefetch/base.cc:135
+> 135         if (pf.empty()) {
+> (gdb) bt
+> #0  BasePrefetcher::getPacket (this=0x0) at
+> build/ALPHA_FS/mem/cache/prefetch/base.cc:135
+> #1  0x0000000000503ceb in Cache<LRU>::getNextMSHR() ()
+> #2  0x0000000000503dc0 in Cache<LRU>::getTimingPacket() ()
+> #3  0x000000000050a589 in Cache<LRU>::MemSidePort::sendPacket() ()
+> #4  0x0000000000413754 in EventQueue::serviceOne (this=<value optimized
+> out>) at build/ALPHA_FS/sim/eventq.cc:203
+> #5  0x000000000045e56a in simulate (num_cycles=9223372036854775807) at
+> build/ALPHA_FS/sim/simulate.cc:73
+> ...
+>
+> I think the problem is in cache_impl.hh at line 1305:
+>
+> PacketPtr pkt = prefetcher->getPacket();
+>
+> Other points in the cache always have a conditional "if (prefetcher)" before
+> they access it, but not at this point. Hopefully this is the only problem
+> and is easily fixed.
+>
+> Joe
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+That will work, but it will run them consecutively.  I assume that you
+want to run them in parallel, so you'll need to put some of them in
+the background if you want to run multiple.  I suggest reading some
+documentation on bash.
+  Nate
+- Show quoted text -
+On Mon, Mar 30, 2009 at 5:29 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> Just a quick question, I want to run four diff. SPEC benchmarks on four core system in FS mode. Is this the right rcs file....
+>
+> #!/bin/bash
+> /sbin/m5 resetstats
+> ./SPEC1
+> ./SPEC2
+> ./SPEC3
+> ./SPEC4
+>
+> with me having no control over where the SPECS get scheduled?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

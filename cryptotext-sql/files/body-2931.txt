@@ -1,0 +1,19 @@
+> I don't know of anyone who's done it, but it sounds cool.  My vote is
+> for option #3.  Option #1 seems really invasive and would make it
+> tricky to deal with wrong-path code or anything else that might be
+> non-deterministic.  Option #2 doesn't scale past N=2.  Option #3 might
+> not be too bad if you interleave things on a page-by-page basis; e.g.,
+> for an N-thread workload, physical page p of thread i maps to physical
+> page N*p+i of the new system.  This would also give you reasonable
+> conflict behavior in a physically indexed cache (another issue that
+> might backfire on you in options 1 or 2... particularly in option 1 if
+> all the threads have overlapping fake physical addresses).
+I agree fully with these comments.  It should be pretty easy to fixup
+the virtual to physical mapping after the checkpoint is restored.  If
+you want to interleave things on a sub-page basis, I'd suggest hacking
+in some code that does some bit swizzling to the PA after translation.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

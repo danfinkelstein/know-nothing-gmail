@@ -1,0 +1,6 @@
+I want to let cpu to generate a request which includes the cpu_id. How
+can accomplish it? I appreciate your help very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,44 @@
+I am trying to create a new cpu model in beta 4 and
+followed the steps listed in m5 site (for m5-v2.0b3).
+But it is giving this error:
+Building in /home/xx/m5_2.0b4/build/ALPHA_FS
+Using saved options file
+/home/xx/m5_2.0b4/build/options/ALPHA_FS
+<type 'exceptions.KeyError'>: 'C':
+  File "/home/xx/m5_2.0b4/SConstruct", line 735:
+    exports = 'env')
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 579:
+    return apply(method, args, kw)
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 516:
+    return apply(_SConscript, [self.fs,] + files,
+subst_kw)
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 244:
+    exec _file_ in call_stack[-1].globals
+  File "/home/xx/m5_2.0b4/build/ALPHA_FS/SConscript",
+line 197:
+    SConscript(joinpath(base, 'SConscript'))
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 579:
+    return apply(method, args, kw)
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 516:
+    return apply(_SConscript, [self.fs,] + files,
+subst_kw)
+  File "/usr/lib/scons/SCons/Script/SConscript.py",
+line 244:
+    exec _file_ in call_stack[-1].globals
+  File
+"/home/xx/m5_2.0b4/build/ALPHA_FS/arch/SConscript",
+line 103:
+    for cpu in env['CPU_MODELS']]
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

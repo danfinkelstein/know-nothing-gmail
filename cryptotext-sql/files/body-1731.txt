@@ -1,0 +1,5 @@
+Does anyone has a disk image with splash benchmarks? It would be useful to put it on the downloads page anyway since splash is most used multi benchmark. 
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

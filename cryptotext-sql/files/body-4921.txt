@@ -1,0 +1,70 @@
+Hi,
+I am not sure if I was clear in the last mail.
+I am looking at a multi-cpu scenario.
+Currently the M5 1.0 has private L1 caches and a shared L2 cache.
+I want to make private L2 caches for every cpu and add another shared L3
+cache.
+I just wanted to make sure that I was on the right track. I am planning to
+add the L2, L3 cache defnitions with appropriate bus interfaces in my
+python scripts.
+However, Im thinking there could be coherance issues that may need to be
+resolved if the L2 is now private (for example like mentioned in this post:
+http://www.mail-archive.com/m5sim-users@lists.sourceforge.net/msg00223.html).
+It would be great if you could point out any other issues I need to take
+care of.
+Thanks a ton for the help,
+Forum
+- Show quoted text -
+Quoting Forum Mangal Parmar <forumm@stanford.edu>:
+> I mean split per-cpu.
+> and yes I meant coherence.
+>
+> Quoting Steve Reinhardt <stever@eecs.umich.edu>:
+>
+> > When you say "split", do you mean split I/D or split per-CPU?
+> >
+> > Also, I'm not sure what you mean by "synchronization": are you talking
+> > about coherence?
+> >
+> > Finally, please post m5 questions to the m5-users mailing list rather
+> > than sending them directly to me.
+> >
+> > Steve
+> >
+> > Forum Mangal Parmar wrote:
+> > > Hi Steve,
+> > >
+> > > I am trying to understand the way the split cache implementation.
+> > >
+> > > I had one very specific question about m5 1.0. If I want to make the
+> L2
+> > > split instead of shared in a multicore situation my question is:
+> > >
+> > >
+> > > 1. Is it sufficient to make a .py file with each cpu having a L1 and
+> L2
+> > > cache (ie declare the L2 cache in a similar way to L1) and then
+> > replicate
+> > > multiple cpus. In this case I will just replicate the L1 to get the
+> L2
+> > and
+> > > make one-to-one bus connections between every L1 and L2 and the next
+> > level
+> > > will be a shared L3 just delared in the same way as L2 is currently.
+> > >
+> > > or
+> > >
+> > > 2. Do I need to change the c++ code for synchronization of the split
+> > caches?
+> > > (ie do something like what is done in m5 2.0)
+> > >
+> > > Thank you,
+> > > Forum
+> >
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

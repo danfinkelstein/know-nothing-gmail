@@ -1,0 +1,80 @@
+ Hi Steve,
+ 
+Thank you so much for your help. I am using 2.0b4, and the overall 
+miss_rate of l2 cache is regular in 2.0b3. I have run a lot of 
+benchmarks, and it shouldn'tbe the problem of particular benchmarks.
+ 
+But I want to know why all printing message are "blk for replacement"
+in my trace files. It is just like no findblk() function is successful,
+and no cache hit in l2 cache. This is unreasonable. Can you tell me 
+the reason?
+ 
+Thanks!
+ 
+Lei Yang
+ 
+ 
+在2008-03-07，"Steve Reinhardt" <stever@gmail.com> 写道：
+This sounds like the writeback protocol issue I fixed in 2.0b5 that's
+just recently available on the web page.  I assume you're using 2.0b4
+which is where this issue was introduced.  Please download and try
+2.0b5 and let us know if the problem doesn't go away.
+I think there was an earlier thread on the mailing list with more
+details regarding this issue if you're interested.
+Thanks,
+Steve
+2008/3/6 nathan binkert <nate@binkert.org>:
+> What is your workload?  There are workloads that could certainly give this
+> behavior.
+>
+>   Nate
+>
+> 2008/3/6 laymanyang <laymanyang@163.com>:
+>
+> >
+> >
+> >
+> >
+> >
+> > Hi all,
+> >
+> >   I configed a CMP with two cpus and had a shared L2 cache. But in the
+> stats file,
+> >
+> > L2 cache overall miss rate is %99.9, and date in L1 icache and dcache look
+> like
+> >
+> > regular.
+> >
+> >   I have traced all accesses in L2 cache, and found that almost all of
+> accesses
+> >
+> > are "blk for replacement" in cache miss.
+> >
+> >   Can anyone tell me why this happened? It looks unreasonable.
+> >
+> >   Thanks
+> >
+> >   Lei Yang
+> >
+> >
+> >
+> > ________________________________
+>  2008年500强企业最新高薪职位，赶快了解一下
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+ 
+领海5月即将开盘！100-140㎡阔水舒宅，海湾印象_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

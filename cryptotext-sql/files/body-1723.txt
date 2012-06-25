@@ -1,0 +1,60 @@
+Also see the slides from our latest tutorial (available on the web
+site); it has detailed instructions for defining a new SimObject.  The
+example is for a new device, but a new cache would be basically the
+same.
+Steve
+- Show quoted text -
+On Sat, Mar 14, 2009 at 8:38 AM, Korey Sewell <ksewell@umich.edu> wrote:
+> Did this class derive from BaseCache?
+>
+> If so, then you are probably creating a new "SimObject" which gets
+> instantiated via the swig-python(?)/Params interface.
+>
+> Look in src/mem/cache/builder.cc.
+>
+> In there, you'll see a BaseCache "create()" function that is used to create
+> a cache object with the typical M5 params.
+>
+> Somewhere, you are going to need a "create() function for you SimObject if
+> you intend to be able to instantiate it through a config file.
+>
+> On Sat, Mar 14, 2009 at 10:43 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>>
+>> Hi, all, I am confused of how to add new class to M5. When I added a new
+>> class called RaceCache in the src/mem/cache, and modified the SConscript and
+>> some other files, I got an compile error as followed:
+>>
+>> build/ALPHA_FS/libm5_opt.a(params_wrap.o): In function
+>> `_wrap_RaceCacheParams_create':
+>> /m5-stable-733318abb7b1/build/ALPHA_FS/params/params_wrap.cc:31843:
+>> undefined reference to `RaceCacheParams::create()'
+>> collect2: ld returned 1 exit status
+>> scons: *** [build/ALPHA_FS/m5.opt] Error 1
+>>
+>> I am always confused with anything related to params, I think that may be
+>> a simple error because of my unfamiliarity of M5, can somebody give me some
+>> hints on how to deal with this ? Thanks !
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> ----------
+> Korey L Sewell
+> Graduate Student - PhD Candidate
+> Computer Science & Engineering
+> University of Michigan
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

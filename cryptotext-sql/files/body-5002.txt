@@ -1,0 +1,14 @@
+Hi,I posted the same problem a few days ago but received no answers! Hope somebody will reply to this. - Show quoted text -On 9/25/06, Shyam Thoziyoor <
+shyam.thoziyoor@gmail.com> wrote:- Show quoted text -Hi,
+ 
+I was having some problems setting up a configuration file for a CMP. Can someone perhaps share a CMP configuration file that has 2/3 levels of cache? Also if somebody has a configuration file that sets up a shared last level cache or can offer advice on how to go about doing that, I would greatly appreciate it. 
+ 
+Thanks,
+Shyam
+ 
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

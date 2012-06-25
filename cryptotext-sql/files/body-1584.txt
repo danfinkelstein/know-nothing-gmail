@@ -1,0 +1,10 @@
+Thank you Steve and Korey.I am working on SPEC CPU 2006 in ALPHA SE mode. I think this problem is neither by benchmarks nor by out of physical memory as I have already had good result with same set of benchmarks. I got correct result even for 16 set of benchmarks with single thread per core. I could simulate at most 4 set of benchmarks, i.e., 2 core and 2 threads per core, in multicore - multithread per core and rest of the others have this problem. This problem is only with multithread per core.
+I will go for testing each single benchmarks and will inform you the result of those testing. Could you please let me idea about how to check the code is pointing null pointers?Thanks in advance,devraj- Show quoted text -
+On Mon, Apr 13, 2009 at 1:21 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+hi everyone,I am working on SPEC CPU 2006 in SE mode. While simulation is tested for single thread per core, it works well but when testing with more than one thread per core, I got the panic problem. The error display as:
+warn: Increasing stack size by one page.panic: Tried to execute unmapped address 0. @ cycle 17190562000[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]Program aborted at cycle 17190562000
+Could anyone please help me to guide towards the solution of this problem?Thanks in advance,D.R. Chapagain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

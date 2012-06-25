@@ -1,0 +1,12 @@
+Most of the addresses are indeed added to the list more than once (but
+get removed only once)!
+Some of the addresses are added to the list once, and never removed.
+(I built a small program to identify the adresses that get added but
+not removed, if you are interested I can send it to you).I think just adding an assertion there as well as inspecting the trace will reveal the source of the problem. Hopefully wont be too long to find the bug, but I'm looking into the fix.
+ 
+What do you mean with a time sync?Maybe I should've said "time sink"? Aarrgh, I'm just communicating badly!Basically I was just saying its a major source of time wasted in that function.  
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

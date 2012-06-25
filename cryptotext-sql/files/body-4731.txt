@@ -1,0 +1,13 @@
+Hi all,
+    I find two virtual to physical address translation functions in M5:
+    One is translate() defined in AlphaITB/AlphaDTB class in tlb.cc,
+    the other one is vtophys() defined in vtophys.cc.
+    Does anyone know which one is for simulated virtual address to
+simulated physical address translation? And which on is for simulated
+virutal address to host physical address translation?
+    Thanks!
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

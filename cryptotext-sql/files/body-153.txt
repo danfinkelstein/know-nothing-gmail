@@ -1,0 +1,5 @@
+Hi all,I am using PARSEC benchmarks on M5, i want to DPRINT some information of ROI of PARSEC applications. But how can i let M5 only DPRINT information of ROI. Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

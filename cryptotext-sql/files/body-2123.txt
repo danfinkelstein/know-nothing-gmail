@@ -1,0 +1,387 @@
+Hello Lisa, I am having some problems, I am getting this output all the time
+warn: clear IPI for CPU=0, but NO IPI
+I have been running the simulation for several hours and I only get
+that output so I do no think that is working. This is how I have my
+Simulation.py file now:
+            # if restoring, make atomic cpu simulate only a few instructions
+            if options.checkpoint_restore != None:
+                testsys.cpu[0].max_insts_any_thread = 1
+Is like this how is suppose to be?. Thanks and sorry for the problems.
+2008/12/19 Lisa Hsu <hsul@eecs.umich.edu>:
+- Show quoted text -> yes, the problem is solved.  the patch i sent out - instead of changing it
+> to a higher number, change the line
+>
+> testsys.cpu[i].max_insts_any_thread = 1
+>
+> to:
+>
+> testsys.cpu[0].max_insts_any_thread = 1
+>
+> (as opposed to the patch, which changed it to
+> testsys.cpu[i].max_insts_any_thread = 100).  this will be a more general
+> solution.
+>
+> taking a checkpoint in SE and then switching to FS will definitely not work.
+>
+> Lisa
+>
+> On Thu, Dec 18, 2008 at 5:17 PM, Bob Nagel <nasmloe@gmail.com> wrote:
+>>
+>> Hello again, is this problem finally solved?,
+>>
+>> I think that for my goal I can do it in another way the only thing
+>> that I want to do, is just load the linux in SE mode take a checkpoint
+>> and after switch to FS. I will repeat the commands that I am using.
+>>
+>> To take the inital checkpoint
+>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b
+>> MyBench --checkpoint-dir=./checkpoint/
+>>
+>> To restore from the checkpoint and do the switching:
+>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b
+>> MyBench  --caches --l2cache -s -w 200000000000 -r 1
+>> --checkpoint-dir=./checkpoint/
+>>
+>> If there is no way to do this without have this problem, is there any
+>> way to know when the simulator has load linux and is executing my
+>> script?. I am getting some information from the simulation and I am
+>> interested in know when that simulation is from my program and when
+>> from the Linux.
+>>
+>> Thank you.
+>>
+>> 2008/12/16, Lisa Hsu <hsul@eecs.umich.edu>:
+>> > Oh - wrt to that patch I don't think that matters. Since this is
+>> > specific to
+>> > the standard switch, every cpu you are simulating has an atomic, timing,
+>> > and
+>> > o3 version, and just setting cpu0 would mean setting one of the atomic
+>> > cpus,
+>> > which can't possibly be switched out because you're starting with it to
+>> > run
+>> > the sim.
+>> >
+>> > Lisa
+>> >
+>> >
+>> > On Tue, Dec 16, 2008 at 3:10 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> > > I mean the patch you committed a few weeks ago that cleaned up all the
+>> > > tid/cpuid/etc stuff. My comment is that unless cpu 0 is always active
+>> > > and not switched out, just setting it on cpu 0 won't work.
+>> > >
+>> > > Ali
+>> > >
+>> > >
+>> > >
+>> > >
+>> > > On Dec 16, 2008, at 2:52 PM, Lisa Hsu wrote:
+>> > >
+>> > > > The patch I sent does nothing but change the number of cycles the
+>> > > > initial atomic CPUs run before switching to timing in the standard-
+>> > > > switch scenario.
+>> > > >
+>> > > > Steve's suggestion is just that only atomicCPU0 has a limit set, all
+>> > > > the rest run "forever" but of course, atomicCPU0 will always hit a
+>> > > > short number of instructions quickly so it doesn't matter.  Which I
+>> > > > think is probably better for this particular case.
+>> > > >
+>> > > > Lisa
+>> > > >
+>> > > > On Tue, Dec 16, 2008 at 1:35 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> > > >
+>> > > > Does Lisa's change always create a cpu 0? Is there a cpu 0 that is
+>> > > > always running?  Otherwise, the only issue I see is that CPU 0 might
+>> > > > not be active at the moment and thus you would never hit the event
+>> > > > (e.g. if you switched out cpu 0 for something else).
+>> > > >
+>> > > > Ali
+>> > > >
+>> > > >
+>> > > >
+>> > > > On Dec 16, 2008, at 12:22 PM, Lisa Hsu wrote:
+>> > > >
+>> > > > > Yes, that would work too.  Probably a better solution for this
+>> > > > > case.  It feels not as "pretty", but I suppose that doesn't
+>> > > > > matter.
+>> > > > > I guess I like symmetry too much.
+>> > > > >
+>> > > > > Lisa
+>> > > > >
+>> > > > > On Tue, Dec 16, 2008 at 11:59 AM, Steve Reinhardt
+>> > > > > <stever@gmail.com>
+>> > > > > wrote:
+>> > > > > Is there a reason why we schedule an event on all the cpus?  Would
+>> > > > it
+>> > > > > work just to schedule the event on cpu 0?
+>> > > > >
+>> > > > > Steve
+>> > > > >
+>> > > > > On Mon, Dec 15, 2008 at 2:39 PM, Lisa Hsu <hsul@eecs.umich.edu>
+>> > > > wrote:
+>> > > > > > Try the attached patch.
+>> > > > > >
+>> > > > > > To anyone interested:
+>> > > > > >
+>> > > > > > for the initial switch from atomic to timing is set at
+>> > > > > > cpu[i].max_insts_any_thread = 1, for all cpu=i.  the idea for
+>> > > > > > max_insts_any_thread is that when the first cpu hits that value,
+>> > > > > an exit
+>> > > > > > event is scheduled - but since in this case all N cores hit 1 in
+>> > > > > the exact
+>> > > > > > same cycle, 4 exit events are scheduled.
+>> > > > > >
+>> > > > > > so after the switch to timing, the first exit event has been
+>> > > > > > dealt
+>> > > > > with but
+>> > > > > > there are still 3 more, which essentially kill your attempts to
+>> > > > > drain.
+>> > > > > >
+>> > > > > > this is a pretty silly fix, making the initial atomic phase last
+>> > > > > 100 insts
+>> > > > > > just to reduce the probability that this will never happen
+>> > > > > > again,
+>> > > > > but
+>> > > > > > doesn't rigorously remove that possibility.  if anyone has a
+>> > > > > better idea of
+>> > > > > > how to fix this let me know.
+>> > > > > >
+>> > > > > > Lisa
+>> > > > > >
+>> > > > > > On Mon, Dec 15, 2008 at 9:44 AM, Lisa Hsu <hsul@eecs.umich.edu>
+>> > > > > wrote:
+>> > > > > >>
+>> > > > > >> I'm working on this.  Stay tuned.
+>> > > > > >>
+>> > > > > >> Lisa
+>> > > > > >>
+>> > > > > >> On Fri, Dec 12, 2008 at 7:50 PM, Eduardo Olmedo Sanchez
+>> > > > > >> <eolmsan2@gmail.com> wrote:
+>> > > > > >>>
+>> > > > > >>> These are the changes that I did to the fs.py file:
+>> > > > > >>>
+>> > > > > >>> np = options.num_cpus = 4
+>> > > > > >>>
+>> > > > > >>> test_sys.l2 = L2Cache(size = '4MB', assoc = 4, latency =
+>> > > > > >>> '30ns')
+>> > > > > >>>
+>> > > > > >>>
+>> > test_sys.cpu[i].addPrivateSplitL1Caches(L1Cache(size
+>> > = '64kB',
+>> > > > > assoc
+>> > > > > >>> = 2, latency = '2ns'),
+>> > > > > >>>                                                L1Cache(size =
+>> > > > > '64kB',
+>> > > > > >>> assoc = 2, latency = '2ns'))
+>> > > > > >>>
+>> > > > > >>> I did not do any other changes to the source code.
+>> > > > > >>>
+>> > > > > >>> On Fri, Dec 12, 2008 at 4:21 PM, Ali Saidi <saidi@umich.edu>
+>> > > > > wrote:
+>> > > > > >>> > Have you changed the default configuration any? It appears
+>> > > > > from your
+>> > > > > >>> > command line that you would only get one cpu.
+>> > > > > >>> >
+>> > > > > >>> > Ali
+>> > > > > >>> >
+>> > > > > >>> > On Dec 12, 2008, at 11:50 AM, Bob Nagel wrote:
+>> > > > > >>> >
+>> > > > > >>> >> Hello Ali,
+>> > > > > >>> >>
+>> > > > > >>> >> What do you mean with devices?, if you are talking about if
+>> > > > > >>> >> I
+>> > > > > do any
+>> > > > > >>> >> changes something in the code of the simulator, I have not
+>> > > > > done any
+>> > > > > >>> >> changes. The value of event->getCount() is 4.
+>> > > > > >>> >>
+>> > > > > >>> >> Thanks.
+>> > > > > >>> >>
+>> > > > > >>> >> 2008/12/11 Ali Saidi <saidi@umich.edu>:
+>> > > > > >>> >>> It looks like a serialization bug to me. What devices are
+>> > > > > you using?
+>> > > > > >>> >>> Just the defaults? Can you print out event->getCount() to
+>> > > > > see what
+>> > > > > >>> >>> the
+>> > > > > >>> >>> value is? i imagine that some object is double executing a
+>> > > > > drain
+>> > > > > >>> >>> event, but the count would say for sure.
+>> > > > > >>> >>>
+>> > > > > >>> >>> Ali
+>> > > > > >>> >>>
+>> > > > > >>> >>>
+>> > > > > >>> >>>
+>> > > > > >>> >>> On Dec 11, 2008, at 9:30 PM, Bob Nagel wrote:
+>> > > > > >>> >>>
+>> > > > > >>> >>>> Hello I am getting this error when I am running a
+>> > > > > simulation in FS
+>> > > > > >>> >>>> this is what I am doing:
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> I start the simulation in atomic model to load linux and
+>> > > > > >>> >>>> I
+>> > > > > take a
+>> > > > > >>> >>>> checkpoint to keep simulating in detail model when the
+>> > > > > script starts
+>> > > > > >>> >>>> running:
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> This is the command to take the checkpoint
+>> > > > > >>> >>>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output
+>> > > > > >>> >>>>  configs/example/
+>> > > > > fs.py -b
+>> > > > > >>> >>>> MyBench --checkpoint-dir=./checkpoint/
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> This is my rcS file:
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> #!/bin/sh
+>> > > > > >>> >>>> /sbin/m5 checkpoint
+>> > > > > >>> >>>> /sbin/m5 switchcpu
+>> > > > > >>> >>>> /sbin/m5 dumpstats
+>> > > > > >>> >>>> /sbin/m5 resetstats
+>> > > > > >>> >>>> cd /parsec/install/bin
+>> > > > > >>> >>>> ./freqmine
+>> > /parsec/install/inputs/freqmine/kosarak_250k.dat
+>> > > > > 220
+>> > > > > >>> >>>> echo "DONE :D"
+>> > > > > >>> >>>> /sbin/m5 exit
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> And when I restore from the checkpoint with this command
+>> > > > > >>> >>>> I
+>> > > > > get this
+>> > > > > >>> >>>> error:
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output
+>> > > > > >>> >>>>  configs/example/
+>> > > > > fs.py -b
+>> > > > > >>> >>>> MyBench  --caches --l2cache -s -w 200000000000 -r 1
+>> > > > > >>> >>>> --checkpoint-dir=./checkpoint/
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> switching cpus
+>> > > > > >>> >>>> Switch at instruction count:0
+>> > > > > >>> >>>> info: Entering event queue @ 1815525533500.  Starting
+>> > > > > simulation...
+>> > > > > >>> >>>> Switching CPUS @ cycle = 1815525533500
+>> > > > > >>> >>>> Simulation ends instruction count:0
+>> > > > > >>> >>>> info: Entering event queue @ 1815525533500.  Starting
+>> > > > > simulation...
+>> > > > > >>> >>>> m5.opt:
+>> > build/ALPHA_FS/python/swig/pyevent.cc:84: void
+>> > > > > >>> >>>> cleanupCountedDrain(Event*): Assertion `event->getCount()
+>> > > > > == 0'
+>> > > > > >>> >>>> failed.
+>> > > > > >>> >>>> Program aborted at cycle 1815525533500
+>> > > > > >>> >>>> Aborted
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> In my script I am running the simulation with 4 cpus, but
+>> > > > the
+>> > > > > >>> >>>> thing is
+>> > > > > >>> >>>> that when I put only 1 cpu the simulation runs without
+>> > > > > >>> >>>> any
+>> > > > > >>> >>>> problem, is
+>> > > > > >>> >>>> this a bug of the simulator?. I am using the latest
+>> > > > > >>> >>>> stable
+>> > > > > version
+>> > > > > >>> >>>> from three weeks ago. And another thing when I restore
+>> > > > > >>> >>>> from
+>> > > > > the
+>> > > > > >>> >>>> checkpoint I get many warns like this one:
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> warn: Not unserializing
+>> > > > > >>> >>>>
+>> > 'system.switch_cpus_10.fuPool.FUList2.opList2': no section
+>> > > > > found in
+>> > > > > >>> >>>> checkpoint.
+>> > > > > >>> >>>>
+>> > > > > >>> >>>> Thanks.
+>> > > > > >>> >>>>
+>> > _______________________________________________
+>> > > > > >>> >>>> m5-users mailing list
+>> > > > > >>> >>>> m5-users@m5sim.org
+>> > > > > >>> >>>>
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >>> >>>>
+>> > > > > >>> >>>
+>> > > > > >>> >>>
+>> > _______________________________________________
+>> > > > > >>> >>> m5-users mailing list
+>> > > > > >>> >>> m5-users@m5sim.org
+>> > > > > >>> >>>
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >>> >>>
+>> > > > > >>> >>
+>> > _______________________________________________
+>> > > > > >>> >> m5-users mailing list
+>> > > > > >>> >> m5-users@m5sim.org
+>> > > > > >>> >>
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >>> >>
+>> > > > > >>> >
+>> > > > > >>> > _______________________________________________
+>> > > > > >>> > m5-users mailing list
+>> > > > > >>> > m5-users@m5sim.org
+>> > > > > >>> >
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >>> >
+>> > > > > >>> _______________________________________________
+>> > > > > >>> m5-users mailing list
+>> > > > > >>> m5-users@m5sim.org
+>> > > > > >>>
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >>>
+>> > > > > >>
+>> > > > > >
+>> > > > > >
+>> > > > > > _______________________________________________
+>> > > > > > m5-users mailing list
+>> > > > > > m5-users@m5sim.org
+>> > > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > > >
+>> > > > > _______________________________________________
+>> > > > > m5-users mailing list
+>> > > > > m5-users@m5sim.org
+>> > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > > >
+>> > > > >
+>> > > > > _______________________________________________
+>> > > > > m5-users mailing list
+>> > > > > m5-users@m5sim.org
+>> > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > >
+>> > > > _______________________________________________
+>> > > > m5-users mailing list
+>> > > > m5-users@m5sim.org
+>> > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > > >
+>> > > >
+>> > > > _______________________________________________
+>> > > > m5-users mailing list
+>> > > > m5-users@m5sim.org
+>> > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > >
+>> > > _______________________________________________
+>> > > m5-users mailing list
+>> > > m5-users@m5sim.org
+>> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> > >
+>> > >
+>> >
+>> >
+>> > _______________________________________________
+>> >  m5-users mailing list
+>> >  m5-users@m5sim.org
+>> >  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

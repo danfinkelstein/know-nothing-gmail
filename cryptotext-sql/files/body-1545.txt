@@ -1,0 +1,16 @@
+Potentially, your calculation could be off since there may be delay in when instructions from the Commit Stage (ROB) update their status to the IEW stage( LSQ) or Rename Stage (dispatch to IQ)... Potentially, you have to check these wires to make sure your getting the right counts...
+ However, each instruction has a "setExecuted" flag so that may be a better way to check anyway.You should check in the "base_dyn_inst.hh" files for a "setExecuted" flag. That marks whether an instruction was executed or not regardless of commit. Why not write a function (or insert code at the end of cpu-tick()) that counts up # of executed instructions in the ROB and then subtracts that from the total ROB count? maybe you could also subtract that from the IQ counts too if that's what you desire...
+- Show quoted text -On Fri, Apr 24, 2009 at 9:42 PM, Javier Jose <javier.jose@gmail.com> wrote:- Show quoted text -
+Hi Everyone,As part of my current project I need to grab the # of instructions in the LSQ, IQ and ROB or just "executing instructions; therefore not in IQ/LSQ" per thread per cycle. I am working with O3 and I have looked at the code up and down, but I am still having some problems.
+Currently I am "sampling"For ROB -> threadEntries[ ] For LSQ -> using getCount( tid )For IQ ->    using count[ ]At every tick() in cpu.cc I sample these variables and do ROB - ( LSQ + IQ) to get the "executing instructions". At the "worst case" I expect that substraction to be 0. This is becasue all instructions in the ROB must be either executing or in the LSQ/IQ. However, sometimes I see negative values. 
+Are these variables the correct ones to sample? Is for some reason, these variables updated in different cycles or updated in a way the above statement (ROB - (LSQ + IQ)) >= 0 would not hold (e.g when instructions are non-speculative or during squashes)?
+I'd appreciate any help,Javier 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- ----------Korey L SewellGraduate Student - PhD Candidate
+Computer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

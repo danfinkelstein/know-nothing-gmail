@@ -1,0 +1,34 @@
+My guess is that this is the result of calling rdunique and wrunique.
+These pal instructions keep track of the currently running thread.
+They more or less just access a single internal pal temp register.
+There are a number of things that could potentially be done to fix the
+slowness here.  You could create an actual renamed register in the o3
+model and make those palcalls access that special register.  If that
+weren't enough, you could add a more generalized facility for renaming
+pal temp registers (there are many that are simply treated as
+registers) and allow mfpr and mtpr to not be serializing.  Another
+option is to make some sort of "barrier" between pal instructions that
+allows them to not necessarily be serializing, but forces them to be
+executed in order.  You could take that a step further if necessary
+and implement a scoreboard that indicates which instructions have to
+wait for others (which is how the ev6 really does it).
+None of these options are particularly simple, but they aren't overly
+massive changes either.
+  Nate
+> Based on the results I am getting, for PARSEC benchmarks, the OoO
+> preformance is really bad, there are to many hw_mfpr and hw_mtpr,
+> instructions. I am trying to figure out why I am in the PALcode so
+> often (any ideas on how to figure this out?). I am running
+> Blackscholes, which is a relatively simple PARSEC benchmark.
+>
+> I need to do more research, but I dont think this is caused at all for
+> itb and dtb misses (i made them really large just in case).
+> Right now for blackscholes, which isnt close to finish executing
+> (about 30%) I have it so it will execute  1e9 instructions (running
+> two cores),  From my perl scripts it seems to have it fetched 13
+> million hw_mfpr and mtpr instructions (fetched, not committed). There
+> is something really wrong with that ratio.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

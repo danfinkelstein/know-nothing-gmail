@@ -1,0 +1,25 @@
+Hi everyone,
+I would like to know how to use m5's MySQL functionality, which I believe
+allows me to write simulation results into a MySQL database.
+I wasn't able to find sufficient infos on this neither on the Wiki nor in the
+Mailinglist - other than I need to compile in MySQL support, which I believe
+I have done. But how do I tell m5 to dump the stats into the MySQL db? Where
+do I specify host, database, user, password?
+Thanks in advance for your help.
+Best regards
+Jonas.
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

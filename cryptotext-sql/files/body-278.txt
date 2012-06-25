@@ -1,0 +1,84 @@
+Thank you very much. 
+ 
+Best Regards,
+Hongsheng Lu
+On Tue, Apr 20, 2010 at 11:40 AM, <m5-users-request@m5sim.org> wrote:
+Send m5-users mailing list submissions to       m5-users@m5sim.org
+To subscribe or unsubscribe via the World Wide Web, visit       http://m5sim.org/cgi-bin/mailman/listinfo/m5-usersor, via email, send a message with subject or body 'help' to
+       m5-users-request@m5sim.orgYou can reach the person managing the list at       m5-users-owner@m5sim.org
+When replying, please edit your Subject line so it is more specificthan "Re: Contents of m5-users digest..."Today's Topics:  1. Re: SSH on m5 (nathan binkert)  2. Re: Accessing m5.debug functions in gdb (nathan binkert)
+  3. Re: reset & dump stats (nathan binkert)  4. Re: Banked Cache (nathan binkert)  5. Re: m5threads (nathan binkert)  6. Re: m5threads (Eberle)  7. Re: m5threads (Eberle)  8. Re: reset & dump stats (Adam Beece)
+----------------------------------------------------------------------Message: 1Date: Mon, 19 Apr 2010 16:11:16 -0700From: nathan binkert <nate@binkert.org>
+Subject: Re: [m5-users] SSH on m5To: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <n2h217accd41004191611vcc2c81d9g5bd59cd72349b48f@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1> mounting swap...modprobe: FATAL: Could not load> /lib/modules/2.6.13/modules.dep: No such file or directory>> modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+> such file or directoryThose errors can be ignored.  I can't remember exactly what they were,but apache is basically trying to see if the kernel supports something(like ipv6) and modprobe for the module fails.
+> But when I use NetPerf benchmark, there is no such error.>> I figured that NetPerf is probably statically linked in.This isn't the issue.> But I got the following error, not sure what it means here with
+> respect to the simulator.> I simply invoked sshd as /opt/sbin/sshd in the rcS script.>> "starting sshd.../tmp/script: line 43: /opt/sbin/sshd: Input/output error"Not sure what exactly the problem is, but my guess is that it's a
+filesystem problem or some problem with the sshd binary.  Where didyou get the binary from?> Could you point me to the right direction of what is the good and> easier way to port ssh to m5?You want to use crosstools to build a crosscompiler toolchain and then
+use that to build sshd.  Alternatively, you can try to use a gentoostage3 tarball to populate a disk image. Nate------------------------------Message: 2Date: Mon, 19 Apr 2010 16:12:41 -0700
+From: nathan binkert <nate@binkert.org>Subject: Re: [m5-users] Accessing m5.debug functions in gdbTo: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:       <z2o217accd41004191612n4d6ecbf9s63e6ea6634f5eed1@mail.gmail.com>Content-Type: text/plain; charset=ISO-8859-1
+> I have been struggling with a performance bottleneck in the o3cpu model for> a few weeks (IPC capped at 3, regardless of the width of the core), and I've> been using gdb on m5.debug to try to find the bottleneck. From the debugging
+> information on the wiki (http://www.m5sim.org/wiki/index.php/Debugging_M5) I> should be able to call some of the dump functions as I step through the
+> simulation. However, I get the following error:> (gdb) call eventq_dump()> No symbol "eventq_dump" in current context.This usually happens only if the simulator hasn't actually started
+yet.  You need to start the simulator by doing something like:(gdb) break SimStartup(gdb) runThen at the first breakpoint, M5 is loaded and running, then you cancall various functions. Nate
+------------------------------Message: 3Date: Mon, 19 Apr 2010 16:17:46 -0700From: nathan binkert <nate@binkert.org>Subject: Re: [m5-users] reset & dump stats
+To: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <j2i217accd41004191617tde483ac5u5a4abc7c54e18202@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1> I was wondering if there was any more complete documentation on> resetstats and dumpstats than can be found at> http://www.m5sim.org/wiki/index.php/M5ops ?
+>> resetstats, in particular does not appear to reset the total instruction count.sim_insts, sim_second, sim_freq, host_inst_rate, host_mem_usage,host_seconds, and host_tick_rate are all special stats in that they
+reflect parameters about the simulator itself and the host, not thesimulated program.  None get reset.  That could be changed by adding abit of code.  See src/sim/stat_control.cc Nate------------------------------
+Message: 4Date: Mon, 19 Apr 2010 21:07:07 -0700From: nathan binkert <nate@binkert.org>Subject: Re: [m5-users] Banked CacheTo: M5 users mailing list <m5-users@m5sim.org>, Jiayuan Meng
+       <jerryhere@gmail.com>, Richard Strong <rstrong@cs.ucsd.edu>Message-ID:       <q2i217accd41004192107udb80af38h540b3bc5e9f452e5@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1Unfortunately, Jiayuan's patches have not yet made it back into themain M5 tree, so if you want to use them, you'll probably need to gethelp from Jiayuan himself or perhaps Rick Strong.
+ Nate> I am a beginner on M5 and doing a project on cache performance. However, I> found M5 seems not supporting banked cache although I found the webs>> http://article.gmane.org/gmane.comp.emulators.m5.users/5110/match=bank and
+> http://article.gmane.org/gmane.comp.emulators.m5.users/2911/match=bank>>> (under the help of Siming Chen, who posted a similar email with the name
+> "About Bank and Crossbar Model" on 04-11-2010 in the email archive). It> seems there is a patch for this>> functionality. So, could some one please help me out? Thank you very much.
+>>> Additionally, attached is a pdf published by jiayuan Meng online. I found it> via Google and attach it for convenience.>>> Best Regards,> Hongsheng Lu>>
+>>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>------------------------------Message: 5Date: Mon, 19 Apr 2010 21:13:07 -0700From: nathan binkert <nate@binkert.org>Subject: Re: [m5-users] m5threads
+To: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <w2q217accd41004192113t491bb651l6c81d385b679d2d2@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1> I have created a m5threads static linkable library for Sparc, with the files> available in the m5 repository. I used the Sparc compiler available in the> m5 website.
+> The thing is: when I link my multithreaded helloworld app with this lib, I> get the following error:>> eberle18@bellatrix:~/UFSC/Wannabe/helloworld$ sparc64-unknown-linux-gnu-g++> -static -L. -lm5pthread hello.cpp -o hello
+> /tmp/ccfh1vud.o(.text+0x2b0): In function `main':> : undefined reference to `pthread_join'> collect2: ld returned 1 exit statusI think your link order is bad.  generally, -l options need to come
+after object files, otherwise, the linker doesn't know to pull out therelevant functions.  (The linker processes files in order.)------------------------------Message: 6Date: Tue, 20 Apr 2010 08:51:59 -0300
+From: Eberle <rambo.ufsc@gmail.com>Subject: Re: [m5-users] m5threadsTo: M5 users mailing list <m5-users@m5sim.org>Message-ID:
+       <t2k9f77e4b51004200451pcbe68d74nc43f9aef73421054@mail.gmail.com>Content-Type: text/plain; charset="utf-8"
+Thanks for the reply.I don't think that is the problem because the first pthread function calledin the hello.cpp was correctly found.I was looking inside the pthreads library generated and I noticed that this
+pthread_join function wasn't listed there. I really can't imagine a reason.To create the library I executed the following two lines:sparc64-unknown-linux-gnu-gcc -c pthread.c -o m5pthread.osparc64-unknown-linux-gnu-ar csr libm5pthread.a m5pthread.o
+Funny thing...On Tue, Apr 20, 2010 at 1:13 AM, nathan binkert <nate@binkert.org> wrote:> > I have created a m5threads static linkable library for Sparc, with the
+> files> > available in the m5 repository. I used the Sparc compiler available in> the> > m5 website.> > The thing is: when I link my multithreaded helloworld app with this lib,
+> I> > get the following error:> >> > eberle18@bellatrix:~/UFSC/Wannabe/helloworld$> sparc64-unknown-linux-gnu-g++> > -static -L. -lm5pthread hello.cpp -o hello> > /tmp/ccfh1vud.o(.text+0x2b0): In function `main':
+> > : undefined reference to `pthread_join'> > collect2: ld returned 1 exit status>> I think your link order is bad.  generally, -l options need to come> after object files, otherwise, the linker doesn't know to pull out the
+> relevant functions.  (The linker processes files in order.)> _______________________________________________> m5-users mailing list> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>-------------- next part --------------An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20100420/105d5561/attachment-0001.htm
+------------------------------Message: 7Date: Tue, 20 Apr 2010 11:13:18 -0300From: Eberle <rambo.ufsc@gmail.com>Subject: Re: [m5-users] m5threads
+To: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <k2g9f77e4b51004200713ubefe970cjd7d259785a5cbea2@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"I was able to successfuly compile my test program without callingpthread_join().But, when I run the executable on the platform with 2 SPARCs, the following
+happened:command line: ./build/SPARC_SE/m5.fast configs/splash2/teste.py -n 2 -bHelloworldGlobal frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb on port 7000
+0: system.remote_gdb.listener: listening for remote gdb on port 7001info: Entering event queue @ 0.  Starting simulation...Initiatingexperiment...<- This is the first of my helloworld printed outputs.
+panic: Tried to execute unmapped address 0. @ cycle 76104000[invoke:build/SPARC_SE/arch/sparc/faults.cc, line 629]Memory Usage: 200844 KBytesFor more information see: http://www.m5sim.org/panic/95542d88
+Program aborted at cycle 76104000AbortedI suppose it happens when I try to create a second thread.The teste.py script is the splash2/run.py modified to use my executable fileinstead.Has someone successfully compiled and ran a multithreaded Sparc software?
+--Eberle A. Rambo.On Tue, Apr 20, 2010 at 8:51 AM, Eberle <rambo.ufsc@gmail.com> wrote:> Thanks for the reply.> I don't think that is the problem because the first pthread function called
+> in the hello.cpp was correctly found.> I was looking inside the pthreads library generated and I noticed that this> pthread_join function wasn't listed there. I really can't imagine a reason.
+>> To create the library I executed the following two lines:>> sparc64-unknown-linux-gnu-gcc -c pthread.c -o m5pthread.o> sparc64-unknown-linux-gnu-ar csr libm5pthread.a m5pthread.o>
+>> Funny thing...>>>> On Tue, Apr 20, 2010 at 1:13 AM, nathan binkert <nate@binkert.org> wrote:>>> > I have created a m5threads static linkable library for Sparc, with the
+>> files>> > available in the m5 repository. I used the Sparc compiler available in>> the>> > m5 website.>> > The thing is: when I link my multithreaded helloworld app with this lib,
+>> I>> > get the following error:>> >>> > eberle18@bellatrix:~/UFSC/Wannabe/helloworld$>> sparc64-unknown-linux-gnu-g++>> > -static -L. -lm5pthread hello.cpp -o hello
+>> > /tmp/ccfh1vud.o(.text+0x2b0): In function `main':>> > : undefined reference to `pthread_join'>> > collect2: ld returned 1 exit status>>>> I think your link order is bad.  generally, -l options need to come
+>> after object files, otherwise, the linker doesn't know to pull out the>> relevant functions.  (The linker processes files in order.)>> _______________________________________________>> m5-users mailing list
+>> m5-users@m5sim.org>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>
+>>-------------- next part --------------An HTML attachment was scrubbed...URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20100420/2b053758/attachment-0001.htm
+------------------------------Message: 8Date: Tue, 20 Apr 2010 11:35:14 -0400From: Adam Beece <acebeece@gmail.com>Subject: Re: [m5-users] reset & dump stats
+To: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <p2ob8d902721004200835t485fed14x564eac75727b4d62@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1Thank you.Oddly enough, my experiments definitely show that sim_seconds isreset, at least with the m5-stable repository.AdmOn Mon, Apr 19, 2010 at 7:17 PM, nathan binkert <nate@binkert.org> wrote:
+>> I was wondering if there was any more complete documentation on>> resetstats and dumpstats than can be found at>> http://www.m5sim.org/wiki/index.php/M5ops ?
+>>>> resetstats, in particular does not appear to reset the total instruction count.>> sim_insts, sim_second, sim_freq, host_inst_rate, host_mem_usage,> host_seconds, and host_tick_rate are all special stats in that they
+> reflect parameters about the simulator itself and the host, not the> simulated program. ?None get reset. ?That could be changed by adding a> bit of code. ?See src/sim/stat_control.cc>> ?Nate
+> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>------------------------------_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 45, Issue 24****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

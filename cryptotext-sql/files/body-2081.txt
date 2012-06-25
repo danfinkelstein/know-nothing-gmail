@@ -1,0 +1,18 @@
+Good question.  It looks to me like BTBUpdate should be called from
+BPredUnit<Impl>::update() like BPUpdate is.  I know Kevin's in the
+middle of getting a final version of a paper ready, but perhaps when
+he's done he'll have time to take a look and see if we're both missing
+something.
+Steve
+- Show quoted text -
+On Sat, Dec 13, 2008 at 9:56 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> I have noticed that BTBUpdate in bpred_unit.hh never gets called. Is this supposed to be such or is it that it depends upon certain parameters/type of predictor etc.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

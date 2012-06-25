@@ -1,0 +1,110 @@
+Thanks a lot Ali, I found the problem and now Alpha simulation works fine. 
+Going back to the MIPS simulator, I still get an error when running a HelloWorld program:
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+panic: Page table fault when accessing virtual address 0x1c3c
+@ cycle 1500
+[invoke:build/MIPS_SE/sim/faults.cc, line 66]
+Program aborted at cycle 1500
+Aborted
+---
+Thanks,
+David- Show quoted text -
+Ali Saidi wrote:
+In that case this panic is pretty much the exact same thing as a segfault when running a program without M5. My best guess is that you have a null pointer somewhere.
+Ali
+On Mar 12, 2008, at 11:10 AM, David Robert White wrote:
+Apologies for the confusion.  I've actually been trying both MIPS and Alpha binaries.
+To prevent any further confusion, please ignore my original email and consider only the problem with Alpha binaries.
+So, I'm trying to run an alpha binary and receiving the error:
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+panic: Tried to access unmapped address 0.
+@ cycle 2118000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]
+Program aborted at cycle 2118000
+-- 
+Thanks (sorry!)
+David
+Ali Saidi wrote:
+Hi David,
+There are a couple of inconsistencies here. Are you running MIPS binaries? The error below says ALPHA, so I'm a bit confused.
+Ali
+On Mar 12, 2008, at 10:52 AM, David Robert White wrote:
+Hi Lisa
+Thanks for your help.
+I've used the native GCC compiler, i.e. x86 targeted, to compile m5.
+I've used the cross-compiler to compile a simple C program, and then tried to run the resulting output using m5.  That's why I needed the cross-compiler.  I attempted to run it using se.py and by supplying a "-c a.out" option to run the results of compiling my code.
+I have managed to get a very simple "HelloWorld" program working, but trying something more complicated now gives me:
+---
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+panic: Tried to access unmapped address 0.
+@ cycle 2118000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]
+Program aborted at cycle 2118000
+---
+Any ideas?
+David
+Lisa Hsu wrote:
+Hi David,
+Are you using the crosstool gcc to compile the m5.debug?   You want m5.debug to be compiled with the native compiler, the crosstool is for compiling any potential binaries you woudl want to use during simulation.  Since you're using using se.py, there's nothing thus far that you've needed the crosstool for.
+Lisa
+On Wed, Mar 12, 2008 at 7:32 AM, David Robert White <drw@cs.york.ac.uk <mailto:drw@cs.york.ac.uk>> wrote:
+  Hi,
+  I'm a new user of M5 and I'm having some problems trying to get a
+  basic
+  "Hello World" test program running.
+  I've used crosstool to compile GCC targeted for the MIPS architecture
+  (without TLS), and I've compiled m5.debug for MIPS in SE mode.
+  I compile an example program, statically linked, but when running M5
+  using configs/example/se.py with the -c option, I receive the
+  following
+  output:
+  - - -
+  Global frequency set at 1000000000000 ticks per second
+  0: system.remote_gdb.listener: listening for remote gdb #0 on port
+  7000
+  **** REAL SIMULATION ****
+  warn: Entering event queue @ 0.  Starting simulation...
+  panic: Page table fault when accessing virtual address 0x1c3c
+   @ cycle 1500
+  [invoke:build/MIPS_SE/sim/faults.cc, line 66]
+  Program aborted at cycle 1500
+  Aborted
+  - - -
+  I'm probably making an elementary mistake, can anyone suggest what I
+  might be doing wrong?
+  Thanks
+  David
+  _______________________________________________
+  m5-users mailing list
+  m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------------------------------------------------ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

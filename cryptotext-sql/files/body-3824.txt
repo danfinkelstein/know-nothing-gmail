@@ -1,0 +1,23 @@
+On Dec 2, 2007 12:48 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>
+> One fix would be to break the functional read into smaller chunks...
+> 8-byte chunks would solve this particular problem, but in reality
+> there's no reason it couldn't be a byte store, so you'd need to do
+> 1-byte reads to really fix the problem.  Unfortunately that could be
+> really slow for large accesses, but maybe it doesn't happen often
+> enough to matter.
+Just to be concrete, here's a quick-and-dirty fix (I think):
+--- a/src/mem/port.cc   Sun Dec 02 01:46:38 2007 -0800
++++ b/src/mem/port.cc   Sun Dec 02 15:49:46 2007 -0500
+@@ -117,7 +117,7 @@ Port::blobHelper(Addr addr, uint8_t *p,
+ {
+     Request req;
+-    for (ChunkGenerator gen(addr, size, peerBlockSize());
++    for (ChunkGenerator gen(addr, size, 1);
+          !gen.done(); gen.next()) {
+         req.setPhys(gen.addr(), gen.size(), 0);
+         Packet pkt(&req, cmd, Packet::Broadcast);
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

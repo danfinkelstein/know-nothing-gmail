@@ -1,0 +1,42 @@
+Well, I expect it's because the prefetcher is buggy and hasn't been
+heavily tested :-).
+Are you using the latest development version?
+When you say segfaults, do you mean the app running on the simulated
+system segfaults, or m5 segfaults?  The former is really bad, as it
+means there's some bug in the way prefetches are handled in the cache
+hierarchy, which could be painful to track down.  The latter is still
+not good, but could be a simple bug in the prefetcher itself (note
+that someone just posted a fix for a memory leak in the stride
+prefetcher to the list recently, and I wouldn't be surprised if there
+aren't more little bugs like that).
+Steve
+- Show quoted text -
+On Sat, Jun 5, 2010 at 10:55 AM, Joe Gross <joegross@umd.edu> wrote:
+> Hello,
+>
+> I'm trying again to get the hardware L2 prefetcher to work in an attempt to
+> model the Nehalem architecture more accurately in FS mode. I enabled the
+> prefetcher in CacheConfig.py as follows:
+>
+> -system.l2 = L2Cache(size='2MB')
+> +system.l2 = L2Cache(size='8MB', assoc=16, latency='49ns',
+> prefetch_policy='ghb', prefetch_degree=2, prefetcher_size=64)
+>
+> Now when I run various SPEC CPU2006 benchmarks, I tend to get segfaults in
+> the benchmarks and in the kernel as well. Switching back to the regular
+> L2Cache gives correct behavior. I am using PhysicalMemory and all other
+> defaults. I have compiled kernel v2.6.27 and am using the cross compiler
+> provided on the website. GemsFDTD/test tends to give a segfault, mcf/test
+> tends to deadlock after some time. Anyone have some idea why this is
+> happening or how to fix it?
+>
+> Joe
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+2.0b4 does.  I don't think 2.0b3 did.
+On 11/9/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> I was reading the document and a doubt creeped up my mind. Do m5 support multiple levels of private caches. For instance , multiple processors each having private L1 and private L2 caches.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

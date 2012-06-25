@@ -1,0 +1,48 @@
+Hi Nate,
+     I didnt understand what you mentioned about connecting a disk model
+directly to the real image.
+The lines from fsconfig.py are:
+self.disk0 = CowIdeDisk(driveID='master')
+    self.disk2 = CowIdeDisk(driveID='master')
+    self.disk0.childImage(mdesc.disk())
+    self.disk2.childImage(disk('linux-bigswap2.img'))
+    self.tsunami = BaseTsunami()
+    self.tsunami.attachIO(self.iobus)
+    self.tsunami.ide.pio = self.iobus.port
+    self.tsunami.ethernet.pio = self.iobus.port
+    self.simple_disk = SimpleDisk(disk=RawDiskImage(image_file =
+mdesc.disk(),
+                                               read_only = True))
+Do I only need to change the last read_only to 'false'? How do I connect the
+disk model directly to the real image?
+Thanks,
+Sujay
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Wednesday, June 11, 2008 4:12 PM
+Subject: Re: [m5-users] output files generated in FS mode
+- Show quoted text ->> Which command do I modify to mount it in read/write mode?
+>
+> You need to remove the copy on write disk image that's in there.
+> Basically, the disk model connects to the COW image which is layered
+> on top of the real image.  If you instead just directly connect the
+> disk model to the real image, writes will hit the disk.
+>
+> Be warned though, if you terminate the simulation without having the
+> kernel unmount the image, the image might need a filesystem check or
+> at worst could get corrupted.
+>
+> It probably makes the most sense to create an empty image, mount that
+> directly, and unmount it when you're done.
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

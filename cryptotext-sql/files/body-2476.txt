@@ -1,0 +1,34 @@
+Hello M5 users,
+The M5 team would like to announce that we're releasing the 6th beta for
+M5 2.0, and that the m5-stable repository has been updated to this beta.
+Both the development repository and the stable repository can be
+accessed from our download page,
+http://www.m5sim.org/wiki/index.php/Download. While we strongly
+encourage accessing the repositories as a mercurial repository, a
+tarball of the current version of the stable repository is available
+here: http://repo.m5sim.org/m5-stable/archive/tip.tar.bz2. There are
+many improvements throughout m5, including the following:
+New Features
+1. Support for gcc 4.3
+2. Core m5 code in libm5 for integration with other simulators
+3. Preliminary support for X86 SE mode
+4. Additional system calls emulated
+5. m5term updated to work on OS X
+6. Ability to disable listen sockets
+7. Event queue performance improvements and rewrite
+8. Better errors for unconnected memory ports
+Bug fixes
+1. ALPHA_SE O3 perlbmk benchmark
+2. Translation bug where O3 could fetch from uncachable memory
+3. Many minor bugs
+We're getting close to a full 2.0 release which should happen after the
+following issues are dealt with:
+1. Statistics cleanup
+2. Improve regression system
+3. Testing
+4. Validation
+Gabe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

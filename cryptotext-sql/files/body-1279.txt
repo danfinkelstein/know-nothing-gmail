@@ -1,0 +1,6 @@
+hiI am wondering what exactly the use of trace_addr defined on the Basecache.py. It says "address to trace" on the file but from there it doesn't clear whats the use of that and whats the purpose and how we can implement or use that to trace something. One more thing what exactly does it trace it out??
+Thanks in advanceAshutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

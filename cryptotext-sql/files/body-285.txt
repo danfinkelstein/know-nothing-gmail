@@ -1,0 +1,10 @@
+Hi,I have been struggling with a performance bottleneck in the o3cpu model for a few weeks (IPC capped at 3, regardless of the width of the core), and I've been using gdb on m5.debug to try to find the bottleneck. From the debugging information on the wiki (http://www.m5sim.org/wiki/index.php/Debugging_M5) I should be able to call some of the dump functions as I step through the simulation. However, I get the following error:
+(gdb) call eventq_dump()No symbol "eventq_dump" in current context.(gdb) call dumpInsts()No symbol "dumpInsts()" in current context.
+I can call the statistics dump function by using the following:(gdb) call Stats::dump()I can't figure out the equivalent way of doing this for the dumpInsts() call, as its a method in the FullO3CPU<Impl> template, not like the Stats class. I tried a few variations of the following, with no success:
+(gdb) call FullO3CPU::dumpInsts()No symbol "dumpInsts" in specified context.Aside: I can call the schedBreakCycle call listed on the wiki:(gdb) call schedBreakCycle(3000000000)
+warn: need to stop all queuesFor more information see: http://www.m5sim.org/warn/856f27a0What am I missing to call the m5.debug dump functions?
+Thank you!-marisabel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

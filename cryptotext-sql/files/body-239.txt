@@ -1,0 +1,12 @@
+Hi all,
+I have some questions on understanding M5 stats for shared L2 cache.
+1) In our simulations, "system.l2.Writeback_accesses" is always  = "system.l2.Writeback_hits". But the trace shows there're L2 Writeback misses. Why there's no L2 Writeback misses in stats.txt?
+2) In stats.txt, there is another parameter called "system.l2.writebacks", how is it related to the "system.l2.Writeback_accesses"?
+3) I noticed that, "system.l2.overall_accesses" is always = "system.l2.ReadExReq_accesses" + "system.l2.ReadReq_accesses::total", and "system.l2.ReadExReq_accesses" always = "system.l2.ReadExReq_misses", why is that? If ReadReq_accesses are always missed, why bother to have two parameters?
+4) The memory trace for my simulations are very large (around 10GB for a simulation). I commented most DPRINTF functions and only leave hits and misses, but it is still too large for me. Does anybody have this problem before? And is there a way in M5 to sample the trace by setting a time interval?
+Thanks,
+Jie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

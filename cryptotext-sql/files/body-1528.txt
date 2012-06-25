@@ -1,0 +1,49 @@
+Please do not hijack a thread to start an entirely different
+discussion. If you have a different question send a new e-mail instead
+of replying. The error message at the bottom seems pretty self
+explanatory.
+Ali
+- Show quoted text -
+On Apr 28, 2009, at 11:00 AM, Gianninos Zografakis wrote:
+> hi,
+>
+> i am trying to run a couple of benchmarks from Splash2 benchmark
+> suite and i am facing problems regarding physical memory.
+> To be more specific...when i am trying to run some of the kernel
+> benchmarks (cholesky , FFT) with 16 or more processors i am getting
+> the following error along with some warnings  :
+>
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack size by one page.
+> warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+> warn: ignoring syscall sigprocmask(3, 0, ...)
+> warn: ignoring syscall sigaction(8, 4831387552, ...)
+> warn: ignoring syscall sigaction(11, 4831387552, ...)
+> warn: ignoring syscall sigaction(10, 4831387552, ...)
+> warn: ignoring syscall sigaction(4, 4831387552, ...)
+> warn: ignoring syscall sigaction(7, 4831387552, ...)
+> warn: ignoring syscall sigaction(6, 4831387552, ...)
+> warn: ignoring syscall sigaction(12, 4831387552, ...)
+> warn: ignoring syscall sigaction(5, 4831387552, ...)
+> warn: ignoring syscall sigaction(13, 4831387552, ...)
+> fatal: Out of memory, please increase size of physical memory.
+>
+> i am using Ubuntu 8,10 and my computer is a HP Compaq8510p ( Core 2
+> Duo CPU 2.20GHz and 3.0GB of RAM)
+>
+> P.S. I searched the user-mail archive for similar posts , and i
+> found some, but when i clicked i kept linking me to different mails
+> than those i wanted..
+>
+> thanks in advance,
+> giannis
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

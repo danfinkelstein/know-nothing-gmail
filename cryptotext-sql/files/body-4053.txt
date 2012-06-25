@@ -1,0 +1,37 @@
+On 11/7/07, Tony Frank <dtustudy@yahoo.com> wrote:
+> Thanks,
+>
+> What do you mean "the caches and busses use a generic "port" model for
+> interconnection " ?
+>
+> I think it means that I can design my bus-model that comply with the
+> generic "port" model so that the cache can exchange meseage or data
+> with my bus-model. Right ?
+Yes, see http://www.m5sim.org/wiki/index.php/Memory_System
+>
+> And, in m5, about the split-transaction bus (which you can combine with
+> caches
+> and bus bridges to make fairly complex hierarchies).
+>
+> If I want to implement my bus-model , do I need to redesign a new bus bridge
+> ?
+You shouldn't need to, no.
+>
+> Is it an interface between bus and cache ?
+The bus bridge is an interface between two buses.
+>
+> And, your cacghe and bus models are event-driven or synchronous with a clock
+> ?
+Event-driven.
+BTW, in the future, please heed the advice below, and also don't quote
+the entire digest in your response.  I had to manually approve your
+message since it went over the default size limit of 40KB.
+Steve
+>
+> When replying, please edit your Subject line so it is more specific
+> than "Re: Contents of m5-users digest..."
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,96 @@
+Is there an actual error?  Those warnings don't necessarily indicate a problem.Steve- Show quoted text -On Tue, Oct 27, 2009 at 12:47 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Hello,
+     I get the following error when running soplex in SE mode in
+M5-stable. (either ref or test input set)
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+info: Increasing stack size by one page.
+warn: subt/sud   f3,f29,f24: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f13,f10,f15: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f14,f13,f11: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f11,f10,f22: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f11,f10,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f29,f10,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f11,f10,f22: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f29,f22,f25: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f12,f25,f28: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: subt/sud   f13,f28,f30: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f14,f10,f23: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f30,f23,f25: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f20,f10,f22: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f15,f14,f13: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: subt/sud   f15,f13,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f10,f14,f26: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f22,f13,f24: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: subt/sud   f22,f24,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f10,f13,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f0,f27,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f26,f10,f15: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f12,f15,f11: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f11,f22,f27: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f1,f25,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f21,f10,f11: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f11,f25,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f12,f25,f13: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f13,f25,f14: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f14,f27,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f11,f12,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f10,f24,f2: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: subt/sud   f12,f11,f10: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f10,f24,f15: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f2,f10,f12: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f2,f10,f11: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: mult/sud   f0,f10,f13: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f11,f10,f13: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+warn: addt/sud   f12,f13,f0: non-standard trapping mode not supported
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+info: Increasing stack size by one page.
+hack: be nice to actually delete the event here
+Exiting @ cycle 438382000 because target called exit()
+Has anyone  been able to run this?
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

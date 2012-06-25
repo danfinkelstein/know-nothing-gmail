@@ -1,0 +1,60 @@
+I’m pretty sure its loading the correct checkpoints.  What is
+really odd is if I load the atomic CPU checkpoint with Atomic CPU, it still
+crashed with a page handler error. I’ll keep fiddling, perhaps the
+serialization routines are broken on my build. I’m using a version of M5 from
+the repository that is older than 2.0b5, I should probably pull again to get
+the new changes.
+ 
+Geoff
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of Lisa
+Hsu
+Sent: Tuesday, March 25, 2008 8:19 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Full System Checkpoints
+ 
+i had this happen to me when i
+was dumping atomic && timing checkpoints into the same directory, and
+specifying checkpoint 1 - but it would read the wrong one and give me that
+exact error because it was reading the first checkpoint (an atomic checkpoint)
+rather than the first timing checkpoint.  if you're doing the same, you'll
+want to separate them.
+lisa
+2008/3/25 Geoffrey Blake <blakeg@umich.edu>:
+I'm trying to dump out a checkpoint of multi-core system using Full System
+to allow me to run a profile of the binaries I'm running in M5. I dump the
+checkpoint using the m5 pseudo instruction from inside the application. 
+The checkpoint though seems malformed.  If I dump it out running with
+timing simple cpu, the checkpoint will not load, the simulator crashes with a
+fatal error saying it cannot read _status for system.cpuXX.  I've tried
+making checkpoints using the atomic CPU, and they seem load fine, but
+immediately after starting to run once the checkpoint is loaded, the binary
+crashes with a kernel page handling error, perhaps due to the fact it does not
+save any ITB entries.  Is there something I am forgetting?
+ 
+Geoff
+ 
+ 
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ 
+No virus found in this incoming message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+- Show quoted text -
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008 10:26 AM
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

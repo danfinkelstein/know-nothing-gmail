@@ -1,0 +1,38 @@
+Hi all,
+It is my first time to use the M5 simulator and I had trouble
+figuring out how to use it. I am running M5 on cygwin. After
+compiling M5 in FS mode, I tried to run some benchmark on it.
+For example:
+$ ./build/alpha_fs/m5.opt ./configs/example/fs.py -b MutexTest
+The output is as follows:
+M5 Simulator System
+Copyright xxxxxxxxxxxxxxx
+xxxxxxxxxxx
+xxxxxxxxxxx
+M5 compiled xxxxxxxxxxx
+M5 started xxxxxxxxxx
+M5 executing on xxxxxxxx
+command line: ./build/alpha_fs/m5.opt ./configs/example/fs.py -b MutexTest
+Global frequency set at 100000000000 ticks per second
+0: system.tsunami.io.rtc: Real-time clock set to xxxxxx
+Listening for system connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Entering event queue @ 0. Starting simulation...
+warn: divt/c  f0,f1,f0: non-standard rounding mode not supported
+panic: Wrong Handler
+@ cycle 37797000
+[handleALRM:build/alpha_fs/base/pollevent.cc, line 272]
+Aborted
+Could you tell me how to deal with this problem?
+BTW: I am not very familiar with Linux/Unix, so please explain
+as detailedly as you could. Thanks a lot.
+In my research, I need to run an application in parallel on some parallel system(network of workstations). Could I use
+M5 to simulate the parallel system and have the application
+run on it? If yes,according to my understanding, I just need
+to modify file fs.py  and recompile the application with some
+alpha compiler. Correct me if I am wrong.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

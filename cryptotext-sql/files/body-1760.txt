@@ -1,0 +1,18 @@
+> The bit that marks the address as an uncached access is 43 bit, in the
+> 0xffff fdxx xxxx xxxx that you mentioned, it's the highest bit of the  "d".
+> I supposed that the 0xffff fcff ffff ffff is the address mask.
+>
+> In this cace, how should I specify an uncached access address ? Can I
+> specify the address like this:  0xffff f8xx xxxx xxxx and the mask is 0xffff
+> f7ff ffff ffff ? Thank you !
+What exactly are you trying to mask?  If you're trying to get the
+physical address look in the TLB code to see exactly what it does.  M5
+is somewhat strange in this regard because we use EV5 palcode but use
+an EV6 processor model.  The EV5 specified 39 bits of physical
+address, and I believe that is what we actually use.  Again, you'll
+need to look in the translation code to verify things.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,213 @@
+Hi jockie,
+I believe you are following instructions given in the
+following link:
+http://www.m5sim.org/wiki/index.php/Defining_CPU_Models
+3 things are different:
+1)In section "Making M5 Recognize MyCPU" and in first
+bullet, you have to comment these lines:
+"if need_simple_base:
+    Source('base.cc')"
+2) In point number 5, you have to place .py file for
+your cpu in that directory not in
+m5/src/python/objects/, since there is no such
+directory.
+3) So, last step "before building your cpu" is not
+required.
+step number 1 is needed, since you will anyway build
+basesimplecpu while compiling other cpus, you dont
+need it for your cpu separately. (Otherwise you will
+get double declaration error).
+Real problem is however something different, beta 4
+seems not to be working with more than 1 timing simple
+cpu and caches present. Even if i restore it from
+checkpoint, it gets successfully restored but then
+while running program, it gives core dump.
+--- jockie lee <jockie.lee@gmail.com> escribió:
+- Show quoted text -
+> My cpu_models.py file got the snippet.
+>
+> By the way, one "deviation" I did with regards to
+> the steps in
+>
+http://m5.eecs.umich.edu/wiki/index.php/Defining_CPU_Models
+> was in the step
+>
+> m5/src/python/objects/MyCPU.py: Create a python file
+> (e.g. MyCPU.py) so that
+> your CPU can be recognized as a simulation object.
+> For this example, we will
+> just use the same code in the SimpleCPU.py file but
+> replace the name
+> 'AtomicSimpleCPU' with 'MyCPU'.
+>
+> I created a MyCPU.py, but I placed it in
+> m5/src/python/m5/objects, since all
+> the other Python object files are in
+> there(03CPU.py,, OzoneCPU.py, etc).
+> There is not even a directory names "objects" under
+> m5/src/python, the
+> folders under it are m5 and swig. At first I thought
+> this was just an
+> oversight on the part of the tutorial writers, but
+> could this be the
+> culprit?
+>
+> Here are the lines
+>
+> mycpu_exec.cc 5693
+>
+>     Ra = xc->readIntRegOperand(this, 0);
+>
+> mycpu_exec.cc 5701
+>
+>             xc->setIntRegOperand(this, 0,
+> final_val);
+>
+> Actually the errors I included in my initial email
+> was just a snippet of the
+> very long list of errors(all concerning the invalid
+> use of undefined type
+> 'struct MyCPU').
+>
+> For the sake of completion, line 64 in
+> static_inst.hh is
+>
+> class MyCPU;
+>
+> Again, thanks!
+>
+> On Dec 27, 2007 3:39 PM, Korey Sewell
+> <ksewell@umich.edu> wrote:
+>
+> > Looking at your error, it looks like that you may
+> have forgot to
+> > include "MyCPU" correctly in the cpu_models.py
+> file.
+> >
+> > Does that file include this snippet?:
+> > "CpuModel('MyCPU', 'mycpu_exec.cc',
+> >  '#include "cpu/mycpu/mycpu.hh"',
+> >  { 'CPU_exec_context': 'MyCPU' })"
+> >
+> > Also, what's the actual source code line in
+> mycpu_exec.cc 5693 and 5701?
+> >
+> >
+> > On Dec 26, 2007 11:21 PM, jockie lee
+> <jockie.lee@gmail.com> wrote:
+> > > what's weird is that i just followed the
+> instructions in the website to
+> > the letter. i was trying to create the model
+> MyCPU. Could it be that the
+> > "tutorial" was wrong, or is this error specific to
+> my installation? thanks a
+> > lot!
+> > >
+> > >
+> > >
+> > >
+> > >
+> > > On Dec 27, 2007 2:04 PM, Gabriel Michael Black
+> <gblack@eecs.umich.edu>
+> > wrote:
+> > >
+> > > > This is likely because the compiler isn't
+> finding a definition of your
+> > CPU
+> > > > class when it goes to compile the execute
+> functions of the
+> > instructions.
+> > > > In the case of the simple cpu, the cpu class
+> itself is used as the
+> > context
+> > > > to pull register values and the like out of,
+> so you're probably
+> > looking at
+> > > > something similar. I don't know the specifics
+> of that mechanism, but I
+> > > > think there's some python code which works
+> through scons to generate a
+> > > > header which gathers up all the appropriate
+> includes and definitions
+> > for
+> > > > all the cpu models you're compiling in. My
+> guess is that that isn't
+> > set up
+> > > > right for your new model.
+> > > >
+> > > > Gabe
+> > > >
+> > > >
+> > > >
+> > > >
+> > > > On Thu, 27 Dec 2007, jockie lee wrote:
+> > > >
+> > > > > i'm trying to create my own CPU model,
+> however I keep on running on
+> > the
+> > > > > following error repeatedly
+> > > > >
+> > > > >
+> build/ALPHA_SE/arch/alpha/mycpu_exec.cc:5693: error:
+> invalid use of
+> > > > > undefined type 'struct MyCPU'
+> > > > > build/ALPHA_SE/cpu/static_inst.hh:56: error:
+> forward declaration of
+> > 'struct
+> > > > > MyCPU'
+> > > > >
+> build/ALPHA_SE/arch/alpha/mycpu_exec.cc:5701: error:
+> invalid use of
+> > > > > undefined type 'struct MyCPU'
+> > > > > build/ALPHA_SE/cpu/static_inst.hh:56: error:
+> forward declaration of
+> > 'struct
+> > > > > MyCPU'
+> > > > > ...
+> > > > >
+> > > > > any ideas what could be causing this? i just
+> followed the
+> > instructions in
+> > > > > the website...
+> > > > >
+> > > >
+> _______________________________________________
+> > > > m5-users mailing list
+> > > > m5-users@m5sim.org
+> > > >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > >
+> > >
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> >
+> >
+> >
+> > --
+> > ----------
+> > Korey L Sewell
+> > Graduate Student - PhD Candidate
+> > Computer Science & Engineering
+> > University of Michigan
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+Hi I am trying to simulate two experiments dealing with multi-core multi-threaded system. Say case is 2 core X 2 thread. So there are 4 benchmarks used. I am using following SPEC CPU 2000 benchmarks: swim, lucas, equake, fma3d. I have also setup the early simpoint values for each for them ( 5, 35, 194, 298 respectively) . 
+Now I am running three simulations with max_insts_all_thread = 100M:case (0) when all benchmarks have simpoint values 0.case (1) When benchmarks are used in following order with their early simpoint values
+system.cpu[0].workload = Benchmarks.SPECSWIM() (500,000,000), Benchmarks.SPECFMA3D() (29,800,000,000)system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000), Benchmarks.SPECART() (3,500,000,000)
+case (2) When benchmarks are used in with their early simpoint values while inter-changing the benchmarks for cpu [0].system.cpu[0].workload = Benchmarks.SPECFMA3D() (29,800,000,000), Benchmarks.SPECSWIM() (500,000,000)
+system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000), Benchmarks.SPECART() (3,500,000,000)I have compared the simulations stats on m5stats file. The case (0) and case (2) produces no differences in the statistics in the stats file. But the case (1) produces the difference in the statistics. Why this happens??
+Ashutosh Jain- Show quoted text -On Mon, Aug 24, 2009 at 6:19 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+HiI am dealing with simpoint and checkpoint values. I have setup simpoint with the benchmarks. Also using the checkpoint on the command line as shown;
+command line:
+ /home/ashutoshj/newm5/build/ALPHA_SE/m5.opt -d ./spcp2000/cmp02_thds02_L2cache01/2C2T/Esimoutput100M /home/ashutoshj/newm5/configs/cpu2000/cmp02_thds02_L2cache01.py --detailed --caches --l2cache -S --take-checkpoint=100000000
+I have been using the max_insts_all_thread = 100000000 (100M) under the configuration file for running the benchmarks. My query is how this checkpoint is computed in M5? Whether the max instruction all threads means "sum of simpoint value + checkpoint" or just the " checkpoint value".
+One more thing do the checkpoint and simpoint value have any relation with statement like the following appeared at the end of simulation        "Exiting @ cycle 62465151500 because all threads reached the max instruction count"
+Thanks in advanceAshutosh Jain
+-- Ashutosh JainM.S. Computer Science,Lamar University, Texas(c) 518-698-0919
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

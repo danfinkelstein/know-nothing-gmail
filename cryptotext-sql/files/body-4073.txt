@@ -1,0 +1,20 @@
+You're actually telling M5 to run an experiment with the -b option.  I'm not sure how long it takes, but 50 minutes isn't unreasonable.  It also certainly depends on the performance of your machine.  The boot process itself should only take a couple of minutes.  You can look at the console.xxx files in the output directory to see progress.- Show quoted text -
+Hello all,
+Here is the command line:
+sudo ./build/alpha_fs/m5.opt ./configs/example/fs.py
+-b NetperfMaerts
+The output shows:
+....
+warn: Entering event queue @ 0. Starting simulation...
+The status has been remaining for more than 50 minutes.
+Is something wrong with the simulation? Normally how much
+time for the simulator boot?
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

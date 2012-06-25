@@ -1,0 +1,60 @@
+Thank you for your reply. It was very useful.Before inserting the script in the wiki, I want to make sure that everything works great. This is the configuration script I wrote. The memory hierarchy seems ok according to the output stat file.
+#################################import os, optparse, sysimport m5from m5.objects import *m5.AddToPath('../common')from FullO3Config import *from FSConfig import *from SysPaths import *
+from Benchmarks import *from m5.objects.CoherenceProtocol import CoherenceProtocol# --------------------# Base L1 Cache# ====================class L1(BaseCache):    latency = 1    block_size = 32
+    mshrs = 4    tgts_per_mshr = 8    #protocol = CoherenceProtocol(protocol='msi')# ----------------------# Base L2 Cache# ----------------------    class L2(BaseCache):    block_size = 64
+    latency = 100    mshrs = 92    tgts_per_mshr = 16    write_buffers = 8nb_cores = 4cpus = [ TimingSimpleCPU() for i in xrange(nb_cores) ]# system simulatedsystem = System(cpu = cpus, physmem = PhysicalMemory(), membus = Bus())
+# l2cache & bussystem.toL2Bus = Bus()system.l2c = L2(size='4MB', assoc=8)system.l2c.cpu_side = system.toL2Bus.port# connect l2c to membussystem.l2c.mem_side = system.membus.port
+# add L1 cachesfor cpu in cpus:    cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),                                L1(size = '32kB', assoc = 4))    cpu.mem = cpu.dcache    # connect cpu level-1 caches to shared level-2 cache
+    cpu.connectMemPorts(system.toL2Bus)# connect memory to membussystem.physmem.port = system.membus.port# workloadbenchmarks = [    "tests/test-progs/test-hello", "",
+    "tests/test-progs/test-hello", "",    "tests/test-progs/test-hello", "",     "tests/test-progs/test-hello", "",    "/local/m5/bench/164.gzip", "
+input.random 1",    "/local/m5/bench/164.gzip", "input.random 1",    "/local/m5/bench/164.gzip", "input.random 1",    "/local/m5/bench/164.gzip", "input.random
+ 1"    ]for i, cpu in zip(range(len(cpus)), cpus):    p            = LiveProcess()    p.executable = benchmarks[i*2]    p.cmd        = benchmarks[i*2] + " " + benchmarks[(i*2)+1]
+    system.cpu[i].workload = p    system.cpu[i].max_insts_all_threads = 10000000    # -----------------------# run simulation# -----------------------root = Root( system = system )root.system.mem_mode
+ = 'timing'############################################It seems to work well with the "hello test". However, when I use a program such as one of the spec benchmark, I have the following output: 
+command line: build/ALPHA_SE/m5.debug -d /tmp/output.m5 configs/example/cmp-2609.py -twarn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8m5.debug: build/ALPHA_SE/mem/request.hh:229: int Request::getThreadNum(): Assertion `validCpuAndThreadNums' failed.
+Program aborted at cycle 1864793AbortedIn addition, even when I use the hello test and I try to play with the coherence protocol, I got an error. I tried to set the coherence protocol in class  L1 as follows: 
+protocol = CoherenceProtocol(protocol='mesi')This is what I got:File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__  File "build/ALPHA_SE/python/m5/config.py", line 842, in __getattr__
+RuntimeError: maximum recursion depth exceeded in cmpError setting param L1.protocol to rootIt seems to me that the coherence protocol should be initialized in the cache, right ? Thanks.- Show quoted text - 
+On 9/25/06, Steve Reinhardt <stever@eecs.umich.edu> wrote:
+Sorry about the delayed reply... sometimes if I don't get to an emailright away I forget about it.  Feel free to repost to the list (like youdid just now) if you don't get an answer within a reasonable amount of time.
+The code you have below actually looks very close.  I believe the errorsyou are getting are simply because this line: >     cpu.l2cache.cpu_side = cpu.toL2Bus.portis inside the for loop instead of outside.  Since there's only one L2
+cache object and one L2 bus object, you end up connecting that same L2to the same bus N times which is what gives you all the errors.The other confusion is that you're making the L2 cache a child of each
+CPU, when since there's a single shared L2 cache it really needs to beat the same level of the hierarchy as the CPUs themselves.  I think weshould be able to generate a warning for this kind of error, but wedon't currently.
+Finally, the _mem_ports[] list is only used by the connectMemPorts()function, so setting it after you've called connectMemPorts() has no effect.So I believe this piece of code does what you wanted your original
+snippet to do:system.toL2Bus = Bus()system.l2c = L2(size='4MB', assoc=8)system.l2c.cpu_side = system.toL2Bus.portfor cpu in cpus:     cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),
+                                 L1(size = '32kB', assoc = 4))     cpu.connectMemPorts(system.toL2Bus)then of course you need to connect the mem_side port of system.l2c tothe main memory system, probably through another bus if you want to be
+able to control the bandwidth of that connection.I haven't tested this but I think it should work.  If it doesn't work,please post your whole script so I can test it.Actually even if it does work it would be nice if you would post it (or
+better yet put it on the wiki... perhaps start a page for exampleconfiguration scripts) so that Shyam has something to look at.Sorry that responses (and progress toward the v2 release!) have been sosluggish lately... Nate & I both recently changed jobs, and the term
+just started back at Michigan which is tying up all the other people onthe team who are still in school.  The good news is that there continuesto be a lot of interest in M5 from both academia and industry so I think
+there will be a lot of exciting developments over the next severalmonths.  Please bear with us, and thanks for your contributions.  We'reparticularly excited and grateful that people outside of our core group
+have been contributing answers (not just questions!) here on the listand on the wiki.  In the long run we want this to be a community thing,not just a one-way street.SteveAlain Kalixte wrote:> Hi,
+>> Thank you for replying. I used the example in simple-timing.pyn and it> works.  My goal is to model  a combination of CMP and SMT. I'm using the> ALPHA_SE for this purpose. I tried to model a system with private L1
+> caches and a shared L2 cache. From my understanding, the> addTwoLevelCacheHierarchy adds a private L1 and a private L2 cache to a> CPU, right ?   I tried to modify the code to have the L2 shared by all
+> L1 caches as in the example that follows:>> bus = Bus()> l2c = L2(size='4MB', assoc=8)> for cpu in cpus:>     cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),>                                 L1(size = '32kB', assoc = 4))
+>     cpu.toL2Bus = bus>     cpu.connectMemPorts(cpu.toL2Bus)>     cpu.l2cache = l2c>     cpu.l2cache.cpu_side = cpu.toL2Bus.port>     cpu._mem_ports = ['l2cache.mem_side']>> This is wrong as shown by the output below:
+>> warning: overwriting port l2cache cpu_side> warning: overwriting port l2cache cpu_side> warning: overwriting port l2cache cpu_side> warning: overwriting port cpu0.l2cache mem_side
+> warning: overwriting port cpu0.l2cache mem_side> warning: overwriting port cpu0.l2cache mem_side> panic: Already have a mem side for this cache>  @ cycle 0> [getPort:build/ALPHA_SE/mem/cache/base_cache.cc, line 236]
+> Program aborted at cycle 0> Aborted>> Can you give me a simple example to do that with 2 cpus, for instance ?> This will probably be a good starting point to understand the interface
+> of the python objects.>> Thanks.>>> On 9/19/06, *Steve Reinhardt* <stever@eecs.umich.edu> <mailto:
+stever@eecs.umich.edu>> wrote:>>     Hi Alain,>>     Did you apply the 2.0beta1 patch "Patch 1" from the web site>     (
+http://www.m5sim.org/wiki/index.php/Download)?  I believe it fixes>     this>     problem.  If not, please repost to the list.>>     An example of a config file with a two-level cache hierarchy is in
+>     tests/configs/simple-timing.py.>>     Steve>>     Alain Kalixte wrote:>      > Hi,>      >>      > I'm a new user and I'm trying to set up a config file with a CPU
+>     and a>      > cache. I'm running into troubles having the cache connected to>     the CPU.>      > Here is the piece of code I added to the sample se.py>     configuration script.
+>      > Note that I'm using the M5 version 2.0.beta1.>      >>      > if options.timing:>      >    ic =>      >>     BaseCache(size='32kB',assoc=1,latency=1,block_size=32,mshrc=4,tgts_per_mshr=8)
+>      >    dc =>      >>     BaseCache(size='32kB',assoc=4,latency=1,block_size=32,mshrs=4,tgts_per_mshr=8)>>      >>      >    cpu.addPrivateSplitL1Caches(ic,dc)
+>      >>      > This is what I have as output:>      > m5.debug: build/ALPHA_SE/mem/request.hh:229: int>      > Request::getThreadNum():  Assertion 'validCpuAndThreadNums' failed>      > Program aborted at cycle 733595
+>      > Aborted>      >>      >>      > A good example on how to hook up a cache to the system will be>     very helpful.>      >>      > Thanks.>      >
+>      >>      >>     ------------------------------------------------------------------------>>      >>      > _______________________________________________>      > m5-users mailing list
+>      > m5-users@m5sim.org <mailto:m5-users@m5sim.org>>      > 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>     _______________________________________________>     m5-users mailing list>     m5-users@m5sim.org
+ <mailto:m5-users@m5sim.org>>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>
+>> ------------------------------------------------------------------------>> _______________________________________________> m5-users mailing list> 
+m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

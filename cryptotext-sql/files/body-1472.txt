@@ -1,0 +1,29 @@
+hi Steve,When I used the same block_size for L1, L2 and L3, I got result for simulations like: 2 core 1 thread, 2 core 2 threads, 4 core 1 thread, 8 core 1 thread and 16 core 1 thread. But when I increase the number of threads like 2 core 8 threads, 4 core 2 threads, 8 core 2 threads and 16 core 2 threads, I got the "Assertion `blkSize == pkt->getSize()' failed" problem.
+What would be the reason the same configuration does not work when number of threads increase? Could you please help me to figure out the problem and solve it?Thanks in advance,
+devrajOn Wed, Apr 29, 2009 at 8:41 PM, Steve Reinhardt <stever@gmail.com> wrote:
+- Show quoted text -The coherence protocol expects all caches to have the same block size.Steve
+On Wed, Apr 29, 2009 at 12:42 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi, everyone,
+I am testing 2 core simulation using SPEC CPU 2006 in SE mode. I got the result using the fixed size (64) block_size for L1, L2 and L3 (in the file Caches.py within directory common). When i have changed the block_size for L1, L2 and L3 as stated in the list below, i encountered the error as :
+............................................................................................warn: Increasing stack size by one page.m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Program aborted at cycle 2903472000..........................................................................................//recent Caches.py which causes the error
+class L1Cache(BaseCache):    assoc = 2    block_size = 16    latency = '1ns'    mshrs = 10    tgts_per_mshr = 5
+class L2Cache(BaseCache):
+    assoc = 8    block_size = 32    latency = '2ns'    mshrs = 20    tgts_per_mshr = 12## added code for L3 Cache
+class L3Cache(BaseCache):    assoc = 16    block_size = 64    latency = '4ns'    mshrs = 30    tgts_per_mshr = 12// previous Caches.py which gives the output
+class L1Cache(BaseCache):    assoc = 2    block_size = 64    latency = '1ns'    mshrs = 10    tgts_per_mshr = 5
+class L2Cache(BaseCache):    assoc = 8    block_size = 64    latency = '10ns'    mshrs = 20    tgts_per_mshr = 12class L3Cache(BaseCache):
+    assoc = 16    block_size = 64    latency = '4ns'    mshrs = 30    tgts_per_mshr = 12==========================================
+Could you please have any idea related to this problem?Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Text got cut off:> For instance, if you change your instruction queue and reorder buffer size to 1 entry that essentially forces in-order execution, right? Similar things for the other buffers should allow you to emulate a in-order core somewhat if you are sure using O3 is a better option over the SimpleCPU.- Show quoted text -
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

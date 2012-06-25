@@ -1,0 +1,7 @@
+   I want to run spec2000 benchmarks in SE mode in M5. Where do i get the required files from?
+We can't redistribute them to the general public unless they have a SPEC license.  I'll send you the info in a private e-mail.  (Since you're at UM and you should have access to them.)
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

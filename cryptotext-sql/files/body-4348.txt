@@ -1,0 +1,48 @@
+Hi everyone,
+I just noticed that the percentages for some of the distribution stats for the
+O3CPU (such as cpu.commit.COM:committed_per_cycle, cpu0.fetch.rateDist, but
+not cpu.iq.ISSUE:FU_type_0) are off by a factor of 100, e.g.:
+system.cpu1.commit.COM:committed_per_cycle.start_dist                     #
+Number of insts commited each cycle
+system.cpu1.commit.COM:committed_per_cycle.samples       699261
+system.cpu1.commit.COM:committed_per_cycle.min_value            0
+                               0       346161   4950.38%
+                               1       105400   1507.31%
+                               2        81999   1172.65%
+                               3        72064   1030.57%
+                               4        70346   1006.00%
+                               5         5584     79.86%
+                               6         4121     58.93%
+                               7          943     13.49%
+                               8        12643    180.81%
+system.cpu1.commit.COM:committed_per_cycle.max_value            8
+system.cpu1.commit.COM:committed_per_cycle.end_dist
+Here's a patch that fixes it, although I dunno if this was the right place to
+fix it:
+--- ../m5-2.0b3-orig/src/base/stats/text.cc     2007-05-17 04:26:07.000000000
++0200
++++ src/base/stats/text.cc      2007-09-04 16:14:15.798458307 +0200
+@@ -479,7 +479,7 @@
+                continue;
+            _min = i * bucket_size + min;
+-           _pdf = vec[i] / total * 100.0;
++           _pdf = vec[i] / total ; // do not multiply by 100 here... This
+seems to be already done elsewhere.
+            _cdf += _pdf;
+Best regards
+Jonas.
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

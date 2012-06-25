@@ -1,0 +1,41 @@
+I'm have a great deal of trouble getting m5 to install on my red hat
+enterprise system.
+After failing the regression tests on an earlier install, I decided to
+use a clean installation, cloned the directory and attemepted to run
+scons.
+Installation is not completing due to errors, specifically in
+ALPHA_FS/params/params_wrap.cc.
+I'm using scons version 1.2.0.r3842 (the latest stable release, which
+I updated to after failing the regression tests on my old install)
+The error appears in a file generated in swig.  I am using swig
+version 1.3.29 and python 2.6.2; all versions are equal or greater
+than the version required by m5.
+What I want to know is what configuration do I need to fix to get m5 working?
+The relevant stderr:
+g++ -o build/ALPHA_FS/params/params_wrap.do -c -Wno-deprecated -pipe
+-fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -ggdb3 -Werror
+-Wno-uninitialized -Wno-sign-compare -Wno-parentheses
+-DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Ibuild/gzstream
+-Ibuild/libelf -Iext -I/usr/local/include/python2.6
+-I/usr/include/mysql -Ibuild/ALPHA_FS
+build/ALPHA_FS/params/params_wrap.cc
+build/ALPHA_FS/params/params_wrap.cc: In function 'int
+SWIG_Python_ConvertFunctionPtr(PyObject*, void**, swig_type_info*)':
+build/ALPHA_FS/params/params_wrap.cc:2051: error: invalid conversion
+from 'const char*' to 'char*'
+build/ALPHA_FS/params/params_wrap.cc: In function 'int
+SWIG_AsCharPtrAndSize(PyObject*, char**, size_t*, int*)':
+build/ALPHA_FS/params/params_wrap.cc:2948: error: cannot convert
+'int*' to 'Py_ssize_t*' for argument '3' to 'int
+PyString_AsStringAndSize(PyObject*, char**, Py_ssize_t*)'
+build/ALPHA_FS/params/params_wrap.cc: In function 'void
+SWIG_Python_FixMethods(PyMethodDef*, swig_const_info*,
+swig_type_info**, swig_type_info**)':
+build/ALPHA_FS/params/params_wrap.cc:39080: error: invalid conversion
+from 'const char*' to 'char*'
+scons: *** [build/ALPHA_FS/params/params_wrap.do] Error 1
+scons: building terminated because of errors.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

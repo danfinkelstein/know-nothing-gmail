@@ -1,0 +1,31 @@
+Thanks for the heads up... I'll take a look at it.
+Steve
+- Show quoted text -
+On Fri, Jun 6, 2008 at 1:20 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> Hello,
+>         I get the following error when I am running M5 beta 5 in FS mode.
+>
+> m5.opt: build/ALPHA_FS/mem/tport.cc:110: void
+> SimpleTimingPort::schedSendTiming(Packet*, Tick): Assertion `waitingOnRetry
+> || (sendEvent->scheduled() && sendEvent->when() <= when)' failed.
+>
+> command line:
+>
+> ./build/ALPHA_FS/m5.opt configs/example/fs.py -t -n 4 --l2cache -b
+> NetperfMaerts
+>
+>
+> It works fine if I remove the --l2cache option. What seems to be the
+> problem?
+>
+> - Sujay
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

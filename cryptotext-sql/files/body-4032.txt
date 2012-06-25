@@ -1,0 +1,47 @@
+At a high level, this makes perfect sense.  The details are the killer
+though; this is not a simple task.  We had a student over the summer
+working on parallelization in a shared-memory environment; he made a
+lot of progress but nothing ready to integrate into a release.  Doing
+it on a cluster would be much harder as you would have to package all
+the needed state in messages, where m5 currently assumes that passing
+pointers to shared objects works fine.
+Steve
+- Show quoted text -
+On 11/8/07, Tony Frank <dtustudy@yahoo.com> wrote:
+> Hi,
+>
+> I would like to improve the simulation speed by running the m5 in a cluster
+> .
+>
+> If I distribute the simulated processors and blocks of m5 into different
+> physical
+> processors, and use MPI (such as IBM blue gene ) to make them work in
+>  parallel, does this improve simulation speed ?
+>
+> The simulated processors are only functional / behavior unit, and only
+> network-on-chip block is cycle-accurate .
+>
+> Does this make sense ?
+>
+> thanks
+>
+> Tony
+>
+> Nov. 8  2007
+>
+> If the MPI packet transaction overhead is too high
+>
+>
+>  __________________________________________________
+> Do You Yahoo!?
+> Tired of spam? Yahoo! Mail has the best spam protection around
+> http://mail.yahoo.com
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

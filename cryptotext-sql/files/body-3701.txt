@@ -1,0 +1,16 @@
+Timing simple cpu in full system mode in m5 beta 4  is
+not booting up. In the console it is getting stuck
+into "NET: Registered protocol family 2" and is not
+proceeding forward.
+System files are from:
+http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+This is happening if 4 cpus are used for booting. For
+1 cpu it is ok.
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

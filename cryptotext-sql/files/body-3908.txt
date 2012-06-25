@@ -1,0 +1,23 @@
+On Nov 20, 2007 10:22 AM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> Thanks Steve !
+> 1.
+> In the first case, I am actually running four copies of radix each on one of the four processors. Basically I want to run different applications each on four processors. Apart from segemntation fault, another problem is as soon as one of the processes finishes, the simulation comes to a hault. Is it how the simulator is supposed to be?
+That's the design, yes.  Typically if you're trying to gather
+statistics on a four-thread workload you don't want those polluted by
+phases where only three (or fewer) threads are running.  If you really
+want to let all 4 threads finish you can change this behavior by
+playing with the emulated exit() syscall (see exitFunc()) and the
+corresponding SimLoopExitEvent() (maybe use a CountedExitEvent()
+instead).
+>
+> 2.
+> If I make a single LiveProcess() with radix for instance, and assign it as workload to all four processors, does the four processors actually run different thread of the same process. Because, in the final statistics I only see the results for one of the four processors which sounds as if only one of them was running thr process.
+If you're seeing this, then that means that radix isn't actually using
+all 4 cpus like you think it is; maybe it didn't parse the
+command-line args correctly, or it encountered a different error
+before it got to the thread-forking step.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

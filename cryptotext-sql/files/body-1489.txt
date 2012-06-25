@@ -1,0 +1,24 @@
+Hey Korey,Here is the script. Ignore the comments on CHANGE hehe.from m5.objects import *import os, optparse, sysfrom os.path import join as joinpathm5.AddToPath('../common')import Simulation
+from Caches import *from cpu2000 import *# Get paths we might need.  It's expected this file is in m5/configs/example.config_path = os.path.dirname(os.path.abspath(__file__))
+config_root = os.path.dirname(config_path)
+m5_root = os.path.dirname(config_root)parser = optparse.OptionParser()# Benchmark optionsparser.add_option("-c", "--cmd",    default=joinpath(m5_root, "tests/test-progs/hello/bin/alpha/linux/hello"),
+    help="The binary to run in syscall emulation mode.")parser.add_option("-o", "--options", default="",    help='The options to pass to the binary, use " " around the entire string')
+parser.add_option("-i", "--input", default="", help="Read stdin from a file.")parser.add_option("--output", default="", help="Redirect stdout to a file.")
+parser.add_option("--errout", default="", help="Redirect stderr to a file.")parser.add_option("--numThreads", type="int", default = 1)execfile(os.path.join(config_root, "common", "Options.py"))
+(options, args) = parser.parse_args()if args:    print "Error: script doesn't take any positional arguments"    sys.exit(1)if options.bench:    try:        if m5.build_env['TARGET_ISA'] != 'alpha':
+            print >>sys.stderr, "Simpoints code only works for Alpha ISA at this time"            sys.exit(1)        exec("workload = %s('alpha', 'tru64', 'ref')" % options.bench)
+        process = workload.makeLiveProcess()    except:        print >>sys.stderr, "Unable to find workload for %s" % options.bench        sys.exit(1)else:    process = []#    CHANGE GOES HERE TO GET NEW .py FILE. need to create smt_process...smt_process[numThreads];
+    smt_workload = crafty('alpha','linux','ref')    smt_process2 = smt_workload.makeLiveProcess()    process += [smt_process2, ](CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+CPUClass.clock = '2GHz'CPUClass.max_insts_all_threads = 100# CHANGE GOES HERE BUT THESE WILL COME IN AS AN INPUT PARAMETER OF THE .PY FILE @ RUN TIMEif options.detailed:
+    CPUClass.numThreads = options.numThreads
+    CPUClass.smtROBPolicy = 'DynamicPartitioned' # NEED TO CHANGE AS options.robpolicy    CPUClass.numROBEntries = 128                 # NEED TO CHANGE AS options.numROBEntries    CPUClass.robEvalPeriod = 262144              # NEED TO CHANGE AS options.EP
+    CPUClass.allocations_per_thread = 4          # NEED TO CHANGE AS options.partitionsnp = options.num_cpussystem = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],                physmem = PhysicalMemory(range=AddrRange("512MB")),
+                membus = Bus(), mem_mode = test_mem_mode)system.physmem.port = system.membus.portif options.l2cache:    system.l2 = L2Cache(size='2MB') #NEED TO CHANGE to options.l2size    system.tol2bus = Bus()
+    system.l2.cpu_side = system.tol2bus.port    system.l2.mem_side = system.membus.portcount = 0for i in xrange(np):    tmp_workload = []    if options.caches:        system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '32kB'),
+                                              L1Cache(size = '64kB'))    if options.l2cache:        system.cpu[i].connectMemPorts(system.tol2bus)    else:        system.cpu[i].connectMemPorts(system.membus)
+    for j in xrange(options.numThreads):        tmp_workload += [process[count], ]        count = count + 1    system.cpu[i].workload = tmp_workload    if options.fastmem:        system.cpu[0].physmem_port = system.physmem.port
+root = Root(system = system)Simulation.run(options, root, system, FutureClass)      Thanks,                                               Javier 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

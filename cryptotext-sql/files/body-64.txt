@@ -1,0 +1,11 @@
+2) For SPEC CPU 2000, it is more complicated. I copied the
+entire CD to a local directory. The problem is I do not have the su
+privilege on the machine I worked on. So the install.sh does not work
+correctly. Is there a simpler way for cross-compile SPEC CPU 2000
+benchmarks (or at least some of them) for M5?Have you checked the m5 wiki? ... http://www.m5sim.org/wiki/index.php/SPEC2000_benchmarks
+All you need to do is generate the binaries and place them in the right directory structure and you can take advantage of the cpu2000.py script.If you cant generate the SPEC binaries out the box (via install.sh), then it wouldnt hurt to go directory by directory and utilize the makefiles inside of each benchmark to compile locally either. More than likely , a little trial/error is what you'll go through though getting all the binaries to compile.
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

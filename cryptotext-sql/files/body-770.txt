@@ -1,0 +1,10 @@
+Hello,
+I was wondering, why do we need to specify the "--caches" and
+"--l2cache" flags again in the command line when they are already
+specified in the configs/common/Options.py file?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

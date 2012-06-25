@@ -1,0 +1,7 @@
+Hello M5 developers --I'm using M5 2.0b1.  I would like to track information about certain instructions using a hash_map, and dump the information at the end of simulation.  Is there a built-in Stats Hash class?  I didn't see one, but I wanted to check.
+Alternatively, I could simply call a function at the end of simulation and copy each entry of the hash_map into a Stats::Vector.  Is there a way to call a function called at the end of simulation *before* the statistics are written to file?  My guess is yes, but I couldn't quite figure out how to do it.
+Thanks for any help you can provide,   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

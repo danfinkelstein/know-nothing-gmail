@@ -1,0 +1,14 @@
+On Dec 27, 2007 11:49 AM, abc def <jose_6154@yahoo.es> wrote:
+>
+> Real problem is however something different, beta 4
+> seems not to be working with more than 1 timing simple
+> cpu and caches present. Even if i restore it from
+> checkpoint, it gets successfully restored but then
+> while running program, it gives core dump.
+Are you referring to the CPU ID problem Ali recently posted a patch
+for, or is this something different?
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

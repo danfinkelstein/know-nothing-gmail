@@ -1,0 +1,14 @@
+Hello,
+ From the posts I've read so far, I know it is difficult to simulate
+for a fixed (user defined) number of instructions.
+I was wondering though, is it possible to have some counter that
+counts the number of instructions, and when a certain number of
+instructions is reached, call an "M5 exit" so that the simulator
+finishes properly? I hope I'm making sense here.
+Also, is MAX_INST a fixed number?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

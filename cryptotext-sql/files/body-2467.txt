@@ -1,0 +1,6 @@
+Hi:This is the first time that I simulate my own benchmark, and it's taken a long time, and I'd like to ask if it's normal, the execution of the program in my computer takes over 2~5 secons, but the simulation has been 1h30m and it's not finishied. I think that the simulator is correct installed, because I've been able to simulate some simple program such as Hello World. I'm simulating under ALPHA architecture and using SE mode. By the way can anyone tell me how to tell the simulator that prints in the screen some info about the simulation to see if everyithing goes fine.
+Thank so much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

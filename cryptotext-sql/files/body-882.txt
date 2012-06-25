@@ -1,0 +1,23 @@
+Joe,
+I think with the changes I pushed recently both the CPU stalling and
+the assertion failure should be taken care of.  Note that if you pull
+from the head you'll have to make some minor changes in your python
+scripts because of some code reorganization that Nate did.
+Unfortunately I've run into another bug that's more complicated to
+fix: because our cache hierarchy does not enforce inclusion, it's
+possible for the L2 prefetcher to prefetch a block that's already
+modified in the L1 and end up prefetching a stale copy out of main
+memory.  In at least one situation (where the L1 writes its modified
+copy back to the L2 in the interval between where the L2's prefetch is
+issued and the prefetch response returns), the stale copy can
+overwrite the modified copy and data is lost.  I think the best way to
+address this is to have L2 prefetches probe the L1s, but there's no
+clean mechanism for that right now, so it's not a trivial fix.  In the
+meantime, having the prefetcher be associated with the L1 dcache and
+not the L2 should be sufficient to avoid this problem.
+Please let us know if you run into anything else...
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

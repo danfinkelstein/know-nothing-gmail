@@ -1,0 +1,43 @@
+On Tue, May 26, 2009 at 10:57 AM, nathan binkert <nate@binkert.org> wrote:
+> In particular, right now I'm at the point where I can boot but get bogged
+> down in all the extraneous inittab boot stuff; even cutting back to
+> single-user mode doesn't help noticeably.  There are several options I could
+> pursue including cutting down inittab, changing the default runlevel, and/or
+> whacking links out of various /etc/runlevel/* directories, and I'm guessing
+> the eventual answer involves all of the above, but rather than spending time
+> playing around with this I'd rather collect what other people have done and
+> then build on your experiences.
+Don't use init at all.  Use a kernel command line option
+(boot_osflags) to change init to your own shell script.  Something
+like "init=/m5/bin/init.sh". Thanks... I hadn't thought of bypassing /sbin/init entirely (nor would I have known the right incantation off the top of my head). 
+Also, if we're going to create a new
+tarball to share, I'd like to suggest that we work on getting my new
+m5ops into the tree.  They extend /bin/m5 to have a readfile command
+that takes a parameter, so you can read different files.  Those files
+are just python objects, and the objects can actually be any python
+file object, so you can wrap strings in your config file and such.
+I can send you my patches if you'd like to check it out.I think this is a great goal, but I'd like to start with the more modest objective of just reproducing something that's functionally equivalent to the image we already distribute.
+I do want this to happen though; I've recently run into bugs in the Intel network device model that I can't create a regression for because the kernel we use for our regressions doesn't have an Intel driver.
+ 
+> Similarly, let me know anything else you've done in terms of getting a
+> gentoo stage 3 image up and usable.
+I actually stole my stuff from an install of gentoo, but that's not
+strictly necessary.  The install helped because I was able to emerge a
+few packages that aren't in the stage3 tarball.  I do believe that we
+should be able to figure out a crosscompile solution for this.
+Alternatively, I do have an alpha up at HP that's outside the firewall
+that you can use.I think I recall Gabe saying that you can configure portage to use a cross-compiler.  I could probably figure that out, but given that I'm a total gentoo newbie I'd be happy to receive canned instructions.  Anyway even if we eventually end up just generating a new image that most people use, it would be good to document the process for those people that need something more custom.
+ 
+> Finally, one more question: is there any situation in which we recommend
+> using linux-dist?  If not, then I'll add that information to the wiki as
+> well.
+I think we want to deprecate linux-dist and move everyone to gentoo.
+I'm willing to help build a new image, but I don't want to do it
+alone.  I've hesitated before, because I'd like to move *everything*
+to the new image, tests, documentation, etc.
+Yea, like I said, I'll start with the modest goal of just documenting the process as a side effect of getting something that's usable for me personally.  Generating a new image that's worth posting as a download is step 2.  Actually using that image for regressions etc. is step 3.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

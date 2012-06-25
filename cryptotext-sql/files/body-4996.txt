@@ -1,0 +1,13 @@
+Hi,
+I have some questions about m5 v2.0b1.
+1) For SE mode, is there a PARMACS m5-specific implementation I could use in order to write multithreaded (shared memory) programs? I know I can use pthreads in FS mode instead,  but I would like to exploit the SMT feature which is currently available only in SE.
+In case that I can use the PARMACS model to write multithreaded apps, is there a way then to map specific threads onto specific logical processors (e.g. in a system with CMPs of SMTs, etc.)?
+2) How can I learn about all the available statistics that are correlated with a specific component (e.g. caches or branch predictors)? How can I get them printed? Are they printed on m5stats file by default, or should I add some extra lines on the simulation script?
+3) Which is the proposed way to get accurate measurements and statistics for the execution of a specific app in FS mode (i.e., excluding all statistics regarding the boot process and so on)? Should I add on my .rcS file the "m5 dumpstats" command before and after the execution of the application, and then get a diff?
+4) How can I start m5 with a checkpoint obtained from a previous execution? I am not sure I have read something about on the wiki pages...
+Thanks in advance,
+Nick.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

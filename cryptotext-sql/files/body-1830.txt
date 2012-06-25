@@ -1,0 +1,12 @@
+> Hi, Nate, thanks for your reply,the mismatch between req->getPaddr and
+> req->paddr makes me diffident to pick an address range for my own structure.
+>
+> Do you mean that it's the problem of gdb, the M5 still works correctly? Can
+> I just change the req->getPaddr() to req->paddr ? I guess then the function
+> will work as I expect. Thank you !
+It is strictly a gdb problem.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

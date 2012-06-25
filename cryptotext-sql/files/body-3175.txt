@@ -1,0 +1,55 @@
+On Fri, May 2, 2008 at 8:49 AM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+Thanks Steve. What about --fast-forward. How does that impact the MP workload. Is there a way to set a simpoint for each cpu?I don't know about those offhand... I haven't used them myself.  I'm sure that it's feasible but it probably involves hacking on the Python script.
+ 
+Also, sometimes I want to terminate the simulation because it takes forever to finish and send SIGINTP (signal 2) to m5. Sometimes it prints the statistics while sometimes it exits without printing any statistics. Any idea?
+It should always dump statistics when you exit, because of this line in src/python/simulate.py:  atexit.register(internal.stats.dump)There may be an issue if you send it two SIGINTs where the second one interrupts the stats dump or something like that.  Or maybe there's a raace condition, I don't know.  You can dump stats without terminating the simulation by sending SIGUSR1 or SIGUSR2 (see src/sim/main.cc).
+Steve - Show quoted text -
+---- Original message ----
+>Date: Fri, 2 May 2008 06:55:01 -0700
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] MP Workloads
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   The max_insts* parameters are per-cpu, so you have
+>   to make sure they're set for all the cpus in the
+>   system (most easily done by setting it on the base
+>   cpu class).  Possibly in the script you're using the
+>   command-line argument is only setting the parameter
+>   on one cpu.
+>
+>   Steve
+>
+>   On Fri, May 2, 2008 at 4:51 AM, Shoaib Akram
+>   <sakram3@uiuc.edu> wrote:
+>
+>     What is the proper way of using multiple
+>     programmes using m5. Currently, I use fast forward
+>     at command line and set max-inst, but the
+>     benchmarks run for much longer than that. If I use
+>     max_insts_all_threads, I have the same problem.
+>     For MP workloads looks like there is not much
+>     control for specifying particular no. of
+>     instructions which makes compariosn a bit tough.
+>     When I interrupt the simulation using sigintp,
+>     sometimes statistics are printed but otherwise the
+>     job exists rather than done.
+>
+>     What is the correct way of running multiple
+>     programmes using m5?
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,24 @@
+Pagefaults don't occur in the simulator in SE mode. You must have
+enough RAM in the simulated system to satisfy the requirements of the
+application. TLB faults do occur, but other than a pipeline flush
+they're handled instantaneously.
+Ali
+- Show quoted text -
+On Aug 2, 2009, at 11:44 AM, Felix Loh wrote:
+> Hi,
+>
+> I have a general question about the simulator: How does m5 handle page
+> faults in SE mode? I've looked through the documentation, but couldn't
+> find anything regarding this issue.
+>
+> Thanks,
+> Felix
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

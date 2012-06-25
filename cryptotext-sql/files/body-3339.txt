@@ -1,0 +1,75 @@
+You can have an Atomic CPU fake stalls by setting the simulate_stalls parameter on the CPU instance. However, if you're doing anything but fast forwarding instructions you should use a timing or o3 cpu instead.
+Ali- Show quoted text -
+On Apr 3, 2008, at 2:06 AM, Korey Sewell wrote:
+if you are running an AtomicSimpleCPU then yes, it is a 1 CPI machine
+so what you are seeing is correct,
+especially if you aren't assigning any caches to the CPUs to create
+any kind of cache miss latency.
+On Thu, Apr 3, 2008 at 1:41 AM, bipin kadel <bipin_kadel@hotmail.com> wrote:
+Hi,
+I am trying to run spec cpu benchmarks on 4 core CMP system in se
+mode. I am using ALPHA_SE. I have assigned 100 million
+for max_instrs_all_threads for each cpu. When I see the m5stats.txt
+file, it shows 100 million for number of cpu cycles simulated and
+also, 100 million for number of instructions executed on each cpu. That
+means, it is showing Intructions per cycle equals to 1. I think the value
+obtained is wrong. So could you please help me regarding this matter.
+The configuration file is :
+process1 = EioProcess()
+process1.file = "/speccpu2000/perlbmk/perlbmk.eio.gz"
+process2 =3D EioProcess()
+process2.file = "/speccpu2000/gap/gap.eio.gz"
+process3 =3D EioProcess()
+process3.file = "speccpu2000/vortex/vortex.eio.gz"
+process4 =3D EioProcess()
+process4.file = "/speccpu2000/twolf/twolf.eio.gz"
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+physmem = PhysicalMemory(range= AddrRange("512MB")),
+membus = Bus(), mem_mode = test_mem_mode)
+for i in xrange(np):
+system.cpu[i].max_insts_all_threads= 100000000
+system.cpu[0].workload =3D process1
+system.cpu[1].workload =3D process2
+system.cpu[2].workload =3D process3
+system.cpu[3].workload =3D process4
+The result obtained in m5stats.txt looks like:
+system.cpu0.not_idle_fraction 1 # Percentage of non-idle cycles
+system.cpu0.numCycles 100000000 # number of cpu cycles simulated
+system.cpu0.num_insts 100000000 # Number of instructions executed
+system.cpu0.num_refs 34901881 # Number of memory references
+.........
+system.cpu1.not_idle_fraction 1 # Percentage of non-idle cycles
+system.cpu1.numCycles 100000000 # number of cpu cycles simulated
+system.cpu1.num_insts 100000000 # Number of instructions executed
+system.cpu1.num_refs 32273950 # Number of memory references
+...........
+system.cpu2.not_idle_fraction 1 # Percentage of non-idle cycles
+system.cpu2.numCycles 100000000 # number of cpu cycles simulated
+system.cpu2.num_insts 100000000 # Number of instructions executed
+system.cpu2.num_refs 38511760 # Number of memory references
+.......
+system.cpu3.not_idle_fraction 1 # Percentage of non-idle cycles
+system.cpu3.numCycles 100000000 # number of cpu cycles simulated
+system.cpu3.num_insts 100000000 # Number of instructions executed
+system.cpu3.num_refs 28610533 # Number of memory references
+________________________________
+Use video conversation to talk face-to-face with Windows Live Messenger. Get
+started!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

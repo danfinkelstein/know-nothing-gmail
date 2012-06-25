@@ -1,0 +1,20 @@
+On Wednesday 05 September 2007 17:28:56 Ali Saidi wrote:
+> We recently migrated to Mercurial (http://www.selenic.com/mercurial) and  
+> plan to allow public read access very soon.
+Great. :-)
+- Show quoted text -
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

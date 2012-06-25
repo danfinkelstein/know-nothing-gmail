@@ -1,0 +1,22 @@
+> My AlphaStation 400 EV45 developed a hardware problem and I would like
+> to boot its Tru64 5.1b OS with M5 so I can recover files.  All of the
+> disks use AdvFS, including the boot disk.  I plan to connect the SCSI
+> drives to my PC which has M5's ALPHA_SE built under RedHat Linux.  My
+> Tru64 licenses are current.
+>
+> What steps do I need to perform to boot Tru64?
+You can't use SE mode to access the disk image.  You will have to boot
+in full system mode.  That said, it has been quite a long time since
+anyone has booted Tru64 in full system mode.  It may or may not work.
+Though, if it doesn't, my guess is that it's not too far off.
+I'm afraid that you're not likely to get too much help with your
+problem because your use case is outside the scope of the M5 project.
+Who knows.  Maybe someone would be willing to help you for a fee.  Or
+you could just buy a cheap alpha on ebay.  If you are truly interested
+in getting Tru64 back up and running and you're willing to put the
+effort in and post patches, I'm sure you'll find help here.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

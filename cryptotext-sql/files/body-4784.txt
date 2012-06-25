@@ -1,0 +1,37 @@
+Jonas Diemer wrote:
+Hi,
+let me continue my monologue: :-)
+With the latest 2.0b2 that was just published, my cache issues are
+fixed, cache write backs seem to work fine. Thanks a lot!
+You're welcome... thanks for waiting patiently for this long-overdue release.
+Here are some other things that I came across:
+1. When enabling the caches, m5 takes quite a lot of time to start the
+simulation. I have not done any profiling yet, though.
+Yes, we've noticed this too... we tracked it down (though I forgot what the exact cause was) and hopefully we'll get it fixed for the final 2.0 release.
+2. Setting cache block sizes to 32 or smaller does not work using the
+detailed CPU model:
+command line: ./build/ALPHA_SE/m5.debug ./configs/jonas/se4.py -d --caches
+Mem mode:timing
+warn: Entering event queue @ 0.  Starting simulation...
+m5.debug: build/ALPHA_SE/mem/cache/tags/cache_tags_impl.hh:314: typename
+CacheTags<Tags, Compression>::BlkType* CacheTags<Tags,
+Compression>::handleFill(typename Tags::BlkType*, MSHR*, unsigned int,
+PacketList&, Packet*) [with Tags = LRU, Compression = NullCompression]:
+Assertion `target->getOffset(blkSize) + target->getSize() <= blkSize'
+failed.
+Program aborted at cycle 8
+Aborted
+That seems odd... does this happen only with the detailed CPU?
+3. With the new Beta2, m5 seems to use Root.clock as the reference tick
+for all statistics. I stumbled over it because my CPI was suddenly
+really huge (>500). This really shocked me until I realized that
+Root.clock defaults to 1THz, so a CPI of 500 makes perfect sense for a
+2GHz machine (once you know about it :-) ). Thus, the CPI in the stats
+is no longer measured in processor cycles but in "root-cycles". Is this
+a bug or a feature?
+At the high level it's supposed to be a feature... there are times you want to have components clocked at rates that are not integer multiples of the CPU frequency.  The CPU's CPI stat should divide out its local clock rate though, so if it's not doing that then that's a bug.  FYI, internally we've been trying to make the distinction between "clocks" (which are the local clocks for various components, e.g. 2GHz for the CPU) and "ticks" (which is the global virtual time rate, e.g. 1THz).  We haven't filly renamed all the flags/variables/options etc. to be consistent with this nomenclature, but that's where we're headed.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

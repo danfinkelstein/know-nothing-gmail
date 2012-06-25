@@ -1,0 +1,35 @@
+It's as much a g++ 4.1 thing as an m5 thing.  If you have g++ 4.0 or 3.x available then the easiest thing is to just use that.  We do have these issues fixed in our internal tree so the other option is to get access to that (since you're local) or wait a few days for us to release an update with those fixes.
+Steve
+Sujay Phadke wrote:
+- Show quoted text -
+Hello,
+     I am trying to complile M5. It compiles correctly wich the build/ALPHA_SE/m5.debug or m5.opt. However, when I try to use build/ALPHA_FS/m5.debug, it does not fully compile. It gets stuck at:
+ g++ -o build/ALPHA_FS/arch/alpha/tlb.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/arch/alpha/tlb.cc
+ build/ALPHA_FS/arch/alpha/tlb.cc:595: error: specialization of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error:   from definition of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]â
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error: specialization of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:595: error:   from definition of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::TLB]â
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: specialization of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error:   from definition of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]â
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error: specialization of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:615: error:   from definition of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::ITB]â
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: specialization of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error:   from definition of âvoid SimObjectParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]â
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error: specialization of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]â in different namespace
+build/ALPHA_FS/arch/alpha/tlb.cc:635: error:   from definition of âvoid SimObjectVectorParam<T*>::showType(std::ostream&) const [with T = AlphaISA::DTB]â
+  How do I solve this issue?
+ configuration:
+Linux version 2.6.18.8-0.1-xen (geeko@buildhost <mailto:geeko@buildhost>)
+(gcc version 4.1.2 20061115 (prerelease) (SUSE Linux)) #1 SMP
+ Thanks,
+Sujay
+ 
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+If you're using the timing memory model, you can look at the
+utilization of the bus between the L2 and memory (typically named
+membus if you're using a prepackaged config).
+Steve
+- Show quoted text -
+On Tue, Jun 10, 2008 at 3:51 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi all,
+>
+> I am trying to study the performance impact of off-chip bandwidth
+> contention on CMP. Currently, I only use the number of L2 misses,
+> because the L2 miss goes off-chip. But I have no clear idea about how
+> to relate the off-chip bandwidth limitations with L2 misses. Are
+> memdepunit.memDep.conflictingLoads and
+> memdepunit.memDep.conflictingStores good metrics to use?
+>
+> Thanks
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

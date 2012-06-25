@@ -1,0 +1,23 @@
+> If an m5 simulation terminates due to a simulation limit being reached,
+> is it then possible that buffered I/O will not be sent out to the
+> terminal? I noticed that output appears to buffered for quite a while
+> until I see it hit the output terminal. Is there a simple way to flush
+> the output to terminal more often or at least before teh simulation
+> terminates.
+I believe that it should be flushed before the simulator exits since
+it is exiting cleanly.  Currently, python and C++ are not properly
+synchronized, so there can be a strange interleaving between them (fix
+in my tree).  In python, you can do sys.stdout.flush.  In C++, you can
+do cout.flush() or cout << flush.  endl also causes a flush, and it is
+what \n translates to in a cprintf.
+> The root of this question is that I am trying to add the ex_tpcb
+> database benchmark and in some cases I don't even see the unconditional
+> printf at the beginning of main(), while at other times the entire
+> benchmark works and I see all the printfs output to the terminal.
+What unconditional printf?  A print in python main()?  Is it something
+you've inserted?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

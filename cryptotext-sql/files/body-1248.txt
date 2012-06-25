@@ -1,0 +1,8 @@
+Hello,I have a working patched BigTsunami setup. My current setup works for 4 processors, but I am interested in scaling to 8-64. For now I just want to have a working setup, as I am okay with 8-64 processors running on a single bus sharing a single L2 Cache. At the moment I am getting various errors (segmentiaton faults to bad error address, diff error for different # of processor), which is leading to my question:
+ What do I need to consider in terms of parameters and setup wise in order to properly execute 8-64 processors?I am not worried about the inefficiencies
+ of the setup, ie bus based or perfect size of cache, I just want to be error free. The only thing I have changed is to  have the same total # of mshrs for each level of cache. I am currently using a development m5 version  changeset 6227.  Currently I am trying to have a successfull run using PARSEC benchmarks (Dedup  where I am matching the number of threads to the number of processors).
+Thanks in advance,EF 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

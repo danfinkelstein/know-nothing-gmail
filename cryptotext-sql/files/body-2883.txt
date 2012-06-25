@@ -1,0 +1,8 @@
+ On M5's end, we should check
+the endianness of binaries and either complain if it isn't supported, or
+make it work somehow.Good catch and points, Gabe...How easy is that to implement? - Show quoted text --- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

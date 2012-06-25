@@ -1,0 +1,29 @@
+Thanks Nate. Correct me if I'm wrong: in file "m5-stable/build/ALPHA_SE/python/m5/objects/__init__.py", all the imports will include the corresponding .py files for each components from src/ directory, and those .py files are the source where I can learn about all the available classes and parameters in script writing, right?
+-W- Show quoted text -
+On 5/26/2010 4:40 PM, nathan binkert wrote:
+I compiled and run M5 successfully with the given example scripts. However,
+the directory "src/python/m5/objects" which is said to contain class
+definitions and parameters is missing. I cannot find it in the tarball
+neither. Is it generated during compilation? If yes, how can I generated it?
+     
+Yes, it is generated and it will actually be in the build directory.
+It will automatically be generated when you compile m5.
+   Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+   
+-- 
+Best Regards,
+Wang, Weixun
+Department of Computer&  Information Science&  Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

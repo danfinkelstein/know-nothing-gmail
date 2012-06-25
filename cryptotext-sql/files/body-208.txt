@@ -1,0 +1,11 @@
+Hi,I am new to M5 and I was trying to understand the L1 stats collection. So I wrote the following program:#define size 3000int main(){  int a[size] ;  int i;  for(i=0; i<size; i++)
+  {     a[i] = i;  }  for(i=0; i<size; i++)  {     a[i] = a[i] + size;  } return 0;}The L1 cache that i had in the config file is:class L1(BaseCache):    latency = options.l1latency
+    block_size = 64    mshrs = 1    tgts_per_mshr = 1    assoc = 1and the size of the cache is merely 512 B.In this example, i am moving over the array. Their should be a lot of evictions and replacements as the cache has assoc 1. But i get only around 1% miss in the dcache.
+system.cpu.dcache.ReadReq_accesses              27769                       # number of ReadReq accesses(hits+misses)system.cpu.dcache.ReadReq_hits                  27423                       # number of ReadReq hits
+system.cpu.dcache.ReadReq_miss_rate          0.012460                       # miss rate for ReadReq accessesI have a couple of questions. 1) What misses are considered as dcache misses? I added an L2 cache and by decreasing the size of the L2 cache, L2 cache hits decreased dramatically but dcache hits had no effect.
+2) What is the best way to learn about such stuff? I turned on --trace-flags=all and there were misses in dcache and L2 but i could not make out which stat was getting updated because of that.Any help in this regards is greatly appreciated.
+- Ankit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

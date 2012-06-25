@@ -1,0 +1,28 @@
+Hi,
+ 
+I am currently working with M5 to test out the possible
+benefits of a cache coherence protocol that adds a conflicted state on top of the
+standard MESI protocol.  To test the correctness of my change I ran the
+regression tests and was unable to pass the memtest regression test.  Also
+I was unable to get any of the splash benchmarks to complete.  After debugging
+my code I eventually tried to run it on pristine M5 code using the MESI
+protocol and was still unable to pass the memtest regression test or finish any
+of the splash benchmarks (I am running in SE mode) as well.  
+ 
+I think I have tracked down the issue to a problem with the
+L2 cache failing to snarf bus responses when the cpus broadcast the data across
+the bus.  I cannot completely confirm this but it currently explains all
+of the behavior I see.  I was wondering if this issue has ever been
+identified before and if you had any other suggestions.  Also I was
+wondering where the code for snarfs by the L2 cache is as I was unable to track
+it down in the M5 code or if there are other places I should look.
+ 
+Any help you could provide would be greatly appreciated and
+please let me know if you have any questions or concerns.
+ 
+Thanks
+Paul Cooper
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

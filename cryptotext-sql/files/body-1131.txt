@@ -1,0 +1,33 @@
+As the comment in trace_cpu.cc and hh says, "Uses a memory trace to
+drive the provided memory hierarchy."  I don't think this code even
+compiles anymore, but that's what it once did.  We've done some more
+work on feeding traces to m5 recently so we probably could commit some
+working code if you need it.
+There's no built-in facility for generating traces from m5, though
+it's not hard to add.  The details have been discussed on this list in
+the not too distant past.
+Steve
+- Show quoted text -
+On Sun, Aug 2, 2009 at 11:39 AM, Felix Loh<felixloh@umich.edu> wrote:
+> Hello,
+>
+> I'm somewhat new to m5 and I've a question regarding trace_cpu.cc in
+> /src/cpu/trace/ . What exactly is the purpose of this code? Can this
+> be used to generate traces, or can it use traces as an input?
+>
+> On a more general note, is it possible to do a trace-based simulation
+> in m5? If so, what's the procedure to do that?
+>
+> Thanks,
+> Felix
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,35 @@
+On Tuesday 11 September 2007 11:59:57 Jonas Diemer wrote:
+> I still have to figure out
+> how to use stats.py to generate reports etc.
+I've been trying a bit more. I would like to use stats.py to list some of the
+stats in the DB. So I did:
+util/stats/stats.py -h localhost -d m5 -j configs/jonas/se-j1.py -u m5 runs
+I am unsure what JobFile is. Is it the python config-script?
+I get the following error:
+Traceback (most recent call last):
+  File "util/stats/stats.py", line 465, in <module>
+    options.jobfile = JobFile(jobfilename)
+  File "/home/jonasd/work/m5/m5-2.0b3/util/batch/jobfile.py", line 456, in
+JobFile
+    execfile(filename, data)
+  File "configs/jonas/se-j1.py", line 5, in <module>
+    import m5
+ImportError: No module named m5
+What am I missing? The configfile I am using is very similar to
+examples/se.py.
+- Show quoted text -
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+Hi,How can I reset m5 stats from within a C benchmark (not python script)? Is there an example of that somewhere?ThanksAmir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

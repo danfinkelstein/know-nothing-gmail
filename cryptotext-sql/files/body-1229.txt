@@ -1,0 +1,12 @@
+By default, a tick is a picosecond.  How many ticks constitute a CPU cycle depends on how fast you have your CPU running, i.e. if you have your CPU at 1GHz, then a CPU cycle is 1000 ticks.  Lisa
+- Show quoted text -On Tue, Jul 7, 2009 at 2:04 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:- Show quoted text -
+HI,When tracing simulations, we got the tick time. Isn't that tick time CPU cycle? If not, which parameter define the CPU cycle?I want to dump the latency of the packet transmission, how can i do this?
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

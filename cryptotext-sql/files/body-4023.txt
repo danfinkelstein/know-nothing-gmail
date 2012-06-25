@@ -1,0 +1,28 @@
+1)The BaseCpu.py object has the following function in both version beta 2 and beta 3:
+def addTwoLevelCacheHierarchy(self, ic, dc, l2c):
+        self.addPrivateSplitL1Caches(ic, dc)
+        self.toL2Bus = Bus()
+        self.connectMemPorts(self.toL2Bus)
+        self.l2cache = l2c
+        self.l2cache.cpu_side = self.toL2Bus.port
+        self._mem_ports = ['l2cache.mem_side']
+Do you still think beta 3 doesnot support or above funstion doesnot create private two level hierarchy?
+2) Do you think m5 is good to do interconnect research?To meaure the increase in traffic on the shared bus,network congestion etc.
+---- Original message ----
+>Date: Fri, 9 Nov 2007 12:52:38 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Coherence Protocol
+- Show quoted text ->To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>2.0b4 does.  I don't think 2.0b3 did.
+>
+>On 11/9/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>> I was reading the document and a doubt creeped up my mind. Do m5 support multiple levels of private caches. For instance , multiple processors each having private L1 and private L2 caches.
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

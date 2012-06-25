@@ -1,0 +1,9 @@
+I am still having problems inserting DPRINTF in coherence_protocol.cc
+printf works though, but I need to also get the cycle number and processor number to analyze the printed trace, which comes naturally with DPRINTF
+Does any one know how to do that?
+What exactly is your problem?  In order to use dprintf, you need to compile either debug or opt (not fast), and turn on some trace flags. running m5 with --help should give you some info.  The debugging page on the documentation section of the wiki has a bit more info.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

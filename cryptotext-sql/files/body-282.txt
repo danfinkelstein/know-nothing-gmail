@@ -1,0 +1,13 @@
+> Thank you.
+>
+> Oddly enough, my experiments definitely show that sim_seconds is
+> reset, at least with the m5-stable repository.
+I'm sure you're right.  I just came up with things off the top of my
+head.  If you want to be certain about what is going on, you'll have
+to look in stat_control.cc
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

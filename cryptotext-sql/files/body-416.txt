@@ -1,0 +1,39 @@
+If you have another object that needs to know about your new object,
+the easiest thing is to add a parameter to the other object so that
+you can pass the new object in:
+class OldObject:
+    myObject = Param.SimObject("ptr to my object")
+You can then read the C++ object pointer out of the C++ old object's
+param struct.
+There's also a SimObject::find() function that lets you find objects
+by name, but it's really for debugging and not for normal programmatic
+usage.
+Steve
+- Show quoted text -
+On Wed, Mar 10, 2010 at 1:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, all. I am using M5 ALPHA FS mode. The objects added in python script
+> function correct, but is there any way I can refer it in C++ code. Right
+> now, I implement a C++ object I/O device and add it in the
+> FSConfig.py/makeLinuxAlphaSystem.
+>
+> self.myIO = myIO(pio_addr = xxx, devicename = xxx);
+> self.myIO.pio = self.iobus.port.
+>
+> It functions correctly and I can read or write the device from the CPU. If I
+> want to refer to it by the name, NOT by read/write functio; for example, I
+> want to invoke a function in the I/O object, what should I do? I know this
+> requirement sounds wierd, but I really need this. Could anybody here give me
+> a hint? Thank you very much !
+>
+>
+> Weidan
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi Clint thanks for your answer. If you can do that then will be perfect. The sooner the better, but If you have stuff to do do not worry the next week is fine. Thanks.
+ 
+- Angela
+From: cws3k@cs.virginia.eduTo: m5-users@m5sim.orgDate: Tue, 13 Jan 2009 18:09:41 -0500Subject: Re: [m5-users] DRAM Module for M5 Simulator- Show quoted text -
+I have the module, but I am otherwise engaged for the next week. I would be able to get a copy out to you, and others who have asked, next week. If you need it sooner, it is possible someone else has a version working and ready for distribution.
+- Clint
+On Jan 13, 2009, at 5:13 PM, Angela Carlsson wrote:
+Hello, I have been trying to find a new DRAM module for M5 in the internet because the one that comes with the suite it does not work. But I have not been lucky enough to find something. I only found this post http://www.mail-archive.com/m5-dev@m5sim.org/msg00980.html, but I cannot make it work with those instructions provided. So I would like to ask if someone has a module working, Can you please submit the patches or instructions in the Mail list?, or try to submit it in the wiki. If it is possible that will be really appreciable. Thanks in advance.
+Diferentes formas de estar en contacto con amigos y familiares. Descúbrelas. Descúbrelas._______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-usersComparte tus fotos con tus amigos. Más fácil con  Windows Live
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

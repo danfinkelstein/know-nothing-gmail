@@ -1,0 +1,21 @@
+Hi,
+Steve Reinhardt schrieb:
+command line: ./build/ALPHA_SE/m5.debug ./configs/jonas/se4.py -d --caches
+Mem mode:timing
+warn: Entering event queue @ 0.  Starting simulation...
+m5.debug: build/ALPHA_SE/mem/cache/tags/cache_tags_impl.hh:314: typename
+CacheTags<Tags, Compression>::BlkType* CacheTags<Tags,
+Compression>::handleFill(typename Tags::BlkType*, MSHR*, unsigned int,
+PacketList&, Packet*) [with Tags = LRU, Compression = NullCompression]:
+Assertion `target->getOffset(blkSize) + target->getSize() <= blkSize'
+failed.
+Program aborted at cycle 8
+Aborted
+That seems odd... does this happen only with the detailed CPU?
+I believe so. I have ran my script (which is heavily based on the new configs/examples/se.py) with no options, with -t and with -d and only the latter results in the error.
+Regards,
+Jonas.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

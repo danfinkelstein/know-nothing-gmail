@@ -1,0 +1,9 @@
+Hello, I am following the same instructions listed under:http://m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5#Compiling_the_Kernel
+From my understanding I need to add the line CONFIG_BIG_TSUNAMI=y (if i want 4+ cores) to .config.m5 before I copy it to .config ? Correct?Is that all I have to do, to configure for big tsuami?My other problem is I installed the precompiled cross compiled and I am trying to compile the kernel:
+so after patching linux 2.6, I type:make mrpropercp .config.m5 .configmake ARCH=alpha CROSS_COMPILE=alphaev67-unknown-linux-gnu- vmlinuxand get the following error:  HOSTCC  scripts/basic/fixdep
+gcc: error trying to exec 'cc1': execvp: No such file or directorymake[2]: *** [scripts/basic/fixdep] Error 1make[1]: *** [scripts_basic] Error 2make: *** No rule to make target `include/config/auto.conf', needed by `include/config/kernel.release'.  Stop.
+Any ideas?Thanksef
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

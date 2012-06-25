@@ -1,0 +1,15 @@
+- Show quoted text -> I am confused about the interface between python and c++ in m5.
+> For example, I set the size and latency of L1 cache in python configuration
+> file. Then, how do these values are passed to c++ codes and affect them? Can
+> you give me an introduction about it?
+The best documentation is probably:
+http://m5sim.org/wiki/index.php/Simulation_Scripts_Explained
+Unfortunately, this leaves out most of the details.  Basically, we use
+the .py files that describe the parameters (like BaseCache.py) to
+autogenerate a C++ parameter structure, wrap that structure with swig
+and add that stuff to the build environment.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

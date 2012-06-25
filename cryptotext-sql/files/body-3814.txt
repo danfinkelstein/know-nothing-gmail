@@ -1,0 +1,51 @@
+Just to clarify: it's using BaseBufferArg::copyIn() and not
+VirtualPort::CopyIn(), right?  I just noticed that these are two
+different functions with totally opposite semantics (explaining Ali's
+earlier confusion).
+Can you print the values of 'size' and 'getSize()' at the point in
+Packet::checkFunctional() where you get this assertion failure?  One
+solution is probably to do the readFunctional() in smaller chunks, but
+I don't know what size chunks it's already using.  If it's trying to
+do the whole buffer and we need to do it in cache-block chunks, that's
+reasonable.  If it's already doing cache-block chunks and still
+failing, then that's a little more puzzling.
+Steve
+- Show quoted text -
+On Nov 30, 2007 3:54 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>
+>
+> Hey all,
+>
+> I'm adding my own benchmarks which spawns multiple threads each printing out
+> a string.
+>
+> Things are fine at beginning but when I scale the number of threads to 100,
+> a panic takes place:
+>
+> "Memory value only partially satisfies the functional request. Now what?"
+>
+> This panic takes place in Packet::checkFunctional(Addr addr, int size,
+> uint8_t* data) (mem/packet.cc). A backtrace with gdb reveals that it is
+> triggered by the writeFunc( ) system call (sim/syscall_emul.cc), which is
+> trying to use CopyIn to emulate printing to the screen. The CopyIn sends a
+> functional read request which in turn caused the panic.
+>
+> I appreciate your help.
+>
+> Thanks!
+>
+> Jiayuan
+>
+> p.s. patch is available, just let me know how to send it to you.
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

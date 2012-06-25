@@ -1,0 +1,126 @@
+  
+  
+Hey,
+1) Did you compile the benchmarks statically? Because if you want to
+run them on M5 everything you run is the compiled binary. So dynamic
+libraries cannot be load.
+2) For SPEC CPU2000 the situation is indeed more complicated. I
+compiled some benchmarks of SPEC CPU2006 and had to do the following
+things in the config-file (make sure you pick a config-file with
+properties very similar to your machine):
+-Select the propper compiler:
+CC           = gcc
+    into 
+CC            = /DIRECTORY OF
+CROSSTOOL/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+-Modify the compile-flags (add the "static" flag) in the "optimization"
+section:
+## Base is low opt
+default=base=default=default:
+COPTIMIZE     = -O2 -static
+CXXOPTIMIZE  = -O2 -static
+FOPTIMIZE    = -O2 -static
+However I recommend you to build SPEC CPU 2000 first for your native
+machine. This could be already difficult. If it works, then try it for
+ALPHA_SE
+Greets,
+Max- Show quoted text -
+On 06/02/2010 10:25 PM, Weixun Wang wrote:
+- Show quoted text -
+  
+Hi all,
+  
+I want to cross-compile some benchmarks so that I can run them in M5.
+I'm using a ALPHA_SE mode M5 on a x86_64 Ubuntu machine. Potentially I
+target to use MiBench or SPEC CPU 2000.  I downloaded the pre-compiled
+cross-compiler for Alpha from m5sim.org.
+  
+  1) For MiBench, it has a simple src code/data structure with a
+simple Makefile. For example, qsort, I modifed the Makefile of it as
+follows:
+  
+-------------------------------------------------------------------------------------------------
+FILE1 = qsort_small.c
+FILE2 = qsort_large.c
+  
+all: qsort_small qsort_large
+  
+qsort_small: qsort_small.c Makefile
+   
+/export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+-static
+qsort_small.c -O3 -o qsort_small -lm
+qsort_large: qsort_large.c Makefile
+   
+/export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+-static
+qsort_large.c -O3 -o qsort_large -lm
+  
+clean:
+    rm -rf qsort_small qsort_large output*
+-------------------------------------------------------------------------------------------------
+  
+I used the option "-lm" since the original "-lc" lead to errors like
+"undefined references to 'exp'". If "-L
+/export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib"
+is
+used, the error still remains.
+  
+The compilation is successful. However, if I run it using
+configs/example/se.py, I got the errors:
+  
+-------------------------------------------------------------------------------------------------
+.........................................................
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+panic: Tried to access unmapped address 0xa8.
+ @ cycle 4947000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+Memory Usage: 577796 KBytes
+For more information see: http://www.m5sim.org/panic/5932f339
+Program aborted at cycle 4947000
+Abort
+-------------------------------------------------------------------------------------------------
+  
+Other benchmarks in MiBench shows similar errors or just simplely hang
+on  "info: Increasing stack size by one page.". 
+  
+I guess the compile options are not correct or the right library is not
+linked. Please help...........................
+  
+  
+  
+  
+  2) For SPEC CPU 2000, it is more complicated. I copied the
+entire CD to a local directory. The problem is I do not have the su
+privilege on the machine I worked on. So the install.sh does not work
+correctly. Is there a simpler way for cross-compile SPEC CPU 2000
+benchmarks (or at least some of them) for M5?
+  
+  
+  
+Thanks!!! 
+  -- 
+Best Regards,
+Wang, Weixun
+Department of Computer & Information Science & Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

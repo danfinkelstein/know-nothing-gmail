@@ -1,0 +1,18 @@
+There are people who have done this, but m5 itself currently only
+provides the bus model.  We hope to change this, but I'm not sure when
+this will happen.
+- Show quoted text -
+On Mon, Dec 8, 2008 at 11:34 PM, suixiufeng <suixiufeng@gmail.com> wrote:
+> I have read some materials about the M5 simulator. It seems to me that M5
+> supports modeling and simulation of the bus based systems. Can it also be
+> used to model and simulate the NoC-based chip multiprocessor? If it can, how
+> to do it?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+Hi,I was wondering if it was possible to do any power estimation in M5. Something similar to the way it is done in simplescalar?Best,Syed
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

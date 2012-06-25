@@ -1,0 +1,6 @@
+I'm running into a problem running the v2 Specweb benchmark. The benchmark works fine and completes fine, but when it completes on its own, I get a zero-length m5stats.txt file. However, when I ctl-C out of the test before it completes, I get data written to m5stats.txt. I've included an explicit command in the client-side rcS file, m5 dumpstats, to get these stats out, but I'm confused as to this behavior.
+Chris Stewart
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

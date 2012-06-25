@@ -1,0 +1,15 @@
+Dear Ali,
+Thanks a lot for the reply. Your reply helps a lot. I went through the codes
+regarding to Cache, Bus n Bridge. Then I wrote a component to be inserted
+between cache and core. And I was able to successfully execute a simple program
+on a alpha architecture with my component plugged in. AT the moment it just
+passes what ever it receives to the other port. Anyway your clarification helped
+me lot in understanding the M5 concepts. Thanks again.
+I think this is the best simulator I found. Great Work.
+- Show quoted text -
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

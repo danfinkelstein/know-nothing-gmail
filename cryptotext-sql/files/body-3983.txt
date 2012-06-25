@@ -1,0 +1,12 @@
+As Steve said, M5 provides point-to-point link, but switch
+model is needed to hook up more than two systems. So my
+question is: Can I have several systems(> 2) work together
+with each two having a distinct point-to-point link for data
+transfer? It is somehow like a fully-connected network. In this
+way, is switch model still needed? Thanks.
+You can do this up to a point.  There is a limit for how many NICs you can attach due to the way interrupts work in the simulated system.  How big of a network do you want to build?
+Also, a switch model wouldn't be that hard to do.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

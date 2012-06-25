@@ -1,0 +1,14 @@
+What about the gnu toolchain?2009/12/9 徐敏超 <xu.minchao@stu.xjtu.edu.cn>
+I run M5 on ubuntu 8.10. the compiler is scons. the version is the following.
+ 
+SCons by Steven Knight et al.:
+    script: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on bangkok
+    engine: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on bangkok
+Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 The SCons Foundation
+thank you
+                      
+                                                                                                               Howard- Show quoted text --- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

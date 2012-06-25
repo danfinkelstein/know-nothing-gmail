@@ -1,0 +1,34 @@
+Hi,
+I am in the early stages of working with m5, and am trying to better understand
+the EXTRAS option. I did read this thread: http://www.mail-archive.com/m5-
+users@m5sim.org/msg02395.html, and found it very helpful.
+I have thus far tried compiling two basic modules using the EXTRA option. The
+first, eio traces, worked as per the instructions. The second is from your m5
+ASPLOS tutorial--http://www.m5sim.org/dist/tutorials/asplos_pres.pdf,
+HelloDevice.
+When I try to compile it, I get an import error:
+**ImportError: No module named Device
+This originates from the call in HelloDevice.py,
+**from Device import BasicPioDevice
+What confuses me is that eio has a similar declaration,
+**from Process import Process
+Other than adding
+**from m5.proxy import *
+to HelloDevice.py (to make it similar to EioProcess.py), it is identical to
+that in the ASPLOS tutorial. The other files are also very similar and should
+work:
+hello.cc has
+**#include "hello.hh" instead of
+**#include "dev/hello.hh" because I am including it using the extras option and
+do not want to directly mess with the source.
+I am using m5 2.0, beta 6
+To compile, I run:
+**scons build/custom_ALPHA_SE/m5.opt EXTRAS=moeng-extra/eio -- works
+**scons build/custom_ALPHA_SE/m5.opt EXTRAS=moeng-extra/hello_device -- doesn't
+work
+Any help is much appreciated,
+Michael Moeng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

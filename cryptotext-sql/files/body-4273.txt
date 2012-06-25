@@ -1,0 +1,13 @@
+  I added a new traceflag into traceflags.py. How could I invoke this
+trace flag in the simulation execution.
+  In m5_2.0b1, I could invoke traceflags by using the following definition:
+  root.trace.flags = "UART"
+  What should I do in m5_2.0b3?
+--trace-flags=  on the m5 command line.
+m5 --help
+will give you extensive help output.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,39 @@
+Hi,
+I have been doing some benchmarks (h.264 decoder from MediaBench2) on a single
+core system with L1 and L2 caches and varying memory bandwidth in SE mode.
+I couldn't make sense of some stats:
+Run 1:
+sim_insts                                    13149912
+sim_ticks                                  7559300000
+system.cpu0.cpi_total                        0.910270
+system.cpu0.numCycles                        11969969
+Run 2:
+sim_insts                                    13146947
+sim_ticks                                  5679495000
+system.cpu0.cpi_total                        0.854693
+system.cpu0.numCycles                        11236603
+For both runs, I ran the benchmark to completion (sim_insts are almost
+identical - why not perfectly the same?). The only difference is the memory
+bus clock speed (run 1 has about 10x less memory bandwidth).
+The two runs have a very different (>30%) sim_ticks (which I believed was the
+number of clock cycles from start to end of simulations, thus should be a
+measure for "total execution time"), but the cpi and numCycles differ much
+less (<7%).
+How can this mismatch be explained?
+Regards,
+Jonas.
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

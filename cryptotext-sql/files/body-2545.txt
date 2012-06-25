@@ -1,0 +1,37 @@
+I had worked on the SPEC2006 in M5 SE mode. and following is the
+status list. I only run the test (smallest) dataset from begin to
+finish. The reference dataset is too big to simulate.  I am working on
+the other things now, so I am not testing the SPEC2006 actively.
+  400.perlbench        fault (unalign) detected @ PC 0x12009cedc
+  401.bzip2               OK
+  403.gcc                  OK on small dataset.
+  410.bwaves            OK
+  416.gamess           OK
+  429.mcf                  OK
+  433.milc                 not fully test yet.
+  434.zeusmp           not fully test yet
+  435.gromacs          Abnormal exit. (mremap)
+  436.cactusADM     fatal: fault (unalign) detected @ PC 0x120026614
+  437.leslie3d           not fully test yet
+  444.namd              not fully test yet
+  445.gobmk            OK
+  447.dealII               Abort by program. Abnormal output.
+  450.soplex             OK
+  453.povray             OK
+  454.calculix            not fully test
+  456.hmmer            OK
+  458.sjeng               OK
+  459.GemsFDTD     not fully test
+  462.libquantum     OK
+  464.h264ref           OK
+  465.tonto               Fortran: Compile Error
+  470.lbm                 not fully test
+  471.omnetpp        not fully test
+  473.astar              not fully test
+  481.wrf                  STOP wrf_abort. Need library
+  482.sphinx3           OK
+  483.xalancbmk      OK
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

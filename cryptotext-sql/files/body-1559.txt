@@ -1,0 +1,63 @@
+Hi all,
+ 
+I read the cache implementation 
+file "Cache_impl.hh" and found that there might be some inaccuracy in 
+function handleResponse() when data cach misses happen. Also, I have some other 
+questions.
+ 
+When the function begin to satisfy the CPU side 
+request, it first calculates "initial_offset", which should be 
+the block offset for the first target(request) in MSHR. I found 
+that if the offset of first target in MSHR is > 0 then there will 
+be some inaccuracy. This is because the next "transfer_offset" will be set 
+as 0, and the "completion_time" will be "HitLatency 
++  firstWordTime". However, if the cache offset of the first 
+target in MSHR is >0, this critical word should arrive after the first 
+word, and the "completion_time" should after "firstWordTime". So the 
+caculation "completion_time" is not right. Since the "completion_time" is 
+the time sending the request back to CPU, there will be some 
+inaccuracy.
+If the the cache offset of the first target in 
+MSHR is equal to 0, then it is accurate. 
+ 
+Here is some tarce results (bus width: 8 Bytes, bus 
+and CPU freqency : 1GHz):
+ 
+102020: system.membus: recvTiming: src 0 dst 2 
+ReadResp 0x86940
+102020: system.cpu.dcache: cache handleResponse 
+initial_offset: 24102020: system.cpu.dcache: cache handleResponse 
+transfer_offset: 0102020: system.cpu.dcache: cache handleResponse 
+pkt->finishTime:112000, pkt->firstWordTime:105000, 
+completion_time:106000
+106000: system.cpu.iew.lsq-dport: recvTiming 
+pkt->size:8, pkt->addr: 0x86958
+ 
+This is a data cache miss in address 0x86958. The 
+offset is 24. In this case, the completion_time is the time when the first word 
+arrives at cache. Apparently at tick 106000 the critical words has not 
+arrived at cache and we should send it at at least tick 108000.
+ 
+ 
+I also have some questions:
+1. Why there is a difference 
+in caculating "completion_time" between FirstWord and the rest words 
+in a block("(transfer_offset ? pkt->finishTime : pkt->firstWordTime);"). 
+That is, why it sends the first word to CPU immediatedly after it arrives at 
+cache, and send the other words to CPU after the whole block arrives at 
+cache? 
+ 
+2. In most CPUs, when a cache miss 
+happens, does the cache send the critical word to CPU first, and 
+then store the data to cache block? Or store the data in cache block first and 
+then send the critical word? Will this make much diffence in the performance of 
+CPU?
+ 
+ 
+ 
+ 
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

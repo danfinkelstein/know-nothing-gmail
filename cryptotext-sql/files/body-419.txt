@@ -1,0 +1,15 @@
+Hi, Steve. Thank you for your reply. As there is no direct way to implement a Verilog 'always' loop in M5, could I use the simulate() function and insert an event in every cycle? This event process will invoke the process function in my I/O device thus my I/O device can run every cycle in parallel with the CPUs. Is that possible? I need to define a new event and insert to the mainEventQueue every cycle. Thank you!
+Weidan在 2010年3月11日 上午9:49，Steve Reinhardt <stever@gmail.com>写道：
+There's no facility in m5 for anything other than event-driven
+modeling... to do something like a Verilog 'always' loop, you
+effectively need to implement a thread package that would let you
+suspend the loop, go process events for other objects, then return to
+the loop.  I agree there are times it would be convenient, but it's
+also relatively expensive in terms of performance.  You basically have
+to code the object as a state machine, and use events to drive it
+forward.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

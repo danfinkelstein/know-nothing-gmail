@@ -1,0 +1,30 @@
+I agree that there are way too few details, but from the sounds of the
+message, he's editing files in the build directory. You should never
+do that.  You should only edit files in the source directory because
+SCons will copy over them as you're seeing.
+- Show quoted text -
+On Sat, Feb 21, 2009 at 1:48 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> You need to be a lot more specific before we can be of much help... what are
+> the files, and what are the errors?
+>
+> On Sat, Feb 21, 2009 at 1:39 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+>>
+>> I receive errors while building in files locate at build/ALPHA_XX/X/Y
+>> etc....if I correct them it build fine. The next time I build, I got same
+>> errors. I can not figure out how are these files being generated or copied
+>> from?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

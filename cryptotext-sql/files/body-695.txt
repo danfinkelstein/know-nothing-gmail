@@ -1,0 +1,6 @@
+ I am using Linux  2.6.31-14-generic #48-Ubuntu 9.10. gcc 4.3.3Is there any problems with X86_SE?-- - Show quoted text -************************************************Junli Gu--谷俊丽Coordinate Science LabUniversity of Illinois at Urbana-Champaign
+************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

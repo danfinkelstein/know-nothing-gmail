@@ -1,0 +1,15 @@
+Hi Pritha,I am glad that it helped. If you used crosstool-ng to build the X-compiler, you may have to hack into its scripts to make sure your changes are reflected in all the components (particularly, glibc) of the X-compiler. That will primarily depend on whether you want to rebuild glibc with your new assembler or not. In the latter case (which should be the case if you want the new instructions to impact only your benchmark source code, for e.g. instructions for hardware acceleration, dynamic power control, etc.), you just have to run 'make' and 'make install' from the binutils configuration directory and you should see the changes (and you don't have to use crosstool-ng at all). In the former, however, the build process can take a long time because building glibc can be very time consuming. In this case, you should use the crosstool-ng scripts.
+Let me know if you have any further questions. Also, we may have to take any further conversations off this mailing list if they get very GCC-centric and not very relevant to M5.
+regards,Soumyaroop- Show quoted text -On Wed, Apr 7, 2010 at 2:44 AM, Pritha Ghoshal <pritha9987@tamu.edu> wrote:
+- Show quoted text -Hi Soumysaroop, thanks for telling the file name, We have been able to find it now. We were looking in a different binutils directory under patches.
+Thanks for the explanation Gabe. I guess we do not need pseudo_inst files. We need to insert a new instruction into the ISA and just need to modify M5 to recognise that instruction and decode it accordingly. 
+--Pritha
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Soumyaroop RoyPh.D. Candidate
+Department of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

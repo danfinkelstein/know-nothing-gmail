@@ -1,0 +1,37 @@
+>     I didnt understand what you mentioned about connecting a disk model
+> directly to the real image.
+>
+> The lines from fsconfig.py are:
+>
+> self.disk0 = CowIdeDisk(driveID='master')
+>    self.disk2 = CowIdeDisk(driveID='master')
+>    self.disk0.childImage(mdesc.disk())
+>    self.disk2.childImage(disk('linux-bigswap2.img'))
+>    self.tsunami = BaseTsunami()
+>    self.tsunami.attachIO(self.iobus)
+>    self.tsunami.ide.pio = self.iobus.port
+>    self.tsunami.ethernet.pio = self.iobus.port
+>    self.simple_disk = SimpleDisk(disk=RawDiskImage(image_file =
+> mdesc.disk(),
+>                                               read_only = True))
+>
+> Do I only need to change the last read_only to 'false'? How do I connect the
+> disk model directly to the real image?
+No, it's the part at the top of the file that's class CowIdeDisk...
+You need to change that.    You need to get rid of the CowDiskImage
+part that wraps the RawDiskImage.
+Something like this:
+class RawIdeDisk(IdeDisk):
+    image = RawDiskImage(read_only=False)
+    def childImage(self, ci):
+        self.image.image_file = ci
+The use RawIdeDisk instead of CowIdeDisk.
+Make sense?  CowDiskImage is intended to be a layer of indirection (to
+keep changes private) on top of a RawDiskImage, and we're just getting
+rid of that indirection.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

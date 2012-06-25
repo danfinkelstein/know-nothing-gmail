@@ -1,0 +1,59 @@
+Way back when I was first adding SPARC support, I had hoped to get
+around providing FP support by making our implementation pretend there
+was no FPU and to fault on the instructions that required it like the
+spec said I could. That didn't really work out, and most of the
+instructions that just faulted were replaced by functional equivalents.
+It seems your workload is trying to use one that was never properly
+implemented. If you can identify what instruction it is you could
+implement it yourself, or if you're not in a hurry you can give me a way
+to reproduce the problem and I can give it a shot. I can't make any
+strong guarantees about when I could take care of it though.
+Gabe
+- Show quoted text -
+Gustavo Henrique Nihei wrote:
+> Hi,
+>
+> This fatal error is happening during the simulation of a SPARC_SE
+> platform.
+>
+> M5 Simulator System
+>
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled May  5 2010 14:24:46
+> M5 revision 94c016415053+ 6283+ default tip
+> M5 started May 11 2010 15:11:44
+> M5 executing on nime-desktop
+> command line: ../../build/SPARC_SE/m5.fast run.py -n 4 -t
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7002
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7003
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7001
+> info: Entering event queue @ 0.  Starting simulation...
+> fatal: fault (fp_disabled) detected @ PC 0x10b194
+>  @ cycle 37023056000
+> [invoke:build/SPARC_SE/sim/faults.cc, line 43]
+> Memory Usage: 220052 KBytes
+> For more information see: http://www.m5sim.org/fatal/f78c96bc
+>
+> I'm trying to run the MPGenc software in the platform.
+> I suppose the fault "fp_disabled" is related to a floating point
+> operation, right?
+> Is there some kind of workaround for this problem?
+>
+> --
+> Gustavo Henrique Nihei
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,79 @@
+Thank you very much for the elaboration, Korey. You have hit the nail on the head with the point you made in #3. That clarifies the following statement you made about the number of events generated in inorder compared to that in o3! I am pretty convinced that I agree with you on that aspect! Thank you also for clarifying point #1.
+Btw, the numbers that you and I reported seem to be in agreement with each other (except for perhaps a slight difference in system.cpu.numCycles for inorder). Isn't that right?regards,Soumyaroop.- Show quoted text -
+On Thu, Aug 13, 2009 at 10:56 PM, Korey Sewell <ksewell@umich.edu> wrote:
+From the #s you present, let me point out a few things for discussion...
+> I just checked the stats.txt for twolf (tests/long/70.wolf):
+>                                                inorder               o3
+> sim_seconds                          0.101268         0.040819
+> host_seconds                         1323.48          412.73
+> system.cpu.committedInsts     91903056        84179709
+Are you sure you checked this right? I justed ran these commands:
+grep -rn "numCycles" tests/long/70.twolf/ref/alpha/tru64/*
+tests/long/70.twolf/ref/alpha/tru64/inorder-timing/stats.txt:260:system.cpu.numCycles
+                       203103109                       # number of cpu
+cycles simulated
+tests/long/70.twolf/ref/alpha/tru64/o3-timing/stats.txt:419:system.cpu.numCycles
+                        81637318                       # number of cpu
+cycles simulated
+tests/long/70.twolf/ref/alpha/tru64/simple-atomic/stats.txt:45:system.cpu.numCycles
+                        91903136                       # number of cpu
+cycles simulated
+tests/long/70.twolf/ref/alpha/tru64/simple-timing/stats.txt:234:system.cpu.numCycles
+                       237494492                       # number of cpu
+cycles simulated
+grep -rn "committedInsts" tests/long/70.twolf/ref/alpha/tru64/*
+tests/long/70.twolf/ref/alpha/tru64/inorder-timing/stats.txt:29:system.cpu.committedInsts
+                   91903056                       # Number of
+Instructions Simulated
+tests/long/70.twolf/ref/alpha/tru64/inorder-timing/stats.txt:30:system.cpu.committedInsts_total
+             91903056                       # Number of Instructions
+Simulated
+tests/long/70.twolf/ref/alpha/tru64/o3-timing/stats.txt:48:system.cpu.committedInsts
+                   84179709                       # Number of
+Instructions Simulated
+tests/long/70.twolf/ref/alpha/tru64/o3-timing/stats.txt:49:system.cpu.committedInsts_total
+             84179709                       # Number of Instructions
+Simulated
+grep -rn "COM:count" tests/long/70.twolf/ref/alpha/tru64/*
+tests/long/70.twolf/ref/alpha/tru64/o3-timing/stats.txt:39:system.cpu.commit.COM:count
+                 91903055                       # Number of
+instructions committed
+Things to note:
+(1) For O3, the actual # you should use is the "count" not
+committedInsts. We had a discussion about these committedInsts values,
+yet it never got updated. That probably means people are waiting for
+me to update it :). I'm going to jump that on my to-do list and knock
+that out by the end of the weekend so people dont get confused by this
+anymore.
+(2) Note how many cycles are being simulated for the inorder,
+simple-timing, and o3 models. Note that the O3 has a significant # of
+cycles LESS than simple-timing and inorder. This is because we are
+talking about an 8-way out of order machine here. That's pretty
+aggressive and means potentially for every 6-8 cycles that the inorder
+machine uses, the O3 only needs 1 cycle.  Also note that the
+simple-timing and the inorder-timing have similar number of cycles.
+This would be expected although I think the simple-timing has some
+small level of instruction stalls builtin that differs from how
+inorder performs.
+(3) With all that said, since o3 is executing ~80M cycles and inorder
+is executing ~200M cycles I would expect both to be largely divergent
+in simulation time considering both are detailed models.
+>This, intuitively, gives
+> the idea that the number of events generated and simulated in o3 would be
+> more than that in inorder.
+I would say it is possible that inorder generates more events than o3.
+BUT, as stated before it seems the real issue is that there are more
+cycles being done in the inorder model, which seems to be the
+first-order answer to your problem rather than any actual simulation
+modeling issues.
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Show quoted text -Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

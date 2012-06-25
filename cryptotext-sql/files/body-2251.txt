@@ -1,0 +1,47 @@
+Actually that's not true... you need an io cache to make sure block
+writes are coherent regardless of where the device is attached.  The
+device by itself doesn't know how to make coherent accesses.
+Steve
+- Show quoted text -
+On Thu, Nov 20, 2008 at 7:51 PM, nathan binkert <nate@binkert.org> wrote:
+> Sorry for the late response, but there really isn't another disk
+> model.  You should in theory be able to hang the disk device off
+> whatever bus memory hangs off of.  You only need an io cache if you
+> want a separate IO bus.
+>
+>  Nate
+>
+> On Wed, Nov 19, 2008 at 4:21 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>> Hi all,
+>>
+>> I have mesh + directory coherence (based on Jiayuan's patches) running
+>> the beginning of a script  in full system and see output coming from the
+>> terminal. However, I am getting an assertion in the ide_disk.cc a little
+>> later:
+>>
+>> Assertion failed: (cmdBytesLeft == 0), function dmaWriteDone, file
+>> /Users/rickstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_disk.cc, line 497.
+>>
+>> As I am running for a deadline, I don't really care about the accuracy
+>> of the disk model. Is there a simpler disk that I could use that might
+>> get me around the complexity of figuring how dma is interacting with the
+>> disk?
+>>
+>> Best,
+>> -Rick
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

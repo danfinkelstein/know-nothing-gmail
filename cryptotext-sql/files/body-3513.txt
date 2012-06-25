@@ -1,0 +1,85 @@
+I'm using an unmodified source aside from the following changes to se.py:
+-----------------------------------------------------
+--- configsold/example/se.py    2007-11-01 20:13:04.000000000 -0500
++++ configs/example/se.py       2008-02-14 17:16:12.000000000 -0600
+@@ -40,25 +40,12 @@
+ if options.input != "":
+     process.input = options.input
+-if options.detailed:
+-    #check for SMT workload
+-    workloads = options.cmd.split(';')
+-    if len(workloads) > 1:
+-        process = []
+-        smt_idx = 0
+-        inputs = []
+-
+-        if options.input != "":
+-            inputs = options.input.split(';')
+-
+-        for wrkld in workloads:
+-            smt_process = LiveProcess()
+-            smt_process.executable = wrkld
+-            smt_process.cmd = wrkld + " " + options.options
+-            if inputs and inputs[smt_idx]:
+-                smt_process.input = inputs[smt_idx]
+-            process += [smt_process, ]
+-            smt_idx += 1
++process = []
++for i in range(0,options.num_cpus):
++    p            = LiveProcess()
++    p.executable = options.cmd
++    p.cmd        = [options.cmd] + options.options.split()
++    process += [p, ]
+ (CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+@@ -86,7 +73,7 @@
+         system.cpu[i].connectMemPorts(system.tol2bus)
+     else:
+         system.cpu[i].connectMemPorts(system.membus)
+-    system.cpu[i].workload = process
++    system.cpu[i].workload = process[i]
+     if options.fastmem:
+         system.cpu[0].physmem_port = system.physmem.port
+-----------------------------------------
+I then launch using the following command:
+build/ALPHA_SE/m5.opt configs/example/se.py -n 129 [-t] [-d --caches]
+and let it execute the default hello world app. As you said, I don't get any error message normally and it just hangs, although if I try to debug the simulator in gdb I get a segmentation fault (within gdb) and gdb exits.
+I'll see if I can narrow it down any further and get you more information.
+Thanks!
+Nick- Show quoted text -
+On Feb 14, 2008, at 2:50 PM, nathan binkert wrote:
+There hasn't been much push (yet) to work on this, though I plan to
+start devoting some effort to it myself very soon.  Would you care to
+give me all of your current patches and explain how you ran M5 and
+what your detailed error messages were? (If you had any, though it
+doesn't sound like you do.)
+ Nate
+On Thu, Feb 14, 2008 at 12:46 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+Is it possible to run a multiprogram simulation with more than 128
+cores? Using a slightly modified se.py and running in simple timing
+mode, I've tried to run the hello world default benchmark on 129
+cores, and it never gets past the "starting simulation" message. For
+128 cores it runs fine (including printing out the "warning:
+increasing stack size by one page" message, but the moment I go above
+128 I never see that warning and it hangs.
+On the other hand, running in atomic simple cpu mode it completes for
+even 256 cores.
+This is using an unmodified m5 2.0b4 source. Does anyone know what may
+be causing this issue, and if there is a way to get around it? Or how
+I may go about tracing the problem down? I'm not sure what all steps
+occur between the "starting simulation" message and when the programs
+get loaded (which I assume causes the stack size increase), but that's
+when the simulator appears to get stuck.
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

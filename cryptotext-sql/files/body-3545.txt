@@ -1,0 +1,21 @@
+Thanks Nicolas, I committed your fix.
+Ali- Show quoted text -
+On Feb 10, 2008, at 6:54 PM, Nicolas Zea wrote:
+Using 2.0b4
+Line 310:
+if (i != portMap.end())
+         dest_id = i->second;
+updatePortCache(dest_id, i->first.start, i->first.end);
+should probably be changed to:
+if (i != portMap.end()){
+       dest_id = i->second;
+        updatePortCache(dest_id, i->first.start, i->first.end);
+}
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

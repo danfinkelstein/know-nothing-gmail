@@ -1,0 +1,12 @@
+Hi Meng thanks for your answer, this is my linux version:
+ 
+Linux version 2.6.9-5.ELsmp (bhcompile@decompose.build.redhat.com) (gcc version 3.4.3 20041212 (Red Hat 3.4.3-9.EL4))
+ 
+I get this information from /proc/version, in fact I can try to install the cross compiler under cygwin, in the web page of the cross compiler says that you can install it under cygwin, but I'd like to ask you if it's a good idea and it's going to be fine. Thank you.
+2008/10/4 Meng-Ju Wu <mengjuwu@gmail.com>- Show quoted text -
+I never have this problem. Could you post your operation system information?I build the crosstool under RedHat, and there has no problem.
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

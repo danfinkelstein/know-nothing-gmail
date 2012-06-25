@@ -1,0 +1,50 @@
+Hello,
+I am reposting my follow up question (to nate's response) from the
+last thread with the same title, as it seems that one of the minor
+questions that I had posed seems to have derailed the thread a bit. I
+am reposting my part of the response that did not seem to get
+answered.
+Thanks in advance.
+I have a couple of follow-up questions to ask:
+In the case of a multi-core system as you said, the second bin (linked
+list) would potentially have more than a single event to be set for
+execution at a particular cycle, and although the current structural
+order implementation for execution is set for LIFO, there is no
+guarantee as to the relative order. I can see this as tending to be
+towards a more realistic approach, as real systems would be
+indeterministic in this regard.
+However, regardless of the order in which the events are executed,
+would you say or in some sense 'guarantee' that the events listed in
+the bin, would execute corresponding to the same timestamp cycle?
+For example, if the 'when' timestamp corresponded to simulation cycle:
+1000, and assume that all the priority levels of the events are
+equivalent,
+if the order in which 5 events let's say in the bin are executed in the order:
+event 1 -> event 3 -> event 2 -> event 5 -> event 4
+at simulated cycle 1001: would these particular events have already
+been set for execution?
+Also, how does the number of cpus determine (if it does assumingly) or
+impact whether or not the bin of events for a particular cycle is
+empty or not in the subsequent cycle? For example, would an event be
+scheduled onto an available core?
+It seems from your previous response that it is possible to have more
+events scheduled at the same time then there are available CPUs, and
+depending on which cpus's generated the event request, does that mean
+some of the events may not be set in execution at that particular
+timestamp (due to data hazards/dependencies or cpu resources?)
+Moreover, from your previous response it seems that it is possible
+(even if it is not the common case) for a single thread/core to set
+for execution more than a single event (whether or not in a multi-core
+system, if we just concern ourselves from perspective of a single
+thread/core).
+I see that there are functions available for event rescheduling, that
+would deal with such situations, but just to confirm, once an event is
+placed in this main queue, all such possibilities of needing to
+reschedule have already been determined, such that at this point,
+there is no reason for it to  be rescheduled or not be executed?
+Thanks.
+Malek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

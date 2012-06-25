@@ -1,0 +1,34 @@
+I don't think there's a way for you to know SOFTWARE thread ID, but you can know hardware thread id with context_id.  But if, for example, you context switch out a software thread that runs on hardware context X, then the hardware statistics for context X will be a combination of all the software threads that ran on that hardware context.
+I don't think you need to change the meaning of thread_id - just use context_id or cpu_id, which in a non-SMT system are essentially the same thing.Lisa- Show quoted text -
+On Mon, Jun 8, 2009 at 5:27 PM, Veydan Wu <veydanwu@gmail.com> wrote:- Show quoted text -
+Hi, Arun, thanks for your suggestion. I have never try to use pthread_self before, but I want to get the thread ID from the hardware, I mean from M5, rather than from software. So what I am really looking for is a structure that can tell me which thread the executing instrution is belong to, of course this structure must inside M5. Thank you !
+ 
+Veydan 
+Subject: Re: [m5-users] a simple question about thread ID
+ 
+Hi Veydan,Did you try linking with pthreads library explicitly? I had a problemfinding out thread ids without linking explicitly with -lpthread. (I wasgetting 0's for pthread_self). After linking, I started getting thread id's
+like 0x4000, 0xc000, etc. Your programs will compile and link even if youdon't do -lpthread.Best Regards,arunOn Mon, Jun 8, 2009 at 6:07 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>> Hi, Lisa, thanks for your reply. I must run my programs on FS mode, each> thread must be associated to a core and there will not be multiple threads> on one core. Is that the only way to distinguish different threads(software
+> thread) is through cpu_id or context_id ? If I change the thread_id to be> one of the two ids, then I can distinguish different threads, is that right?> Thank you!>> Subject: Re: [m5-users] does M5 support SMT
+>>>>>> If you must do FS, then you can run a multi-threaded program on a CMP>> rather>> than an SMT platform.  You can use the set_affinity syscall to attach a>> particular thread to a particular core.  Search the archives, I'm sure it
+>> has been discussed before on the mailing list.>> Lisa>>>> On Wed, May 27, 2009 at 6:29 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+>>
+>> > Thanks, Korey. But I must run my program on FS mode, some of my>> testbenches>> > fail to run on SE mode.>> >>> > Maybe running a multi-thread program on a single cpu core is my only
+>> > choice, but how to dinstinguish them against each other? Do you have any>> > idea about that? I think M5 run only one thread on one cpu core at a>> time,>> > as all the thread ID are 0.
+>>>> Subject: Re: [m5-users] a simple question about thread ID>>>> Sorry for the big delay in replying to this, I was just cleaning out my
+>> inbox and noticed this question.
+>> What you want is a context_id.  Theoretically, in an SMT system there are>> context_ids, which are unique across the system, and cpu_ids, which are>> unique to each core, and thread_ids, which are unique within a core.  So,
+>> if>> you have a 2-core 2-way SMT platform, you'd have cpu_id 0, 1, context_ids>> 0,>> 1, 2, 3, and cpu 0 would have thread 0 and thread 1, and cpu 1 would also>> have thread 0 and thread 1.
+>>>> If you are running in FS, there is no SMT support so all thread id's will>> be>> 0.  What you are looking for is context_id.>>>> Good luck,>> Lisa
+>>>> >>> > Hi all, I am running a multi-thread program on M5 under ALPHA-FS mode.>> When>> > I tried to get the thread ID, it always return 0, and I cannot>> distinguish
+>> > them between different threads.  I tried to get the thread ID>> > throught the function in thread_state structure, which is supposed to>> return>> > the thread ID.>> > My test program is implemented by POSIX thread library. Should I use the
+>> > function in the thread_state structure to get the thread ID ? Is those>> > functions supposed to return different thread ID? Sorry for such silly>> > question, but it really confuses me. Thanks!
+>> 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

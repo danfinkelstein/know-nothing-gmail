@@ -1,0 +1,49 @@
+My problem was that I had not exactly followed the instructions on http://www.m5sim.org/wiki/index.php/Compiling_a_Linux_Kernel. Just run them again           one by one and hopefully you'll get the .config.m5 file.
+Amir
+- Show quoted text -On Mon, Nov 23, 2009 at 6:31 PM, Shivananda Reddy <shiva_b05781@neo.tamu.edu> wrote:- Show quoted text -
+Hello Amir,
+ 
+I am also not able to find .config.m5 file.  
+“cp: cannot stat `.config.m5': No such file or directory”
+ 
+How did you resolve this?
+ 
+Thanks
+-Shiva
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of Amir
+Hossein Hormati
+Sent: Monday, November 23, 2009 12:25 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] kernel compile
+ 
+So, I figured it out. I was
+doing something wrong. :) so now i have the kernel compiled. How to do I update
+the kernel in the  disk image that I downloaded form m5's website to the
+version i just compiled? The tutorial does not say anything about it.
+Thanks
+Amir
+On Mon, Nov 23, 2009 at 10:49 AM, Amir Hossein Hormati <hormati@eecs.umich.edu> wrote:
+Hi,
+I am trying to upgrade my kernel from 2.6.13 to 2.6.27 based on the
+instructions found at http://www.m5sim.org/wiki/index.php/Compiling_a_Linux_Kernel
+One of the steps is :
+cp .config.m5 .config
+I can not find .config.m5 or .config files in the checked out directory. 
+I created my own .config file by running "make menuconfig" but
+couldn't figure out how to get .config.m5 . Am I missing something? Is there a
+better way to do this? 
+I was wondering why the disk image on the website does not come with the latest
+version of kernel supported by m5? That could save a lot of time.
+Thanks.
+Amir
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

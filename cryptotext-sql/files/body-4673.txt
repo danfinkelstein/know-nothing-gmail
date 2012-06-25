@@ -1,0 +1,37 @@
+Hi Vilas,
+Sorry, this is a bug in the code.  It's fixed in the version we have.  It's better to account for the barriers and remove the #if FULL_SYSTEM from iew_impl.hh.  I think that should get rid of your error.
+Kevin
+Vilas Sridharan wrote:
+- Show quoted text -
+Hello again --
+I'm running some of the spec2k benchmarks using m5 v2.0b2 (ALPHA_SE), and am getting an almost immediate assertion failure when running swim.  Specifically, the memDepUnit attempts to find a memory barrier instruction and cannot.
+The problem, as best as I can tell, is as follows:
+From iew_impl.hh:1125 (function dispatchInsts):
+#if FULL_SYSTEM
+        } else if (inst->isMemBarrier() || inst->isWriteBarrier()) {
+            // Same as non-speculative stores.
+            inst->setCanCommit();
+            instQueue.insertBarrier(inst);
+            add_to_iq = false;
+#endif
+But in inst_queue_impl.hh:966 (function wakeDependents):
+    if (completed_inst->isMemRef()) {
+        memDepUnit[completed_inst->threadNumber].wakeDependents(completed_inst);
+        completeMemInst(completed_inst);
+    } else if (completed_inst->isMemBarrier() ||
+               completed_inst->isWriteBarrier()) {
+        memDepUnit[completed_inst->threadNumber].completeBarrier(completed_inst);
+    }
+Note the lack of an #if FULL_SYSTEM directive around the IsMemBarrier() code.  This seems to be what is causing the assertion failure.
+Which is correct in SE mode?  To ignore the barriers (I should add #if FULL_SYSTEM around the code in inst_queue_impl.hh) or to account for the barriers (I should remove the #if FULL_SYSTEM from iew_impl.hh)?
+Thanks,
+   -Vilas
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

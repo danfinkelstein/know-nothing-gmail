@@ -1,0 +1,6 @@
+hi,While tracing the dumped information of the packet, i got the packet_size as 4, 8 and 64 in different tick time. Can the packet size be different in different tick time on the same bus?  I'm really sorry to ask such a question but i want to know it. 
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

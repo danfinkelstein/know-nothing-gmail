@@ -1,0 +1,19 @@
+Hi all,
+I am working on a script that turns the config.ini into xml and then
+adds all the m5 stats to the correct node in the xml. This is to make
+things easier for a more detailed power model. However, I noticed
+something strange. Is there a good reason for BPredUnit statistics to be
+apart of global? The stats  involved are shown below.
+-Rick
+   <stat name="global.BPredUnit.condIncorrect" value="0"/>
+    <stat name="global.BPredUnit.BTBLookups" value="0"/>
+    <stat name="global.BPredUnit.BTBHits" value="0"/>
+    <stat name="global.BPredUnit.condPredicted" value="0"/>
+    <stat name="global.BPredUnit.BTBCorrect" value="0"/>
+    <stat name="global.BPredUnit.usedRAS" value="0"/>
+    <stat name="global.BPredUnit.lookups" value="0"/>
+    <stat name="global.BPredUnit.RASInCorrect" value="0"/>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

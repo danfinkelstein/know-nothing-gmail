@@ -1,0 +1,132 @@
+Hi Gabe,We havent modified the kernel in anyway, we have just included user programs in the binary and created .rcS files to run them. Pritha- Show quoted text -On Mon, May 3, 2010 at 8:31 PM, Gabriel Michael Black <gblack@eecs.umich.edu> wrote:
+You should be able to trace execution near the point of the abort and see what the kernel is trying to do and, ideally, in service of what user program. The first part is fairly straightforward using traceflags. I know the other part is possible by checking various kernel data structures, but I don't know how to do it myself. You can also hook up gdb using the remote debugging stub and look at the state of the simulated system right before it aborts. Hooking up gdb should also be straightforward using the instructions on the wiki, although you'll need to make sure you stop the simulated system right before it aborts.
+Did you modify the kernel itself in any way, or are you just trying to run your own user programs? If it's the later then there's a decent chance you're running into a bug in M5 somewhere, although that's not necessarily what's happening.
+Gabe
+Quoting Pritha Ghoshal <pritha9987@tamu.edu>:
+Hey
+We are facing one strange issue. When we try to run some pre-compiled
+benchmark(like surgespecweb) on our modified m5-code, we are not getting
+these aborts. Its only when we run our self-compiled codes, we are getting
+the aborts. We checked using m5term that the abort comes even before our
+self-benchmark code starts executing. So, we presume this is in the kernel
+part. Then in that case, our modules never get activated. We are hence not
+able to understand why there is no error while running standard benchmark vs
+the abort in our code in the kernel part.
+We compiled our code using Crosscompiler available on the m5sim website and
+then built it into the linux-image.
+Are we missing something here??
+Thanks
+Pritha
+On Mon, May 3, 2010 at 5:23 PM, Gabriel Michael Black <gblack@eecs.umich.edu
+wrote:
+That's probably that your read was to an address, 0xFFFFF00188, that wasn't
+claimed by any memory, device, etc. That address may fall into a range with
+a special purpose in Alpha, but I don't really know.
+Gabe
+Quoting Pritha Ghoshal <pritha9987@tamu.edu>:
+Hi
+The assert says :
+m5.opt: build/ALPHA_FS/cpu/simple/atomic.cc:496: Fault
+AtomicSimpleCPU::read(Addr, T&, unsigned int) [with T = uint64_t]:
+Assertion
+`!pkt.isError()' failed.
+And we have printf statements in the addlv instruction, so that whenever
+it
+executes, we get to know. Those statements are not being printed, so I
+think
+its not the addlv which is getting executed.
+Thanks
+Pritha
+On Mon, May 3, 2010 at 3:29 PM, Gabriel Michael Black <
+gblack@eecs.umich.edu
+wrote:
+What does the actual assert say? I'm wildly guessing a load crossed a
+cache
+line boundary, but it's hard to say from the backtrace. That addlv
+instruction might actually be executed. You could try implementing a
+pseudo
+instruction which is much less likely to be used accidentally.
+Gabe
+Quoting Pritha Ghoshal <pritha9987@tamu.edu>:
+ Hi,
+We have been getting an abort while running M5 in full system mode. We
+have
+modified one instruction (addlv) to execute a different function,
+because
+that instruction is never used in the kernel part of the code.  The
+debugger
+backtrace output is given below. Could anyone help us by  suggesting
+possible reasons for this abort?
+Thanks
+Pritha
+#0  0x0000003423c30265 in raise () from /lib64/libc.so.6
+#1  0x0000003423c31d10 in abort () from /lib64/libc.so.6
+#2  0x0000003423c296e6 in __assert_fail () from /lib64/libc.so.6
+#3  0x0000000000435a3e in read<uint64_t> (this=0x14e4950,
+addr=1099510579592, data=@0x7fffffffd0e8, flags=512) at
+build/ALPHA_FS/cpu/simple/atomic.cc:518
+#4  0x0000000000456465 in AlphaISAInst::Hw_ldQ::execute (this=0x2051e70,
+xc=0x14e4950, traceData=0x0) at build/ALPHA_FS/base/flags.hh:45
+#5  0x0000000000425be6 in AtomicSimpleCPU::tick (this=0x14e4950) at
+build/ALPHA_FS/base/refcnt.hh:83
+#6  0x00000000006703d5 in EventQueue::serviceOne (this=<value optimized
+out>) at build/ALPHA_FS/sim/eventq.cc:202
+#7  0x00000000009f2f12 in simulate (num_cycles=9223372036854775807) at
+build/ALPHA_FS/sim/simulate.cc:73
+#8  0x0000000000a62fd7 in _wrap_simulate (self=<value optimized out>,
+args=<value optimized out>) at
+build/ALPHA_FS/python/swig/event_wrap.cc:4079
+#9  0x000000343b2360f0 in PyObject_Call () from
+/usr/lib64/libpython2.4.so.1.0
+#10 0x000000343b29352c in PyEval_EvalFrame () from
+/usr/lib64/libpython2.4.so.1.0
+#11 0x000000343b295fe5 in PyEval_EvalCodeEx () from
+/usr/lib64/libpython2.4.so.1.0
+#12 0x000000343b29473f in PyEval_EvalFrame () from
+/usr/lib64/libpython2.4.so.1.0
+#13 0x000000343b294b66 in PyEval_EvalFrame () from
+/usr/lib64/libpython2.4.so.1.0
+#14 0x000000343b295fe5 in PyEval_EvalCodeEx () from
+/usr/lib64/libpython2.4.so.1.0
+#15 0x000000343b296032 in PyEval_EvalCode () from
+/usr/lib64/libpython2.4.so.1.0
+#16 0x000000343b295237 in PyEval_EvalFrame () from
+/usr/lib64/libpython2.4.so.1.0
+#17 0x000000343b295fe5 in PyEval_EvalCodeEx () from
+/usr/lib64/libpython2.4.so.1.0
+#18 0x000000343b29473f in PyEval_EvalFrame () from
+/usr/lib64/libpython2.4.so.1.0
+#19 0x000000343b295fe5 in PyEval_EvalCodeEx () from
+/usr/lib64/libpython2.4.so.1.0
+#20 0x000000343b296032 in PyEval_EvalCode () from
+/usr/lib64/libpython2.4.so.1.0
+#21 0x000000343b2b2729 in ?? () from /usr/lib64/libpython2.4.so.1.0
+#22 0x0000000000791365 in m5Main (argc=<value optimized out>,
+argv=<value
+optimized out>) at build/ALPHA_FS/sim/init.cc:194
+#23 0x000000000040854c in main (argc=7, argv=0x7fffffffe848) at
+build/ALPHA_FS/sim/main.cc:57
+--
+Pritha Ghoshal
+Texas A&M University
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+Pritha Ghoshal
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+Pritha Ghoshal
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

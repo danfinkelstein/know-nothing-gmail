@@ -1,0 +1,34 @@
+Hello,
+I have created an EtherSwitch model to replace the EtherLink.
+However, I got two problems:
+1) In original EtherLink model, each Interface has only one
+   txlink, so when Interface::recvPacket(packet) is called by
+   its peer, txlink->transmit(packet) is returned. But in
+   the EtherSwitch model, each Interface has N-1 txlinks(N is
+   # of systems), so function recvPacket(packet) must
+   determine
+   which txlink is needed to transmit the packet. I tried to
+   find the destination information in the packet. I looked
+   through base/inet.hh and found the function dst() can
+   return
+   the destination address, so I wrote the following codes:
+               IpPtr p = IpPtr(packet);
+               uint32_t ip_address = p->dst();
+   But the simulator exited with error when it ran the
+   above codes. Can anyone know how to get the destination
+   information from the packet?
+2) similar to the above problem. In original EtherLink model,
+   when Interface::isBusy() is called, it just returns
+   txlink->busy() since it has only one txlink. But in the
+   EtherSwitch model,  isBusy doesn't know which txlink
+   is needed to transmit the packet and the worse is no packet
+   can be used to determine the destination. One feasible
+   solution is make sure all txlinks are free before a packet
+   is transmitted although only one txlink is used. My
+   question is how to modify the original code in order to
+   replace isBusy() by isBusy(packet).
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

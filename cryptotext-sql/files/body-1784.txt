@@ -1,0 +1,39 @@
+hi everyone,I am still facing the problem as:warn: Increasing stack size by one page.m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Could you please reply me with file details.
+Thanks in advance,drc
+- Show quoted text ----------- Forwarded message ----------From: Devraj Chapagain <drchapagain@gmail.com>
+Date: Wed, Mar 4, 2009 at 7:46 AMSubject: Re: [m5-users] fatal: numThreads is not a valid valueTo: M5 users mailing list <m5-users@m5sim.org>Thank you Steve. 
+On Wed, Mar 4, 2009 at 5:51 AM, Steve Reinhardt <stever@gmail.com> wrote:
+You could start by looking at line 135 of src/cpu/o3/fetch_impl.hh.
+Admittedly it's not the greatest error message but it gives enough
+information for you to find the solution.
+On Wed, Mar 4, 2009 at 1:23 AM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+> hi everyone,
+> I got error while simulating  the sample for 8 thread. I got message "number
+> of threads assigned is not a valid value". Actually, i am not getting the
+> file where i should change the script so that  it could support for assigned
+> number of threads. The error message is like :
+> ***********************************************************************************
+> Global frequency set at 1000000000000 ticks per second
+> fatal: numThreads is not a valid value
+>  @ cycle 0
+> [DefaultFetch:build/ALPHA_SE/cpu/o3/fetch_impl.hh, line 135]
+> Memory Usage: 42090228 KBytes
+> **********************************************************************************
+> Please inform me in detail about such problem.
+> Thanks in advance
+> drc
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,50 @@
+I modified the InstRecord class to keep track of commit time of an
+instruction.  I update commit time
+when src/cpu/o3/rob_impl.hh:retireHead calls head_inst->setCommitted.
+This goes to
+src/cpu/base_dyn_inst.hh:setCommitted().  I added to this code:
+setCommitted(){
+    status.set(Committed)
+#if TRACING_ON
+    if (traceData != NULL){
+       traceData->setCommitted();
+    }
+#endif
+}
+I also modify src/cpu/exetrace.cc to print out the committed time at the
+beginning of each line. The weird thing is some of instructions have
+times that are negative, zero, or other garbadge. Either the
+ExeTracerRecord is called before commit on some instructions or some of
+the instructions are misspeculated and  commit times  is not being set.
+Any ideas?
+Best,
+-Rick
+- Show quoted text -
+Steve Reinhardt wrote:
+> Are you getting misspeculated instructions even when you set the flag
+> to turn them off?
+>
+> On Thu, Oct 30, 2008 at 4:54 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>
+>> Hi,
+>>
+>> For an exec trace, it seems that both misspeculated and
+>> non-misspeculated instructions are being printed out for the o3cpu as
+>> the src/cpu/o3/thread_context.hh returns false no mater what. Is this
+>> the case or am I missing a level of indirection?
+>>
+>> Best,
+>> -Rick
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

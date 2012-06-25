@@ -1,0 +1,5 @@
+sorry if this is such a simple question, but i would like to know from those who've worked with the SPEC2K benchmarks before, but is perlbmk not processor intensive? i was able to run it and all, and it produced files such as diffmail.pl and scrabbl.pl(it is still running), but one thing i've noticed about is that it doesnt stress my processor the way crafty or mgrid did(which practically hogged entire cores for themselves). in fact unlike the two, the entry for perlbmk is hardly nowhere near the top in the htop/top(i run the banchmarks one at a time) table and its entry is very stationary. is this to be expected from perlbmk?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

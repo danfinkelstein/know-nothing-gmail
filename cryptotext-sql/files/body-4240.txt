@@ -1,0 +1,5 @@
+Followup on the SPEC CPU 2000 thread: Ali mentioned the modifications to the directory structure of the benchmarks (namely that the subdirectories of <data> under each <benchmark> need to go up one level, but are you doing that in the actual cpu2000 directory installation or some separate for-testing-only directory, duplicating some files in the process?
+I copied all of the files when creating the cpu2000 directory.  The main reasoning was that I wanted to create one place that had all of the data sets, and all of the binaries instead of having them scattered about.
+I did an ls -laR in our CPU 2000 which I've attached.  Let me know if this helps answer questions.
+I hoped to create a script that does all of the copying, but I don't really use CPU2000 and couldn't justify the extra time.  We'd love it if someone did this and contributed it.
+  Nate

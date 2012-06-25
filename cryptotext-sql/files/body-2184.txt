@@ -1,0 +1,22 @@
+Hi All,
+I am implementing a page migration mechanism, where I would want to
+remap a virtual address to a different physical page. I am using M5 in
+the SE mode. I am trying to do the following for the same: 1) Allocate
+a new page, 2) Flush dirty cache blocks corresponding to that page, 3)
+Flush the TLB entry for that page, 4) Copy contents to the new page,
+5) Modify the page table to map the virtual address to the new page. I
+have already implemented all these steps except 2), i.e. the cache
+flushing part. The implementation looks fine to me, as the simulation
+without caches (page migration enabled) runs absolutely fine.
+Although I have already spent some time with the cache code of M5, I
+am still not sure how to accomplish the flushing part. It would be
+great if someone more familiar with the code can give me some insights
+on how to go about implementing it. Also, is there a way to configure
+caches as write-through, so that I might not need to flush the dirty
+cache blocks?
+Thanks in advance,
+-Gaurav
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

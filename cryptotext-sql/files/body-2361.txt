@@ -1,0 +1,36 @@
+You shouldn't need to run in debug mode just to get the error message
+when it dies.  Maybe you're running into a memory leak and the OS is
+killing the job because it's taking up too much memory?
+- Show quoted text -
+On Thu, Oct 30, 2008 at 4:59 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> it happens after couple of billion insts so never managed to run in debug mdoe and gather traces. Though the srun simply output, task kiled, job failed.
+>
+> ---- Original message ----
+>>Date: Thu, 30 Oct 2008 16:45:28 -0700
+>>From: Rick Strong <rstrong@cs.ucsd.edu>
+>>Subject: Re: [m5-users] art110
+>>To: M5 users mailing list <m5-users@m5sim.org>
+>>
+>>Shoaib Akram wrote:
+>>> Does anyone has been ale to run art for a sufficient large no. of insts. My jobs with art always failed beyond 1 bilion for a range of configuration.
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>>What is the failure message?
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

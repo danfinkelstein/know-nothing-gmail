@@ -1,0 +1,33 @@
+Hello, Steve,Thank you for your suggestion!Our plan is to use m5sim in an assignment.We want to minimize the effort for students to use m5sim.We hope students can use 5msim on the server,so that they do not need to install linux or virtual machine on their own computer.
+However, editing the disk image is difficult for non root user.Although non root user can use VirtualBox to do the job,I do not have root privilege to install VirtualBox on the server at the first place.Therefore, I think the own choice is to let every student install Linux or 
+virtual machine on their own computer.Best regards,Zhenyu YeEindhoven University of Technology- Show quoted text -On Sat, Dec 12, 2009 at 2:46 AM, Steve Reinhardt <stever@gmail.com> wrote:
+One way to get around this is to install a system in a virtual machine
+(using something like VirtualBox or QEMU) and mount the image there,
+since you can give yourself root in the VM.
+Steve
+On Thu, Dec 10, 2009 at 10:20 AM, zhenyu ye <yezhenyu.sam@gmail.com> wrote:
+> Hello, m5 users,
+>
+> I am using m5sim on a server, where I do not have root privilege.
+> Does anyone know how to add files to disk image as normal user?
+> The m5 wiki only mentions one method, which requires root to mount the
+> image.
+> Thank you very much!
+>
+> Zhenyu Ye
+> Eindhoven University of Technology
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

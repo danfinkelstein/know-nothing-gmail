@@ -1,0 +1,58 @@
+One thing that might be happening is that the program isn't working
+correctly, possibly because some syscalls are missing, and it's
+allocating memory or recursing or otherwise allocating memory long after
+it was supposed to stop. On a real machine if a single process uses more
+than 2 gigs of memory that's likely, though not necessarily, incorrect
+behavior. I'm not sure how off the top of my head, but if you can I
+would suggest running this or an x86 equivalent somewhere and checking
+what it's actual memory usage is. It won't be exact, but it can tell you
+if 2 gigs is reasonable.
+One other thing I thought of just now is that SE's page management might
+be a little too simple to handle lots of page deallocation and
+reallocation with, for instance, a stream of mmaps and munmaps. I'm just
+guessing here so I wouldn't spend too much time looking at that unless
+you can't think of what else it might be.
+Gabe
+- Show quoted text -
+Meng-Ju Wu wrote:
+> Ali, thank you very much.
+>
+>  (1) I modified the src/arch/alpha/linux/process.cc.
+>
+>        SyscallDesc("ftruncate", unimplementedFunc) =>
+> SyscallDesc("ftruncate", ftruncateFunc)
+>
+>      Now, the ftruncate() works.
+>
+>      I want to implement other system calls.  What the files should I look at?
+>
+>  (2) The memory system configuration is
+>
+>        system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+>                 physmem = PhysicalMemory(range=AddrRange("2048MB")),
+>                 membus = Bus(), mem_mode = 'timing')
+>
+>      This is the largest number I can set.
+>
+>      There are 9 spec2006 benchmarks has the problem
+>
+>       " terminate called after throwing an instance of 'std::bad_alloc' "
+>
+>      I tried to use a smaller dataset in 410.bwaves. It  finished
+> correctly without any problem.
+>
+>      What should I  do to avoid this problem or correct it without
+> changing the dataset?
+>
+> Thanks again.
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,32 @@
+Further to my earlier email, things seems fine to me in the last few events before assertion failure:
+59572419000: system.cpu15.tol2bus: recvTiming: src 1 dst 2 ReadRespWithInvalidate 0x8218c0
+59572419000: system.cpu15.dcache: Handling response to 8218c0
+59572419000: system.cpu15.dcache: Block for addr 8218c0 being updated in Cache
+59572419000: system.cpu15.dcache: Block addr 8218c0 moving from state 0 to 5
+---- Original message ----
+>Date: Fri, 29 May 2009 15:29:26 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Glad it worked... thanks for following up.  That
+>   I/O bridge doesn't exist in SE mode so that's why
+>   this only shows up with Linux.  Hard to say about
+>   real systems... in some cases because a real system
+>   design has a hard limit on the number of cores then
+>   it is practical to simply design buffering in for
+>   the worst case and not worry about specific flow
+>   control problems.
+>
+>   In any case, though m5 has its unrealistic aspects,
+>   I'm pretty confident that it has fewer of those than
+>   your average academic simulator.  Sadly I can't
+>   promise that the ones it does have are irrelevant to
+>   whatever you're doing...
+>
+>   Steve
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

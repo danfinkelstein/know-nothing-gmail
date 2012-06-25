@@ -1,0 +1,50 @@
+Hi,
+I have ported Jiayuan Meng's diff to work for full system mode on m5-dev
+if that would
+be helpful. However, if you just want to do system emulation mode, you
+can apply his
+diff to the version of M5 that he mentions.
+Best of luck,
+-Rick
+Steve Reinhardt wrote:
+> It's certainly not impossible, but there's no support for it out of
+> the box.  You'd have to extend the memory system yourself to model
+> NUMA and whatever coherence protocol you want to use.  That's doable
+> but not a small task.
+>
+> Jiayuan Meng at UVA has done this already:
+> http://www.mail-archive.com/m5-dev@m5sim.org/msg00898.html
+> Unfortunately due to time pressures on our side we haven't gone
+> through the process of integrating his code into the release.  He may
+> be willing to share his patches with you directly.
+>
+> Steve
+>
+> On Thu, Jan 1, 2009 at 8:31 AM, Haseeb Malik <haseebmalik@yahoo.com> wrote:
+>
+>> Hi,
+>>
+>> Can M5 be used to simulate a cc-NUMA architecture?
+>>
+>> Cheers
+>>
+>> Haseeb
+>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

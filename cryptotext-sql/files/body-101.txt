@@ -1,0 +1,35 @@
+Thanks for those pointers Korey, we'll check it tomorrow.Qingyuan- Show quoted text -On Tue, Jun 1, 2010 at 11:41 PM, Korey Sewell <ksewell@umich.edu> wrote:
+You'll want to check out the m5 wiki page (m5sim.org) for a lot of the introductory info.
+In particular the documentation page (http://m5sim.org/wiki/index.php/Documentation) and the tutorials page (http://m5sim.org/wiki/index.php/Tutorials) should help get you through if you  have any initial troubles running M5. 
+In terms of your particular case, it's hard to tell because there is no command line that you are giving. The traceflags have been working though since I've been using M5 so I dont think the version is a problem there.
+But if you check the Reporting Problems page (http://m5sim.org/wiki/index.php/Reporting_Problems), it will give you good insight on how to detail your problem so people can help you quickly. We want to help, but we would need to understand the problem fully first!
+After checking out those links (and probably using a new version as well!) , if things still seem to not work, check back in and let us know how things are going.-Korey
+On Tue, Jun 1, 2010 at 10:23 PM, Qingyuan Deng <ddqqyy@gmail.com> wrote:
+Thanks Korey, does that work on v1.1? I put --trace-flags=Cache there but it aborted the running and complained "cannot assign object", and when I set it to be "--traceflags", it runs, but didn't print out any traces. 
+QingyuanOn Tue, Jun 1, 2010 at 7:40 PM, Korey Sewell <ksewell@umich.edu> wrote:
+Use the "Exec" flag to trace your progam and possibly other traceflags depending on what CPU Model your using. You can always turn on some traceflags in the memory system too (src/mem/SConscript ...I think 'Cache' will work")...
+But there is initialization code in your binary that gets the arguments ready for the main function as well as setup some libraries so more than likely thats the culprit.
+On Tue, Jun 1, 2010 at 7:11 PM, Qingyuan Deng <ddqqyy@gmail.com> wrote:
+Hi,I am trying to figure out the following issue:
+When I run a "null" program (empty main function without anything), there are still more than 160 dcache misses, and more than 200 icache misses. Is that normal? Or where do they come from?
+I am using SE mode with one core and the version is 1.1Thanks a lot,Qingyuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

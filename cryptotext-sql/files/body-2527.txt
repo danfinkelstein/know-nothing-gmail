@@ -1,0 +1,39 @@
+Hi Meng-Ju,
+This request comes up periodically.  When I developed the stats
+package, I intentionally made it so that it wasn't easy to get a stat
+value out from C++ because stats can be reset or swapped at almost any
+time, making it hard to use these values correctly.  Generally, I tell
+people that they should have a normal integer that keeps track of the
+value in parallel with the statistic.  In the numCycles case, I think
+this already exists (depending on which numCycles of course).
+If you really want to get at the value, you'd use numCycles.value().
+This isn't quite as dangerous as it used to be, but be careful for
+statistics being reset and things like that.
+  Nathan
+- Show quoted text -
+On Wed, Sep 24, 2008 at 4:11 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi,
+>
+> I have questions related to C++. The first one is about how to compare
+> two "Stats::Scalar numCycles" values in the program. The ">" operator
+> is not defined now.  Where can I add the definition?
+>
+>  no match for 'operator>' in
+> '((MTSimpleCPU*)this)->MTSimpleCPU::<anonymous>.TimingSimpleCPU::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles
+>> ((MTSimpleCPU*)this)->MTSimpleCPU::<anonymous>.TimingSimpleCPU::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles'
+>
+> Another question is how to transfer the numCycles to the integer value?
+>
+> Thanks,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

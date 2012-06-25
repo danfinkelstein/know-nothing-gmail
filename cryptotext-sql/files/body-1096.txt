@@ -1,0 +1,17 @@
+Hi All:
+    I have a question about how I should extend a cpu model. In the
+tutorial on the website, it seems that one has to copy the base.cc and
+base.hh files from src/cpu/simple directory and then inherent from
+BaseSimpleCPU. I wonder if that copying is necessary, if so why? It
+seems just the base.cc and base.hh files are just copied and nothing
+is modified to them. Why wouldn't it be ok just to inherent from
+BaseSimpleCPU, rather than copying the files and then inherent? Is it
+that Scons has some restrictions or some other reason?
+    Thank you for any comment in advance.
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,45 @@
+Hello,
+I am trying to run a multithreaded program on m5.
+I am trying to run the threads to multiple cores of
+the processor. I have defined 3 cores in the fs.py
+file.
+The fs.py file looks like -
+*******************************************************
+system = makeLinuxAlphaSystem(mem_mode, bm[0])
+    system.cpu = [AtomicSimpleCPU(),
+AtomicSimpleCPU(), AtomicSimpleCPU()]
+    system.cpu[0].connectMemPorts(system.membus)
+    system.cpu[0].mem = system.physmem
+    system.cpu[1].connectMemPorts(system.membus)
+    system.cpu[1].mem = system.physmem
+    system.cpu[2].connectMemPorts(system.membus)
+    system.cpu[2].mem = system.physmem
+    root = Root(clock = '1GHz', system = system)
+******************************************************
+But when I am running the simulator, it gets stuck. It
+never gives me any error. The message where it gets
+stuck is -
+"scsi0 : scsi_m5, version 1.73 [20040518],
+dev_size_mb=8, opts=0x0
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
+  Type:   Direct-Access                      ANSI SCSI
+revision: 03
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
+SCSI device sda: drive cache: write back
+ sda: unknown partition table
+Attached scsi disk sda at scsi0, channel 0, id 0, lun
+0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2 "
+What am I doing wrong here ? Any suggestion would be
+highly appreciated.
+Regards-
+Rajdeep
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,51 @@
+It's likely that you're trying to simulate a system that has more memory than
+your computer and/or your computers address space supports. If you're using a
+32 bit host, you could try moving to a 64 bit one. If that doesn't work, you'll
+likely have three choices.
+1. Scale back your simulation. M5 executes for what would be a short amount of
+real time, so you likely couldn't even touch very large regions of memory in
+any reasonable amount of time.
+2. Buy more RAM and use a 64 bit computer.
+3. Implement a memory object that can be sparsely populated. If you do this one,
+please share after you're done.
+Gabe
+- Show quoted text -
+Quoting jia wang <jiawang20006@yahoo.com>:
+>
+> Hi:
+>
+> I am a new user of M5 SE system; When I follow the instructions from M5-Main
+> page to run M5 SE system, I get the following errors:
+>
+> [root@localhost m5_2.0b4]# ./build/ALPHA_SE/m5.debug ./configs/example/se.py
+> M5 Simulator System
+>
+> Copyright (c) 2001-2006
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled Oct 10 2008 00:17:17
+> M5 started Fri Oct 10 00:20:32 2008
+> M5 executing on localhost.localdomain
+> command line: ./build/ALPHA_SE/m5.debug ./configs/example/se.py
+> Global frequency set at 1000000000000 ticks per second
+> mmap: Cannot allocate memory
+> fatal: Could not mmap!
+>  @ cycle 0
+> [PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 65]
+> Memory Usage: 18328 KBytes
+>
+> Can anyone help me with this problem?
+>
+> thanks,
+>
+> Jiao
+>
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

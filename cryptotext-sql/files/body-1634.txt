@@ -1,0 +1,13 @@
+- Show quoted text -> Hi, all, I wonder when I added a device to the iobus, how does the kernel
+> know it? I added it follow the instructions of the tutorial and I don't
+> quite understand how to modify the console code to access it. Is it
+> necessary to letter the linux know that M5 has a new component ? What should
+> I do before I can access it from a device driver ? Thanks !
+Did you ever figure out your problems?  Unfortunately, many of us have
+been pretty busy lately, so your requests have slipped through the
+cracks.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

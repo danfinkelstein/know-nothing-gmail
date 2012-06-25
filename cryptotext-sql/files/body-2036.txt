@@ -1,0 +1,51 @@
+Dear All,
+I tried to configure this kind of architecture in the M5 2.0b6 SE mode,
+   CPU     CPU ........  CPU
+     |           |                |
+    L1        L1   .........  L1
+     |           |                |
+------------------------------------Bus
+     |           |                |
+    L2        L2   ........  L2
+     |           |                |
+------------------------------------Bus
+                 |
+               MEM
+Basically, I want to let each L2 can snoop and cache the blocks of
+different addresses.  In the beginning, I just want to see if I can
+make this kind of configuration, so I write the python code like:
+system.bankl2_1=L2(size = options.l2size, assoc = 8);
+system.bankl2_2=L2(size = options.l2size, assoc = 8);
+for cpu in smp_cpus:
+    cpu.addPrivateSplitL1Caches(L1(size = options.l1size), L1(size =
+options.l1size))
+    cpu.connectMemPorts(system.toL2net)
+system.bankl2_1.cpu_side = system.toL2net.port
+system.bankl2_1.mem_side = system.memnet.port
+system.bankl2_2.cpu_side = system.toL2net.port
+system.bankl2_2.mem_side = system.memnet.port
+system.physmem.port = system.memnet.port
+But I got the error.
+      0: system.memnet: received RangeChange from device id 2
+      0: system.memnet: Adding range 0 - 0xffffffff for id 2
+      0: system.memnet: received address range request, returning:
+      0: system.memnet:   -- 0 : 0xffffffff
+      0: system.memnet: received RangeChange from device id 0
+      0: system.memnet: Adding id 0 to snoop list
+      0: system.memnet: received address range request, returning:
+      0: system.memnet:   -- 0 : 0xffffffff
+      0: system.memnet: received RangeChange from device id 1
+      0: system.memnet: Adding id 1 to snoop list
+      0: system.memnet: Adding range 0 - 0xffffffff for id 1
+fatal: system.memnet has two ports with same range:
+        system.bankl2_2-mem_side_port
+        system.physmem-port0
+The range.size of system.bankl2_2-mem_side_port is 1, but he
+range.size of system.bankl2_1-mem_side_port is 0. What does the
+range.size mean, and how could I configure multiple individual L2s?
+Thanks a lot,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

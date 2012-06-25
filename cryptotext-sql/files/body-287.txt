@@ -1,0 +1,21 @@
+Hi,
+ 
+We are working on a project related to Transactional Memory implemetation using M5. We are developing it on the AtomicSimpleCPU model.
+ 
+For such a system to work, we need to ensure basically two things. We need to save the architectural state at the beginning of a transactional block(since it is speculative) so that the system could rollback to the same in case of aborts and we need to make modification to the memory system to ensure the proper non-violating loads/stores from different threads.
+ 
+So far, addressing the first issue at hand, we have included different routines in the cpu/thread_simple_thread.cc , cpu/thread_context.cc , cpu/simple/atomic.cc which can save the architectural state when our transaction_begin instruction gets called. We are ensuring that whatever state-saving routines we have defined, would always be called through the thread_context interface. We supposed that this way, an instance of this class & the simpleThread class wud be created per thread that we create and thereby, each thread wud save its state independently....We have included some print messages in these files( i.e, cpu/thread_simple_thread.cc , cpu/thread_context.cc , cpu/simple/atomic.cc etc) but the problem is that, even if we are using code that spwans multiple threads, we are getting "new thread activated" message only once(that too at the beginning of the simulation). what about the others...Ideally as we are understanding it multiple instances should be created, one for each thread.
+ 
+ Then, are we looking ino the correct files. Where can we tap info about each individual thread???
+ We just want to know wat r the thread specific routines/classes which will be instantiated( i mean their objects created) per thread...
+ 
+Also we would like to know has the -n proc option (that is given during the simulation run) anything to do with the number of threads that can be spawned?
+ 
+FYI, we are using a code(benchmark) that spawns threads using calls to the pthread library...
+ 
+Thanks,
+Reena
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

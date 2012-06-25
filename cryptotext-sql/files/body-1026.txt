@@ -1,0 +1,6 @@
+Hi All,Could someone please tell me how to find the number of context switches that ccured in a (detailed) simulation? I see that there is a kern.swap_context statistic in m5stats file, but I get a number that is as high as 7661, for a 0.48 second ALPHA_FS simulation (after fast forwarding the first 200 million instructions). 
+If kern.swap_context is indeed the statistic, then does it include context switches in fast forwarding mode also? Thank you very much, in advance.Best Regards,arun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

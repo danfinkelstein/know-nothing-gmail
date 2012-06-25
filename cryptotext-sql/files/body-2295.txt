@@ -1,0 +1,5 @@
+I wrote a simple program with 3 branches and ran it on m5. The statstics show much more branches and the number of instructions executed are also more than the assembly generated. Is it because of noise from emulated system calls?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

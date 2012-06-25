@@ -1,0 +1,248 @@
+  
+Hey,
+I wanted to specify the problem a little bit further and I found this:
+After applying the patch:
+When setting the latency of the IL1 cache at 0.5ns and the Physical
+Memory's latency at 30ns I can run the simulation for latencies of the
+L2-cache in the range ]0, 8.5] ns.
+When I keep the L2 latency at 2ns I can change the Memory's latency to
+a latency in the range ] 0, 43] ns.
+When I keep L2's latency at 1ns I can change the Memory's latency to a
+latency in the range ]0, 45] ns.
+Without the patch I get similar results, though somewhat different:
+IL1 latency=0.5ns; Memory latency=30ns => "valid" L2 latency in
+]0;5.5 ns]
+IL1 latency=0.5ns; L2 latency=2ns => "valid" Memory latency in
+]0;37.5ns]
+IL1 latency=0.5ns; L2 latency=1ns => "valid" Memory latency in
+]0;39.5ns]
+Best regards,
+Max- Show quoted text -
+On 01/21/2010 10:43 AM, Maximilien Breughe wrote:
+  
+  
+Hi,
+  
+My first experiences the patch:
+M5 quits for the same configurations as before (IL1 latency = 0.5ns; L2
+cache), but the error changes. In fact I don't get any error message
+but I reached the maximum execution time after less than a second:
+  
+Exiting @ cycle 9223372036854775807 because simulate() limit reached
+  
+It's okay, I can wait until Monday :-).
+Thanks for helping me!
+  
+Max
+  
+On 01/20/2010 05:50 PM, Korey Sewell wrote:
+  Max,
+please try the recvRetry patch out and let us know how it goes.
+    
+In my repository, I currently am changing cache sizes and adjusting
+latencies in my simulations w/out the problems you specify. However, I
+have something time-sensitive for Monday and will need to wait until
+Tuesday to work on cleaning up any "scruff" in the patches and
+committing them.
+    
+If you really need it before then, I could zip-up some patches and send
+you the mercurial "series" file and you can try that as well. Of
+course, the downside to that is that when I do make changes to the
+patches and commit to the tree you'll potentially have some merging of
+code to do the next time you update from the dev branch.
+    
+-Korey
+    
+    On Wed, Jan 20, 2010 at 8:52 AM,
+soumyaroop
+roy <sroy@cse.usf.edu> wrote:
+    Try
+this
+patch. I never got around to testing it properly. It it
+highly likely that would have to make the changes manually. But it is
+a pretty small patch.
+      
+-Soumyaroop
+      
+On Wed, Jan 20, 2010 at 5:28 AM, Maximilien Breughe
+      
+      <Maximilien.Breughe@elis.ugent.be>
+wrote:
+> Soumyaroop,
+>
+> I'm afraid that the dev branch gives me the same results.. (I've
+pulled
+> everything with Mercurial from http://repo.m5sim.org/m5/
+and it gives me
+> the same error).
+> I'll try to gdb it a little bit more. You were talking about a
+patch? Or
+> is it already in the dev branch?
+>
+> You might be right about the L1 hit latency. But for an inorder
+cpu this
+> would mean that the front end could be a bottleneck since we would
+only
+> have a front end fill rate of 1 instruction each 2 cycles.
+>
+> best regards,
+> Max
+>
+> On 01/19/2010 03:17 PM, soumyaroop roy wrote:
+>> Hi Max,
+>>
+>> Please see if the problem persists with the dev branch. There
+is a bug
+>> with recvRetry() which is causing applu, gcc, and perlbmk to
+fail
+>> (ref.  inorder test status page through the inorder
+documentation
+>> page: http://www.m5sim.org/wiki/index.php/InOrder)
+even
+in the default
+>> configuration (i.e. L1 hit latency 2 cycles, etc.). Korey has
+a patch
+>> to fix it but it is currently untested.
+>>
+>> Btw, a best case L1 hit latency of 2 cycles is not unrealistic
+for
+>> high perf. processors (e.g. PowerPC MPC7450 family). Perhaps,
+somebody
+>> else can comment on this for inorder processors.
+>>
+>> regards,
+>> Soumyaroop
+>>
+>> On Tue, Jan 19, 2010 at 8:08 AM, Maximilien Breughe
+>> <Maximilien.Breughe@elis.ugent.be>
+ wrote:
+>>
+>>> Hello,
+>>>
+>>> I'm having a problem to use the InOrderCPU core with an L2
+cache when
+>>> adjusting the I-L1-latency.
+>>> Is there anyone else who countered the same problem?
+>>> I use ALPHA_SE and the latest stable M5-version.
+>>>
+>>> Description:
+>>> -----------------
+>>> I configured my CPU to run at 2GHz. The default value of
+the Instruction
+>>> L1-latency is 1 ns. This means that it would take 2
+clock-cycles of the
+>>> CPU to get something from the instruction L1 cache, which
+is unrealistic.
+>>> Therefore I can either adjust the CPU's clock frequency to
+1GHz or
+>>> adjust the latency of the L1 cache to 0.5ns. When using
+the second
+>>> option I get the following error when I also add an
+L2-cache:
+>>>
+>>> 0: system.remote_gdb.listener: listening for remote gdb #0
+on port 7000
+>>> m5.opt:
+build/ALPHA_SE/cpu/inorder/resources/cache_unit.cc:722: void
+>>> CacheUnit::recvRetry(): Assertion `cacheBlocked' failed.
+>>> Program aborted at cycle 39145001
+>>>
+>>>
+>>> ./run-max.sh: line 48:  1406 Aborted                
+./${binary} -d
+>>> "${outputdir}" --trace-flags="Exec"
+--trace-file="tracedmp" "${script}"
+>>> --output "${benchout}" --bench "${1}" ${cpumodel} --caches
+--l2cache
+>>>
+>>> When I only use an L1 cache no error occurs. Also for
+other L1-latencies
+>>> everything works fine when I do attach an L2 cache.
+>>>
+>>> Example:
+>>> ------------
+>>> Unfortunately I do not get this error for the
+hello-benchmark, but I do
+>>> get it for simple code-fragments like this one:
+>>>
+>>> #include<iostream>
+>>> using namespace std;
+>>>
+>>> int main(){
+>>>          double result=1;
+>>>          double x;
+>>>          while(cin>>x){
+>>>                  result*=x;
+>>>          }
+>>>          cout<<"The result of the multiplication
+session is"<<result<<endl;
+>>> }
+>>>
+>>> To run this program you need to provide an inputfile that
+contains
+>>> numbers seperated by spaces:
+>>> ./a.out<  inputfile
+>>>
+>>>
+>>> Thank you!
+>>>
+>>>
+>>> Max
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+      
+      
+      
+      
+      
+      
+      --
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+      http://www.csee.usf.edu/~sroy
+      
+      
+      
+_______________________________________________
+m5-users mailing list
+      m5-users@m5sim.org
+      http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+    
+    
+    
+    
+-- 
+- Korey
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

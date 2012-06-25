@@ -1,0 +1,36 @@
+Hello,
+I've tried running the following command:
+$ build/ALPHA_FS/m5.opt -d ../orig_netperf/ configs/example/fs.py --l2cache -b NetperfStream
+The thing is, it eventually terminates prematurely due to the "--l2cache" flag:
+Shell output:
+M5 compiled Sep 14 2009 17:50:19
+M5 revision 94c016415053 6283 default tip
+M5 started Sep 14 2009 18:00:01
+M5 executing on felixloh-desktop
+command line: build/ALPHA_FS/m5.opt -d ../orig_netperf/ configs/example/fs.py --l2cache -b NetperfStream
+Global frequency set at 1000000000000 ticks per second
+info: kernel located at: /home/felixloh/research/m5/system_files/binaries/vmlinux
+Listening for testsys connection on port 3456
+      0: testsys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009
+info: kernel located at: /home/felixloh/research/m5/system_files/binaries/vmlinux
+Listening for drivesys connection on port 3457
+      0: drivesys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009
+0: testsys.remote_gdb.listener: listening for remote gdb #0 on port 7000
+0: drivesys.remote_gdb.listener: listening for remote gdb #1 on port 7001
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+2240256513000: testsys.cpu.break_event: break event panic triggered
+panic: M5 panic instruction called at pc=0xfffffc000031add0.
+ @ cycle 2240353352500
+[execute:build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.cc, line 10987]
+Memory Usage: 401872 KBytes
+For more information see: http://www.m5sim.org/panic/116b925c
+Program aborted at cycle 2240353352500
+Aborted
+Conversely, when I left out this "--l2cache" flag in the command above, the benchmark runs to completion.
+Do you have any suggestions on what I can do here? I've attached the corresponding testsys.terminal output file as well.
+Thanks,
+Felix_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

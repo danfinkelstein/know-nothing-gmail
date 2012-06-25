@@ -1,0 +1,30 @@
+An easier approach is to call req->isInstFetch().  Note that this used to be called isInstRead() but was renamed a few months ago in the development tree:http://repo.m5sim.org/m5/rev/a27c0934de24
+Steve- Show quoted text -On Mon, Jun 15, 2009 at 11:16 PM, ef <snorlaxgb@gmail.com> wrote:
+Hello,The only way I believe is you need to use tracing setting trace=Config, and it will tell what ports are connected to where, and you can then tell what the src and dest are, as they are just numbers (no names). I guess you can add couts and modify the code to distinguish. So basically there is no elegant solution, you have to hardcode it in.
+On Tue, Jun 16, 2009 at 1:01 AM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi ef,yes... I mean whether the packet is from icache or dcache.On Mon, Jun 15, 2009 at 1:22 PM, ef  wrote:
+What do you mean, you mean whether it is from the icache or dcache?
+On Mon, Jun 15, 2009 at 2:53 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi,I am interested in analyzing packets. I could not figure out that the requested packet is data or instruction. 
+Could anyone please help me,  what parameters tell us that the requested packet is whether data or instruction? 
+Thanks in advance,DRC
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

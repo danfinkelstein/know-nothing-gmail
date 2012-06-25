@@ -1,0 +1,58 @@
+Hi Jonas,
+Putting it in the bugtracker is nice since then we're less likely to forget about it.
+Thanks for all the patches...
+Steve- Show quoted text -
+Jonas Diemer wrote:
+Hi,
+Steve Reinhardt schrieb:
+3. With the new Beta2, m5 seems to use Root.clock as the reference tick
+for all statistics. I stumbled over it because my CPI was suddenly
+really huge (>500). This really shocked me until I realized that
+Root.clock defaults to 1THz, so a CPI of 500 makes perfect sense for a
+2GHz machine (once you know about it :-) ). Thus, the CPI in the stats
+is no longer measured in processor cycles but in "root-cycles". Is this
+a bug or a feature?
+At the high level it's supposed to be a feature... there are times you want to have components clocked at rates that are not integer multiples of the CPU frequency.  The CPU's CPI stat should divide out its local clock rate though, so if it's not doing that then that's a bug.  FYI, internally we've been trying to make the distinction between "clocks" (which are the local clocks for various components, e.g. 2GHz for the CPU) and "ticks" (which is the global virtual time rate, e.g. 1THz).  We haven't fully renamed all the flags/variables/options etc. to be consistent with this nomenclature, but that's where we're headed.
+Well, then this seems like a bug. This is how the CPI is currently calculated:
+cpi = simTicks / committedInsts;
+Following your convention, this could rather be called "tpi = ticks per instruction", or, as you suggested, the calculation should be something like:
+cpi = simTicks / committedInsts / clock;
+Similarly, ipc needs to be changed.
+BTW: should I post things like this to the bugtracker rather than to the ML?
+Here's the diff
+--- src/cpu/o3/cpu.cc.orig      2006-12-11 12:13:17.674351500 +0100
++++ src/cpu/o3/cpu.cc   2006-12-11 12:10:48.121005000 +0100
+@@ -377,25 +377,25 @@
+       .name(name() + ".cpi")
+        .desc("CPI: Cycles Per Instruction")
+        .precision(6);
+-    cpi = simTicks / committedInsts;
++    cpi = simTicks / committedInsts / clock;
+    totalCpi
+       .name(name() + ".cpi_total")
+        .desc("CPI: Total CPI of All Threads")
+        .precision(6);
+-    totalCpi = simTicks / totalCommittedInsts;
++    totalCpi = simTicks / totalCommittedInsts / clock;
+    ipc
+       .name(name() + ".ipc")
+        .desc("IPC: Instructions Per Cycle")
+        .precision(6);
+-    ipc =  committedInsts / simTicks;
++    ipc =  committedInsts / simTicks * clock;
+    totalIpc
+       .name(name() + ".ipc_total")
+        .desc("IPC: Total IPC of All Threads")
+        .precision(6);
+-    totalIpc =  totalCommittedInsts / simTicks;
++    totalIpc =  totalCommittedInsts / simTicks * clock;
+}
+       Jonas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

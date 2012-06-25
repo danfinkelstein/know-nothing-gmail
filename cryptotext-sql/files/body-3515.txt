@@ -1,0 +1,40 @@
+I think I trace the problem down. The issue is that that core 129 (M5_pid = 128) is unable to get a correct TLBEntry object because the asn value it reads from its misc register file is 0, while the pid stored in the tlbentry is 128. This causes the translation request to fault, which then leads to trying to advance directly to fault handler, which faults, leading to an infinite loop between fetch() and advanceInst(fault) (lines 538 and 555 of timing.cc are where the loop is formed).
+The problem is that the IPR_DTB_ASN misc register for core 128 gets set to pid << 57 (in arch/alpha/process.cc line 80), which overflows for pids > 7 bits. I'm not all that familiar with the alpha isa, but does it need to be shifted by 57 bits like that? Or maybe it should be using IPR_ITB_ASN instead of the DTB one (The ITB::translate function uses the IPR_DTB_ASN) which can have 60 bits of accuracy?
+-Nick- Show quoted text -
+On Feb 14, 2008, at 2:53 PM, Steve Reinhardt wrote:
+If it works in atomic mode but not timing, I suspect some sort of
+cache deadlock (try cranking up the number of targets per MSHR, or
+less likely the number of MSHRs), or maybe we're using a int8_t for
+the bus ID somewhere (which would fail at 256 since we use -1 for
+broadcast).
+Steve
+On Thu, Feb 14, 2008 at 12:46 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+Is it possible to run a multiprogram simulation with more than 128
+cores? Using a slightly modified se.py and running in simple timing
+mode, I've tried to run the hello world default benchmark on 129
+cores, and it never gets past the "starting simulation" message. For
+128 cores it runs fine (including printing out the "warning:
+increasing stack size by one page" message, but the moment I go above
+128 I never see that warning and it hangs.
+On the other hand, running in atomic simple cpu mode it completes for
+even 256 cores.
+This is using an unmodified m5 2.0b4 source. Does anyone know what may
+be causing this issue, and if there is a way to get around it? Or how
+I may go about tracing the problem down? I'm not sure what all steps
+occur between the "starting simulation" message and when the programs
+get loaded (which I assume causes the stack size increase), but that's
+when the simulator appears to get stuck.
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

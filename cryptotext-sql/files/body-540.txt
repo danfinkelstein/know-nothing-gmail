@@ -1,0 +1,13 @@
+Okay, but this extra cycle is only visible when there is a dependent
+instruction directly following the multiply. So when I set the multiply
+latency for example to 3, the latency is 3 when no dependent instruction
+is immediately following this multiply. If there actually is a dependent
+instruction immediately following the multiply, the latency would be 4.There is a difference between if the instruction is stalled because the previous stage is blocking (1st example you said) or it may be getting an additional stall because of the data dependence (2nd example).
+I'm willing to dig deeper and help, but I would need some type of debug output confirming what's going on. Can you run it with the traceflags on ("maybe InOrderCPUAll") and see if the instruction is stalled because the multiply instruction blocked the pipeline OR the forwarding path isnt immediate after the execution as it should be. I'm not convinced of the problem but instead of the speculation we should just dive into the problem. It could be something like the multiply-finish event is happening a cycle late.
+Also for the cache example, I think in my tree I made the default latency to 1 cycle, but it might be default 2 in the main tree. So again double check that as it seems like a possible confusion of parameters there.
+So as I was saying, a good way to start to solve the problem is generate an debugging tace so we can ID the problem and hopefully from the trace output see where things are possibly going wrong. 
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

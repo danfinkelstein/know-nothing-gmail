@@ -1,0 +1,12 @@
+I just added the linux-patches repository to repo.m5sim.org. It is a
+Mercurial Queues repository of patches that we apply on top of the
+Linux Mercurial repository (http://www.kernel.org/hg/linux-2.6/). The
+standalone patches on the website will not be updated in the future.
+If you would like the latest patches please either use the patch queue
+or download the tarball and apply the patches in the order listed in
+the series file.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

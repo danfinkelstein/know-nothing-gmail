@@ -1,0 +1,10 @@
+Sorry about that, not sure how that happened.  the spec-surg-client.rcS file should have "cd /benchmarks/surge" instead of "cd benchmarks/specsurge" and i believe that should work.lisa- Show quoted text -
+On 4/19/07, Mojtaba Mehrara <mehrara@eecs.umich.edu> wrote:
+HiI am trying to run specweb99 benchmarks with apache running on theserver side.  I tried using "-b SurgeSpecweb", but it seems the latestlinux disk image from the website doesn't have necessary files for
+running apache and also some paths are not set correctly in thespec-surge-server.rcS and spec-surge-client.rcS files. Are these scriptssupposed to run with the latest disk image? Am I missing sth here?
+Thanks,-Mojtaba_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

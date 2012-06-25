@@ -1,0 +1,6 @@
+Is it possible to simulate nodes passing udp traffic in m5? Also, is it possible to simulate arbitrary cpu loads on the node to test affects or cpu load on network traffic?
+Lanier
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

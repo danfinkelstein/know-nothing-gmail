@@ -1,0 +1,15 @@
+I would guess it has something to do with the python library or with SWIG. I'd guess that you've compiled M5 with one version of python and the clusters have a slightly different version of python, or perhaps there one is compiled with threads and the other is not?
+Ali- Show quoted text -
+On Nov 23, 2007, at 8:13 PM, Shoaib Akram wrote:
+Recently, I have been trying to install m5 on a cluster and evrything builds fine else at the final step of actually making binaries,m5.debug.bin, it ends with followong errors..
+/usr/local/lib/libpython2.4.so(thread.o)In function Pythread_set_key_value:
+python/thread_pthread.h:298:undefined reference to sem_wait
+and more errors all of the same form related to pthread library...
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

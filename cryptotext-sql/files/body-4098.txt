@@ -1,0 +1,7 @@
+Hi,
+Is there any good method of scheduling a thread between CPUs? I am trying open two threads from a checkpoint and put them into a SMT processor. What would be the best way to proceed. I could imagine scheduling them from a single core to a SMT core, or just finding a way to schedule them together at the beginning. Any ideas?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

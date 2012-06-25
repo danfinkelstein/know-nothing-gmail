@@ -1,0 +1,40 @@
+Dan,
+I looks like you are playing with M5.  What do you think so far?
+-Todd
+--
+Todd Bezenek
+MIPS Technologies
+Daniel Alex Finkelstein wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+Bingo -- that solved it.
+Thanks, Steve.
+- --Dan
+On Aug 26, 2006, at 5:53 PM, Steve Reinhardt wrote:
+I just added that check... try commenting it out (search for 'zlib'  in m5/SConstruct) and replacing it with this:
+env.Append(LIBS=['z'])
+and see if you can compile anyway.  If so, then there's something  messed up with the way scons is checking for the library.
+Steve
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- --
+Daniel Alex Finkelstein
+Graduate Research Fellow
+Computer & Information Science
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201
+tel: 718-260-3378
+fax: 718-260-3609
+url: http://pages.poly.edu/~dfinke01
+-----BEGIN PGP SIGNATURE-----
+Version: PGP Desktop 9.0.6 (Build 6060)
+iQA/AwUBRPDFppcnyjn38MHdEQKaggCg3g9rTRHsRHWrrZwCS8oducvlw9kAnjMl
+bRlm5vr+nVKrw1xEoKSXSgrx
+=dRXq
+-----END PGP SIGNATURE-----
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

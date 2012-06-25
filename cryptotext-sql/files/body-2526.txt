@@ -1,0 +1,14 @@
+Hi,
+I have questions related to C++. The first one is about how to compare
+two "Stats::Scalar numCycles" values in the program. The ">" operator
+is not defined now.  Where can I add the definition?
+ no match for 'operator>' in
+'((MTSimpleCPU*)this)->MTSimpleCPU::<anonymous>.TimingSimpleCPU::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles
+> ((MTSimpleCPU*)this)->MTSimpleCPU::<anonymous>.TimingSimpleCPU::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles'
+Another question is how to transfer the numCycles to the integer value?
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

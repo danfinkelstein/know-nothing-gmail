@@ -1,0 +1,45 @@
+That post is pretty old. All three configurations should work fine now.
+Ali
+- Show quoted text -
+On Mon, 19 Oct 2009 16:40:30 -0400, di wang <diwang@bu.edu> wrote:
+> Hi,
+>
+> I saw a post in the user archives explaining the MP simulation as
+follows:
+>
+>
+> you can simulate multiple processors on a coherent bus as long as (1)
+there
+> is only one
+> bus that has multiple caches connected to it and (2) there is only one
+> level of cache above the shared bus.  That is, like this:
+>
+> CPU --- L1 --|
+>                   |--- MEM
+> CPU --- L1 --|
+>
+> or like this:
+>
+> CPU --- L1 --|
+>                   |--- L2 --- MEM
+> CPU --- L1 --|
+>
+> but NOT like this:
+>
+> CPU --- L1 --- L2 --|
+>                            |--- MEM
+> CPU --- L1 --- L2 --|
+>
+> Has the situation been changed?  Any improvement? Can multiple L1 and L2
+be
+> above the shared bus now and with different latecy buses between L1 and
+L2
+> pairs?
+>
+> thanks,
+>
+> di
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

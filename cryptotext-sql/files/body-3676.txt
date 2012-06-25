@@ -1,0 +1,14 @@
+Hi all,
+ 
+I am trying to run some simple benchmarks on M5 using CMP architecture. My question is how can i run my benchmark parallel i.e. if i have 2 processors how do i schedule the instructions for each one? 
+ 
+Do i have to configure my system, for example on se.py file , and define the workload to each processor or do i have to make the scheduling within the benchmark, for example using pthreads?
+ 
+I want to simulate MIPS architecture on SE mode
+ 
+Thanks
+PanayiotisExpress yourself instantly with MSN Messenger! MSN Messenger
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

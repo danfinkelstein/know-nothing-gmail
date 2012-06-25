@@ -1,0 +1,21 @@
+I'm trying to adapt the cache model to my interconnection module which 
+duplicates packets. I came into "simulate() limit reached" when replacing the 
+toL2bus with my interconnenction in splash2/run.py (SE mode). A further 
+investigation show that this happens upon a Stq_c. 
+ 
+Can you give some information about how M5 handles store-conditional/link 
+load? I observe that the TimingSimpleCPU switched to DcacheWaitResponse while 
+the L1 cache sends UpgradeReq requests, which, however, never gets any 
+responses. Hence the cpu hangs there and ran out of events.
+ 
+I noticed that some where in the cache the UpgradeReq is replaced by 
+ReadExReq, but I can't figure out under what conditions. I'd appreciate any 
+help.
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

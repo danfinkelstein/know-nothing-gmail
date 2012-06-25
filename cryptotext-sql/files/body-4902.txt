@@ -1,0 +1,25 @@
+Hi Chris,
+Yes, this code should be:
+        if maxtick == -1:
+            exit_event = m5.simulate(maxtick)
+        else:
+            exit_event = m5.simulate(maxtick - m5.curTick())
+Sorry, I thought that fix was in the release... if not I'm pretty sure it was discussed on the mailing list.  It's definitely in our internal tree (actually it was fixed and then Lisa just cleaned up the interface to eliminate the problem entirely).
+I guess we really need to get a new release out to get all these bug fixes in.  We honestly just have a couple more known bugs we're trying to get rid of before that happens.
+Steve- Show quoted text -
+Hsiong Christopher En Ping wrote:
+So in the provided configs/example/fs.py script, there is a while loop at the bottom that keeps running simulations:
+while exit_event.getCause() == "checkpoint":
+   m5.checkpoint(root, "cpt.%d")
+   exit_event = m5.simulate(maxtick - m5.curTick())
+This is not entirely correct, because if I pass in maxtick=-1 (to run forever), then after the first checkpoint is written, the expression "maxtick - m5.curTick()" would give me the large negative num_cycles and crash the simulation as I encountered. Of course, the fix for this is really trivial, unless to say that this is intended and we shouldn't mess with this?
+Sincerely,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,50 @@
+> Is there any pointers out there about how to use the mysql + M5 integration?
+Unfortunately, I'm pretty sure that there's nothing much.  Basically,
+the output side is easy, you just have to call m5.stats.initMySQL()
+and then when stats are dumped, they get dumped to the mysql database.
+ There are two other issues.  Database setup is done with
+"util/stats/stats.py database init".  The main issue is with
+extraction.
+Look at the stats.py script for example code.  There are a few things
+that I support:
+First, once you've connected to the database, the code queries the
+database for all stat names and sucks them out of the database.  You
+can then use the update_dict call to put all of the stats into a dict
+of your choice (you can even pass globals() or locals() as the dict).
+In that dict, you will get a whole bunch of proxy objects, for each
+stat.  So if you have an object foo.bar and a stat called blah, you'd
+end up with foo.bar.blah in that dict.  The proxies understand all of
+the fomula stuff, so you can say
+x = foo.bar.blah / foo.bar.baz and you'll get a new proxy object x
+that is a division of the two stats.
+You can call db.get("my.job.name", x) to query the database for the result.
+There are a few more sophisticated things you can do.  If you dump
+stats more than once in a single run, you can use: db.sum(), db.avg(),
+db.stdev().  Those stats give you the sum, mean, and standard
+deviation of all of the dumps done in that single run.
+All in all, it's really pretty powerful, but it does take some getting
+used to.  There are some outstanding changes that you'd probably find
+useful in our shared patch queue (see stats.diff).  That patch also
+has lots of examples of how I integrated the database stuff with
+matplotlib.
+I have grand plans to go a lot further with this stuff.  Essentially,
+I plan to create a database file (probably a python shelf, though
+maybe sqlite db) that contains all of the stat data and make all of
+this python code both able to query the mysql database and the
+database file.  I will move all of the stats output code that is
+currently in C++ over to python (I've made stats accessible to the
+python side of M5).  Then I can use the same basic query code to dump
+the text file from either the mysqldb, database file, or the python
+interface to stats.  Finally, I will probably also move from MySQLdb
+to sqlalchemy.
+Ok, long e-mail.  I hope you find this stuff useful.  If you want to
+learn a thing or two about python, databases, swig, and the C/Python
+API, consider helping me out!  This sounds like a whole lot of stuff,
+but in all honestly, a significant fraction of the code is written.
+It's mostly a matter of putting the pieces together and cleaning it
+all up.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

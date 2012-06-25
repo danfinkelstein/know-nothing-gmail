@@ -1,0 +1,6 @@
+Hi,  I seem to recall reading in the mailing list about how to create and modify disk images without having sudo or root access on a machine.  I have searched through the archives, and I can't find anything about it.  Is there a way to do this?
+  Thanks,  Joel--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

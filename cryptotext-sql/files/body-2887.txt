@@ -1,0 +1,21 @@
+Gabe Black <gblack <at> eecs.umich.edu> writes:
+>
+>     I figured out what's going on. The binary you're trying to run has
+> been compiled as big endian, while M5's MIPS implementation assumes
+> little endian. If you reverse the order of the instruction bytes as
+> reported by gdb, you'll find that they decode to the instructions M5 was
+> trying to execute. To fix your problem, you should be able to just
+> recompile your program as little endian. On M5's end, we should check
+> the endianness of binaries and either complain if it isn't supported, or
+> make it work somehow.
+>
+What flag should be used to recompile in little endian?  I tried using -EL and
+-mlittle-endian with the crosstool version of the gcc.  The -mlittle-endian
+didnt work and when compiled with -EL, the binary was not even considered
+runnable by M5.  I can't even get a "Hello World" running under MIPS_SE.
+Aaron
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

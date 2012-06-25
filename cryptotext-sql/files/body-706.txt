@@ -1,0 +1,47 @@
+In the atomic.cc code, do you know where the cache misses and hits are
+determined?
+It looks like it's in this portion (line 349 onwards):
+if (hasPhysMemPort && pkt.getAddr() == physMemAddr)
+{  dcache_latency += physmemPort.sendAtomic(&pkt);
+}
+else
+{  dcache_latency += dcachePort.sendAtomic(&pkt);
+}
+Thanks,
+Felix
+- Show quoted text -
+Quoting Shoaib Akram <sakram3@illinois.edu>:
+> one way, might catch such packets on the system bus. Packet has a
+> fields that would tell the command(load/store) and address that
+> generated the request.
+>
+> ---- Original message ----
+>> Date: Tue, 13 Oct 2009 16:41:48 -0400
+>> From: Felix Loh <felixloh@umich.edu>
+>> Subject: [m5-users] Tracing loads/stores that miss in the L2 cache
+>> To: "m5-users@m5sim.org" <m5-users@m5sim.org>
+>>
+>> Hello,
+>>
+>> I was wondering, is there a way to get a trace of only the memory
+>> operations (loads and stores) that miss in the L2 cache (i.e those
+>> that need to access main memory)? I'm currently using the AtomicSimple
+>> CPU model.
+>>
+>> Thanks,
+>> Felix
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

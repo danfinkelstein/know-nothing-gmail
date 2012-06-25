@@ -1,0 +1,8 @@
+1.
+I have a system with four processors. I make four LiveProcess objects and assign the radix benchmark to each of them. After a while, I get the error, segmentation fault, core dumped. Any insight?
+2.
+I want to assign one process to one of the processors in above system and want others to be idle. But then it says, parameter workload not specified. Any way around?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

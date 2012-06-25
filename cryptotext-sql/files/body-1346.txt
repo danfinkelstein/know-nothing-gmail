@@ -1,0 +1,19 @@
+As far as I know no one has ever run a JVM on M5, someone correct me if I'm wrong.I looked into it a while ago - since we really only have ALPHA as the totally mature FS, you'd need a JVM for Alpha, which there used to be one that was under development but seeing as I can't find it on the web anymore I think it might be a dead project.
+It would be much simpler to find a JVM for Sparc, but I'm not up on how much is going on with SPARC_FS right now.  Lisa
+- Show quoted text -On Thu, Jun 4, 2009 at 8:20 AM, Panayiotis Petrides <p_tottis@hotmail.com> wrote:- Show quoted text -
+Hi,
+ 
+I want to use M5 for some Java programs
+simulation. I was wondering if there is a support of JVM on M5 FS? Does anyone
+have an information on how I can execute Java programs on FS mode?
+ 
+Thanks
+Panayiotis
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

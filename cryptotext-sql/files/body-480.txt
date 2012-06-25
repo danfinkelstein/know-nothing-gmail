@@ -1,0 +1,13 @@
+Hi,
+I am interested in running m5 in the SPARC_FS mode for doing some
+performance measurements for programs written with the Intel TBB
+library. I've downloaded OpenSparc T1 which has a directory named
+S10image. Can someone please help me in getting started with booting
+solaris in the SPARC_FS mode? I couldn't find instructions regarding
+the same on the wiki.
+Regards,
+Prasun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

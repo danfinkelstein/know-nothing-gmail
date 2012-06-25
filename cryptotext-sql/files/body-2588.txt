@@ -1,0 +1,58 @@
+If someone wants to give me an account on a machine with gcc 4.3 on
+it, I will fix this problem before we ship the stable release.  I
+don't have the time to set it up on a new machine.
+  Nate
+- Show quoted text -
+On Fri, Aug 29, 2008 at 4:28 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi all,
+>
+> I got a better machine and installed 64-bits Fedora on it. When I
+> tried to compile M5, I got the errors.
+>
+> scons: Building targets ...
+> g++ -o build/ALPHA_SE/python/swig/pyevent.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/usr/include/python2.5 -Ibuild/libelf -Ibuild/ALPHA_SE
+> build/ALPHA_SE/python/swig/pyevent.cc
+> In file included from build/ALPHA_SE/base/cprintf.hh:41,
+>                 from build/ALPHA_SE/base/misc.hh:39,
+>                 from build/ALPHA_SE/sim/eventq.hh:50,
+>                 from build/ALPHA_SE/python/swig/pyevent.hh:35,
+>                 from build/ALPHA_SE/python/swig/pyevent.cc:34:
+> build/ALPHA_SE/base/varargs.hh:153: error: declaration of 'typedef
+> class RefCountingPtr<VarArgs::Base<RECV> >
+> VarArgs::Argument<RECV>::Base'
+> build/ALPHA_SE/base/varargs.hh:132: error: changes meaning of 'Base'
+> from 'struct VarArgs::Base<RECV>'
+> build/ALPHA_SE/base/varargs.hh:172: error: declaration of 'typedef
+> struct VarArgs::Argument<RECV> VarArgs::List<RECV>::Argument'
+> build/ALPHA_SE/base/varargs.hh:152: error: changes meaning of
+> 'Argument' from 'struct VarArgs::Argument<RECV>'
+> cc1plus: warnings being treated as errors
+> build/ALPHA_SE/sim/host.hh:61: error: 'MaxTick' defined but not used
+> scons: *** [build/ALPHA_SE/python/swig/pyevent.do] Error 1
+> scons: building terminated because of errors.
+>
+> My software version:
+> Scons: v0.96.91
+> Swig:1.3.28
+> g++ (GCC) 4.3.0 20080428 (Red Hat 4.3.0-8)
+> Python 2.5.1
+>
+> Should I downgrade the g++ and Python? The same code works fine on the
+> old machine (python2.4.3; g++ 3.4.6)
+>
+> Thanks,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

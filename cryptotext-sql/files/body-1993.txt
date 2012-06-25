@@ -1,0 +1,131 @@
+Hi,Lisa.I am very appreciate of  your help, I have got to a normal prompt when running M5 in full system mode. I should have read the document carefully enough. Thank you ! The MAKEDEV still doesn't work, I found a MAKEDEV under /sbin on my platform, and copied it to the directory of M5 to replace the original MAKEDEV that supplied by the M5, but the same error came up again. I guessed the error maybe result from the compile process of the image, but I am not sure of that. I will still try to find out the problem, and maybe I will compile it again if necessary.
+I'm not sure what's up with the MAKEDEV script, it obviously used to work
+but it has been a long time.  Actually, now that I think about it, it
+probably has to do with your platform, I bet the MAKEDEV shipped with
+ptx-dist doesn't work with your platform, and if you typed "which MAKEDEV"
+on your machine you'd find a local MAKEDEV that would work.
+However, I'm not sure there was anything wrong with what you saw earlier. If
+you were just running plain old fs.py, then it wasn't stalled, it was just
+behaving normally.  fs.py with no arguments just boots linux and does
+nothing after that, but continues to just...run.  it will go until you kill
+it.
+if you use the m5term utility, you can see the output from the boot process
+and note that it will boot, get to a prompt, and just wait for input from
+there.
+Lisa
+On Wed, Jan 28, 2009 at 9:31 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, Lisa.
+>
+> I have tried to run it in this way, I began without sudo and NOT as root,
+> and the initdev.sh asked me if I have a sudo access and I entered the
+> password, and then an error came up!
+>
+> Is there any problem with the MAKEDEV, the error says the MAKEDEV fails to
+> run as root.
+>
+> I built the image from the scratch because I want to run some programs I
+> wrote myself on M5 in full system mode. I have compiled the alpha-fs mode
+> and when I ran, everything seemed OK as the document says, but it just
+> stalled there and nothing continued. It looked like this:
+>
+> *M5 Simulator System
+>
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled Jan 10 2009 00:08:03
+> M5 revision Unknown:Unknown
+> M5 commit date Unknown
+> M5 started Jan 29 2009 10:25:59
+> M5 executing on ubuntu
+> command line: build/ALPHA_FS/m5.opt -d /tmp/output configs/example/fs.py
+> Global frequency set at 1000000000000 ticks per second
+> warn: kernel located at:
+> /media/Study/CPU/CPUsource/M5/m5-stable-733318abb7b1/dist/m5/system/binaries/vmlinux
+> Listening for system connection on port 3456
+>       0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00
+> 2009
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> **** REAL SIMULATION ****
+> warn: Entering event queue @ 0.  Starting simulation...
+>
+> and nothing continues, the simulator just stalls here...
+>
+> *I could not find out where the problem is and I have sent a question to
+> the maillist but no one have encountered this.
+>
+> So I decided to build an image myself, I hope it will work.
+> *
+>
+>
+> **
+> *
+>>
+>> * *I think it was a problem with the initdev.sh script - what if you run
+>> ptxdist images NOT as root or sudo at all?  initdev.sh should ask you if
+>> you
+>> have sudo access, and just tell it yet and it will ask for your password
+>> from there.
+>>
+>> is there a reason you must build an image from scratch yourself?
+>>
+>> lisa
+>>
+>> On Wed, Jan 28, 2009 at 11:45 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>>
+>> > Hi, Lisa. Thanks for your reply.
+>> >
+>> > I have tried both ways, I ran it with sudo too but the error is the
+>> same.
+>> >
+>> > I have been working on this for several weeks and finally get to the
+>> last
+>> > step, that's frustrated !
+>> >
+>> >>
+>> >>
+>> >> I have a vague recollection of something like that happening.  I think,
+>> >> for
+>> >> some reason, the script worked if I ran it with sudo instead of as
+>> root.
+>> >>
+>> >> I'm changing the wiki now to warn that this whole ptx-dist process is
+>> >> pretty
+>> >> deprecated and not well-supported, but if you got that far, that's
+>> great!
+>> >>
+>> >> Lisa
+>> >>
+>> >> On Wed, Jan 28, 2009 at 6:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>> >>
+>> >> > Hi, I used the ptxdist to create an full system image to run on M5,
+>> and
+>> >> I
+>> >> > have reached the last  step. When I run the command * ptxdist
+>> images*, I
+>> >> > just got an error !
+>> >> >
+>> >> > The error seems simple:
+>> >> >
+>> >> > *Failed to
+>> >>
+>> run*/media/Study/CPU/CPUsource/M5/linux-dist/lib/ptxdist-0.10.3/m5_files/MAKEDEV
+>> >> > -d /media/Study/CPU/CPUsource/M5/linux-dist/my_workspace/root/dev
+>> >> console
+>> >> > random urandom null hda hdb hdc hdd sda* as root*
+>> >> >
+>> >> > but the problem is I run the command under root
+>> >> >
+>> >> > root@ubuntu:/media/Study/CPU/CPUsource/M5/linux-dist/my_workspace#
+>> >> ptxdist
+>> >> > images
+>> >> >
+>> >> > Does anyone encounter such an problem yet? I have absolutely no idea
+>> now
+>> >> !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+Does anyone tried to successfully run lmbench or linpack using m5 in SYS-EM mode?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,11 @@
+Good afternoon,I have created a m5threads static linkable library for Sparc, with the files available in the m5 repository. I used the Sparc compiler available in the m5 website.The thing is: when I link my multithreaded helloworld app with this lib, I get the following error:
+eberle18@bellatrix:~/UFSC/Wannabe/helloworld$ sparc64-unknown-linux-gnu-g++ -static -L. -lm5pthread hello.cpp -o hello/tmp/ccfh1vud.o(.text+0x2b0): In function `main':: undefined reference to `pthread_join'
+collect2: ld returned 1 exit statusThe hello.cpp code follows:#include <iostream>#include <stdio.h>char* frasemain = "Hello M5 SPARC!! <Main>";char* frase1 = "Hello M5 SPARC!! <1>";
+void* print(void* haha){        std::cout << (char*)haha << std::endl;                return NULL;}int main(int argc, char* argv[]) {        char* initial = "Initiating experiment...";
+        print(initial);                pthread_t *t1;        int ok = pthread_create(t1, NULL, print, frase1);                print(frasemain);        ok = pthread_join(*t1, NULL);        
+        return ok;
+}Am I doing something wrong?--Eberle A. Rambo.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

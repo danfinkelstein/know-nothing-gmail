@@ -1,0 +1,6 @@
+In real network environment, if a client want to send a pointer value to the server, it has to copy and send the data on that memory address(pointer) instead of the address itself. I am wondering how it works in M5 simulator. Does it work like the real network environment? Or the client and server "share the memory", so the client can just send the address (pointer) itself?
+The client and server are simulated as two different systems and mimic real-world systems, so communication would have to take place in the same way.  That said, all systems are simulated in a single process, so if you were trying to hack something into the simulator that shared a pointer between simulated systems in the simulator, that would work.  If you actually wanted two different systems to share guest memory, that could work too, but would require hacking.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

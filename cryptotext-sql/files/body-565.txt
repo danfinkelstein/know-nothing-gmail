@@ -1,0 +1,7 @@
+Hi,Has anyone seen anything similar to this while running a benchmark in full system:# ./a.out -i 5a.out(790): unaligned trap at 0000000120005d54: 0000000120010b6c 2b 1
+a.out(789): unaligned trap at 0000000120005d54: 0000000120010b6c 2b 1Bus errorThis is a benchmark that uses pthreads and runs fine if I compile it with x86 gcc. Any idea?
+ThanksAmir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

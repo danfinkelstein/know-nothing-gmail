@@ -1,0 +1,112 @@
+Hi,
+Thank you for replying so soon.
+I have installed Python properly in /usr/bin/ and also
+I can run the command "python".
+I am pasting here the exact error I am getting -
+-------------------------------------------------
+g++ -o build/ALPHA_FS/sim/main.do -c -pipe
+-fno-strict-aliasing -Wall -Wno-sign-compare -Werror
+-Wundef -g3 -gdwarf-2 -O0 -DTHE_ISA=ALPHA_ISA -DDEBUG
+-Iext/dnet -I/usr/include/python2.4
+-Ibuild/libelf/include -Ibuild/ALPHA_FS
+build/ALPHA_FS/sim/main.cc
+scons: *** [Errno 2] No such file or directory:
+'build/ALPHA_FS/python/swig/cc_main.i'
+scons: building terminated because of errors.
+--------------------------------------------------
+both cc_main.i and main.cc are present in the
+specified folder.
+Waiting for a reply.
+Thanks in advance.
+Regards-
+Chaitali
+- Show quoted text ---- Paul <stenius@gmail.com> wrote:
+> you proably dont have python installed, try running
+> it. if it is installed
+> add its location to your path env
+>
+> On 11/9/06, Steve Reinhardt <stever@eecs.umich.edu>
+> wrote:
+> >
+> > Is this all the output you get?  If not, can you
+> send it all?
+> >
+> > Also, have you verified that you can execute
+> python by itself?
+> >
+> > Chaitali Gupta wrote:
+> > > Hi All,
+> > >
+> > > I am new to this simulator. I am trying to
+> install m5 2.0. I have
+> > > already installed Python, Scons, Swig and zlib.
+> > >
+> > > When I compiled m5 using scons, I used the
+> command -
+> > >
+> > >  > scons build/ALPHA_FS/m5.debug
+> > >
+> > > and got one error - "cannot execute -python ...
+> compilation terminated
+> > because of 1 error"
+> > >
+> > > Can anyone help me find the reason ?
+> > >
+> > > Thanks in advance.
+> > >
+> > > Regards-
+> > >
+> > > Chaitali
+> > >
+> > >
+> > >
+> > >
+> > >
+> > >
+> > >
+> > >
+> __________________________________________________
+> > > Do You Yahoo!?
+> > > Tired of spam? Yahoo! Mail has the best spam
+> protection around
+> > > http://mail.yahoo.com
+> > >
+> > >
+> > >
+>
+------------------------------------------------------------------------
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+>
+> --
+>                /
+>               /
+>       \ O  /
+>        \/_(
+> .__  /   \
+>   __\/     )
+> ./         (
+> > _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+____________________________________________________________________________________
+Cheap talk?
+Check out Yahoo! Messenger's low PC-to-Phone call rates.
+http://voice.yahoo.com
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

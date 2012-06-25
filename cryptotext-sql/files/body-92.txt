@@ -1,0 +1,197 @@
+Hi Steve,I
+ have a limited knowledge of M5, with that i made the following 
+conclusions. Let me know whether i am wrong and what would be the 
+correct way of fixing it.
+On Wed, Jun 2, 2010 at 2:02 
+PM, Steve Reinhardt <stever@gmail.com>
+ wrote:
+Thanks for tracking this down and supplying these patches.  I'm
+confused by a couple of things though:
+- For base.cc, how was there a leak in the original code?  I agree
+it's pretty contorted; the one place where keep_trying used to be
+sometimes set to true got deleted, see
+http://repo.m5sim.org/m5/rev/874f2ee2f115,
+ and the code never got
+restructured to reflect the fact that keep_trying is always false.
+Given that keep_trying is always false in the original code though I
+don't see a memory leak, since we always just return the packet we
+pop.  Your patch actually changes the behavior of the prefetcher
+pretty significantly (sort of emulating the old !cacheCheckPush 
+behavior).The valgrind log should the 
+following to be a major place of loosing memory. This is from a run 
+which was a fraction of the full run.==18669== 12,816,136 (6,038,400
+ direct, 6,777,736 indirect) bytes in 3,145 blocks are definitely lost 
+in loss record 3,109 of 3,110
+==18669==    at 0x4A062CA: operator new[](unsigned long) 
+(vg_replace_malloc.c:264)==18669==    by 0x9D56EC: 
+FastAlloc::moreStructs(int) (fast_alloc.cc:62)==18669==    by 
+0x86D403: FastAlloc::allocate(unsigned long) (fast_alloc.hh:170)
+==18669==    by 0x86D42A: FastAlloc::operator new(unsigned long) 
+(fast_alloc.hh:200)==18669==    by 0x905AA9: 
+BasePrefetcher::notify(Packet*&, long) (base.cc:235)==18669==   
+ by 0x8E31BA: Cache<LRU>::timingAccess(Packet*) 
+(cache_impl.hh:449)
+==18669==    by 0x8E3ACB: Cache<LRU>::CpuSidePort::recvTiming(Packet*)
+ (cache_impl.hh:1409)==18669==    by 0x86A6A7: 
+Port::sendTiming(Packet*) (port.hh:186)==18669==    by 0x9C005F: 
+TimingSimpleCPU::handleReadPacket(Packet*) (timing.cc:259)
+==18669==    by 0x9C1AE8: TimingSimpleCPU::sendData(Request*, 
+unsigned char*, unsigned long*, bool) (timing.cc:282)==18669==    by
+ 0x9C2D29: TimingSimpleCPU::finishTranslation(WholeTranslationState*)
+ (timing.cc:660)
+==18669==    by 0x9CB35C: DataTranslation<TimingSimpleCPU>::finish(RefCountingPtr<FaultBase>,
+ Request*, ThreadContext*, BaseTLB::Mode) (translation.hh:233)The
+ packets that are created in BasePrefetcher::notify are put in a list 
+and they are taken out in BasePrefetcher::getPacket(), and with 
+keep_trying always set to false in getPacket(), I was  not sure that it was the 
+expected behavior. A lot of packets present in the cache would be 
+returned and are leaked subsequently. There might be better ways of 
+fixing this though.
+- The stride.cc fix makes sense, but isn't it adequate to just add:
+    delete *min_pos;
+in front of tab.erase(min_pos) without adding the min_entry variable?Yes.
+ That should do it. - Show quoted text -On Wed, Jun 2, 2010 at 2:02 PM, Steve Reinhardt <stever@gmail.com> wrote:
+Thanks for tracking this down and supplying these patches.  I'm
+confused by a couple of things though:
+- For base.cc, how was there a leak in the original code?  I agree
+it's pretty contorted; the one place where keep_trying used to be
+sometimes set to true got deleted, see
+http://repo.m5sim.org/m5/rev/874f2ee2f115, and the code never got
+restructured to reflect the fact that keep_trying is always false.
+Given that keep_trying is always false in the original code though I
+don't see a memory leak, since we always just return the packet we
+pop.  Your patch actually changes the behavior of the prefetcher
+pretty significantly (sort of emulating the old !cacheCheckPush
+behavior).
+- The stride.cc fix makes sense, but isn't it adequate to just add:
+    delete *min_pos;
+in front of tab.erase(min_pos) without adding the min_entry variable?
+Steve
+On Wed, Jun 2, 2010 at 10:37 AM, Ankit Sethia <asethia@eecs.umich.edu> wrote:
+> Hi,
+>
+> After running valgrind i found the leaks. I have fixed them locally and my
+> applications dont blow up in memory after the fix. Here is the diff, kindly
+> let me know if it is correct:
+>
+> diff -r 84bd4089958b src/mem/cache/prefetch/base.cc
+> --- a/src/mem/cache/prefetch/base.cc    Tue May 25 20:15:44 2010 -0700
+> +++ b/src/mem/cache/prefetch/base.cc    Wed Jun 02 13:21:46 2010 -0400
+> @@ -138,23 +138,25 @@
+>      }
+>
+>      PacketPtr pkt;
+> -    bool keep_trying = false;
+> +    bool keep_trying = true;
+>      do {
+>          pkt = *pf.begin();
+>          pf.pop_front();
+>
+> -        if (keep_trying) {
+> +        if ((pkt != (*pf.end())) && inCache(pkt->getAddr())) {
+> +            keep_trying = true;
+>              DPRINTF(HWPrefetch, "addr 0x%x in cache, skipping\n",
+>                      pkt->getAddr());
+>              delete pkt->req;
+>              delete pkt;
+>          }
+> +        else {
+> +            keep_trying = false;
+> +        }
+>
+> -        if (pf.empty()) {
+> +        if (keep_trying && pf.empty()) {
+>              cache->deassertMemSideBusRequest(BaseCache::Request_PF);
+> -            if (keep_trying) {
+> -                return NULL; // None left, all were in cache
+> -            }
+> +            return NULL; // None left, all were in cache
+>          }
+>      } while (keep_trying);
+>
+> diff -r 84bd4089958b src/mem/cache/prefetch/stride.cc
+> --- a/src/mem/cache/prefetch/stride.cc    Tue May 25 20:15:44 2010 -0700
+> +++ b/src/mem/cache/prefetch/stride.cc    Wed Jun 02 13:21:46 2010 -0400
+> @@ -110,13 +110,16 @@
+>          if (tab.size() >= 256) { //set default table size is 256
+>              std::list<StrideEntry*>::iterator min_pos = tab.begin();
+>              int min_conf = (*min_pos)->confidence;
+> +           StrideEntry* min_entry = NULL;
+>              for (iter = min_pos, ++iter; iter != tab.end(); ++iter) {
+>                  if ((*iter)->confidence < min_conf){
+>                      min_pos = iter;
+>                      min_conf = (*iter)->confidence;
+> +                    min_entry = *iter;
+>                  }
+>              }
+>              DPRINTF(HWPrefetch, "  replacing PC %x\n",
+> (*min_pos)->instAddr);
+> +           delete min_entry;
+>              tab.erase(min_pos);
+>          }
+>
+> On Tue, Jun 1, 2010 at 7:46 PM, Korey Sewell <ksewell@umich.edu> wrote:
+>>
+>>  Has anyone come across such an issue or can any one suggest me what is
+>> the appropriate way of finding out where the problem lies?
+>> Try using "valgrind" to check where the memory leak is coming from. It's a
+>> tremendously useful tool.
+>>
+>> you'll want to run on a debug binary and for a limited number of cycles as
+>> well..
+>>
+>> a command line such as "valgrind --tool=memcheck --leak-check=yes
+>> <cmd_line>" usually works for me. (it's a lot of output, be warned).
+>>
+>>
+>>>
+>>> The GHB, prefetching mechanism works fine in all cases.
+>>>
+>>> Another problem that i am currently facing is as follow:
+>>> There are only integers and floating point numbers in the application
+>>> that i am trying to run.
+>>
+>> Check the mailing list archives but I'm not sure Floating Point support is
+>> all the way there for x86. I'll let someone else chime in.
+>>
+>>
+>>>
+>>> build/X86_SE/cpu/simple/timing.cc:438: Fault TimingSimpleCPU::read(Addr,
+>>> T&, unsigned int) [with T = uint64_t]: Assertion `split_addr <= addr ||
+>>> split_addr - addr < block_size' failed.
+>>
+>> That looks like a error in the code trying to determine something with
+>> split accesses (accesses that span multiple cache blocks)...
+>>
+>> It could be something to do with your prefetcher...Or it could be
+>> something with the memory leak corrupting values.
+>>
+>>
+>>
+>> --
+>> - Korey
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Ankit
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Ankit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

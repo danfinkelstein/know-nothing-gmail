@@ -1,0 +1,25 @@
+Is the following kernel bug being exposed due to the changs I made to m5 or is it just a kernel bug that will appear regardless of configuration in simulator?
+Kernel bug at kernel/signal.c:806^M
+CPU 2 FFT(813): Kernel Bug 1^M
+pc = [<fffffc000034e6f0>]  ra = [<fffffc000034f694>]  ps = 0007    Not tainted^M
+pc is at send_signal+0x2e0/0x2f0^M
+ra is at group_send_sig_info+0x94/0xc0^M
+v0 = fffffc0007279c00  t0 = fffffc0007279c00  t1 = 0000000000000000^M
+t2 = 0000000000000000  t3 = fffffc00071c8400  t4 = fffffc0007528f80^M
+t5 = 5280000000000000  t6 = 4000000000000000  t7 = fffffc0007674000^M
+a0 = 0000000000000020  a1 = fffffc0007677e98  a2 = fffffc0007550680^M
+a3 = 0000000000000001  a4 = 0000000000000000  a5 = 0000000000000000^M
+t8 = 000000000000001f  t9 = 00000200001a2b78  t10= 0000000000000008^M
+t11= 0000000120015860  pv = fffffc00006ba840  at = 000000000b803e69^M
+gp = fffffc0000859d40  sp = fffffc0007677da8^M
+Trace:^M
+[<fffffc000034f694>] group_send_sig_info+0x94/0xc0^M
+[<fffffc000034f714>] kill_pid_info+0x54/0x90^M
+[<fffffc000034fa20>] sys_kill+0x90/0x1e0^M
+[<fffffc0000310e14>] entSys+0xa4/0xc0^M
+^M
+Code: 225f0080  6b5b623c  27ba0051  23bdb660
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

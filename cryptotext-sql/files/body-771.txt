@@ -1,0 +1,32 @@
+Hey,
+About my previous email -- what I really meant to say was, why do we
+need to add the following two lines to our run scripts (e.g run.py)?
+parser.add_option("--caches", action="store_true")
+parser.add_option("--l2cache", action="store_true")
+The above two lines are already in configs/common/Options.py, but if I
+don't add those two lines to my run script, M5 fails to recognize the
+--caches and --l2cache flags in my command line.
+Sorry about the confusion.
+Thanks,
+Felix
+- Show quoted text -
+Quoting Felix Loh <felixloh@umich.edu>:
+> Hello,
+>
+> I was wondering, why do we need to specify the "--caches" and
+> "--l2cache" flags again in the command line when they are already
+> specified in the configs/common/Options.py file?
+>
+> Thanks,
+> Felix
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+> Yea, I agree... One consequence is that it would allow a lot of the
+> common ISA code to be fleshed out if you decided to optimize it.
+>
+> But I guess "overly conservative" isnt the all the way right word for
+> that single class solution (i dont have a better word though!).
+>
+> What you would gain in immediate programmability (theISA->func()), you
+> would probably definitely lose in performance.
+You can't make an ISA independent CPU model.  It's just not possible.
+It must use virtual functions, templates, or #defines.  Virtual
+functions are out because of performance.  We don't really use
+templates for the ISA, but it would be nice if we did.  We mostly use
+#defines (THE_ISA) and it would be nice to move more to templates, but
+I think we'll have to keep using #defines and the solution is to then
+use build tricks to wrap stuff in namespaces so we can compile the
+same file multiple times and not have symbol conflicts.
+   Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

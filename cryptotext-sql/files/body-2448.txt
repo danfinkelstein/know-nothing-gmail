@@ -1,0 +1,5 @@
+I am simulating a multiprocessor system with a shared bus. Private L1,l2 and shared L3 (connected to shared bus through tol3bus). When I insert a bridge between the shared bus and tol3bus, the L2 cache on a miss, after allocating mshr and sending the bus packet on shared bus, calls cleardownStreamPending(). This is not supposed to happen since cleardownStreamPending() should be called by last-level(L3) cache. cleardownStreamPending() is indeed called by the L3 cache if there is no bridge. Any of the developers aware of the implementation of this feature can throw some light maybe?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

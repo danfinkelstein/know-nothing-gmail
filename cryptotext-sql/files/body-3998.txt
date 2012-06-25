@@ -1,0 +1,32 @@
+HIi ALi,
+      As you replied, we have to set the DRAM parameters independently of the simulation setup. But I feel that these default DRAM parameters are wrong, and will give wrong results for people doing timing simulation. Correct me if I am wrong.
+- Sujay
+----- Original Message ----- From: "Ali Saidi" <saidi@umich.edu>
+To: <rstrong@cs.ucsd.edu>; "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, November 12, 2007 6:08 PM
+Subject: Re: [m5-users] How to determine phyMem latency- Show quoted text -
+No it means it's one tick of simulator time which is 1ps.
+Ali
+On Nov 12, 2007, at 5:40 PM, Rick Strong wrote:
+Hi,
+I noticed that the PhysicalMemory class sets memory latency to 1t  which I assume is 1 tick from looking at the python. Does this imply  that my memory latency is 1 tick of the system.membus clock @1GHZ?
+class PhysicalMemory(MemObject):
+  type = 'PhysicalMemory'
+  port = VectorPort("the access port")
+  range = Param.AddrRange(AddrRange('128MB'), "Device Address")
+  file = Param.String('', "memory mapped file")
+  latency = Param.Latency('1t', "latency of an access")
+  zero = Param.Bool(False, "zero initialize memory")
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+Hi Everyone,As part of my current project I need to grab the # of instructions in the LSQ, IQ and ROB or just "executing instructions; therefore not in IQ/LSQ" per thread per cycle. I am working with O3 and I have looked at the code up and down, but I am still having some problems.
+Currently I am "sampling"For ROB -> threadEntries[ ] For LSQ -> using getCount( tid )For IQ ->    using count[ ]At every tick() in cpu.cc I sample these variables and do ROB - ( LSQ + IQ) to get the "executing instructions". At the "worst case" I expect that substraction to be 0. This is becasue all instructions in the ROB must be either executing or in the LSQ/IQ. However, sometimes I see negative values. 
+Are these variables the correct ones to sample? Is for some reason, these variables updated in different cycles or updated in a way the above statement (ROB - (LSQ + IQ)) >= 0 would not hold (e.g when instructions are non-speculative or during squashes)?
+I'd appreciate any help,Javier 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

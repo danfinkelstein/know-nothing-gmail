@@ -1,0 +1,43 @@
+Tracy,
+Did you check the output the simulator stores in console.system.sim_console?
+This file should have all the output for the simulation run such as the
+linux boot messages and whatever your program outputted to stdout inside M5.
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of rlai@mtu.edu
+Sent: Wednesday, November 07, 2007 2:48 PM
+To: M5 users mailing list
+Subject: [m5-users] How to get execution outputs of spec2000 in M5
+fullsystem
+Hi,
+   Now I am running spec2000 in m5 full system and I want to check if my
+execution outputs are correct.
+   The command to run the simulation I use is like:
+    cmd = m5 + ' -d ' + out_dir +\
+         ' --stats-file=' + sta_file +\
+         ' ' + current_dir + sim_dir + 'configs/' + cf + '/fs.py' +\
+         ' -b ' + ben +\
+         ' -t ' +\
+         ' > ' + std_file + ' 2> ' + err_file
+   In std_file, I got the file to dump simulator output to.
+   But I don't get the execution output for these benchmarks. For example:
+the gcc output should be:
+   rank: 2, 1, 1, 29
+   bank: 4, 3, 2, 27
+   row: 16384, 16383, 14, 13
+   col: 1024, 1023, 10, 3
+   byte: 8, 7, 3, 0
+   address width: 30 (1024MB)
+   Does anyone know how to get the execution output for each benchmark?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

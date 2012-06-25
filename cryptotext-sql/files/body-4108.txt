@@ -1,0 +1,18 @@
+You need to either compile it on an Tru64/Alpha or Linux/Alpha or use a cross compiler. For instructions on building a cross compiler look at this page: http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+Ali- Show quoted text -
+On Oct 29, 2007, at 8:55 PM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hi,
+I am trying to run some program (c code) on the FS simulator.
+Does the simulator provide any compiler so that I can compile
+the program in the simulation system?  If no, can I just
+compile the program in some linux system and run it on the
+simulator? Thanks a lot.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

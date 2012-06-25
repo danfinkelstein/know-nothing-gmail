@@ -1,0 +1,16 @@
+By the way, I read that someone requested for this tutorial to be recorded. Are there any plans for this? This will be very helpful for us (me and my colleagues who plan to use m5) since we cannot go to ASPLOS for a variety of reasons (primarily and frankly, difficulty for applying for a US visa coming from a third world country and the cost of going to Seattle, probably equal to at least six months of what we get for a round trip).- Show quoted text -
+On 15/02/2008, Ali Saidi <saidi@umich.edu> wrote:
+I just wanted to remind everyone about the tutorial at ASPLOS. We're about two weeks away now.  Thanks, Ali  On Feb 5, 2008, at 11:51 PM, Ali Saidi wrote:  > I just wanted to make everyone aware that we're holding a tutorial
+ > again at ASPLOS this year (Sunday 3/2) in the morning. We're > planning to provide public access to the M5 repository in > conjunction with the tutorial. > > We have some exciting new features in v2.0, including:
+ > > - New cache model > - More abstract cache coherence that is general enough to allow > multi-level configurations > - Inter-object protocol for memory-system objects > - Python creation of object parameters
+ > - Support for ARM, SPARC, and MIPS > - Performance improvements > - Creating and using Simpoints > > Even if you came to last year's tutorial, you can come again to > learn about these new features.
+ > > We'll also be discussing: > - M5 structure > - Specifying configurations > - Running experiments > - Statistics > - Debugging techniques > - Future development directions
+ > > So, if you're new to M5, you're going to learn enough to get started. > > Our tutorial page: > http://www.m5sim.org/wiki/index.php/ASPLOS_2008
+ > > ASPLOS web page (registration, schedule, etc.): > http://research.microsoft.com/asplos08/ > > Hope to see you there! > > Ali
+ > _______________________________________________ > m5-users mailing list > m5-users@m5sim.org > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ >  _______________________________________________ m5-users mailing list m5-users@m5sim.org http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

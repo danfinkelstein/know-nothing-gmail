@@ -1,0 +1,141 @@
+- Show quoted text -Quoting Rehab Massoud <rehab.massoud@gmail.com>:
+> Hi all,
+>
+> I'm having the following problems getting m5 working as it is before any
+> modifications, and hope if anyone can help...
+>
+> 1-It was correctly built for ALPHA_FS & SE & SPARC_SE, but has the following
+> error when trying to buld for X86:
+>
+> g++ -o build/X86_SE/arch/x86/decoder.do -c -Wno-deprecated -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -ggdb3 -Werror
+> -DTHE_ISA=X86_ISA -DDEBUG -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/libelf
+> -Iext -I/usr/local/include/python2.6 -Ibuild/X86_SE
+> build/X86_SE/arch/x86/decoder.cc
+> build/X86_SE/arch/x86/decoder.cc:54164: error: integer constant is too large
+> for 'long' type
+> cc1plus: warnings being treated as errors
+> build/X86_SE/arch/x86/insts/microldstop.hh:67: error:
+> 'X86ISA::SegmentFlagMask' defined but not used
+> scons: *** [build/X86_SE/arch/x86/decoder.do] Error 1
+> scons: building terminated because of errors.
+> ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+>
+> 2-When trying to execute regression tests they report failure on all the
+> built simulators (ALPHA_FS & SE and SPARC_SE), I get the following:
+>
+> rehab@hatoon-a1cc:~/bin/m5-stable-94c016415053> scons
+> build/ALPHA_SE/m5.debug
+> scons: Reading SConscript files ...
+> .hg directory not found
+> Checking for leading underscore in global variables...(cached) no
+> Checking for C header file Python.h... (cached) yes
+> Checking for C library pthread... (cached) yes
+> Checking for C library dl... (cached) yes
+> Checking for C library util... (cached) yes
+> Checking for C library m... (cached) yes
+> Checking for C library python2.6... (cached) yes
+> Checking for accept(0,0,0) in C++ library None... (cached) yes
+> Checking for zlibVersion() in C++ library z... (cached) yes
+> Checking for C header file fenv.h... (cached) yes
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/x86/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/arm/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/mips/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/sparc/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/alpha/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/inorder/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/simple/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/o3/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/ozone/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/mem/ruby/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/mem/protocol/SConsopts
+> Building in /home/rehab/bin/m5-stable-94c016415053/build/ALPHA_SE
+> Using saved variables file
+> /home/rehab/bin/m5-stable-94c016415053/build/variables/ALPHA_SE
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> scons: `build/ALPHA_SE/m5.debug' is up to date.
+> scons: done building targets.
+> rehab@hatoon-a1cc:~/bin/m5-stable-94c016415053> scons
+> build/ALPHA_SE/tests/debug/quick/00.hello
+> scons: Reading SConscript files ...
+> .hg directory not found
+> Checking for leading underscore in global variables...(cached) no
+> Checking for C header file Python.h... (cached) yes
+> Checking for C library pthread... (cached) yes
+> Checking for C library dl... (cached) yes
+> Checking for C library util... (cached) yes
+> Checking for C library m... (cached) yes
+> Checking for C library python2.6... (cached) yes
+> Checking for accept(0,0,0) in C++ library None... (cached) yes
+> Checking for zlibVersion() in C++ library z... (cached) yes
+> Checking for C header file fenv.h... (cached) yes
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/x86/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/arm/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/mips/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/sparc/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/alpha/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/inorder/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/simple/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/o3/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/ozone/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/mem/ruby/SConsopts
+> Reading /home/rehab/bin/m5-stable-94c016415053/src/mem/protocol/SConsopts
+> Building in /home/rehab/bin/m5-stable-94c016415053/build/ALPHA_SE
+> Using saved variables file
+> /home/rehab/bin/m5-stable-94c016415053/build/variables/ALPHA_SE
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/inorder-timing
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/o3-timing
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/simple-atomic
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/simple-timing
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/o3-timing
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/simple-atomic
+> FAILED!
+>
+> ***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/simple-timing
+> FAILED!
+>
+> scons: done building targets.
+> //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+>
+> The thing I've noticed, but don't know whether it has something to do with
+> this problem is:
+> ".hg directory not found " message
+> checking the m5-users archive, this is related to "M5 style hook", which is
+> probably related to Mercurial, which is not something critical I guess.
+>
+> I'm using OpenSUSE11 and installed the most recent stable versions of
+> python, SCons, SWIG, zlib and m4.
+>
+>
+> Anyone who can help me out??
+>
+> --
+> Rehab H. Massoud
+>
+The x86 failure was already talked about, and I think Nate is right
+about it being a 32 bit vs. 64 bit issue. It's hard to tell for sure
+for the "FAILED" regressions, but if you look in the output files in
+the directories that are named, I'm betting you'll find something
+about a file not being found. The actual binaries and I think input
+files the regressions depend on aren't distributed with M5 for legal
+reasons and to keep the size of the repository reasonable as I
+understand it, so they'll basically all fail except the various "Hello
+world!" ones.
+Gabe
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

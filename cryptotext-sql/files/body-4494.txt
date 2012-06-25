@@ -1,0 +1,130 @@
+Hi Ali,
+ 
+Thanks for the hint and I did find that there is an 
+error. But I'm not sure whether it's the problem with my implementation or with 
+M5.
+ 
+Here is the problem:
+ 
+ 
+void thread_main()
+{
+    int* x = new x[10];
+    delete [] x;
+    my_exit(); // inlined assembly(asm volatile 
+(".byte 0x61, 0x00,0x00,0x40))
+}
+ 
+main()
+{
+    for(int n=0; n<4; n++)
+        
+thread_create(&thread_main); // inlined assembly(asm volatile (".byte 0x62, 
+0x00,0x00,0x40))
+    wait(); // inlined assembly(asm volatile 
+(".byte 0x63, 0x00,0x00,0x40))
+}
+ 
+in the following example, I am trying to create 4 
+threads running simultaneously. Each of the thread allocate some heap space and 
+then free it.
+ 
+I am expecting that the "x"s in each thread is 
+assigned to a different address in the heap. But I found that the 4 threads 
+allocate exactly the same address to the 4 "x"s, thus, when they try to free 
+"x", it is freed four times and the application invokes an 
+error:
+*** glibc detected *** double free or corruption 
+(fasttop): 0x00000001201d8a40 ***
+ 
+and this error is always followed by the "stat64 
+unimplemented" message.
+ 
+Can you also give me some hints about how to solve 
+this? why does the four threads assign their "x" the same address? how can I get 
+around with this?
+ 
+Thanks!
+ 
+Jiayuan
+ 
+ 
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Ali Saidi 
+  To: M5 users mailing list 
+  Sent: 2007年6月13日 10:24 AM
+  Subject: Re: [m5-users] thread alloc/dealloc 
+  error and stat64 system call
+  I'm not sure I know why stat64 is being called. It could be 
+  that one of your new instructions isn't what you think it is and the program 
+  execution path changes to some error handler, or something else. You probably 
+  want to create an instruction trace and make sure it's doing what you think it 
+  is. If that is the case then implementing stat64 shouldn't be that difficult, 
+  just take a look at fstat64. stat64 is the same thing but instead of argument 
+  1 being a file descriptor it's a path to a file.
+  
+  Ali
+  
+  
+  On Jun 12, 2007, at 8:14 PM, Jiayuan Meng wrote:
+  
+    Hi all,
+     
+    As I am trying to run a thread in SE mode, 
+    I made up the following code:
+     
+    void thread_main()
+    {
+        int* x = new x[10];
+        delete [] x;
+        my_exit(); // inlined assembly(asm 
+    volatile (".byte 0x61, 0x00,0x00,0x40))
+    }
+     
+    main()
+    {
+        launch(&thread_main); // inlined 
+    assembly(asm volatile (".byte 0x62, 0x00,0x00,0x40))
+        wait(); // inlined assembly(asm 
+    volatile (".byte 0x63, 0x00,0x00,0x40))
+    }
+     
+    To launch this thread, what I 
+    did was: allocate a stack, assign the pc, and 
+    activate the thread context on another cpu. my_exit() will tell the 
+    simulator that this thread is finished and the simulator will 
+    deallocate/halt its thread context.
+     
+    The extened assemblies are implemented following 
+    the M5FUNC pseudo instructions.
+     
+    I use crosstool's g++ 3.4.3 to compile the code to 
+    alpha-linux. M5 is compiled on a 64bit x86 machine.
+     
+    I get the following message:
+    fatal: syscall stat64 (#425) unimplemented.
+     
+    how ever, if I just change the thread_main 
+to:
+    
+    void thread_main()
+    {
+        int* x = new x
+        delete x;
+        my_exit();
+    }
+     
+     
+    The error will be gone. What can I do to allow the first 
+    case to work? is there any patch for system call stat64?
+     
+    Thanks!
+     
+    Jiayuan
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users

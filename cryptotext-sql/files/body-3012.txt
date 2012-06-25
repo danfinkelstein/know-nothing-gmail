@@ -1,0 +1,5 @@
+Hi,I found that the function of LRU::LRU() is called but the function of LRU::~LRU() is not called. why?Thank you!    
+中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

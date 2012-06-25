@@ -1,0 +1,21 @@
+It depends on what you're trying to do. If you just do a memcopy the caches
+might have a stale copy of the data.
+Ali
+On Thu, 18 Feb 2010 12:11:15 -0500, "Sujay Phadke" <sphadke@eecs.umich.edu>
+wrote:
+- Show quoted text -> Hello,
+>    I am running M5 in SE mode. I have created a system with 3 different
+>    physical memory modules. They are laid out sequentially in the address
+>    space. (0-100, 101-200, etc). I want to remap pages between them. I
+have
+>    the address of a page in module 1, and I want to move it to another
+>    address in module 2. The data is stored in 3 different mmap'ed regions
+>    of the host memory. Can I simply use memcpy to transfer data or do I
+>    have to create packet requests and send it over the bus with write
+>    requests?
+>
+> Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

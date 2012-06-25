@@ -1,0 +1,14 @@
+What is the appropriate way to modify the parameters (count, latency,
+etc.) for the various arithmetic execution units in O3? By modifying
+src/cpu/o3/FuncUnitConfig.py?
+-Soumyaroop.
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+Hi, I am working on the same problem.  I haven't completely solved it yet but something to think about:  you are compiling on 2.6 but what kernel are you booting in M5?  It may be that you're statically linking with the wrong versions of glibc or something which causes a segfault.
+-Philip JagielskiOn Tue, Jan 26, 2010 at 9:29 AM,  <taozhao@umich.edu> wrote:
+I use m5-stable-94c016415053,
+cross compiler is alphaev67-unknown-linux-gnu,  gcc version 4.3.2
+(crosstool-NG-1.3.3)
+System file is m5_system_2.0b3.
+The problem is when I run ALPHA_FS, I can only run the pre installed
+benchmark on the disk image.  I try to compile a simple hello world program
+and mount the image, copy it in. When I run it, I get a segmentation fault.
+My host machine is openSUSE 11, with kernel 2.6.25.16, gcc version 4.3.2
+Is there anything in cross compling? Now I just type:
+alphaev67-unknown-linux-gnu/bin/alphaev67-unknown-linux-gnu-gcc -static
+hello.c
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

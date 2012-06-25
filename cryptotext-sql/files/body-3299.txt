@@ -1,0 +1,5 @@
+it was said that the 03cpu was loosely based on the 21264. just how loosely was it based? i know that it got the branch predictors right, but how about the registers for instance? the 21264 has two registers(but they contain the same values), one for each pair of integer execution block. the broadcasting of a value from an execution block to a nonlocal register has some latency. is this modelled in m5? i've read the iew and commit stage, and it looks as if 03cpu has only one register file, and there is no grouping of functional units. is this correct, or did i miss something? thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

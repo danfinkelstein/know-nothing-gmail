@@ -1,0 +1,257 @@
+Hi Yungang:
+Thank you very much!
+- Show quoted text -
+Yungang Bao wrote:
+> I have made the prefetcher work. The followings are the modifications
+> which have been posted at M5-dev maillist.
+>
+> Please be caution if want to adopt stride prefetcher for L2 cache
+> because the pkt->req->getPC() may incur an alert due to the request
+> may be issued by L1 cache's prefetcher and L1's Writeback event.
+>
+> =====================================
+> cache/prefetch/base.hh
+> =====================================
+> 107,112d106
+> <
+> <   Tick nextPrefetchReadyTime()
+> <     {
+> <         return pf.empty() ? MaxTick : pf.front()->time;
+> <     }
+> <
+>
+> =====================================
+> cache/cache.hh
+> =====================================
+> 317,321d316
+> <     /**
+> <     * Moved from base.hh to here, baoyg
+> <     */
+> <     Tick nextMSHRReadyTime();
+> <
+> 340,342d334
+> <
+> <
+> <
+>
+> =====================================
+> cache/base.hh
+> =====================================
+> >
+> 472c471
+> <         //assert(false);
+> ---
+> >         assert(false);
+>  =====================================
+> cache/cache_impl.hh
+> =====================================
+> 808,818c808
+> <             if (target->pkt->cmd == MemCmd::HardPFResp) {
+> <                 blk->status |= BlkHWPrefetched; //remove it when not
+> use tagged prefetcher
+> <                 delete target->pkt->req;
+> <                 delete target->pkt;
+> <             } else{
+> <                 cpuSidePort->respond(target->pkt, completion_time);
+> <             }
+> ---
+> >             cpuSidePort->respond(target->pkt, completion_time);
+>
+> 1325,1343d1315
+> < /**
+> <  * find out next Ready Time from mshrQueue, writeBuffer and *prefetcher*
+> <  */
+> < template<class TagStore>
+> < Tick
+> < Cache<TagStore>::nextMSHRReadyTime()
+> < {
+> <     if(prefetchMiss || prefetchAccess){
+> <         return std::min(prefetcher->nextPrefetchReadyTime(),
+> <                                (std::min(mshrQueue.nextMSHRReadyTime(),
+> <                                 writeBuffer.nextMSHRReadyTime())));
+> <     }
+> <     else{
+> <         return std::min(mshrQueue.nextMSHRReadyTime(),
+> <                         writeBuffer.nextMSHRReadyTime());
+> <     }
+> < }
+> <
+>
+>
+> =====================================
+> cache/prefetch/stride.cc
+>  =====================================
+> #include "arch/isa_traits.hh"
+> #include "mem/cache/prefetch/stride.hh"
+>
+> void
+> StridePrefetcher::calculatePrefetch(PacketPtr &pkt, std::list<Addr>
+> &addresses,
+>                                     std::list<Tick> &delays)
+> {
+>     Addr blkAddr = pkt->getAddr() & ~(Addr)(this->blkSize-1);
+>     int cpuID = pkt->req->getCpuNum();
+>     if (!useCPUId) cpuID = 0;
+>
+>     /* Scan Table for IAddr Match */
+>     std::list<strideEntry*>::iterator iter;
+>     for (iter=table[cpuID].begin(); iter !=table[cpuID].end(); iter++) {
+>       if ((*iter)->IAddr == pkt->req->getPC())
+>           break;
+>     }
+>
+>     if (iter != table[cpuID].end()) {
+>       //Hit in table
+>       int newStride = blkAddr - (*iter)->MAddr;
+>      if (newStride == (*iter)->stride) {
+>           (*iter)->confidence++;
+>       }
+>       else {
+>           (*iter)->stride = newStride;
+>           (*iter)->confidence--;
+>       }
+>
+>       (*iter)->MAddr = blkAddr;
+>
+>        for (int d=1; d <= degree; d++) {
+>           Addr newAddr = blkAddr + d * newStride;
+>           if (this->pageStop &&
+>               (blkAddr & ~(TheISA::VMPageSize - 1)) !=
+>               (newAddr & ~(TheISA::VMPageSize - 1))) {
+>               //Spanned the page, so now stop
+>               this->pfSpanPage += degree - d + 1;
+>               return;
+>           }
+>           else {
+>               addresses.push_back(newAddr);
+>               delays.push_back(latency);
+>           }
+>       }
+>   }
+>   else {
+>       //Miss in table
+>       //Find lowest confidence and replace
+>
+>       if(table[cpuID].size() >= 256){ //set default table size is 256
+>           std::list<strideEntry*>:: iterator minPos = NULL;
+>           int64_t  minConf = 0xFFFFFFFL;
+>           for (iter=table[cpuID].begin(); iter !=table[cpuID].end();
+> iter++) {
+>               if ((*iter)->confidence < minConf){
+>                   minPos = iter;
+>                   minConf = (*iter)->confidence;
+>               }
+>           }
+>           table[cpuID].erase(iter);
+>       }
+>
+>       strideEntry * newEntry = new strideEntry;
+>       newEntry->IAddr = pkt->req->getPC();
+>       newEntry->MAddr = blkAddr;
+>       newEntry->stride = 0;
+>       newEntry->confidence = 0;
+>       table[cpuID].push_back(newEntry);
+>   }
+> }
+>
+>
+>
+>
+> 2008/7/23, Gary Chai <ameseacla@gmail.com <mailto:ameseacla@gmail.com>>:
+>
+>     Hi all:
+>     I meet prefetch error in the full system simulation. Does anybody know
+>     where I can find the prefetch patches, which help to correct prefetch
+>     problems.
+>
+>     thanks
+>     Gary
+>
+>     Steve Reinhardt wrote:
+>     > There are some problems with the prefetching support in the new
+>     memory
+>     > system... basically it did not get tested after the rewrite.  There
+>     > were some patches posted to the mailing list recently that I will be
+>     > pushing to the development repository soon.
+>     >
+>     > Steve
+>     >
+>     > On Mon, Jul 21, 2008 at 10:31 AM, Gary Chai <ameseacla@gmail.com
+>     <mailto:ameseacla@gmail.com>
+- Show quoted text ->     > <mailto:ameseacla@gmail.com <mailto:ameseacla@gmail.com>>> wrote:
+>     >
+>     >     Hi all:
+>     >     I want to take a look at the result of prefetch, so I add two
+>     >     lines in the configs/example/fs.py and keep others same.
+>     >
+>     >     if options.l2cache:
+>     >          test_sys.l2 = L2Cache(size = '2MB')
+>     >          test_sys.tol2bus = Bus()
+>     >          test_sys.l2.cpu_side = test_sys.tol2bus.port
+>     >          test_sys.l2.mem_side = test_sys.membus.port
+>     >          test_sys.l2.prefetch_policy = 'tagged'      ####  by me
+>     >          test_sys.l2.prefetch_miss = 'true'          ####  by me
+>     >
+>     >     Then the simulation is aborted and the following is the error.
+>     >
+>     >     M5 compiled Jun  9 2008 21:51:22
+>     >     M5 started Mon Jul 21 13:24:26 2008
+>     >     M5 executing on seasmile-pc
+>     >     command line: /home/m5/m5-2.0b5/build/ALPHA_FS/m5.debug -d
+>     result2
+>     >     /home/m5/m5-2.0b5/configs/example/fs.py -t --caches -n 1
+>     --l2cache
+>     >     -b hello
+>     >     Global frequency set at 1000000000000 ticks per second
+>     >     warn: kernel located at: /dist/m5/system/binaries/vmlinux
+>     >           0: system.tsunami.io.rtc: Real-time clock set to Thu
+>     Jan  1
+>     >     00:00:00 2009
+>     >     Listening for system connection on port 3456
+>     >     0: system.remote_gdb.listener: listening for remote gdb #0
+>     on port
+>     >     7000
+>     >     **** REAL SIMULATION ****
+>     >     warn: Entering event queue @ 0.  Starting simulation...
+>     >     m5.debug: build/ALPHA_FS/mem/cache/base.hh:471: void
+>     >     BaseCache::deassertMemSideBusRequest(BaseCache::RequestCause):
+>     >     Assertion `false' failed.
+>     >     Program aborted at cycle 12851847000
+>     >     Aborted
+>     >
+>     >     Can you help me find the reason?
+>     >     Thanks
+>     >     Gary
+>     >
+>     >     _______________________________________________
+>     >     m5-users mailing list
+>     >     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     <mailto:m5-users@m5sim.org <mailto:m5-users@m5sim.org>>
+- Show quoted text ->     >     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >
+>     >
+>     >
+>     ------------------------------------------------------------------------
+>     >
+>     > _______________________________________________
+>     > m5-users mailing list
+>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+I think this will be more clear when you read the above specification, but the architecture should look something like this:
+http://zeep.eecs.umich.edu/~saidi/etherswitch.pdf
+Everywhere that you show one EtherInt in that picture, there should really be two.  One for each side of the interface.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

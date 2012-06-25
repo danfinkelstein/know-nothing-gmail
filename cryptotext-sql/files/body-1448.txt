@@ -1,0 +1,12 @@
+On Wed, May 20, 2009 at 11:04 AM, nathan binkert <nate@binkert.org> wrote:
+We don't really use
+templates for the ISA, but it would be nice if we did.  We mostly use
+#defines (THE_ISA) and it would be nice to move more to templates, but
+I think we'll have to keep using #defines and the solution is to then
+use build tricks to wrap stuff in namespaces so we can compile the
+same file multiple times and not have symbol conflicts.
+I'm curious why you think we'll have to keep with #defines... is it just too much effort, or are there more fundamental issues?Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+> This question is not really related to m5 but general multicore design.
+>
+> Since the number of processors in a multicorer system are constrained by total chip area (400mm^2 for power4 etc), is there a way to estimate the area of O3CPU based on certain parameters like size of LS Queues, reorder buffer size. If anyone knows of methodology or some research regarding this, please give suggestions.
+There were several papers on complexity effective design about 5 or so
+years ago that got into this sort of thing.  You should probably dig
+those up.  That said, if you do plan to implement this sort of thing,
+I can probably help you figure out how to use the M5 config file to
+pass the configuration parameters directly to your model.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

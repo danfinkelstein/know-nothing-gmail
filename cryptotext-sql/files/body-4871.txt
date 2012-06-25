@@ -1,0 +1,33 @@
+> > I would like to instantiate multiple cores and still have control over
+> > the internals of the processors and the communication between them.
+> > Basically what I want to do is to define a higher level module that has
+> > r/w access to processor modules, so that we can accurately model the
+> > system we are investigating.
+>
+> You can do that, you're going to have to hack on the models to expose what
+> you want though.
+>
+> > For example, I would like to modify the fetch stage so that each
+> > processor is running successive instructions of the same program. So say
+> > proc0 is running instructions 0,2,4,6... and proc1 is running
+> > instructions 1,3,5,7... Do you have any advice on how to implement this?
+>
+> This would probably involve some major changes to the fetch stage, and
+> probably the decode stage and the register file as well.  I imagine that
+> you're going to want dependencies between instructions on the different
+> cores, and to pass information between the cores.  Are you trying to do
+> something where you can take two normal cores, but turn them into a
+> cluster for higher performance?
+>
+>    Nate
+Yes this is exactly what I want to do. I want to make, say a 2-core CMP behave
+as though it was a 2-way superscalar core. I have an idea of what I need to do,
+but I'm not sure where to start. You also mentioned about hacking the models.
+Could you elaborate more on that?
+Any help would be greatly appreciated.
+Thanks,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

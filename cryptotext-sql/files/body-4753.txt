@@ -1,0 +1,55 @@
+Hi,
+I'm trying to run SPLASH2 benchmarks in 4 detailed CPU cores M5_1.1.
+I have little time, so I also try FS_mode.
+I don't have alpha machine.
+So, I tried to compile SPLASH2 benchmarks using cross-compiler.
+I can compile  hello warld program and can run this program correctly in FS_mode.
+But I try to run my compiled SPLASH2 benchmarks , get following error messege.
+># ./FFT
+>
+>FFT with Blocking Transpose
+>   1024 Complex Doubles
+>   1 Processors
+>   65536 Cache lines
+>   16 Byte line size
+>   4096 Bytes per page
+>
+>Segmentation fault
+Though I look for a way to compile it, owing to lack of information ,I don't know what to use PARMACS MACRO and option.
+Could you tell me how to compile SPLASH2 benchmarks ?
+Best regards,
+this is my makefile----------------------------
+TARGET = FFT
+OBJS = fft.o
+CFLAGS = -O2 -w
+LDFLAGS = -lm -lpthread
+MACROS = /home/fukumoto/splash/parmacs.upc.3/pthreads/c.m4.pthreads
+x = *
+$(TARGET): $(OBJS)
+        alpha-linux-gcc $(OBJS) $(CFLAGS) -o $(TARGET) $(LDFLAGS)
+.SUFFIXES:
+.SUFFIXES:      .o .c .C .h .H
+.H.h:
+        m4 ${MACROS} $*.H > $*.h
+.C.c:
+        m4 $(MACROS) $*.C > $*.c
+.c.o:
+        alpha-linux-gcc -c $(CFLAGS) $*.c
+.C.o:
+        m4 $(MACROS) $*.C > $*.c
+        alpha-linux-gcc -c $(CFLAGS) $*.c
+my environment----------------------------
+OS  :CentOS 4.2
+ISA :x86_64
+I refer to following link:
+cross compiler
+http://www.cse.unsw.edu.au/~cgray/crossdev/x86-alpha-xcc.html
+compiling splash2 (PARMACS MACRO)
+http://kbarr.net/splash2.html
+--
+Naoto Fukumoto
+E-mail:fukumoto@c.csce.kyushu-u.ac.jp
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

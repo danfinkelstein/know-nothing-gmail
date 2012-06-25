@@ -1,0 +1,16 @@
+syscall emulation or FS mode?- Show quoted text -On Tue, Apr 15, 2008 at 3:36 AM, jerry lrui <jerry.lrui@gmail.com> wrote:- Show quoted text -
+Thanks for all your help.
+ 
+Can you give me more details about how to control the system so that all threads were done before system halt?
+ 
+Regards,
+Jerry 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- ----------Korey L SewellGraduate Student - PhD Candidate
+Computer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

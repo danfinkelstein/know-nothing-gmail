@@ -1,0 +1,16 @@
+What CPU model are you using?  This would not be surprising if you're not using SimpleCPU.
+Steve- Show quoted text -
+Meeta Gupta wrote:
+Hi,
+I have been trying to bring up a 4-CMP Full System setup, giving a Memory configuration of "OCM".
+It has been more than 2 hours and the Linux kernel has still not finished booting up. Is it usual for it to take so long, as it seems quite weird.
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

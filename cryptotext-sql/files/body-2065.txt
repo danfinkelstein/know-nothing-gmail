@@ -1,0 +1,27 @@
+Dear All,
+I am trying to run a multi-threaded matrix multiplication program on a ALPHA CMP
+system under SE mode. The program is written in c and uses CPU_SET to bind a
+thread to a core. (I am not a good c programmer so please dont ask me how this
+works, I got the code from a friend.)
+I used a alpha cross compiler to compile this and resulted binaries were given
+to the cmp configuration file. Then it gives me an error saying
+fatal: syscall _sysctl (#319) unimplemented.
+ @ cycle 1056500
+[unimplementedFunc:build/ALPHA_SE/sim/syscall_emul.cc, line 73]
+After searching through the mailing list I found following links which explains
+how to run splash2 in SE.
+http://thread.gmane.org/gmane.comp.emulators.m5.users/1364/focus=1365
+and
+http://m5sim.org/wiki/index.php/Splash_benchmarks
+But in the link
+(http://thread.gmane.org/gmane.comp.emulators.m5.users/3542/focus=3553) Steve is
+saying "There is no thread scheduler in SE mode, so you can't have more threads
+than cores.". Which made me think if I have one thread per core will I be able
+run it in SE mode?
+If it is possible any advice/help in this regard is greatly appreciated.
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

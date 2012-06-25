@@ -1,0 +1,8 @@
+Hello,I am a newbie when it comes to M5, scons, python etc...I tried extensively searching the web but could not find an answer. In my machine my only option is using scons-local. I am having difficulty running:
+ scons build/ALPHA_SE/tests/debug/quick->scons: Command not found.As scons obviously is not found.The Scons local  read me says:Then modify the build/install instructions for your package to instruct
+your users to execute SCons as follows (if you installed this package inyour top-level directory):        $ python scons.pySo I assume I need to go to the:Sconstruct file. However I have no idea what to modify!!
+Any help would be appreciated.Thanks!Devin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+        I am seeing this message in some of my simulations. Other workloads
+on the same configuration finish correctly, and the same workload on
+other configurations finishes fine. From my reading of the code, the
+error should only occur if an instruction object was corrupted, since
+otherwise they would always be correctly built for the specific ISA,
+yes?
+        Does anyone have any other ideas for how to determine the error?
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

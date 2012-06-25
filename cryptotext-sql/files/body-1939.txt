@@ -1,0 +1,14 @@
+Hi:
+ 
+I am trying to run SPEC00 and SPEC06 on M5 FS mode (Alpha architecture, Linux OS). I have the following questions:
+ 
+(1): Can SPEC00 or SPEC06 be run on M5 FS mode?
+(2): Is there any procedure I can follow to do that? 
+ 
+Thanks
+ 
+Jiao
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

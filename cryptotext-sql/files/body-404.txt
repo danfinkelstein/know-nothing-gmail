@@ -1,0 +1,132 @@
+  
+Korey,
+Thank you for answering to my e-mail.
+Today I have been looking a little further to solve my problem by
+generating a trace for the "hello world" benchmark that's included in
+M5.
+First I'll try to explain what my problem is.
+After modifying the code to implement more stages, I noticed that some
+benchmarks needed 20x more host time. My computer took 20x more time to
+execute the simulation of a benchmark with 8 stages, compared to 5
+stages.
+I understand that the CPI will rise when more stages are added, this
+due to the increased miss penalty. However, as you have confirmed, it
+is impossible that the CPI would be 20x as high.
+I wanted to know where the time was spent, so I compiled m5.prof, to
+get the gprof statistics. After running this I saw that the most
+time-consuming method was CacheUnit::removeAddrDependency: for a binary
+that took 236 seconds, removeAddrDependency spent 205 seconds of it!
+Using some c++ timers I came to the conclusion that the find-function
+call took almost all of removeAddrDependency's time. I suspected that
+this would be due to a big size of the addrList. After profiling the
+code myself, this was confirmed: addrList contains only 1 instruction
+at a time when only 5 stages are considered, but contains lots more
+instructions in the case of 8 stages.
+When simulating the hello benchmark we don't see that much of a time
+difference, because of its small size. However we can see that addrList
+contains more instructions when 8 stages are considered (it reaches a
+maximum of 580 instructions!).
+If you'lld generate a trace with --trace-flags="InOrderCPUAll,AddrDep"
+you will see that CacheUnit::setAddrDependency is called more than
+CacheUnit::removeAddrDependency.
+Take for example instruction 0x12000067c. This one is added to
+addrList, a little bit later a squash occurs and this instruction never
+gets removed!  This never happens in the case of 5 pipeline stages.
+If you want I can give you all instructions that aren't removed..
+Max
+ps: 
+Thanks for mentioning that I should modify BackEndStartStage. 
+I also tried to insert more stages in the way you guys did this in
+9-stage model, it's a lot easier and cleaner. In fact you only need to
+change
+InstStage *X = inst->addStage(); to 
+InstStage *X = inst->addStage(5);
+in pipeline_traits.cc to have 8 pipeline stages =)
+(and the proper adjustments in the pipeline_traits.hh)- Show quoted text -
+On 03/11/2010 08:58 PM, Korey Sewell wrote:
+- Show quoted text -Hi Max,
+I'd be happy to help you look into things, but some more specifics and
+perhaps a faulty instruction trace would help expedite the process. 
+(Further comments below)
+  
+  
+  
+The extra stages that I want to add shouldn't do anything since I'm only
+interested in the change in CPI they cause.
+Did anybody do this before?
+  
+  There is an example of a 9-stage pipeline model in the inorder
+tree. It's a bit outdated as some of the scheduling structures
+underneath changed, but the basic premise for adding more pipeline
+stages is within the model's capability.
+  
+  
+  
+  I
+tried it by modifying cpu/inorder/pipeline_traits.cc and
+cpu/inorder/pipeline_traits.hh (see below).
+  
+  The below looks like it should work save for also updating the
+"BackEndStartStage" variable appropriately. (Also, we hope to get all
+the variables in the pipeline_traits file into a parameterizable format
+so users can do this off the command line .)
+ 
+  The
+result of my execution is correct but however it takes 20 times as
+much time!!!
+  
+  20x in real time or 20x in simulated ticks?
+  
+How much degradation do you expect ? Consider that you've added 3 extra
+stages before the branch is resolved in the execution unit, so now
+you're mispredict penalty is lengthened in the pipeline. Depending on
+your benchmark, this could make a difference  but I agree a 20x
+degradation seems extreme.
+  
+I also know there is a code optimization yet to made that should sleep
+the CPU earleir if it's waiting for a long-event like a cache miss or a
+FP opp. But that wouldn't effect your simulated ticks but your real
+time waiting for the simulation to finish.
+ 
+  I
+debugged the code a little bit and found that there is some problem in
+the instruction fetch:
+In cpu/inorder/resources/cache_unit.cc addrList accumulates a lot of
+instructions because CacheUnit::setAddrDependency is called more than
+CacheUnit::removeAddrDependency.
+This happens only for the calls to the instruction cache (and thus
+originating from the 0th stage (instruction fetch))!
+  
+  Is this a direct source of pipeline stalling? I would imagine it
+shouldnt be since the instruction cache is only performing reads, so
+there is no need to block even for the same addresses. 
+  
+Note in the cache_unit.cc::getSlot() code used to allocate an
+instruction access to a resource:
+"   if (resName == "icache_port" ||
+        find(addrList[tid].begin(), addrList[tid].end(), req_addr) == 
+        addrList[tid].end()) {
+...
+"
+The code should be saying that for the icache_port, we dont care about
+address dependency but for anything else we do.
+  
+I'm not sure what the fix would be up front, since I'm also not sure
+the problem is completely diagnosed. Can you point to a particular
+trace of code that is executing poorly and causing unnecessary stalls?
+Maybe you can try this on a simple benchmark to identify problem spots
+easier?
+  
+  
+  
+-- 
+- Korey
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

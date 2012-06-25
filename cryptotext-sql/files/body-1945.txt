@@ -1,0 +1,6 @@
+    Hi all, I am a beginner of M5. I want to make some change to M5 to do some search work using M5.    I am now reading the source code of M5 and trying to figure out how the M5 start to work. I have no idea where the M5 begins to run ? Which file does it execute first ? Is there any document about this ? I just need an outline of its execute path.
+    Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

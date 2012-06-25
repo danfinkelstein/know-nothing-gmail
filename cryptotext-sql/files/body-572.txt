@@ -1,0 +1,10 @@
+Hi, everyone,I have another question about the "invalidateBlk" function in "src/mem/cache/tags/lru.cc". It seems to me that after the block is invalidated, it is not moved to the tail of the LRU set, which may leave an invalid block located in front of a vlaid one in the LRU stack. So, do you think if it is necessary to adjust the location of a block after it is invalidated?
+Thanks,Leonard- Show quoted text -On Thu, Jan 28, 2010 at 10:27 PM, Sage <leonard951@gmail.com> wrote:
+Hi, guys,When I was reading the source code of src/mem/cache/blk.hh, I found that there might be a potential problem with the overloading "const CacheBlk& CacheBlk::operator=(const CacheBlk& rhs)". In line 145, "data = rhs.data" may mess up "data" 's original space assignment since "data" is a pointer. So, I suggest that we assign the new value in such a way as follows:
+if (!data)    std::memcpy(data, rha.data, size);I don't think it is complete. I just want to bring up the problem for our discussion.Thanks,Leonard
+-- Give our ability to our work, but our genius to our life!
+-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

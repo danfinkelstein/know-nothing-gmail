@@ -1,0 +1,15 @@
+I generated a checkpoint as below,
+   m5.fast configs/example/se.py --bench=gcc_integrate
+--take-checkpoints=0 --simpoint
+However, when I tried to restore the checkpoint, I found the max-inst
+parameters become ineffective.
+The command I used is as below,
+  m5.fast configs/example/se.py --bench=gcc_integrate
+--checkpoint-restore=0 --simpoint --max-inst=10000
+The simulation kept running until I killed it.
+Have anyone met this problem ever before?
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

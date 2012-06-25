@@ -1,0 +1,5 @@
+I tried to run the simulation after fixing the path of benchmarks. I gave the absolute path for every benchmarks but its still showing the instruction executed only in one cpu. Also, no matter how many CPUs I used, it only shows the eio trace for the single cpu.Could you please help me.Test your Star IQ Play now!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

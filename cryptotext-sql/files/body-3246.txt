@@ -1,0 +1,110 @@
+FYI:the patch so syscall emulation threads dont stop after one thread finishes should come soon. I have it in my tree now, but I just have to find the time to generate the appropriate mercurial patch queue in a clean tree then email the patch out. Since everything else in my tree isnt "patchqueued" there's a little reverse engineering to do...
+I'll try to post it in a day or two though...- Show quoted text -On Tue, Apr 15, 2008 at 12:20 AM, nathan binkert <nate@binkert.org> wrote:
+Yes, this should work.  My guess is that in the 2GHz/1GHz case, the
+second CPU isn't getting far enough to print the value before the
+first CPU causes the simulation to exit.  If you used more complicated
+programs, or hacked things so that the system didn't terminate until
+all threads were done, I'm pretty sure it will work.  I run multiple
+frequencies all the time in full system mode.
+  Nate
+> I am trying to run two simple workloads "Hello World" in two independent
+> CPUs which have different frequencies.
+> At first when I set CPU0'clock to "2GHz" and CPU1's clock to "3GHz",
+> everything seems to work fine.
+>  But when I changed CPU1's clock from "3GHz" to "1GHz", there is only one
+> program has been executed.
+> If I changed CPU1's clock to "4GHz", it also only one program executed.
+>
+> Can different CPUs run at any different frequencies in m5? Any suggestion
+> would be highly appreciated.
+>
+> Regards,
+> Jerry
+>
+> ===================================================
+> More details about the config file and results:
+>
+> The changes from the original example file se.py:
+> --- se.py 2008-04-15 10:06:02.000000000 +0800
+> +++ se0.py 2008-03-01 01:28:51.000000000 +0800
+> @@ -86,8 +86,8 @@
+>
+>  np = options.num_cpus
+>
+> -system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+>  -                physmem = PhysicalMemory(range=AddrRange("512MB")),
+>                  membus = Bus(), mem_mode = test_mem_mode)
+> +system = System(cpu = [CPUClass(cpu_id=0,clock="2GHz"),
+> CPUClass(cpu_id=1,clock="3GHz"))],
+>  +              physmem = PhysicalMemory(range=AddrRange("512MB")),
+>
+>
+>  system.physmem.port = system.membus.port
+> @@ -106,7 +106,7 @@
+>          system.cpu[i].connectMemPorts(system.tol2bus)
+>      else:
+>          system.cpu[i].connectMemPorts(system.membus)
+> -    system.cpu[i].workload = process
+>  +    system.cpu[i].workload = process[i]
+>
+>      if options.fastmem:
+>          system.cpu[0].physmem_port = system.physmem.port
+>
+> Command line running m5 :
+> $ build/ALPHA_SE/m5.debug configs/example/se.py
+>
+> --cmd="/home/jerry/m5-2.0b5/tests/test-progs/hello/bin/alpha/linux/hello0;/home/jerry/m5-2.0b5/tests/test-progs/hello/bin/alpha/linux/hello1"
+> -d --cache -n2
+>
+> The first running result:
+> ...................
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+>  **** REAL SIMULATION ****
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> Hello World0!
+> Hello World1!
+> Exiting @ cycle 5536000 because target called exit()
+>
+> Change CPU1's clock from "3GHz" to "3GHz":
+> --- se0.py 2008-04-15 11:09:02.000000000 +0800
+> +++ se1.py 2008-04-15 11:07:06.000000000 +0800
+> @@ -86,7 +86,7 @@
+>
+>  np = options.num_cpus
+>
+> -system = System(cpu = [CPUClass(cpu_id=0,clock="2GHz"),
+> CPUClass(cpu_id=1,clock="3GHz")],
+> +system = System(cpu = [CPUClass(cpu_id=0,clock="2GHz"),
+> CPUClass(cpu_id=1,clock="1GHz")],
+>                 physmem = PhysicalMemory(range=AddrRange("512MB")),
+>                  membus = Bus(), mem_mode = test_mem_mode)
+> The second running result:
+> .........................
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+>  **** REAL SIMULATION ****
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> Hello World1!
+> Exiting @ cycle 5502000 because target called exit()
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

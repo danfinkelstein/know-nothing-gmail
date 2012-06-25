@@ -1,0 +1,24 @@
+I'm not completely sure, but each packet has an opaque pointer that it
+sends along with the packet that must be restored before the response
+is send back to the host. In the case of a store for the o3 cpu, this
+pointer contains information about the instruction, slot in the store
+queue, etc. If the pointer was trashed or not properly restored, you
+would likely see this error.
+Ali
+- Show quoted text -
+On Nov 23, 2008, at 1:31 PM, Shoaib Akram wrote:
+> I never touched any thing outside the memory system. I am getting
+> this assertion failur. Any idea what might be the problem?
+>
+> m5.opt: build/ALPHA_SE/cpu/o3/lsq_unit_impl.hh:882: void
+> LSQUnit<Impl>::completeStore(int) [with Impl = O3CPUImpl]: Assertion
+> `storeQueue[store_idx].inst' failed.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

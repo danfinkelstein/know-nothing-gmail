@@ -1,0 +1,44 @@
+You should look into the cache access code.  Actually, you should in
+general look for any case where you see hitLatency in the cache code.
+You'll want to change that to some sort of function.
+  Nate
+- Show quoted text -
+On Tue, Jul 15, 2008 at 9:26 AM, Gary Chai <ameseacla@gmail.com> wrote:
+> Thank you for your reply.
+> It is like nonuniform cache. When the L2 cache receives a different address
+> request, It assigns a different latency. Which codes describe such kind of
+> process?
+> Thanks
+> Gary
+>
+> On Mon, Jul 14, 2008 at 3:28 PM, nathan binkert <nate@binkert.org> wrote:
+>>
+>> > If I want to let the latency of accessing different parts in L2 cache is
+>> > different, so the latency is not uniform. Is it possible in m5? how can
+>> > I
+>> > get it and where can I edit the code?
+>> > Any suggestion is really appreciated.
+>>
+>> I.e. you want to implement NUCA of some sort?  I don't anyone has
+>> modeled this yet, so you'd have to hack on the cache model a bit.  I
+>> honestly don't think this should be all that difficult to do depending
+>> on how complicated your NUCA model is.
+>>
+>> Anyone like to correct me?
+>>
+>>  Nate
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

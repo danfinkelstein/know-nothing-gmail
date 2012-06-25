@@ -1,0 +1,31 @@
+The Simulation.py script is only setup to set max_inst on a cpu that
+is not the one you restored from since the normal reason for taking a
+checkpoint is to switch to a different (more detailed) cpu model. If
+you really want to do this you can probably add a line like:
+testsys.cpu[0].max_insts_any_thread = options.max_inst
+before the m5.simulate() on line 352 of Simulation.py.
+Ali
+- Show quoted text -
+On Feb 26, 2009, at 10:11 AM, Kan Huang wrote:
+> I generated a checkpoint as below,
+>   m5.fast configs/example/se.py --bench=gcc_integrate
+> --take-checkpoints=0 --simpoint
+> However, when I tried to restore the checkpoint, I found the max-inst
+> parameters become ineffective.
+> The command I used is as below,
+>  m5.fast configs/example/se.py --bench=gcc_integrate
+> --checkpoint-restore=0 --simpoint --max-inst=10000
+>
+> The simulation kept running until I killed it.
+> Have anyone met this problem ever before?
+>
+> Thanks
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

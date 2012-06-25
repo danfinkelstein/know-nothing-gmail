@@ -1,0 +1,12 @@
+> 4) The memory trace for my simulations are very large (around 10GB for a simulation). I commented most DPRINTF functions and only leave hits and misses, but it is still too large for me. Does anybody have this problem before? And is there a way in M5 to sample the trace by setting a time interval?
+You can specify --trace-start on the command line which will tell the
+simulator to delay tracing until a certain tick.  If you're debugging
+in gdb, you can also do:
+(gdb) call setTraceFlag("MyFlag")
+or
+(gdb) call clearTraceFlag("MyFlag")
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

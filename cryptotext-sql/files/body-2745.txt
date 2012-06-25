@@ -1,0 +1,24 @@
+I recall going over this with Kevin when he was designing O3: faults
+are signaled when an instruction marked as faulting reaches commit,
+but when the fault is on the instruction fetch itself then you have no
+actual instruction to mark as faulting.  Hence in this one specific
+case you have to synthesize a no-op just to have something to mark as
+faulting.
+Korey, do you recall what smtNumFetchingThreads does with respect to
+the fetch stage?  What I believe Rick is saying is that without
+explicitly setting this variable to 1 then O3 *is* fetching from two
+different threads in the same cycle, which is causing the problem
+(since the bug is that one of them overwrites the other's fetch fault
+no-op).  If you're saying that it wasn't designed to do that, but in
+reality it is doing that in the default configuration, then that
+sounds bad.
+Steve
+On Sun, Jul 6, 2008 at 7:07 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+> The TLB code didn't add anything with a noop, although I do remember
+> seeing something like that in there to carry faults down to commit.
+>
+> Gabe
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

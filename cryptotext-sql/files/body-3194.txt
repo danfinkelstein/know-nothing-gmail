@@ -1,0 +1,32 @@
+I nailed the problem down a bit. Two things seems to give this error for most of benchmarks. L3 Cache latency and membus.headercycles. the kind of stuff i am doing i need to play with header cycles. For some values of  latency and header cycles benchmarks work fine while for other i get the unmapped error. I am keeping the l3 cache latency more than the time membus is occupied in case of data and request transfers.
+---- Original message ----
+>Date: Sat, 26 Apr 2008 06:55:04 -0700
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Same Error with Detailed Model
+- Show quoted text ->To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>On Fri, Apr 25, 2008 at 11:48 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>> Attached are some files. No parameter of O3CPU is touched. Some cache parameters like mshrs are changed. I attach my script file, the result of tracediff with timing and detailed,call stack and final part of instruction traces from both timing and detailed model. Looks like detailed is executing instructions tice and at different ticks but if we ignore these two factores, the results of tracediff are very similar.
+>
+>You missed an important detail on the tracediff command line: you want
+>to run "Exec,-ExecTicks" (note the hyphen/minus sign in there) not
+>"Exec,ExecTicks".  By default Exec by itself prints the tick numbers
+>(as you see) but if you add "-ExecTicks" it suppresses that so that
+>tracediff can actually pinpoint where the execution diverges.
+>
+>As Gabe says, the tricky part once you've done that is figuring out
+>"when" things go wrong on the detailed side, but you do have the line
+>number of the diff from tracediff and can then rerun just the detailed
+>version with ticks enabled to see what tick you're at at the relevenat
+>line of the trace.  I use combination of "head" and "tail" for that,
+>though as Gabe says a simple perl script works too.
+>
+>Steve
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

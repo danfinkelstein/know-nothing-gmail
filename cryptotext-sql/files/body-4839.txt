@@ -1,0 +1,14 @@
+Hi,
+    I met some problems in running multiple benchmarks in full-system.
+    To run one benchmark, I can use:
+./build/ALPHA_FS/m5.opt  ./configs/examples/fs.py –b NetperfMaerts
+It seems like I don't need to boot up the OS, and just type the command in
+local host machine.
+    But how to run multiple benchmarks simultaneously? Should I connect to
+the simulated console interface and run them ? how to run them?
+    Thanks!
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+It's not obvious, but it does give some clues...The null pointer is being read from memory address 0x12022e508, so either that's a bogus address or the memory location doesn't have the right value (not getting initialized or getting clobbered at some point).
+The pointer address is computed by adding the uniq register (put into R0 by "call_pal rduniq") and some value (0x28) read from -29160(r29)... I think that's the global constant pool.  The uniq reg is used as a pointer to thread-local storage.  So basically it's reading the null value out of thread-local storage.  It could be that that's a value that the OS is supposed to provide but we're not initializing it properly.
+I'd do two more things to try and get some more clues:- run with just --trace-flags=Syscall (and no --trace-start) to get a complete syscall trace, then look at whatever the last few syscalls are, and see what they are and how closely they precede the crash
+- run with just --trace-flags=Exec (and no --trace-start) and then pipe the trace through "egrep -i '12022e50[0-7]' " to look at all the other references to that memory location... is it ever written, if it's read before is it always zero, etc.  This will take a while...
+SteveOn 9/7/07, Elliott Cooper-Balis <eeeealmo@yahoo.com> wrote:
+here is the output.  is there anything obvious that might be broken?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+Hi,
+I have a nasty solution for integrating Wattch at the moment where
+I am updating extern counters and calling watch update routines each
+cycle.
+I would like to move wattch to level of the m5 object, so one can get
+the power of all the devices separately and get the result in the general
+stats printout. The tricky part is that I need to be able to update a power stats
+each cycle depending on whether the device is on or off (because they will either
+have turned on or turned off values). What would be the best way of adding
+a stat, that is  updated at the end of every cycle?
+I will also want to add voltage, frequency scaling. I believe that I can do this
+by updating the voltage/frequency numbers in python/swig after breaking out
+of simulation, and then jump back in after recomputing all the wattch power
+parameters. Is there any reason why I might meet problems updating global wattch
+parameters from swig? I have only done this on a small scale program, and it worked.
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

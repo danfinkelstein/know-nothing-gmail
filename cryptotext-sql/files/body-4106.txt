@@ -1,0 +1,15 @@
+Hi Richard,
+Presently no. Most of the simulation work done with M5 is in full-system mode not syscall emulation mode. At some point I think there was a way to run some EIO traces through both threads of an smt.
+Ali- Show quoted text -
+On Oct 30, 2007, at 6:29 PM, Rick Strong wrote:
+Hi,
+Just to be certain about this before I add support, there is really no way to simulate two threads on a SMT O3CPU with each thread starting at a different offest s(# of instructions into execution). You essentially have to run both threads on the cpu and suffer the different rates of execution of the different threads?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

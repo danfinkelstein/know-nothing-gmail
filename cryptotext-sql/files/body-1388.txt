@@ -1,0 +1,123 @@
+Err ... I think I might have written something wrong in either the
+directory coherence or interconnect model because I didn't know what the
+default responder is all about.  My guess is that the membus is supposed
+to realize that no one responds to the bad address and simply return
+BadAddressError. However, I use a mesh coherence model where
+destinations are known apriori (that is, destinations for certain
+requests are generated during the m5 initialization process when status
+change messages are sent). Would a correct implementation consider the
+address ranges of the port and return BadAddressError if the destination
+does not accept the address range?
+Thanks in advance,
+-Rick
+Steve Reinhardt wrote:
+> That's a good question... yes, there should be a BadAddr responder
+> associated with the main memory bus that handles this case.  The bus
+> should not hand the request to PhysicalMemory object if it's out of
+> the object's range.
+>
+> Rick, can you post the specific error message you were getting in the
+> original case, and the config.out as well?
+>
+> Thanks,
+>
+> Steve
+>
+> On Mon, Jun 1, 2009 at 4:31 PM, nathan binkert <nate@binkert.org
+> <mailto:nate@binkert.org>> wrote:
+>
+>     Shouldn't there be a default responder that takes care of this?  Has
+>     that changed?
+>
+>      Nate
+>
+>     On Mon, Jun 1, 2009 at 12:24 AM, Rick Strong <rstrong@cs.ucsd.edu
+- Show quoted text ->     <mailto:rstrong@cs.ucsd.edu>> wrote:
+>     > This was exactly the problem.  Thanks for the feedback. The fix
+>     that I
+>     > made is as follows for those interested in the future:
+>     >
+>     > diff --git a/src/mem/physical.cc b/src/mem/physical.cc
+>     > --- a/src/mem/physical.cc
+>     > +++ b/src/mem/physical.cc
+>     > @@ -255,8 +255,14 @@
+>     >  Tick
+>     >  PhysicalMemory::doAtomicAccess(PacketPtr pkt)
+>     >  {
+>     > -    assert(pkt->getAddr() >= start() &&
+>     > -           pkt->getAddr() + pkt->getSize() <= start() + size());
+>     > +    // OOO: Bad address from OOO core
+>     > +    if(pkt->getAddr() < start() ||
+>     > +        pkt->getAddr() + pkt->getSize() > start() + size()){
+>     > +        assert(pkt->needsResponse());
+>     > +        pkt->makeResponse();
+>     > +        pkt->setBadAddress();
+>     > +        return calculateLatency(pkt);
+>     > +    }
+>     >
+>     >     memAccesses++;
+>     >
+>     >
+>     > Steve Reinhardt wrote:
+>     >> Yea, with speculative execution it's not impossible for the CPU to
+>     >> fetch from a bogus physical address in kernel mode due to a
+>     >> misspeculated path.  Physical memory should respond to this
+>     with a Bad
+>     >> Address response, which then gets ignored when the
+>     misspeculated path
+>     >> is squashed.
+>     >>
+>     >> Steve
+>     >>
+>     >> On Fri, May 29, 2009 at 4:51 PM, Rick Strong
+>     <rstrong@cs.ucsd.edu <mailto:rstrong@cs.ucsd.edu>
+- Show quoted text ->     >> <mailto:rstrong@cs.ucsd.edu <mailto:rstrong@cs.ucsd.edu>>> wrote:
+>     >>
+>     >>     Hi all,
+>     >>
+>     >>     For the O3 cpu running several of the parsec benchmarks, let's
+>     >>     focus on
+>     >>     x264 with 16 cores. I see that it's fetch unit requests
+>     0xffffffc0
+>     >>     which
+>     >>     fails in the physmem because it is not within the valid
+>     address range
+>     >>     for the functional memory. The address is the result of  "iew:
+>     >>     Execute:
+>     >>     Branch mispredict"  being detected and execute redirects
+>     fetch to PC:
+>     >>     0xffffffc0. This strange behavior does not occur when I use
+>     >>     SimpleTimingCPU. Is there any potential for the iew stage
+>     to redirect
+>     >>     fetch to a bogus address, that is inst->readNextPC() in
+>     iew_impl.hh
+>     >>     returns a bogus address that would propagate to the memory
+>     system
+>     >>     and be
+>     >>     caught later?
+>     >>
+>     >>     Thanks in advance,
+>     >>     -Rick
+>     >>
+>     >>
+>     >>
+>     >>     _______________________________________________
+>     >>     m5-users mailing list
+>     >>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     <mailto:m5-users@m5sim.org <mailto:m5-users@m5sim.org>>
+- Show quoted text ->     >>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >>
+>     >>
+>     >
+>     > _______________________________________________
+>     > m5-users mailing list
+>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >
+>     >
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

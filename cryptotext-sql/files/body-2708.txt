@@ -1,0 +1,52 @@
+the stderr file contains:
+Traceback (most recent call last):  File 
+"<string>", line 1, in <module>  File 
+"build/ALPHA_SE/python/m5/main.py", line 313, in main    
+execfile(sys.argv[0], scope)  File "tests/run.py", line 65, in 
+<module>    execfile(os.path.join(tests_root, category, 
+name, 'test.py'))  File "tests/quick/20.eio-short/test.py", line 29, in 
+<module>    root.system.cpu.workload = EioProcess(file 
+= binpath('anagram',NameError: name 'EioProcess' is not defined
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Sujay 
+  Phadke 
+  To: M5 users mailing list 
+  Sent: Wednesday, July 09, 2008 4:34 
+  PM
+  Subject: [m5-users] quick test fails with 
+  repo version
+  
+  Hello,
+           
+  I downloaded the latest version in the repo and was running the tests for SE 
+  mode. The long tests run correctly but with the quick tests I get the 
+  following error:
+   
+  build/ALPHA_SE/m5.opt -d 
+  build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic 
+  tests/run.py quick/20.eio-short/alpha/eio/simple-atomic > 
+  build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stdout 
+  2> 
+  build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stderrscons: 
+  *** 
+  [build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stdout] 
+  Error 1
+   
+  What does this mean? Do we need to downloaded the 
+  encumbered files? I dont remember having done this when I was using M5 beta 4 
+  or 5.
+   
+  Thanks,
+  Sujay
+   
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

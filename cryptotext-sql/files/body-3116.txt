@@ -1,0 +1,19 @@
+Thanks,  but, I can not see the root of the disk image mounted in m5.I installed "M5 2.0b3 Full System Files"  in m5/dist/m5/system.In the directory , I have [normal@ system]$ ls -ltotal 18088drwxrwx--- 2 normal normal     4096 May  7 16:33 binariesdrwxrwx--- 2 normal normal     4096 May 17  2007 disks-rw-rw-r-- 1 normal normal 18468181 May 17  2007 m5_system_2.0b3.tar.bz2drwxrwxr-x 3 normal normal     4096 May  5 17:43 www.m5sim.org[normal@ system]$ cd disks/[normal@ disks]$ ls -ltotal 2141972-r--r----- 1 normal normal 2139095040 May 17  2007 linux-bigswap2.img-rw-r----- 1 normal normal   52125696 May 17  2007 linux-latest.img[normal@ system]$ cd binaries/[normal@ binaries]$ ls -ltotal 31748-rwxrwx--- 1 normal normal    78500 May 17  2007 console-rwxrwx--- 1 normal normal    52136 May 17  2007 ts_osfpal-rwxrwxr-x 1 normal normal 32313628 Oct  8  2006 vmlinuxAnd, I should mount linux-bigswap2.img or linux-latest.img  ? and where to mount them ? I do not have root directory in m5.Thanks, May 8  2008 Date: Wed, 7 May 2008 21:17:01 -0700From: stever@gmail.comTo: m5-users@m5sim.orgSubject: Re: [m5-users] about m5term and linux kernel- Show quoted text -On Wed, May 7, 2008 at 5:06 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+Hi, I am using m5.opt and m5.debug  to run  FS simulation. ./build/ALPHA_FS/m5.opt  configs/example/fs.py -b NetperfMaertsbuild/ALPHA_FS/m5.debug -d /tmp/output configs/example/fs.pybuild/ALPHA_FS/m5.opt --trace-flags="Cache" configs/example/fs.py
+And, I  connect to the simulated console interface bym5term localhost 3456But, the console responds my typing very slowly.And,  I use ls and got : 	benchmarks  etc         lib         mnt         sbin        usr
+	bin         floppy      lost+found  modules     sys         var	dev         home        man         proc        tmp         zMy question is :Where are these directories located ? 
+In the root directory of the disk image you've mounted in m5. 
+And, where is the linux kernel located ? That's loaded separately; it's not on the disk image. 
+If I want to implement a linux scheduling algorithm in a linux kernel.And, I plan to use linux-dist to Create Disk Images and Kernels for M5with compiled benchmarks.And then, I install the disk in the  directory:
+/dist/m5/systemAnd, when I run the benchmarks . How can I make sure that the threads generated from the benchmarks are scheduled by th new linux kernel ?It's pretty much the same as if you were doing it on a real system... if you want to be sure it's working, you just have to observe that it's having some effect.
+Steve thanks,Mike May.  7  2008 
+ Get Free (PRODUCT) RED™  Emoticons, Winks and Display Pics. Check it out!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+Windows Live SkyDrive lets you share files with faraway friends. Start sharing.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

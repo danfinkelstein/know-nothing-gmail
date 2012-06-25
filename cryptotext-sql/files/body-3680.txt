@@ -1,0 +1,34 @@
+It's hard to say given so little information... how are you
+rescheduling the tick() method?
+- Show quoted text -
+On Dec 20, 2007 6:56 PM,  <rlai@mtu.edu> wrote:
+> Hello,
+>
+>     I am trying to add out-of-order memory access scheduling in m5_2.0b3.
+> My new dram model is derived from physicalMemory. I create a new
+> memory port and re-implement recvTiming() & recvAtomic() in the
+> derived memory port class.  When the latency for a packet is
+> calculated, I call sendTiming() to send out the latency. In the new
+> recvTiming(), I remove the sendTiming().
+>
+>     In my algorithm, there are two functions: access() and tick().
+> access() is used to schedule the memory access and calculate the latency.
+> tick() is used to check the memory access status every memory cycle.
+>
+>     After compile the code and run the simulation, I found my recvTiming()
+> is called only once, and tick() is continuously called. The simulation
+> is in an infinite loop.
+>
+>     Does anyone know what is wrong?
+>
+> Thanks,
+> Rongrong
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Sorry for open another thread, I want to classify the errors I met when I use EIO on M5 2.0 B, I will try to attach them one bye one, if someone else has clue, please help me!There are 8 programs meet errors, other 18 programs are fine.
+Thanks,Jiang----------------Error 1: (172.mgrid, 187.facerec, 200.sixtrack, 255.vortex)m5.opt: build/ALPHA_SE/cpu/o3/mem_dep_unit_impl.hh:540: typename MemDepUnit<MemDepPred, Impl>::MemDepEntryPtr& MemDepUnit<MemDepPred, Impl>::findInHash(const typename Impl::DynInstPtr&) [with MemDepPred = StoreSet, Impl = O3CPUImpl]: Assertion `hash_it != 
+memDepHash.end()' failed.Program aborted at cycle 67154964Error 2: (179.art)terminate called after throwing an instance of 'std::bad_alloc'  what():  St9bad_allocProgram aborted at cycle 138087609
+Error 3: E(252.eon)fatal: system.cpu0.workload: EIO trace inconsistency: ICNT mismatch @ cycle 31904896[read_trace:build/ALPHA_SE/encumbered/eio/eio.cc, line 447]Error 4: (175.vpr)fatal: system.cpu0.workload
+: cannot read EIO transaction @ cycle 57609002[read_trace:build/ALPHA_SE/encumbered/eio/eio.cc, line 437]Error 5: (188.ammp)It finished just after execute 336156 instructions.I found in the stat file, sim_ticks is wrong:
+sim_ticks                                9223372036854775808                       # Number of ticks simulatedNotes that 9223372036854775808  = 0x8000000000000000
+_______________________________________________

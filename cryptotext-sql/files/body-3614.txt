@@ -1,0 +1,20 @@
+> I think you're wrong on point 2... max_insts_all_threads runs each
+> thread for *at least* the specified number, and does not terminate
+> individual threads early.  There's no option right now that does
+> terminate individual threads without terminating the entire
+> simulation, largely because in my opinion that's kind of meaningless
+> (for the reasons you explain in point 2).
+Ah, right.  This should probably be listed as an unimplemented option #3.
+> I can take a crack at updating the FAQ later if you don't get to it.
+I'll do it right now.
+> Overall I think our FAQ is way too big and should be reorganized into
+> normal topical documentation, but this particular question isn't any
+> worse than any other.
+I agree.  We should probably have a meeting among all of those who are
+interested to discuss how to improve the wiki before we have the
+tutorial.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

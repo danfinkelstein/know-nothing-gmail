@@ -1,0 +1,31 @@
+Ok, I think I have figured this out. M5 is already doing what I want to do.
+In cpu.hh, renameMap and commitRenameMap are defined as linear arrays (for # of h/w threads).
+In cpu.hh, renameMap and commitRenameMap are initialized for each thread.
+regards,
+Soumyaroop.- Show quoted text -On 7/10/09, soumyaroop roy <sroy@cse.usf.edu> wrote:
+Hello all,
+I want to track physical register accesses in a single core of an
+ultrasparc/opensparc T1 (which has SMT support for 4 h/w threads, each
+of which is allocated a quarter of the physical register file).
+It appears that the way to model this in m5 is to:
+1. Instantiate one master physical register file with the total integer
+registers (and , perhaps, even floating point registers) required for
+all the 4 threads. Assert statements in cpu.cc suggest that.
+assert(params->numPhysIntRegs   >= numThreads * TheISA::NumIntRegs);
+assert(params->numPhysFloatRegs >= numThreads * TheISA::NumFloatRegs);
+2. The current rename logic doesn't seem to track the actual
+mapping between the physical register file and the isa register file
+across the h/w threads. If that is correct, the rename logic should be
+modified so that register renaming for each thread
+takes place to physically separate portions of the master physical
+register file.
+Could someone comment on my understanding above.
+regards,
+Soumyaroop.
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and Engineering
+University of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

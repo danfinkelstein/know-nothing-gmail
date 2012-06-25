@@ -1,0 +1,29 @@
+On Jan 16, 2008 9:06 AM, nathan binkert <nate@binkert.org> wrote:
+> Jun,
+>
+> > I want to do some research on the subject of SDRAM fairness of
+> > multicore and need to make all the threads reach the same max
+> > instructions. How could I do this with M5? If I set
+> > max_insts_any_thread the same for all the threads, then when one of
+> > them reaches the max_insts_any_thread, the simulation will stop.
+> To answer what I think is your question, you want max_insts_all_threads.
+>
+> This question comes up enough that I decided to write a faq entry on it:
+> http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_terminate_multiprogram_workloads.3F
+I think you're wrong on point 2... max_insts_all_threads runs each
+thread for *at least* the specified number, and does not terminate
+individual threads early.  There's no option right now that does
+terminate individual threads without terminating the entire
+simulation, largely because in my opinion that's kind of meaningless
+(for the reasons you explain in point 2).
+I can take a crack at updating the FAQ later if you don't get to it.
+>
+> If there is a better place for this text to go, please, someone let me know.
+Overall I think our FAQ is way too big and should be reorganized into
+normal topical documentation, but this particular question isn't any
+worse than any other.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

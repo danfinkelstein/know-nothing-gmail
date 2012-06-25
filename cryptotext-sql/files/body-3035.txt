@@ -1,0 +1,15 @@
+Hi,
+ 
+I would like to pass an argument from the python front end
+to a rcS script and I noticed that the M5ops page (http://www.m5sim.org/wiki/index.php/M5ops)
+states that the initparam utility is deprecated.  Is  there a functional
+replacement to initparam?
+ 
+Thanks,
+ 
+Brad
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

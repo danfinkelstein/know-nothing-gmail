@@ -1,0 +1,13 @@
+First, please keep your questions to the list and not to me directly for everyone else's benefit.
+Another follow up to my previous mail:
+I tried using a static variable (float), doing all calculations with it. Now I want to dump the value of this at the end, so I tried assigning it to oa Formula stat so that it is printed out at the end.
+Stats:: Formula energy;
+in the regStats,
+energy = static_variable;
+Problem is this stat is not being printed at all. Any ideas?
+If you don't at least give a stat a name (using the .name() function), it won't print.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

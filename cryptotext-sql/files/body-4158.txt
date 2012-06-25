@@ -1,0 +1,14 @@
+I don't know what you mean by multi-threaded in this context, but a checkpoint can save state from multiple cpu at once.
+Ali- Show quoted text -
+On Oct 12, 2007, at 7:39 PM, Rick Strong wrote:
+Hi,
+I was also wondering if it is possible to make multi-threaded checkpoints?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

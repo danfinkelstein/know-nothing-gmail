@@ -1,0 +1,13 @@
+Is there any support for micro-ops in the O3CPU model? I am looking to add this
+type of support to the simulator, but I do not want to just duplicate work if
+someone has already implemented or planned to implement this (especially since
+I have noticed that the Sparc machine model already makes use of micro-ops.
+Steve
+------------------------------
+Stephen Hines
+hines@cs.fsu.edu
+http://www.cs.fsu.edu/~hines
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

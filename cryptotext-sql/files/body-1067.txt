@@ -1,0 +1,18 @@
+Folks,
+I have a quick one:
+Is there a way to fast forward not just to the first workload's
+simpoint but to stagger it in such a way that we are all entering at
+the each's respective simpoint?
+Could it be faked could the bench marks be padded with instructions
+until they are aligned?
+_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

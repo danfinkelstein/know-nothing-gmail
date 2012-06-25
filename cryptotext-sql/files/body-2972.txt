@@ -1,0 +1,62 @@
+Hi,
+I tried to run a 16 cores CMP configuration on SE O3 cpu mode. I use
+Spec2006 445.gobmk, and each core has one copy of this benchmark. It
+works for 1, 2, 4, 6, 8 cores' configuration, and the benchmarks can
+finish correctly.  But when I try to increase the number of cores
+(>8), I begin to encounter the problems.
+Why does this happen on larger number of cores?  I tried the timing
+mode, it works fine on 16 cores' configuration. Also the largest
+number of cores is depend on the benchmarks.
+Thanks a lot,
+Meng-Ju
+M5 compiled May 31 2008 14:23:59
+M5 started Wed Jun  4 12:10:13 2008
+M5 executing on avw1450-cearch_21
+command line: /import/home1/mjwu/m5-2.0b5/build/ALPHA_SE/m5.fast
+--outdir=16cpu_p /import/home1/mjwu/work_spec2006/configs/cmt4.py -d
+--caches --num_cpus 16 --l2cache --benchmark gobmk
+/import/home1/mjwu/work_spec2006/configs
+/import/home1/mjwu/work_spec2006/configs
+/import/home1/mjwu/work_spec2006
+Global frequency set at 1000000000000 ticks per second
+Dumping Instruction List
+Instruction:0
+PC:0x1200001e0
+[tid:0]
+[sn:88]
+Issued:0
+Squashed:0
+Instruction:1
+PC:0x1200001e4
+[tid:0]
+[sn:89]
+Issued:0
+Squashed:0
+Instruction:2
+PC:0x1200001e8
+[tid:0]
+[sn:90]
+Issued:0
+Squashed:0
+Instruction:3
+PC:0x1200001ec
+[tid:0]
+[sn:91]
+Issued:0
+Squashed:0
+Instruction:4
+PC:0x1200001f0
+[tid:0]
+[sn:92]
+Issued:0
+Squashed:0
+Instruction:5
+PC:0x1200001f4
+[tid:0]
+[sn:93]
+Issued:0
+Squashed:0
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

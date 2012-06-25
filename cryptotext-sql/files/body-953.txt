@@ -1,0 +1,37 @@
+EF,
+It is my understanding that Packet->req->threadId() (as well as
+Packet->req->getPC() ) will always return a valid result if
+Packet->req->hasPC() returns true.
+Joe
+- Show quoted text -
+ef wrote:
+> Hello,
+>
+> I am trying to display thread ID using pkt->req->threadid(), however
+> the following occurs in FS Mode:
+> int Request::threadId() const: Assertion
+> `privateFlags.isSet(VALID_THREAD_ID)' failed.
+>
+> However this is not my question, my question is why is there not a
+> function for thread id like this one:
+>  bool
+>     hasContextId() const
+>     {
+>         return privateFlags.isSet(VALID_CONTEXT_ID);
+>     }
+>
+>
+> am I missing something? Implementing one is trivial,  I am wondering
+> if I am using this function incorrectly (pkt->req->threadid())
+>
+> Thanks,
+> EF
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

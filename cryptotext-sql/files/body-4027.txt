@@ -1,0 +1,11 @@
+2. Since python is used to create the structs automatically, how many files do we need to modify to add, say, one extra parameter.
+  for eg: in dram.cc, if I want to have a new parameter, do I still need to declare it in the relevant sections in all of the:
+dram.cc
+dram.hh
+PhysicalMemory.hh
+You only add the parameter to PhysicalMemory.hh.  You can then access it through the params()-> function
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

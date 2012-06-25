@@ -1,0 +1,62 @@
+Judging by the segfault, you're using an earlier version of M5 that
+didn't handle unconnected ports very gracefully. In the versions in the
+stable and unstable repositories a port will be connected to a
+default/dummy peer. If you ever try sending something to that peer, it
+will complain at you instead of segfaulting.
+A possible reason you're getting a bad addr would be that Linux is
+looking for a device were none exists. It could also be that address
+translation is going wrong for some reason and it's accessing junk
+addresses instead of physical memory.
+If possible, I would recommend updating to the stable repository. This
+problem may already be fixed, and if you haven't introduced any new bugs
+it may just start working.
+Gabe
+- Show quoted text -
+ef wrote:
+> Hello,
+>
+> I am trying to run m5, and I am getting a segfault during linux boot
+> up. I am hoping anyone can give me any advice and insight into fixing
+> this error,as there are some issues with  the changes in my M5 version.
+>
+> Debug information is listed below including Trace Flags and GDB
+> information:
+>
+>
+> M5 output:
+> 397217555000: system.physmem: Read of size 8 on address 0x78c088 data
+> 0x4180000010c
+> .....
+> 397217555000: system.membus: recvFunctional: packet src 4 dest -1 addr
+> 0x4180000010c cmd ReadReq
+> 397217555000: system.membus: Unable to find destination for addr:
+> 0x4180000010c, will use default port
+> Segmentation Fault
+>
+> GDB output:
+> #0  0x00000000004c9bdc in Port::sendFunctional (this=0x0,
+> pkt=0x7fffc259cd30) at build/ALPHA_FS/mem/port.hh:215
+>
+>
+>   I am pretty inexperienced when it comes to M5, does anyone know
+> anything else I can do to try to isolate the error and get more
+> information in hopes of fixing it. The real issue is not the segfault,
+> but the bad addr being received from physical memory.
+>
+> Also shouldn't M5 stop running as soon as the destination is not
+> found, as the membus does not have a default port, which is causing
+> the seg fault.
+>
+>
+> Thanks
+> EF
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

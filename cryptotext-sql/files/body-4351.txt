@@ -1,0 +1,6 @@
+Hi,I tried 8 CPUs configuratation in SE mode. The creation order of CPU IDs is 6->4->5->2->3->0->1->7. When I run a single-thread prpgram, the program is executed on CPU 6. How should I change the simulator to let my program can be executed on CPU 0? And why the creation order is not 0->1->2->.....->6->7?
+I really appreciate if you can give me some hints about which part of the source codes I should look at.Thanks,Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

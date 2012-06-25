@@ -1,0 +1,14 @@
+Thanks a lot Clint. I applied your patch but I am getting some errors when I build the simulator. These are the errors that I am getting. Any idea of why I am getting these errors?Thanks,-Raidbuild/ALPHA_SE/mem/dramsim.hh: In constructor ‘DRAMsim::Control::Control(DRAMsim&)’:
+build/ALPHA_SE/mem/dramsim.hh:114: error: no matching function for call to ‘Event::Event()’build/ALPHA_SE/mem/dramsim.hh: In member function ‘virtual void DRAMsim::Control::process()’:build/ALPHA_SE/mem/dramsim.hh:124: error: ‘class DRAMsim’ has no member named ‘schedule’
+build/ALPHA_SE/mem/dramsim.cc: In member function ‘bool DRAMsim::doTiming(Packet*, int)’:build/ALPHA_SE/mem/dramsim.cc:252: error: ‘schedule’ was not declared in this scope- Show quoted text -On Tue, Apr 7, 2009 at 10:14 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+The patch was posted to the m5-users mailing list in late January (see [PATCH] Beta patch for M5 2.0 DRAMsim implementation). I don't think it has support for loading the power information file yet, but it would not be difficult to add.
+On Apr 7, 2009, at 10:59 PM, Raid Ayoub wrote:I would like to integrate M5 with DRAMsim to do DRAM power/timing simulations. It will be appreciable if you guys can tell me where to get the required patch for this. Also any information about the accuracy of DRAMsim compare to the built in m5 DRAM model?
+thanks-Raid Ayoub _______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

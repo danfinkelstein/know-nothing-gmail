@@ -1,0 +1,37 @@
+Hello,I have been doing some research on PARSEC and M5. There seems to be a lot of serialization causing bad IPC in Parsec Benchmarks. Serialization of Store Conditionals is ne issue, at this point I am unable to determine whether the issue is M5 Alpha implementation or just that the Alpha ISA is to old. I tried seeing what other architecture do, but there are LL/SC in Intel implemtations (they use a lock prefit tag on each instruction). 
+If it turns out that we dont need to make LL/SC unserial, any possible ideas on solutions? Although I am not sure thats the case, I just had difficulty finding literature in terms of alpha with LL/SC.Here is what I am talking about:
+cpu/o3/rename_impl.hhLine 649:  // Handle serializeAfter/serializeBefore instructions.        // serializeAfter marks the next instruction as serializeBefore.        // serializeBefore makes the instruction wait in rename until the ROB
+        // is empty.        // In this model, IPR accesses are serialize before        // instructions, and store conditionals are serialize after        // instructions.  This is mainly due to lack of support for
+        // out-of-order operations of either of those classes of        // instructions.        if ((inst->isIprAccess() || inst->isSerializeBefore()) &&            !inst->isSerializeHandled()) {
+            DPRINTF(Rename, "Serialize before instruction encountered.\n");            if (!inst->isTempSerializeBefore()) {                renamedSerializing++;                inst->setSerializeHandled();
+            } else {                renamedTempSerializing++;            }            // Change status over to SerializeStall so that other stages know            // what this is blocked on.            renameStatus[tid] = SerializeStall;
+            serializeInst[tid] = inst;            blockThisCycle = true;            break;        } else if ((inst->isStoreConditional() || inst->isSerializeAfter()) &&                   !inst->isSerializeHandled()) {
+            DPRINTF(Rename, "Serialize after instruction encountered.\n");            renamedSerializing++;            inst->setSerializeHandled();            serializeAfter(insts_to_rename, tid);
+        }Thanks,EF- Show quoted text -On Wed, Dec 2, 2009 at 11:40 AM, Steve Reinhardt <stever@gmail.com> wrote:
+Good question... it's not clear they need to be.  I think the overall
+motivation is to make sure that lock acquire/release operations are
+properly ordered, but for Alpha that should be enforced via separate
+barrier instructions anyway.  I assume this is happening as a side
+effect of the instructions being marked as "locked"?  Can you point to
+the code you're referring to?
+Steve
+On Wed, Nov 18, 2009 at 7:03 PM, ef <snorlaxgb@gmail.com> wrote:
+> Hello,
+> Why are stl_c and stq_c serializing instructions in the O3 model
+> during the renaming stage?
+>
+> Thanks
+> EF
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

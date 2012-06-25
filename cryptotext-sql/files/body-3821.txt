@@ -1,0 +1,15 @@
+They're "express snoops," take a look at: http://www.m5sim.org/wiki/index.php/Coherence_Protocol
+Ali- Show quoted text -
+On Dec 2, 2007, at 11:55 AM, giotis@umich.edu wrote:
+Hi I am reposting my question. I am running splash2 with 2 CPUs. Although I use the trace cache flag option, on the output I see no traces of my second's CPU cache.
+Moreover, since I have configured my system for atomic requests, who is calling the functional requests on the bus?
+Thanks
+Panos
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

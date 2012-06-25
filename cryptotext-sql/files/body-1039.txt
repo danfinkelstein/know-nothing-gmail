@@ -1,0 +1,78 @@
+This may be of some help to you. I had done a similar thing for printing
+custom stats for memory when the simulation ended.:
+In dram.hh file, inserted:
+class exit_EDResults : public Callback
+{
+    DRAMMemory *dram;
+  public:
+    exit_EDResults(DRAMMemory *a) {dram = a;}
+    virtual void process() {dram->printEDResults();};
+};
+in dram.cc,
+insert this in the regStats for DRAMMemory:
+void:DRAMMemory::regStats(){
+registerExitCallback(new exit_EDResults(this));
+}
+so the custom exitcallback is registered now. all you need now is the actual
+function to handle it, in the cc file:
+void DRAMMemory::printIdleDist(void){
+.....
+- Show quoted text -}
+----- Original Message -----
+From: "Joe Gross" <joegross@umd.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, August 17, 2009 2:51 PM
+Subject: Re: [m5-users] about destructor
+> I've looked through these, but have not generated SWIG interfaces
+> before, so I'm not perfectly clear how it all links together. It seems
+> that this creates an interface to call SimStartup() and that calls
+> startup() in every object in the startupq. Presumably one would use the
+> same technique to call shutdown() on all items in the startupq, add
+> virtual void shutdown(); to StartupCallback and implement this. Then any
+> class that inherits from this (PhysicalMemory included) would implement
+> shutdown() and all would be work.
+>
+> I see that initAll() calls init() for each object, so one could reverse
+> this instead and use destroyAll() and destroy() for each object. Not
+> sure which method you were thinking, but it shouldn't be too bad.
+>
+> Also, I can't tell how the python scripts call these functions, at least
+> not explicitly, so I'm not sure where I could add the shutdown/destroy
+> call.
+>
+> Joe
+>
+> nathan binkert wrote:
+>>> Is there some way to get the simulator to call the destructors of the
+>>> components in the test system (FS mode) or to receive an event signaling
+>>> that the simulation is exiting? I've tried adding print statements all
+>>> the way up the inheritance chain (starting with PhysicalMemory in my
+>>> case) and none seem to be called. I also did a leak check using valgrind
+>>> and this is confirmed (lots of data still in use at termination).
+>>>
+>> Yeah, we're really bad at cleanup.  My suggestion is that you add a
+>> shutdown callback similar to how we have startup callbacks.  Then we
+>> can put an explicit call to a shutdown system before the simulation
+>> terminates.
+>>
+>> check out src/sim/startup.(cc|hh), src/python/swig/core.i.  You'll
+>> need to expose the shutdown core to the m5 python library.  probably
+>> src/python/m5/core.py
+>>
+>>  Let me know if this is unclear.
+>>
+>>   Nate
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

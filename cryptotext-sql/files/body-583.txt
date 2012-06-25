@@ -1,0 +1,86 @@
+Hi Max,
+Please see if the problem persists with the dev branch. There is a bug
+with recvRetry() which is causing applu, gcc, and perlbmk to fail
+(ref.  inorder test status page through the inorder documentation
+page: http://www.m5sim.org/wiki/index.php/InOrder) even in the default
+configuration (i.e. L1 hit latency 2 cycles, etc.). Korey has a patch
+to fix it but it is currently untested.
+Btw, a best case L1 hit latency of 2 cycles is not unrealistic for
+high perf. processors (e.g. PowerPC MPC7450 family). Perhaps, somebody
+else can comment on this for inorder processors.
+regards,
+Soumyaroop
+- Show quoted text -
+On Tue, Jan 19, 2010 at 8:08 AM, Maximilien Breughe
+<Maximilien.Breughe@elis.ugent.be> wrote:
+> Hello,
+>
+> I'm having a problem to use the InOrderCPU core with an L2 cache when
+> adjusting the I-L1-latency.
+> Is there anyone else who countered the same problem?
+> I use ALPHA_SE and the latest stable M5-version.
+>
+> Description:
+> -----------------
+> I configured my CPU to run at 2GHz. The default value of the Instruction
+> L1-latency is 1 ns. This means that it would take 2 clock-cycles of the
+> CPU to get something from the instruction L1 cache, which is unrealistic.
+> Therefore I can either adjust the CPU's clock frequency to 1GHz or
+> adjust the latency of the L1 cache to 0.5ns. When using the second
+> option I get the following error when I also add an L2-cache:
+>
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> m5.opt: build/ALPHA_SE/cpu/inorder/resources/cache_unit.cc:722: void
+> CacheUnit::recvRetry(): Assertion `cacheBlocked' failed.
+> Program aborted at cycle 39145001
+>
+>
+> ./run-max.sh: line 48:  1406 Aborted                 ./${binary} -d
+> "${outputdir}" --trace-flags="Exec" --trace-file="tracedmp" "${script}"
+> --output "${benchout}" --bench "${1}" ${cpumodel} --caches --l2cache
+>
+> When I only use an L1 cache no error occurs. Also for other L1-latencies
+> everything works fine when I do attach an L2 cache.
+>
+> Example:
+> ------------
+> Unfortunately I do not get this error for the hello-benchmark, but I do
+> get it for simple code-fragments like this one:
+>
+> #include <iostream>
+> using namespace std;
+>
+> int main(){
+>         double result=1;
+>         double x;
+>         while(cin>>x){
+>                 result*=x;
+>         }
+>         cout<<"The result of the multiplication session is "<<result<<endl;
+> }
+>
+> To run this program you need to provide an inputfile that contains
+> numbers seperated by spaces:
+> ./a.out < inputfile
+>
+>
+> Thank you!
+>
+>
+> Max
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,33 @@
+Edith,
+Although I have moved to running Splash2 in FS, I still have the SE version of the v1-splash-alpha.tgz working for simple CPUs.  I have included in this email a configuration script to run the benchmarks.  You will have to point the rootdir parameter to the precompiled splash2 directory you downloaded.  The other file attached is a diff that enables the threads to be scheduled properly.  However, it currently will break any SMT cores in the system and I have not verified that it works with the O3 cpu.
+So in short, if you want to run with simple CPUS, you can use the diff attached and the configuration file attached along with the precompiled splash2 benchmarks on the m5 website to run them in SE mode.  If you want O3 cpu support you may have to make the proper changes to the inital thread state of each CPU as was done for the simpleCPU in the diff.
+Please let me know if you have any difficulty getting them to run.  The config file has several different preset flags you can use to set the size/latencies of L1 and L2 caches as well as the speed and number of cores.  The diff I have given here is from the beta3 release that should be available shortly, although it should work with the beta2 as well, line numbers may not line up, I haven't tried it.
+example command line:
+%: build/ALPHA_SE/m5.debug run.py -n2 --rootdir="./splash2/codes" --benchmark=FMM
+Of course you will need to point the rootdir at your version.
+-Ron- Show quoted text -
+On Sun, 22 Apr 2007, Edith Hand wrote:
+Hello All,
+Has anyone had success running the Splash2 benchmarks on M5 in SE mode?
+I've read through a lot of the posts on this type of subject and it looks
+like maybe as of Sep/Oct last year, it's best to run in FS mode because of
+the lack of pthreads and PARMACS support in SE.  Is that still the case?
+Here's what I have tried so-far.  I have built M5 on my Linux box and I'm
+running Alpha Linux in SE.  I have cross-compiled the Splash2 benchmarks for
+Alpha.  I used the configs/example/se.py as a starting point to call the
+various benchmarks.  The first problem I ran into was that _sysctl wasn't
+emulated.  The second problem I ran into (with benchmarks that don't appear
+to call _sysctl or if I tell the emulation to ignore sysctl) is a page table
+fault.
+I also tried running the pre-compiled Splash2 benchmarks from the m5 dist
+page (v1-splash-alpha.tgz), but I'm having the same problem with those as
+with the benchmarks that I cross compiled myself.
+Any hints would be greatly appreciated.  I'd love to be able to run the
+benchmarks in SE, but if that's not possible, I suppose I could brave the FS
+world...
+Regards,
+-Edith
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

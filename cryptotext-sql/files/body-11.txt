@@ -1,0 +1,6 @@
+Hi,I would like to run simulations with multiple workloads with restoring an individual checkpoint for each program.I read this thread http://www.mail-archive.com/m5-users@m5sim.org/msg02870.html from the archive.
+I will very much appreciate if you can point me to the mentioned patch or give me pointers for the required modifications to do this.thank you very much.regards,Susie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

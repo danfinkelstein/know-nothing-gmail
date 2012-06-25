@@ -1,0 +1,59 @@
+Oh, nice. That must be new. When I looked into this I remember there
+was talk about an embedded project but they hadn't actually produced
+anything that that point. They talk about the autoconf issue in there
+as well, and apparently they just force it to think everything is ok
+for those few cases. If they have it all figured out for you then I
+take back my earlier comments.
+Gabe
+- Show quoted text -
+Quoting nathan binkert <nate@binkert.org>:
+> I still find this surprising.  There's a whole handbook that's
+> basically on cross compiling, so at least perhaps it has come a long
+> way:
+> http://www.gentoo.org/proj/en/base/embedded/handbook/
+>
+> I think the biggest issue might be that you need a gentoo system as a
+> host, but with virtual machines, or even chroot, we should be able to
+> accomplish that.
+>
+>   Nate
+>
+> On Tue, May 26, 2009 at 6:47 PM, Gabriel Michael Black
+> <gblack@eecs.umich.edu> wrote:
+>>
+>>>
+>>> I think I recall Gabe saying that you can configure portage to use a
+>>> cross-compiler.  I could probably figure that out, but given that I'm a
+>>> total gentoo newbie I'd be happy to receive canned instructions.  Anyway
+>>> even if we eventually end up just generating a new image that most people
+>>> use, it would be good to document the process for those people that need
+>>> something more custom.
+>>>
+>>
+>> There is a way for you to do this, but it won't really work. The
+>> problem is that a lot of programs expect to run things that are
+>> compiled with the selected compiler when they're being configured. You
+>> may have seen messages when building something where there's a sanity
+>> check to make sure the compiler can generate a functioning executable.
+>> Beyond little but tricky hangups like that it should work in theory.
+>> In the end it would be much less headache to do a real install or run
+>> under some sort of speedy emulation like maybe QEMU than to try to
+>> cross compile.
+>>
+>> Gabe
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

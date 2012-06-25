@@ -1,0 +1,14 @@
+>From trace files it seems that cache hit latency is
+around 1000 ticks to 2000 ticks, but if it misses then
+the latency is ~6000 cycles but not more. Now in the
+simulation there is no L2 so,how come second latency
+which is the memory access latency is so close of L1
+access latency?
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

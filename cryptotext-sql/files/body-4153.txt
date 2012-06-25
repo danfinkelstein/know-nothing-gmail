@@ -1,0 +1,32 @@
+The detailed CPU is significantly slower than the AtomicCPU, so ls will probably eventually be run, but it's will take a while. Normally we checkpoint a certain amount of time after the checkpoint instruction after whatever benchmark of interest is running.
+We use the following command line to restore from the checkpoint and switch to a detailed CPU. I don't know exactly what you're running so I can't be sure if there is a problem or not.
+./build/ALPHA_FS/m5.fast configs/example/fs.py -t --caches --l2cache -s -w 200000000000 -r 1 --checkpoint_dir=....
+Where -s stands for standard switching (to a detailed cpu), and -w says warmup the caches/tlb/etc for  200000000000 ticks with a simple cpu before switching.
+Ali- Show quoted text -
+On Sep 25, 2007, at 6:43 AM, abc def wrote:
+Hi,
+I am trying to create and restore checkpoints for
+detailed CPU model in M5 v2.0b3.
+But it is not restoring properly.
+While taking checkpoint i am using AtomicSimpleCPU and
+then using "m5 checkpoint" from command line after
+booting finishes.
+Next while restoring, i am giving the checkpoint with
+--detailed switch.
+It switches to timing mode and console goes to command
+prompt. But after that it doesn´t respond to any
+command. For example if i restore from checkpoint in
+this way, in the console even "ls" is not responding.
+Am i doing it correctly?
+____________________________________________________________________________________
+Sé un Mejor Amante del Cine
+¿Quieres saber cómo? ¡Deja que otras personas te ayuden!
+http://advision.webevents.yahoo.com/reto/entretenimiento.html
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

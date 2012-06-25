@@ -1,0 +1,8 @@
+Hi all, I am running the CMP simulation. It works fine with cores number <= 6. However, when I try 8 cores it appears the following message.---------------------------------------------------- Dumping Instruction List
+Instruction:0PC:0x120011f2c[tid:0][sn:1756]Issued:1Squashed:0 Instruction:1PC:0x120011f30[tid:0][sn:1757]Issued:0Squashed:0... 212: [sn:1917] not destroyed213: [sn:1918] not destroyed
+... m5.debug: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:178: void BaseDynInst<Impl>::initVars() [with Impl = AlphaSimpleImpl]:        Assertion `instcount <= 1500' failed. --------------------------------------------------------------
+I am using the SE mode. Does anyone know how to fix this problem? Thanks in advance! Fei
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

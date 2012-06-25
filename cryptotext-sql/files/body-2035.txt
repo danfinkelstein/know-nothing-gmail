@@ -1,0 +1,12 @@
+Hello Ali thanks for your answer I have been searchig but I have found only this:
+ 
+http://www.mail-archive.com/m5-dev@m5sim.org/msg00980.html
+http://article.gmane.org/gmane.comp.emulators.m5.users/3948/match=configure+latencies+dram
+ 
+I have been trying to find more but no other results have come up, can you point me to a concrete module, that you recommend.
+ 
+Thank you.> From: saidi@umich.edu> To: m5-users@m5sim.org> Date: Mon, 12 Jan 2009 10:26:40 -0500> Subject: Re: [m5-users] latencies in the physical memory and in the DRAM memory- Show quoted text -> > Still non tested/validated etc. If you really need a full-blown DRAM > model (a simple latency won't do) you should see about getting one of > the other models that has been mentioned on the list.> > Ali> > On Jan 12, 2009, at 2:27 AM, Angela Carlsson wrote:> > > Hello,> >> > I have a question about the latencies defined in the > > PhysicalMemory.py file. What is the latency defined in the > > PhysicalMemory?, In the DRAM memory the latencies are defined with > > parameters such as RAS to CAS..., but in the PhysicalMemory I have > > no idea about what is that latency refering.> >> > Only attending to the definition it seems much better use the DRAM > > Memory (more parameters and it seems much more real), but I read in > > some older posts, that the DRAM memory it was not tested, how is the > > state of the DRAM memory in the last version of the simulator?, is > > working now?.> >> > Thanks in advance> >> > Disfruta antes que nadie del nuevo Windows Live Messenger > > _______________________________________________> > m5-users mailing list> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> > _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-usersNuevo Windows Live, un mundo lleno de posibilidades Descúbrelo.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

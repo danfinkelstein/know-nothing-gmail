@@ -1,0 +1,15 @@
+Hi.I'm currently running the Ruby module with MI-example system.I'm accessing the ruby interface directly with memory trace inputs.When there is a LD request, the Directory state changes from I -> IM -> M.
+During I -> IM transition, qf_queueMemoryFetchReqeust() is called toenqueue the request to the m_input_queue of the Memory controller.Here, TO_MEM_CTRL_LATENCY parameter seems to be used for the delay between the directory controller and the memory controller. 
+Am I right?But when the memory controller receives the request through the m_input_queue,it seems that the TO_MEM_CTRL_LATENCY is not used for delaying the message.As a result, even if I increase the TO_MEM_CTRL_LATENCY parameter,
+the round-trip time of Directory -> Memory -> Directory remains the same.Below shows the results.[When TO_MEM_CTRL_LATENCY = 1]       1   0        Seq                             Begin       >       [0x40, line 0x40]
+       9   0    L1Cache                          Load      I>IS     [0x40, line 0x40]      17   1  Directory                         GETX      I>IM     [0x40, line 0x40]     248   1  Directory         Memory_Data     IM>M      [0x40, line 0x40]
+     255   0        Seq                             Done       >       [0x40, line 0x40]      255   0    L1Cache                       Data     IS>M      [0x40, line 0x40][When TO_MEM_CTRL_LATENCY = 5] 
+       1   0        Seq                             Begin       >       [0x40, line 0x40]       9   0    L1Cache                          Load      I>IS     [0x40, line 0x40]      17   1  Directory                         GETX      I>IM     [0x40, line 0x40]
+     248   1  Directory         Memory_Data     IM>M      [0x40, line 0x40]     259   0        Seq                             Done       >       [0x40, line 0x40]     259   0    L1Cache                        Data     IS>M      [0x40, line 0x40]
+As can be seen, the round-trip time (clk 17 -> clk 248) remains the same.The total clk increase by 4 is because TO_MEM_CTRL_LATENCY is used again when sending the returned data to the processor. In the source code (ruby/system/MemoryControl.cc), 
+MemoryControll::enqueue() function, which is called by the qf_queueMemoryFetchRequest(), just puts the incoming message into the m_input_queue without any delay. Is this operation correct?Or did I miss something?
+Thanks.HyoukJoong.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

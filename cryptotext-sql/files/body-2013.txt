@@ -1,0 +1,19 @@
+Hello, I am implementing DRAMSim in m5, as it says here:
+ 
+http://osdir.com/ml/emulators.m5.devel/2008-07/msg00146.html
+ 
+But I have a problem related with the scheduling of events in the DRAM, the problem comes with this line
+ 
+memCtrlEvent->schedule(0);
+ 
+This is the definition of memCtrlEvent
+ 
+typedef EventWrapper<DRAMMemory, &DRAMMemory::processMemCtrlEvent>  MemCtrlEvent;
+ 
+The problem is that the class EventWrapper has changed in the lasts versions of M5, and now in the class EventWrapper there is no schedule method. So my question is how can I schedule the packects now?. If someone is interested I can submit the patches for the implementation, if finally works.
+ 
+Thank you so much.Comparte tus fotos con tus amigos. Más fácil con  Windows Live
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

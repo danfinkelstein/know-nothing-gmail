@@ -1,0 +1,59 @@
+On Jan 30, 2009, at 1:11 PM, Pavan Kumar wrote:
+> Hello,
+>
+>          I am trying to run SPEC CPU 2006 benchmarks on
+> m5-2.0b6(SPARC_SE mode), and some of them are showing the following
+> error messages.
+>
+>
+> perlbench  ---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+You need to implement gettimeofday(). Implementations exist for
+AlphaLinux and Tru64. Replacing the unimplementedFunc in the syscall
+table with the appropriate one should do the trick.
+> gcc           ---           error (fatal: syscall stat (#38)
+> unimplemented.)
+Same as above
+> bwaves     ---           error (fatal: syscall ioctl (#54)
+> unimplemented.)
+Maybe same as above. You would need to figure out what it's calling
+ioctl on.
+>
+> gobmk      ---           error (fatal: fault (fp_disabled) detected
+> @ PC 0x16e74c)
+I'm aware of no programs that intentionally take an fp fault for
+correct behavior, but I could be wrong.
+>
+> soplex      ---           error (panic: attempt to execute
+> unimplemented instruction 'for' (inst 0x7c99b30f88))
+Implement the for instruction in src/arch/sparc/isa
+>
+> povray      ---           error (fatal: syscall getcwd (#119)
+> unimplemented.)
+see above
+>
+> hmmer     ---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+see above
+> lbm          ---           error (fatal: syscall stat (#38)
+> unimplemented.)
+see above
+> astar        ---           error (panic: attempt to execute
+> unimplemented instruction 'fpadd32s' (inst 0x5385b18a63))
+Implement the fpadd32s instruction in src/arch/sparc/isa
+> xalancbmk---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+see above
+>
+> zeusmp    ---           error (fatal: syscall ioctl (#54)
+> unimplemented.)
+see above
+If you're going to work on getting these fixed, please use the
+development repository http://repo.m5sim.org/m5 and PLEASE contribute
+the changes back when you are done.
+Thanks,
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

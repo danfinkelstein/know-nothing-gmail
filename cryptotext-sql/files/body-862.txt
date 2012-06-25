@@ -1,0 +1,28 @@
+Hello di,
+ 
+This a wattch.diff file provided to me by Rick Strong (from M5
+user list). This do not work with 2.0beta6 or latest version of M5. This is
+supposed to work with beta5 but I tried integrating with the older version
+(which requires a lower version of gcc). But still I had some issue.
+ 
+Thanks & Regards,
+-Shiva
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of di
+wang
+Sent: Friday, October 09, 2009 2:21 PM
+To: m5-users@m5sim.org
+Subject: [m5-users] M5 integrated with Wattch
+- Show quoted text -
+ 
+Hi All,
+I am looking for an integrated version of M5 and Wattch. I believe some people
+have done that already. Is there anyone willing to share that version or
+his/her ways to integrate these two tools?
+Thank you very much,
+di 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

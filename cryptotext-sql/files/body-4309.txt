@@ -1,0 +1,9 @@
+Hi Yue,This page should answer your questions; let us know if not:http://www.m5sim.org/wiki/index.php/SimpleCPUSteve- Show quoted text -
+On 9/10/07, Yue Li <yl06g@fsu.edu> wrote:
+Hi there,    I run those two CPU models on the same application which uses 4 threads to do summation. The total cycles of TimingSimpleCPU  is 1449144666000 while that of AtomicSimpleCPU is only 65388275500.Why there are so many difference in the metric and which one I should adopt it?
+    Thank you very much and best wishes.                                                                                            Yue                                                                                            09-10-2007
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

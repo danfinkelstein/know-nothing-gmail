@@ -1,0 +1,17 @@
+Hi
+ 
+I understand that some features are disabled in the beta
+version pending the release of version 2.0.
+I have a few questions.
+I downloaded the beta2 of version 2.0.
+The readme file says that multiprocessor coherence is
+disabled. Is that so?
+Also what other features are disabled in the beta version?
+When do you anticipate releasing version 2?
+ 
+Thanks
+Roger Kahn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

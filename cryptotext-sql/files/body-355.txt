@@ -1,0 +1,24 @@
+Any thoughts on the crash that I have mentioned?- Show quoted text -On Fri, Apr 2, 2010 at 6:10 PM, ef <snorlaxgb@gmail.com> wrote:
+A good explanation can be found here on ROI and checkpoints, also check out parsec benchmark code :
+http://www.cs.utexas.edu/~parsec_m5/TR-09-32.pdf
+basically roi region is where all the parallel portion of execution is done, exlcuding startup and exit code 
+Ive also heard, take this with a grain of salt running 64 cores and trying to restore checkpoint is a bit buggy. I think other people have had similar problems.
+On Fri, Apr 2, 2010 at 4:03 PM, Bhushan <mohan@cs.virginia.edu> wrote:
+Hi,I'm trying to use the checkpoint feature in m5 for the benchmarks in the PARSEC suite. In the first run, the checkpoint gets created and in the second run when I try to run in detailed mode using the restore checkpoint option, I get some errors.
+first run - creating checkpoint - successful.# ./build/ALPHA_FS/m5.opt ./configs/example/fs.py -n 1 --script=./scripts/blackscholes_64c_simdev_ckpts.rcSsecond run - running in detailed mode:#./build/ALPHA_FS/m5.opt ./configs/example/fs.py --detailed --caches --l2cache --checkpoint-restore=1 -n 1
+............................Switch at curTick count:10000info: Entering event queue @ 2254485270500.  Starting simulation...m5.opt: build/ALPHA_FS/sim/simulate.cc:68: SimLoopExitEvent* simulate(Tick): Assertion `curTick <= mainEventQueue.nextTick() && "event scheduled in the past"' failed.
+Program aborted at cycle 2254485270500The benchmarks in the PARSEC suite run fine if I do not use the checkpointing feature. Also, I have been trying to understand how exactly checkpointing is invoked? 
+How does m5 know from which part the ROI starts? Where does (in the scripts) m5 create a checkpoint? If these questions sound repetitive, could anyone point me to the mailing list discussions that explain checkpointing (references to checkpointing in mail archive seem to explain specific cases instead of the general working)?
+-- Regards,Bhushan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Regards,Bhushan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

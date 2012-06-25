@@ -1,0 +1,84 @@
+Hi Lisa,
+But if i want to do a single switch, then it would not work as of now?
+Thanks,
+Meeta- Show quoted text -
+On Fri, 23 Mar 2007, Lisa Hsu wrote:
+the -s option only does a single switch anyway....if your usage model is to
+go from a simpler cpu to a detailed cpu ONCE, then you want to use -s.
+sounds like you want to sample though (i.e. switch back and forth
+periodically), so -s -w probably not the best option for you anyway.
+lisa
+On 3/22/07, Meeta Gupta <meeta@eecs.harvard.edu> wrote:
+hi,
+so does this mean that i cannot use '-s -w ' option?
+should i use the sampling instructions instead?
+thanks,
+meeta
+On Thu, 22 Mar 2007, Ali Saidi wrote:
+> We're working on this...
+> Ali
+>
+> On Mar 22, 2007, at 11:24 AM, Meeta Gupta wrote:
+>
+>> Hi,
+>>
+>> I get a segmentation fault when I try using the sampling functionality
+in
+>> M5.
+>>
+>> I am using this command:
+>> ./m5.opt fs.py -s -w 3000000000 -n 4 -d --caches
+>>
+>> And I get following on console before I get a segmentation fault.
+>>
+>> warn: Entering event queue @ 0.  Starting simulation...
+>>      0: system.sim_console: attach console 0
+>> warn: Entering event queue @ 10000.  Starting simulation...
+>> Changing memory mode to timing
+>> switching cpus
+>> warn: Entering event queue @ 15000.  Starting simulation...
+>> warn: 148881001: Trying to launch CPU number 1!
+>> warn: 151612001: Trying to launch CPU number 2!
+>> warn: 154340001: Trying to launch CPU number 3!
+>> switching cpus
+>> warn: Entering event queue @ 3000015000.  Starting simulation...
+>> warn: Entering event queue @ 3000015500.  Starting simulation...
+>>
+>>
+>> ------------------------------------------------------------
+>> The booting up reaches:
+>>
+>>
+>> Console: colour dummy device 80x25
+>> Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+>> Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+>> Memory: 119072k/131072k available (3058k kernel code, 8680k reserved,
+695k
+>> data, 480k init)
+>>
+>>
+>>
+>> -----------------------------------------------------------------
+>>
+>> Can anyone help?
+>>
+>> Thanks,
+>> Meeta
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

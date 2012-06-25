@@ -1,0 +1,18 @@
+I just clean-installed Ubuntu 7.10 (got fed up with the state of
+Debian) and mostly things worked OK with a clean install of M5 2.0b4
+but I patched the wiki with a few details I had to fix:
+* needs m4 macro processor (not in the default Ubuntu install)
+* looks like Ubuntu needs zlib1g-dev instead of zlib1g-dev
+* the instructions to untar the FS files puts them a directory too deep
+   (unless you edit configs/common/SysPaths.py)
+Just a heads-up in case I unintentionally did something weird in my
+Ubuntu install and these don't apply generally ...
+--
+Philip Machanick (Visiting Fellow, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
++61-7-3871-0963 (office 3365-2766) skype philipmach
+http://opinion-nation.blogspot.com/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

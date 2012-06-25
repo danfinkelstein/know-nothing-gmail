@@ -1,0 +1,25 @@
+Hi all,
+ 
+We have a mesh interconnection model and I'm thinking about refine it 
+and integrate it into M5. But I got several questions:
+ 
+1.  it seems the bus is tightly coupled with address mapping 
+(findPort(addr)). I don't understand why and how to implement the same 
+functionality into the mesh. I'm planning to just identify ports with their IDs 
+(plus a reserved ID for broadcasting). Is this okay?
+ 
+2. I'm not sure what the snoop ports are for. In the splash2 SE 
+script, the bus doesn't seem to have snoop ports. 
+ 
+3. I assume the functionality of  the bus/interconnection is 
+to forward packets from src to dst while modeling some sort of contention. Is 
+there any other roles this module plays? Does the bus in M5 carry any 
+responsibilities in coherence?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,30 @@
+Hi I'm new to M5 so bear with me...
+I've followed the compilation instructions, installed all the relevant
+packages and built ALPHA_FS/m5.debug.
+I then moved onto the regression tests section, and couldn't manage to run
+the example given, indeed the directories you suggest on the compiling
+page didn't exist. I have downloaded and unzipped the full system tarball
+into /dist/m5/system...
+My next thought was that this might be a problem because I built the
+.debug binary, so I attempted to rebuild using the .opt binary, but now
+whenever I try to run any of the commands you offer in the tutorial I get
+the following message:
+pundit@m5$ scons build/ALPHA_FS/tests/opt/quick
+scons: Reading SConscript files ...
+Checking for C header file Python.h... yes
+Checking for C library python2.5... yes
+Checking for accept(0,0,0) in C++ library None... yes
+Checking for zlibVersion() in C++ library z... yes
+Checking for C header file fenv.h... yes
+Building in /mnt/scratch/tools/m5/build/ALPHA_FS
+Using saved options file /mnt/scratch/tools/m5/build/options/ALPHA_FS
+scons: *** Error converting option: CPU_MODELS
+Invalid value(s) for option: <built-in function all>
+File "/mnt/scratch/tools/m5/SConstruct", line 611, in <module>
+I am running on a x86 opensuse 10.2 machine.
+Thanks in advance for your help,
+Matt Horsnell
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

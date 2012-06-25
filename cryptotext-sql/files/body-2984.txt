@@ -1,0 +1,28 @@
+ 
+Hi, all   
+   I am using M5 2.0.5 in SE mode to do cache bahavior simulation.    First, I excute gzip for 0.7 billion in a single core, and its L2 cachemiss rate is 46.2%, cpi is 2.166.    Then I construct a two core system with private L1 cache and shared L2 
+cache. L1 and L2 cache's parameters are not changed compared with single 
+core.  I execute gzip and art in this two core system, and each benchmark 
+is bound to a core. The parameter max_insts_any_thread is set to 0.7 billion. Then, the gzip's miss rate in L2 cache is changed to 59.5% with only 13.3%
+decrease, and cpi is changed to 2.615. 
+   
+   But in many papers, gzip's L2 cache miss number is increased 9X when it 
+is excuted with art, and ipc could also change 60%.    
+   Is it the reason that executed instruction number is too small, or the problem of M5 configuration?   My L1 icache and dcache is 2-way associative and 8kB, and shared L2 cache is 16-way associative and 512kB. The detailed configuration is listed in accessory.
+ 
+   By the way, the L2 cache miss rate distinction of gzip when L2 size
+ changed in 2.0.4 is very tinny. L2 cache miss rate for gzip is 63% with
+ 1MB L2, and is 64.5% with 512kB L2. But the distinction is more obvious 
+in 2.0.5.
+   So I think may be the simulation of cache part in M5 has some problem. 
+   
+   Could anyone tell me why? or any possible reasons?
+   
+   Thanks a lot!
+   
+   Jason 
+  
+眼睛干涩？润洁一下！清凉配方，多重营养，缓解眼疲劳_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,19 @@
+You can search the mailing list at gmane.org or at mail-archive.com:
+http://dir.gmane.org/gmane.comp.emulators.m5.users
+http://www.mail-archive.com/m5-users@m5sim.org
+THe #1 tool for debugging is the trace facility... turning on the right set of trace flags should tell you what's happening up to the point of the deadlock.
+Steve- Show quoted text -
+Abdel-Hameed Abdel-Salam Badawy wrote:
+- Show quoted text -
+Is there an easy way of searching inside the M5 mailing list archives?
+I am geting a deadlock in the ALPHA_SE for v1.0 and I want to debug it and I need guidelines/help etc. and I want to use help from others who have been through this before instead of asking again.
+--Hameed.
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

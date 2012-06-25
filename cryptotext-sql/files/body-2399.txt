@@ -1,0 +1,79 @@
+On Oct 22, 2008, at 11:03 AM, jia wang wrote:
+> For M5 developper or anyone who can help:
+>
+> This is Jiao, a student of ECE department of Northeastern Univ., and
+> I am trying to use M5 full system in my research. It is a great tool
+> for our research, but if we can have access to the M5 OS (Linux
+> 2.6.13), that will be much more helpful. I tried to create disk
+> images and kernel for M5 according to the document from M5 main
+> website - "Using linux-dist to Create Disk Images and Kernels for
+> M5", but face the following difficulties:
+>
+> There are three steps to build up disk images:
+>
+> (1): compile a cross-compiler capable of building alpha binaries.
+>
+> In this step, I followed the instructions to use crosstool 0.42,
+> make change to demo-alpha.sh and gcc-3.4.3-glibc-2.3.5.dat. But when
+> I run the demo-alpha.sh to install the cross-compiler, it showed
+> error of "linux-libc-headers-2.6.13.0.tar.bz2 not exist". I went to
+> the website: ftp://ftp.lfs-matrix.net/pub/linux-libc-headers/ and
+> found the lastest header is linux-libc-headers-2.6.12.0.tar.bz2.
+> Could anybody explain to me what this header is for and where to get
+> the version linux-libc-headers-2.6.13.0.tar.bz2? Since the lastest
+> version is 2.6.12.0, so I just use it for demo-alpha.sh and
+> successfully generate the cross-compiler gcc-3.4.3-glibc-2.3.5.
+That should be fine.
+- Show quoted text -
+>
+>
+> (2):  compile a kernel using this cross-compiler
+>
+> For this step, I download kernel linux-2.6.13 and try to use cross-
+> compiler gcc-3.4.3-glibc-2.3.5 to build it using command:
+>
+> make ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-glibc-2.3.5/
+> alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu- vmlinux
+> But I got the following errors:
+>
+> In file included from arch/alpha/kernel/asm-offsets.c:11:
+> include/asm/io.h: In function `ioport_map':
+> include/asm/io.h:273: warning: implicit declaration of function
+> `__IO_PREFIX_ioportmap'
+> include/asm/io.h:273: warning: return makes pointer from integer
+> without a cast
+> include/asm/io.h: In function `ioremap':
+> include/asm/io.h:282: warning: implicit declaration of function
+> `__IO_PREFIX_ioremap'
+> include/asm/io.h:282: warning: return makes pointer from integer
+> without a cast
+> include/asm/io.h: In function `iounmap':
+> include/asm/io.h:299: warning: implicit declaration of function
+> `__IO_PREFIX_iounmap'
+> include/asm/io.h: In function `__is_ioaddr':
+> include/asm/io.h:304: warning: implicit declaration of function
+> `__IO_PREFIX_is_ioaddr'
+> include/asm/io.h: In function `__is_mmio':
+> include/asm/io.h:310: warning: implicit declaration of function
+> `__IO_PREFIX_is_mmio'
+> make[1]: *** [arch/alpha/kernel/asm-offsets.s] Error 1
+> make: *** [arch/alpha/kernel/asm-offsets.s] Error 2
+I don't imagine you configured the kernel or copied the .config.m5
+to .config (assuming you're using our linux-patches repository).
+>
+>
+> Since I use different header in step 1, so I also try the same
+> command on Linux kernel 2.6.12.0, but got the same error. Does that
+> because I use the wrong header in step 1 or because I didn't get the
+> right kernel? If it is kernel probelm, can anyone please let me know
+> where to get the right kernel?
+I recommend you get a newer kernel 2.6.18 or 2.6.22 and use the linux
+patches repository on it. Either way the problem current seems to be
+that the kernel wasn't configured, __IO_PREIX should get replaced by
+something like generic_ or tsunami_ if the kernel is configured
+correctly.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

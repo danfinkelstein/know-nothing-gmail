@@ -1,0 +1,64 @@
+as steve mentioned earlier, the vmlinux kernel is not on the image and is loaded separately.  you can see it in the directory listing you provided in an earlier email.note that is just the binary, so you won't get any scheduling information out of it.  if you want to modify the linux scheduler, you'll have to modify kernel code and recompile the binary yourself.  see here:
+http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+and here for linux patches and a precompiled cross compiler (if you don't want to create your own as described above).http://m5.eecs.umich.edu/wiki/index.php/Download
+as you can see, a lot of useful information is provided on the website, you'll probably save yourself a lot of time if you just go through it, then you won't have to wait on us for answers that are right there.  we also have a tutorial and audio to go with it online that i think might be very helpful to you, loaded with information.  
+lisa- Show quoted text -On Fri, May 9, 2008 at 11:04 AM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+Thanks,  It works. I redownloaded it and mount it again according to FAQ.But, there is no linux kernel source files inside "linux-latest.img". Where to find out what scheduling algorithms that the disk image of m5 simulator is
+ using to run the benchmarks ?thanksMike May 9  2008 > Date: Thu, 8 May 2008 20:04:46 -0400> From: gblack@eecs.umich.edu
+> To: m5-users@m5sim.org> Subject: Re: [m5-users] about m5term and linux kernel> > It looks like when you ran mke2fs you reformatted the image...
+> > I think there may be some confusion on how this is supposed to work. > Basically, there are several layers of stuff going on here. At the > bottom (as far as we're concerned), there is a disk which holds a bunch 
+> of bytes like a HUGE array. Then, it's up to a filesystem to carve up > those bytes and basically build up the datastructures which represent > files and directories and whatnot. What the image is is basically a file 
+> rather than a physical device which holds the bytes. When you mount it > as a loopback device, you're telling Linux to interpret its contents as > a filesystem like it would with a hard drive. What you did below was to 
+> tell Linux to present the file as a device like a harddrive. You then > formatted the "hard drive" with an ext2 filesystem, mounted it, and saw > that you successfully overwrote it. I think this will work if you leave 
+> out the mke2fs command. You may need to redownload the image files as > well. You should make sure you both read the directions on the website > carefully and that you understand all the steps, and then I think all 
+> this will go a lot smoother.> > Gabe> > Mike Anderson wrote:> > Thanks,> >> > But, I still can not see the img files.> >> > I set up loopdevice
+> >> > [root@m5_2.0b4]#  losetup  /dev/loop2 > > /home/normal/m5_2.0b4/dist/m5/system/disks/linux-latest.img> >> > And then, I  > >> > mke2fs -c /dev/loop2 1000
+> >> > And then,> > [root@ m5_2.0b4]# mount -t ext2     /dev/loop2       > > /home/normal/m5_2.0b4/m5root2> >> > but, when  I go to  /home/normal/m5_2.0b4/m5root2.
+> >> > [normal@m5root2]$ ls -l> > total 12> > drwx------ 2 root root 12288 May  8 17:08 lost+found> >> > Only, this directory.> >> > I can not see the  linux-latest.img  .
+> >> > Thanks> >> > Mike> > May  8  2008> >> >> >> >> >> >     ------------------------------------------------------------------------
+> >     Date: Thu, 8 May 2008 11:10:45 -0400> >     From: hsul@eecs.umich.edu> >     To: m5-users@m5sim.org
+> >     Subject: Re: [m5-users] about m5term and linux kernel> >> >     linux-latest.img is the root image.  if you mount it, you will see> >     the directories as you saw them when running m5. 
+> >> >     lisa> >> >     On Thu, May 8, 2008 at 11:07 AM, Mike Anderson> >     <m5kernel8@hotmail.com <mailto:m5kernel8@hotmail.com>> wrote:
+> >> >> >         Thanks,  but, I can not see the root of the disk image mounted> >         in m5.> >> >         I installed "M5 2.0b3 Full System Files> >         <http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2>" 
+> >         in m5/dist/m5/system.> >         In the directory , I have> >> >         [normal@ system]$ ls -l> >         total 18088> >         drwxrwx--- 2 normal normal     4096 May  7 16:33 binaries
+> >         drwxrwx--- 2 normal normal     4096 May 17  2007 disks> >         -rw-rw-r-- 1 normal normal 18468181 May 17  2007> >         m5_system_2.0b3.tar.bz2> >         drwxrwxr-x 3 normal normal     4096 May  5 17:43 www.m5sim.org
+> >         <http://www.m5sim.org>> >> >         [normal@ system]$ cd disks/> >         [normal@ disks]$ ls -l> >         total 2141972
+> >         -r--r----- 1 normal normal 2139095040 May 17  2007> >         linux-bigswap2.img> >         -rw-r----- 1 normal normal   52125696 May 17  2007> >         linux-latest.img
+> >> >         [normal@ system]$ cd binaries/> >         [normal@ binaries]$ ls -l> >         total 31748> >         -rwxrwx--- 1 normal normal    78500 May 17  2007 console
+> >         -rwxrwx--- 1 normal normal    52136 May 17  2007 ts_osfpal> >         -rwxrwxr-x 1 normal normal 32313628 Oct  8  2006 vmlinux> >> >         And, I should mount linux-bigswap2.img or linux-latest.img  ?
+> >> >         and where to mount them ?> >         I do not have root directory in m5.> >> >         Thanks,> >> >         May 8  2008> >> >
+> >             ------------------------------------------------------------------------> >             Date: Wed, 7 May 2008 21:17:01 -0700> >             From: stever@gmail.com <mailto:stever@gmail.com>
+> >             To: m5-users@m5sim.org <mailto:m5-users@m5sim.org>> >             Subject: Re: [m5-users] about m5term and linux kernel
+> >> >> >> >> >             On Wed, May 7, 2008 at 5:06 PM, Mike Anderson> >             <m5kernel8@hotmail.com <mailto:m5kernel8@hotmail.com>> wrote:
+> >> >                 Hi,> >> >                 I am using m5.opt and m5.debug  to run  FS simulation.> >> >                 ./build/ALPHA_FS/m5.opt  configs/example/fs.py -b
+> >                 NetperfMaerts> >> >                 build/ALPHA_FS/m5.debug -d /tmp/output> >                 configs/example/fs.py> >> >                 build/ALPHA_FS/m5.opt --trace-flags="Cache"
+> >                 configs/example/fs.py> >> >                 And, I  connect to the simulated console interface by> >> >                 m5term localhost 3456> >
+> >                 But, the console responds my typing very slowly.> >> >                 And,  I use ls and got : > >> >                 	benchmarks  etc         lib         mnt         sbin        usr
+> >> >> >                 	bin         floppy      lost+found  modules     sys         var> >                 	dev         home        man         proc        tmp         z> >
+> >                 My question is :> >> >                 Where are these directories located ? > >> >             In the root directory of the disk image you've mounted in m5.
+> >              > >> >> >> >                 And, where is the linux kernel located ? > >> >> >             That's loaded separately; it's not on the disk image.
+> >              > >> >> >> >                 If I want to implement a linux scheduling algorithm in a linux kernel.> >> >                 And, I plan to use linux-dist to Create Disk Images and Kernels for M5
+> >                 with compiled benchmarks.> >> >                 And then, I install the disk in the  directory:> >> >> >                 /dist/m5/system> >
+> >                 And, when I run the benchmarks . > >> >                 How can I make sure that the threads generated from the benchmarks > >                 are scheduled by th new linux kernel ?
+> >> >> >             It's pretty much the same as if you were doing it on a> >             real system... if you want to be sure it's working, you> >             just have to observe that it's having some effect.
+> >> >             Steve> >              > >> >> >                 thanks,> >> >                 Mike > >> >                 May.  7  2008 
+> >> >> >> >> >> >> >> >> >> >> >                  > >> >> >> >> >                 ------------------------------------------------------------------------
+> >                 Get Free (PRODUCT) RED™ Emoticons, Winks and Display> >                 Pics. Check it out!> >                 <http://joinred.spaces.live.com?ocid=TXT_HMTG_prodredemoticons_052008>
+> >> >                 _______________________________________________> >                 m5-users mailing list> >                 m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+> >                 http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> >> >> >         ------------------------------------------------------------------------
+> >         Windows Live SkyDrive lets you share files with faraway> >         friends. Start sharing.> >         <http://www.windowslive.com/skydrive/overview.html?ocid=TXT_TAGLM_WL_Refresh_skydrive_052008>
+> >> >         _______________________________________________> >         m5-users mailing list> >         m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+> >         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> >> >> > ------------------------------------------------------------------------
+> > Stay in touch when you're away with Windows Live Messenger. IM anytime > > you're online. > > <http://www.windowslive.com/messenger/overview.html?ocid=TXT_TAGLM_WL_Refresh_messenger_052008> 
+> >> > ------------------------------------------------------------------------> >> > _______________________________________________> > m5-users mailing list> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> > _______________________________________________> m5-users mailing list
+> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+With Windows Live for mobile, your contacts travel with you. Connect on the go.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+hi everyone,While I am working on 8 core and 2 thread in SPECCPU 2006 in SE mode, i am facing assertion problem as :warn: Increasing stack size by one page.
+m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Could you please reply me with files detail which cause such error.
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

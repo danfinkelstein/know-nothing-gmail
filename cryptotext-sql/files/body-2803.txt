@@ -1,0 +1,60 @@
+I'm not familiar with the details of wattch, so I'll have to ask as
+many questions as I answer here...
+How frequently are the computations in power.c performed?  If they're
+infrequent, you could move all that code into python where it would
+have direct access to the python parameters.
+How modular is the power code?  It seems inelegant that the
+system-level power model would care about the implementation details
+of the individual cores.  If there was a way for each SimObject to own
+its own little piece of the power model, then finding the parameters
+should be easy... the CPU knows how big its LSQ is, the problem is in
+getting that information out of the CPU model when not every CPU has
+an LSQ.  Similarly the System object knows how many CPUs there are in
+that system, so if you can do the system-level power modeling right
+there (or in a subordinate object) then it shouldn't be hard.  Note
+that when you're doing multi-system simulations you probably don't
+want to roll up the power consumption across all the systems, since
+some of the systems are just drivers to create traffic for the system
+under test.
+As a last resort you could create a SimObject just for the power model
+and then have the python pass the needed params in (you could probably
+even set the python up to grab all those param values
+semi-automatically) but the more I think about it that seems to be a
+cop-out relative to having the power model itself be more modular.
+But given the state of the existing code and your time constraints it
+might be your best course of action.
+Steve
+On Mon, Jun 23, 2008 at 9:26 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> Thanks Gabe and Steve for your suggestions. What I am trying to do is
+> integrated wattch in M5 beta 5, using Rick Strong's basic code.
+>
+> It consists of a lot of counters integrated into various O3 implementation
+> files (*_impl.hh), mem/cache/cache_impl.hh and calling the power
+> calculations routines from power.c in simulate.cc He used a separate
+> definitions files in which he defined the constants used for simulation (say
+> numcpus or memory size), since his code did not have any hooks to get the
+> information from python.
+>
+> for example: I would need to access to various system parameters - say the
+> value of numcpus supplied at runtime, the value of memory size, etc. These
+> are specified by the user using the config script and I assume some
+> SimObject is created for the at runtime. Some other things like lsq_size are
+> defined in O3CPU.py and I would need to access it.
+>
+> Currently the values are obtained by using a #include<> (in each of those
+> files above) to include the file which has these parameters defined. So
+> everytime we change a simulation parameter, this file has to be edited
+> manually.
+>
+> So what would be the best way of going about this?
+>
+> Secondly, is this the best way of integrating wattch into M5? (modifying all
+> the files I mentioned above). Or can you suggest a more cleaner approach
+> that would work for all CPU models.
+>
+> Thanks,
+> Sujay
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

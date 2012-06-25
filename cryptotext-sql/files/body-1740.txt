@@ -1,0 +1,38 @@
+Hello all,
+This message is related with this one,
+http://thread.gmane.org/gmane.comp.emulators.m5.users/3939/focus=3967.
+In that message Ali gives an explanation about how to use pin. I have
+been trying to use it but it seems that  when I am running the script
+m5 does not recognize the command, following you can see my script and
+the output.
+#!/bin/sh
+cd /parsec/install/bin
+/sbin/m5 pin 0 ./ferret /parsec/install/inputs/ferret/coreld lsh
+/parsec/install/inputs/ferret/queriesd 5 5 8
+/parsec/install/inputs/ferret/output.txt
+echo "Done :D"
+/sbin/m5 exit
+loading script...
+usage: m5 ivlb <interval>
+       m5 ivle <interval>
+       m5 initparam
+       m5 sw99param
+       m5 exit [delay]
+       m5 resetstats [delay [period]]
+       m5 dumpstats [delay [period]]
+       m5 dumpresetstats [delay [period]]
+       m5 checkpoint [delay [period]]
+       m5 readfile
+       m5 debugbreak
+       m5 switchcpu
+All times in nanoseconds!
+Done :D
+I looked to the code in /util/m5/m5.c and I see that the pin command
+is only executed if linux is define. I do not understand why the pin
+command is inside those defines. Also I tried to delete the defines
+but that did not work. Any help about how to use it?.
+Thanks a lot in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,168 @@
+Also make sure you unmount the disk image before you try simulating
+with it. Otherwise your changes might be buffered in the kernel and
+not actually visible to M5.
+Gabe
+- Show quoted text -
+Quoting Ali Saidi <saidi@umich.edu>:
+> Hmm... Maybe delete libc* from the image and then copy it over incase
+> an old version is being used. You could also try statically linking
+> the m5 binary with your complier. Did you compile the m5 binary with
+> the same gcc/libc version?
+>
+> Ali
+>
+> On Mar 5, 2009, at 1:48 PM, Bob Nagel wrote:
+>
+>> Hi Ali thanks for your help,
+>>
+>> I am getting this error:
+>>
+>> m5: setaffinity: Function not implemented
+>> Done :D
+>>
+>> I believe is because there is a problem with libc. This is what I did
+>> I went to the directory:
+>>
+>> /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/alpha-
+>> unknown-linux-gnu/lib
+>>
+>> And I copy all the libc* and libstdc++* files from there to the /lib
+>> directory in the disk image. Then I unmount I ran the simulation and I
+>> get the error I said before.
+>>
+>> Am I missing any file or something in the process to make it work?.
+>> Thanks a lot for your help.
+>>
+>>
+>> 2009/3/5 Ali Saidi <saidi@umich.edu>:
+>>> You need to overwrite the files you have with the ones from the cross
+>>> compiler. The problem is the version of libc on the disk doesn't
+>>> support the sched_setaffinity() call.
+>>>
+>>> Ali
+>>>
+>>> On Mar 5, 2009, at 1:33 AM, Bob Nagel wrote:
+>>>
+>>>> Hi Ali thanks a lot for your answer.
+>>>>
+>>>> I already have a bigger image so the option of copy the libc* and
+>>>> libstdc++* from one of the cross compilers works perfect for me.
+>>>> In my
+>>>> image I already have some libc files in the lib directory, so I just
+>>>> copied the files that I did not have libstdc++.so.6.0.3,
+>>>> libstdc++.so.6, libstdc++.so. But it did not work. Can you provide
+>>>> more details with what files I need to copy and where specifically
+>>>> in
+>>>> the disk image. Sorry for this simple question and thanks a lot
+>>>> again.
+>>>>
+>>>> 2009/3/4 Ali Saidi <saidi@umich.edu>:
+>>>>> Hi Bob,
+>>>>>
+>>>>> The m5 binary on the disk image that we distribute doesn't support
+>>>>> the
+>>>>> pin command. You'll need to compile it yourself. Additionally, I
+>>>>> don't
+>>>>> believe libc on the disk image supports sched_setaffinity (needed
+>>>>> by
+>>>>> pin). This is something we need to fix, but it unfortunately
+>>>>> involves
+>>>>> distributing a new disk image to everyone and updating a bunch of
+>>>>> regressions. You can easily make a new disk image by starting
+>>>>> with a
+>>>>> gentoo image or you can copy the libc* and libstdc++* from one of
+>>>>> the
+>>>>> cross compilers on the m5sim.org website onto the disk image (you
+>>>>> might need to make the actual image bigger to do this).
+>>>>>
+>>>>> Ali
+>>>>>
+>>>>>
+>>>>>
+>>>>> On Mar 4, 2009, at 11:54 AM, Bob Nagel wrote:
+>>>>>
+>>>>>> Hello all,
+>>>>>>
+>>>>>> This message is related with this one,
+>>>>>> http://thread.gmane.org/gmane.comp.emulators.m5.users/3939/focus=3967
+>>>>>> .
+>>>>>>
+>>>>>> In that message Ali gives an explanation about how to use pin. I
+>>>>>> have
+>>>>>> been trying to use it but it seems that  when I am running the
+>>>>>> script
+>>>>>> m5 does not recognize the command, following you can see my script
+>>>>>> and
+>>>>>> the output.
+>>>>>>
+>>>>>> #!/bin/sh
+>>>>>> cd /parsec/install/bin
+>>>>>> /sbin/m5 pin 0 ./ferret /parsec/install/inputs/ferret/coreld lsh
+>>>>>> /parsec/install/inputs/ferret/queriesd 5 5 8
+>>>>>> /parsec/install/inputs/ferret/output.txt
+>>>>>> echo "Done :D"
+>>>>>> /sbin/m5 exit
+>>>>>>
+>>>>>> loading script...
+>>>>>> usage: m5 ivlb <interval>
+>>>>>>       m5 ivle <interval>
+>>>>>>       m5 initparam
+>>>>>>       m5 sw99param
+>>>>>>       m5 exit [delay]
+>>>>>>       m5 resetstats [delay [period]]
+>>>>>>       m5 dumpstats [delay [period]]
+>>>>>>       m5 dumpresetstats [delay [period]]
+>>>>>>       m5 checkpoint [delay [period]]
+>>>>>>       m5 readfile
+>>>>>>       m5 debugbreak
+>>>>>>       m5 switchcpu
+>>>>>>
+>>>>>> All times in nanoseconds!
+>>>>>> Done :D
+>>>>>>
+>>>>>> I looked to the code in /util/m5/m5.c and I see that the pin
+>>>>>> command
+>>>>>> is only executed if linux is define. I do not understand why the
+>>>>>> pin
+>>>>>> command is inside those defines. Also I tried to delete the
+>>>>>> defines
+>>>>>> but that did not work. Any help about how to use it?.
+>>>>>>
+>>>>>> Thanks a lot in advance.
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,43 @@
+On 11/13/06, Chaitali Gupta <chaitaligupta80@yahoo.com> wrote:
+Hi Lisa,As mentioned by you, I have read the webpage. I wastrying something like -"root = Root(clock = '1THz',    system = makeLinuxAlphaSystem(mem_mode, bm[0]))root.system.cpu =[AtomicSimpleCPU(),AtomicSimpleCPU()]
+root.system.cpu[0] = cpuwhat is it that you were trying to do with the above assignment?  did you ever define cpu anywhere?  you've already assigned root.system.cpu[0] by doing the "root.system.cpu
+ = [AtomicSimple....]".- Show quoted text -cpu.connectMemPorts(root.system.membus)cpu.mem
+ = root.system.physmemroot.system.cpu[1] = cpu2cpu2.connectMemPorts(root.system.membus)cpu2.mem = root.system.physmem "in fs.py file. But I am  getting the following error -"Error in unproxying param 'cpu' of 
+system.intrctrlTraceback (most recent call last):  File "<string>", line 1, in ?  File "build/ALPHA_FS/python/m5/main.py", line 314,in main    execfile(sys.argv[0], scope)
+  File "configs/example/fs.py", line 86, in ?    m5.instantiate(root)  File "build/ALPHA_FS/python/m5/__init__.py", line87, in instantiate    root.print_ini()  File "build/ALPHA_FS/python/m5/config.py", line 517,
+in print_ini    self._children[child].print_ini()  File "build/ALPHA_FS/python/m5/config.py", line 517,in print_ini    self._children[child].print_ini()  File "build/ALPHA_FS/python/m5/config.py", line 505,
+in print_ini    value = value.unproxy(self)  File "build/ALPHA_FS/python/m5/config.py", line 665,in unproxy    result, done = self.find(obj)  File "build/ALPHA_FS/python/m5/config.py", line 748,
+in find    return obj.find_any(self._pdesc.ptype)  File "build/ALPHA_FS/python/m5/config.py", line 466,in find_any    raise AttributeError, \AttributeError: parent.any matched more than one:
+<bound method AtomicSimpleCPU.path of<m5.objects.SimpleCPU.AtomicSimpleCPU object at0xb788520c>> <bound method AtomicSimpleCPU.path of<m5.objects.SimpleCPU.AtomicSimpleCPU object at0xb78853ac>>"
+Any help or suggestion is appreciated.Thanks in advance.Regards-ChaitaliLisa Hsu <hsul@eecs.umich.edu> wrote:> If all you want to do is have a machine with
+> multiple CPUs, you can> instantiate more in your python configuration> script.>> on our wiki is some documentation explaining> configuration scripts, you can> literally just have your system's cpu parameter
+> point to an array or cpu> objects, and that's it.>>http://www.m5sim.org/wiki/index.php/Simulation_Scripts_Explained
+>> lisa>> On 11/11/06, Chaitali Gupta> <chaitaligupta80@yahoo.com> wrote:> >> > Hi Ali,> >> > I would let the linux scheduler do the scheduling
+> for> > my multithreaded program. But I want to know how> to> > specify/configure to make my program run on> different> > CPUs and CPUs having multiple cores.> >
+> > Thanks> > Chaitali> >> > --- Ali Saidi <saidi@umich.edu> wrote:> >> > > Chaitali,> > >> > > You need to compile the programs with the cross
+> > > compiler. Depending> > > on the programs this may be as simple as setting> > > your CC variable to> > > the cross compiler, or if it is a more complex> > > process it make have a
+> > > parameter you can pass to configure to do it or> > > perhaps you'll have> > > to do some work to make it work.  After you have> a> > > binary you'll need
+> > > to put it on the disk image -- look at> www.m5sim.org> > > for instructions.> > >> > > Normally the linux scheduler will schedule the
+> > > threads as it sees> > > fit. If you want to change this take a look at> this> > > article from IBM:> > >> >>
+http://www-128.ibm.com/developerworks/linux/library/l-affinity.html?> > >> > > ca=dgr-lnxw09Affinity> > >> > > Ali> > >> > >> > >
+> > > On Nov 11, 2006, at 12:51 PM, Chaitali Gupta> wrote:> > >> > > > Hi,> > > >> > > > I have successfully installed and run m5 2.0> in
+> > > full> > > > system mode. I can run the benchmarks in full> > > system> > > > and see the stats.> > > >> > > > But, I want to run two programs - one
+> > > single-threaded> > > > and one multithreaded program on m5 in full> system> > > > mode. I have installed cross compiler -> > > crosstool-0.42> > > > from the kegel site mentioned in the m5
+> webpage.> > > >> > > > My question is -> > > >> > > > How can I compile and run my own programs on> m5> > > and> > > > also how can I specify the threads to be run
+> on> > > > different cores of the processor for the> > > > multi-threaded program?> > > >> > > > Eagerly waiting for a reply.> > > >
+> > > > Regards-> > > > Chaitali> > > >> > > >> > > >> > > >> > >> >>______________________________________________________________________
+> > >> > > > ______________> > > > Yahoo! Music Unlimited> > > > Access over 1 million songs.> > > > 
+http://music.yahoo.com/unlimited> > > >> _______________________________________________> > > > m5-users mailing list> > > > m5-users@m5sim.org
+> > > >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> > >> > > _______________________________________________
+> > > m5-users mailing list> > > m5-users@m5sim.org> > >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >> >> >> >> >> >> >>____________________________________________________________________________________> > Cheap talk?
+> > Check out Yahoo! Messenger's low PC-to-Phone call> rates.> > http://voice.yahoo.com> > _______________________________________________> > m5-users mailing list
+> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> >
+> > _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users____________________________________________________________________________________Do you Yahoo!?Everyone is raving about the all-new Yahoo! Mail beta.
+http://new.mail.yahoo.com_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,30 @@
+Hi all,
+I'm running M5 in Full-System mode with 8 CPUS. I've applied the Linux patches for BigTsunami support up to 64 processors.
+The simulation works well using PARSEC multithreaded benchmark "blackscholes" with small inputs and 64 threads.
+In the next step, I'm trying to run with multiprogram workloads on more processors and having the following questions:
+(1)     In M5 FS mode, is there a way to assign different multithreaded applications to different groups of CPUs?
+        For example, if I have 8 CPUs, and two multithreaded benchmarks ( "blackscholes" and "canneal") each with 64 threads.
+        I'd like to assign "blackscholes"  to cpu0 to cpu3; and assign "canneal"  to cpu4 to cpu7; to let them run in parallel.
+        Is there a way I could do that? If there is, how could I configure it in the simulation script?
+        I've learned how to config multiprogram workloads in SE mode. But in FS mode, should I also consider changing the .rcS script?
+(2)     Also, I'm trying to increase the number of CPUs to 64. (All the configures are the same expect I'm using "-n 64" in the command line.)
+        Firstly, I created a checkpoint at the beginning of the ROI (region of interest--parallel phase), to first run M5 in simple mode.
+        Then, I run M5 in detailed mode beginning at the checkpoint.
+        Everything works fine in the first step. But there's an "Segmentation fault" as follows when restoring the checkpoint.
+        *****************************************************
+        Restoring from checkpoint
+        warn: Not unserializing 'system.cpu54.dcache': no section found in checkpoint.
+        For more information see: http://www.m5sim.org/warn/dc3e87f8
+        warn: Not unserializing 'system.cpu54.icache': no section found in checkpoint.
+        For more information see: http://www.m5sim.org/warn/dc3e87f8
+        Segmentation fault
+        *****************************************************
+        I've been using exactly the same configuration and steps with 8 CPUs and it works well. I was wondering why it doesn't work with 64 cores.
+        Is there anybody met the same problem before? Or has any idea what may cause this problem?
+        Any comment and suggestion would be appreciated,
+Thanks in advance,
+Jie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

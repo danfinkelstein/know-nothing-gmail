@@ -1,0 +1,16 @@
+Hi, 
+ 
+I have working on running some openMP
+application on M5 simulator in ALPHA_FS mode. 
+However, gcc 4.1.1 do not support the
+openMP library.
+I am wondering if there is any gcc 4.2.0 (or
+newer) cross compiler or any other way to run openMP application on M5.
+Thanks for your reading!
+Any help would be grateful.
+ 
+Dennis 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

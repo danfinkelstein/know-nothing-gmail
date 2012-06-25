@@ -1,0 +1,15 @@
+Our statistics guru Nate is on vacation, so I'll reply even though I'm not the most qualified...Basically, as long as your class derives from SimObject and has a regStats() method that initializes the per-instance stats, then you shouldn't have to do anything else to get the stats to show up in the output.
+Steve- Show quoted text -On Tue, Jul 7, 2009 at 11:16 AM, Valerie Juarez <vmjuarez@my.lamar.edu> wrote:- Show quoted text -
+Hello,I am working on implementing a compression technique into M5 (version m5-2.0b6), and I would like to record some statistics for my implementation. I will be making a separate compression folder under src/mem/ and I want to record my statistics in the compression.cc file I add in that folder.
+I've read on the website about adding statistics, but I just want to make sure I understand it correctly.As long as I include the statistics package, add it to the member list, and make the regStats() method in my compression class with my stats initialized in the following format (this is how I intended on doing it, anyway):
+ statname.name(name() + ".statname")                .desc("description");it should include the statistics that I add in m5stats.txt, right?
+And if so, will I need to call regStats() at any point, or is it done automatically?
+Thanks in advance,Valerie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

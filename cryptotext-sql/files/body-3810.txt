@@ -1,0 +1,112 @@
+In fact, there are some problems with 2 benchmarks (cholesky and lunoncontig) even with the updated script. These benchmarks require us to pass all ddefault arguments, otherwise they dont end correctly (you can pass the extra -t arg to check results). I'll post a fixed config file that I use.
+- Sujay
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, December 02, 2007 6:56 PM
+Subject: Re: Fwd: [m5-users] CMP simulation- Show quoted text -
+Note that there were some issues with the splash script in passing
+args to splash benchmarks, and Ali posted an updated version to the
+list recently.
+Steve
+On Dec 2, 2007 3:19 PM, Sujay Sunil Phadke <sphadke@eecs.umich.edu> wrote:
+you can execute any benchmark in the splash2 suite by the "-p" option
+which specifies the number of processors.
+~<....> -p 4 - b FFT
+does this do what you want?
+- Sujay
+On Sun, 2 Dec 2007, giotis@umich.edu wrote:
+> Yes,, you are right, my stats shows that no instruction is executed in > the
+> second cpu. I was using FFM, is there any benchmark in splash2 that > would
+> utilize both processors?
+>
+> -panos
+>
+> Quoting Steve Reinhardt <stever@eecs.umich.edu>:
+>
+>> Oops, meant to send this to the list and not just to Ali.
+>>
+>>
+>> ---------- Forwarded message ----------
+>> From: Steve Reinhardt <stever@eecs.umich.edu>
+>> Date: Dec 2, 2007 12:50 PM
+>> Subject: Re: [m5-users] panic on partially satisfying the functional
+>> request
+>> To: Ali Saidi <saidi@umich.edu>
+>>
+>>
+>> No, they're not.  The functional accesses Panos is seeing are probably
+>> from syscall emulation.
+>>
+>> If there aren't any traces from the second CPU's cache, that probably
+>> means the application is never getting to the point of creating a
+>> thread on the second CPU.
+>>
+>> Steve
+>>
+>>
+>> On Dec 2, 2007 11:36 AM, Ali Saidi <saidi@umich.edu> wrote:
+>>> Actually, now that I think about this I'm not sure that it is? Are
+>>> express snoops functional accesses?
+>>>
+>>> Ali
+>>>
+>>>
+>>> On Dec 2, 2007, at 2:33 PM, Ali Saidi wrote:
+>>>
+>>> > They're "express snoops," take a look at:
+>>> http://www.m5sim.org/wiki/index.php/Coherence_Protocol
+>>> >
+>>> >
+>>> > Ali
+>>> >
+>>> > On Dec 2, 2007, at 11:55 AM, giotis@umich.edu wrote:
+>>> >
+>>> >> Hi I am reposting my question. I am running splash2 with 2 CPUs.
+>>> >> Although I use the trace cache flag option, on the output I see no
+>>> >> traces of my second's CPU cache.
+>>> >>
+>>> >> Moreover, since I have configured my system for atomic requests,
+>>> >> who is calling the functional requests on the bus?
+>>> >>
+>>> >> Thanks
+>>> >>
+>>> >> Panos
+>>> >> _______________________________________________
+>>> >> m5-users mailing list
+>>> >> m5-users@m5sim.org
+>>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> >>
+>>> >
+>>> > _______________________________________________
+>>> > m5-users mailing list
+>>> > m5-users@m5sim.org
+>>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> >
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

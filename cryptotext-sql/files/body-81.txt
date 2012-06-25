@@ -1,0 +1,76 @@
+Part of the confusion here might stem from the use of the word "core" and whether that means a simulated core or a real one. If M5 was multithreaded, multiple threads could execute multiple events simultaneously. Even though it's not, multiple events can still be scheduled to run at the same *simulated* time in a simulated multicore system. Each simulated core would have its own stream of events which would align arbitrarily and possibly (even probably) fall at exactly the same simulation tick in many cases. M5 is (or at least is intended to be) entirely determinstic, and these events will be executed in some determinstic but unspecified order.
+Gabe- Show quoted text -
+Quoting nathan binkert <nate@binkert.org>:
+In the case of a multi-core system as you said, the second bin (linked
+list) would potentially have more than a single event to be set for
+execution at a particular cycle, and although the current structural
+order implementation for execution is set for LIFO, there is no
+guarantee as to the relative order. I can see this as tending to be
+towards a more realistic approach, as real systems would be
+indeterministic in this regard.
+However, regardless of the order in which the events are executed,
+would you say or in some sense 'guarantee' that the events listed in
+the bin, would execute corresponding to the same timestamp cycle?
+For example, if the 'when' timestamp corresponded to simulation cycle:
+1000, and assume that all the priority levels of the events are
+equivalent,
+if the order in which 5 events let's say in the bin are executed in the order:
+event 1 -> event 3 -> event 2 -> event 5 -> event 4
+at simulated cycle 1001: would these particular events have already
+been set for execution?
+I don't know what you mean by "set for execution".  At cycle 1001, all
+events from times < 1001 would have been executed and removed from the
+queue.
+Also, how does the number of cpus determine (if it does assumingly) or
+impact whether or not the bin of events for a particular cycle is
+empty or not in the subsequent cycle? For example, would an event be
+scheduled onto an available core?
+events aren't scheduled on cores.  Events are scheduled on the event
+queue.  A core has some sort of clock event that must be scheduled to
+start the clock and must be rescheduled every cycle to schedule it for
+the next cycle.  Events don't persist on the event queue.
+It seems from your previous response that it is possible to have more
+events scheduled at the same time then there are available CPUs, and
+depending on which cpus's generated the event request, does that mean
+some of the events may not be set in execution at that particular
+timestamp (due to data hazards/dependencies or cpu resources?)
+Events can be scheduled for any reason.  It depends on the design of
+the module.  It seems that you might be confused about the
+relationship of events and cores.  Events are created by any module to
+schedule something to happen in the future.  Those events are
+scheduled on an event queue which dispatches those events in
+time/priority order.  A dispatched event may do anything from report
+the response message of a cache operation to doing the main clock
+function of a core.
+Moreover, from your previous response it seems that it is possible
+(even if it is not the common case) for a single thread/core to set
+for execution more than a single event (whether or not in a multi-core
+system, if we just concern ourselves from perspective of a single
+thread/core).
+Yes, that is possible.
+I see that there are functions available for event rescheduling, that
+would deal with such situations, but just to confirm, once an event is
+placed in this main queue, all such possibilities of needing to
+reschedule have already been determined, such that at this point,
+there is no reason for it to  be rescheduled or not be executed?
+No, that is not true.  An event can be rescheduled.  For example, I
+may schedule an event for 50 cycles in the future and find out in 10
+cycles that it should have been scheduled sooner.  In that case, I may
+choose to reschedule the event.  Alternatively, I could use an event
+for some sort of timeout (like a watchdog clock).  In that case, I'll
+schedule the event for a fixed time in the future, but if the clock
+gets reset, It will be rescheduled further in the future.
+I think you're trying to make the event system more complicated than
+it is.  It is effectively a heap where the top element is dispatched.
+The only rule about insertion is that you can't insert an event in the
+past.  There aren't any restrictions on removing events from the
+queue.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

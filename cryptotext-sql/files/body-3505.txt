@@ -1,0 +1,52 @@
+Hey Dan,
+it was my understanding that if someone else has a SPEC license that
+then you can exchange binaries, but if they dont then you can't.
+Ali is probably the best resource on licensing stuff.
+I'll ask him about it tomorrow and see what we can come up with. Maybe
+we will be able to just link to your page from the WIKI?
+On Sun, Feb 24, 2008 at 8:34 PM, Daniel Alex Finkelstein
+<dfinke01@cis.poly.edu> wrote:
+>
+> Hey Korey,
+>
+> The M5 wiki page http://m5sim.org/wiki/index.php/SPEC2000_benchmarks says
+> that you're not distributing binaries or data sets b/c of SPEC licensing
+> restrictions, but I thought binaries were free to be distributed -- but
+> nothing else. I don't know if that argument is controlling, but simplescalar
+> had Alpha/OSF1 binaries of all the SPEC CPU 2000 benchmarks freely available
+> from its web site (sans data sets, without which the binaries are mostly
+> useless since they're coded to expect the particular data files).
+>
+> I've been talking with Ali about uploading my versions of the binaries so
+> others could use them without dealing with cross compilers or debugging the
+> SPEC binaries, but we haven't figured out a good way to distribute or post
+> them. In the meantime I just hand them out from my web site to whomever
+> asks.
+>
+> --Dan
+>
+>
+>
+>
+>
+> Daniel Alex Finkelstein
+> Ph.D. Candidate (CS)
+> Work: +1-718-260-3378
+> Mobile: +1-718-246-7421
+> Fax: +1-718-260-3609
+> Email: dfinke01@cis.poly.edu
+> IM: steuben13 (Skype)
+> Polytechnic University
+> 6 MetroTech Center
+> Brooklyn, NY 11201 USA
+>
+>
+>
+>
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan

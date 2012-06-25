@@ -1,0 +1,5 @@
+My experiment is based on 2 processors full system simulation. I want to record which pages in the main memory are accessed by processor 1, and which ones are accessed by processor 2. Can you tell me if this is feasible with m5? Thanks a lot.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

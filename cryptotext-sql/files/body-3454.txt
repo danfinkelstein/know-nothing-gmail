@@ -1,0 +1,65 @@
+Are you trying to import config files from m5.1.1 to m5 2.0?
+All the common config files are moved to the m5/configs/* directory.
+Things like Caches.py are found in the configs/common directory.
+If you are trying to import from a previous M5, realize that you might
+not be able to copy your config files over and change where the
+location of objects are find.
+So hopefully, if you are using m5.2.0 then you are using python
+configuration files based off the configs/example/se.py file instead
+of some other file or you will probably run into problems.
+- Show quoted text -
+On Wed, Mar 12, 2008 at 12:16 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+> Hi
+>
+> I am getting error like.........
+>
+>
+> [ashutoshj@kani gcc]$ runm5
+> M5 Simulator System
+> Copyright (c) 2001-2006
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+> M5 compiled Mar 11 2008 00:03:09
+> M5 started Wed Mar 12 11:00:20 2008
+> M5 executing on kani.cs.lamar.edu
+> command line: ../../../build/ALPHA_SE_kani/m5.opt runshort.py
+>  Traceback (most recent call last):
+>   File "<string>", line 1, in ?
+>   File "build/ALPHA_SE/python/m5/main.py", line 350, in main
+>   File "runshort.py", line 3, in ?
+>     from DetailedUniConfig import *
+>    File "/space/ashutoshj/m5_2.0b4/tests/DetailedUniConfig.py", line 2, in ?
+>     from MemConfig import *
+>   File "/space/ashutoshj/m5_2.0b4/tests/MemConfig.py", line 2, in ?
+>     class BaseL1Cache(BaseCache):
+>  NameError: name 'BaseCache' is not defined
+> [ashutoshj@kani gcc]$
+>
+>
+> I am unable to get where I put my BaseCache.py file and all other similar
+> files under which directory so that the  error could be sloved.............
+>
+>
+> Thanks in advance
+>
+> Ashutosh Jain
+> M.S. Computer Science,
+>
+>
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

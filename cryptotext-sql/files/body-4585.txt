@@ -1,0 +1,47 @@
+Thanks. Changing the path somehow solved the problem. But I still get the following error message after bootup on the server side (a similar thing shows up on the client side as well) I checked the lib folder on the image and there is no modules folder there. How can I get that?
+-Mojtaba
+--------------------------------
+mounting filesystems...
+EXT2-fs warning: maximal mount count reached, running e2fsck is recommended
+loading script...
+mounting swap...modprobe: FATAL: Could not load /lib/modules/2.6.8.1/modules.dep: No such file or directory
+modprobe: FATAL: Could not load /lib/modules/2.6.8.1/modules.dep: No such file or directory
+swapon: /dev/hdc: No such device or address
+done.
+setting up network...eth0: link now 1000F mbps, full duplex and up.
+done.
+mounting file set...mount: Mounting /dev/hdb1 on /z/htdocs failed: No such device or address
+done.
+starting httpd...modprobe: FATAL: Could not load /lib/modules/2.6.8.1/modules.dep: No such file or directory
+[Sun Jan 01 00:00:01 2006] [notice] Apache/2.0.52 (Unix) Specweb/2.01 configured -- resuming normal operations
+done.
+notifying client...
+done
+Lisa Hsu wrote:
+Sorry about that, not sure how that happened.  the spec-surg-client.rcS file should have "cd /benchmarks/surge" instead of "cd benchmarks/specsurge" and i believe that should work.
+lisa
+On 4/19/07, *Mojtaba Mehrara* <mehrara@eecs.umich.edu <mailto:mehrara@eecs.umich.edu>> wrote:
+    Hi
+    I am trying to run specweb99 benchmarks with apache running on the
+    server side.  I tried using "-b SurgeSpecweb", but it seems the latest
+    linux disk image from the website doesn't have necessary files for
+    running apache and also some paths are not set correctly in the
+    spec-surge-server.rcS and spec-surge-client.rcS files. Are these
+    scripts
+    supposed to run with the latest disk image? Am I missing sth here?
+    Thanks,
+    -Mojtaba
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

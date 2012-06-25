@@ -1,0 +1,102 @@
+Hi Ananth. I recently made x86 work with the simple timing CPU as well
+as it does with the simple atomic CPU. The changes are in the
+development repository. If you'd like to try porting those particular
+changes to the stable repository, you can find them through the
+following links:
+http://repo.m5sim.org/m5/rev/17157c5f7e15
+http://repo.m5sim.org/m5/rev/8b9aaeac5bab
+http://repo.m5sim.org/m5/rev/9574f561dfa2
+http://repo.m5sim.org/m5/rev/342cbc20a188
+Gabe
+- Show quoted text -
+Ananth wrote:
+>  Ali, Gabe
+> Thanks for the information.
+> With the simple CPU, is it possible to change just the memory system
+> to simulate a more realistic set-up?
+>
+> On Wed, Oct 22, 2008 at 4:02 PM,  <gblack@eecs.umich.edu> wrote:
+>
+>> Ali is right. Unfortunately neither the timing mode of the simple CPU or the O3
+>> cpu work with X86 SE at the moment. Making the timing mode work should amount
+>> to some fairly easy extension of the load/store microops to support the timing
+>> accesses, and potentially more complicated changes to bring the timing
+>> personality of the simple CPU up to date with the atomic one as far as handling
+>> of microcode. This shouldn't be a huge amount of work, but it's just been a low
+>> priority. Now that I know someone needs it, I'll work on it in the near future.
+>>
+>> Getting O3 to work will be much, much more complicated because a lot of the
+>> things that make x86 complicated get a lot harder to deal with with out of
+>> order execution. This won't work for quite a while.
+>>
+>> Gabe
+>>
+>> Quoting Ali Saidi <saidi@umich.edu>:
+>>
+>>
+>>> In it's default mode (atomic memory transactions with a simple cpu) M5
+>>> simulates a perfect memory system with a 1 CPU cycle latency to
+>>> memory. It this case the time (in ticks) to execute the benchmark is
+>>> equal to the number of instructions/cpu width * 1/frequency. For other
+>>> results you'll need a timing memory model. You can use the simple
+>>> timing cpu or the O3 cpu (Gabe does the O3 cpu worth with X86 SE?).
+>>> Then the time to run the benchmark will vary based of the system
+>>> parameters. Look at the -t, -d, --caches, --l2cache options to se.py.
+>>>
+>>> As for a page on the wiki, I don't believe there is one. Please feel
+>>> free to contribute what you've learned, however.
+>>>
+>>> Ali
+>>>
+>>>
+>>>
+>>> On Oct 22, 2008, at 3:43 PM, Ananth wrote:
+>>>
+>>>
+>>>> Hi all
+>>>> I am trying to understand the output that M5 produces. I am running my
+>>>> program with m5 (v2.05) in x86 Syscall emulation mode.
+>>>> At the end of the simulation M5 writes a line that says that 'Target
+>>>> exited at cycle xyz since it called exit()'. The value xyz reported
+>>>> corresponds to the sim_ticks value in m5stats.txt. What I noticed is a
+>>>> 1-1 correlation between CPU frequency / CPU width and the sim_ticks
+>>>> value.
+>>>>
+>>>> What I mean is this: For a fixed workload, if I double the frequency
+>>>> or width values, the sim_ticks value reported at the end of the
+>>>> simulation is reduced by half.
+>>>> Which stat should I be using it as a measure of performance?
+>>>>
+>>>> Is there a page on the m5 wiki that gives details on the output stats
+>>>> and the way to interpret it? I wasn't able to locate any.
+>>>>
+>>>> --
+>>>> Ananth Narayan S
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

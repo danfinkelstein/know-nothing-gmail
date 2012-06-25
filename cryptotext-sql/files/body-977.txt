@@ -1,0 +1,8 @@
+Hello,I am following the steps here:http://m5sim.org/wiki/index.php/Debugging_M5For kernel debuggingwe configure like this:./configure --target=alpha-linux
+however I am getting these issue in the debugger:"Remote 'g' packet reply is too long: 730000000000000094a2000000000000ffff...."and from M5:warn:could not read by from debugger
+When GDB also loads its saying:This GDB was configured as "x86_64-redhat-linux-gnu"...I guess this gdb is not being configured for alpha? Anyone now what im doing wrong. The site says download GDB 6.3 but the site shows an example from version 5 dont know if that means I am configuring wrong.
+ThanksEF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

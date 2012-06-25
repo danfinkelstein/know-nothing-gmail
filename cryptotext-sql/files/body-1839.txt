@@ -1,0 +1,31 @@
+Hi Nate, thank you for your reply, your suggestion is very helpful to me, although something still confused me.The boot process of Gentoo is very slow, your suggestion must be greatly useful to solve this problem. Follow your suggestion. I read the /etc/init.d/bootmisc  and  /etc/inittab to see what the gentoo does in boot time. Your initial script seems only mount the file system, then execute the init.sh by M5.  Could you please give me some hint how this scripte work well ? The boot process seems has a lot of things to do, not just mounting the file system. 
+I guess the line execfile init.sh is executed by Gentoo, can it invoke the m5 command ?Sorry for such silly question, but they really confuse me. Thank you ! 
+------------------------------
+Message: 5
+Date: Tue, 24 Feb 2009 21:24:49 -0800
+From: nathan binkert <nate@binkert.org>
+Subject: Re: [m5-users] fix the problem of "unable to open an
+        initialconsole" and a new problem of booting gentoo
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <217accd40902242124i33c3062fldcc23c0529ea5502@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+> Yes it is. You're suppose to change /dev/ROOT to, for instance,
+> /dev/hda1. The BOOT and SWAP lines you can probably just remove entirely.
+I also suggest that you don't use gentoo's init scripts, but rather
+implement your own init script.  This is so you can know exactly what
+applications are running and also minimize boot time.  I've appended
+the init script that I use with gentoo that works in a similar way to
+our original boot scripts.
+  Nate
+#!/bin/sh
+echo "mounting filesystems..."
+mount -n -o remount,rw /dev/root /
+mount -a
+echo "execute init script..."
+/m5/bin/m5 execfile init.sh
+/bin/bash
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

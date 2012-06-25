@@ -1,0 +1,34 @@
+This is just an arithmetic instruction and should be rather easy to
+implement.  Just look in the Alpha architecture reference manual and
+implement the instruction.  Check out src/arch/alpha/isa/decoder.isa.
+If you have questions, let me know.
+PLEASE send us a diff if you do implement these instructions.
+  Nate
+- Show quoted text -
+On Tue, Jul 21, 2009 at 3:21 PM, ef<snorlaxgb@gmail.com> wrote:
+> Hello,
+>
+> I am compiling Ferret from PARSEC 2.0 and I got this panic in m5:
+>
+> panic: attempt to execute unimplemented instruction 'maxuw4' (inst
+> 0x723007a4, opcode 0x1c)
+>>  @ cycle 2367067420500
+>> [execute:build/ALPHA_FS/arch/alpha/o3_cpu_exec.cc, line 70]
+>
+> Any clues on how fix this? One way is to implement the instructions, other
+> way is probably to find some sort of compiling flag to not produce this
+> instructions. Anyways any advice, experience or thoughts on this problem is
+> appreciated.
+>
+> Thanks
+> EF
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

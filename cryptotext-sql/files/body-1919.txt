@@ -1,0 +1,10 @@
+Dear Pavan,
+Hope this link would help.
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks
+regards,
+Isuru
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

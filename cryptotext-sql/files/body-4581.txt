@@ -1,0 +1,14 @@
+How about getting rid of the L2 entirely and giving main memory the latency of an L2 hit?  If I understand you correctly that would give you what you're looking for.- Show quoted text -
+Prabhat Kumar wrote:
+Hi All,
+ I want to simulate a system in which I have only L1 cache latency,i.e., if I have a miss in the L1 cache and the data is fetched from L2 cache or from memory still I want to observe just the L1 cache latency. Can I make the latency of L2 cache/memory to be 0 to achieve this? Or is there any parameter in M5 configuration, like max load latency or something, which I can set so as to fulfill my objective.
+Thanks,
+Prabhat
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

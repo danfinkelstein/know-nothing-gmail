@@ -1,0 +1,17 @@
+In the M5 beta 5 release, the line in 
+Options.py:
+ 
+parser.add_option("-n", "--num-cpus", type="int", 
+default=1)
+ 
+Shouldn't this be:
+parser.add_option("-n", "--num_cpus", type="int", 
+default=1)
+ 
+it is used in fs.py as np = 
+options.num_cpus
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

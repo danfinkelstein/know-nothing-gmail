@@ -1,0 +1,246 @@
+It has. I have included it in this response for your convenience.
+-R
+Vilas Sridharan wrote:
+Hi Rick, et al,
+Has a diff of this code been sent out (to properly track file I/O on checkpoint restore)?  I think I am running into the same problem on some benchmarks.  I can write the code if necessary, but if it's already been done... :).
+Thanks,
+    -Vilas
+- Show quoted text -
+On Nov 15, 2007 6:54 PM, Ali Saidi <saidi@umich.edu <mailto:saidi@umich.edu>> wrote:
+    Yes please send us a diff when you're done and have tested the code.
+    Thanks,
+    Ali
+    On Nov 15, 2007, at 6:51 PM, Rick Strong wrote:
+    > Your collective trust of m5 guru-ness was right. I am now saving
+    > file offset, host flags, mode, name and able to bring it back from
+    > checkpoint. Most of my changes were localized to the alloc_fd and
+    > free_fd function in process.c by including a few more parameters. I
+    > just have to correctly handle pipe, and I will post a diff if any
+    > are interested. I went with the parallel array technique to just
+    > avoid too many changes, and that may reduce desirability.  Let me
+    > know.
+    >
+    > -R
+    >
+    > Steve Reinhardt wrote:
+    >> Hmm, yea, I think making this work robustly in all cases is
+    >> non-trivial, but you can probably at least fix your bug pretty
+    >> easily.
+    >>
+    >> Basically the fd_map array in Process is the key; all the non-
+    >> negative
+    >> entries in this array are open file descriptors in the target
+    >> process,
+    >> and the value of the entry is the file descriptor in m5 that it
+    >> corresponds to.
+    >>
+    >> Rather than saving and restoring this array literally, like we are
+    >> now
+    >> (which actually makes no sense), you should serialize for every
+    >> non-negative fd the filename, mode (ro, rw) and offset, then reopen
+    >> the file, seek to that offset, and store the new fd in the array
+    >> entry
+    >> in the unserialize method.
+    >>
+    >> To have the filename and mode around you'll need to save that in a
+    >> parallel array (or better expand fd_map to a struct) on the "open"
+    >> calls.  You'll have to special-case stdin/stdout etc if they don't
+    >> get
+    >> reassigned.
+    >>
+    >> To be really thorough you'll have to handle dup'd fds, etc.
+    specially
+    >> too, but that's probably optional in terms of getting past your
+    bug.
+    >>
+    >> Hope that helps...
+    >>
+    >> Steve
+    >>
+    >> On Nov 14, 2007 9:38 PM, Rick Strong <rstrong@cs.ucsd.edu- Show quoted text -
+    <mailto:rstrong@cs.ucsd.edu>> wrote:
+    >>
+    >>> All right, I am in the process on understanding how it all works.
+    >>> Where
+    >>> is a good place to start. I am right now looking through sim/
+    >>> process.*
+    >>> and sim/syscall_emul* to work backwards to where all the
+    >>> information is
+    >>> stored. If someone has insight on this system and could offer a
+    >>> brief
+    >>> description of how it works, it would be very helpful.
+    >>>
+    >>> -Richard
+    >>>
+    >>>
+    >>> Nathan Binkert wrote:
+    >>>
+    >>>> When you fix this, pretty please submit a diff :)
+    >>>>
+    >>>>
+    >>>>> I'm pretty sure I figured it out and I'm pretty sure it is
+    >>>>> related to
+    >>>>> file I/O. When we restore from a checkpoint we don't reopen and
+    >>>>> seek
+    >>>>> to the appropriate place in any files we were reading
+    from/writing
+    >>>>> to. I bet what is happening is that the benchmark attempts
+    to read
+    >>>>> some input data (or maybe write some data) and the file
+    >>>>> descriptor is
+    >>>>> invalid when M5 passes the syscall through to the host OS.
+    The OS
+    >>>>> returns an error code which alters the path of the benchmark and
+    >>>>> it
+    >>>>> exits early. It shouldn't be too hard to fix but I don't have
+    >>>>> time to
+    >>>>> do it at the moment. You would need to keep track of all the
+    open
+    >>>>> files paths and modes and add the paths/modes to the checkpoint
+    >>>>> along
+    >>>>> with the current position (via tell()). Upon restoring from a
+    >>>>> checkpoint you would reopen the files and seek() to the
+    >>>>> appropriate
+    >>>>> place in the file.
+    >>>>>
+    >>>>> Ali
+    >>>>>
+    >>>>> On Nov 14, 2007, at 10:02 PM, Rick Strong wrote:
+    >>>>>
+    >>>>>
+    >>>>>> When I take a checkpoint in AtomicSimpleCPU (m5_2.0b4) at
+    >>>>>> curTick=100015476500 (approx. 200,000,000 insts into the
+    >>>>>> binary) in
+    >>>>>> mcf, and resume execution in any CPU model, I get an exit
+    syscall
+    >>>>>> (syscall trace included below) at cycle 100522711000 (approx
+    >>>>>> 1014345
+    >>>>>> insts into execution). What is strange is that if I run
+    >>>>>> AtomicSimpleCPU through this point (from start), I have no
+    >>>>>> problems.
+    >>>>>> Any ideas on either the problem or how to debug?
+    >>>>>>
+    >>>>>> It turns out that the same problem happens for checkpoints in
+    >>>>>> twolf
+    >>>>>> about 200,000,000 insts into the binary. A resume has some file
+    >>>>>> i/o
+    >>>>>> and an untimely exit. Both problems seem related to file
+    i/o and
+    >>>>>> then an exit call. Is it possible that some system call is not
+    >>>>>> implemented and defaulting to exit. I included the syscall
+    >>>>>> trace for
+    >>>>>> twolf for any interested parties:
+    >>>>>>
+    >>>>>> I have resumed both checkpoints, immediately created new
+    >>>>>> checkpoints, and they diff clean (except for order of the
+    ptable
+    >>>>>> entries).
+    >>>>>>
+    >>>>>> I am right now working on getting an EXEC trace for mcf,
+    one from
+    >>>>>> checkpoint and one executing from the beginning to find any
+    >>>>>> differences.
+    >>>>>>
+    >>>>>>
+    >>>>>> TWOLF syscall trace
+    >>>>>> "
+    >>>>>> 100285445500: system.cpu: pc 4832275812 syscall read called
+    >>>>>> w/arguments 4,5368834056,8192,1
+    >>>>>> 100285445500: system.cpu: syscall read returns
+    >>>>>> 18446744073709551615
+    >>>>>> 100286500500: system.cpu: pc 4832275812 syscall read called
+    >>>>>> w/arguments 4,5368834056,8192,5
+    >>>>>> 100286500500: system.cpu: syscall read returns
+    >>>>>> 18446744073709551615
+    >>>>>> 100287514000: system.cpu: pc 4832260836 syscall close called
+    >>>>>> w/arguments 0,4831383888,1,1048576
+    >>>>>> 100287514000: system.cpu: syscall close returns 0
+    >>>>>> 100287679500: system.cpu: pc 4832260628 syscall write called
+    >>>>>> w/arguments 1,5368796680,172,1048576
+    >>>>>>
+    >>>>>> TimberWolfSC version: v4.3a date:Mon Jan 25 18:50:36 EST 1988
+    >>>>>> Standard Cell Placement and Global Routing Program
+    >>>>>> Authors: Carl Sechen, Bill Swartz
+    >>>>>>     Yale University
+    >>>>>> 100287679500: system.cpu: syscall write returns 172
+    >>>>>> 100287726500: system.cpu: pc 4832260836 syscall close called
+    >>>>>> w/arguments 1,4831383888,172,0
+    >>>>>>
+    >>>>>> " MCF SYSCALL TRACE "
+    >>>>>>
+    >>>>>>>> 100519102000: system.cpu: syscall read called w/arguments
+    >>>>>>>> 3,5368799240,8192,7
+    >>>>>>>> 100519102000: system.cpu: syscall read returns
+    >>>>>>>> 18446744073709551615
+    >>>>>>>> 100521401500: system.cpu: syscall obreak called w/arguments
+    >>>>>>>> 5374902272,0,0,1048576
+    >>>>>>>> 100521401500: global: Break Point changed to: 0X1405E8000
+    >>>>>>>> 100521401500: system.cpu: syscall obreak returns 5374902272
+    >>>>>>>> 100521680500: system.cpu: syscall close called w/arguments
+    >>>>>>>> 0,4831387472,1,1048576
+    >>>>>>>> 100521680500: system.cpu: syscall close returns 0
+    >>>>>>>> 100521846000: system.cpu: syscall write called w/arguments
+    >>>>>>>> 1,5368778616,119,1048576
+    >>>>>>>> 100521846000: system.cpu: syscall write returns 119
+    >>>>>>>> 100521893000: system.cpu: syscall close called w/arguments
+    >>>>>>>> 1,4831387472,119,0
+    >>>>>>>> 100521893000: system.cpu: syscall close returns 0
+    >>>>>>>> 100522014000: system.cpu: syscall close called w/arguments
+    >>>>>>>> 2,4831387472,0,1048576
+    >>>>>>>> 100522014000: system.cpu: syscall close returns
+    >>>>>>>> 18446744073709551615
+    >>>>>>>> 100522187500: system.cpu: syscall close called w/arguments
+    >>>>>>>> 3,4831387472,1,1048576
+    >>>>>>>> 100522187500: system.cpu: syscall close returns 0
+    >>>>>>>> 100522357000: system.cpu: syscall obreak called w/arguments
+    >>>>>>>> 5368815616,0,0,1048576
+    >>>>>>>> 100522357000: global: Break Point changed to: 0X14001A000
+    >>>>>>>> 100522357000: system.cpu: syscall obreak returns 5368815616
+    >>>>>>>> 100522623500: system.cpu: syscall sigprocmask called w/
+    >>>>>>>> arguments
+    >>>>>>>> 1,18446744073709547831,0,0
+    >>>>>>>> warn: ignoring syscall sigprocmask(1,
+    >>>>>>>> 18446744073709547831, ...)
+    >>>>>>>> 100522623500: system.cpu: syscall sigprocmask returns 0
+    >>>>>>>> 100522711000: system.cpu: syscall exit called w/arguments
+    >>>>>>>> 18446744073709551615,5368739848,2,0
+    >>>>>>>>
+    >>>>>>>> _______________________________________________
+    >>>>>>>> m5-users mailing list
+    >>>>>>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>>>>>>
+    >>>>>>>>
+    >>>>>> _______________________________________________
+    >>>>>> m5-users mailing list
+    >>>>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>>>>
+    >>>>>>
+    >>>>> _______________________________________________
+    >>>>> m5-users mailing list
+    >>>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>>>
+    >>> _______________________________________________
+    >>> m5-users mailing list
+    >>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>
+    >>>
+    >>
+    >>
+    >
+    > _______________________________________________
+    > m5-users mailing list
+    > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

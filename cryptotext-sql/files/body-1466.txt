@@ -1,0 +1,15 @@
+Hi Rick,
+looks like the activity count went to 0. In the O3, if the activity
+count is 0 it will sleep the CPU until something wakes it up.
+I'm thinking that usually what happens is that if the CPU is waiting
+for a long cache miss, it will just sleep the CPU and then when the
+cache event completes it will update the activity count.
+Maybe what's happening is the ITB miss happens, but then it never gets
+to the code in fetch where the activity count is updated, thus
+sleeping the CPU indefinitely...???
+--
+- Korey
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

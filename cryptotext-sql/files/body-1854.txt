@@ -1,0 +1,27 @@
+If you are using full system alpha mode, make sure all the cpus boot
+successfully. If not, you might need updated pal code.
+Best,
+-Rick
+- Show quoted text -
+Hari Kiran wrote:
+>
+> hi
+>
+> I am running eight-core system simulation for integer benchmarks. But
+> i am getting some 0 values for some cores in m5stat.txt.
+> After  exchanging the benchmarks to different cpu's I am getting the
+> results. What might be the problem I don't understand. So please help
+> me out regarding this problem.
+>
+> Thanks
+> HARI
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

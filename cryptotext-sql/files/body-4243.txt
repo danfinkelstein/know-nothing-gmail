@@ -1,0 +1,8 @@
+Hi all,
+ 
+I am new to M5 and I have some questions. If they look stupid, please forgive me.
+ I want to add an out-of-order scheduling algorithm to physical memory access. I need to deal with the packet to the physical memory every cycle. Where should I add the algorithm to? Does the PhysicalMemory::MemoryPort::recvTiming(Packet *pkt) Function execute every cycle or just when the packet comes? Can I just add the scheduling here? And which kind of simulation model should I choose, Full System or Systemcall Emulation? I notice that the latency from memory->calculateLatency(pkt)is sent to EventQueue by  SimpleTimingPort::SendEvent(this, pkt, time).What is the function of the EventQueue? Since only the latency is transferred to the eventqueue but the pkt is not. How do they work collaboratively? What is the relationship between the CPU and the EventQueue? Thanks a lot! Pun Jun 
+杀70万种木马病毒，瑞星2008版免费_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

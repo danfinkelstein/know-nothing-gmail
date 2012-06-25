@@ -1,0 +1,129 @@
+Hi Joe,Sorry for the delay in responding.  I'm puzzled that #1 didn't solve your problem; there's some corner case I don't understand.  I'm willing to dig into it myself, but my schedule is pretty full lately... I may have a little time next week but that's probably it for June.
+I'm hoping that you only see data corruption if you take the assertion out, right?  Debugging the assertion failure will be much easier than tracking down a data corruption.If you have the time, could you (1) pick one of your runs that dies with the assertion failure, (2) re-run it with --trace-flags=Cache,Bus --trace-start=<a few million ticks before the failure>, and (3) send me the output?  I might have more time to take a look at that than to reproduce the failure myself.
+Thanks,Steve- Show quoted text -On Tue, May 19, 2009 at 11:57 AM, Joe Gross <joegross@umd.edu> wrote:
+Hello,
+I've been trying off and on for a month to try to get the prefetcher to
+work. I've opted to take option 3 and 1 both to try to get it to work.
+After commenting out the assertion it does still work, but I often get
+segfaults, access violations or data errors in the benchmarks being run.
+I've tried this with PhysicalMemory and my own DRAM simulator and have
+seen the same result.
+e.g. from bzip2:
+Compressed data 726677 bytes in length
+Uncompressing Data
+(null): Data integrity error when decompressing.
+I've seen the same result with these three configurations.
+test_sys.l2 = L2Cache(size='1MB', assoc=16, latency="7ns", mshrs=32,
+prefetch_policy='ghb', prefetch_degree=3, prefetcher_size=256,
+tgts_per_mshr=24, prefetch_cache_check_push=False)
+test_sys.l2 = L2Cache(size='1MB', assoc=16, latency="7ns", mshrs=32,
+prefetch_policy='stride', prefetch_degree=2, prefetcher_size=64,
+prefetch_cache_check_push=False)
+test_sys.l2 = L2Cache(size='1MB', assoc=16, latency="7ns", mshrs=32,
+prefetch_policy='ghb', prefetch_degree=2, prefetcher_size=16)
+test_sys.l2 = L2Cache(size='1MB', assoc=16, latency="7ns", mshrs=32,
+prefetch_policy='ghb', prefetch_degree=3, prefetcher_size=64,
+tgts_per_mshr=24, prefetch_cache_check_push=False)
+It doesn't happen to every benchmark and often takes many millions of
+DRAM transactions to appear, so it's a pretty rare occurrence.
+I modify the LinuxAlphaSystem as follows and fast forward through bootup
+and then run '/sbin/m5 switchcpu':
+self.membus = MemBus(bus_id=1, clock='2600MHz')
+self.bridge = Bridge(delay='2ns', nack_delay='1ns')
+I'm hoping to find some kind of a workaround as many benchmarks show
+great improvement with a hardware prefetcher.
+Joe
+Steve Reinhardt wrote:
+> (OK, Joe sent me a binary to reproduce it and I did... replying back
+> on the list for posterity.)
+>
+> I tracked it down, and I understand what's happening now, and there
+> are several possible solutions, though there's no obvious best one.
+>
+> The basic issue is that a prefetch is being issued on a block that's
+> already in the cache.  The problem is that the cache asserts (just as
+> a sanity check) that the only reason we'd ever issue a request for a
+> block we already have is if that block is read-only and we need an
+> exclusive copy.  In the case of this particular prefetch that's not
+> true.
+>
+> The reason it's happening is that in the default configuration we
+> check whether or not a prefetch candidate is already in the cache
+> before we queue it up for prefetching, but we don't check again when
+> we issue it from the prefetch queue, so if we happen to get a demand
+> request that brings the block in during that window while the prefetch
+> is in the queue then we'll issue a redundant prefetch.
+>
+> The timing is pretty tight (I'm not positive, but I think the demand
+> request has to be both issued and satisfied while the prefetch is
+> sitting in the queue), so it's a very rare occurrence.
+>
+> There are at least three ways to fix this (though I haven't tested any of them):
+>
+> 1. Set the cache's prefetch_cache_check_push parameter to False.  This
+> makes the prefetcher check the cache for redundant prefetches when it
+> pops candidates out of the queue, not before it pushes them in, and
+> should eliminate this window.  The downside is that the prefetch queue
+> will be likely to fill up with redundant prefetches that get discarded
+> when they are popped, so for a given prefetch queue size you'll
+> probably see reduced prefetching effectiveness.
+>
+> 2. Hack the prefetcher to check the cache on both ends of the queue;
+> look for  cacheCheckPush in src/mem/cache/prefetch/base.cc, and
+> replace occurrences of both cacheCheckPush and !cacheCheckPush with
+> true.  The only downside of this is it's not very realistic; you
+> really wouldn't want to probe the cache tags twice before every
+> prefetch.
+>
+> 3. Just comment out the assertion that's getting violated in
+> cache_impl.hh.  As I said, it's just a sanity check; I can't guarantee
+> that it won't cause other problems, but fundamentally it's just a
+> wasted redundant prefetch.  I did this (somewhat accidentally) and the
+> program kept running happily past the point where it should have
+> asserted.
+>
+> In the long run, #3 is probably the best option.  I'll probably try
+> and enhance the assertion to assert the current condition OR the
+> request is a prefetch just to keep a bit of a sanity check in there.
+>
+> Steve
+>
+> On Thu, Mar 5, 2009 at 5:04 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>
+>> Hi Joe,
+>>
+>> I think this is unrelated to your previous encounter, and is probably
+>> a symptom of enabling the prefetcher.  I fixed a bunch of bugs in the
+>> prefetch code recently but maybe this is one I missed.  Can you send
+>> me (off list) the binary you're running and a command line that
+>> reproduces the error?
+>>
+>> Thanks,
+>>
+>> Steve
+>>
+>> On Wed, Mar 4, 2009 at 10:42 AM,  <joegross@umd.edu> wrote:
+>>
+>>> Hello,
+>>>
+>>> I haven't seen this bug in a long time (that's why I reused the subject line), but I'm running the latest M5 dev version in FS mode and running either the mcf or bzip2 benchmarks and I again get this assertion error:
+>>>
+>>> m5.opt: build/ALPHA_FS/mem/cache/cache_impl.hh:558: Packet* Cache<TagStore>::getBusPacket(Packet*, typename TagStore::BlkType*, bool) [with TagStore = LRU]: Assertion `needsExclusive && !blk->isWritable()' failed.
+>>>
+>>> The only way I get this problem is when I enable the prefetcher (stream, ghb or tagged all do it), otherwise all benchmarks run fine. Some, like stream and lbm seem to run fine with the prefetcher on as well, so I wonder if this is due to some problem with the coherence protocol, updates to the prefetcher, some problem with memory doing out-of-order accesses or what. Would be nice to figure out what's causing this as the prefetcher really helps increase memory bandwidth.
+>>>
+>>> Joe
+>>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

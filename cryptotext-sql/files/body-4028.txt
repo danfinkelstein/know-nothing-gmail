@@ -1,0 +1,10 @@
+On Nov 9, 2007, at 2:15 PM, Sujay Phadke wrote:
+Hi,
+        Referring to beta 4 release notes:
+1.  Is the use of TLBs in SE mode by default, or do we need to explicitly enable it?
+It exists in only one mode, always enabled.
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,36 @@
+Have you made any changes to M5, the kernel or the disk image?
+Ali- Show quoted text -
+On May 24, 2008, at 8:52 PM, Blake Mason wrote:
+- Show quoted text -
+I’m trying to get started with M5, but I’ve run into a roadblock here with this error. I assume I followed the compiling instructions correctly. I searched the last 1 year of this mailing list and found nothing on this error.
+blake@ubuntu-vm:~/m5/m5-2.0b5$ build/ALPHA_FS/m5.debug -d /tmp/output configs/example/fs.py
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled May 15 2008 01:02:00
+M5 started Sat May 24 17:31:17 2008
+M5 executing on ubuntu-vm
+command line: build/ALPHA_FS/m5.debug -d /tmp/output configs/example/fs.py
+/dist/m5/system/disks
+/dist/m5/system/disks
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at: /dist/m5/system/binaries/vmlinux
+      0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009
+Listening for system connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+panic: Attempt to perform CHS access, only supports LBA
+ @ cycle 1684791043000
+[startCommand:build/ALPHA_FS/dev/ide_disk.cc, line 642]
+Program aborted at cycle 1684791043000
+Aborted
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

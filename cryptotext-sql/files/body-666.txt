@@ -1,0 +1,24 @@
+Check out util/m5 for how the "m5" binary gets built that lets you
+reset stats from a shell prompt.  Basically you need to get the
+do_reset_stats() function linked in to your benchmark so you can call
+it directly.
+Steve
+- Show quoted text -
+On Tue, Dec 1, 2009 at 9:25 AM, Amir Hossein Hormati
+<hormati@eecs.umich.edu> wrote:
+> Hi,
+> How can I reset m5 stats from within a C benchmark (not python script)? Is
+> there an example of that somewhere?
+>
+> Thanks
+> Amir
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

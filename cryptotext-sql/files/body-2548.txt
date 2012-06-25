@@ -1,0 +1,20 @@
+Fantastic.
+- Show quoted text -
+On Wed, Sep 24, 2008 at 2:44 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Sure. I will write a page to show how to run the SPEC2006 alpha binaries on M5.
+>
+> (1) How to build the alpha binaries.
+> (2) The SPEC2006 commands.
+> (3) The system configuration.
+> (4) Missing system calls.
+> (5) Done and not done.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

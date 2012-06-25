@@ -1,0 +1,121 @@
+Hi Ali, 
+   Thanks a lot for your help. Adding a parameter in cache class is a goodway to differentiate L1 and L2 cache. 
+   If I define a new class different from LRU and FALRU, how can I use this 
+new replacement method in m5? What should be changed in configrue files?  
+   I don't know how to add a new class into m5 and use it by configure files.Can you tell me the process by a simple example? Thank you so much. 
+   By the way, the parameter 'repl' is set to NULL acquiescently, and then  is LRU strategy being used?
+ 
+   Lei
+ 
+ 
+ 
+在2008-02-27，"Ali Saidi" <saidi@umich.edu> 写道：- Show quoted text -
+For example if you look at configs/common/Caches.py an L1 and L2 cache  
+are defined. They both inherit from the BaseCache and set a default  
+latency, associativity, etc. If you wanted to make the L2 cache  
+special you could can just add a parameter to the cache overall and  
+then set that parameter in the L2 cache class (or make your own cache  
+class) e.g.:
+class L2CacheWReplacement(L2Cache):
+     different_replacement = True
+Any time you use L2CacheWReplacement in the object hierarchy the  
+different_replacement parameter will be set and the cache model can  
+change it's behavior based on that parameter.
+Ali
+On Feb 26, 2008, at 12:12 PM, nathan binkert wrote:
+> There are unique names for each object, but I'd say that hacking
+> things to be based on name in the C++ code is a bad idea.  It is
+> certainly error prone.  Adding a new cache type or a flag is easy
+> enough.
+>
+>  Nate
+>
+> On Tue, Feb 26, 2008 at 9:08 AM, Shoaib Akram <sakram3@uiuc.edu>  
+> wrote:
+>> Isn't there unique ids assigned to all components (buses+cpus 
+>> +caches), so one can use different functions on objects base on  
+>> their ids?
+>>
+>>
+>>
+>>
+>> ---- Original message ----
+>>> Date: Tue, 26 Feb 2008 08:20:32 -0800
+>>> From: "Steve Reinhardt" <stever@gmail.com>
+>>> Subject: Re: [m5-users] question about how to differentiate L1 and  
+>>> L2 cache in cache class
+>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>
+>>> If you want to use two different replacement functions, you'll  
+>>> either
+>>> have to create a flag parameter to select one or the other or  
+>>> create a
+>>> new cache class.
+>>>
+>>> In either case, the caches themselves don't know if they're L1 or L2
+>>> caches.  What you'd do is go into your configuration script and  
+>>> create
+>>> the caches with different parameters or classes when you add the L1s
+>>> vs. when you add the L2(s).
+>>>
+>>> Steve
+>>>
+>>> 2008/2/26 laymanyang <laymanyang@163.com>:
+>>>> Hi all,
+>>>>
+>>>>   I want to implement a cache replacement arithmetic. If I want  
+>>>> to use this
+>>>> replacement arithmetic only in
+>>>> L2 cache, how can I differentiate L1 and L2 cache? For example,  
+>>>> if I change
+>>>> the findReplacement() function
+>>>> in Lru.cc, it will also be used in L1 cache. How can I avoid this  
+>>>> situation,
+>>>> and use this new function only
+>>>> in L2 cache?
+>>>>
+>>>>   Is there something used to identify L1 and L2 cache, such as  
+>>>> some member
+>>>> variable in cache class? How can
+>>>> I get some change only in L2 cache?
+>>>>
+>>>>   Thanks a lot!
+>>>>
+>>>>   Lei
+>>>>
+>>>>
+>>>>
+>>>>
+>>>> ________________________________
+>>>> 已 经 超 过 100 万 台 电 脑 安 装  
+>>>> 了 网 易 有 道 免 费 英 汉 词 典 ， 点 击 此 处 可 以 快 速 下 载
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>> ________________
+>>
+>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+已 经 超 过 100 万 台 电 脑 安 装 了 网 易 有 道 免 费 英 汉 词 典 ， 点 击 此 处 可 以 快 速 下 载 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

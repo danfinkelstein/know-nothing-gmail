@@ -1,0 +1,68 @@
+Ying Xiong，您好！ 
+     Perhaps you should use makeLinuxAlphaSystem to 
+generate a system object for FS mode.
+     Please refer the 
+configs/example/fs.py .
+　　
+ 
+======== 2006-11-21 13:20:04 您在来信中写道： 
+========- Show quoted text -
+ 
+  
+  
+    
+      
+        Hi all,I'd like to simulate cache hierarchy on M5. I have 
+        read some cache configuration example files via the mailing list. I used 
+        the example in tests/configs/simple-timing.py, however, I get an error 
+        as below: command line: build/ALPHA_FS/m5.opt -d /tmp/output 
+        --trace-flag=Cache --trace-file=cache 
+        configs/example/simple-timing.pypanic: Simulator object type 
+        'System' not found@cycle 0[creatObject: 
+        build/ALPHA_FS/sim/builder.cc, line 121] Program aborted at cycle 
+        0Aborted
+         
+        Any help will be appreciated.
+        Thanks. 
+        Lawrence Xiong
+        The simple-timing.py file is
+        
+        import m5from m5.objects import *
+        class MyCache(BaseCache):    assoc = 
+        2    block_size = 64    latency = 
+        1    mshrs = 10    tgts_per_mshr = 
+        5
+        cpu = TimingSimpleCPU()cpu.addTwoLevelCacheHierarchy(MyCache(size 
+        = '128kB'), MyCache(size = 
+        '256kB'),                              
+        MyCache(size = '2MB'))cpu.mem = cpu.dcachecpu.mem = 
+        cpu.dcachesystem = System(cpu = cpu, 
+                        
+        physmem = 
+        PhysicalMemory(),                
+        membus = Bus())system.physmem.port = 
+        system.membus.portcpu.connectMemPorts(system.membus)
+        root = Root(system = system)
+        m5.instantiate(root)
+        if options.maxtick:    maxtick = 
+        options.maxtickelif options.maxtime:    simtime = 
+        int(options.maxtime * root.clock.value)    print 
+        "simulating for: ", simtime    maxtick = 
+        simtimeelse:     maxtick = -1
+        exit_event = m5.simulate(maxtick)
+        while exit_event.getCause() == "checkpoint":    
+        m5.checkpoint(root, "cpt.%d")    exit_event = 
+        m5.simulate(maxtick - m5.curTick()) 
+        print 'Exiting @ cycle', m5.curTick(), 'because', 
+        exit_event.getCause() 
+= = = = = = = = = = = = = = = = = = = = = = 
+　　　　　　　　致礼！
+ 
+　　　　　　　　　　　　　　xiaojun.chen
+　　　　　　　　　　　　　　chenxiaojun@software.ict.ac.cn
+　　　　　　　　　　　　　　　2006-11-21
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

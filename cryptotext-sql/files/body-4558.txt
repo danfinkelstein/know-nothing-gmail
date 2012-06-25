@@ -1,0 +1,36 @@
+M5 can run pthreads binaries in full-system mode, which means you're
+restricted to Alpha for now.
+There are directions on building a gcc-based cross compiler here:
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+Note that you just need to follow the first section (on building the
+cross compiler); the other parts on building a new kernel are
+unnecessary if you're just compiling new applications.
+Steve
+- Show quoted text -
+Jiayuan Meng wrote:
+> Hi all,
+>
+> I am a starter on M5, and I'm interested in simulating a multithreaded
+> program on a CMP architecture. My question is, can M5 run programs
+> written with pthreads? what crosscompiler do you recommend to compile C
+> or C++ code on a x86 host to SPARC/ALPHA binaries that can be run on M5?
+>
+> I tried to compile helloworld code on UltraSparc IIIi/SunOS using gcc
+> version 3.3.6. However, the sparc binary generates faults when the code
+> is run on M5. Would you please give me some hints?
+>
+> Thanks!
+>
+> Jiayuan
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

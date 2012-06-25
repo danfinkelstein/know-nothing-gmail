@@ -1,0 +1,63 @@
+Hi,
+I was trying understand how the cache works and find out how currently the
+L1(private cache) sends snoops to the L2 for coherence in a multi-core
+setting.
+1. Is it correct that L1 just invalidates its own cache and allows another
+L1 to go into exclusive state?
+2. If there were private L2s, it would need to allow another cache to go
+into exclusive state as well as forward the invalidate to the private L1. I
+am not sure what methods to use to do the latter. Please can you point out
+methods that would acocmplish this.
+3.
+Im getting this error:
+m5/mem/cache/coherence/coherence_protocol.cc:455: MemCmd
+CoherenceProtocol::getBusCmd(MemCmd, unsigned int, MSHR*): Assertion
+`cmdOut != InvalidCmd' failed.
+for this configuration:
+class DetailedCPU(FullCPU):
+    toL2Bus = ToL2Bus()
+    l2 = L2(in_bus=Parent.toL2Bus, out_bus=Parent.toL3Bus)
+    dcache = DL1(out_bus=Parent.toL2Bus)
+    icache = IL1(out_bus=Parent.toL2Bus)
+    iq = StandardIQ(size = 64, caps = [0, 0, 0, 0])
+    iq_comm_latency = 1
+    fupools = DefaultFUP()
+    lsq_size = 32
+    rob_size = 196
+    rob_caps = [0, 0, 0, 0]
+    storebuffer_size = 32
+    width = 8
+    issue_bandwidth = [8, 8]
+    prioritized_issue = False
+    thread_weights = [1, 1, 1, 1]
+    dispatch_to_issue = 1
+    decode_to_dispatch = 15
+    mispred_recover = 3
+    fetch_branches = 3
+    ifq_size = 32
+    num_icache_ports = 1
+    branch_pred = DefaultBranchPred()
+class DetailedStandAlone(Root):
+    Coherence = CoherenceProtocol(protocol='msi')
+    cpu0 = DetailedCPU()
+    cpu1 = DetailedCPU()
+    cpu0.workload = Benchmarks.AnagramShort()
+    cpu0.max_insts_any_thread = 500000
+    cpu1.workload = Benchmarks.AnagramShort()
+    cpu1.max_insts_any_thread = 500000
+    cpu0.dcache.protocol = Coherence
+    cpu0.icache.protocol = Coherence
+    cpu0.l2.protocol = Coherence
+    cpu1.dcache.protocol = Coherence
+    cpu1.icache.protocol = Coherence
+    cpu1.l2.protocol = Coherence
+    toL3Bus = ToL3Bus()
+    l3 = L3(in_bus=Parent.toL3Bus, out_bus=Parent.toMemBus)
+    toMemBus = ToMemBus()
+    ram = SDRAM(in_bus=Parent.toMemBus)
+Thank you,
+Forum
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

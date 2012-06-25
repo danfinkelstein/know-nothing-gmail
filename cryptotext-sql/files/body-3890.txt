@@ -1,0 +1,37 @@
+i think you can no more specify a particular coherence protocol. So, coherenceprotocol() is no object, just dont use it i guess!
+- Show quoted text -
+---- Original message ----
+>Date: Sat, 24 Nov 2007 21:33:01 -0500
+>From: "Julian Bui" <julianbui@gmail.com>
+>Subject: [m5-users] Cache Coherence Protocol in M5beta4..
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   Hi all,
+>
+>   I was running code that used to work in v3 in v4,
+>   and M5 is yelling at me about
+>
+>   "protocol =
+>   CoherenceProtocol(protocol=options.protocol)
+>   NameError: name 'CoherenceProtocol' is not defined"
+>
+>   Now, I know that the coherence protocol was changed
+>   in v4, but, as a newbie, I would think this
+>   CoherenceProtocol is a simple parser function.  Was
+>   the function gotten rid of in v4?  Is there some
+>   other equivalent function that I can use now?
+>
+>   Any help would be greatly appreciated.
+>
+>   Thanks,
+>   Julian Bui
+>   julianbui@gmail.com
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

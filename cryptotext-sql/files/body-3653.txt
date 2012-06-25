@@ -1,0 +1,10 @@
+Where can I find the possible command line options for the benchmark applications, for instance:
+./spec-m5 1 20 1 192.168.0.1 5 40000 1000000000 1000 , taken from spec-surge-Client.rcS
+What exactly does this specific command line do?
+And other command line options in the other benchmark applications listed in the Benchmark.py file. Is there a 'man' type file for these command line applications?
+Thanks
+Lanier
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

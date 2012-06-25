@@ -1,0 +1,70 @@
+This is just for creating new threads on a different O3CPU. I am using
+the script in configs/splash2/run.py, but when --detailed is used we run
+into the problem that O3CPU thread context is initially allocated as
+Suspended. If you try to add a hack that allocates O3CPU thread context
+as Unallocated, you run into the problem that no available resource can
+be found for a new thread in function activateWhenReady(...).  I guess
+the hack to get around this to start everything as atomic or simple
+timing and then switch. However, it seems that a slight modification to
+O3ThreadContext<Implh>::activate could also solve the problem as long as
+we check that no thread currently exists?
+Best,
+-Rick
+- Show quoted text -
+Korey Sewell wrote:
+> Rick,
+> do we want to create new SMT threads or do we want to create new
+> threads on a different O3 CPU?
+>
+> On Mon, Oct 6, 2008 at 2:27 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>
+>> If you take a look at the flyspray bugs I posted based on this you'll see
+>> that they're still outstanding:
+>>
+>> http://www.m5sim.org/flyspray/task/317
+>> http://www.m5sim.org/flyspray/task/318
+>>
+>> As the comments on these bug reports show, I tried a simple fix but it
+>> didn't work.  The code for deciding when you can allocate new threads on the
+>> fly in O3 is basically broken (looks like it was never tested).  At the time
+>> a general fix by anyone other than Korey looked too complicated.  I don't
+>> know if Korey's looked into it or not (Korey?).
+>>
+>> It could be that if you don't want to use SMT then coming up with a fix that
+>> works only for the 0->1 transition might be easier, but of course a more
+>> general fix for N->N+1 would be better yet.
+>>
+>> Steve
+>>
+>> On Mon, Oct 6, 2008 at 10:21 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>>
+>>> Hi all,
+>>>
+>>> So I tried to run splash benchmarks with more than 1 O3 cpu, and I get
+>>> the error message, "nxm_threade_create: no idle contexts available". It
+>>> appears that the O3CPU thread contexts are not being set to unallocated
+>>> according to some emails I saw involving Sujay Phadke. Did we ever
+>>> commit the fix to the O3CPU? If so, i don't see it.
+>>>
+>>> Best,
+>>> -Rick
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

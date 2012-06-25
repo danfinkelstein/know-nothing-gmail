@@ -1,0 +1,24 @@
+Old:
+while (tickNextIdle < curTick)
+    tickNextIdle += clock;
+New:
+if (tickNextIdle < curTick)
+       tickNextIdle = (curTick / clock) * clock + clock;
+We actually went back and forth about this.  The question is, when is the divide better than the loop?  We never profiled the code, so we didn't have evidence that one was better than the other.  It seems that you're saying that the divide is better.  We were even thinking that it might make sense to try the add say four times, and do the multiply if it didn't work out.  (That way busy busses only pay the cost of an add or two, and slow busses escape with a divide/multiply.)  Would you be willing to try somethign like this?
+if (tickNextIdle < curTick)
+    tickNextIdle += clock
+if (tickNextIdle < curTick)
+    tickNextIdle += clock
+if (tickNextIdle < curTick)
+    tickNextIdle += clock
+if (tickNextIdle < curTick)
+    tickNextIdle += clock
+if (tickNextIdle < curTick)
+    tickNextIdle = (curTick / clock) * clock + clock;
+It really has been quite a while since anyone in the core group has profiled M5, so we'd appreciate this sort of help from people!  If you can identify something that's slow and what fraction of the total execution it accounts for, that'd be fantastic.  Suggestions on improvement are an added bonus.  A statement about what kind of speedup is achieved is icing on the cake.
+Thanks,
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

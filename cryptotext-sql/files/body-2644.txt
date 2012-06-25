@@ -1,0 +1,151 @@
+You've got a simulated segfault. You're program for some reason is trying to
+access memory at address 0. M5 doesn't have a mapping for that page, so it
+assumes your program did something wrong and quits. You should try to figure
+out why your program is trying to use that address, or if it's not why m5
+thinks it is.
+Gabe
+- Show quoted text -
+Quoting SrÄ‘an StipiÄ‡ <srdjan.stipic@gmail.com>:
+> Hi.
+>
+> I am trying to implement multi CPU x86 sistem call emulation in M5.
+> The idea is that every thread that is created in the program runs on
+> it's own CPU,
+> so that we don't need any thread scheduling.
+>
+> The following program runs without the problems with my implementation:
+>
+> int k = 0;
+>
+> void f(long a){ k+= a; }
+> void g(long a){ k+= a; }
+>
+> int main(){
+>  long t1 = create_thread(&f, 5);
+>  long t2 = create_thread(&g, 6);
+>  join_thread(t1);
+>  join_thread(t2);
+>  printf("%d", k);
+> }
+>
+>
+> The implementation that I have wright now is:
+>
+> I have implemented 3 new system calls in M5:
+> create_thread
+> join_thread
+> stop_thread.
+>
+> create_thread(f, a):
+> - alocates a stack space for new thread
+> - and adds the code that will call the stop_thread system call when
+> function 'f' returns.
+> - sets program counter of the unactive cpu to point to address of 'f'
+> - activates inactive cpu
+>
+> join_thread(t1):
+> - waits thread 't1' to be suspended or suspends parent thread
+>
+> stop_thread():
+> - suspends itself.
+>
+>
+> When I run more complex examples that execute 'printf' or 'malloc' in
+> child thread,
+> the simulator stop executing program with the following error message:
+>
+> Running clients... panic: Tried to access unmapped address 0.
+>  @ cycle 132099500
+> [invoke:build/X86_SE/arch/x86/faults.cc, line 160]
+> Program aborted at cycle 132099500
+> Aborted
+>
+> Can you give me any directions what can be the problem?
+>
+> (I have the feeling that current sistem call emulation doesn't support
+> I/0 that execute from two different thread_conetexts)
+>
+> Tnx,
+> Srdjan
+>
+> P.S.
+> Longer log for the example were child thread calls malloc:
+> 127311000: system.cpu2 T0 : @main+280 :         CALL_NEAR_I : stupd
+> t7, SS:[rsp + 0xfffffffffffffff8] : MemWrite :  D=0x00007fffffffeaa8
+> A=0x7fffffffeaa8
+> 127311500: system.cpu2 T0 : @main+280 :         CALL_NEAR_I : wrip   ,
+> t7, t1 : IntAlu :
+> 127312000: system.cpu2 T0 : @create_thread :    PUSH_R : stupd   rbp,
+> SS:[rsp + 0xfffffffffffffff8] : MemWrite :  D=0x00007fffffffeaa0
+> A=0x7fffffffeaa0
+> 127312500: system.cpu2 T0 : @create_thread+1 :  MOV_R_R : mov   rbp,
+> rbp, rsp : IntAlu :  D=0x00007fffffffeaa0
+> 127313000: system.cpu2 T0 : @create_thread+4 :  SUB_R_I : limm   t1,
+> 0x20 : IntAlu :  D=0x0000000000000020
+> 127313500: system.cpu2 T0 : @create_thread+4 :  SUB_R_I : sub   rsp,
+> rsp, t1 : IntAlu :  D=0x000000000000002c
+> 127314000: system.cpu2 T0 : @create_thread+8 :  MOV_M_R : st   rdi,
+> SS:[rbp + 0xffffffffffffffe8] : MemWrite :  D=0x00000000004005ea
+> A=0x7fffffffea88
+> 127314500: system.cpu2 T0 : @create_thread+12 :         MOV_M_R : st
+> rsi, SS:[rbp + 0xffffffffffffffe0] : MemWrite :  D=0x0000000000d91c28
+> A=0x7fffffffea80
+> 127315500: system.cpu2 T0 : @create_thread+16 :         MOV_R_I : limm
+>  eax, 0x111 : IntAlu :  D=0x0000000000000111
+> 127316000: system.cpu2 T0 : @create_thread+21 :         MOV_R_M : ld
+> rdi, SS:[rbp + 0xffffffffffffffe8] : MemRead :  D=0x00000000004005ea
+> A=0x7fffffffea88
+> 127317000: system.cpu2 T0 : @create_thread+25 :         MOV_R_M : ld
+> rsi, SS:[rbp + 0xffffffffffffffe0] : MemRead :  D=0x0000000000d91c28
+> A=0x7fffffffea80
+> 127317500: system.cpu2 T0 : @create_thread+29 :         syscall    eax
+>           : IntAlu :
+> 127318000: system.cpu2 T0 : @create_thread+31 :         MOV_M_R : st
+> rax, SS:[rbp + 0xfffffffffffffff8] : MemWrite :  D=0x0000000000cbb0d0
+> A=0x7fffffffea98
+> 127318500: system.cpu0 T0 : @client_run :       PUSH_R : stupd   rbp,
+> SS:[rsp + 0xfffffffffffffff8] : MemWrite :  D=0x00002aaaaabacfe9
+> A=0x2aaaaabacfe9
+> 127319000: system.cpu2 T0 : @create_thread+35 :         MOV_R_M : ld
+> rax, SS:[rbp + 0xfffffffffffffff8] : MemRead :  D=0x0000000000cbb0d0
+> A=0x7fffffffea98
+> 127319000: system.cpu0 T0 : @client_run+1 :     MOV_R_R : mov   rbp,
+> rbp, rsp : IntAlu :  D=0x00002aaaaabacfe9
+> ....
+> ....
+> 127339500: system.cpu2 T0 : @main+355 :         CMP_R_M : sub   t0,
+> rax, t1 : IntAlu :  D=0x00000000000000b9
+> 127340000: system.cpu2 T0 : @main+359 :         JL_I : rdip   t1,
+> %ctrl153,  : IntAlu :  D=0x000000000040367e
+> 127340000: system.cpu0 T0 : @malloc+22 :        MOV_R_P : ld   rax,
+> DS:[t7 + 0x16fcab] : MemRead :  D=0x0000000000000000 A=0x58a848
+> 127340500: system.cpu0 T0 : @malloc+29 :        TEST_R_R : and   t0,
+> rax, rax : IntAlu :  D=0x0000000000000050
+> 127340500: system.cpu2 T0 : @main+359 :         JL_I : limm   t2,
+> 0xffffffffffffffda : IntAlu :  D=0xffffffffffffffda
+> 127341000: system.cpu2 T0 : @main+359 :         JL_I : wrip   , t1, t2
+>   : IntAlu :
+> 127341000: system.cpu0 T0 : @malloc+32 :        JZ_I : rdip   t1,
+> %ctrl153,  : IntAlu :  D=0x000000000041aba2
+> 127341500: system.cpu0 T0 : @malloc+32 :        JZ_I : limm   t2, 0x1e
+>   : IntAlu :  D=0x000000000000001e
+> 127341500: system.cpu2 T0 : @main+323 :         MOV_R_M : ld   eax,
+> SS:[rbp + 0xffffffffffffffe4] : MemRead :  D=0x0000000000000000
+> A=0x7fffffffeb34
+> 127342000: system.cpu2 T0 : @main+326 :         MOV_R_M : ld   rdx,
+> SS:[rbp + 0xffffffffffffffc8] : MemRead :  D=0x00007fffffffeab0
+> A=0x7fffffffeb18
+> 127342000: system.cpu0 T0 : @malloc+32 :        JZ_I : wrip   , t1, t2
+>   : IntAlu :
+> 127343000: system.cpu2 T0 : @main+330 :         CDQE_R : sexti   rax,
+> rax, 0x1f : IntAlu :  D=0x0000000000000000
+> END
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

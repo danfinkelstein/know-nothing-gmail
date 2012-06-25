@@ -1,0 +1,44 @@
+Also, on some end, you can expect inorder to be slower than o3 because
+o3 is naturally a faster CPU (architecturally).
+O3 committing more instructions per cycle (8 by default for o3?) so if
+you are comparing CPUs for the same amount of instructions that would
+not necessarily be a good comparison if you are talking about raw
+simulation performance.
+Rather, if you are comparing raw performance you should compare how
+long does it take each CPU to maybe complete the same amount of
+cycles.
+A good sanity check might be to look at the results from the
+regression tests. In the "tests" directory, you can look at the
+"stats.txt" file for each regression and you'll see the committed
+values for simulation cycles and simulation time. Comparing those
+across the CPU models should give you a good perspective.
+On Thu, Aug 13, 2009 at 4:56 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+- Show quoted text -> Hello there,
+>
+> The performance of M5 in simulating an inorder-timing CPU seems to be
+> significantly lower than that in simulating an o3-timing CPU (0.33X for gzip
+> for 10 M instructions) in their default configurations. Does that sound
+> correct? I would expect it to be the other way around unless, of course,
+> there are differences in their implementations which affects the
+> performance. I am using the Alpha ISA in SE mode.
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

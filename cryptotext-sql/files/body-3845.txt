@@ -1,0 +1,13 @@
+Hey all,
+ 
+I am planning to model a shared cache with banks. While looking at the code 
+in M5v2b4 (src/mem/cache/tags/), I have a question about the split cache and 
+split blocks, what is special with "split"? 
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

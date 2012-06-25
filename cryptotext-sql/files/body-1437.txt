@@ -1,0 +1,13 @@
+> I think this is a great goal, but I'd like to start with the more modest
+> objective of just reproducing something that's functionally equivalent to
+> the image we already distribute.
+No problems.  I rolled a lot of things in there.  My m5ops stuff does
+make writing init scripts a lot easier though, so if you end up
+wanting to make lots of changes to stuff in configs/boot, you should
+probably take a look at it though.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

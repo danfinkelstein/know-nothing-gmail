@@ -1,0 +1,9 @@
+Hi,
+I was wondering if it would be easy (or already exists) to get the file
+name and line number of a particular machine instruction that executed
+during full system in the kernel while doing an Exec trace?
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

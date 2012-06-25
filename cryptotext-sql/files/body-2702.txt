@@ -1,0 +1,31 @@
+Hi all,
+I followed every instructions on the Web (Defining CPU Models beta 4)
+to create a new CPU model in the beta 5. But I got the error. Is the
+way to define the new CPU model in beta5 changed? My SCons version is
+v0.96.92.D002.
+Many thanks,
+Meng-Ju
+mjwu:~/m5-2.0b5-mt: scons build/ALPHA_SE/m5.debug CPU_MODELS=MyCPU
+scons: Reading SConscript files ...
+Checking for C header file Python.h... yes
+Adding /homes/mjwu/local/lib to LIBPATH for python2.4
+Checking for main() in C library python2.4... yes
+Checking for accept(0,0,0) in C++ library None... yes
+Checking for zlibVersion() in C++ library z... yes
+Checking for C header file fenv.h... yes
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/cpu/mycpu/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/cpu/o3/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/cpu/simple/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/arch/mips/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/arch/alpha/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5-mt/src/arch/sparc/SConsopts
+Building in /import/home1/mjwu/m5-2.0b5-mt/build/ALPHA_SE
+Options file /import/home1/mjwu/m5-2.0b5-mt/build/options/ALPHA_SE not found,
+  using defaults in build_opts/ALPHA_SE
+scons: *** Error converting option: CPU_MODELS
+Invalid value(s) for option: MyCPU
+File "SConstruct", line 742, in ?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

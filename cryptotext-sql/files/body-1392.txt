@@ -1,0 +1,12 @@
+> In base_dyn_inst_impl.hh, what is the significance of
+>
+>  assert(instcount <= 1500);
+The idea is that we're trying to prevent a memory leak.  If you create
+a ton of CPU objects though, 1500 might not be a large enough number.
+I assume that this is not the current M5 because now M5 uses a per CPU
+object count.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

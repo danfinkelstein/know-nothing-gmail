@@ -1,0 +1,16 @@
+> build/X86_SE/arch/x86/decoder.cc
+> build/X86_SE/arch/x86/decoder.cc:54164: error: integer constant is too large
+> for 'long' type
+> cc1plus: warnings being treated as errors
+> build/X86_SE/arch/x86/insts/microldstop.hh:67: error:
+> 'X86ISA::SegmentFlagMask' defined but not used
+I'm guessing that you're building on a 32 bit machine.  That right?
+It wouldn't surprise me if 64-bit bugs have managed to creep in since
+most of us run 64-bit machines.
+If so, one of us will just have to compile on a 32-bit machine and try
+to fix bugs.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

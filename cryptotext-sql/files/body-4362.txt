@@ -1,0 +1,25 @@
+Hi,
+ I am using O3CPU model to run simulations. The benchmark I use is
+ValStream. I run 100million or more instructions, and meet this problem:
+ warn: This DRAM module has not been tested with the new memory
+ system at all!
+ 0: system.tsunami.io.rtc: Real-time clock set to Sun Jan  1
+ 00:00:00 2006
+    Listening for console connection on port 3456
+ 0: system.remote_gdb.listener: listening for remote gdb #0 on port
+ 7000
+ warn: Entering event queue @ 0.  Starting simulation...
+ warn: cycle 245000: Quiesce instruction encountered, halting fetch!
+ warn: cycle 266000: Quiesce instruction encountered, halting fetch!
+ warn: cycle 318500: fault (itbmiss) detected @ PC 0x000000
+ panic: Unable to find destination for addr: 80867e50
+  @ cycle 20572 971000
+ [findPort:build/ALPHA_FS/mem/bus.cc, line 154]
+   If I use TimingSimpleCPU/AtomicSimpleCPU, the simulation can finish
+correctly. Is anyone know what the problem is?
+ Thanks,
+ Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,506 @@
+Hi Ali,Thanks! That was the problem! Also, two quick questions:system.cpu[i].max_insts_all_threads = 100000000  <-- Is this the correct way of using max_insts_all_threads? Is process.simpoint = [simpoint] the correct way of inserting simpoints when setting multiple processes? I know you can enter it through the command line when calling build/ALPHA_SE/m5.debug as per: http://www.m5sim.org/dist/tutorials/asplos_pres.pdf, but the examples there assume one benchmark (one thread). 
+NEW CMD LINE examples (For Reference):    smt_process2 = LiveProcess()    smt_process2.executable = 'cpu2000/binaries/galgel00.peak.ev6'    smt_process2.cmd = ['cpu2000/binaries/galgel00.peak.ev6','cpu2000/data/galgel/input/galgel.in']
+    smt_process2.input = 'cpu2000/data/galgel/input/galgel.in'    smt_process2.simpoint = 2491*100E6    process += [smt_process2, ]    smt_process2 = LiveProcess()
+    smt_process2.executable = 'cpu2000/binaries/equake00.peak.ev6'    smt_process2.cmd = ['cpu2000/binaries/equake00.peak.ev6','cpu2000/data/equake/input/inp.in']
+    smt_process2.input = 'cpu2000/data/equake/input/inp.in'    smt_process2.simpoint = 812*100E6    process += [smt_process2, ]Javier 
+On Wed, May 6, 2009 at 10:06 AM,  <m5-users-request@m5sim.org> wrote:
+Send m5-users mailing list submissions to
+        m5-users@m5sim.org
+To subscribe or unsubscribe via the World Wide Web, visit
+        http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+or, via email, send a message with subject or body 'help' to
+        m5-users-request@m5sim.org
+You can reach the person managing the list at
+        m5-users-owner@m5sim.org
+When replying, please edit your Subject line so it is more specific
+than "Re: Contents of m5-users digest..."
+Today's Topics:
+   1. Re: problem with newly compiled 2.6.27 kernel (Steve Reinhardt)
+   2. Command Line Errors running SPEC CPU2000 benchmarks (Javier Jose)
+   3. Re: Command Line Errors running SPEC CPU2000 benchmarks
+      (Ali Saidi)
+   4. Re: problem with newly compiled 2.6.27 kernel (Ali Saidi)
+   5. Re: Range Error (Geoffrey Blake)
+   6. Re: Range Error (nathan binkert)
+----------------------------------------------------------------------
+Message: 1
+Date: Tue, 5 May 2009 08:54:48 -0700
+From: Steve Reinhardt <stever@gmail.com>
+Subject: Re: [m5-users] problem with newly compiled 2.6.27 kernel
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <28fce2300905050854v18677803wedee67c37ac48b4b@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+BTW, this is using ts_osfpal, not tsb_osfpal, which is why I didn't expect
+BIG_TSUNAMI to be needed.
+On Tue, May 5, 2009 at 8:53 AM, Steve Reinhardt <stever@gmail.com> wrote:
+> Thanks, that helps a lot... I must have missed that email.  It works now,
+> but only if I set CONFIG_BIG_TSUNAMI=y.  (The .config.m5 in the patch queue
+> doesn't set this either way, so you have to pick one when you build.)  If I
+> don't set it, the console output ends like this:
+>
+> hda: M5 IDE Disk, ATA DISK drive
+> hdb: M5 IDE Disk, ATA DISK drive
+> hda: UDMA/33 mode selected
+> hdb: UDMA/33 mode selected
+> ide0 at 0x8410-0x8417,0x8422 on irq 15
+> ide1 at 0x8418-0x841f,0x8426 on irq 15
+> ide_generic: please use "probe_mask=0x3f" module parameter for probing all
+> legacy ISA IDE ports
+> ide2: probed IRQ 14 and default IRQ 14 failed
+> ide2: failed to initialize IDE interface
+> ide3: potential IRQ problem with ide1 and ide0
+> ide3 at 0x170-0x177,0x376 on irq 15 (shared with ide0)
+> hda: max request size: 128KiB
+> hda: 101808 sectors (52 MB), CHS=101/16/63
+>  hda:<4>hda: lost interrupt
+> hda: lost interrupt
+> hda: lost interrupt
+> hda: dma_timer_expiry: dma status == 0x64
+> hda: DMA interrupt recovery
+> hda: lost interrupt
+>  hda1
+> hdb: max request size: 128KiB
+> hdb: 4177920 sectors (2139 MB), CHS=4144/16/63
+>  hdb:<4>hdb: lost interrupt
+> hdb: lost interrupt
+>
+>
+> Steve
+>
+>
+> On Tue, May 5, 2009 at 5:56 AM, Ali Saidi <saidi@umich.edu> wrote:
+>
+>> GCC 4.1 generates invalid code. You need to use 4.3. I have a post on the
+>> m5 mailing list a few months ago where I discussed the particular issue in
+>> detail, but it has to do with dependence analysis across call pal's being
+>> completely broken with gcc 4.0-4.2.
+>>
+>> Ali
+>>
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090505/50daba5d/attachment-0001.htm
+------------------------------
+Message: 2
+Date: Tue, 5 May 2009 15:09:41 -0500
+From: Javier Jose <javier.jose@gmail.com>
+Subject: [m5-users] Command Line Errors running SPEC CPU2000
+        benchmarks
+To: m5-users@m5sim.org
+Message-ID:
+        <b050f5ff0905051309v7a4f2955j1431cb3134be1e86@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"- Show quoted text -
+Hi everyone,
+I am running SPEC CPU2000 benchmarks with O3. However, some benchmarks:
+crafty, equake and swim, ammp, applu don't run correctly. Except for crafty
+which actually gives an error message the rest seem to just stop running
+becuase when I run "top" I see the m5.debug process get's killed and the
+terminal freezes.
+This is how I am setting up the processes ( I have run them individually and
+in SMT mode and the result is the same):
+smt_process2 = LiveProcess()
+smt_process2.executable = 'cpu2000/binaries/crafty00.peak.ev6'
+smt_process2.cmd =
+['cpu2000/binaries/crafty00.peak.ev6','<','cpu2000/data/crafty/input/
+crafty.in','>','cpu2000/data/crafty/output/crafty.out','2>','cpu2000/data/crafty/output/crafty.err'
+]
+smt_process2.simpoint = 774 * 100E6
+process += [smt_process2, ]
+smt_process2 = LiveProcess()
+smt_process2.executable = 'cpu2000/binaries/equake00.peak.ev6'
+smt_process2.cmd =
+['cpu2000/binaries/equake00.peak.ev6','<','cpu2000/data/equake/input/inp.in',
+'>', 'cpu2000/data/output/inp.out', '2>',
+'cpu2000/data/equake/output/inp.err']
+smt_process2.simpoint = 812*100E6
+process += [smt_process2, ]
+smt_process2 = LiveProcess()
+smt_process2.executable = 'cpu2000/binaries/swim00.peak.ev6'
+smt_process2.cmd =
+['cpu2000/binaries/swim00.peak.ev6','<','cpu2000/data/swim/input/swim.in','>','cpu2000/data/swim/output/swim.out','2>','cpu2000/data/swim/output/swim.err'
+]
+smt_process2.simpoint = 2079*100E6
+process += [smt_process2, ]
+smt_process2 = LiveProcess()
+smt_process2.executable = 'cpu2000/binaries/ammp00.peak.ev6'
+smt_process2.cmd =
+['cpu2000/binaries/ammp00.peak.ev6','<','cpu2000/data/ammp/input/ammp.in','>','cpu2000/data/ammp/output/ammp.out','2>','cpu2000/data/ammp/output/ammp.err'
+]
+smt_process2.simpoint = 108*100E6
+process += [smt_process2, ]
+smt_process2 = LiveProcess()
+smt_process2.executable = 'cpu2000/binaries/applu00.peak.ev6'
+smt_process2.cmd =
+['cpu2000/binaries/applu00.peak.ev6','<','cpu2000/data/applu/input/applu.in','>','cpu2000/data/applu/output/applu.out','2>','cpu2000/data/applu/output/applu.err'
+]
+smt_process2.simpoint = 2179*100E6
+process += [smt_process2, ]
+I am sure the problem is on how it is interpreting the 'cmd', since they run
+fine in simplescalar and I've had similar problems with ALPBench and other
+benchmarks, but I can't really get around these.
+The error message from Crafty is the following:
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+info: Increasing stack size by one page.
+Crafty v14.3
+ERROR "<" is unknown command-line option
+ERROR "crafty.in" is unknown command-line option
+ERROR ">" is unknown command-line option
+ERROR "crafty.out" is unknown command-line option
+ERROR "crafty.err" is unknown command-line option
+White(1):
+I'd appreciate the help.
+Another quick question: system.cpu[i].max_insts_all_threads = 100000000  <--
+Is this the correct way of using max_insts_all_threads?
+Thanks,
+Javier
+Texas A&M University
+Computer Science and Engineering Department
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090505/9829ef64/attachment-0001.htm
+------------------------------
+Message: 3
+Date: Tue, 5 May 2009 19:13:41 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] Command Line Errors running SPEC CPU2000
+        benchmarks
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <82CD6057-764D-4599-9A3B-BD1C909AE6E5@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+You shouldn't use pipes (<, >) for  the input, output and err output.
+You should set the processes input, output, errout properties instead.
+Ali
+On May 5, 2009, at 3:09 PM, Javier Jose wrote:
+- Show quoted text -
+> Hi everyone,
+>
+> I am running SPEC CPU2000 benchmarks with O3. However, some
+> benchmarks: crafty, equake and swim, ammp, applu don't run
+> correctly. Except for crafty which actually gives an error message
+> the rest seem to just stop running becuase when I run "top" I see
+> the m5.debug process get's killed and the terminal freezes.
+>
+> This is how I am setting up the processes ( I have run them
+> individually and in SMT mode and the result is the same):
+>
+> smt_process2 = LiveProcess()
+> smt_process2.executable = 'cpu2000/binaries/crafty00.peak.ev6'
+> smt_process2.cmd = ['cpu2000/binaries/
+> crafty00.peak.ev6','<','cpu2000/data/crafty/input/
+> crafty.in','>','cpu2000/data/crafty/output/crafty.out','2>','cpu2000/
+> data/crafty/output/crafty.err' ]
+> smt_process2.simpoint = 774 * 100E6
+> process += [smt_process2, ]
+>
+> smt_process2 = LiveProcess()
+> smt_process2.executable = 'cpu2000/binaries/equake00.peak.ev6'
+> smt_process2.cmd = ['cpu2000/binaries/
+> equake00.peak.ev6','<','cpu2000/data/equake/input/inp.in', '>',
+> 'cpu2000/data/output/inp.out', '2>', 'cpu2000/data/equake/output/
+> inp.err']
+> smt_process2.simpoint = 812*100E6
+> process += [smt_process2, ]
+>
+> smt_process2 = LiveProcess()
+> smt_process2.executable = 'cpu2000/binaries/swim00.peak.ev6'
+> smt_process2.cmd = ['cpu2000/binaries/swim00.peak.ev6','<','cpu2000/
+> data/swim/input/swim.in','>','cpu2000/data/swim/output/
+> swim.out','2>','cpu2000/data/swim/output/swim.err' ]
+> smt_process2.simpoint = 2079*100E6
+> process += [smt_process2, ]
+>
+> smt_process2 = LiveProcess()
+> smt_process2.executable = 'cpu2000/binaries/ammp00.peak.ev6'
+> smt_process2.cmd = ['cpu2000/binaries/ammp00.peak.ev6','<','cpu2000/
+> data/ammp/input/ammp.in','>','cpu2000/data/ammp/output/
+> ammp.out','2>','cpu2000/data/ammp/output/ammp.err' ]
+> smt_process2.simpoint = 108*100E6
+> process += [smt_process2, ]
+>
+> smt_process2 = LiveProcess()
+> smt_process2.executable = 'cpu2000/binaries/applu00.peak.ev6'
+> smt_process2.cmd = ['cpu2000/binaries/applu00.peak.ev6','<','cpu2000/
+> data/applu/input/applu.in','>','cpu2000/data/applu/output/
+> applu.out','2>','cpu2000/data/applu/output/applu.err' ]
+> smt_process2.simpoint = 2179*100E6
+> process += [smt_process2, ]
+>
+>
+> I am sure the problem is on how it is interpreting the 'cmd', since
+> they run fine in simplescalar and I've had similar problems with
+> ALPBench and other benchmarks, but I can't really get around these.
+>
+> The error message from Crafty is the following:
+>
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0.  Starting simulation...
+> info: Increasing stack size by one page.
+>
+> Crafty v14.3
+>
+> ERROR "<" is unknown command-line option
+> ERROR "crafty.in" is unknown command-line option
+> ERROR ">" is unknown command-line option
+> ERROR "crafty.out" is unknown command-line option
+> ERROR "crafty.err" is unknown command-line option
+> White(1):
+>
+> I'd appreciate the help.
+>
+> Another quick question: system.cpu[i].max_insts_all_threads =
+> 100000000  <-- Is this the correct way of using max_insts_all_threads?
+>
+> Thanks,
+>
+> Javier
+> Texas A&M University
+> Computer Science and Engineering Department
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------
+Message: 4
+Date: Wed, 6 May 2009 08:38:19 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] problem with newly compiled 2.6.27 kernel
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <7D31EB75-5F92-440F-B249-57192781D3FE@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+I've never seen that, although I always use big_tsunami. The primary
+difference between the two is how interrupts are handled. It's
+possible that there is another compiler issue with that code.
+Ali
+On May 5, 2009, at 10:53 AM, Steve Reinhardt wrote:
+> Thanks, that helps a lot... I must have missed that email.  It works
+> now, but only if I set CONFIG_BIG_TSUNAMI=y.  (The .config.m5 in the
+> patch queue doesn't set this either way, so you have to pick one
+> when you build.)  If I don't set it, the console output ends like
+> this:
+>
+> hda: M5 IDE Disk, ATA DISK drive
+> hdb: M5 IDE Disk, ATA DISK drive
+> hda: UDMA/33 mode selected
+> hdb: UDMA/33 mode selected
+> ide0 at 0x8410-0x8417,0x8422 on irq 15
+> ide1 at 0x8418-0x841f,0x8426 on irq 15
+> ide_generic: please use "probe_mask=0x3f" module parameter for
+> probing all legacy ISA IDE ports
+> ide2: probed IRQ 14 and default IRQ 14 failed
+> ide2: failed to initialize IDE interface
+> ide3: potential IRQ problem with ide1 and ide0
+> ide3 at 0x170-0x177,0x376 on irq 15 (shared with ide0)
+> hda: max request size: 128KiB
+> hda: 101808 sectors (52 MB), CHS=101/16/63
+>  hda:<4>hda: lost interrupt
+> hda: lost interrupt
+> hda: lost interrupt
+> hda: dma_timer_expiry: dma status == 0x64
+> hda: DMA interrupt recovery
+> hda: lost interrupt
+>  hda1
+> hdb: max request size: 128KiB
+> hdb: 4177920 sectors (2139 MB), CHS=4144/16/63
+>  hdb:<4>hdb: lost interrupt
+> hdb: lost interrupt
+>
+>
+> Steve
+>
+> On Tue, May 5, 2009 at 5:56 AM, Ali Saidi <saidi@umich.edu> wrote:
+> GCC 4.1 generates invalid code. You need to use 4.3. I have a post
+> on the m5 mailing list a few months ago where I discussed the
+> particular issue in detail, but it has to do with dependence
+> analysis across call pal's being completely broken with gcc 4.0-4.2.
+>
+> Ali
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------
+Message: 5
+Date: Wed, 6 May 2009 10:23:22 -0400
+From: "Geoffrey Blake" <blakeg@umich.edu>
+Subject: Re: [m5-users] Range Error
+To: "'M5 users mailing list'" <m5-users@m5sim.org>
+Message-ID: <001801c9ce56$36149e40$a23ddac0$@edu>
+Content-Type: text/plain;       charset="us-ascii"
+Yes, that extra bridge is the cause. What is happening is that the bridge is
+being probed by l3bus which then probes l3bus2 for address ranges, l3bus2
+probes the L3 cache for ranges as will l3bus a some point, both probes to
+the bridge and the L3 cache will return the same address range at some point
+causing the error.  The way address range propagation is handled currently
+disallows more than 1 path to a device that responds to memory address
+ranges, which is what that extra bridge is causing (2 possible paths to get
+to the L3 cache and underlying physmem). You will either have to just limit
+your experimentation to not doing this, or muck with the address range
+propagation code in bus.cc to allow multiple paths.
+Geoff
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Shoaib Akram
+Sent: Monday, May 04, 2009 3:54 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Range Error
+I have attached a diagram(pdf file) of configuration and fs2.py. Please note
+that the problem occurs because of l3Bridge (commented in fs2.py).
+Ofcourse, I have a solution to maintain coherence at the back end.
+---- Original message ----
+>Date: Mon, 4 May 2009 15:04:57 -0400
+>From: "Geoffrey Blake" <blakeg@umich.edu>
+>Subject: Re: [m5-users] Range Error
+>To: "'M5 users mailing list'" <m5-users@m5sim.org>
+>
+>If you haven't modified any code, it is most likely with how your fs.py
+>configures the devices.  You have to make sure no device can pass its
+>address range back through multiple paths (ie. devices cannot be
+>connected to multiple bridges that connect to one bus), and no two
+>devices have the same address ranges set. The best way is to post your
+>fs.py file so some here can help if they are able.
+>
+>Geoff
+>
+>-----Original Message-----
+>From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>Behalf Of Shoaib Akram
+>Sent: Monday, May 04, 2009 2:40 PM
+>To: m5-users@m5sim.org
+>Subject: [m5-users] Range Error
+>
+>I am getting a "Two devices with same range" error. I have never been
+>involved with the Range business. Can some one give hints as to where
+>to look for the problem. I am running fs.py with a few extra bridges.
+>Is this problem need to be resolved at the front-end or tweaking bus.cc?
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>No virus found in this incoming message.
+>Checked by AVG - www.avg.com
+>Version: 8.5.287 / Virus Database: 270.12.16/2094 - Release Date:
+>05/03/09 16:51:00
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG - www.avg.com
+Version: 8.5.287 / Virus Database: 270.12.19/2099 - Release Date: 05/05/09
+13:07:00
+------------------------------
+Message: 6
+Date: Wed, 6 May 2009 08:00:39 -0700
+From: nathan binkert <nate@binkert.org>
+Subject: Re: [m5-users] Range Error
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <217accd40905060800t69c8333cj6605e6b89e1f224@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+The bus bridge code has the "filter_ranges_a" and "filter_ranges_b"
+parameters.  These were intended for this sort of case and can be used
+to disallow bridges from propagating certain addresses.  I'm not sure
+if this can fix the exact problem since I haven't followed this thread
+closely, but it's certainly a place to start.
+  Nate
+On Wed, May 6, 2009 at 7:23 AM, Geoffrey Blake <blakeg@umich.edu> wrote:
+> Yes, that extra bridge is the cause. What is happening is that the bridge is
+> being probed by l3bus which then probes l3bus2 for address ranges, l3bus2
+> probes the L3 cache for ranges as will l3bus a some point, both probes to
+> the bridge and the L3 cache will return the same address range at some point
+> causing the error. ?The way address range propagation is handled currently
+> disallows more than 1 path to a device that responds to memory address
+> ranges, which is what that extra bridge is causing (2 possible paths to get
+> to the L3 cache and underlying physmem). You will either have to just limit
+> your experimentation to not doing this, or muck with the address range
+> propagation code in bus.cc to allow multiple paths.
+>
+> Geoff
+>
+> -----Original Message-----
+> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+> Behalf Of Shoaib Akram
+> Sent: Monday, May 04, 2009 3:54 PM
+> To: M5 users mailing list
+> Subject: Re: [m5-users] Range Error
+>
+> I have attached a diagram(pdf file) of configuration and fs2.py. Please note
+> that the problem occurs because of l3Bridge (commented in fs2.py).
+>
+> Ofcourse, I have a solution to maintain coherence at the back end.
+>
+> ---- Original message ----
+>>Date: Mon, 4 May 2009 15:04:57 -0400
+>>From: "Geoffrey Blake" <blakeg@umich.edu>
+>>Subject: Re: [m5-users] Range Error
+>>To: "'M5 users mailing list'" <m5-users@m5sim.org>
+>>
+>>If you haven't modified any code, it is most likely with how your fs.py
+>>configures the devices. ?You have to make sure no device can pass its
+>>address range back through multiple paths (ie. devices cannot be
+>>connected to multiple bridges that connect to one bus), and no two
+>>devices have the same address ranges set. The best way is to post your
+>>fs.py file so some here can help if they are able.
+>>
+>>Geoff
+>>
+>>-----Original Message-----
+>>From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>>Behalf Of Shoaib Akram
+>>Sent: Monday, May 04, 2009 2:40 PM
+>>To: m5-users@m5sim.org
+>>Subject: [m5-users] Range Error
+>>
+>>I am getting a "Two devices with same range" error. I have never been
+>>involved with the Range business. Can some one give hints as to where
+>>to look for the problem. I am running fs.py with a few extra bridges.
+>>Is this problem need to be resolved at the front-end or tweaking bus.cc?
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>>
+>>No virus found in this incoming message.
+>>Checked by AVG - www.avg.com
+>>Version: 8.5.287 / Virus Database: 270.12.16/2094 - Release Date:
+>>05/03/09 16:51:00
+>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> No virus found in this incoming message.
+> Checked by AVG - www.avg.com
+> Version: 8.5.287 / Virus Database: 270.12.19/2099 - Release Date: 05/05/09
+> 13:07:00
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 34, Issue 8
+***************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+>> > I am a freshman with M5. My problem is how to use M5 to get profiling
+>> > information. What is the command and options to start profiling? And how to
+>> > collect the profiling informations?
+>> > Do I have to use build/ALPHA_FS/m5.prof instead of build/ALPHA_FS/m5.opt to
+>> > get start the M5?
+>>
+>> Are you trying to profile the simulator itself or what is running.  If
+>> you're trying to do the former, then yes, you just build m5.prof and
+>> run it.
+>>
+>>   Nate
+>>
+>
+> Thanks Nathan,
+> What if profiling what is running in M5, for example some benchmarks? What are
+> the steps?
+You need to set the profile parameter on the CPU object.  This will
+dump a profile into the output directory.  You then use
+util/stats/profile.py to parse the file.  There isn't really any
+documentation on how this works, so you're just going to have to read
+the source code.  I also haven't used this in over a year, so I don't
+recall how stable it is.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

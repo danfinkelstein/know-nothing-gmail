@@ -1,0 +1,28 @@
+A split cache just means a sparate cache for data and instructions.
+- Show quoted text -
+---- Original message ----
+>Date: Wed, 28 Nov 2007 11:15:14 +0800
+>From: "Jiayuan Meng" <jerrygonair@hotmail.com>
+>Subject: [m5-users] What is SplitCache
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   Hey all,
+>
+>   I am planning to model a shared cache with banks.
+>   While looking at the code in M5v2b4
+>   (src/mem/cache/tags/), I have a question about the
+>   split cache and split blocks, what is special with
+>   "split"?
+>
+>   Thanks!
+>
+>   Jiayuan
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

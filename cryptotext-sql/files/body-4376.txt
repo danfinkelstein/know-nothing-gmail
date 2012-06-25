@@ -1,0 +1,8 @@
+On 8/21/07, Matthew James Horsnell <horsnell@cs.man.ac.uk> wrote:
+so ideally I want to be able to do something like this:format Jump {   0x15:   if(Rb & 0xffff0000 == 0xffff0000) {      syscall(Rb & 0x0000ffff);   }   else {      jsr(IsCall);   }
+}Actually this won't work... the code you're changing is the decoder, which simply maps static machine instruction patterns to the C++ StaticInst objects that represent them.  At the time this code is executed all you have is the machine instruction and not the register values (and in fact this mapping gets cached and will get reused any other time the same binary machine instruction shows up).
+You need to change the contents of the StaticInst subclass's execute() method in order to change the runtime behavior of the instruction.Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

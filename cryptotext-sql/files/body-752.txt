@@ -1,0 +1,12 @@
+Hello,
+I was wondering, in the case of the O3 cpu model, is there a way to
+calculate the number of cycles an instruction spends in stalls at the
+head of the ROB?
+Also, for the simple cpu model, is there a ROB? I would think that it
+doesn't, but I just want to make sure.
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

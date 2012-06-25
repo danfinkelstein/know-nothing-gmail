@@ -1,0 +1,71 @@
+Hi,
+ 
+I am also getting the "assertion "validCpuAndThreadNums" failed" error when I have a core with a simple cache hierarchy. Hello World works fine but SPEC VprPlace generates the error message shown below. Note that VprPlace works fine with other configurations I have tried (which did not have caches). Does anybody have an idea why I could be getting this error?
+ 
+Thanks,
+Shyam
+ 
+ 
+Error message:
+---------------------------------------
+command line: build/ALPHA_SE/m5.debug configs/example/simple_cache.pywarn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 becaus
+e of access to 0x11ff91ff8warn: cvtts/su   f2,f0: non-standard trapping mode not supportedassertion "validCpuAndThreadNums" failed: file "build/ALPHA_SE/mem/request.hh",line 229Aborted
+-----------------------------------------
+ 
+ 
+Configuration script I was using when I got the above error:
+-------------------------------------------------
+import m5
+from m5.objects import *
+import os, optparse, sys
+m5.AddToPath('../common')
+from Benchmarks_James import *
+from FullO3Config import *
+class MyCache(BaseCache):
+assoc = 2
+block_size = 64
+latency = 1
+mshrs = 10
+tgts_per_mshr = 5
+cpu = TimingSimpleCPU()
+cpu.addTwoLevelCacheHierarchy(MyCache(size = '128kB'), MyCache(size = '256kB'),
+MyCache(size = '2MB'))
+cpu.mem = cpu.dcache
+cpu.workload = VprPlace()
+#cpu.workload = Helloworld()
+system = System(cpu = cpu,
+physmem = PhysicalMemory(),
+membus = Bus())
+system.physmem.port = system.membus.port
+system.cpu.connectMemPorts(system.membus)
+#system.cpu.mem = system.physmem
+ root = Root(system = system)
+ root.system.mem_mode = 'timing'
+# instantiate configuration
+m5.instantiate(root)
+ #simulate until program terminates
+exit_event = m5.simulate()
+print 'Exiting @ tick', m5.curTick(), 'because', exit_event.getCause()
+ --------------------------------------------------
+ 
+ - Show quoted text -
+ 
+On 9/27/06, Steve Reinhardt <stever@eecs.umich.edu> wrote:
+Alain Kalixte wrote:> It seems to work well with the "hello test". However, when I use a
+> program such as one of the spec benchmark, I have the following output:>> command line: build/ALPHA_SE/m5.debug -d /tmp/output.m5> configs/example/cmp-2609.py -t> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack 0x11ff92000:0x11ff9b000 to> 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8> warn: Increasing stack 0x11ff92000:0x11ff9b000 to> 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+> warn: Increasing stack 0x11ff92000:0x11ff9b000 to> 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8> warn: Increasing stack 0x11ff92000:0x11ff9b000 to> 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+> m5.debug: build/ALPHA_SE/mem/request.hh:229: int> Request::getThreadNum(): Assertion `validCpuAndThreadNums' failed.> Program aborted at cycle 1864793> Aborted>Have you applied patch 1 from the web site?  This looks like the bug
+that that fixes.> In addition, even when I use the hello test and I try to play with the> coherence protocol, I got an error. I tried to set the coherence> protocol in class  L1 as follows:
+> protocol = CoherenceProtocol(protocol='mesi')>> This is what I got:> File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__>   File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+>   File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__>   File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__>   File "build/ALPHA_SE/python/m5/config.py", line 842, in __getattr__
+> RuntimeError: maximum recursion depth exceeded in cmp> Error setting param L1.protocol to root>> It seems to me that the coherence protocol should be initialized in the> cache, right ?
+>This is an m5 bug... the CoherenceProtocol object definition isn'tgetting loaded when you import m5.objects.  Here's the (trivial) patch:===== src/python/m5/objects/__init__.py 1.33 vs edited =====
+--- 1.33/src/python/m5/objects/__init__.py      2006-09-04 10:52:24 -07:00+++ edited/src/python/m5/objects/__init__.py    2006-09-18 10:54:44 -07:00@@ -14,6 +14,7 @@               'Bus',               'Bridge',
+               'Checker',+             'CoherenceProtocol',               'Debug',               'Device',               'DiskImage',Unfortunately MP coherence isn't quite working in 2.0beta1, so you're
+going to be limited to multiprogrammed workloads in the short term (i.e.setting the coherence protocol won't matter).  We're hoping to get thattaken care of very soon, like in the next week or so.Steve
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

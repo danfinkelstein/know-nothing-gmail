@@ -1,0 +1,19 @@
+The M5 cache model is a writeback (not writethrough) cache, so these are the block writebacks from the cache to memory you're seeing.  What you want to do with them would depend on what you're trying to accomplish with your trace.
+Steve
+Yu Zhang wrote:
+- Show quoted text -
+Hi,
+ 
+When I tried to trace the access to the main memory using M5_Writer, I collected some statistics of ‘writeback’ command. What’s this writeback about? Should I just treat these ‘writeback’ command as write to the main memory, or I should just ignore it?
+ 
+Thanks,
+Yu
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

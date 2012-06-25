@@ -1,0 +1,35 @@
+Thanks I read through the emails on the M5-dev list. Meng's stuff is
+impressive:
+http://www.cs.virginia.edu/~jm6dg/fractal/m5patches.htm
+I fear that Meng's MT patches shall keep the two threads benchmarks in
+the same context/cache footprint, I think it runs the the second thread
+on a fetch.
+I might be able to use that, but I am looking to see if something akin
+to Sampling (http://www.m5sim.org/wiki/index.php/Sampling) might do
+what I am looking for, maybe use the feature of draining the pipe then
+try some shenanigans.
+What I should really like is to run task 1 for sometime, context switch
+to task 2 and look at the two footprints in memory and then swap task 1
+back in look at the footprint.
+Cheers,
+Will
+- Show quoted text -
+Meng-Ju Wu wrote:
+>Hi William,
+>
+>Go to look at Jiayuan Meng's multithread patches. You can submit
+>multiple threads and schedule the threades on the same core.
+>
+>Meng-Ju
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

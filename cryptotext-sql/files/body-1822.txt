@@ -1,0 +1,203 @@
+Ali,
+   I have tried your method. But the simulation still kept running.
+   I am using the latest version of M5 without any modification.
+Huang
+On Fri, Feb 27, 2009 at 1:00 AM,  <m5-users-request@m5sim.org> wrote:
+> Send m5-users mailing list submissions to
+>        m5-users@m5sim.org
+>
+> To subscribe or unsubscribe via the World Wide Web, visit
+>        http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> or, via email, send a message with subject or body 'help' to
+>        m5-users-request@m5sim.org
+>
+> You can reach the person managing the list at
+>        m5-users-owner@m5sim.org
+>
+> When replying, please edit your Subject line so it is more specific
+> than "Re: Contents of m5-users digest..."
+>
+>
+> Today's Topics:
+>
+>   1. Re: fix the problem of "unable to open an initialconsole" and
+>      a new problem of booting gentoo (Gabe Black)
+>   2. Problem with restoring checkpoint (Kan Huang)
+>   3. Re: Problem with restoring checkpoint (Ali Saidi)
+>
+>
+> ----------------------------------------------------------------------
+>
+> Message: 1
+> Date: Wed, 25 Feb 2009 19:25:28 -0800
+> From: Gabe Black <gblack@eecs.umich.edu>
+> Subject: Re: [m5-users] fix the problem of "unable to open an
+>        initialconsole" and a new problem of booting gentoo
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <49A60BA8.1090308@eecs.umich.edu>
+> Content-Type: text/plain; charset=ISO-8859-1
+>
+> No problem. A good resource is http://www.gentoo.org/doc/en/list.xml,
+> specifically the "Installation Guides" section. If you follow Nate's
+> suggestion and use your own init script you won't have to worry about
+> this stuff.
+>
+> Gabe
+>
+> Veydan Wu wrote:
+>>
+>> Thank you for your reply, Gabe, but I still don't understand, I run
+>> this linux on M5, which device should I mount the /dev/ROOT, how
+>> should I decide the mount point ? Sorry for such silly question. I
+>> dont't quite understand how this work.
+>>
+>>
+>>     Message: 3
+>>     Date: Tue, 24 Feb 2009 20:58:17 -0800
+>>     From: Gabe Black <gblack@eecs.umich.edu
+>>     <mailto:gblack@eecs.umich.edu>>
+>>     Subject: Re: [m5-users] fix the problem of "unable to open an
+>>            initialconsole" and a new problem of booting gentoo
+>>     To: M5 users mailing list <m5-users@m5sim.org
+>>     <mailto:m5-users@m5sim.org>>
+>>     Message-ID: <49A4CFE9.8080103@eecs.umich.edu
+>>     <mailto:49A4CFE9.8080103@eecs.umich.edu>>
+>>     Content-Type: text/plain; charset=ISO-8859-1
+>>
+>>     Yes it is. You're suppose to change /dev/ROOT to, for instance,
+>>     /dev/hda1. The BOOT and SWAP lines you can probably just remove
+>>     entirely.
+>>
+>>     Veydan Wu wrote:
+>>     > Thank you for replying so quick, Gabe, the mount point of
+>>     /dev/ROOT is
+>>     > not dummy, if "/".  the content of the /etc/fstab is below
+>>     >
+>>     > //dev/BOOT        /boot        ext2        noauto,noatime    1 2
+>>     > /dev/ROOT        /        ext3        noatime        0 1
+>>     > /dev/SWAP        none        swap        sw        0 0
+>>     > /dev/cdrom        /mnt/cdrom    auto        noauto,ro    0 0
+>>     > #/dev/fd0        /mnt/floppy    auto        noauto        0 0/
+>>     >
+>>     > How should I correct that ? Thank you!
+>>     >
+>>     >
+>>     >
+>>     >     Yes. This is actually a pretty common error when installing
+>>     Gentoo.
+>>     >     You need to modify /etc/fstab to reflect your mount points
+>>     instead of
+>>     >     the dummy values /dev/ROOT, etc. The image your using is
+>>     supposed to
+>>     >     be a starting point for installing Gentoo so it won't be
+>>     quite ready
+>>     >     to boot right away. I can't think of anything off the top of
+>>     my head
+>>     >     beyond setting up fstab that's absolutely necessary, though.
+>>     >
+>>     >     Gabe
+>>     >
+>>     >
+>>     >
+>>     ------------------------------------------------------------------------
+>>     >
+>>     > _______________________________________________
+>>     > m5-users mailing list
+>>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------
+>
+> Message: 2
+> Date: Thu, 26 Feb 2009 23:11:37 +0800
+> From: Kan Huang <huangkan0406@gmail.com>
+> Subject: [m5-users] Problem with restoring checkpoint
+> To: m5-users@m5sim.org
+> Message-ID:
+>        <ccf942460902260711t5b82564cv53cf84e085934483@mail.gmail.com>
+> Content-Type: text/plain; charset=ISO-8859-1
+>
+> I generated a checkpoint as below,
+>   m5.fast configs/example/se.py --bench=gcc_integrate
+> --take-checkpoints=0 --simpoint
+> However, when I tried to restore the checkpoint, I found the max-inst
+> parameters become ineffective.
+> The command I used is as below,
+>  m5.fast configs/example/se.py --bench=gcc_integrate
+> --checkpoint-restore=0 --simpoint --max-inst=10000
+>
+> The simulation kept running until I killed it.
+> Have anyone met this problem ever before?
+>
+> Thanks
+>
+>
+> ------------------------------
+>
+> Message: 3
+> Date: Thu, 26 Feb 2009 11:05:19 -0500
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] Problem with restoring checkpoint
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <A5D97A6D-0F6E-480C-AB80-7AD5F21EDADC@umich.edu>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+- Show quoted text ->
+> The Simulation.py script is only setup to set max_inst on a cpu that
+> is not the one you restored from since the normal reason for taking a
+> checkpoint is to switch to a different (more detailed) cpu model. If
+> you really want to do this you can probably add a line like:
+> testsys.cpu[0].max_insts_any_thread = options.max_inst
+> before the m5.simulate() on line 352 of Simulation.py.
+>
+> Ali
+>
+>
+>
+>
+> On Feb 26, 2009, at 10:11 AM, Kan Huang wrote:
+>
+>> I generated a checkpoint as below,
+>>   m5.fast configs/example/se.py --bench=gcc_integrate
+>> --take-checkpoints=0 --simpoint
+>> However, when I tried to restore the checkpoint, I found the max-inst
+>> parameters become ineffective.
+>> The command I used is as below,
+>>  m5.fast configs/example/se.py --bench=gcc_integrate
+>> --checkpoint-restore=0 --simpoint --max-inst=10000
+>>
+>> The simulation kept running until I killed it.
+>> Have anyone met this problem ever before?
+>>
+>> Thanks
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 31, Issue 36
+> ****************************************
+- Show quoted text ->
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

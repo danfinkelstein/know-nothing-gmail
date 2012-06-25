@@ -1,0 +1,45 @@
+By the way, please use the m5-users@m5sim.org list; we're trying to migrate away from the SourceForge list.
+Thanks,
+Steve
+-------- Original Message --------
+Subject: Re: [m5sim-users] CMP
+Date: Tue, 05 Sep 2006 11:04:35 -0700
+From: Steve Reinhardt <stever@eecs.umich.edu>
+To: Bushra Ahsan <ahsan_bushra@yahoo.com>
+CC: m5sim-users@lists.sourceforge.net
+References: <20060905165243.28033.qmail@web54305.mail.yahoo.com>
+Bushra Ahsan wrote:
+Hi,
+I am running a 4 core CMP on m51.1 and I have some general questions about it.
+1) Running the simulator with 4 different benchmarks, for example 50000 instructions each, takes a very long time (in days) whereas running the same  benchmark on all four terminates very quickly (in seconds)
+That obviously doesn't make any sense.  Are you sure in the 4-benchmark
+case that you have all 4 CPUs set to terminate after 50000 instructions?
+ Check the output and see how many instructions each CPU actually executed.
+2) Running some benchmarks gives the message of not supporting trapping mode
+for example.  warn: cvttq/sum  f0,f10: non-standard trapping mode not supported
+That shouldn't be a problem... I think this is a trap-on-underflow mode,
+so as long as the FP values don't underflow you'll be OK.  I don't know
+of any normal programs that rely on underflow traps for correct operation.
+Steve
+Please advice,
+Bushra Ahsan
+PhD Student
+Department of Electrical Engineering
+City College at City University of New York
+------------------------------------------------------------------------
+Yahoo! Messenger with Voice. Make PC-to-Phone Calls <http://us.rd.yahoo.com/mail_us/taglines/postman1/*http://us.rd.yahoo.com/evt=39663/*http://voice.yahoo.com> to the US (and 30+ countries) for 2｢/min or less.
+------------------------------------------------------------------------
+-------------------------------------------------------------------------
+Using Tomcat but need to do more? Need to support web services, security?
+Get stuff done quickly with pre-integrated technology to make your job easier
+Download IBM WebSphere Application Server v.1.0.1 based on Apache Geronimo
+http://sel.as-us.falkag.net/sel?cmd=lnk&kid=120709&bid=263057&dat=121642
+------------------------------------------------------------------------
+_______________________________________________
+m5sim-users mailing list
+m5sim-users@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/m5sim-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

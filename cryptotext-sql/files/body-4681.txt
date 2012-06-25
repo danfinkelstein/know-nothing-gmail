@@ -1,0 +1,9 @@
+Hi,
+    M5_1.0 simulator has an option "-P" (which executes <python> directly
+in the configuration). But I cannot find it in 2.0 version.
+    Is there any substitute option?
+Rongrong Lai
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

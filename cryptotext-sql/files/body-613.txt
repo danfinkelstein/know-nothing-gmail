@@ -1,0 +1,9 @@
+> Does M5 currently support a vector processor model? Maybe your answer is no
+> because, there is not any information in the documentation about vector
+> processing.
+No, there is currently no vector processor model in M5.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+I'm using syscall emulation. 
+ 
+I've posted my problem on http://www.mail-archive.com/m5-users@m5sim.org/msg00244.html. 
+  
+Thanks! 
+Jerry
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

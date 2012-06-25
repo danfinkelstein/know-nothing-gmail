@@ -1,0 +1,10 @@
+> By the way, is there any effort
+> currently to validate the memory timing model?
+What aspects of it?  In general, I'd say not really.  We've done some
+microbenchmark validation, but that was quite some time ago.
+It would be good for us to discuss such a thing though.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

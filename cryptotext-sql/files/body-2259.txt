@@ -1,0 +1,86 @@
+Ok, I looked at the panic message in the code and it appears that you
+haven't allocated enough memory to the benchmark.  In short 10GB is
+not enough for whatever you're trying to do.
+On Mon, Nov 17, 2008 at 12:50 PM, Devraj Chapagain
+- Show quoted text -<drchapagain@gmail.com> wrote:
+> hi,
+> We are using 64-bit machine with 16GB memory and SPEC CPU 2000 benchmarks.
+> Please read the part of the configuration file attached below, My
+> understanding is that in the configuration file we have total 10GB physical
+> memory for one simulation with 8-core (1-thread per core) , am I right?
+>
+> I have checked that memfree+swapfree in our system is about 14GB memory
+> (13144704 KB + 2031608 KB), which is greater than 10GB. It seems that there
+> is enough memory, but the error message is "out of memory".  Do you think
+> anything wrong with the configuration setup itself?
+>
+> ===================================================================================
+> np = 8
+> num_thrds_per_cpu = 4
+>
+> system = System(cpu = [CPUClass(cpu_id = i) for i in xrange(np)],
+>                 physmem = PhysicalMemory(range = AddrRange("10GB")),
+>                 membus = ToMemBus(), mem_mode = test_mem_mode)
+> ====================================================================================
+>
+>
+>
+> On Mon, Nov 17, 2008 at 12:23 PM, nathan binkert <nate@binkert.org> wrote:
+>>
+>> I'm pretty sure I've responded to this did you not investigate?
+>>
+>> Look in /proc/meminfo
+>> If "MemFree + SwapFree" is not greater than the number you've put in
+>> that physmem times the number of physical memory objects you have plus
+>> a couple hundred megabytes for M5 itself, you don't have enough
+>> virtual memory to do what you need.  Add some swap space.
+>>
+>> On Mon, Nov 17, 2008 at 11:10 AM, Devraj Chapagain
+>> <drchapagain@gmail.com> wrote:
+>> > hi there,
+>> > I am working on 64 bit OS with 16 GB RAM to simulate the configuration
+>> > file.
+>> > While simulating  the configuration(.py) file, i have encountered a
+>> > problem
+>> > as:
+>> >
+>> > fatal: Out of memory, please increase size of physical memory.
+>> >  @ cycle 0
+>> > [new_page:build/ALPHA_SE/sim/
+>> > system.cc, line 230]
+>> > Memory Usage: 2295488 KBytes
+>> >
+>> > Then in order to remove this error, i changed the allocated physical
+>> > memory
+>> > size, i.e. physmem = PhysicalMemory(range = AddrRange("2056MB")),
+>> > initially
+>> > was to "16GB" step by step but got still the same problem.
+>> >
+>> > What would be the possible solution to this problem?
+>> >
+>> > Please help!!!
+>> >
+>> >
+>> > Thank you,
+>> > devraj
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

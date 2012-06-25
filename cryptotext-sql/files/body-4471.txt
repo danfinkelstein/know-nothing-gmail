@@ -1,0 +1,82 @@
+Hi Ali,
+ 
+Thanks for the quick responce. 
+ 
+I am having a master thread spawning child threads on 
+multiple cpus. Once a thread gets allocated to a cpu, it always resides there 
+(so far). 
+ 
+I am using AtomicTimingCPU. In my test case 
+with racing mallocs, I have five CPUs(with id from 0 to 4). A 
+master threads initially runs on cpu0. When it comes to a pseudo 
+instruction, it tells the simulator to spawn four child threads on the 
+other CPUs. Each CPU only uses one thread context(all have 
+the id 0 by default). Will this be a problem? I'll try assigning 
+different thread IDs. 
+ 
+To create threads, I learned 
+from "stack_createFunc" and "init_thread_context" in 
+ kern/tru64/tru64.hh, basically allocate a new stack, and assigns the pc 
+and sp register. A major difference might be that I am not using pthreads. 
+instead, I inserted a new pseudo instruction which "atomically" creates four 
+threads on the other four CPUs, they start to execute at the same cycle. 
+ 
+I actually extended SimpleCPUs to have multiple thread 
+contexts and the CPU can switch among them. They are tested with the 
+splash2 FFT benchmark and things went fine. But to make the 
+test more clear, I just set each CPU to have exactly one 
+thread context. In the future, I may need to "migrate" a running thread 
+context from one CPU to another. 
+ 
+I'm in trouble now... I wonder how splash2 gets 
+around with this in SE mode?
+ 
+Thanks again!
+ 
+Jiayuan
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Ali Saidi 
+  To: M5 users mailing list 
+  Sent: 2007年6月16日 2:41 AM
+  Subject: Re: [m5-users] synchronization 
+  primitives in SE mode
+  The 
+  Alpha ISA has a load locked and a store conditional instruction which we 
+  support. Again I don't know exactly what you're doing to create your threads, 
+  but you need to make sure that their cpu/thread ids are unique. Are you 
+  scheduling each thread on it's own cpu or are they moving around? 
+  
+  Ali
+  
+  
+  
+  
+  On Jun 15, 2007, at 1:30 PM, Jiayuan Meng wrote:
+  
+    Hey all,
+     
+    By using the --trace-flags=Exec debug tool, I found that 
+    there is a race condition in the malloc function in my multithreaded 
+    program. However, when looking into the malloc.c in the glibc, it said it is 
+    a thread-safe version. I also noticed that in malloc/arena.c, it uses 
+    mutex_lock(), which seems to be a spinlock. This may still be problematic if 
+    several threads are accessing the lock simultaneously.
+     
+    So, what kind of synchronization support does M5 have in 
+    SE mode? Does it have store-conditional or test-and-set instructions or I'll 
+    have to add one myself?
+     
+    Thanks!
+     
+    Jiayuan
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

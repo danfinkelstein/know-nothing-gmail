@@ -1,0 +1,15 @@
+1)I really need to know the link bandwidth, so I can calculate
+ how much time to transmit certain amount of data.
+ If it's a gigabit link, why are those rxBandwidths and
+ totBandwidths just tens of bits per second? I looked through
+ the source code etherlink.cc, does the link bandwidth equal
+ sim_freq/ticksPerByte?
+This is the bandwidth your application achieved.  For example, think of a real gigabit ethernet link.  Usually, you're not actually sending 1Gbps on that link.
+2)Is the execution time on testsys equal to
+  (drivesys.cpu.numCycles/2GHZ)? In M5 simulator,
+ does 2G mean 2*2^30 or 2*10^9?
+For bytes, G is 2^30, for everything else, it's 10^9- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

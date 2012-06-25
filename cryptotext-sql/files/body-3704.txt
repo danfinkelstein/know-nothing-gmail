@@ -1,0 +1,27 @@
+Hello,
+  I've followed the instructions at http://m5sim.org/wiki/index.php/Defining_CPU_Models and I encountered this build error:
+% scons build/ALPHA_SE/m5.debug CPU_MODELS=MyCPU
+...
+...
+...
+g++ -o build/ALPHA_SE/cpu/mycpu/mycpu.do -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/mycpu/mycpu.cc
+build/ALPHA_SE/cpu/mycpu/mycpu.cc: In member function ‘virtual void MyCPU::resume()’:
+build/ALPHA_SE/cpu/mycpu/mycpu.cc:197: error: ‘SimpleCPU’ is not a member of ‘Trace’
+build/ALPHA_SE/cpu/mycpu/mycpu.cc: In member function ‘virtual void MyCPU::activateContext(int, int)’:
+build/ALPHA_SE/cpu/mycpu/mycpu.cc:248: error: ‘SimpleCPU’ is not a member of ‘Trace’
+build/ALPHA_SE/cpu/mycpu/mycpu.cc: In member function ‘virtual void MyCPU::suspendContext(int)’:
+build/ALPHA_SE/cpu/mycpu/mycpu.cc:268: error: ‘SimpleCPU’ is not a member of ‘Trace’
+build/ALPHA_SE/cpu/mycpu/mycpu.cc: In member function ‘void MyCPU::tick()’:
+build/ALPHA_SE/cpu/mycpu/mycpu.cc:701: error: ‘SimpleCPU’ is not a member of ‘Trace’
+cc1plus: warnings being treated as errors
+build/ALPHA_SE/sim/host.hh: At global scope:
+build/ALPHA_SE/sim/host.hh:61: warning: ‘MaxTick’ defined but not used
+build/ALPHA_SE/arch/alpha/isa_traits.hh:165: warning: ‘AlphaISA::SyscallPseudoReturnReg’ defined but not used
+scons: *** [build/ALPHA_SE/cpu/mycpu/mycpu.do] Error 1
+scons: building terminated because of errors.
+dean@stallman:~/m5/m5_2.0b4$
+I'm using beta 4 version.  Im kind of lost. please help.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

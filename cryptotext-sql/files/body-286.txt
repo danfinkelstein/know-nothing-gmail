@@ -1,0 +1,19 @@
+> I have been struggling with a performance bottleneck in the o3cpu model for
+> a few weeks (IPC capped at 3, regardless of the width of the core), and I've
+> been using gdb on m5.debug to try to find the bottleneck. From the debugging
+> information on the wiki (http://www.m5sim.org/wiki/index.php/Debugging_M5) I
+> should be able to call some of the dump functions as I step through the
+> simulation. However, I get the following error:
+> (gdb) call eventq_dump()
+> No symbol "eventq_dump" in current context.
+This usually happens only if the simulator hasn't actually started
+yet.  You need to start the simulator by doing something like:
+(gdb) break SimStartup
+(gdb) run
+Then at the first breakpoint, M5 is loaded and running, then you can
+call various functions.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

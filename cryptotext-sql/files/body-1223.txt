@@ -1,0 +1,16 @@
+Thanks for the reply. Test is indeed Not failing in the loop but at the following statement in handleResponse().
+MSHR::Target *initial_tgt = mshr->getTarget();
+I believe the cache is receiving two separate Upgrade responses for a single Upgrade request it initiated. I am modeling a system with distributed ordering points (more like two clusters with each having a shared bus and a snoop filter in the middle). I thought the coherence protocol ensuring a single owner will prevent that from happening.
+---- Original message ----
+>Date: Mon, 6 Jul 2009 11:15:15 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] Assertion:hasTargets() failed
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   The MSHR belongs to a single cache.  There's no
+>   reason I can see why the test in the while loop
+>   would succeed but the assertion would fail.  You
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

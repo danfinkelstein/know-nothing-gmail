@@ -1,0 +1,87 @@
+Matt,
+The short answer is yes it will mostly work that way, tho longer answer is a bit more complicated.
+In the simple cpus that are only executing one instruction at a time, in order, without speculation. With those three assumptions the instruction will do what you have planned. However, if you violate any of those assumptions weird things may happen.
+If you look at call how syscall is is called in callsys() in the alpha decoder you can see how we make a syscall in alpha. The important distinction here is that the instruction is marked: IsSerializeAfter, IsNonSpeculative. This directs the cpu models to not execute the instruction until its not speculative anymore (until it reaches the head of  the ROB in an out-of-order cpu) and to stop issuing instructions until after it completes. Unfortunately tagging your jsr instruction with this could be problematic, as it would significantly limit the amount of parallelism an out-of-order cpu could find.
+The only way I can think around this problem is to do something similar to what we did in SPARC (even though the SPARC instruction is still marked like the Alpha one). If you look at tccx in sparc/isa/decoder.isa you can see how we make a syscall in SPARC. We return a new Trap to the CPU. If that instruction is on the correct path the trap will be executed which will result in the the syscall happening.
+Ali- Show quoted text -
+On Aug 21, 2007, at 7:26 AM, Matthew James Horsnell wrote:
+Hi Ali,
+Thanks for your help. I've fixed my problem now, it appears the the only
+reason the two traces differed was because the instruction selected the
+JsrAndLink when ZeroReg was 0, as the RA register is set to 0. However
+having looked at the code for the JSR decode in alpha it appears we
+differ a lot more than I was aware (our ISA is purportedly alpha-like).
+Anyway moving onto another question. In our current simulation
+environment we make calls through to the o/s using builtin functions,
+much like the syscall functions in m5. For example when a JSR is
+executed, if the value of register Rb has the top 16 bits set e.g.
+0xffffxxxx then we call a builtin function such as fstat, fopen etc
+defined by the xxxx part of the register.
+What is the simplest way to do this. Is the value of a register
+available to the decoder? e.g. can I look at the register index in, say
+branch.isa, can I also look at the value of that register. I appreciate
+this isn't feasible in hardware, but presumably syscalls are treated as
+special cases.
+currently I have:
+format Jump {
+     0x15: jsr(IsCall);
+    }
+so ideally I want to be able to do something like this:
+format Jump {
+   0x15:
+   if(Rb & 0xffff0000 == 0xffff0000) {
+      syscall(Rb & 0x0000ffff);
+   }
+   else {
+      jsr(IsCall);
+   }
+}
+Ali Saidi wrote:
+Matt,
+I would still guess that it's something to do with a hardcoded value,
+if not in decoder.isa than in one of the other isa files. Here are
+some probable candidates:
+branch.isa:    return (RA == 31)
+int.isa:     if (RC == 31) {
+main.isa:     if (RC == 31) {
+mem.isa:     if (RA == 31) {
+mem.isa:     if (RA != 31) {
+Ali
+On Aug 20, 2007, at 12:31 PM, Steve Reinhardt wrote:
+Hi Matt,
+On 8/20/07, *Matthew James Horsnell* <horsnell@cs.man.ac.uk
+<mailto:horsnell@cs.man.ac.uk>> wrote:
+    Having followed Steve's suggestions I have debugged the the binaries
+    using gdb, and can indeed see that when ZeroReg is set to 31 (and
+    ReturnAddressReg is 0) then the code calls JsrAndLink, whereas
+    when the
+    constants are switched the code calls Jsr, but I have extensively
+    searched to see where I may have missed a constant.
+If this is the case, then I suggest setting a breakpoint on
+decodeInst() in decoder.cc and stepping through to see why when the
+machine instruction is being decoded it is returning a Jsr object and
+not a JsrAndLink object.  That line I pointed out earlier in
+branch.isa is what's supposed to control that, but obviously it's not
+working...
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+Matt Horsnell,
+Advanced Processor Technologies Group,
+University of Manchester.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

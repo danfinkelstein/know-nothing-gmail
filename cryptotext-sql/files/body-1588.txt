@@ -1,0 +1,131 @@
+Hi Ali,Thanks for the help. I tried a suggestion from another user which told me he had a similar problem and adding --l2cache to the command line solved it, and it did. I appreciate your attention anyhow.Sorry for deviating but, Is SMT still unsupported for Full System?
+I have compiled ALPHA_FS w/:numThreads = 4smtNumFetchingThreads = 4smtFetchPolicy = RoundRobinHowever, different from SE in config.ini I can't just verify if is it running multithreaded since (I assume) the Linux scheduler will assign the workloads dynamically at runtime (with the scheduler). Is this what is happening, or would it simply run everything serially; no SMT? 
+I wonder why would it not be supported if the Linux image is able to handle multiple CPU's why can't it handle multiple hard-threads, at least from 1 CPU?
+--JavierOn Sat, Apr 11, 2009 at 9:00 AM,  <m5-users-request@m5sim.org> wrote:
+Send m5-users mailing list submissions to
+        m5-users@m5sim.org
+To subscribe or unsubscribe via the World Wide Web, visit
+        http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+or, via email, send a message with subject or body 'help' to
+        m5-users-request@m5sim.org
+You can reach the person managing the list at
+        m5-users-owner@m5sim.org
+When replying, please edit your Subject line so it is more specific
+than "Re: Contents of m5-users digest..."
+Today's Topics:
+   1. Assertion `blkSize == pkt->getSize()' failed. (Devraj Chapagain)
+   2. panic: Tried to execute unmapped address 0 (Devraj Chapagain)
+   3. Re: O3 error in FS: Aborting before starting simulation
+      (Ali Saidi)
+----------------------------------------------------------------------
+Message: 1
+Date: Fri, 10 Apr 2009 11:27:49 -0700
+From: Devraj Chapagain <drchapagain@gmail.com>
+Subject: [m5-users] Assertion `blkSize == pkt->getSize()' failed.
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <dd84602f0904101127l3465b738t9fde0530c8a67043@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+hi everyone,I am using 16 copies of SPEC CPU2006 benchmarks in SE mode for
+simulation. I got the error as:
+warn: Increasing stack size by one page.
+m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool
+Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&,
+PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()'
+failed.
+Could you please suggest me any solutions related to this problem.
+Thanks in advance,
+devraj
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090410/bd0a177b/attachment.html
+------------------------------
+Message: 2
+Date: Fri, 10 Apr 2009 11:35:13 -0700
+From: Devraj Chapagain <drchapagain@gmail.com>
+Subject: [m5-users] panic: Tried to execute unmapped address 0
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <dd84602f0904101135j76e0e79dsdaf8cc55d8d3ca7a@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+hi everyone,While I am working on 8 core and 2 thread in SPECCPU 2006
+in SE mode, i am facing panic problem.
+hello robert white,
+I saw you M5-users email correspondence with Ali, on this problem. On
+that email you replied you solved this problem. Could you please help
+me how to fix this problem, the problem is:
+warn: Increasing stack size by one page.
+panic: Tried to execute unmapped address 0.
+ @ cycle 17190562000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+Program aborted at cycle 17190562000
+Thanks in advance,
+devraj
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090410/40632096/attachment-0001.htm
+------------------------------
+Message: 3
+Date: Fri, 10 Apr 2009 17:23:33 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] O3 error in FS: Aborting before starting
+        simulation
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <B6FF7662-4CBD-4FE7-80C7-64118F35C515@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes- Show quoted text -
+What kernel are you running? Have you modified the configuration in
+any way? If you're using a one of our kernels and haven't modified the
+configuration then the next thing to do would be to enable the trace
+flags for the caches and the o3 cpu a few thousand cycles before the
+panic occurs and see where the address in question is coming from.
+Ali
+On Apr 9, 2009, at 1:01 AM, Javier Jose wrote:
+> Hi everyone,
+>
+> I am trying to run ALPHA_FS with O3 but it is aborting before
+> finishing regardless of the benchmark.
+>
+> COMMAND LINE:
+>
+>  build/ALPHA_FS/m5.[any] -d /home/javier/log/mpgenc2_pvt configs/
+> example/fs.py -d --caches -b [benchmark]
+>
+> ERROR:
+>
+> info: Entering event queue @ 0.  Starting simulation...
+> panic: Unable to find destination for addr (user set default
+> responder): 0x80c4dbc0
+>  @ cycle 48692311000
+> [findPort:build/ALPHA_FS/mem/bus.cc, line 334]
+> Memory Usage: 197392 KBytes
+> For more information see: http://www.m5sim.org/panic/6c40f6ee
+> Program aborted at cycle 48692311000
+> Aborted
+>
+> Right now I am just trying to run just 1 thread; 1 CPU. I have been
+> using ALPBench and PARSEC with SimpleCPU and it works fine even with
+> CMP configurations with L2 shared and L2 private cache configurations.
+>
+> Also, Is SMT still unsupported on FS? I can't seem to get a clear
+> answer form the m5-user digest.
+>
+> I appreciate the help,
+>
+> Javier
+> Texas A&M University
+> Computer Science and Engineering Department
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 33, Issue 14
+****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

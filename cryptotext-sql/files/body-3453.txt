@@ -1,0 +1,20 @@
+Hi
+ 
+I am getting error like.........
+ 
+[ashutoshj@kani gcc]$ runm5M5 Simulator System
+Copyright (c) 2001-2006The Regents of The University of MichiganAll Rights Reserved
+M5 compiled Mar 11 2008 00:03:09M5 started Wed Mar 12 11:00:20 2008M5 executing on kani.cs.lamar.educommand line: ../../../build/ALPHA_SE_kani/m5.opt runshort.py
+Traceback (most recent call last):  File "<string>", line 1, in ?  File "build/ALPHA_SE/python/m5/main.py", line 350, in main  File "runshort.py", line 3, in ?    from DetailedUniConfig import *
+  File "/space/ashutoshj/m5_2.0b4/tests/DetailedUniConfig.py", line 2, in ?    from MemConfig import *  File "/space/ashutoshj/m5_2.0b4/tests/MemConfig.py", line 2, in ?    class BaseL1Cache(BaseCache):
+NameError: name 'BaseCache' is not defined[ashutoshj@kani gcc]$
+ 
+I am unable to get where I put my BaseCache.py file and all other similar files under which directory so that the  error could be sloved.............
+ 
+ 
+Thanks in advance
+Ashutosh JainM.S. Computer Science,
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

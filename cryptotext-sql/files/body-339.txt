@@ -1,0 +1,6 @@
+Hi Soumysaroop, thanks for telling the file name, We have been able to find it now. We were looking in a different binutils directory under patches.Thanks for the explanation Gabe. I guess we do not need pseudo_inst files. We need to insert a new instruction into the ISA and just need to modify M5 to recognise that instruction and decode it accordingly. 
+--Pritha
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

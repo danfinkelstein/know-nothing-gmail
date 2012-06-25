@@ -1,0 +1,44 @@
+Hi, Lisa. Thanks for your reply.I have tried both ways, I ran it with sudo too but the error is the same.I have been working on this for several weeks and finally get to the last step, that's frustrated !     
+I have a vague recollection of something like that happening.  I think, for
+some reason, the script worked if I ran it with sudo instead of as root.
+I'm changing the wiki now to warn that this whole ptx-dist process is pretty
+deprecated and not well-supported, but if you got that far, that's great!
+Lisa
+On Wed, Jan 28, 2009 at 6:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, I used the ptxdist to create an full system image to run on M5, and I
+> have reached the last  step. When I run the command * ptxdist images*, I
+> just got an error !
+>
+> The error seems simple:
+>
+> *Failed to run*/media/Study/CPU/CPUsource/M5/linux-dist/lib/ptxdist-0.10.3/m5_files/MAKEDEV
+> -d /media/Study/CPU/CPUsource/M5/linux-dist/my_workspace/root/dev console
+> random urandom null hda hdb hdc hdd sda* as root*
+>
+> but the problem is I run the command under root
+>
+> root@ubuntu:/media/Study/CPU/CPUsource/M5/linux-dist/my_workspace# ptxdist
+> images
+>
+> Does anyone encounter such an problem yet? I have absolutely no idea now !
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090128/e12c7d01/attachment.htm
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 30, Issue 25
+****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

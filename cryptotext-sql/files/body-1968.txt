@@ -1,0 +1,27 @@
+Hi David,
+You can create a tracing object that helps you out. This is especially useful since all you really need is the start and end of functions, not all the instructions and whatever in the middle. I've attached a diff (in git format, I don't think it will apply with normal patch) that should get you a lot of the way to what you need.
+Ali
+On Feb 9, 2009, at 6:28 AM, David Robert White wrote:
+Hi,
+I'm using M5 to profile a C function by producing a trace file and
+counting the number of instructions in the file that have been executed
+in that function.
+As my trace files get larger, this is somewhat inefficient (taking say
+10 seconds to sed or grep a file).  I'm guessing there's a much more
+sensible way to profile an individual function - can anyone please help?
+Thanks
+David
+-- 
+David R White
+Research Student
+Dept. of Computer Science
+University of York,
+Heslington, YO10 5DD
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

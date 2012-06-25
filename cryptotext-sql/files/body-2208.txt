@@ -1,0 +1,20 @@
+Most of the .rcS files use the "m5 checkpoint" command to take a
+checkpoint near or soon after the script starts running.  If you add
+this to your .rcS script and then set max checkpoints to 1, the atomic
+run will end right after the first checkpoint is dropped.
+When you want to run from this checkpoint, internally you have to
+restore the checkpoint to a simple cpu then switch over to the
+detailed cpu, but I think if you specify both a checkpoint to restore
+from and "--detailed" on the script command line this is handled
+automatically by the scripts.
+Steve
+On Wed, Nov 26, 2008 at 12:35 PM, Ryan Markley <overgeo@gmail.com> wrote:
+> Hello thanks for the thelp, at what cycle do you recommend to take the
+> checkpoint?. When you say switch to the detail cpu do you mean switch
+> using the sampling function of m5 or use the detail cpu with the
+> command line?. Thank you.
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

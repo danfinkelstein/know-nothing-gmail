@@ -1,0 +1,12 @@
+Hello,
+I think there is a missing state transition in
+mem/cache/coherence/coherence_protocol.cc , namely
+trasitionTable[Invalid][ReadEx].onRequest
+Am I correct in assuming that it should be (ReadEx)?
+Also, is ReadEx an exclusive read, or am I missing something?
+--
+Marius Grannæs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

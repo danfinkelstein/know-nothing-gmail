@@ -1,0 +1,21 @@
+On 11/12/07, Steve Stephen <sstephen66@yahoo.com> wrote:
+>
+> packets are used for memory-to-memory transfer only then what mechanism is
+> used for satisfying requests of processor by caches.
+Packets are used for transfers between any two objects in the memory
+system, including cpus and caches.
+> Also,a packet only
+> occupies the bus on a cache miss? For what else does packet occupy the bus?
+A packet occupies the bus whenever it crosses it, for a request or a response.
+Steve
+>  ________________________________
+> Get easy, one-click access to your favorites. Make Yahoo! your homepage.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

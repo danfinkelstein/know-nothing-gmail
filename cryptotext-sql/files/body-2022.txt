@@ -1,0 +1,9 @@
+Hello,
+ 
+I have been trying to find a new DRAM module for M5 in the internet because the one that comes with the suite it does not work. But I have not been lucky enough to find something. I only found this post http://www.mail-archive.com/m5-dev@m5sim.org/msg00980.html, but I cannot make it work with those instructions provided. So I would like to ask if someone has a module working, Can you please submit the patches or instructions in the Mail list?, or try to submit it in the wiki. If it is possible that will be really appreciable.
+ 
+Thanks in advance.Diferentes formas de estar en contacto con amigos y familiares. Descúbrelas. Descúbrelas.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

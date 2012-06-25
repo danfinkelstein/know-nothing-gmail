@@ -1,0 +1,20 @@
+Hi,
+I created a disk image following the instruction of documentation. Then I ran the M5 to see if the disk image
+works with other components. I booted the simulator and
+type ./m5term localhost 3456 to connect the host. But
+I got the following error:
+.........
+Warning: Unable to open an initial console.
+I noticed that something called busybox is involved if using
+the sample disk image. And I checked the directory my/workspace/root/dev, there is nothing but a directory ptx/.
+The disk image created above is a raw image. So how to add my
+own benchmark to the image? Is that right to compile my own
+benchmark with alpha cross compiler(/opt/....) followed by
+adding the binaries to my/workspace/root/benchmarks before
+creating the disk image(ptxdist images)?
+Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

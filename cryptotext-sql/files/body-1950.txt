@@ -1,0 +1,167 @@
+Hi Devraj,
+I have not run workloads on M5 system emulation mode, as I use full
+system to do this. I am unsure what your script is doing as I don't know
+what Data1[i+1] is. However, each application you assign to the workload
+is going to have to use a LiveProcess like the options.detailed+SMT does
+in configs/example/se.py copied below. In order to schedule threads
+between cores, you are going to have to write the scheduling mechanism
+in M5. I have seen a post related to this issue for splash 2 benchmarks
+@ http://www.m5sim.org/wiki/index.php/Splash_benchmarks. Give that a
+read to know what you are in for and hopefully you can use to the
+pre-designed pthreads hack to accomplish your goal. I also know that
+Jiayuan has his own implementation of a multithreading library, similar
+to option 2 in the link. You can ask him for some help on how to use it.
+If you want to run more than one thread on a single CPU you will
+probably also need to add support to switch between the threads (unless
+that exists ... anyone know the answer to this?).
+Best,
+-Rick
+if options.detailed:
+    #check for SMT workload
+    workloads = options.cmd.split(';')
+    if len(workloads) > 1:
+        process = []
+        smt_idx = 0
+        inputs = []
+        outputs = []
+        errouts = []
+        if options.input != "":
+            inputs = options.input.split(';')
+        if options.output != "":
+            outputs = options.output.split(';')
+        if options.errout != "":
+            errouts = options.errout.split(';')
+        for wrkld in workloads:
+            smt_process = LiveProcess()
+            smt_process.executable = wrkld
+            smt_process.cmd = wrkld + " " + options.options
+            if inputs and inputs[smt_idx]:
+                smt_process.input = inputs[smt_idx]
+            if outputs and outputs[smt_idx]:
+                smt_process.output = outputs[smt_idx]
+            if errouts and errouts[smt_idx]:
+                smt_process.errout = errouts[smt_idx]
+            process += [smt_process, ]
+            smt_idx += 1
+- Show quoted text -
+Devraj Chapagain wrote:
+> hello Rick,
+> I  have posted here a part of code. Please let me know is there any
+> way to check whether the threads are assigned to core or not?
+>
+> =====================================================================================
+>
+> for i in range(int(count - 1)):
+>   BenchmarkList[i] = "Benchmarks." + Data1[i + 1]
+>
+> print 'num of cpus = %d' %np
+> print 'num threads per cpu = %d' %num_thrds_per_cpu
+>
+> k = 0
+> for i in xrange(np):
+>     expression = "system.cpu[" + str(i) + "].workload = ["
+>     for j in xrange(num_thrds_per_cpu):
+>         expression += BenchmarkList[k]
+>         k = k + 1
+>         if j != (num_thrds_per_cpu - 1):
+>                 expression += ", "
+>     expression += "]"
+>     print expression
+>     exec(expression)
+>
+> root = Root(system = system)
+> ===========================================================================================
+>
+> Here, i have used one core with two threads......
+>
+> yes ... i am in ES mode and Is there any way to check whether
+> scheduler assigning a thread to each core in SE mode?
+> please reply me with possible solutions....
+>
+> Thanks in advance,
+> devra
+>
+>
+>
+>
+>
+>
+> On Wed, Feb 4, 2009 at 3:04 PM, Rick Strong <rstrong@cs.ucsd.edu
+- Show quoted text -> <mailto:rstrong@cs.ucsd.edu>> wrote:
+>
+>     Devraj Chapagain wrote:
+>     > hi there,
+>     >
+>     > I am using 16 copies of SPEC CPU2006 benchmarks for simulation.
+>     While
+>     > simulating for small number of instructions, I got the result as:
+>     >
+>     > ===========================================================
+>     > warn: Increasing stack size by one page.
+>     > warn: Increasing stack size by one page.
+>     > Exiting @ cycle 62736000 because all threads reached the max
+>     > instruction count
+>     > ===========================================================
+>     >  It seems correct, but the result is incomplete as some cores
+>     has void
+>     > or zero values for all the fields. For clarify, the values like
+>     > overall_miss_rate :  <err: div-0>. as some core has no reading
+>     values
+>     > (i.e., 0 on all). So, i could not determine the output of
+>     simulation.
+>
+>     This probably means that one (or more) of your cores was not running.
+>     >
+>     >
+>     > When the number of instructions is increased, then i got the
+>     following
+>     > result:
+>     > ===========================================================
+>     > warn: Increasing stack size by one page.
+>     > warn: Increasing stack size by one page.
+>     > warn: Increasing stack size by one page.
+>     > Exiting @ cycle 56291500 because target called exit()
+>     > =============================================================
+>
+>     This implies that the target application (assuming you are in system
+>     emulation mode) called exit. Maybe the application finished?
+>     > The simulation is exit after fixed number(56291500) of cycle
+>     whatever
+>     > be the size of physical memory is increased. Initially, i have
+>     > assigned 2GB of physical memory and when i got this result
+>     "Exiting @
+>     > cycle 56291500" then i increase the physical memory to 10GB, then to
+>     > 20GB ..... 40GB but no effect. The simulation is exit after the same
+>     > number of cycle. After i got this, i checked the result but the
+>     result
+>     > is as on the previous, some core has assigned the values of reading,
+>     > while some of the cores have error like--> overall_miss_rate :
+>      <err:
+>     > div-0>.
+>     Is your scheduler assigning a thread to each core?  You might want to
+>     try Full System mode as you wont has the physical memory problem
+>     and can
+>     use traditional scripts.
+>
+>     >
+>     > devraj
+>     >
+>     >
+>     >
+>     ------------------------------------------------------------------------
+>     >
+>     > _______________________________________________
+>     > m5-users mailing list
+>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+- Show quoted text ->     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

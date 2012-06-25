@@ -1,0 +1,28 @@
+Hi all:
+After I boot linux, I use "m5 checkpoint"  to create a checkpoint.
+When I restore from this checkpoint from the command line:
+"build/ALPHA_FS/m5.debug fs.py --caches --l2caches --r 1"
+The following error is generated:
+command line: build/ALPHA_FS/m5.debug fs.py -r 1 --caches --l2cache
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at: /home/rhome/dist/m5/system/binaries/vmlinux
+      0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1
+00:00:00 2009
+Listening for system connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "build/ALPHA_FS/python/m5/main.py", line 350, in main
+    execfile(sys.argv[0], scope)
+  File "myfs.py", line 167, in <module>
+    Simulation.run(options, root, test_sys, FutureClass)
+  File "/home/rhome/m5/m5-2.0b5/configs/common/Simulation.py", line 170,
+in run
+    elif options.simpoint:
+AttributeError: Values instance has no attribute 'simpoint'
+Can anybody tell me the reason?
+Thank you very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

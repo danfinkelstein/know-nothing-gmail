@@ -1,0 +1,50 @@
+Thanks Ali.Actually, the booting problem of the extended disk image was because the image wasn't labeled (i.e. partitioned) properly.After successful labeling, the simulation proceeds to the point reading kernels and configuring services via SMF.
+But as soon as the SMF stages pass, I get following error and the m5sim refuses to show me its login prompt.
+Since this does not happen with the original disk image, I believe there should be some workaround.
+Any suggestions?
+################################
+# error message starts from here.
+SUNW-MSG-ID: SUN4-8000-5A, TYPE: Defect, VER: 1, SEVERITY: Critical
+EVENT-TIME: Tue Nov 27 00:10:58 PST 2007
+PLATFORM: sun4v, CSN: -, HOSTNAME: unknown
+SOURCE: eft, REV: 1.13
+EVENT-ID: 38b27d6d-8c56-cbc8-90f6-e649c8c5fa6b
+DESC:
+A problem was detected in the PCI-Express subsystem software.
+  Refer to http://sun.com/msg/SUN4-8000-5A for more information.
+AUTO-RESPONSE: One or more device instances may be disabled
+IMPACT: Loss of services provided by the device instances associated with
+this problem
+REC-ACTION: Ensure latest driver and patch are installed.  Use fmdump -v -u  to identify the module/package, o
+r contact Sun for support.
+################################2007/11/24, Ali Saidi <saidi@umich.edu>:- Show quoted text -
+I don't have any other guidance for  you, you'll just have to spendsome time figuring it out.Option 1 will work, but like I said you'll have to modify the mmdiskdevice to be a good bit smarter and properly create a partition table
+for the two disks. I know it is possible to make it work because bothlegion and sam do this.As for option 2 I don't know I'm not at all surprised that the systemwon't boot if you can't create a run installboot on the image because
+it won't have a proper boot block then. The only other thing thatcomes to mind is doing this on a real physical disk and then dding thecontents into a image.AliOn Nov 22, 2007, at 11:39 PM, Lee Henry wrote:
+> Actually, I've tried both paths: 1) adding a 2nd disk, 2) extending> existing disk.> In case of 2), the problem is that it does not boot up correctly.>> Below is the procedures I've followed:
+>> 1. create backup of the disk.s10hw2: mount disk.s10hw2 & run> 'ufsbackup'> 2. create empty file of about 1GB size: 'dd if=/dev/zero of=new.img> bs=1024 count=1000000' & mount 
+new.img (to /dev/lofi/1) & run> 'newfs /dev/lofi/1'> 3. restore backup onto new image: run 'ufsrestore'> 4. make new image bootable: 'dd if=bootblk of=/dev/lofi/1 bs=1b> oseek=1 count=15 conv=sync'
+>> The only difference from yours is procedure 4.> It's because 'installboot' refuses to work on loop devices (i.e.> created by lofiadm).>> I see that the new image mounts & unmounts correctly within
+> UltraSPARC machine.> But I can't get it booted up correctly on both the M5 and the> opensparc tools.>> Any suggestions?>> 2007/11/23, Ali Saidi <
+saidi@umich.edu >:Support for a second disk> in SPARC_FS was never completed. To make> that work you would need to modify the mmdisk device model to put both> partitions next to each other in memory and generate an appropriate
+> partition map describing the two disk locations. Another option would> be to make the disk larger which can also be done. I haven't tried> this, but something like it should work:> #> # Mount the existing disk image
+> #> /usr/sbin/lofiadm -a /export/disk_image_old> /usr/sbin/mount /dev/lofi/1 /mnt>> #> # Create the new disk image using a larger size and put> # a filesystem on it> #
+> /usr/sbin/mkfile -n 1024m /export/disk_image_new> /usr/bin/chmod a+w /export/disk_image_new> /usr/sbin/lofiadm -a /export/disk_image_new> /usr/sbin/newfs /dev/rlofi/2  # make sure you specify the rlofi device
+>> #> # Install a sun4v boot block:> #> /usr/sbin/installboot /mnt1/usr/platform/sun4v/lib/fs/ufs/bootblk /> dev/> rlofi/2>> #> # Clone the filesystem (from /mnt1 to /mnt2)
+> #> cd /mnt2> /usr/sbin/ufsdump 0f - /mnt1 | /usr/sbin/ufsrestore xf - .>> #> # Umount and cleanup the filesystem on the new disk> #> cd /> /usr/sbin/umount /mnt2
+> /usr/sbin/fsck -y /dev/rlofi/2> /usr/sbin/lofiadm -d /dev/rlofi/2>> Ali>>>>> On Nov 22, 2007, at 8:08 PM, Lee Henry wrote:>> > Hello folks,
+> >> > Since the free space within the solaris disk image (from opensparc)> > is not enough for me,> > I'm trying to add 2nd disk image storing large benchmark programs.> >
+> > But the problem is that at the beginning of the simulation it> > terminates with errors:> >> > # start of error message> > panic: Two devices with same range> >  @ cycle 0
+> > # end of error message> >> > The error seems pretty obvious but I can't figure it out where in> > the M5 source code the disk device's address range is assigned to.> > I'd really appreciate your help.
+> >> > Here's what I've done to the makeSparcSystem (FSConfig.py):> >> >     self.disk0 = CowMmDisk()> >     self.disk0.childImage(disk('disk.s10hw2'))
+> >     self.disk0.pio = self.iobus.port> >> > ###################> > # start of lines added> >     self.disk1 = CowMmDisk()> >     self.disk1.childImage(disk('disk_500mb.img'))
+> >     self.disk1.pio = self.iobus.port> > # end of lines added> > ###################> >> > _______________________________________________> > m5-users mailing list
+> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>> _______________________________________________
+> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

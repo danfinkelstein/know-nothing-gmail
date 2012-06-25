@@ -1,0 +1,29 @@
+ 
+1. mcf - 
+ 
+warn: Entering event queue @ 0.  Starting 
+simulation...warn: Increasing stack size by one page.fatal: Out of 
+memory, please increase size of physical memory. @ cycle 
+45551000[new_page:build/ALPHA_SE/sim/system.cc, line 235]
+ not sure about this.... 
+2. parser - 
+AttributeError: OptionParser instance has no __call__ method. I think 
+it needs input thru STDIN but does not seem to work
+ If you are using the script I gave you, it's because you cant have two things with the same class name in one python script.I couldnt figure out how to differentiate the two in python.
+The code is something like "parser.options.bmark" but then the benchmark is "parser".What I did was just name derive a new class in my cpu2000 .py file "parser_work" (based off of parser) so to break this and then I could run the program.
+ 
+3. amongst the 
+specint benchmarks, perlbmk and bzip2 do not have a smred input set. So what 
+input_set options do we have to pass on?
+ I used the lgred inputs for bzip2... not sure for perlbmk what I use.. But if you look in cpu2000 where perlbmk is defined you can figure out which input files it accepts...
+ 
+Also, how do we check if the benchmarks ran 
+correctly or no?you cna always diff the output versus the regressions outputs in the "tests/long" directory.
+ 
+Has anyone gotten all these to run 
+correctly?Right now, I'm running them all on the SimpleCPU. They should work for the O3 too, but I havent tested them all. They probably need to be O3  regression tests for the whole suite on spec2k instead of just a few of the benchmarks.
+ -- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

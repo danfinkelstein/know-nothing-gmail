@@ -1,0 +1,11 @@
+Hi there,
+To be able to perform a detailed timing on a CPU with an inorder
+execution core, should I be using the DerivO3CPU model or the
+InOrderCPU model?
+regards,
+Soumyaroop.
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

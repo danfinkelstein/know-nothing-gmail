@@ -1,0 +1,88 @@
+Hi All,
+ 
+Thanks for providing the m5-stable and m5 development hg
+repositories.  Unfortunately I’m having a problem taking checkpoints
+with a clean copy of m5-stable.  Below is the command and error
+message.  I don’t see many recent changes in these files, so I’m
+confused why the generated drain function now encounters an error.
+ 
+Thanks for your help!
+ 
+Brad
+ 
+svvint08[/proj/aatl_perfmod_arch/users/bbeckman/m5-temp]%
+./build/ALPHA_FS/m5.debug configs/example/fs.py --benchmark=NetperfStream
+--checkpoint-dir=/proj/aatl_perfmod_arch/users/bbeckman/
+m5-temp/temp --take-checkpoints=1000,1000
+--max-checkpoints=10
+M5 Simulator System
+ 
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+ 
+ 
+M5 compiled Jun 23 2008 18:25:15
+M5 started Tue Jun 24 00:21:14 2008
+M5 executing on svvint08
+M5 revision Unknown:Unknown
+M5 commit date Unknown
+command line: ./build/ALPHA_FS/m5.debug
+configs/example/fs.py --benchmark=NetperfStream
+--checkpoint-dir=/proj/aatl_perfmod_arch/users/bbeckman/m5-temp/temp
+--take-checkpoints=1000,1000 --
+max-checkpoints=10
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at:
+/proj/aatl_perfmod_arch/users/bbeckman/m5-ext/m5/system/m5_system_2.0b3/binaries/vmlinux
+      0: testsys.tsunami.io.rtc:
+Real-time clock set to Thu Jan  1 00:00:00 2009
+Listening for testsys connection on port 3456
+warn: kernel located at:
+/proj/aatl_perfmod_arch/users/bbeckman/m5-ext/m5/system/m5_system_2.0b3/binaries/vmlinux
+      0: drivesys.tsunami.io.rtc:
+Real-time clock set to Thu Jan  1 00:00:00 2009
+Listening for drivesys connection on port 3457
+0: testsys.remote_gdb.listener: listening for remote gdb #0
+on port 7000
+0: drivesys.remote_gdb.listener: listening for remote gdb #1
+on port 7001
+warn: Entering event queue @ 0.  Starting simulation...
+Traceback (most recent call last):
+  File "<string>", line 1, in
+<module>
+  File "build/ALPHA_FS/python/m5/main.py",
+line 313, in main
+    execfile(sys.argv[0], scope)
+  File "configs/example/fs.py", line 172, in
+<module>
+    Simulation.run(options, root, test_sys,
+FutureClass)
+  File
+"/proj/aatl_perfmod_arch/users/bbeckman/m5-temp/configs/common/Simulation.py",
+line 320, in run
+    m5.checkpoint(root, joinpath(cptdir,
+"cpt.%d"))
+  File "build/ALPHA_FS/python/m5/simulate.py",
+line 136, in checkpoint
+    doDrain(root)
+  File
+"build/ALPHA_FS/python/m5/simulate.py", line 109, in doDrain
+    all_drained = drain(root)
+  File
+"build/ALPHA_FS/python/m5/simulate.py", line 120, in drain
+    unready_objects =
+root.startDrain(drain_event, True)
+  File
+"build/ALPHA_FS/python/m5/SimObject.py", line 831, in startDrain
+    count +=
+self._ccObject.drain(drain_event)
+  File "build/ALPHA_FS/params/params.py",
+line 358, in drain
+    def drain(*args): return _params.SimObject_drain(*args)
+TypeError: in method 'SimObject_drain', argument 2 of type
+'Event *'
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

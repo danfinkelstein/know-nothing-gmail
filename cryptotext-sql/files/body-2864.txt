@@ -1,0 +1,6 @@
+how exactly do you use simpoints with spec2000? i've been able to run spec2000 benchmarks in full( by using ./build/ALPHA_SE/m5.opt tests/run.py long/00.gzip/alpha/tru-64/03-timing and the like), what i want to do now is use simpoints. i noticed that run.py doesn't have flags or switched for it unlike se.py. cpu2000.py, on the other hand, i noticed already has the specific simpoints encoded into it. do i have to modify se.py, or create my own script? or would certain additional flags to the current command i'm using suffice?
+thanks a bunch!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

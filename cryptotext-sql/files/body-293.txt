@@ -1,0 +1,7 @@
+Hi,I have this doubt related to O3 SMT model in ALPHA_SE mode. So I understand that for running multi-programmed benchmarks one can pass a vector of benchmarks as the parameters and set the cpu.numThreads to the size of vector. But is it possible for the O3 CPU to extract the TLP in a (single) given multithreaded benchmark. So what I am trying to say is lets say I just want to run a single multi-threaded benchmark and just by specifying the number of SMT threads (say 4 SMT threads) can the O3 CPU extract the threads from the benchmark and run in a SMT fashion? I would appreciate any directions in this regard. 
+Something tells me that it is not possible. And if that is the case then how do I compare different SMT configurations for a given benchmark ? So the Idea is that I want to change the SMT configuration for a O3 CPU and compare the preformance of a given workload.  
+Thanks,Abhishek-- 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

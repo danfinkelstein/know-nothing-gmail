@@ -1,0 +1,271 @@
+I've done this hundreds of times and the instructions on the webpage
+are correct.  My best guess is that there is some strange permissions
+issue that is masked, or you've corrupted the image file somehow.
+  Nate
+- Show quoted text -
+On Thu, May 8, 2008 at 4:01 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+>
+> thanks,
+> But, it does not work.
+>
+> [root@ /]# mount -o loop,offset=32256
+> /home/normal/newm5_080505/m5_2.0b4/dist/m5/system/disks/linux-latest.img
+> /home/normal/newm5_080505/m5_2.0b4/m5root2
+>
+> mount: you must specify the filesystem type
+>
+> [root@ /]# mount -o loop,offset=32256
+> /home/normal/newm5_080505/m5_2.0b4/dist/m5/system/disks/linux-latest.img
+> /home/normal/newm5_080505/m5_2.0b4/m5root2 -t ext3
+>
+> mount: wrong fs type, bad option, bad superblock on /dev/loop3,
+>        missing codepage or other error
+>        In some cases useful info is found in syslog - try
+>        dmesg | tail  or so
+>
+> [root@ /]# dmesg | tail
+> SELinux: initialized (dev loop6, type ext2), uses xattr
+> EXT2-fs warning: mounting unchecked fs, running e2fsck is recommended
+> SELinux: initialized (dev loop2, type ext2), uses xattr
+> hfs: unable to find HFS+ superblock
+> VFS: Can't find an ext2 filesystem on dev loop2.
+> VFS: Can't find ext3 filesystem on dev loop2.
+> SELinux: initialized (dev loop2, type ext2), uses xattr
+> hfs: unable to find HFS+ superblock
+> VFS: Can't find ext3 filesystem on dev loop3.
+> VFS: Can't find an ext2 filesystem on dev loop3.
+>
+>
+> I have tried "ext2 " , the same thing.
+>
+> thanks
+> Mike
+> May 8  2008
+>
+> ________________________________
+> Date: Thu, 8 May 2008 18:21:44 -0400
+> From: hsul@eecs.umich.edu
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] about m5term and linux kernel
+>
+> mount it this way:
+>
+> http://m5.eecs.umich.edu/wiki/index.php/Frequently_Asked_Questions#How_do_I_add_files_to_a_disk_image.3F
+>
+> lisa
+>
+> On Thu, May 8, 2008 at 6:16 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+>
+> Thanks,
+>
+> But, I still can not see the img files.
+>
+> I set up loopdevice
+>
+> [root@m5_2.0b4]#  losetup  /dev/loop2
+> /home/normal/m5_2.0b4/dist/m5/system/disks/linux-latest.img
+>
+> And then, I
+>
+> mke2fs -c /dev/loop2 1000
+>
+> And then,
+> [root@ m5_2.0b4]# mount -t ext2     /dev/loop2
+> /home/normal/m5_2.0b4/m5root2
+>
+> but, when  I go to  /home/normal/m5_2.0b4/m5root2.
+>
+> [normal@m5root2]$ ls -l
+> total 12
+> drwx------ 2 root root 12288 May  8 17:08 lost+found
+>
+> Only, this directory.
+>
+> I can not see the  linux-latest.img  .
+>
+> Thanks
+>
+> Mike
+> May  8  2008
+>
+>
+>
+>
+>
+> ________________________________
+> Date: Thu, 8 May 2008 11:10:45 -0400
+> From: hsul@eecs.umich.edu
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] about m5term and linux kernel
+>
+> linux-latest.img is the root image.  if you mount it, you will see the
+> directories as you saw them when running m5.
+>
+> lisa
+>
+> On Thu, May 8, 2008 at 11:07 AM, Mike Anderson <m5kernel8@hotmail.com>
+> wrote:
+>
+> Thanks,  but, I can not see the root of the disk image mounted in m5.
+>
+> I installed "M5 2.0b3 Full System Files"  in m5/dist/m5/system.
+> In the directory , I have
+>
+> [normal@ system]$ ls -l
+> total 18088
+> drwxrwx--- 2 normal normal     4096 May  7 16:33 binaries
+> drwxrwx--- 2 normal normal     4096 May 17  2007 disks
+> -rw-rw-r-- 1 normal normal 18468181 May 17  2007 m5_system_2.0b3.tar.bz2
+> drwxrwxr-x 3 normal normal     4096 May  5 17:43 www.m5sim.org
+>
+> [normal@ system]$ cd disks/
+> [normal@ disks]$ ls -l
+> total 2141972
+> -r--r----- 1 normal normal 2139095040 May 17  2007 linux-bigswap2.img
+> -rw-r----- 1 normal normal   52125696 May 17  2007 linux-latest.img
+>
+> [normal@ system]$ cd binaries/
+> [normal@ binaries]$ ls -l
+> total 31748
+> -rwxrwx--- 1 normal normal    78500 May 17  2007 console
+> -rwxrwx--- 1 normal normal    52136 May 17  2007 ts_osfpal
+> -rwxrwxr-x 1 normal normal 32313628 Oct  8  2006 vmlinux
+>
+> And, I should mount linux-bigswap2.img or linux-latest.img  ?
+>
+> and where to mount them ?
+> I do not have root directory in m5.
+>
+> Thanks,
+>
+> May 8  2008
+>
+>
+> ________________________________
+> Date: Wed, 7 May 2008 21:17:01 -0700
+> From: stever@gmail.com
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] about m5term and linux kernel
+>
+>
+>
+> On Wed, May 7, 2008 at 5:06 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+>
+> Hi,
+>
+> I am using m5.opt and m5.debug  to run  FS simulation.
+>
+> ./build/ALPHA_FS/m5.opt  configs/example/fs.py -b NetperfMaerts
+>
+> build/ALPHA_FS/m5.debug -d /tmp/output configs/example/fs.py
+>
+> build/ALPHA_FS/m5.opt --trace-flags="Cache" configs/example/fs.py
+>
+> And, I  connect to the simulated console interface by
+>
+> m5term localhost 3456
+>
+> But, the console responds my typing very slowly.
+>
+> And,  I use ls and got :
+>
+>       benchmarks  etc         lib         mnt         sbin        usr
+>
+>
+>
+>       bin         floppy      lost+found  modules     sys         var
+>       dev         home        man         proc        tmp         z
+>
+> My question is :
+>
+> Where are these directories located ?
+>
+> In the root directory of the disk image you've mounted in m5.
+>
+>
+>
+> And, where is the linux kernel located ?
+>
+> That's loaded separately; it's not on the disk image.
+>
+>
+>
+> If I want to implement a linux scheduling algorithm in a linux kernel.
+>
+> And, I plan to use linux-dist to Create Disk Images and Kernels for M5
+> with compiled benchmarks.
+>
+> And then, I install the disk in the  directory:
+>
+>
+>
+> /dist/m5/system
+>
+> And, when I run the benchmarks .
+>
+> How can I make sure that the threads generated from the benchmarks
+> are scheduled by th new linux kernel ?
+>
+> It's pretty much the same as if you were doing it on a real system... if you
+> want to be sure it's working, you just have to observe that it's having some
+> effect.
+>
+> Steve
+>
+>
+> thanks,
+>
+> Mike
+>
+> May.  7  2008
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+> ________________________________
+> Get Free (PRODUCT) RED™ Emoticons, Winks and Display Pics. Check it out!
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ________________________________
+> Windows Live SkyDrive lets you share files with faraway friends. Start
+> sharing.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ________________________________
+> Stay in touch when you're away with Windows Live Messenger. IM anytime
+> you're online.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ________________________________
+> Make Windows Vista more reliable and secure with Windows Vista Service Pack
+> 1. Learn more.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

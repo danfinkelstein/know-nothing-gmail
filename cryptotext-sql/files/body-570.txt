@@ -1,0 +1,25 @@
+On Mon, Feb 1, 2010 at 2:13 PM, nathan binkert <nate@binkert.org> wrote:
+>> In simics, we can use Haps to register a callback function, when some
+>> events happen, we can run our own codes to do something. Can we do this in
+>> m5?
+>>
+>> To be more specific, I want to simulate until some point, like a function
+>> call, then stop and do something. It seems now that I can only stop at some
+>> instruction count, but in practice we don't know at what instruction count
+>> an event will happen.
+>
+> If you want to do something on a function call basis, CPUs have a
+> pcEventQueue where you schedule events for a given pc.  We use this to
+> intercept certain function calls.
+If you want to do something at a specific point in the app (as opposed
+to on every function call), and you have source code, your best bet is
+to use a special 'm5' instruction to signal to the simulator that
+you've hit that point.
+I guess the overall message is that we need more details on what
+you're trying to do if you want specific suggestions on how best to do
+it.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

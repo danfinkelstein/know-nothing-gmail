@@ -1,0 +1,43 @@
+Hello everyone,
+I've just started using M5 in X86 SE mode. My ultimate goal is to run some
+SPEC 2000 benchmarks on it, so I thought I'd start by compiling the provided
+Hello World application myself to test the waters.
+First, I built m5.debug and that was fine. I then compiled the Hello World
+program with gcc 4.1.2 on an AMD64 Barcelona system running Gentoo 2.6.21
+barcelona# gcc -o test test.c --static
+I compared this against the given /tests/test-progs/hello/bin/x86/linux/hello
+and saw the difference in kernel versions with file:
+$ file ../tests/test-progs/hello/bin/x86/linux/hello
+../tests/test-progs/hello/bin/x86/linux/hello: ELF 64-bit LSB executable,
+x86-64, version 1 (SYSV), for GNU/Linux 2.4.1, statically linked, not
+stripped
+and mine was:
+$ file test
+test: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), for GNU/Linux
+2.6.9, statically linked, not stripped
+I changed the command option in configs/example/se.py and ran the script with
+tracing in m5 and got:
+$ build/X86_SE/m5.debug --trace-flags="X86" configs/example/se.py
+...
+...
+  36500: global: Setting int reg 17 to value 0x60
+  36500: global: Setting int reg 32 to value 0
+  37000: global: Setting int reg 16 to value 0
+  37000: global: Read int reg 16 and got value 0
+  37000: global: Read int reg 0 and got value 0x7fffffffee38
+  37000: global: Read int reg 17 and got value 0x60
+  37000: global: ADD_M_R : st: The address is 0x7fffffffedc3
+  37500: global: Setting int reg 16 to value 0
+fatal: fault (Invalid-Opcode) detected @ PC 0x400332
+ @ cycle 37500
+[invoke:build/X86_SE/sim/faults.cc, line 43]
+Memory Usage: 543424 KBytes
+I'm not sure what's causing the Invalid Opcode problem here. I searched the
+mailing list archive but wasn't able to find anything on this error, so
+thought I'd post here and ask.
+Thanks in advance,
+Viren
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

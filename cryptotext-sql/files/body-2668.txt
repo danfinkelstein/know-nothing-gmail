@@ -1,0 +1,9 @@
+Hi all:
+I want to run different benchmarks in different cpu in m5 full system
+simulation. Does anybody have the experience? Please give me a help.
+Thank you very much
+Gary
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

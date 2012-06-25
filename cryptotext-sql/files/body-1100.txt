@@ -1,0 +1,30 @@
+The EXTRAS path points to the extra code you want to add to the
+repository.  It needs to be in a place that's outside of the standard
+m5/src tree.
+Steve
+- Show quoted text -
+On Mon, Aug 3, 2009 at 1:23 PM, Cong Wang<jameswang99@yahoo.com> wrote:
+> Hi All:
+>    I am trying to use the Extra option in m5 to add some code that
+> doesn't have the right license for M5 (not yet, at least). The
+> tutorial on the website doesn't really say which I should put my code
+> in. I currently have the codes in a directory called
+> src/cpu/timing_trace but I am not sure if that is a good place. It is
+> not exactly clear from the tutorial
+> scons EXTRAS=/path/to/m5_2.0_encumbered build/ALPHA_SE/m5.opt
+>     Do I use the /path/to/m5_2.0_encumbered to point to my code or
+> just the m5 distribution in general? Thanks for any comment in
+> advance.
+>
+> --
+> Regards
+> James Wang
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

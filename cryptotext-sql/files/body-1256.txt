@@ -1,0 +1,10 @@
+Hello,I am trying to compile the latest version of Linux following the instructions given on the website. I am stuck at cross compiling. I don't know much about linux and I dont know how to fix the following  problem, any thoughts?:
+I basically downloaded http://www.m5sim.org/dist/current/alphaev67-unknown-linux-gnu.tar.bz2, and then untar-ed it.
+Then I set my path:set path=( /home/ef/newinstall/Crosscompiler/alphaev67-unknown-linux-gnu/bin $path  )(tried path in the front also using tcsh, but the above configuration always works in my linux distro)
+ and type:~/kernel/linux-2.6>> make ARCH=alpha CROSS_COMPILE=alpha-unknown-linux-gnu- vmlinuxmake: alpha-unknown-linux-gnu-gcc: Command not found  CHK     include/linux/version.h  CHK     include/linux/utsrelease.h
+  CC      kernel/bounds.s/bin/sh: alpha-unknown-linux-gnu-gcc: command not foundmake[1]: *** [kernel/bounds.s] Error 127I don't get it, am I suppose to configure the precompiled binaries (if so how?) ? Not sure why its not registering at all. Any help is appreciated!
+Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

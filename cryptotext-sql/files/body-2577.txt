@@ -1,0 +1,8 @@
+Hey,I am trying to compile the copy of m5 that I downloaded from the repository.   I am getting the following error:aswilli@aswilli-laptop:~/m5-stable$ scons build/ALPHA_SE/m5.debugscons: Reading SConscript files ...
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':  File "/home/aswilli/m5-stable/SConstruct", line 338:    env['GCC'] = subprocess.Popen(env['CXX'] + ' --version', shell=True,
+I have all of the most current version of the software required.  There was a previous post by someone with this problem but he said he did not have g++ or m4 installed in ubuntu.  I am running ubuntu but have checked for both of these issues.
+Please advise,Aaron-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

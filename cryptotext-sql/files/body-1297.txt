@@ -1,0 +1,11 @@
+Hi,
+ 
+I would like to know, Did anyone tried integrating Wattch
+with M5 for Power numbers. (Like Simplescalar).
+ 
+Thanks in advance,
+-Shiva
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

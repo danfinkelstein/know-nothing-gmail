@@ -1,0 +1,6 @@
+Is there a way to insert a trigger(probably not max_insts since it will halt the entire simulation) in SMT O3 cpu such that a single thread will be paused/resumed after it has executed a certain number of instructions, while other threads continue to execute? Possibly dump the statistics ...Then resume the threads all together ..? I'm trying to find a work-around on warming up the caches(before recording detailed simulation) without resolving to(Sampling) using two Atomic CPUs and having to deal with the page table entries and memory address collision stuff..
+thanks, Dean Michael Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

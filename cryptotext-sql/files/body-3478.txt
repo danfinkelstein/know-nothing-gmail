@@ -1,0 +1,14 @@
+hi,
+ 
+I am graduate student pursuing Masters in Computer Science and currently want to do research work in computer architecture, So my professor told me to learn M5 2.0b4 version simulator.............I got familiar with M5 1.1 very much and i already run SPEC cpu2000 on that and i am unable to run SPEC cpu2000 benchmarks on M5 2.0b4...............
+ 
+Please help.......
+ 
+ 
+Hoping to hear very soon..........
+ 
+Thanks Ashutosh JainM.S. Computer Science,Lamar University, Texas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

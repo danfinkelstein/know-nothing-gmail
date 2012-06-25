@@ -1,0 +1,33 @@
+On 11/9/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> 1)The BaseCpu.py object has the following function in both version beta 2 and beta 3:
+>
+> def addTwoLevelCacheHierarchy(self, ic, dc, l2c):
+>         self.addPrivateSplitL1Caches(ic, dc)
+>         self.toL2Bus = Bus()
+>         self.connectMemPorts(self.toL2Bus)
+>         self.l2cache = l2c
+>         self.l2cache.cpu_side = self.toL2Bus.port
+>         self._mem_ports = ['l2cache.mem_side']
+>
+> Do you still think beta 3 doesnot support or above funstion doesnot create private two level hierarchy?
+The function works.  You can create whatever hierarchy you want in any
+version of m5.  However, due to restrictions on the coherence
+protocol, b3 and earlier versions will only function correctly with
+two levels of private cache for uniprocessor systems.  If you have
+private L1s and private L2s in a multiprocessor in b3 or earlier the
+coherence protocol will fail.
+The b4 release has a new coherence protocol that does not have this
+restriction.  It is designed to support nearly arbitrary
+configurations.  There are bugs that may cause it to fail in some more
+exotic configurations, but private L1s with private L2s should work
+fine.
+>
+> 2) Do you think m5 is good to do interconnect research?To meaure the increase in traffic on the shared bus,network congestion etc.
+Yes, but it won't do everything you want out of the box.  You'll have
+to put some effort into modeling the exact platform(s) you want to
+study.  I'm guessing that's true no matter what simulator you use.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+I think the resaon is because you assign one process object to two
+different CPUs.
+system.cpu[i].workload = [Benchmarks.SPECGCCEIO()]
+You can create two different process objects, SPECGCCEIO_0() and
+SPECGCCEIO_1(), then assign the processes to CPU0 and CPU1,
+system.cpu[0].workload = [Benchmarks.SPECGCCEIO_0()]
+system.cpu[1].workload = [Benchmarks.SPECGCCEIO_1()]
+This shuld solve your problem.
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

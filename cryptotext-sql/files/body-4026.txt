@@ -1,0 +1,81 @@
+Hi,
+        Referring to beta 4 
+release notes:
+ 
+1.  Is the use of TLBs in SE mode by default, 
+or do we need to explicitly enable it?
+ 
+2. Since python is used to create the structs 
+automatically, how many files do we need to modify to add, say, one extra 
+parameter.
+   for eg: in dram.cc, if I want to have 
+a new parameter, do I still need to declare it in the relevant sections in all 
+of the:
+ 
+dram.cc
+dram.hh
+PhysicalMemory.hh
+ 
+files, or is there a simper way to do 
+it?
+ 
+Thanks,
+Sujay
+ 
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Ali Saidi 
+  To: M5 users mailing list ; m5-announce@m5sim.org 
+  Sent: Monday, November 05, 2007 7:17 
+  PM
+  Subject: [m5-users] M5 2.0b4 now 
+  available!
+  
+  Hello M5 Users,
+  
+  The M5 team would like to announce the availability of the 4th beta for 
+  M5 2.0. This release contains improvements to the caches that make the 
+  code more readable and support previously unsupported configurations. In 
+  addition: the creation and configuration of SimObjects has been simplified, 
+  there are several improvements to the build system, and a variety of 
+  small bugs fixes. We're still not promising there aren't any bugs, but we 
+  think we've made another step forward and appreciate everyones patience (and 
+  patches) in the process. After downloading the tarball please take a moment to 
+  read the RELEASE_NOTES associated with it as there are a few important changes 
+  in this release.
+  
+  New Features:
+  
+  - New cache model
+  - Use of a I/O cache between devices and memory
+  - Ability to include compiled code with EXTRAS=
+  - Python creation of params structures for initialization
+  - Ability to remotely debug in SE
+  - Use of TLBs in SE mode
+  Bug fixes:
+  - Fix SE serialization
+  
+  - SPARC_FS booting with TimingSimpleCPU
+  - Rename cycles() to ticks()
+  - Various SPARC ISA fixes
+  - Draining code for checkpointing
+  - Various performance improvements
+  
+  You can get the beta on the download page:
+  
+  http://www.m5sim.org/wiki/index.php/Download 
+  
+  Thanks!
+  
+  The M5 Team
+  
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

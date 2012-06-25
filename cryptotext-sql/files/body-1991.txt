@@ -1,0 +1,6 @@
+I am referring to a message passing system I guess.  I want each machine to only know about its individual set of meory and no one else's.  -- Aaron S. WilliamsGraduate StudentArizona State University
+Department of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

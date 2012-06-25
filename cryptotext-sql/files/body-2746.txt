@@ -1,0 +1,37 @@
+> Hence in this one specific
+> case you have to synthesize a no-op just to have something to mark as
+> faulting.
+This sounds like it was a FS problem that was solved but then kind of
+trickled down to SE right? I think I remember this happening as well
+but formerly in SE mode whenever you got a fault that was not a page
+fault to increase the stack then we died so thats why I think it is
+something that must of got permeated through.
+> Korey, do you recall what smtNumFetchingThreads does with respect to
+> the fetch stage?
+Yes, that *should* be how many threads fetch from a cycle at once.
+That number should be 1 by default.
+> If you're saying that it wasn't designed to do that, but in
+> reality it is doing that in the default configuration, then that
+> sounds bad.
+If that's what's happening, that definitely is bad as we made the
+design decision that since the majority of SMT implementations would
+want to fetch from 1 thread at a time. I'm not sure how that got set
+to anything other than 1 other than it was edited somehow when we were
+translating to the new type of params. In the *old* days, the params
+the O3 configuration file set this to 1 I'm pretty sure so we never
+saw this problem.
+Setting that default to 1 should solve the initial problem.
+For the case where we really do want to fetch from multiple threads,
+we added the initial framework/functionality for it in anticipation of
+future work but we dont have any workloads that would stress that
+situation as it is uncommon.
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

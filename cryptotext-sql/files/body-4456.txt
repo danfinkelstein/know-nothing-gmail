@@ -1,0 +1,127 @@
+Hi Steve,
+   I appreciate you very much for your reply. I had tried the --trace-flags="Exec" and got a very big file which was nearly 9GB. I thought it was the statistics instruction by instruction.And I searched the file by the keyword "thread" and I got the information like this:
+   61912087000: system.cpu0 T0 : @kernel_thread : ldah       r29,79(r27)     : IntAlu :  D=0xfffffc0000801c70
+                                                            ...
+   2026704706000: system.cpu3 T0 : @start_thread+36 : ret        (r26)           : IntAlu :
+Is that possible that I can use such an information to help me understand when each thread starts and ends.
+            Thank you very much for your help and best wishes to you!
+                                                                               Yue  Li
+                                                                              07-05-2007
+----- Original Message -----
+From: Steve Reinhardt <stever@eecs.umich.edu>
+Date: Tuesday, July 3, 2007 12:11 pm
+Subject: Re: [m5-users] How to get the statistics for each thread
+To: M5 users mailing list <m5-users@m5sim.org>
+> On 7/2/07, yl06g@fsu.edu <yl06g@fsu.edu> wrote:
+> >
+> > Hi Ali,
+> >
+> >    Thank you very much for your reply. Could you please tell me
+> how to use
+> > the trace-flag to see when the
+> >
+> > kernel thread info struct changes from one thread to another
+> thread?I mean
+> > which specific flag is for that.
+>
+>
+>
+> It's the Thread flag, --trace-flags=Thread.  However we recently
+> discoveredthat there's some code that option depends on in
+- Show quoted text -> sim/vptr.hh that is broken,
+> so in the short term it won't do you any good.
+>
+>   The reason that I think there are two cycle counts because each
+> cpu has
+> > its own CPU cycles like
+> >
+> > system.cpu0.numCycles. Except that we still have  sim_ticks
+> which is
+> > nearly equal to the
+> >
+> > system.cpu0.numCycles. And sim_seconds=sim_ticks/1THz. Since we
+> only have
+> > CPU cycle counts,how
+> >
+> > can we use it to be divided by the system frequency?
+>
+>
+>
+> The numCycles for the CPU object is the number of ticks that the
+> CPU is
+> active (not disabled or waiting to start up).  Typically that
+> should be the
+> same as (or very nearly the same as) sim_ticks, which is the total
+> number of
+> ticks in the simulation.  They are the same tick units though.
+>
+>
+>   Thanks a lot for your help.Best wishes to you!
+> >
+> >
+> >                                                           Yue Li
+> >                                                           07-02-2007
+> >
+> >
+> >
+> > ----- Original Message -----
+> > From: Ali Saidi <saidi@umich.edu>
+> > Date: Thursday, June 28, 2007 3:12 pm
+> > Subject: Re: [m5-users] How to get the statistics for each thread
+> > To: M5 users mailing list <m5-users@m5sim.org>
+> >
+> > >
+> > > On Jun 28, 2007, at 2:45 PM, <yl06g@fsu.edu> wrote:
+> > >
+> > > > Hi everyone,
+> > > >
+> > > >    I have a multithreaded program running on m5-2.0b3 in full
+> > > > system mode. I can get the m5stats.txt which includes the
+> > > > statistics for each core. Is there anybody who can tell me how
+> > > to
+> > > > get the statistics for each thread instead of each core by
+> > > > configuring m5?
+> > > There isn't any way we've implemented to do this. If you enable
+> > > the
+> > > traceflag Thread you should see when the kernel thread info struct
+> > >
+> > > changes from one thread to another thread, but this information
+> > > isn't
+> > > connected into the statistics code at the moment. You would have
+> > > to
+> > > make some modifications for it to work. Take a look at arch/alpha/
+> > > linux/* for more information about how we figure out what
+> > > thread/pid/
+> > > process name is running.
+> > >
+> > > >   Another problem is I found there are two frequency for
+> > > > simulator.One is 1THz for system and the other is 2GHz for CPU.
+> > > But
+> > > > in the statistics file CPU and system have the nearly same cycle
+> > >
+> > > > counts.So could you please why different clock frequency are
+> used?> > We simulate the system at 1THz so you don't have to have all
+> > > devices
+> > > in the system be some multiple of the CPU frequency. I don't
+> > > believe
+> > > there is a cycle count attached to a system, only to CPUs.  Do you
+> > >
+> > > have an example? Both parameters are configurable.
+> > >
+> > > Ali
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> >
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

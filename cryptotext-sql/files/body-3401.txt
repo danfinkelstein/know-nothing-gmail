@@ -1,0 +1,6 @@
+That looks good as far as I can tell.  What does m5 print out when you
+run the simulation?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

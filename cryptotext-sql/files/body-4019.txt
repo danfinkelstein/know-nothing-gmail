@@ -1,0 +1,32 @@
+Referring to the coherence setup in previous release, we are actually trying to measure the overhead in latency due to snoop-related traffic and coherence protocol. Looking at the code here is my understanding. So, please see if i am right.
+First, it seems like when the packet occupies the bus, it is the bus that initiates the snooping by the caches of all cores else the source of packet. Everytime the packet occupies the bus, if SNOOP_COMMIT bit is set, snooping by other caches is initiated, otherwise not. A packet is not exclusively sent to initiate snooping by other ports. Is it right?
+Further no extra cycles are added for snooping while the num_cycles are counted for which the packet will occupy the bus. Is it right?
+- Show quoted text -
+---- Original message ----
+>Date: Tue, 6 Nov 2007 08:50:43 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Coherence Protocol
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>Yes, the cache coherence protocol is largely rewritten, and is no
+>longer configurable (it's hardwired as MOESI).  The primary goal was
+>to allow multi-level coherence in some workable form, and once you get
+>past simple single-bus snooping you can't really parameterize things
+>very easily (not that it worked all that well in the old version,
+>actually).
+>
+>On 11/6/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>> The new version seem to have reimplemented the cache structure. Looks like in the BaseCache object, there is no parameter protocol. Specifically, how does coherence protocol works in the new version, if different protocols need to be selected like in the previous version, or not to specify one at all.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

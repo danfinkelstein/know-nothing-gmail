@@ -1,0 +1,35 @@
+ok. I will run again and give a trace. It happened with running a multiprogramming workload conssiting of mesa and ammp but somehwere after 350 million instructions.
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 25 Apr 2008 10:58:26 -0500
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] fault-unalign
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>Hmm that sounds like a bug. What are you running? Can you give us a
+>snippet of the instruction trace around that instruction for both the
+>timing and the detailed cpu? The only thing I can think of is that the
+>o3 cpu speculates on a load or store, however it should realize that
+>was the bad path and that fault shouldn't matter.
+>
+>Ali
+>
+>On Apr 25, 2008, at 4:53 AM, Shoaib Akram wrote:
+>
+>> when i run some benchmarks using detailed model, I have the error,
+>> fault:unalign detected at PC XXX, while it doesnot occur with timing
+>> model. Any insight?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

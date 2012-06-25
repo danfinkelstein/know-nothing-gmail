@@ -1,0 +1,21 @@
+> Hi,
+> Thanks for the update. I tried to run multiple threads concurrently using SMT mode with the structure present in the se.py file. I am now getting the following error.
+>
+> build/SPARC_SE/cpu/o3/cpu.cc:278: FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams*) [with Impl = O3CPUImpl]: Assertion `params->numPhysIntRegs >= numThreads * SparcISA::NumIntRegs' failed.
+>
+You can try commenting out that assertion as a work-around, but to
+solve the root of the problem you need to figure out why the number of
+physical integer registers too low.
+For instance, if 1 thread takes about 128 integer registers, then if
+you are running more than 2 threads and dont have >= 256 registers
+then there is no way the CPU will work.
+More than likely, you need to increase that physical register
+parameter listed above. Check src/arch/sparc/isa_traits.hh and various
+files in that directory to find out the exact SparcISA::NumIntRegs
+value.
+--
+- Korey
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

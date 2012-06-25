@@ -1,0 +1,26 @@
+Just to clarify, MinneSPEC is a set of substitute inputs for SPEC CPU 2000 -- not executable binaries, in case there's any confusion.
+--Dan
+On Mar 25, 2008, at 12:19 , Korey Sewell wrote:
+I actually got all my SPEC 2K binaries from the pool file system and
+they are working for SE MODE ALPHA. I think there are full SPEC
+binaries in one folder, MinneSpec in another folder, and then they
+have the actual code on the last folder.
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA

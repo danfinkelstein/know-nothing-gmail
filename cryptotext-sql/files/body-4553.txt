@@ -1,0 +1,22 @@
+Sorry for taking so long to reply.
+You're correct that the message about repeated store-conditional failures is supposed to be a warning about potential livelock.  The livelock would be more at the coherence protocol level than in the application though.
+What version of m5 are you using?  I believe in the recent 2.0 beta releases there's a bug where the failed-store-conditional counter doesn't get reset, so it's possible to get this warning even when there isn't a problem.
+Steve
+Edith Hand wrote:
+- Show quoted text -
+Hello again...
+Has anyone ever seen the subject error.  I'm in the process of using --trace_flags and adding DPRINTFs to try and figure out exactly what's going on.
+My interpretation of this error is that the store conditional is basically always failing (I repeatedly get this message in increments of 100000).  So, that's sounds pretty bad...  It makes me wonder if the code being simulated is deadlocking (if it's using LL/SC to implement locking and the SC keeps failing, maybe it can never acquire a lock?).
+If anyone has seen this type of message and know what it means, I'd appreciate any feedback you can provide.
+FYI, I'm running ALPHA_SE.
+Regards,
+-Edith
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

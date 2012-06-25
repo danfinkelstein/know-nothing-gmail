@@ -1,0 +1,59 @@
+Dear Meng-Ju Wu,
+Thanks for the link. I download the patch and started doing as instructed and
+got some questions.
+1. The M5 version Jiayuan Meng is using is beta 4. Therefore I tried to pop all
+the patches and update it to new M5 version. But I got some errors. Below is the
+terminal output. Please advice me how to resolve that.
+herathh@cayman:~/scratch/m5/m5_multithreads> hg heads
+changeset:   5282:acba09f372ed
+tag:         qtip
+tag:         tip
+tag:         glibc.patch
+user:        Jiayuan Meng <jm6dg@virginia.edu>
+date:        Sun Jul 13 22:27:58 2008 -0400
+summary:     imported patch glibc.patch
+changeset:   5275:e49da42ecac6
+user:        Jiayuan Meng <jm6dg@virginia.edu>
+date:        Sun Nov 18 22:30:24 2007 -0500
+summary:     [mq]: merge marker
+herathh@cayman:~/scratch/m5/m5_multithreads> hg qpop -a
+Patch queue now empty
+herathh@cayman:~/scratch/m5/m5_multithreads> hg fetch
+abort: multiple heads in this branch (use "hg heads ." and "hg merge" to
+merge)
+herathh@cayman:~/scratch/m5/m5_multithreads> hg heads
+changeset:   5279:24393b1eb5ac
+tag:         tip
+user:        Steve Reinhardt <stever@gmail.com>
+date:        Tue Nov 20 07:36:49 2007 -0800
+summary:     Might as well ship splash2 scripts since we get questions
+on the list.
+changeset:   5275:e49da42ecac6
+user:        Jiayuan Meng <jm6dg@virginia.edu>
+date:        Sun Nov 18 22:30:24 2007 -0500
+summary:     [mq]: merge marker
+----------
+2. Thereafter I tried to work in the old version. Then I followed all the steps
+given by Jiayuan Meng. When I try to do step 7, make compile, first it gives an
+error saying cannot locate scons.py. Then I change the make file to execute
+scons directly. Then aganin got an error. The terminal output is follows.
+build/ALPHA_SE/smp/mtsimplecpu.cc: In member function ‘void
+MTSimpleCPU::updateThreadInvolvement()’:
+build/ALPHA_SE/smp/mtsimplecpu.cc:120: error: ‘long long’ invalid for ‘elapse’
+build/ALPHA_SE/smp/mtsimplecpu.cc:120: error: ‘long long’ invalid for ‘type name’
+cc1plus: warnings being treated as errors
+build/ALPHA_SE/sim/host.hh: At global scope:
+build/ALPHA_SE/sim/host.hh:61: warning: ‘MaxTick’ defined but not used
+build/ALPHA_SE/arch/alpha/isa_traits.hh:164: warning:
+‘AlphaISA::SyscallPseudoReturnReg’ defined but not used
+scons: *** [build/ALPHA_SE/smp/mtsimplecpu.do] Error 1
+scons: building terminated because of errors.
+It would be great if you could advice me how to overcome these problems. This is
+a great help
+Thanks and regards,
+Isuru
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

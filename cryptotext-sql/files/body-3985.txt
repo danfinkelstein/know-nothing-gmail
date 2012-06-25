@@ -1,0 +1,10 @@
+Thanks for your reply. The number of systems on the network
+is less than 20. Could you provide a sample for the switch
+model and the configuration for the network issue(e.g. fs.py)?
+I think the best you'd do with the fully connected network is 7.  I can't remember what our limit on PCI devices is, but it's something like that. YOu may be able to "share" pci slots and share irqs and but use different PCI functions for multiple NICs.  That works in real systems, but I haven't ever needed to do that.
+As for providing a switch model, sorry, I don't have the time right now. You could certainly start with the etherlink model to see how it models a wire, and just create a new model that has many interfaces with some switching logic in the middle.  It really wouldn't be that hard.  (And if you do go through the trouble, please contribute the code back to the M5 team.)
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

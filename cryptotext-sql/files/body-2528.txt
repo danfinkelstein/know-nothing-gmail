@@ -1,0 +1,53 @@
+Hi Meng-Ju,
+You could define it in base/statistics.hh, however I'm not sure what
+it would mean. I could see it working for a scalar statistics, but not
+for any other type of statistic. Generally, statistics are  only for
+book-keeping or printing at the end of an interesting bit of
+simulation. I don't know exactly what you want, but numInst is the
+number of instructions that have been executed. Assuming that your cpu
+hasn't gone quiesced you can just divide the curTick by the cpu clock
+rate.  If you really do want cycles it's probably safest to add your
+own variable and duplicate the recording of that information in the
+statistic.
+Ali
+- Show quoted text -
+On Sep 24, 2008, at 4:11 PM, Meng-Ju Wu wrote:
+> Hi,
+>
+> I have questions related to C++. The first one is about how to compare
+> two "Stats::Scalar numCycles" values in the program. The ">" operator
+> is not defined now.  Where can I add the definition?
+>
+> no match for 'operator>' in
+> '((MTSimpleCPU*)this)-
+> >
+> MTSimpleCPU
+> ::<
+> anonymous
+> >
+> .TimingSimpleCPU
+> ::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles
+>> ((MTSimpleCPU*)this)-
+>> >
+>> MTSimpleCPU
+>> ::<
+>> anonymous
+>> >
+>> .TimingSimpleCPU
+>> ::<anonymous>.BaseSimpleCPU::<anonymous>.BaseCPU::numCycles'
+>
+> Another question is how to transfer the numCycles to the integer
+> value?
+>
+> Thanks,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

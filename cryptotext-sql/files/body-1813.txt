@@ -1,0 +1,139 @@
+On Feb 19, 2009, at 2:56 PM, Angela Carlsson wrote:
+> Yes now it is working if I do not use DRAMsim, when I use DRAMsim it
+> does not work. I think this is related with what Nate say that it is
+> not common to checkpoint time related things.
+In what way does it not work? The assert that you mentioned
+previously? You would need to modify the drain() code for DRAMsim to
+work correctly. While we don't generally checkpoint timing related
+things often, draining them is required to be able to switch from
+timing -> atomic mode.
+>
+>
+> The reason to use fastforwarding is to speed up the simulation. Do
+> you have a copy and paste example of fastforwarding in FS that I can
+> take as an example?. I want to fastfoward for exmple 200e6
+> instructions switch to detailed do my stuff for 100e6 and after
+> fastfoward again until the end of the simulation.
+With our standard scripts (fs.py and related files) I use the
+following which (restore from the first checkpoint, warm up for
+10000000 ticks, switch to a detailed cpu): -r 1  -w 10000000  --
+detailed  --caches --l2cache.
+>
+>
+> Also I saw in a post that Nate said that it is possible to take
+> stats when the simulation reach a certain cycle number, I could not
+> find any documentation to do this, can anyone post an explanation of
+> how this can be done?
+There are two ways this can be done. The first is within the
+simulation you can execute an m5op instruction dumpandresetstats. This
+can either be done with the m5 binary on the FS disk image ./e.g. m5
+dumpresetstats <delay until dump> <period it should occur> or through
+inserting the actual opcode in the program you're executing (e.g. when
+it starts executing some interesting piece of the code). The second
+way is through the python interface. You can have the script simulate
+for some number of cycles, return to python in which case calling
+m5.stats.dump() m5.stats.reset() will do the trick.
+Ali
+- Show quoted text -
+>
+>
+> Thanks a lot in advance.
+>
+> > From: saidi@umich.edu
+> > To: m5-users@m5sim.org
+> > Date: Thu, 19 Feb 2009 13:45:35 -0500
+> > Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+> implemention
+> >
+> >
+> > On Feb 19, 2009, at 1:15 PM, Angela Carlsson wrote:
+> >
+> > > Hello Ali thanks for the answer, you were right was an M5 bug, I
+> was
+> > > using a little bit old version of M5 I updated and the error was
+> > > gone. I was testing DRAMsim and checkpoints and they do not work.
+> > So, it is working in the new version?
+> >
+> > >
+> > >
+> > > By the way does fastforwarding work in FS?.
+> > Yes. Are you planning on using it instead of simulation?
+> >
+> > Ali
+> >
+> >
+> > >
+> > > Thanks a lot for the answers.
+> > >
+> > > > From: saidi@umich.edu
+> > > > To: m5-users@m5sim.org
+> > > > Date: Wed, 18 Feb 2009 22:42:35 -0500
+> > > > Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+> > > implemention
+> > > >
+> > > >
+> > > > On Feb 18, 2009, at 9:01 PM, nathan binkert wrote:
+> > > >
+> > > > >> Hmm...it is derived from PhysicalMemory, so from that
+> viewpoint
+> > > all
+> > > > >> it
+> > > > >> needs is to be rebuilt using the same parameters and have the
+> > > > >> underlying PhysicalMemory data restored correctly. If
+> > > PhysicalMemory
+> > > > >> currently works with checkpointing, I am unclear what in my
+> > > DRAMsim
+> > > > >> code prevents it from working, since I do not override either
+> > > > >> serialize or unserialize. Any ideas on what to look for?
+> > > > >
+> > > > > Well, the error isn't with serialize/unserialize actually,
+> it's
+> > > with
+> > > > > the drain code that forces the memory system to drain all in
+> > > flight
+> > > > > requests. We do the drain before we take a checkpoint to make
+> > > sure we
+> > > > > don't lose any data.
+> > > > It's possible that it's not a bug with DRAMsim, but rather some
+> > > other
+> > > > issue with M5. What other components are you simulating? Do you
+> > > have a
+> > > > NIC in the simulation? I know that over the last few months I've
+> > > fixed
+> > > > one or two checkpointing bugs with the Intel NIC model. A good
+> start
+> > > > to understanding the problem is printing out the value of
+> getCount()
+> > > > before that assert occurs. A value less than 0 means that some
+> > > object
+> > > > called process() on it's drainEvent more than it should have. I
+> > > don't
+> > > > think a positive value is possible.
+> > > >
+> > > > Ali
+> > > >
+> > > > _______________________________________________
+> > > > m5-users mailing list
+> > > > m5-users@m5sim.org
+> > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> > > ¡Haz tu clic solidario y ayuda a África! ¡Puedes empezar ahora!
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> La cartera, las gafas. ¿te falta algo? Ahora llévate Messenger en tu
+> móvil _______________________________________________
+- Show quoted text -> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi all,
+I am wondering if there has any way to disable some statistics
+recorded in the m5stats.txt.  Basically, I don't want to go into every
+file and mask out the related codes. Could I set up something when
+registering the statistic counter, then m5 will not print this counter
+into the m5stats.txt? I needs this because when I use the large scale
+CMP configuration, the m5stats.txt is more than 100MBytes.
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

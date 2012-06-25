@@ -1,0 +1,6 @@
+Hi everyone,I'd appreciate it if someone can comment on the following issues:1- What is the status of x86 support? Is it robust enough to handle spec2006 benchmarks compiled with gcc 4.x?2- What is the status of standalone version of simulation? Can I compile spec200 or spec2006 benchmarks for x86 and run it one the simulator without booting an OS?
+I tried to look for answers to these questions on the mailing list but didn't find any.Thanks,Amir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

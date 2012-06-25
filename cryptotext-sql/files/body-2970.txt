@@ -1,0 +1,25 @@
+Looks like it was a problem with using the wrong PAL.  Turns out that
+tsb_osfpal isn't in the m5_system_2.0b3 tarball, and the one in
+zizzer:/z/m5/system/stable is broken (out of date).  We've got the one
+from /dist/m5/system now and it seems to be working.
+I'll put a link up on the wiki for the working tsb_osfpal.
+Steve
+On Wed, Jun 4, 2008 at 7:01 AM, nathan binkert <nate@binkert.org> wrote:
+> The very low phisical address 0x10134 indicates that this code is
+> either in the console, or in the PAL.  The reason you're hitting the
+> fencepost is probably because gdb can't make any sense out of what the
+> stack should be because the console and the PAL don't exactly follow
+> normal ABIs.  What stage of the system are you in?  I can imagine you
+> being in the console code if either your CPUs haven't spun up yet
+> because you're still booting, or if they're idle.  You can nm the
+> console and PAL binaries to figure out what's up.  You can also load
+> the symbols for those into GDB in addition to (or instead of) the
+> linux kernel.  If this error is only on CPUs > the fourth, then it's
+> probably because you're using the wrong PAL.
+>
+>  Nate
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

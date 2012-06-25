@@ -1,0 +1,6 @@
+For a multiple core system in m5 with shared bus , consider two writes issued by two different cores at the same time. What is the criteria as to which one will be granted access first? What memory consistency model m5 implements? And which are the associated files to understand it?
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

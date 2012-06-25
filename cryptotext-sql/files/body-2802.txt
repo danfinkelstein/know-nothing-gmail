@@ -1,0 +1,139 @@
+Thanks Gabe and Steve for your suggestions. What I am trying to do is
+integrated wattch in M5 beta 5, using Rick Strong's basic code.
+It consists of a lot of counters integrated into various O3 implementation
+files (*_impl.hh), mem/cache/cache_impl.hh and calling the power
+calculations routines from power.c in simulate.cc He used a separate
+definitions files in which he defined the constants used for simulation (say
+numcpus or memory size), since his code did not have any hooks to get the
+information from python.
+for example: I would need to access to various system parameters - say the
+value of numcpus supplied at runtime, the value of memory size, etc. These
+are specified by the user using the config script and I assume some
+SimObject is created for the at runtime. Some other things like lsq_size are
+defined in O3CPU.py and I would need to access it.
+Currently the values are obtained by using a #include<> (in each of those
+files above) to include the file which has these parameters defined. So
+everytime we change a simulation parameter, this file has to be edited
+manually.
+So what would be the best way of going about this?
+Secondly, is this the best way of integrating wattch into M5? (modifying all
+the files I mentioned above). Or can you suggest a more cleaner approach
+that would work for all CPU models.
+Thanks,
+Sujay
+- Show quoted text -
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, June 22, 2008 7:36 PM
+Subject: Re: [m5-users] get python values into c files
+> The real question is: what do you want to access and why?
+>
+> The SimObject parameters that you specify in python are handed off to
+> the corresponding objects in C++, so they are already there.  For
+> example, the C++ L2 cache object knows its size.  Some of the things
+> that aren't specifically passed as SimObject parameters are known in
+> C++ as well.  For example, the System object knows how may CPUs are in
+> the system it represents, and you can access that through the
+> getNumCPUs() method.
+>
+> That said, the first thing you want to be sure of is that you really
+> need to access the variable from C++; it may be that it's easier to do
+> what you want to do in python anyway.  If you can be more specific
+> about your end goal then we can probably provide better advice.
+>
+> Steve
+>
+> On Sun, Jun 22, 2008 at 4:25 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+>> You could also create a new SimObject which has all the information you
+>> want stored in it. SimObjects are how components of a simulation, both
+>> concrete and abstract, are represented in python and at a higher level
+>> in C++. The C++ representation of a SimObject is populated using the
+>> values in the python representation, so you can store the values you're
+>> interested in in the python SimObject before starting up the simulation.
+>> Then have your C++ code refer to it's copy to get the values back out.
+>> There are lots of examples of SimObjects in M5 which should get you
+>> started. If you look around the source tree, the files which define the
+>> python version of SimObjects are .py files mixed in with the .ccs and
+>> .hhs. Unfortunately I don't think there's any documentation specifically
+>> about how to make you're own SimObjects (someone please correct me if
+>> I'm wrong), but it's more straightforward than it used to be so you
+>> hopefully won't have too much trouble. To see what basic types of
+>> parameters there are you should look in src/python/m5/params.py.
+>>
+>> Gabe
+>>
+>> Sujay Phadke wrote:
+>>> Sure, but I was wondering is there an easier way to connect between
+>>> the dynamic python parameters and the c++ code?
+>>>
+>>>     ----- Original Message -----
+>>>     *From:* Ravi Prakash M <mailto:mraviprakash06@gmail.com>
+>>>     *To:* M5 users mailing list <mailto:m5-users@m5sim.org>
+>>>     *Sent:* Sunday, June 22, 2008 6:11 PM
+>>>     *Subject:* Re: [m5-users] get python values into c files
+>>>
+>>>     Hi Sujay,
+>>>
+>>>     U can use file I/O operation , put the comments next to numcpus
+>>>     definition and also add some keyword , and then search for that
+>>>     keyword read the lines using readline() and extract the information
+>>> ,
+>>>     u need .
+>>>
+>>>     Regards,
+>>>     Ravi
+>>>
+>>>     On Sun, Jun 22, 2008 at 4:45 PM, Sujay Phadke
+>>>     <sphadke@eecs.umich.edu <mailto:sphadke@eecs.umich.edu>> wrote:
+>>>
+>>>         Hello,
+>>>              I am trying to get the dynamic values of the system
+>>>         configuration and use it in a custom .cc file in M5. For
+>>>         example, I would like to get the numcpus, or L2 size, etc.
+>>>         which is either in the .py files or specified in the config
+>>>         files. How do I get these values and use it in my files?
+>>>
+>>>         Thanks,
+>>>         Sujay
+>>>
+>>>
+>>>         _______________________________________________
+>>>         m5-users mailing list
+>>>         m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>>         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>>
+>>>
+>>>     --
+>>>     Regards,
+>>>     Ravi Prakash M
+>>>
+>>>     ------------------------------------------------------------------------
+>>>     _______________________________________________
+>>>     m5-users mailing list
+>>>     m5-users@m5sim.org
+>>>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> ------------------------------------------------------------------------
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

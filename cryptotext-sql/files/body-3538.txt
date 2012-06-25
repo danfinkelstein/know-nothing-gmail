@@ -1,0 +1,64 @@
+This option wasn't for speed.  It was because there were specific
+intervals that he wanted to record stats.
+No, I don't believe that anyone has studied stat overhead, but in
+general, it's just incrementing a number, and it's only stats that get
+touched a lot that matter.  So, stuff that gets executed every cycle
+in the cpu might matter, but little else.  It's not worth the effort
+to turn some on and off.
+  Nate
+- Show quoted text -
+On Thu, Feb 14, 2008 at 6:17 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> >  As for selectively dumping some stats and not dumping others we don't
+>  >  support anything like that currently.
+>  Have we ever studied the Statistics overhead in M5?
+>
+>  I may be wrong on this, but it seems to me that if every SimObject has
+>  some stats, if all stats in SimObjects are kept without option, and if
+>  M5 is heavily modular than that means that being able to toggle
+>  exactly which stats are kept and not kept during any simulation could
+>  be pretty important for simulation performance.
+>
+>  Additionally, the performance degradation of not including this
+>  capability would continue to increase as people try to simulate
+>  10s/100s of cores and each core/cache has it's own particular set of
+>  stats it's constantly trying to keep updated.
+>
+>  If this is indeed a problem worth looking at,
+>  then any solution would probably be complicated (Python/SWIG magic?)
+>  or it would be messy in the code (compiler directives everywhere?).
+>
+>  The compiler directives method probably wouldnt be very effective
+>  because then if you have two objects of the same type and want to
+>  collects stats from one and not the other you really aren't able to do
+>  that. Also, you wouldn't be able to toggle different stats for
+>  different objects at run-time.
+>
+>  Nate's example of enabling/disabling could be a way to make it work
+>  asyou could set that in the regStats() function based on some
+>  "stats_on" parameter defined in the SimObject class.
+>
+>  However, if you have code like:
+>
+> void operator++() { if (enabled) data()->inc(1, params); }
+>  is that really significantly faster then figuring out a way  to compile it out?
+>
+>  I dont know, but this may be something to look into after the tutorial...
+>
+>  --
+>  ----------
+>  Korey L Sewell
+>  Graduate Student - PhD Candidate
+>  Computer Science & Engineering
+>  University of Michigan
+>
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+Christopher Hsiong wrote:
+Another thing is that when I was using GDB to debug this, a pollEvent-like
+interrupt keeps coming in (like 5x per line of code) which makes stepping
+through the debugger really hard. How do I turn this off?
+Say 'handle SIGALRM ignore' at the gdb prompt... yes, that is a pain.- Show quoted text -
+Regards,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

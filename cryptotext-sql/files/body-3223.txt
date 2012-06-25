@@ -1,0 +1,9 @@
+Everyone,
+We've moved all of the outstanding tasks and bugs from our internal bug tracker to flyspray at: http://www.m5sim.org/flyspray/
+We list the various features and bugs and what release we would like them to by done by. If you have any suggestions, comments please add them and if you would like to help out please feel free to spend some time squashing outstanding issues.
+Thanks,
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

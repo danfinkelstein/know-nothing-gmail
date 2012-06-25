@@ -1,0 +1,23 @@
+Hi , when i try to run 8 core with each having 8 threads each in it ,
+ 
+gives me different error :
+Global frequency set at 1000000000000 ticks per secondfatal: numThreads is not a valid value @ cycle 0[DefaultFetch:build/ALPHA_SE/cpu/o3/fetch_impl.hh, line 132]Memory Usage: 2204368 KBytes
+ 
+May i know reason for this  ,it says numThreads is not valid value ??? 
+It works fine when i run with 8 core and 2 threads each , but when i increase threads it shows error...
+Regards,
+Ravi Prakash 
+ 
+ 
+On Wed, Jun 25, 2008 at 3:37 PM, Steve Reinhardt <stever@gmail.com> wrote:
+As the error message indicates, it's coming from the eio code.  Thelimitation is on the number of simultaneously open EIO traces.  The
+error message also tells you how to fix it.Does this mean you got past the error you were having previously wherethe second thread never seemed to commit any instructions?  If so, canyou let us know what the problem was in case others run into it?
+Steve
+On Wed, Jun 25, 2008 at 12:53 PM, prannav shrestha <prannav@gmail.com> wrote:> hi,> i am trying to run 8 core with each having 4 threads, using O3CPU.  the
+> number of instruction to be run by each thread is 10M. the threads are> loaded with speccpu2000 benchmarks. but while rub the simulation, i am> getting error like>> fatal: out of lex buffer streams, increase MAX_STREAMS
+>  @ cycle 0> [yy_setstream:/z/stever/bk/m5/eio/exolex.l, line 201]>> the simulation ran successfully for 4 core 2 thread and 8 core 1 thread> system. What may be the reason for this? is there any limitation on the
+> number of threads m5 can handle?> would appreaciate if someone help me to solve this problem>> thank u>> prannav>>> _______________________________________________
+> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Regards,Ravi Prakash M
+Content-Dispo

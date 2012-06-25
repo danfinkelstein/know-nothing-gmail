@@ -1,0 +1,9 @@
+From the debugger, it looks like the panic is for the instruction after the last instruction output which makes sense since the data in the location would be output but there would be problems if the address is bad as in my case.
+Does anyone know how I would be able to get the bad instruction output or where I should look?Thanks,Paul- Show quoted text -
+On Sat, Apr 25, 2009 at 7:55 PM, Paul Lee <pl4u@virginia.edu> wrote:
+I am debugging an application on a modified version of m5 and am running with --trace-flags=Exec.  I am wondering if the panic that I am getting is for the last instruction in the assembly output, or if it is for the instruction just after the assembly output.
+Thanks,Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+Hi
+I am trying to run specweb99 benchmarks with apache running on the server side.  I tried using "-b SurgeSpecweb", but it seems the latest linux disk image from the website doesn't have necessary files for running apache and also some paths are not set correctly in the spec-surge-server.rcS and spec-surge-client.rcS files. Are these scripts supposed to run with the latest disk image? Am I missing sth here?
+Thanks,
+-Mojtaba
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

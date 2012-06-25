@@ -1,0 +1,14 @@
+  I added several new directories in /src/mem directory. In each new
+directory, I added a SConscript file to declare this new added files.
+Also I added new .py config files in /src/python/m5/objects and declare
+this .py files in /src/python/SConscript.
+  When I did some modification in some files and recompile them, I found
+the whole M5 system was compiled! Did I miss something or make some
+mistakes?
+  Does anyone know what is the problem?
+What files did you modify?  SCons tends to be very good about dependencies and doesn't rebuild stuff unless there is a reason.  You could also have a date issue on your machine.  Is your directory in NFS?  I don't think we're using signatures by default, but if the date thing is the problem, you can either fix your date, or turn on signatures.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

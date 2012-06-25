@@ -1,0 +1,67 @@
+    cc1-cccp.cp1 is not a binary, it's an EIO file. If you open it with
+a text editor (which I just did), you'll see a comment at the top saying
+so. A LiveProcess object is for running a program under m5 where m5
+emulates the system calls itself. An EioProcess object is used for
+running a process from an EIO file where m5 gets the results of system
+calls from it's input file. I don't personally have any experience with
+EIO so I'll defer explaining the right way to use this to someone else.
+Also, I think this file was available only up to our third beta. You
+might want to try the fourth beta which was released recently which will
+have fixes for some of the third beta's bugs.
+Gabe
+Steve Stephen wrote:
+> I am using the file cc1-cccp.cp1 in \tests\test-progs\gcc\bin  and i specify the file too ....the full command is
+>
+> os.path.join(m5_root, "\tests\test-progs\gcc\bin\cc1-cccp.cp1 "),
+>
+>
+>
+> ----- Original Message ----
+> From: Gabe Black <gblack@eecs.umich.edu>
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Sent: Friday, November 16, 2007 6:49:13 PM
+> Subject: Re: [m5-users] gccBenchmark
+>
+>     Are you actually using \tests\test-progs\gcc\bin\gcc? If so, that's
+> an absolute path and is likely the problem.
+>
+> Gabe
+>
+> Steve Stephen wrote:
+>
+>> I am trying to run gcc benchmark in \tests\test-progs\gcc\bin with file name cc1-cccp.cp1.....when i specify it as an executable to  a Liveprocess()...i get the following error...Can't load object file. Is it not the binary file? What do I need to do to run the gcc benchmark using this file?
+>>
+>>
+>>      ____________________________________________________________________________________
+>> Be a better pen pal.
+>> Text or chat with friends inside Yahoo! Mail. See how.   http://overview.mail.yahoo.com/
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>       ____________________________________________________________________________________
+> Get easy, one-click access to your favorites.
+> Make Yahoo! your homepage.
+> http://www.yahoo.com/r/hs
+- Show quoted text ->
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

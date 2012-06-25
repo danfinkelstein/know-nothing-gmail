@@ -1,0 +1,29 @@
+> StaticInst "allows a 1 to 1 mapping of StaticInst to unique binary machine
+> instructions." . I assumed that the DynamicInst is just a more detailed
+> encapsulation of the binary instruction. But while it is not 1 to 1, it is
+> close, right?
+Sorry, I misread that. Yea, one DynInst contains one StaticInst.
+Again, very sorry about the misread on my part.
+> Does this mean that the fetch stage fetches several instructions  from the
+> cache, but only sends one instruction to the next stage per CPU tick?
+It means that the CPU tries to fetch one cache line per tick and tries
+to get a N number of instructions from that cache line based on some parameter.
+> Or
+> "architecturally", how many binary instructions are passed to the next stage
+> per clock cycle?
+Whatever the "width" parameter (I believe thats what it is called) is,
+is the # of
+instructions that can be passed from one stage to another any given cycle.
+However, in between some stages are skidBuffers in order to ease stage
+pressure a bit
+in the presence of stalls.
+- Show quoted text -
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi folks --It seems like the default behavior in the O3CPU (for Alpha, anyway) is that loads and stores use an Integer ALU to do the effective address calculation (Rb + displacement).  Thus, the memory operation must be scheduled on an Integer ALU from the Functional Unit pool.
+Is there any optimization in the O3CPU?  For example, if the EA requires no calculation (e.g., the displacement value is zero), does the O3CPU still schedule the memory operation on an Integer ALU?  I've been looking through the code (and the list archives) and can't find the answer to this question.
+Thanks,    -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

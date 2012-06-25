@@ -1,0 +1,7 @@
+Hi,I have been trying to change the stageWidth parameter in inorder CPU model (ALPHA SE mode) and I keep getting the following from the simulation output:Exiting @ cycle 9223372036854775807 because simulate() limit reached
+I am running splash2's Radix benchmark.Also, even after setting "stageWidth" to a value different than 1 in pipeline_traits.hh and re-compiling, the stageWidth in the generated stats.txt remains 1. Is it possible that I could be doing something wrong.
+Thanks,Abhishek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

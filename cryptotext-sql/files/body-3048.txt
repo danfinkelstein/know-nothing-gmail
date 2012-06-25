@@ -1,0 +1,8 @@
+i modified the 03cpu and after some further editing i was able to compile it. i was also able to run hello world or se.py on it. when i ran the regression test howeverscons build/ALPHA_SE/tests/opt/quick 
+it returnedbuild/ALPHA_SE/m5.opt -d build/ALPHA_SE/tests/opt/quick/00.hello/alpha/linux/o3-timing tests/run.py quick/00.hello/alpha/linux/o3-timing > build/ALPHA_SE/tests/opt/quick/00.hello/alpha/linux/o3-timing/stdout 2> build/ALPHA_SE/tests/opt/quick/00.hello/alpha/linux/o3-timing/stderr
+scons: *** [build/ALPHA_SE/tests/opt/quick/00.hello/alpha/linux/o3-timing/stdout] Error 134scons: building terminated because of errors.is it possible that it wouldn't compile? is this because my modified cpu is, to use a common term, unsound? or is it something else?
+i thought that it'd tell me whether or not some regression tests were failed, but i didn't expect that it'd fail to compile.thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

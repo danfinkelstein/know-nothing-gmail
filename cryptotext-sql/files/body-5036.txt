@@ -1,0 +1,9 @@
+I tried to summarize my understanding of the Python linking situation here:
+http://www.m5sim.org/wiki/index.php/Using_a_non-default_Python_installation
+Those of you with first-hand experience, please take the time to look it over and edit the page directly anywhere I've got it wrong or am missing any useful information.
+Thanks,
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

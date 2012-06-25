@@ -1,0 +1,20 @@
+Hi,
+    When I compile m5_2.0b3, I met this problem:
+ g++ -o build/ALPHA_FS/kern/linux/events.o -c -pipe -fno-strict-aliasing
+-Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA
+-DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include
+-Ibuild/ALPHA_FS build/ALPHA_FS/kern/linux/events.cc
+build/ALPHA_FS/kern/linux/events.cc: In member function virtual void
+Linux::DebugPrintkEvent::process(ThreadContext*):
+build/ALPHA_FS/kern/linux/events.cc:47: error: DebugPrintf is not a member
+of Trace
+scons: *** [build/ALPHA_FS/kern/linux/events.o] Error 1
+scons: building terminated because of errors.
+DebugPrintf is a traceflag defined in traceflag.cc
+Does anyone know what the problem is ?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

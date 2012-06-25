@@ -1,0 +1,30 @@
+julian bui wrote:
+> Hi all,
+>
+> I've never used M5 before.  I'm trying to learn how to get everything
+> set up.  I have two main things I need to figure out:
+>
+> 1) I need to see some example scripts for a *multi-core* CPU
+> <http://en.wikipedia.org/wiki/CPU> (or *chip-level multiprocessor*,
+> *CMP*) just to see how things are done and also to get myself started.
+> Is there a webpage or some kind of resource for more complex scripts
+> than the ones described on the M5 documentation site or the example
+> scripts in the config dir?
+>
+> 2) How to run the simulator on a specific program:  I've looked at the
+> documentation pages (and maybe I didn't look closely enough) but I can't
+> find out where to specify the program to be simulated.  If there's a
+> really step-by-step, thorough tutorial available online that anyone
+> knows of, I'd really like to know about it.
+        One important consideration here is if you want to run in syscall
+emulation mode where you simulate only the program, or if you want to
+use full system where you simulate a whole machine, OS and all. If you
+want to use SE mode, at least to start, you can use the se.py example
+configuration with the -c option. If you want to use FS mode, you need
+to put the program you want to run on the disk image you're using and
+then set up an rc script which runs your benchmark. The rc script can be
+specified when you use the fs.py example configuration.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

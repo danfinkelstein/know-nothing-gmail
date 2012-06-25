@@ -1,0 +1,11 @@
+Here is a quick  answer:I dont think SMT and FS mode are supported together, their might be patches. You should wait for someone more knowledgable to comment.Thanks- Show quoted text -On Tue, May 26, 2009 at 8:52 PM, Alexander Neckar <a-neckar@northwestern.edu> wrote:
+- Show quoted text -Hi,We're simulating an SMT with ALPHA_FS. When we change the smtFetchPolicy parameter in o3_cpu.py we don't observe any change whatsoever in simulator behavior. Even with a bogus input (like 'smtFetchPolicy = param.string('xyz',"smt fetch policy"') we don't see any warnings or errors. Any insight would be appreciated.
+Thanks,Alex Neckar
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

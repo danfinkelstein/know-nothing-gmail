@@ -1,0 +1,16 @@
+> Err ... I think I might have written something wrong in either the directory
+> coherence or interconnect model because I didn't know what the default
+> responder is all about.  My guess is that the membus is supposed to realize
+> that no one responds to the bad address and simply return BadAddressError.
+> However, I use a mesh coherence model where destinations are known apriori
+> (that is, destinations for certain requests are generated during the m5
+> initialization process when status change messages are sent). Would a
+> correct implementation consider the address ranges of the port and return
+> BadAddressError if the destination does not accept the address range?
+I think that makes sense.  I think you should return the error as soon
+as you recognize that you don't have anywhere to send a request.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

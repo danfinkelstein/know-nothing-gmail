@@ -1,0 +1,13 @@
+Hello,
+   I want to simulate a system which has 2 different main memory modules
+and 2 buses which connect it to the L2, with different address ranges.
+(something like a dancehall). Is it straightforward to do this or would
+it affect the coherency protocols, or something else in the system?
+Secondly, would the changes I make be any different if I use the ruby
+models instead of the inbuilt dram models?
+thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

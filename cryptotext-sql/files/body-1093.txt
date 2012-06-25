@@ -1,0 +1,122 @@
+I didn't mean that you should use checkpoints... what I meant was that
+we have the hooks I described in place to allow you to take a
+checkpoint after linux boots, so one way to enable tracing would be to
+hack on those hooks inside m5 to force them to turn tracing on instead
+of taking a checkpoint.
+However, an even easier approach (if it works for you) would be to
+boot with tracing disabled, take a checkpoint right before your
+benchmark runs, stop the simulation, then restart m5 from the
+checkpoint with tracing enabled.
+Steve
+- Show quoted text -
+On Tue, Aug 4, 2009 at 1:02 PM, Sujay Phadke<sphadke@eecs.umich.edu> wrote:
+> HI Steve,
+>  Thanks for the follow-up. How can I use checkpoints here to do this? Do I
+> create a checkpoint just before the b/m is fired up, then go back and check
+> the tick values and then run it again with trace-start at that tick?
+>
+> - Sujay
+>
+> ----- Original Message -----
+> From: "Steve Reinhardt" <stever@gmail.com>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Tuesday, August 04, 2009 3:01 PM
+> Subject: Re: [m5-users] memory traces in FS mode
+>
+>
+> It would require a little more hacking, I think, but the "right" way
+> to do this is to use the m5 binary in the target system (see util/m5)
+> to execute a fake m5op instruction that tells the simulator to turn on
+> tracing.  Then you can put a call to this binary in your script right
+> before you fire up your benchmark.  We already do this to time
+> checkpoints appropriately, so you could use that as a guide (or if
+> you're not doing checkpoints, you could hack the code up just to use
+> the existing checkpoint hooks to enable tracing instead... ugly, but
+> faster).
+>
+> Steve
+>
+> On Tue, Aug 4, 2009 at 11:54 AM, Sujay Phadke<sphadke@eecs.umich.edu> wrote:
+>> any better way of doing this?
+>>
+>> ----- Original Message -----
+>> From: ef
+>> To: M5 users mailing list
+>> Sent: Monday, August 03, 2009 3:15 PM
+>> Subject: Re: [m5-users] memory traces in FS mode
+>> I think you need to run a blank .rcs file and see the stats.txt to see
+>> when
+>> linux boot ends. So your basically only running the linux bootup. Maybe
+>> someone will have a better idea...
+>>
+>>
+>> On Mon, Aug 3, 2009 at 1:55 PM, Sujay Phadke <sphadke@eecs.umich.edu>
+>> wrote:
+>>>
+>>> I am not sure how to get the tick when it starts.
+>>>
+>>> ----- Original Message -----
+>>> From: Lisa Hsu
+>>> To: M5 users mailing list
+>>> Sent: Monday, August 03, 2009 2:28 PM
+>>> Subject: Re: [m5-users] memory traces in FS mode
+>>> If you know what tick the benchmark starts at, just don't begin your
+>>> traceflagging until that point (i.e. --trace-start=Tick)
+>>> Lisa
+>>>
+>>> On Mon, Aug 3, 2009 at 9:22 AM, Sujay Phadke <sphadke@eecs.umich.edu>
+>>> wrote:
+>>>>
+>>>> Hello,
+>>>> I am trying to collect memory traces running specweb in FS mode.
+>>>> However, if I use the traceflags to collect traces (say MemoryAccess),
+>>>> it
+>>>> starts collecting all memory requests, including the OS booting up. I
+>>>> want
+>>>> to collect only when the benchmark start running. How do I do this.?
+>>>>
+>>>> Thanks,
+>>>> Sujay
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> ________________________________
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> ________________________________
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,30 @@
+There's a comInstEventQueue in the CPU models (see src/cpu/base.cc)
+that allows you to schedule events to occur when a CPU hits a given
+number of committed instructions.  You can then call Stats::dump() and
+Stats::reset() in that event.
+Steve
+- Show quoted text -
+On Thu, Feb 11, 2010 at 10:59 PM, Sage <leonard951@gmail.com> wrote:
+> Hi, everyone,
+>
+> I am working on a sampler that dumps the L2 statistics on every 10^7
+> executed instructions in the context of timing cpu. Would you please give me
+> some hints about how a certain event can be triggered on every 10^7
+> instructions or how can I get the current instruction count in
+> mem/cache/lru.cc?
+>
+> Thanks a lot!
+> Leonard
+>
+> --
+> Give our ability to our work, but our genius to our life!
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

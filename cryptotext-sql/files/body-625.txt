@@ -1,0 +1,33 @@
+    
+        
+    
+    
+        
+            Hi EF,
+            
+            What code are you referring to?  The scoreboard.cc and scoreboard.hh class in cpu/o3 is currently used. The O3 CPU has some basis on the published details of the EV6 processors, but only loosely. I can't say for certain if implementing the scoreboard as it was intended to be will help with serializing instructions.
+            
+            I hope this clears things up for you,
+            
+            Kevin- Show quoted text -
+            
+            Quoting ef <snorlaxgb@gmail.com>:
+        - Show quoted text -
+        
+            
+                Hello,
+                It seems there is code in M5, that was written for a scoreboard class. From what I can tell, it is not in use, is this correct?
+                
+                I am assuming that this scoreboard was intended to be the EV6 scoreboard explained in the Alpha EV6 manual?
+                
+                Due to serializing instructions being very apparent in PARSEC benchmarks, there needs to be some solution to reduce the impact of these instructions. The first solution I believe is to implement the scoreboard as it was intended to be. I suspect for a wide machine we can gain 10% preformance which might be the best we can get in using the ALPHA ISA (pretty out dated).
+                
+                Thanks,
+                EF
+            
+        
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

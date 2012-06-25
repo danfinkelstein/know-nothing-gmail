@@ -1,0 +1,82 @@
+Yeah this sounds sufficient. Thanks a lot :)
+Jiayuan
+- Show quoted text -
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: 2008年2月5日 9:12 AM
+Subject: Re: [m5-users] stats switch off/on
+> Actually, come to think of it, your usage is a bit simpler than what
+> the binning code was able to do.  You could just choose to change the
+> implementations of the various overloaded operators in
+> src/base/statistics.hh to only do the operation of a certain global
+> variable is true.  You could then turn on and off that variable in
+> accordance with your system call.
+>
+> For example, in ScalarBase, you could change operator++ to:
+> void operator++() { if (enabled) data()->inc(1, params); }
+>
+>  Nate
+>
+>
+> On Feb 4, 2008 5:08 PM, nathan binkert <nate@binkert.org> wrote:
+>> While we debate the merits of binning, you're probably best off just
+>> trying to swap in the old stats stuff.  There have undoubtedly been
+>> some bugfixes that you'll want to carry forward, but it shouldn't be
+>> so tough.  I'm definitely not going to be able to re-add it myself
+>> anytime soon.
+>>
+>>   Nate
+>>
+>>
+>> On Feb 4, 2008 4:54 PM, jiayuan meng <jerrygonair@hotmail.com> wrote:
+>> >
+>> > Thanks Nate, and thank Ali for the details!
+>> > It's interesting to hear about some history :)
+>> >
+>> >
+>> > ________________________________
+>> > > Date: Mon, 4 Feb 2008 14:10:45 -0800
+>> >
+>> > > From: nate@binkert.org
+>> > > To: m5-users@m5sim.org
+>> > > Subject: Re: [m5-users] stats switch off/on
+>> > >
+>> >
+>> > > > I can get around it by using my own variables. But I LOVE m5 and I would
+>> > > > prefer to use its stats if possible.
+>> > > Wow, that's quite an endorsement.
+>> > >
+>> > > > It's a pity that the functionality is turned off. Is there a patch for
+>> > it?
+>> > > The funny thing (or not funny from your perspective) is that the old
+>> > > feature is exactly for what you want. m5_1.1 does have the binning
+>> > > feature, and stats haven't changed much so it could probably be
+>> > > re-added.
+>> > >
+>> > > I actually liked the idea of the feature. It could be re-added. Any
+>> > > old time developers have any opinions?
+>> > >
+>> > > Nate
+>> > > _______________________________________________
+>> > > m5-users mailing list
+>> > > m5-users@m5sim.org
+>> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> > ________________________________
+>> > Helping your favorite cause is as easy as instant messaging. You IM, we
+>> > give. Learn more.
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

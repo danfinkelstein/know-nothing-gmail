@@ -1,0 +1,7 @@
+Did you solve this yet?  If not, do these benchmarks work without "-d --caches --l2cache"?On Mon, Jun 1, 2009 at 7:41 AM, Anitha Mohan <anithamohan2009@u.northwestern.edu> wrote:
+>> build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c vortex00.peak.ev6 -o "lendian2.raw" -i lendian2.raw
+The fact that you're using the same file for both the input and the output seems suspicious to me...Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

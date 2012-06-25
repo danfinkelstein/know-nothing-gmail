@@ -1,0 +1,19 @@
+Thanks Ali.  I think I understand now. You're referring to what's being modeled, not the type of processor you need to run the simulation.  But I'm assuming that parts of the full system simulation still require specific properties of the host, even though it's not native execution.  So for example, I assume that even with a full system simulation model, I couldn't run M5 on an X86 and simulate Niagara.  Or could I?
+- Jeff
+P.S.  I know we've exchanged a lot of emails on this, and I really appreciate your patience.- Show quoted text -
+Ali Saidi wrote:
+On Mar 28, 2008, at 6:43 PM, Jeff Diamond wrote:
+Ali Saidi wrote:
+I should clarify that full-system isn't supported for *SPARC* in our out-of-order model (it does work for syscall emulation), and it could work with full-system, but some of the ASI nastiness would have to be handled. Our out-of-order model simulates Alpha full-system just fine.
+So to clarify your earlier statement, does full system work for a "SPARC" in order model?  That is to say, it's using SPARC binaries?
+Maybe if you haven't had a need to do a full system test in OO mode, then it might not be so critical...
+We can boot a one processor Solaris system on the SPARC architecture as long as the processor is an in-order machine. To do so we model a Sun T2000 machine (Niagara) . Clear?
+Ali
+ _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

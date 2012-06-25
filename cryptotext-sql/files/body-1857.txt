@@ -1,0 +1,12 @@
+Dear Rick,
+I am just curious, even if a thread is assigned to a core we will not be able to
+use multi-threaded application in SE mode unless we use the patch by Jiayuan
+Meng and translate our benchmarks to use his thread version rather than
+pthreads. (Please correct me if I am wrong)
+regards,
+Isuru
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

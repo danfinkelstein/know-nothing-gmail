@@ -1,0 +1,18 @@
+I used the exitcallback to register a function which is called at the end of simumations. I use floating point quantities in the simulations and wanted to print them out in my own format in a file. This function opens a file, dumps the required values into it at the end of simulation.
+This is working perfectly in SE mode. But in the FS mode, there is no file being generated. The simulation ends (say when i do a ctrl-C) and dumps out the standard stats,but somehow does not call this exit function.
+- Sujay
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Friday, November 02, 2007 12:04 AM
+Subject: Re: [m5-users] Float in stats
+- Show quoted text -
+My other doubt is - Can I make this work in FS mode? Currently when I run a simulation in FS mode, its not writing to the file.
+Stats really aren't any different between FS and SE.  Can you explain your problem better?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

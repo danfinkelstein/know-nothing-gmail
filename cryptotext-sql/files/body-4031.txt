@@ -1,0 +1,4 @@
+Hi, I would like to improve the simulation speed by running the m5 in a cluster .If I distribute the simulated processors and blocks of m5 into different physicalprocessors, and use MPI (such as IBM blue gene ) to make them work in parallel, does this improve simulation speed ? The simulated processors are only functional / behavior unit, and onlynetwork-on-chip block is cycle-accurate .   Does this make sense ?thanks Tony Nov. 8  2007 If the MPI packet transaction overhead is too high __________________________________________________Do You Yahoo!?Tired of spam?  Yahoo! Mail has the best spam protection around http://mail.yahoo.com _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,47 @@
+  
+After digging M5 for some time, I found I'm still not very sure about
+something. 
+1. Is it normal to have only __init__.{py,py.do,py.o,py.s} file in
+"M5/m5-stable/build/ALPHA_SE/python/m5/objects" while there is no
+"objects" directory in "M5/m5-stable/src/python/m5"? How to generate
+the .py files during compilation exactly? Otherwise, "from m5.objects
+import *" makes not sense...
+2. Is ruby also an alternative memory simulator for M5? Or the current
+version of M5 uses its own implemented memory hierarchy, as I guess? 
+3. If ruby is not used, which cache coherence protocol is used? I saw
+one script has "from
+m5.objects.CoherenceProtocol import CoherenceProtocol" but
+as indicated in point 1, I do not have anything in m5.objects....
+Thanks!!!!!
+Weixun - Show quoted text -
+On 5/26/2010 5:08 PM, nathan binkert wrote:
+  
+    Thanks Nate. Correct me if I'm wrong: in file
+"m5-stable/build/ALPHA_SE/python/m5/objects/__init__.py", all the imports
+will include the corresponding .py files for each components from src/
+directory, and those .py files are the source where I can learn about all
+the available classes and parameters in script writing, right?
+    
+  
+  
+Yes, that's roughly correct.  The SimObject statement in the
+SConscript files tells the build system about .py files that will go
+into m5/objects.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+-- 
+Best Regards,
+Wang, Weixun
+Department of Computer & Information Science & Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

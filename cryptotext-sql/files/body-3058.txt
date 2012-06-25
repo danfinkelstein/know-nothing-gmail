@@ -1,0 +1,53 @@
+This is my cmp configuration. You can change the cpu numbers, and you
+can also assign different  processes to different cpu worloads. I hope
+this can give you some hints.
+# Simple test script
+#
+# "m5 test.py"
+import m5
+from m5.objects import *
+import os, optparse, sys
+m5.AddToPath('./configs')
+import Simulation
+from Caches import *
+import Mybench
+config_path = os.path.dirname(os.path.abspath(__file__))
+print config_path
+config_root = os.path.dirname(config_path)+"/configs"
+print config_root
+m5_root = os.path.dirname(config_root)
+print m5_root
+parser = optparse.OptionParser()
+# Benchmark options
+parser.add_option("-b", "--benchmark", default="",
+                 help="The benchmark to be loaded.")
+parser.add_option("-c", "--chkpt", default="",
+                 help="The checkpoint to load.")
+execfile(os.path.join(config_root, "configs", "Options.py"))
+(options, args) = parser.parse_args()
+(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+CPUClass.clock = '2.0GHz'
+np = options.num_cpus
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+                physmem = PhysicalMemory(range=AddrRange("512MB")),
+                membus = Bus(), mem_mode = 'timing')
+system.physmem.port = system.membus.port
+for i in xrange(np):
+    if options.caches:
+        system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '64kB'),
+                                              L1Cache(size = '64kB'))
+    if options.l2cache:
+        system.l2 = L2Cache(size='2MB')
+        system.tol2bus = Bus()
+        system.l2.cpu_side = system.tol2bus.port
+        system.l2.mem_side = system.membus.port
+        system.cpu[i].connectMemPorts(system.tol2bus)
+    else:
+        system.cpu[i].connectMemPorts(system.membus)
+    system.cpu[i].workload = process         <== change the process
+root = Root(system = system)
+Simulation.run(options, root, system, FutureClass)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

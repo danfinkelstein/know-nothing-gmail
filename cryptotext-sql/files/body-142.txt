@@ -1,0 +1,29 @@
+Hi all,I'm having the following problems getting m5 working as it is before any modifications, and hope if anyone can help...1-It was correctly built for ALPHA_FS & SE & SPARC_SE, but has the following error when trying to buld for X86:
+g++ -o build/X86_SE/arch/x86/decoder.do -c -Wno-deprecated -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -ggdb3 -Werror -DTHE_ISA=X86_ISA -DDEBUG -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/libelf -Iext -I/usr/local/include/python2.6 -Ibuild/X86_SE build/X86_SE/arch/x86/decoder.cc
+build/X86_SE/arch/x86/decoder.cc:54164: error: integer constant is too large for 'long' typecc1plus: warnings being treated as errorsbuild/X86_SE/arch/x86/insts/microldstop.hh:67: error: 'X86ISA::SegmentFlagMask' defined but not used
+scons: *** [build/X86_SE/arch/x86/decoder.do] Error 1scons: building terminated because of errors.///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+2-When trying to execute regression tests they report failure on all the built simulators (ALPHA_FS & SE and SPARC_SE), I get the following:rehab@hatoon-a1cc:~/bin/m5-stable-94c016415053> scons build/ALPHA_SE/m5.debug
+scons: Reading SConscript files ....hg directory not foundChecking for leading underscore in global variables...(cached) noChecking for C header file Python.h... (cached) yes
+Checking for C library pthread... (cached) yesChecking for C library dl... (cached) yesChecking for C library util... (cached) yesChecking for C library m... (cached) yesChecking for C library python2.6... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yesChecking for zlibVersion() in C++ library z... (cached) yesChecking for C header file fenv.h... (cached) yesReading /home/rehab/bin/m5-stable-94c016415053/src/arch/x86/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/arm/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/arch/mips/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/arch/sparc/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/alpha/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/inorder/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/simple/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/o3/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/ozone/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/mem/ruby/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/mem/protocol/SConsopts
+Building in /home/rehab/bin/m5-stable-94c016415053/build/ALPHA_SEUsing saved variables file /home/rehab/bin/m5-stable-94c016415053/build/variables/ALPHA_SEscons: done reading SConscript files.scons: Building targets ...
+scons: `build/ALPHA_SE/m5.debug' is up to date.scons: done building targets.rehab@hatoon-a1cc:~/bin/m5-stable-94c016415053> scons build/ALPHA_SE/tests/debug/quick/00.helloscons: Reading SConscript files ...
+.hg directory not foundChecking for leading underscore in global variables...(cached) noChecking for C header file Python.h... (cached) yesChecking for C library pthread... (cached) yesChecking for C library dl... (cached) yes
+Checking for C library util... (cached) yesChecking for C library m... (cached) yesChecking for C library python2.6... (cached) yesChecking for accept(0,0,0) in C++ library None... (cached) yesChecking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yesReading /home/rehab/bin/m5-stable-94c016415053/src/arch/x86/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/arch/arm/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/arch/mips/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/arch/sparc/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/arch/alpha/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/inorder/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/cpu/simple/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/o3/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/cpu/ozone/SConsoptsReading /home/rehab/bin/m5-stable-94c016415053/src/mem/ruby/SConsopts
+Reading /home/rehab/bin/m5-stable-94c016415053/src/mem/protocol/SConsoptsBuilding in /home/rehab/bin/m5-stable-94c016415053/build/ALPHA_SEUsing saved variables file /home/rehab/bin/m5-stable-94c016415053/build/variables/ALPHA_SE
+scons: done reading SConscript files.scons: Building targets ...***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/inorder-timing FAILED!***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/o3-timing FAILED!
+***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/simple-atomic FAILED!***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/linux/simple-timing FAILED!***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/o3-timing FAILED!
+***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/simple-atomic FAILED!***** build/ALPHA_SE/tests/debug/quick/00.hello/alpha/tru64/simple-timing FAILED!scons: done building targets.//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     The thing I've noticed, but don't know whether it has something to do with this problem is: ".hg directory not found " message checking the m5-users archive, this is related to "M5 style hook", which is probably related to Mercurial, which is not something critical I guess.
+I'm using OpenSUSE11 and installed the most recent stable versions of python, SCons, SWIG, zlib and m4.
+Anyone who can help me out??-- Rehab H. Massoud
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

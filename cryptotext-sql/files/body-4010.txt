@@ -1,0 +1,105 @@
+Hello,
+        I am 
+running splash2 benchmarks, with the same configuration in m5 beta 3 and 4. Here 
+is a snapshot of the m5stats.txt for overall l2 stats.
+ 
+With Beta 4:
+-------------------
+system.l2.overall_accesses                       
+8683                       
+# number of overall (read+write) 
+accessessystem.l2.overall_avg_miss_latency                  
+0                       
+# average overall miss latencysystem.l2.overall_avg_mshr_miss_latency  
+<err: 
+div-0>                       
+# average overall mshr miss 
+latencysystem.l2.overall_avg_mshr_uncacheable_latency <err: 
+div-0>                       
+# average overall mshr uncacheable 
+latencysystem.l2.overall_hits                           
+2560                       
+# number of overall 
+hitssystem.l2.overall_miss_latency                      
+0                       
+# number of overall miss 
+cyclessystem.l2.overall_miss_rate                  
+0.705171                       
+# miss rate for overall 
+accessessystem.l2.overall_misses                         
+6123                       
+# number of overall 
+missessystem.l2.overall_mshr_hits                         
+0                       
+# number of overall MSHR 
+hitssystem.l2.overall_mshr_miss_latency                 
+0                       
+# number of overall MSHR miss 
+cyclessystem.l2.overall_mshr_miss_rate                    
+0                       
+# mshr miss rate for overall 
+accessessystem.l2.overall_mshr_misses                       
+0                       
+# number of overall MSHR 
+missessystem.l2.overall_mshr_uncacheable_latency            
+0                       
+# number of overall MSHR uncacheable 
+cyclessystem.l2.overall_mshr_uncacheable_misses            
+0                       
+# number of overall MSHR uncacheable misses
+With beta 3:
+------------------system.l2.overall_accesses                    
+1076225                       
+# number of overall (read+write) 
+accessessystem.l2.overall_avg_miss_latency                  
+0                       
+# average overall miss latencysystem.l2.overall_avg_mshr_miss_latency  
+<err: 
+div-0>                       
+# average overall mshr miss 
+latencysystem.l2.overall_avg_mshr_uncacheable_latency <err: 
+div-0>                       
+# average overall mshr uncacheable 
+latencysystem.l2.overall_hits                         
+477093                       
+# number of overall 
+hitssystem.l2.overall_miss_latency                      
+0                       
+# number of overall miss 
+cyclessystem.l2.overall_miss_rate                  
+0.556698                       
+# miss rate for overall 
+accessessystem.l2.overall_misses                       
+599132                       
+# number of overall 
+missessystem.l2.overall_mshr_hits                         
+0                       
+# number of overall MSHR 
+hitssystem.l2.overall_mshr_miss_latency                 
+0                       
+# number of overall MSHR miss 
+cyclessystem.l2.overall_mshr_miss_rate                    
+0                       
+# mshr miss rate for overall 
+accessessystem.l2.overall_mshr_misses                       
+0                       
+# number of overall MSHR 
+missessystem.l2.overall_mshr_uncacheable_latency            
+0                       
+# number of overall MSHR uncacheable 
+cyclessystem.l2.overall_mshr_uncacheable_misses            
+0                       
+# number of overall MSHR uncacheable misses
+ 
+With beta 4, it seems that the number of 
+accesses are lesser, cache hits/misses are different. All other parameters 
+have been kept the same (num_cpus, L1, L2 sizes, DRAM size, etc).
+ 
+Why this difference?
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

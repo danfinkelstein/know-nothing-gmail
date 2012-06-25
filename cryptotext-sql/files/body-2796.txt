@@ -1,0 +1,38 @@
+Depends on how you want to access it.  If you're just routing certain
+addresses to it, then all you need to do is attach it to a bus
+somewhere that the CPU can get at it, and make sure its address range
+doesn't overlap with the regular dram object.
+The trickier part is getting your application to use the new
+addresses.  You'd have to do something to the SE-mode page table code
+to make sure that the virtual addresses in the application that should
+correspond to your sram get mapped to the physical addresses where
+your sram is.  The details of that would depend on how exactly your
+application tells the system that it wants sram instead of dram (or
+however that distinction is made).
+Steve
+- Show quoted text -
+On Sat, Jun 28, 2008 at 8:59 PM, 邓宁 <dunning2006@gmail.com> wrote:
+> hi all,
+> i 've add my spm(sram) model into m5 recently, what i need to do next is to
+> redirect the original access to cache to my spm as a substitute. i 've
+> modified some files such as /src/cpu/o3/lsq.cc(.hh), but i don't know if
+> dcache elsewhere are essential to be noted in my work?
+> how can i do my spm access redirect then?
+> thanks a lot.
+> --
+> Regards
+> Dengning
+>
+> School Of Computer Science and Technology
+> Beijng Institute of Technology, China, 100081
+> dunning2006@gmail.com
+> dnenging@bit.edu.cn
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

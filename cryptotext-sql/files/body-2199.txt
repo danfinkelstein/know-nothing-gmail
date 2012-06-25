@@ -1,0 +1,15 @@
+Did you say whether you had changed anything other than the benchmark
+you're trying to run?  What happens if you don't specify a benchmark
+at all (which should just bring you to a console prompt)?  From the
+system.terminal output you showed before it looks like the error is
+happening before you get that far.
+If it's true that you can't even boot to a prompt with the unmodified
+source code, kernel, and disk image from our web site, then it must be
+something in your build environment.  Do you have access to an older
+version of gcc?  I use 4.2.4 and have no problems.  I believe others
+are using gcc 4.3 though, so I'm skeptical that that's it.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

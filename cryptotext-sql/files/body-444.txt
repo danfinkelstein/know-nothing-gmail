@@ -1,0 +1,14 @@
+hi all,
+i see the M5's cache replace policy of LRU, it seems that it will
+always choose from the tail of the LRU list and if it's valid block
+then refresh the relevant stats parameters? but i have a doubt that
+most modern systems will consider the invalid blocks when looking for
+blocks for allocating. if there're no invalid blocks then go to the LRU
+list and choose from the tail. Is M5 violating this mechanism? or I
+miss something?
+Thanks,
+Sheng 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

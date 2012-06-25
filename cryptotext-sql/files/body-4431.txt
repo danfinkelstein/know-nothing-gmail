@@ -1,0 +1,27 @@
+The tutorial's out of date... it was true at the time, but not any more.  If you check out the wiki page:
+http://www.m5sim.org/wiki/index.php/Compiling_M5
+you'll see that we now require gcc 3.4 or newer.  (It's
+hard enough to keep it working with the new gcc releases, at some point
+you have to give up on the older ones.)Steve- Show quoted text -On 7/13/07, Dean Michael Ancajas <dbancajas@gmail.com
+> wrote:- Show quoted text -thank you again Ali for bearing with the newbies such as me.I was able to install the new Python with --enable-shared directive in the compilation. When I tried to build using "scons build/ALPHA_SE/tests/debug/quick" I got this new errors:
+Note: I was able to produce some neat outputs, I only posted below the error messages,please let me know if you want all of the output messages. I dont really know the true cause of the error but it seems that my C compiler doesn't recognize the declarations. My gcc version 
+3.2.3 and it should work fine according to the tutorial documentation.===========================start here================In file included from build/ALPHA_SE/base/bigint.cc:31:build/ALPHA_SE/base/bigint.hh:39: 'uint64_t' is used as a type, but is not
+   defined as a type.build/ALPHA_SE/base/bigint.hh:40: 'uint64_t' is used as a type, but is not   defined as a type.build/ALPHA_SE/base/bigint.hh:43: syntax error before `)' tokenbuild/ALPHA_SE/base/bigint.hh:46: `x' was not declared in this scope
+build/ALPHA_SE/base/bigint.hh:46: ISO C++ forbids declaration of `b' with no   typebuild/ALPHA_SE/base/bigint.hh:46: ISO C++ forbids initialization of member `b'build/ALPHA_SE/base/bigint.hh:46: making `b' static
+build/ALPHA_SE/base/bigint.hh:46: ISO C++ forbids in-class initialization of   non-const static member `b'build/ALPHA_SE/base/bigint.hh:48: ISO C++ forbids defining types within return   typebuild/ALPHA_SE/base/bigint.hh:48: syntax error before `&' token
+build/ALPHA_SE/base/bigint.hh:51: ISO C++ forbids declaration of `b' with no   typebuild/ALPHA_SE/base/bigint.hh:51: `x' was not declared in this scopebuild/ALPHA_SE/base/bigint.hh:52: syntax error before `return'
+build/ALPHA_SE/base/bigint.hh:55: syntax error before `(' tokenbuild/ALPHA_SE/base/bigint.hh:63: 'uint32_t' is used as a type, but is not   defined as a type.build/ALPHA_SE/base/bigint.hh:64: 'uint32_t' is used as a type, but is not
+   defined as a type.build/ALPHA_SE/base/bigint.hh:67: syntax error before `)' tokenbuild/ALPHA_SE/base/bigint.hh:70: `x' was not declared in this scopebuild/ALPHA_SE/base/bigint.hh:70: ISO C++ forbids declaration of `b' with no
+   typebuild/ALPHA_SE/base/bigint.hh:70: ISO C++ forbids initialization of member `b'build/ALPHA_SE/base/bigint.hh:70: making `b' staticbuild/ALPHA_SE/base/bigint.hh:70: ISO C++ forbids in-class initialization of
+   non-const static member `b'build/ALPHA_SE/base/bigint.hh:72: ISO C++ forbids defining types within return   typebuild/ALPHA_SE/base/bigint.hh:72: syntax error before `&' tokenbuild/ALPHA_SE/base/bigint.hh:75: ISO C++ forbids declaration of `b' with no
+   typebuild/ALPHA_SE/base/bigint.hh:75: redefinition of `int b'build/ALPHA_SE/base/bigint.hh:51: `int b' previously defined herebuild/ALPHA_SE/base/bigint.hh:75: `x' was not declared in this scope
+build/ALPHA_SE/base/bigint.hh:76: syntax error before `return'build/ALPHA_SE/base/bigint.hh:79: syntax error before `(' tokenbuild/ALPHA_SE/base/bigint.cc: In function `std::ostream&   operator<<(std::ostream&, const Twin64_t&)':
+build/ALPHA_SE/base/bigint.cc:39: `struct m5_twin64_t' has no member named `a'build/ALPHA_SE/base/bigint.cc: In function `std::ostream&   operator<<(std::ostream&, const Twin32_t&)':
+build/ALPHA_SE/base/bigint.cc:45: `struct m5_twin32_t' has no member named `a'{standard input}: Assembler messages:{standard input}:6720: Error: symbol `b' is already definedscons: *** [build/ALPHA_SE/base/bigint.do] Error 1
+scons: building terminated because of errors.Segmentation fault (core dumped)====================end here======================-- Dean Michael B. Ancajas
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

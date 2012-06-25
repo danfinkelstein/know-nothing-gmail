@@ -1,0 +1,19 @@
+Hi,
+I am trying to synchronize two processors in AtomicSimpleCPU. Say I have two
+CPUS, cpu0 and cpu1, and they are assigned the same testcase so that they run
+in parallel. I set up my fetch stage so that cpu0 gets the first instruction
+and cpu1 gets the next instruction. Their register files cannot communicate
+with each other, so I declared a static struct where both cpus can see and
+access it and thus update their register files whenever either one updates
+their own. I tried to implement synchronization using locks and spins.
+In my hello world testcase, cpu1's thread arrives earlier than cpu0 at the start
+(which is normal), but it just spins forever. Somehow, cpu0's thread never comes
+and does its thing and unlock it. This sounds like threads are not
+issued/executed in parallel or independently of one another. What am I missing
+or what should I do to make them synchronize?
+Thanks,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

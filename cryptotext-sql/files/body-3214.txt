@@ -1,0 +1,22 @@
+There was a bug in the cpu2000.py file where mcf (and several of the other SPEC2k benchmarks) were getting the wrong input files.  From the list archives, this is what I sent out:gzip_source:  the second input should be '60', not '1'
+mcf:  should get inp.in as argument, not mcf.in
+parser:  needs ref.in on stdinequake:  needs inp.in on stdin
+facerec:  needs ref.in on stdinlucas:  needs lucas2.in on stdin
+sixtrack:  needs inp.in on stdinThis was as of Jan 7 of this year; I don't know if this got fixed in a more recent version (or which version you're using).
+   -Vilas- Show quoted text -On Sun, Apr 20, 2008 at 8:45 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+We use mcf as a regression test so it at least works a little. If it only runs a few thousand instructions, it's likely either the standard library initialization is failing, or mcf itself is quiting with an error very early in execution. If you haven't yet, you should check it's output and see if there are any messages. Also, with so few instructions, it should be fairly easy to add --trace-flags=Exec --trace-file=trace.out to your command line and inspect what it's doing directly. The function it's executing last should be a good clue as to what's going on.
+Gabe
+Shoaib Akram wrote:
+Did anybody tried running mcf benchmark in SE mode. All of the other SPEC CINT benchmarks I am using run for millions of instructions but mcf runs for a couple of thousand even under ref input. _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

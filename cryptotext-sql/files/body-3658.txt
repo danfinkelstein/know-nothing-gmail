@@ -1,0 +1,288 @@
+Steve,
+What you described below is exactly what was happening when I was going
+through the bus and cache traces.  With more than 2 CPUs, you would get into
+a condition where CPU1 would release its spin-lock, then CPU2 and CPU3 would
+both read the line and try to do a store-conditional.  At this point there
+are 2 UpgradeReq's trying to get the bus.  Say CPU2 gets the bus first, so
+it invalidates CPU1 and CPU3's cache lines.  CPU3 gets the bus next and
+issues a ReadExReq because its line was invalidated, this then invalidates
+CPU2's pending cache fill.  CPU3 will fail the store-conditional and mark
+the line as exclusive only.  If another CPU tries to read the same line to
+get the spin lock, it will get a stale value from a lower level of cache,
+ignoring the up to date value.  This makes the kernel do some bizarre things
+as you would imagine.  For 16+ CPUs there is something else wrong, but that
+one gets many of the "warn: bonus snoop allocated" messages, so I'm
+wondering what could be happening there.
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Steve Reinhardt
+Sent: Saturday, December 29, 2007 12:26 AM
+To: M5 users mailing list
+Subject: Re: [m5-users] full-system issue in m5 beta 4
+Geoff,
+Do you have any more information on what the problem was that this
+patch fixes?  On the face of it, the patch doesn't make sense... the
+original code only marks the block dirty if the block was written to,
+while with your patch it will get marked as dirty even in the case of
+a failed store conditional that doesn't actually modify the block.  So
+locally it seems wrong.
+However I can imagine that there might be some global situation where
+a block is dirty (owned) in cache A, and then cache B requests an
+exclusive copy for a store conditional, but in the meantime something
+else happens that causes the store conditional to fail.  So then cache
+B gets A's dirty copy, but fails to mark it as dirty, so then later it
+doesn't get written back, and A's modification is lost.  Does this
+sound like what's happening?  If so, then this may well be the right
+fix, but I'd have to think about it a little more... the key issue is
+that right now when a cache receives an exclusive copy of a block it
+doesn't really pay attention to whether it's getting it from memory
+(in which case it's OK not to mark it dirty) or from another cache (in
+which case it must be marked dirty).
+Though at this point I can't think of a reason it would be incorrect
+to always mark the block dirty even if the store conditional fails...
+you might suffer an extra writeback in some very rare circumstances,
+but it should still be functionally correct.  So perhaps your patch is
+the right solution.
+Steve
+On Dec 28, 2007 9:16 PM, Nathan Binkert <nate@binkert.org> wrote:
+> What are the implications of this diff?  I'm not clear on the funcitons in
+> question, but if this was wrong for 4 and 8 cpus, it seems like it's just
+> fundamentally wrong.  Steve?
+>
+>    Nate
+>
+>
+> > To those looking for a fix to booting M5 in FS mode with more than 2
+> > CPUs, I've attached a diff that fixes some of the problems.  I have M5
+> > booting with 4 and 8 CPUs using timing simple CPU and caches and the
+> > l2cache.  16 CPUs and above, its still getting stuck.
+> >
+> > Geoff
+> >
+> > Quoting Ali Saidi <saidi@umich.edu>:
+> >
+> >> Normally I add a -s to that command line because I want to create
+> >> checkpoints with the atomic cpu, I restore from the checkpoints
+> >> immediately into the timing cpu where the caches are warmed up and
+> >> then I switch to a detailed cpu model. The -w flag has no meaning
+> >> unless the -s (standard switch) flag is used.
+> >>
+> >> You'll need to modify the scripts a little bit if you want to do
+> >> anything else. If you want to just transition into a timing cpu and
+> >> not into a detailed cpu you'll need to change line 64 in
+> >> Simulation.py  from         root.switch_cpus = switch_cpus to
+> >> testsys.switch_cpus = switch_cpus and then add some code to alter the
+> >>  atomic warm up period. Alternatively you could use the standard
+> >> switch  code and change the O3 cpu to another timing cpu if you
+> >> wanted to end  up with a simple cpu model that would allow statistics
+> >> to be collected  on the other cpu after the switch over.
+> >>
+> >> Ali
+> >>
+> >>
+> >> On Dec 17, 2007, at 6:49 AM, abc def wrote:
+> >>
+> >>> I tried using following command line:
+> >>> build/ALPHA_FS/m5.opt configs/example/fs.py  -n 4 -r 1
+> >>> --timing --caches -w 50000000000, so that it switches
+> >>> to timing simple cpu only after warming up caches with
+> >>> atomic simple cpu.
+> >>> But nothing is happening in console. It is not getting
+> >>> restored from checkpoint.
+> >>>
+> >>> I am using system files from version b3.
+> >>>
+> >>> Can you please forward me the command  line you use
+> >>> for booting up timing simple cpu.
+> >>>
+> >>>
+> >>> --- Ali Saidi <saidi@umich.edu> escribió:
+> >>>
+> >>>> It's another bug, but since we never really boot
+> >>>> with timing and
+> >>>> caches it's not surprising that we haven't seen it
+> >>>> before.
+> >>>>
+> >>>> Ali
+> >>>>
+> >>>> On Dec 16, 2007, at 11:43 PM, Nathan Binkert wrote:
+> >>>>
+> >>>>> This could honestly be just because it takes a
+> >>>> long time.  With
+> >>>>> timing and caches, the simulator is pretty slow.
+> >>>>>
+> >>>>>> This is working if caches option is not used.
+> >>>>>>
+> >>>>>> But with L1,L2 cache present and with multiple
+> >>>> cpus it
+> >>>>>> is still getting stuck while booting.
+> >>>>>>
+> >>>>>> command line used:
+> >>>>>> build/ALPHA_FS/m5.opt configs/example/fs.py  -n 4
+> >>>>>> --timing --caches --l2cache
+> >>>>>>
+> >>>>>> --- Ali Saidi <saidi@umich.edu> escribió:
+> >>>>>>
+> >>>>>>> There is an issue in b4 with when the CPU ids
+> >>>> get
+> >>>>>>> assigned to CPUs
+> >>>>>>> that can cause some weird behavior in all
+> >>>>>>> multi-processor
+> >>>>>>> configurations (2,3,4, xxx cpus). The attach
+> >>>> patch
+> >>>>>>> fixes those problems.
+> >>>>>>>
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>> Ali
+> >>>>>>>
+> >>>>>>> On Dec 16, 2007, at 2:53 AM, Ali Saidi wrote:
+> >>>>>>>
+> >>>>>>>> Yea, you found a bug. I found the changeset
+> >>>> that
+> >>>>>>> caused the problem,
+> >>>>>>>> and I'll try to figure out what is going on
+> >>>>>>> tomorrow and post a patch.
+> >>>>>>>>
+> >>>>>>>> In the future please create a new topic on the
+> >>>>>>> mailing list by
+> >>>>>>>> sending a new message to m5-users@m5sim.org
+> >>>>>>> instead of replying to a
+> >>>>>>>> current topic and changing the subject.
+> >>>> Replying
+> >>>>>>> to the same topic
+> >>>>>>>> and just changing the subject preserves the
+> >>>>>>> In-Reply-To mail header
+> >>>>>>>> and makes it more difficult to reconstruct
+> >>>> threads
+> >>>>>>> of conversation
+> >>>>>>>> on the mailing list.
+> >>>>>>>>
+> >>>>>>>> Ali
+> >>>>>>>>
+> >>>>>>>> On Dec 15, 2007, at 7:57 PM, abc def wrote:
+> >>>>>>>>
+> >>>>>>>>> Timing simple cpu in full system mode in m5
+> >>>> beta
+> >>>>>>> 4  is
+> >>>>>>>>> not booting up. In the console it is getting
+> >>>>>>> stuck
+> >>>>>>>>> into "NET: Registered protocol family 2" and
+> >>>> is
+> >>>>>>> not
+> >>>>>>>>> proceeding forward.
+> >>>>>>>>>
+> >>>>>>>>> System files are from:
+> >>>>>>>>>
+> >>>>>>>
+> >>>>>>
+> >>>>
+> >>> http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+> >>>>>>>>>
+> >>>>>>>>> This is happening if 4 cpus are used for
+> >>>> booting.
+> >>>>>>> For
+> >>>>>>>>> 1 cpu it is ok.
+> >>>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> ______________________________________________
+> >>>>>>>>> ¿Chef por primera vez?
+> >>>>>>>>> Sé un mejor Cocinillas.
+> >>>>>>>>> http://es.answers.yahoo.com/info/welcome
+> >>>>>>>>>
+> >>>> _______________________________________________
+> >>>>>>>>> m5-users mailing list
+> >>>>>>>>> m5-users@m5sim.org
+> >>>>>>>>>
+> >>>>>>>
+> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>>>>>>
+> >>>>>>>>
+> >>>>>>>> _______________________________________________
+> >>>>>>>> m5-users mailing list
+> >>>>>>>> m5-users@m5sim.org
+> >>>>>>>>
+> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>>> _______________________________________________
+> >>>>>>> m5-users mailing list
+> >>>>>>> m5-users@m5sim.org
+> >>>>>>>
+> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>> ______________________________________________
+> >>>>>> ¿Chef por primera vez?
+> >>>>>> Sé un mejor Cocinillas.
+> >>>>>> http://es.answers.yahoo.com/info/welcome
+> >>>>>> _______________________________________________
+> >>>>>> m5-users mailing list
+> >>>>>> m5-users@m5sim.org
+> >>>>>>
+> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>> _______________________________________________
+> >>>>> m5-users mailing list
+> >>>>> m5-users@m5sim.org
+> >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>
+> >>>> _______________________________________________
+> >>>> m5-users mailing list
+> >>>> m5-users@m5sim.org
+> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>
+> >>>
+> >>>
+> >>>
+> >>>
+> >>> ______________________________________________
+> >>> ¿Chef por primera vez?
+> >>> Sé un mejor Cocinillas.
+> >>> http://es.answers.yahoo.com/info/welcome
+> >>> _______________________________________________
+> >>> m5-users mailing list
+> >>> m5-users@m5sim.org
+> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >>
+> >>
+> >
+> >
+> >
+> >
+> > ----- End forwarded message -----
+> >
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG Free Edition.
+Version: 7.5.516 / Virus Database: 269.17.11/1201 - Release Date: 12/28/2007
+11:51 AM
+No virus found in this outgoing message.
+Checked by AVG Free Edition.
+Version: 7.5.516 / Virus Database: 269.17.11/1201 - Release Date: 12/28/2007
+11:51 AM
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

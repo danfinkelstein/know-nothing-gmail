@@ -1,0 +1,6 @@
+My other doubt is - Can I make this work in FS mode? Currently when I run a simulation in FS mode, its not writing to the file.
+Stats really aren't any different between FS and SE.  Can you explain your problem better?- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

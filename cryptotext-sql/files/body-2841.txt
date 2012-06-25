@@ -1,0 +1,6 @@
+i want to add something to my question about sram, since i want to add the sram which is unified in memory address space but seperated in layout(sram is on-chip but dram is off-chip)...i can't derive it from cache since there is no tag...so i am puzzled, can i derive it from PhysicalMemory ? what else should i do then? 
+many thks：）-- RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

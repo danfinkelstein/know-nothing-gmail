@@ -1,0 +1,45 @@
+If you want to trace the behavior of O3 itself, it has a number of trace
+flags and there's one that turns them all on called O3CPUAll. You can
+see where they're declared in src/cpu/o3/SConscript. O3CPUAll will
+generate a LOT of output, so use it carefully.
+If you want to trace execution, instruction tracing has historically
+just been controlled by DPRINTFs and by the way you've compiled the
+simulator (so don't use m5.fast, I think). That system works essentially
+the same in all CPU models.
+A while ago I turned the instruction tracer into a changable SimObject
+so you could, for instance, used a different format needed by some other
+tool, communicate register state to some other program to verify, etc.
+The IntelTrace object you're looking at is one of the alternative
+instruction tracers, written by Lisa for use with an Intel tool of some
+sort. It predates my change and was orignally controlled directly with
+traceflags. I may have mangled it in translation, but I expect I would
+have tested it at least a little. Anyway, as long as you haven't
+explicitly changed anything, the original tracer is installed by default
+and behaves pretty much like it always has, controlled by traceflags. To
+get a normal trace just turn on the Exec traceflag.
+Gabe
+- Show quoted text -
+Eberle wrote:
+> I need to enable trace in the O3 processor. I've been trying some
+> things but i didn't have success.
+> Looks like the method getInstRecord(..) from IntelTrace always return
+> NULL.
+>
+> I need to enable tracing to be able to observe the data and address
+> from reads and writes at the head of the ROB. And i see that Trace
+> does that.
+> How can I enable and use it?
+>
+>
+> --
+> Eberle A. Rambo.
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

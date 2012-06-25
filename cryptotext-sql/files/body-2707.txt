@@ -1,0 +1,25 @@
+Hello,
+         I 
+downloaded the latest version in the repo and was running the tests for SE mode. 
+The long tests run correctly but with the quick tests I get the following 
+error:
+ 
+build/ALPHA_SE/m5.opt -d 
+build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic tests/run.py 
+quick/20.eio-short/alpha/eio/simple-atomic > 
+build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stdout 2> 
+build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stderrscons: 
+*** [build/ALPHA_SE/tests/opt/quick/20.eio-short/alpha/eio/simple-atomic/stdout] 
+Error 1
+ 
+What does this mean? Do we need to downloaded the 
+encumbered files? I dont remember having done this when I was using M5 beta 4 or 
+5.
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

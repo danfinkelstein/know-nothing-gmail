@@ -1,0 +1,204 @@
+I am using:
+build/ALPHA_SE/m5.opt configs/splash2/runsplash.py -n 4 -k 4 -b Barnes &
+(or any other benchmark)
+I run this exact thing in  beta 3 and beta 4.
+Files I have modified:
+dram.hh and dram.cc - for some extra energy delay calculations.
+request.hh - to get cpu_id without the assert()
+the only difference between the runsplash.py in beta3 vs beta4 is that the coherenceprotocol statement has been removed from the beta4 version.(since it doesnt support anything other than moesi).
+I have attached the config script. I can send you any other files you want.
+- Sujay
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, November 11, 2007 1:49 AM
+Subject: Re: [m5-users] sims with m5 beta4 - cache stats - any ideas?- Show quoted text -
+Sorry for the delayed reply... haven't had a lot of time to look into it.
+The coherence protocol in b4 is (slightly) different than in b3, so
+this will cause some minor variations in the cache stats.  However the
+variations you're seeing in things like l2.overall_accesses are way
+beyond minor... looks like it could well be a bug to me, where maybe
+we're not incrementing a counter where we should be.  I'll try to look
+into it as soon as I can.  Can you send me the command line you're
+using when you see these differences?
+For parallel benchmarks, a change in the coherence protocol causing a
+small change in the instruction count isn't too surprising, as it can
+change the number of iterations the app has to sit in a spin-wait
+loop.  The instruction count is deterministic only for single-threaded
+apps (both in m5 and in reality).
+Steve
+On 11/10/07, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Any ideas about this?
+----- Original Message -----
+From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Saturday, November 10, 2007 2:35 PM
+Subject: Re: [m5-users] sims with m5 beta4 - cache stats
+> Yes it is using AtomicSimpleCPU. Do you want me to check with timing > CPU
+> (should it make a difference)?
+>
+> Also, I am surprised that there are differences in the total # of
+> instructions.
+>
+> eg: simulating FFT in SE mode under beta 3 and 4
+>
+> # instructions:
+>                    beta3                                beta4
+>
+> Lunoncontig   9517399                           9389288
+> Barnes      3704144329                    3704147106
+>
+> Why should the # of instructions be different? In fact, every statistic
+> (which should be simulator independent) is coming out different, for > any >
+> benchmark.
+>
+> Some more questions:
+> ----------------------
+> question about remote_gdb listener in beta 4:
+> How do I use this? I thought i'd work similar to opening up a term when > we
+> simulate in FS mode: compile m5term, do >m5term <port number>. Here I > did:
+> > >m5term 7000.
+> On the main screen, it shows connecting console, but the term program > just
+> hangs. There's no output there. If I press <enter>, it just shows some
+> garbage and hangs.
+>
+>
+> another question on the side: What does the line at the top: "import
+> Simulation", in the config script do? (when running in SE mode) Even if > I
+> dont have that line in my config script, my simulation is still running > by
+> doing m5.simulate(...)  instead of doing Simulation.run(...). So does
+> including that line do anything more than just this?
+>
+> same with:
+> from Caches import *
+>
+> My sims are working without this, so what does this line do?
+>
+> Thanks,
+> Sujay
+>
+> ----- Original Message -----
+>> From: "Steve Reinhardt" <stever@gmail.com>
+>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>> Sent: Friday, November 09, 2007 3:32 PM
+>> Subject: Re: [m5-users] sims with m5 beta4 - cache stats
+>>
+>>
+>>> That is odd... the coherence protocol's a little different, but not
+>>> that different.  Is this using atomic mode?
+>>>
+>>> Steve
+>>>
+>>> On 11/9/07, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+>>>>
+>>>>
+>>>> Hello,
+>>>>         I am running splash2 benchmarks, with the same configuration >>>> in
+>>>> m5
+>>>> beta 3 and 4. Here is a snapshot of the m5stats.txt for overall l2
+>>>> stats.
+>>>>
+>>>> With Beta 4:
+>>>> -------------------
+>>>> system.l2.overall_accesses                       8683
+>>>> # number of overall (read+write) accesses
+>>>> system.l2.overall_avg_miss_latency                  0
+>>>>                 # average overall miss latency
+>>>> system.l2.overall_avg_mshr_miss_latency  <err: div-0>
+>>>>                 # average overall mshr miss latency
+>>>> system.l2.overall_avg_mshr_uncacheable_latency <err: div-0>
+>>>>                       # average overall mshr uncacheable latency
+>>>> system.l2.overall_hits                           2560
+>>>> # number of overall hits
+>>>> system.l2.overall_miss_latency                      0
+>>>> # number of overall miss cycles
+>>>> system.l2.overall_miss_rate                  0.705171
+>>>> # miss rate for overall accesses
+>>>> system.l2.overall_misses                         6123
+>>>> # number of overall misses
+>>>> system.l2.overall_mshr_hits                         0
+>>>> # number of overall MSHR hits
+>>>> system.l2.overall_mshr_miss_latency                 0
+>>>>                 # number of overall MSHR miss cycles
+>>>> system.l2.overall_mshr_miss_rate                    0
+>>>>                 # mshr miss rate for overall accesses
+>>>> system.l2.overall_mshr_misses                       0
+>>>> # number of overall MSHR misses
+>>>> system.l2.overall_mshr_uncacheable_latency            0
+>>>>                   # number of overall MSHR uncacheable cycles
+>>>> system.l2.overall_mshr_uncacheable_misses            0
+>>>>                  # number of overall MSHR uncacheable misses
+>>>>
+>>>> With beta 3:
+>>>> ------------------
+>>>> system.l2.overall_accesses                    1076225
+>>>> # number of overall (read+write) accesses
+>>>> system.l2.overall_avg_miss_latency                  0
+>>>>                 # average overall miss latency
+>>>> system.l2.overall_avg_mshr_miss_latency  <err: div-0>
+>>>>                 # average overall mshr miss latency
+>>>> system.l2.overall_avg_mshr_uncacheable_latency <err: div-0>
+>>>>                       # average overall mshr uncacheable latency
+>>>> system.l2.overall_hits                         477093
+>>>> # number of overall hits
+>>>> system.l2.overall_miss_latency                      0
+>>>> # number of overall miss cycles
+>>>> system.l2.overall_miss_rate                  0.556698
+>>>> # miss rate for overall accesses
+>>>> system.l2.overall_misses                       599132
+>>>> # number of overall misses
+>>>> system.l2.overall_mshr_hits                         0
+>>>> # number of overall MSHR hits
+>>>> system.l2.overall_mshr_miss_latency                 0
+>>>>                 # number of overall MSHR miss cycles
+>>>> system.l2.overall_mshr_miss_rate                    0
+>>>>                 # mshr miss rate for overall accesses
+>>>> system.l2.overall_mshr_misses                       0
+>>>> # number of overall MSHR misses
+>>>> system.l2.overall_mshr_uncacheable_latency            0
+>>>>                   # number of overall MSHR uncacheable cycles
+>>>> system.l2.overall_mshr_uncacheable_misses            0
+>>>>                  # number of overall MSHR uncacheable misses
+>>>>
+>>>>
+>>>> With beta 4, it seems that the number of accesses are lesser, cache
+>>>> hits/misses are different. All other parameters have been kept the >>>> same
+>>>> (num_cpus, L1, L2 sizes, DRAM size, etc).
+>>>>
+>>>> Why this difference?
+>>>>
+>>>> - Sujay
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

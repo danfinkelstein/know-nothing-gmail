@@ -1,0 +1,47 @@
+There's also the issue that if this is a multithreaded simulation, the
+path that the program takes could be non deterministic and the cache
+configuration can certainly influence the program flow.  (i.e. who
+wins a lock?)
+  Nate
+- Show quoted text -
+On Thu, Dec 3, 2009 at 9:30 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> What is the reason it has to be a single run?  It would be much easier to
+> just do two runs, one with private, one with shared.
+> Lisa
+>
+> On Thu, Dec 3, 2009 at 7:34 AM, Kenzo Van Craeynest
+> <kenzo.vancraeynest@elis.ugent.be> wrote:
+>>
+>> Hi
+>>
+>> In a multicore configuration, is there a way to duplicate the l2 cache
+>> (which is shared) accesses so that each core uses the shared l2-cache
+>> to drive the simulation, but also sends each access to a private
+>> l2-cache? I'd like to have a configuration where I could compare the
+>> performance of the shared and the private cache in a single run. This
+>> seems like the easiest way to do so, but I might be mistaken ofcourse.
+>>
+>> I've already thought about (and tried) keeping duplicate (private)
+>> copies inside of the actual l2-cache, but it seems quite difficult to
+>> determine the owner of a cacherequest (the contextid of the request),
+>> for instance in the case of writebacks...
+>>
+>> Regards,
+>>
+>> Kenzo
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

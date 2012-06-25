@@ -1,0 +1,28 @@
+Hi Ryan,
+We're going to need a lot more information to help you. Please see http://www.m5sim.org/wiki/index.php/Reporting_Problems
+Ali
+- Show quoted text -
+On Nov 24, 2008, at 3:19 PM, Ryan Markley wrote:
+> Hello, I have been running several simulations but I can complete
+> all of them with the atomic cpu but when I put the option of --
+> detailed cpu then I get the following error:
+>
+> panic: Unable to find destination for addr (user set default
+> responder): 0x80c4dbc0
+>  @ cycle 44873206500
+> [findPort:build/ALPHA_FS/mem/bus.cc, line 334]
+> Memory Usage: 197528 KBytes
+> Program aborted at cycle 44873206500
+> Aborted
+>
+> With every program I get the same error and in the same cycle, I
+> thought that maybe is a bug so I update to the last development
+> version but I still get the same error.  Thank you.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

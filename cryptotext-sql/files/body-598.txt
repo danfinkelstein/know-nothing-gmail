@@ -1,0 +1,28 @@
+Hi Lukasz,
+What do you mean by m5threads? Are you trying to parallelize m5 from scratch?
+What is m5thread library?
+I'm working on parallelizing m5 as well. I'm also using OpenMP. I haven't
+finished my work yet (I'm a student and have exams till the end of the month).
+I'm planning on finishing programming shortly after my exams. There is a
+large, recent thread on the m5-dev list titled "parallelizing m5" in which we
+discussed several issues concerning parallelization.
+http://www.mail-archive.com/m5-dev@m5sim.org/msg05013.html
+I have had success with running multiple separate "Systems" (m5 System
+SimObjects) in parallel but simulating "interacting" components in parallel
+requires some substantial changes and thus more work.
+I'm planning on contributing my changes but since I have to finish my master's
+thesis first, getting my code in a good enough form might have to wait till
+spring.
+Good luck
+- Show quoted text -
+Hello,
+I am having problems with getting m5threads to work with OpenMP codes. All
+of my multithreaded codes build and compile with m5thread library correctly,
+but only OpenMP codes do not seem to run in multithreaded mode. Also, all
+tests included in the m5thread package pass except for the OpenMP one. I
+would appreciate any help.
+Lukasz
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

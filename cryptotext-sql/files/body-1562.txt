@@ -1,0 +1,7 @@
+Hi everyone,I am currently implementing a dynamic adaptive partitioning of ROB for SMT, but I have a question concerning ROB enrtry allocation.Is the ROB entry allocated in M5 during dispatch? I expected to be so, but after looking at the code in O3, specifically iew_impl.hh, commit_impl.hh and rob_impl.hh, I don't see any communication or "wire" when dispatch is executed to instruct the commit module to insert the instruction in the ROB. "In the other direction" I see only the commit_impl.hh inserting ( and allocating entries for) instructions into the ROB during the commit() function, it says it checks for ready instructions from the rename module for the next cycle, but I am not sure of the mechanics. 
+Another way of asking this can be: If an instruction in inside the ROB, managed by numInstsInROB, is it or is not in the IQ/LSQ (else it is already "issued/executing")?I'd appreciate any help,
+Javier 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

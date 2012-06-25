@@ -1,0 +1,55 @@
+No, I'll commit it.
+Ali- Show quoted text -
+On Apr 9, 2008, at 6:29 PM, nathan binkert wrote:
+Other than the FSConfig.py change, is there any reason this shouldn't
+just be in the tree?
+On Wed, Apr 9, 2008 at 1:53 PM, Ali Saidi <saidi@umich.edu> wrote:
+Actually in our tutorial as ASPLOS 2008 we showed an example of adding a
+variance to delay memory. Here is a diff to m5 that should do the trick.
+Just set latency_var = 'XXns' on the Physical Memory object and that should
+do the trick. It will still be deterministic for a given latency since the
+random number generator is seeded to the same thing (which is good so you
+can redo an experiment when you find the problem). Changing the latency_var
+parameter by a little bit is probably the best way to see a wide variety of
+results.
+Ali
+On Apr 9, 2008, at 4:46 PM, Steve Reinhardt wrote:
+Have you read the paper by Alameldeen and Wood on this?  (There may have
+been other coauthors.)  They introduced variability by making the memory
+latency pseudo-random.
+Steve
+2008/4/9 Geoffrey Blake <blakeg@umich.edu>:
+I'm potentially looking for some ways to induce some non-determinism into
+multiprocessor setups for M5, since currently M5 is completely
+deterministic. Does anyone have any suggestions where I should start looking
+to be able to do this?  I'd like to measure the variance for threaded
+programs over many runs.
+I'm thinking the best place to induce non-determinism is in bus.cc, or to
+even perhaps randomly shuffle the event queue for events that need to launch
+on the same tick.
+Thanks,
+Geoff
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.10/1367 - Release Date: 4/9/2008
+7:10 AM
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

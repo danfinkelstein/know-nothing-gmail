@@ -1,0 +1,6 @@
+I need to enable trace in the O3 processor. I've been trying some things but i didn't have success.Looks like the method getInstRecord(..) from IntelTrace always return NULL.I need to enable tracing to be able to observe the data and address from reads and writes at the head of the ROB. And i see that Trace does that.
+How can I enable and use it?--Eberle A. Rambo.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,32 @@
+Sched_setaffinity  works in Linux v2.6.18. Try that version with
+the proper M5 patches.
+ 
+Geoff
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of abc
+def
+Sent: Tuesday, May 05, 2009 11:16 AM
+To: m5-users@m5sim.org
+Subject: [m5-users] pthread issue
+ 
+ 
+  
+  sched_setaffinity is usually used to bind a LWP to a
+  specific processor. But it is not working in m5. 
+  
+  I am running m5 in full system mode. and linux kernel is the one
+  distrinuted,i.e, 2.6.13.. According to a linux source it is introduced since
+  2.5.8. 
+  
+ 
+ 
+No virus
+found in this incoming message.
+Checked by AVG - www.avg.com
+Version: 8.5.287 / Virus Database: 270.12.18/2096 - Release Date: 05/05/09
+08:05:00
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

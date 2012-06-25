@@ -1,0 +1,95 @@
+Hi Steve,
+ 
+Thank you very much again. I have already solved the problem of sendTiming. The reason that I cannot correctly use sendTiming is that I should not move sendTiming completely from SimpleTimingPort::recvTiming, because other derived class such as PioPort still need sendTiming in the SimpleTimingPort::recvTiming.
+ 
+Now I have met new problems. I have buffered many packets in a queue with a length of 100 from the recvTiming(pkt).Then I call sendTiming to send them in completely reversed order. But when I telnet the host using term, it printed out some wrong information, as follows:
+ 
+==== m5 slave console: Console 0 ====
+M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+Got Configuration 623
+memsize 20000000 pages 10000 
+First free page after ROM 0xFFFFFC0000018000
+………….
+Console: colour dummy device 80x25
+Unable to handle kernel paging request at virtual address 000000000000003c
+CPU 0 swapper(0): Oops -1
+pc = [<000000000000003c>]  ra = [<000000000000003f>]
+  ps = 0000    Not tainted
+pc is at 0x3c
+ra is at 0x3f
+v0 = fffffc0000e8a000  t0 = 0000000000100000  
+t1 = fffffc000085a0f8
+t2 = 0000000000000000  t3 = 0000000000000001  
+t4 = fffffc0000f8a000
+t5 = fffffc0000f8a000  t6 = 00000000000007c5  
+t7 = fffffc000070c000
+s0 = 0000000000000004  s1 = fffffc000065c504  
+s2 = 000000000000076c
+s3 = 0000000000000000  s4 = 0000000000002000  
+s5 = 0000000000000008
+s6 = fffffc0000809afc
+a0 = fffffc0000e8a000  a1 = 0000000000000000  
+a2 = 0000000000000000
+a3 = 0000000000000000  a4 = 000000000000003f  
+a5 = 0000000000000080
+t8 = 0000000000000740  t9 = fffffc000085a000  
+t10= 0000000000000001
+t11= 0000000000010000  pv = fffffc00004c0720  
+at = 0000000000000000
+gp = fffffc0000808200  sp = fffffc000070fe58
+ 
+and a panic information 'M5 panic instruction called at pc=0xfffffc000031d7a0'.
+I think maybe the packets are not received correctly, what is wrong with this? Can the instruction packets not be reordered? 
+ 
+Sometimes, when I change the out-of-order schedule method I get a assert information, which is 'assert( dest != pkt->getSrc())' in the Bus::recvTiming function. I am curious about why the 'dest' is equal to the packet's 'src'. Is this because of this packet being retried by Bus? Or, why does this happen?
+ 
+Thank you very much !
+ 
+Jun Pang
+- Show quoted text -On 10/10/07, Steve Reinhardt <stever@gmail.com> wrote:
+Hi Jun,What CPU model are you using?  If you're using SimpleCPU, that's a blocking CPU model, so you won't get any more accesses from that CPU until you satisfy the current request.  In order to see multiple outstanding memory references you have to use multiple CPUs and/or a non-blocking CPU such as O3. 
+I'm not sure about your second question... if you call the two-argument version of sendTiming() (the one that takes a tick value as the second argument) then all it does is schedule an event to call the regular sendTiming() later at the specified tick.  (Actually it maintains a list of all the pending sendTiming() calls and uses a single event that's timed to handle the first pending call.)  I don't see any reason why that wouldn't work when called from MemoryPort. 
+FYI, in our current internal tree we've renamed the two-argument version of sendTiming() to schedSendTiming() just to make the distinction clearer.  And we are supposedly getting closer to resolving the issues that are keeping us from making that tree public... 
+Steve 
+On 10/9/07, Jun Pang <mryld08@gmail.com> wrote:
+ 
+Hi Steve,
+ 
+Thank you very much for your soon answer ！
+ 
+I am still confused with the use of sendTiming in SimpleTimingPort::recvTIming.
+ 
+I don't want to send the packet from the recvTiming(pkt) immediately, for example,  I want to buffer a lot of packets, schedule them, then select one of them to send to implement out-of-order 
+ memory access. However, when I add some operation in SimpleTimingPort:recvTiming() to control the execution of sendTimng, I find that if sendTiming is not executed, then there is no new packet coming from bus. If that is true, how to implement the out-of-order scheduling? 
+ 
+Another question is that I find the sendTiming function can only be called in the SimpleTimingPort::recvTiming other than a class devrived from SimpleTimingPort, such as MemoryPort. If it is called from a member function of MemoryPort, there is no new packet either and the simulation stops. Could you also explain that? 
+ 
+Thank you very much!
+ 
+Jun Pang
+On 10/9/07, Steve Reinhardt < stever@gmail.com
+> wrote: 
+Hi Jun,Hard to know what's going wrong from your description.  What happens if you take your new code but keep the same fixed latency as the old code?  In that case the execution path should be identical.  Check out the util/tracediff script for a good way to track down differences between two runs that should be doing the same thing but aren't (see the comments at the top of the script for usage info). 
+Also it might be easier to debug an SE-mode program first and make sure that works before trying it under FS mode.  You can use the regression tests for example.Steve
+On 10/8/07, Jun Pang < mryld08@gmail.com
+> wrote:
+Hi,
+ 
+I want to implement an out-of-order memory access scheduling with M5 simulator 2.0.3 edition. First, I will put some packets in a buffer and schedule it, then as soon as a latency of one packet is obtained through my algorithm, it will be sent by calling SimpleTimngPort::sendTiming. 
+ So, instead of called by SimpleTimingPort::recvTiming in the tport.cc, the sendTiming is called in my function and get a latency calculated by the function as an argument of sendTiming However, when I recompile the source and run the simulator in full system mode, the m5term cannot connect the host and shows information as follows: 
+ 
+==== m5 slave console: Console 0 ====
+ 
+What causes m5 to stop here?  What's wrong with my implementation? I wonder if I could put the sendTiming in somewhere else instead of its original SimpleTimingPort::recvTiming. Thank you very much! 
+ 
+Jun Pang_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

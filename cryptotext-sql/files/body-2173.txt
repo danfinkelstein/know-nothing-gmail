@@ -1,0 +1,5 @@
+Has anyone been able to run 450.soplex (either reference input) to completion (or at least quite far) in SE or FS mode for Alpha?Thanks,Lisa
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

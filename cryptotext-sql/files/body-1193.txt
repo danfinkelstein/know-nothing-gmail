@@ -1,0 +1,74 @@
+It's also a sign of a deadlock... perhaps there's a deadlock situation that's not covered by the assertion.Steve- Show quoted text -On Mon, Jul 13, 2009 at 3:31 PM, Cong Wang <jameswang99@yahoo.com> wrote:
+The error suggests that you do not have anything on the main event
+queue. Please check if you are making the proper call to schedule
+events correctly on the main event queue.
+Regards
+James Wang
+On Mon, Jul 13, 2009 at 3:12 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+> Hello all,
+>
+> I tried to run the testcase 01.hello-2T-smt for SPARC without increasing the
+> number of physical registers (in o3-timing.py script) and I was hoping to
+> see an assertion failure because of the following statement in cpu.cc:
+> assert(params->numPhysIntRegs   >= numThreads * TheISA::NumIntRegs);
+>
+> However, I get no such failure. Instead, I get this error:
+> "Exiting @ tick 9223372036854775807 because simulate() limit reached"
+>
+> Here are the contents of simout (numThreads and TheISA::NumIntRegs are also
+> printed out):
+> </fast/quick/01.hello-2T-smt/sparc/linux/o3-timing$ more simout
+> M5 Simulator System
+>
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled Jul 13 2009 16:27:20
+> M5 revision 94c016415053+ 6283+ default tip
+> M5 started Jul 13 2009 18:03:38
+> M5 executing on theoracle
+> command line: build/SPARC_SE/m5.fast -d
+> build/SPARC_SE/tests/fast/quick/01.hello-2T-smt/sparc/linux/o3-timing -re
+> tests/run.py
+> build/SPARC_SE/tests/fast/quick/01.hello-2T-smt/sparc/linux/o3-timing
+> Global frequency set at 1000000000000 ticks per second
+> numThreads: 2
+> numIntRegs: 169
+> numFloatRegs: 64
+> info: Entering event queue @ 0.  Starting simulation...
+> Exiting @ tick 9223372036854775807 because simulate() limit reached
+>
+> While my simerr is this:
+> </fast/quick/01.hello-2T-smt/sparc/linux/o3-timing$ more simerr
+> warn: Sockets disabled, not accepting gdb connections
+> For more information see: http://www.m5sim.org/warn/d946bea6
+>
+> What am I doing wrong here?
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

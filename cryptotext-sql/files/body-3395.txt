@@ -1,0 +1,11 @@
+> I was told that I could generate 'dot' plots from profile data created
+> during a simulation run.  Could someone give a quick primer on how to do
+> this?
+I haven't done it in a long time, but util/stats/profile.py is the
+thing to use.  Give it a shot and if it doesn't work or make sense,
+let me know.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

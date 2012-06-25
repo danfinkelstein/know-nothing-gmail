@@ -1,0 +1,18 @@
+If you mean stuff like mesh networks, rings, and crossbars, unfortunately, no.
+  Nate
+- Show quoted text -
+On Sat, Mar 15, 2008 at 7:48 PM, Steve Stephen <sstephen66@yahoo.com> wrote:
+>
+> Apart from providing multiple levels of private caches , are there any other
+> topologies supported by the coherence protocol in latest versions of m5.
+>  ________________________________
+> Never miss a thing. Make Yahoo your homepage.
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

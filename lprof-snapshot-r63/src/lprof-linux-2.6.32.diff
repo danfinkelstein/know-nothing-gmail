@@ -1,0 +1,629 @@
+diff -ruwN linux-2.6.32.15/arch/x86/include/asm/processor.h linux-2.6.32.15-lprof/arch/x86/include/asm/processor.h
+--- linux-2.6.32.15/arch/x86/include/asm/processor.h	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/arch/x86/include/asm/processor.h	2010-06-24 14:42:10.585258380 -0400
+@@ -29,6 +29,7 @@
+ #include <linux/threads.h>
+ #include <linux/math64.h>
+ #include <linux/init.h>
++#include <linux/lprof.h>
+ 
+ /*
+  * Default implementation of macro that returns current
+@@ -475,6 +476,10 @@
+ 	unsigned long	debugctlmsr;
+ 	/* Debug Store context; see asm/ds.h */
+ 	struct ds_context	*ds_ctx;
++
++	u64 saved_pmpc[MAX_PMCS];
++	u64 saved_pmes[MAX_PMCS];
++	u64 saved_pmgc;
+ };
+ 
+ static inline unsigned long native_get_debugreg(int regno)
+diff -ruwN linux-2.6.32.15/arch/x86/include/asm/unistd_64.h linux-2.6.32.15-lprof/arch/x86/include/asm/unistd_64.h
+--- linux-2.6.32.15/arch/x86/include/asm/unistd_64.h	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/arch/x86/include/asm/unistd_64.h	2010-06-17 11:33:22.134219966 -0400
+@@ -661,6 +661,8 @@
+ __SYSCALL(__NR_rt_tgsigqueueinfo, sys_rt_tgsigqueueinfo)
+ #define __NR_perf_event_open			298
+ __SYSCALL(__NR_perf_event_open, sys_perf_event_open)
++#define __NR_lprof_config			299
++__SYSCALL(__NR_lprof_config, sys_lprof_config)
+ 
+ #ifndef __NO_STUBS
+ #define __ARCH_WANT_OLD_READDIR
+diff -ruwN linux-2.6.32.15/arch/x86/kernel/cpu/common.c linux-2.6.32.15-lprof/arch/x86/kernel/cpu/common.c
+--- linux-2.6.32.15/arch/x86/kernel/cpu/common.c	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/arch/x86/kernel/cpu/common.c	2010-06-17 11:33:22.134219966 -0400
+@@ -1119,6 +1119,9 @@
+ 
+ 	clear_in_cr4(X86_CR4_VME|X86_CR4_PVI|X86_CR4_TSD|X86_CR4_DE);
+ 
++	//Allow userland PCM reads
++	set_in_cr4(X86_CR4_PCE);
++
+ 	/*
+ 	 * Initialize the per-CPU GDT with the boot GDT,
+ 	 * and set up the GDT descriptor:
+diff -ruwN linux-2.6.32.15/arch/x86/kernel/cpu/lprof.c linux-2.6.32.15-lprof/arch/x86/kernel/cpu/lprof.c
+--- linux-2.6.32.15/arch/x86/kernel/cpu/lprof.c	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.6.32.15-lprof/arch/x86/kernel/cpu/lprof.c	2010-07-02 12:51:14.720755843 -0400
+@@ -0,0 +1,380 @@
++/*
++ * Kernel support for LambdaProfiler, a userland, performance
++ * counter-based counter profiler.  Allows users with to configure
++ * performance counters and read them
++ */
++#include <linux/syscalls.h>
++#include <asm/perf_event.h>
++#include <asm/nmi.h>
++#include <asm/msr.h>
++#include <asm/msr-index.h>
++#include <linux/types.h>
++#include <linux/unistd.h>
++#include <linux/cpu.h>
++#include <linux/cpuset.h>
++#include <linux/sched.h>
++#include <linux/lprof.h>
++#include <asm/uaccess.h>
++
++#define PERFMON_EVENTSEL_ENABLE (1 << 22)
++#define PERFMON_EVENTSEL_INT    (1 << 20)
++#define PERFMON_EVENTSEL_USR    (1 << 16)
++#define PERFMON_EVENTSEL_OS     (1 << 17)
++#define PERFMON_EVENTSEL_PC     (1 << 19)
++
++extern void perf_event_print_debug(void);
++
++struct lprof_cs_pattern {
++    size_t len;
++    unsigned char* pattern;
++};
++
++//Per-task lprof information
++struct lprof_info {
++    struct lprof_stats __user *lp_stats;
++    struct lprof_cs_pattern cs_patterns[MAX_CS];
++};
++
++typedef struct {
++    /* How many tasks are using this counter?*/
++    u32 num_tasks;
++} perf_cntr_t;
++
++static u32 num_perf_counters = 0;
++static perf_cntr_t *perf_counter_info = NULL;
++
++static int lprof_detect_pattern(size_t len, unsigned char* pat) {
++    size_t i;
++    uint64_t ip = task_pt_regs(current)->ip;
++    unsigned char __user *ins = (unsigned char __user *)ip;
++    if (!access_ok(VERIFY_READ, ins, 1))
++	return false;
++
++    for (i=0; i<len; i++) {
++	if (pat[i] == *ins) {
++	    //Found an anchor
++	    unsigned char __user *wouldBegin = ins - i;
++	    if (access_ok(VERIFY_READ, wouldBegin, len))
++		if (memcmp(pat, wouldBegin, len) == 0)
++		    return true;
++	}
++    }
++    return false;
++}
++
++static int lprof_detect_cs(void) {
++    int i;
++    struct lprof_info* info = current->lp_info;
++    if (!info)
++	return 0;
++
++    for (i=0; i<MAX_CS; i++) {
++	if (info->cs_patterns[i].len) {
++	    if (lprof_detect_pattern(info->cs_patterns[i].len,
++				     info->cs_patterns[i].pattern))
++		return 1;
++	}
++    }
++    return 0;
++}
++
++static void doLastModify(struct lprof_stats __user* stats, size_t i, u64 p) {
++    stats->last[i] -= p;
++
++    if (stats->rdpmc_inprogress || lprof_detect_cs()) {
++	struct pt_regs *regs = task_pt_regs(current);
++	size_t ctr = regs->cx; // The counter being read is in %ecx
++	if (ctr == i) {
++	    //If an rdpmc operation is in progress on this counter,
++	    // %rdx and %rax must be zero'ed
++	    regs->dx = 0;
++	    regs->ax = 0;
++	    printk("LProf: Detected atomic counter read on (%lu).  RDX and RAX have been reset.\n", i);
++	}
++    }
++}
++
++extern void lprof_tick() {
++    if (current->lp_info && current->lp_info->lp_stats) {
++	//Ensure that the memory region pointed to exists..
++	if (access_ok(VERIFY_WRITE, current->lp_info->lp_stats,
++		      sizeof(struct lprof_stats))) 
++	    current->lp_info->lp_stats->timer_interrupts++;
++    }
++}
++
++//Process switch
++extern void lprof_switchto(struct task_struct *prev_p,
++			   struct task_struct *next_p) {
++	struct thread_struct *prev = &prev_p->thread;
++	struct thread_struct *next = &next_p->thread;
++	size_t i;
++	unsigned long long g;
++	struct lprof_stats __user *lp_stats = NULL;
++
++	if (prev_p == next_p)
++	    return;
++
++	if (current == prev_p && prev_p->lp_info && prev_p->lp_info->lp_stats) {
++	    if (access_ok(VERIFY_WRITE, current->lp_info->lp_stats,
++			  sizeof(struct lprof_stats))) {
++		lp_stats = current->lp_info->lp_stats;
++		lp_stats->context_switches++;
++	    }
++	}
++
++	//Save all perf counter data for prev_p
++	rdmsrl(MSR_CORE_PERF_GLOBAL_CTRL, g);
++	prev->saved_pmgc = g;
++	for (i=0; i<num_perf_counters; i++) {
++		if (prev_p->perf_counters_inuse & (1 << i)) {
++			u64 c, p;
++
++			p = native_read_msr(MSR_ARCH_PERFMON_PERFCTR0 + i);
++			c = native_read_msr(MSR_ARCH_PERFMON_EVENTSEL0 + i);
++
++			if (p >= 0x80000000) {
++			    printk("LProf: P(%llx) >= 0x80000000.  Reseting and notifying userland.\n", p);
++			    //Cannot write more than 31 bits back
++			    if (lp_stats)
++				doLastModify(lp_stats, i, p);
++			    p = 0;
++			}
++
++			prev->saved_pmpc[i] = p;
++			prev->saved_pmes[i] = c;
++
++			printk("Saved PMC(%lu): %llx\n", i, p);
++		}
++	}
++
++	//Restore all perf counter data for next_p
++	g = next->saved_pmgc;
++	wrmsrl(MSR_CORE_PERF_GLOBAL_CTRL, g);
++	for (i=0; i<num_perf_counters; i++) {
++		if (next_p->perf_counters_inuse & (1 << i)) {
++			u64 c, p;
++
++			p = next->saved_pmpc[i];
++			c = next->saved_pmes[i];
++
++			printk("LProf: Restored %lu with %llx\n", i, p);
++
++			wrmsrl(MSR_ARCH_PERFMON_PERFCTR0 + i, p);
++			wrmsrl(MSR_ARCH_PERFMON_EVENTSEL0 + i, c);
++		}
++	}
++}
++
++int init_lprof(void) {
++    union cpuid10_edx edx;
++    union cpuid10_eax eax;
++    unsigned int dummy1, dummy2;
++
++    if (!cpu_has(&boot_cpu_data, X86_FEATURE_ARCH_PERFMON)) {
++	return -ENODEV;
++    }
++
++    //Get CPU info about performance counters and events
++    cpuid(10, &eax.full, &dummy1, &dummy2, &edx.full);
++    num_perf_counters = eax.split.num_events;
++    if (num_perf_counters > MAX_PMCS) {
++	printk("LProf Warning: found %d counters, max of %d supported. Limiting.\n",
++	       num_perf_counters, MAX_PMCS);
++	num_perf_counters = MAX_PMCS;
++    }
++    perf_counter_info = kmalloc(sizeof(perf_cntr_t) * num_perf_counters, GFP_KERNEL);
++    memset(perf_counter_info, 0, sizeof(perf_cntr_t) * num_perf_counters);
++    printk("LProf init: found %d counters\n", num_perf_counters);
++    return 0;
++}
++
++int lp_stats(struct lprof_stats __user *stats) {
++    if (current->lp_info == NULL) {
++	current->lp_info = (struct lprof_info*)kmalloc(sizeof(struct lprof_info), GFP_KERNEL);
++	memset(current->lp_info, 0, sizeof(struct lprof_info));
++    }
++    current->lp_info->lp_stats = stats;
++    return 0;
++}
++
++int lp_start(unsigned int op, unsigned int counter,
++	     unsigned long long config) {
++    unsigned long long pgc;
++
++    if (counter >= num_perf_counters) {
++	return -ENODEV;
++    }
++
++    if (current->lp_info == NULL) {
++	current->lp_info = (struct lprof_info*)kmalloc(sizeof(struct lprof_info), GFP_KERNEL);
++	memset(current->lp_info, 0, sizeof(struct lprof_info));
++    }
++
++    printk("Opening counter %d.\n", counter);
++
++    //Reserve the request counter if we haven't already
++    if (perf_counter_info[counter].num_tasks == 0) {
++	//Reserve PCMx
++	if (!reserve_perfctr_nmi(MSR_ARCH_PERFMON_PERFCTR0 + counter))
++	    return -EBUSY;
++	
++	//Reserve PerfEvtSelx
++	if (!reserve_evntsel_nmi(MSR_ARCH_PERFMON_EVENTSEL0 + counter)) {
++	    release_perfctr_nmi(MSR_ARCH_PERFMON_PERFCTR0 + counter);
++	    return -EBUSY;
++	}
++    }
++
++    current->perf_counters_inuse |= 1 << counter;
++    perf_counter_info[counter].num_tasks++;
++
++    //Ensure counter is NON-OS and enabled
++    config = PERFMON_EVENTSEL_USR | PERFMON_EVENTSEL_ENABLE | 
++	(config & ~PERFMON_EVENTSEL_OS & ~PERFMON_EVENTSEL_PC & 
++	 (0xFFF | (0xFF << 24)));
++
++    //Reset counter
++    wrmsr(MSR_ARCH_PERFMON_PERFCTR0 + counter, 0, 0);
++    //Configure Counter
++    wrmsr(MSR_ARCH_PERFMON_EVENTSEL0 + counter, config, 0);
++    //Clear a possible counter overflow
++    wrmsrl(MSR_CORE_PERF_GLOBAL_OVF_CTRL, 1 << counter);
++
++    rdmsrl(MSR_CORE_PERF_GLOBAL_CTRL, pgc);
++    pgc |= 1 << counter;
++    wrmsrl(MSR_CORE_PERF_GLOBAL_CTRL, pgc);
++
++    return 0;
++}
++
++int lp_stop(unsigned int op, unsigned int counter,
++	     unsigned long long config) {
++    unsigned long long pgc;
++
++    if (!(current->perf_counters_inuse & (1 << counter))) {
++	return -EINVAL;
++    }
++
++    printk("Closing counter %d.\n", counter);
++
++    current->perf_counters_inuse &= ~(1 << counter);
++
++    //Disable counter
++    config &= ~ARCH_PERFMON_EVENTSEL0_ENABLE;
++    wrmsrl(MSR_ARCH_PERFMON_EVENTSEL0 + counter, config);
++
++    rdmsrl(MSR_CORE_PERF_GLOBAL_CTRL, pgc);
++    pgc &= ~(1 << counter);
++    wrmsrl(MSR_CORE_PERF_GLOBAL_CTRL, pgc);
++
++    perf_counter_info[counter].num_tasks--;
++    if (perf_counter_info[counter].num_tasks == 0) {
++	//Release resources back to kernel
++	release_perfctr_nmi(MSR_ARCH_PERFMON_PERFCTR0 + counter);
++	release_evntsel_nmi(MSR_ARCH_PERFMON_EVENTSEL0 + counter);
++	printk("Releasing counter %d to kernel\n", counter);
++    }
++    return 0;
++}
++
++static int lp_debug(unsigned int op, unsigned int counter,
++		    unsigned long long config) {
++    u32 i;
++    printk("----- LProf Debug -----\n");
++    perf_event_print_debug();
++    printk("In use:\n");
++    for (i=0; i<num_perf_counters; i++) {
++	printk("\tCounter %d: %d tasks\n", i, perf_counter_info[i].num_tasks);
++    }
++
++    return 0;
++}
++
++static int lp_dfn_cs(unsigned int cs_num, unsigned long long sz,
++		     void __user* ptr) {
++    struct lprof_cs_pattern* pat;
++    if (cs_num >= MAX_CS || sz > MAX_CS_LEN)
++	return -EINVAL;
++
++    if (current->lp_info == NULL) {
++	current->lp_info = (struct lprof_info*)kmalloc(sizeof(struct lprof_info), GFP_KERNEL);
++	memset(current->lp_info, 0, sizeof(struct lprof_info));
++    }
++
++    pat = &current->lp_info->cs_patterns[cs_num];
++    pat->len = sz;
++    pat->pattern = kmalloc(sz, GFP_KERNEL);
++    copy_from_user(pat->pattern, ptr, sz);
++
++    return 0;
++}
++
++static int lp_del_cs(unsigned int cs_num) {
++    if (cs_num >= MAX_CS)
++	return -EINVAL;
++
++    if (!current->lp_info)
++	return -EINVAL;
++
++    if (current->lp_info->cs_patterns[cs_num].pattern)
++	kfree(current->lp_info->cs_patterns[cs_num].pattern);
++
++    current->lp_info->cs_patterns[cs_num].len = 0;
++    current->lp_info->cs_patterns[cs_num].pattern = 0;
++
++    return 0;
++}
++
++/**
++ * sys_perf_counter_open - open a performance counter, associate it to a task/cpu
++ *
++ * @op:                 Bitmap of operations to conduct
++ * @counter:		The number of the counter to use
++ * @config:             The value to use in PERFEVTSELx
++ * @stats:              Userland memory location to store scheduling
++ *                          stats or NULL
++ */
++SYSCALL_DEFINE4(lprof_config,
++		unsigned int, op,
++		unsigned int, counter,
++		unsigned long long, config,
++		void __user *, ptr)
++{
++    int rc;
++    //Do we need to initialize?
++    if (!perf_counter_info) {
++	int rc = init_lprof();
++	if (rc < 0)
++	    return rc;
++    }
++
++    //What operation is requested?
++    switch (op & LPROF_OP_MASK) {
++    case LPROF_STOP:
++	return lp_stop(op, counter, config);
++    case LPROF_START:
++	if ((rc = lp_start(op, counter, config)))
++	    return rc;
++    case LPROF_STATS:
++	return lp_stats((struct lprof_stats __user*)ptr);
++    case LPROF_DBG:
++	return lp_debug(op, counter, config);
++    case LPROF_DFN_CS:
++	return lp_dfn_cs(counter, config, ptr);
++    case LPROF_DEL_CS:
++	return lp_del_cs(counter);
++    default:
++	return -EINVAL;
++    }
++}
++
++void exit_lprof(struct task_struct* tsk) {
++    if (tsk->perf_counters_inuse && perf_counter_info) {
++	u32 i;
++	for (i=0; i<num_perf_counters; i++) {
++	    if (tsk->perf_counters_inuse & (1 << i))
++		lp_stop(0, i, 0);
++	}
++    }
++}
+diff -ruwN linux-2.6.32.15/arch/x86/kernel/cpu/Makefile linux-2.6.32.15-lprof/arch/x86/kernel/cpu/Makefile
+--- linux-2.6.32.15/arch/x86/kernel/cpu/Makefile	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/arch/x86/kernel/cpu/Makefile	2010-06-17 11:33:22.134219966 -0400
+@@ -16,7 +16,7 @@
+ obj-y			+= vmware.o hypervisor.o sched.o
+ 
+ obj-$(CONFIG_X86_32)	+= bugs.o cmpxchg.o
+-obj-$(CONFIG_X86_64)	+= bugs_64.o
++obj-$(CONFIG_X86_64)	+= bugs_64.o lprof.o
+ 
+ obj-$(CONFIG_CPU_SUP_INTEL)		+= intel.o
+ obj-$(CONFIG_CPU_SUP_AMD)		+= amd.o
+diff -ruwN linux-2.6.32.15/debbuild.sh linux-2.6.32.15-lprof/debbuild.sh
+--- linux-2.6.32.15/debbuild.sh	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.6.32.15-lprof/debbuild.sh	2010-06-18 13:02:35.281141557 -0400
+@@ -0,0 +1,3 @@
++#!/bin/bash
++
++CONCURRENCY_LEVEL=20 make-kpkg --stem kernel-lp --rootcmd fakeroot --revision 1.0.lprof --initrd kernel_image kernel_headers 
+diff -ruwN linux-2.6.32.15/include/linux/init_task.h linux-2.6.32.15-lprof/include/linux/init_task.h
+--- linux-2.6.32.15/include/linux/init_task.h	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/include/linux/init_task.h	2010-07-02 10:13:47.597969876 -0400
+@@ -177,6 +177,8 @@
+ 		[PIDTYPE_SID]  = INIT_PID_LINK(PIDTYPE_SID),		\
+ 	},								\
+ 	.dirties = INIT_PROP_LOCAL_SINGLE(dirties),			\
++	.perf_counters_inuse = 0,					\
++	.lp_info = NULL,					        \
+ 	INIT_IDS							\
+ 	INIT_PERF_EVENTS(tsk)						\
+ 	INIT_TRACE_IRQFLAGS						\
+diff -ruwN linux-2.6.32.15/include/linux/lprof.h linux-2.6.32.15-lprof/include/linux/lprof.h
+--- linux-2.6.32.15/include/linux/lprof.h	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.6.32.15-lprof/include/linux/lprof.h	2010-07-02 10:40:45.617980900 -0400
+@@ -0,0 +1,76 @@
++/*
++ * LambdaProfiler Fine-Grandularaity Userland Performance Counter support
++ *
++ *    Copyright (C) 2010, John Demme, Columbia University
++ *
++ */
++#ifndef _LINUX_LPROF_H
++#define _LINUX_LPROF_H
++
++#ifndef __KERNEL__
++#include <unistd.h>
++#include <stdint.h>
++#endif
++
++#define MAX_PMCS   8
++#define MAX_CS     8
++#define MAX_CS_LEN 256
++
++#define LPROF_OP_MASK   0x7
++
++#define LPROF_STOP      (0)  //Start or stop profiling?
++#define LPROF_START     (1)  //Start or stop profiling?
++#define LPROF_DBG       (2)  //Print debug info to kernel log
++#define LPROF_STATS     (3)  //Inform kernel about stats location
++#define LPROF_DFN_CS    (4)  //Define instruction pattern of LP
++			     //critical section
++#define LPROF_DEL_CS    (5)  //Delete LP critical section
++
++#ifndef _LPROF_H
++struct lprof_stats {
++    unsigned char rdpmc_inprogress; /* Offset: 0 bytes */
++    uint64_t context_switches;	    /* Offset: 8 byte */
++    uint64_t timer_interrupts;	    /* Offset: 16 bytes */
++    int64_t last[MAX_PMCS];	    /* Offsets: [0]: 24
++				                [1]: 32 
++						[2]: 40 ...*/
++};
++#endif
++
++#ifndef __KERNEL__
++
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
++#endif
++
++#define __NR_lprof_config 299
++
++static inline int
++sys_lprof_config(unsigned int op, unsigned int counter,
++		 unsigned long long config, void* ptr)
++{
++    return syscall(__NR_lprof_config, op, counter, config, ptr);
++}
++
++#define DECLARE_ARGS(val, low, high)	unsigned low, high
++#define EAX_EDX_VAL(val, low, high)	((low) | ((unsigned long long)(high) << 32))
++#define EAX_EDX_ARGS(val, low, high)	"a" (low), "d" (high)
++#define EAX_EDX_RET(val, low, high)	"=a" (low), "=d" (high)
++static inline unsigned long long native_read_pmc(int counter)
++{
++	DECLARE_ARGS(val, low, high);
++
++	asm volatile("rdpmc" : EAX_EDX_RET(val, low, high) : "c" (counter));
++	return EAX_EDX_VAL(val, low, high);
++}
++#endif //__KERNEL__
++
++#ifdef __KERNEL__
++
++struct task_struct;
++extern void exit_lprof(struct task_struct*);
++extern void lprof_tick(void);
++extern void lprof_switchto(struct task_struct *prev_p, struct task_struct *next_p);
++
++#endif //__KERNEL__
++#endif //_LINUX_LPROF_H
+diff -ruwN linux-2.6.32.15/include/linux/sched.h linux-2.6.32.15-lprof/include/linux/sched.h
+--- linux-2.6.32.15/include/linux/sched.h	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/include/linux/sched.h	2010-07-02 10:14:00.998601971 -0400
+@@ -1214,6 +1214,7 @@
+ };
+ 
+ struct rcu_node;
++struct lprof_info;
+ 
+ struct task_struct {
+ 	volatile long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
+@@ -1541,6 +1542,12 @@
+ 	/* bitmask of trace recursion */
+ 	unsigned long trace_recursion;
+ #endif /* CONFIG_TRACING */
++
++	/* LProf accounting info */
++
++	/* Bit map of the performance counts in use */
++	unsigned long perf_counters_inuse;
++	struct lprof_info *lp_info;
+ };
+ 
+ /* Future-safe accessor for struct task_struct's cpus_allowed. */
+diff -ruwN linux-2.6.32.15/kernel/exit.c linux-2.6.32.15-lprof/kernel/exit.c
+--- linux-2.6.32.15/kernel/exit.c	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/kernel/exit.c	2010-06-17 11:33:22.144203872 -0400
+@@ -48,6 +48,7 @@
+ #include <linux/fs_struct.h>
+ #include <linux/init_task.h>
+ #include <linux/perf_event.h>
++#include <linux/lprof.h>
+ #include <trace/events/sched.h>
+ 
+ #include <asm/uaccess.h>
+@@ -963,6 +964,8 @@
+ 		acct_process();
+ 	trace_sched_process_exit(tsk);
+ 
++	if (tsk->perf_counters_inuse)
++	    exit_lprof(tsk);
+ 	exit_sem(tsk);
+ 	exit_files(tsk);
+ 	exit_fs(tsk);
+diff -ruwN linux-2.6.32.15/kernel/fork.c linux-2.6.32.15-lprof/kernel/fork.c
+--- linux-2.6.32.15/kernel/fork.c	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/kernel/fork.c	2010-06-17 11:33:22.144203872 -0400
+@@ -1117,6 +1117,8 @@
+ 	p->lockdep_recursion = 0;
+ #endif
+ 
++	p->perf_counters_inuse = 0;
++
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 	p->blocked_on = NULL; /* not blocked yet */
+ #endif
+diff -ruwN linux-2.6.32.15/kernel/sched.c linux-2.6.32.15-lprof/kernel/sched.c
+--- linux-2.6.32.15/kernel/sched.c	2010-06-01 12:56:03.000000000 -0400
++++ linux-2.6.32.15-lprof/kernel/sched.c	2010-07-02 10:25:41.917943782 -0400
+@@ -71,6 +71,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/ctype.h>
+ #include <linux/ftrace.h>
++#include <linux/lprof.h>
+ 
+ #include <asm/tlb.h>
+ #include <asm/irq_regs.h>
+@@ -2850,6 +2851,10 @@
+ {
+ 	struct mm_struct *mm, *oldmm;
+ 
++	//Do the lprof context switch here.  Must happen before MM change
++	if (prev->perf_counters_inuse || next->perf_counters_inuse)
++	    lprof_switchto(prev, next);
++
+ 	prepare_task_switch(rq, prev, next);
+ 	trace_sched_switch(rq, prev, next);
+ 	mm = next->mm;
+@@ -5267,6 +5272,8 @@
+ 	struct rq *rq = cpu_rq(cpu);
+ 	struct task_struct *curr = rq->curr;
+ 
++	lprof_tick();
++
+ 	sched_clock_tick();
+ 
+ 	spin_lock(&rq->lock);

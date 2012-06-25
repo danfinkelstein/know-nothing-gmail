@@ -1,0 +1,89 @@
+The head appears to work. The directory cache project is probably a
+month behind the head so I guess I need to update. Thanks for the heads up.
+-rick
+- Show quoted text -
+Steve Reinhardt wrote:
+> This works for me in the head:
+>
+> build/ALPHA_SE/m5.opt configs/example/memtest.py
+>
+> Does it work for you?
+>
+> Steve
+>
+> On Wed, Mar 18, 2009 at 9:47 AM, Steve Reinhardt <stever@gmail.com> wrote:
+>
+>> Hi Rick,
+>>
+>> I haven't tried that script recently, but I'll take a look when I get
+>> a chance.  I generally run memtest via the regression mechanism, which
+>> does work (since it runs nightly)... from memory, it would be
+>> something like:
+>>
+>> scons build/ALPHA_SE/tests/opt/quick/50.memtest
+>>
+>> Steve
+>>
+>> On Wed, Mar 18, 2009 at 12:02 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>>
+>>> Hi all,
+>>>
+>>> I am attempting to use configs/example/memtest.py and get:
+>>>
+>>> m5run m5powerfs configs/example/memtest.py
+>>> M5 Simulator System
+>>>
+>>> Copyright (c) 2001-2008
+>>> The Regents of The University of Michigan
+>>> All Rights Reserved
+>>>
+>>>
+>>> M5 compiled Mar 17 2009 22:04:22
+>>> M5 revision Unknown
+>>> M5 started Mar 17 2009 23:54:49
+>>> M5 executing on rickshin-portable.local
+>>> command line: /Users/rickstrong/build/m5powerfs/build/ALPHA_FS/m5.opt
+>>> configs/example/memtest.py
+>>> Global frequency set at 1000000000000 ticks per second
+>>> Error in unproxying param 'boot_cpu_frequency' of system
+>>> Traceback (most recent call last):
+>>>  File "<string>", line 1, in <module>
+>>>  File "/Users/rickstrong/work/m5powerfs/src/python/m5/main.py", line
+>>> 372, in main
+>>>    exec filecode in scope
+>>>  File "configs/example/memtest.py", line 209, in <module>
+>>>    m5.instantiate(root)
+>>>  File "/Users/rickstrong/work/m5powerfs/src/python/m5/simulate.py",
+>>> line 47, in instantiate
+>>>    root.unproxy_all()
+>>>  File "/Users/rickstrong/work/m5powerfs/src/python/m5/SimObject.py",
+>>> line 702, in unproxy_all
+>>>    self._children[child].unproxy_all()
+>>>  File "/Users/rickstrong/work/m5powerfs/src/python/m5/SimObject.py",
+>>> line 682, in unproxy_all
+>>>    value = value.unproxy(self)
+>>>  File "/Users/rickstrong/work/m5powerfs/src/python/m5/proxy.py", line
+>>> 94, in unproxy
+>>>    (self.path(), self._pdesc.ptype_str, base.path())
+>>> AttributeError: Can't resolve proxy 'cpu[0].clock.frequency' of type
+>>> 'Frequency' from 'system'
+>>>
+>>>
+>>>
+>>> Any ideas?
+>>>
+>>> Thanks in advance,
+>>> -Rick
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

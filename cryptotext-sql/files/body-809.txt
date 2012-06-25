@@ -1,0 +1,57 @@
+Dear Soumyaroop,
+You are right, I should've provide you more detailed information.
+-I am indeed using the ALPHA_SE configuration, with the "m5.opt" binary.
+-For now I am not using a standardized benchmark but a small
+self-generated program.
+-The trace flags I am using are: "InOrderExecute", "InOrderStage",
+"InOrderStall", "InOrderCachePort" and "InOrderExecute".
+Thanks,
+Maximilien
+- Show quoted text -On Wed, 2009-10-28 at 11:21 -0400, soumyaroop roy wrote:
+> Dear Maximilien,
+>
+> It seems to me that you are using the term "execution-trace" to imply
+> the trace of the instructions as they finish executing (EX stage). Is
+> that correct? Which test program are you using to simulate on the CPU?
+> It is possible that there is hardcoded logic within the code for a
+> stage width of 1 although I do not recall any at this time. Korey
+> should be able to comment on it better. I assume that you're working
+> with the ALPHA_SE configuration.
+>
+> You will find some documentation about InOrder on this page:
+> http://www.m5sim.org/wiki/index.php/InOrder
+>
+> regards,
+> Soumyaroop
+>
+> On 10/28/09, Maximilien Breughe <maximilien.breughe@elis.ugent.be> wrote:
+> > Hello,
+> >
+> >  I'm new at M5 and I'm interested in the simulation of an in-order core.
+> >  Since I want to check the behavior of dependent instructions I would
+> >  like to simulate a superscalar in-order core.
+> >
+> >  I figured out that there are 4 "stages" each instruction needs to pass.
+> >  Each stage calls the resources of the in-order core.
+> >  I tried to modify the "stageWidth"-parameter in the hope that more
+> >  buffer slots would be available at each stage but unfortunately nothing
+> >  changed. The generated execution-trace is exactly the same.
+> >
+> >  Thank you very much!
+> >
+> >
+> >  Greets
+> >
+> >  Maximilien
+> >
+> >  _______________________________________________
+> >  m5-users mailing list
+> >  m5-users@m5sim.org
+> >  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+Hi,I was trying to run m5 latest version (m5-stable-733318abb7b1) for 32 cores and 64 cores with the timing model and L1 caches enabled.But i got the following error:panic: Need to implement cache resending nacked packets! @ cycle 197946000[recvTiming:build/ALPHA_FS/mem/cache/cache_impl.hh, line 1405]Program aborted at cycle 197946000AbortedNow, 16 cores case seems to be fine. But that was working anyway even in the version beta 4 also. Specifically i am looking for very large number of cores like 64.
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

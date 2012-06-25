@@ -1,0 +1,50 @@
+There is also the inorder model that korey has submitted patches to
+the list for, but it hasn't been committed yet. He can detail the
+particulars of the model more.
+Ali
+- Show quoted text -
+On Mar 8, 2009, at 7:51 PM, Lisa Hsu wrote:
+> The closest thing we have to what you're looking for is the Timing
+> CPU model, which models a 1CPI in-order CPU, very basic, but models
+> latencies from the memory system.
+>
+> Any stats you changed/added within the O3 CPU would not be
+> transferred by using the Timing model, but any stats from outside of
+> the CPU (like in the memory system), would still be there.
+>
+> Lisa
+>
+> On Wed, Mar 4, 2009 at 5:07 PM, Shervin Sharifi <shervin@ucsd.edu>
+> wrote:
+> Hi,
+>
+>
+>  I have done some changes on O3CPU model of M5 to get different
+> performance-related metrics such as cache misses, register file
+> accesses, etc. at runtme.
+>  I need to run an in-order CPU (similar to Alpha EV4) and get these
+> performance metrics again.
+>  I was wondering if I can change the O3CPU model to model an in-
+> order architecture. If this is possible, I will still be able to use
+> my changed code to get performance metrics I need when running the
+> in-order CPU.
+>
+>  Has anyone done something similar before?
+>
+>  Thanks
+>    Shervin
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

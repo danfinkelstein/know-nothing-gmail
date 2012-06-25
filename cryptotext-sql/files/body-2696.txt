@@ -1,0 +1,6 @@
+Hi all:If I want to let the latency of accessing different parts in L2 cache is different, so the latency is not uniform. Is it possible in m5? how can I get it and where can I edit the code?Any suggestion is really appreciated.
+Gary
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

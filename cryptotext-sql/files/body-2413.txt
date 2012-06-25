@@ -1,0 +1,41 @@
+Hi all,
+I am attempting to generate all the stats necessary in the
+SimpleTimingCPU model for our new power model. The last thing I need to
+know is the number of register accesses. However, src/base/cpu.hh, there
+are many functions that access the registers. Which functions do I have
+to add an increment to the new register_access statistic? This for
+integer I see:
+uint64_t readIntRegOperand(const StaticInst *si, int idx)
+void setIntRegOperand(const StaticInst *si, int idx, uint64_t val)
+For float there is:
+FloatReg readFloatRegOperand(const StaticInst *si, int idx, int width)
+FloatReg readFloatRegOperand(const StaticInst *si, int idx)
+FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx, int
+width)
+FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx)
+void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val,
+                            int width)
+void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val)
+void setFloatRegOperandBits(const StaticInst *si, int idx,
+                                FloatRegBits val, int width)
+void setFloatRegOperandBits(const StaticInst *si, int idx,
+                                FloatRegBits val)
+But then to add a bit more confusion, there is:
+MiscReg readMiscRegNoEffect(int misc_reg)
+MiscReg readMiscReg(int misc_reg)
+void setMiscRegNoEffect(int misc_reg, const MiscReg &val)
+void setMiscReg(int misc_reg, const MiscReg &val)
+MiscReg readMiscRegOperandNoEffect(const StaticInst *si, int idx)
+ MiscReg readMiscRegOperand(const StaticInst *si, int idx)
+void setMiscRegOperandNoEffect(const StaticInst *si, int idx, const
+MiscReg &val)
+void setMiscRegOperand(const StaticInst *si, int idx, const MiscReg &val)
+So to which functions to I need to add the register_access statistic
+increment in order to catch all register accesses? What are the miscReg
+variants for? What is the difference between Effect and NoEffect?
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

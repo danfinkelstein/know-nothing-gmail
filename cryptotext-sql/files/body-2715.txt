@@ -1,0 +1,12 @@
+hello all,    I've created my PauseThreadEvent class (see below) which will supposedly allow me to pause threads while waiting for the CountedExitEvent(which I also copied and modified) counter to equate to zero. My question is how do I insert a call to PauseThreadEvent::process() in the CountedExit event given that I do not have a thread context variable in the CountedExitEvent class(or is it somewhere there?), a quick solution I can think of is to add a ThreadContext pointer to the threads and call my PauseThread everytime I encounter a CountedExitEvent. Is this a possible solution, in a scale of 1-5(5 being highest) my understanding of the M5 C++ internals is on level 1 so I guess I pretty much need help on anyone who can shine a light on my issue.
+another question: what file will I modify so that Scons will know that I want my pause_thread_event.hh/cc to be compiled in M5?Thanks in advance.#include "cpu/base.hh"  7 #include "cpu/thread_context.hh"
+  8 #include "cpu/pausethread_event.hh"  9  10 PauseThreadEvent::PauseThreadEvent(ThreadContext *_tc) 11         :Event(&mainEventQueue),tc(_tc) 12 {} 13  14 void PauseThreadEvent::process(){
+ 15  16         DPRINTF(ThreadPause,"suspending %s\n",tc->getCpuPtr()->name()); 17         tc->suspend(); 18        19 }     20        21 const char* PauseThreadEvent::description() const{
+ 22         return "Pause Thread"; 23 } pausethreadevent.hh#ifndef __PAUSE_THREAD__  7 #define __PAUSE_THREAD__  8   9 #include "sim/eventq.hh" 10  11 class ThreadContext;
+ 12  13 struct PauseThreadEvent : public Event { 14  15         /* A pointer to the thread that is going to be paused */ 16  17         ThreadContext *tq; 18  19         /* Event process to occur at interrupt */ 
+ 20       21         virtual void process(); 22          23         /* Event description */ 24          25         virtual const char *description() const; 26  27 }; 28  29 #endif //__PAUSE_THREAD__
+-- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+> Ah, the patch simply fixes the issue that if a PhysicalMemory object
+> receives a functional request in timing mode, it alters the request
+> which was causing things to crash. I don't remember the precise error
+> and I'm not sure if it happens in the unstable version, it is simply
+> an issue I encountered using the stable version a while back.
+Well, if you ever notice the problem in the dev repository, please try
+to get the fix into the tree.  Perhaps a memory expert can give it a
+quick glance to see if it belongs.  Steve?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

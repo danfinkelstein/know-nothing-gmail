@@ -1,0 +1,25 @@
+ 
+Another question regarding a Formula that is based on a Counter's final value. For example:
+ 
+Counter c;
+Formula f;
+ 
+regStats()
+{
+    f = scalar(c)/constant(1000);
+}
+ 
+However, type scalar doesn't exist and Scalar doesn't work either. Can anyone give me some hints?
+ 
+I am following the documentation on the statistics website, which says
+"
+If you want to use the value of bar or num at the moment the formula is calculated (i.e. the end), use the scalar() castIf you want to use the value of bar or num at the moment the formula is calculated (i.e. the end), use the scalar() cast
+"
+ 
+Thanks for helping!
+ 
+JiayuanNeed to know the score, the latest news, or you need your Hotmail®-get your "fix". Check it out.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi all,
+I have a question about how to bypass the packet in the L2 cache.  For
+example, when L2 cache receives the packet from L1 cache, it will
+bypass this packet to the Memory bus.  I am think about redirecting
+the packet in the CpuSidePort::recvTiming() function. What is the best
+way to write the packet into the MemSidePort directly and schedule
+this event?
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

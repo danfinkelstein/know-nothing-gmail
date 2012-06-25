@@ -1,0 +1,34 @@
+> Sorry, I think i can't make you clear.
+No, you are not being very clear at all.  Be precise.  What *exactly*
+are you changing?
+> When i used the same block_size ( 64)  for all caches (L1, L2 and L3), i got
+> results. But when i changed the configuration, i.e., change the size of L1,
+> L2 and L3, i got "Assertion `blkSize == pkt->getSize()' failed" problem on
+> all the simulations (even for the simulations which gave the output
+> previously with same block_size).
+This isn't clear.  What did you change?  Just the size of the cache?
+Nothing about the block size?  Are you changing the block size at all
+in the ones that are failing?  What are you changing in the runs that
+are failing?
+> My question is:  What will be the reason for getting this assertion problem
+> when number of threads goes increasing evenif the same architecture is
+> working for single threads?
+>
+> Could you please provide me some suggestions so that i could run all the
+> simulations successfully.
+You have to give a better bug report if you want help.  Before you
+sent us your configuration and all we saw was that you were changing
+the block size so that it was not all the same for all caches.  THIS
+IS NOT ALLOWED.  Other than that, we have no clue what exactly you're
+doing.
+I'm sorry, but we're getting very frustrated at your lack of a
+detailed bug report.  Read this article about giving bug reports
+before you try again:
+http://www.chiark.greenend.org.uk/~sgtatham/bugs.html
+Also, read the m5 page on reporting problems:
+http://www.m5sim.org/wiki/index.php/Reporting_Problems
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

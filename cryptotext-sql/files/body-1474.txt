@@ -1,0 +1,117 @@
+Sorry, I think i can't make you clear. When i used the same block_size ( 64)  for all caches (L1, L2 and L3), i got results. But when i changed the configuration, i.e., change the size of L1, L2 and L3, i got "Assertion `blkSize == pkt->getSize()' failed" problem on all the simulations (even for the simulations which gave the output previously with same block_size).
+I got results for some simulation when using same block_size but some simulations (2 core 8 threads, 4 core 2 threads, 8 core 2 threads, 16 core 2 threads, and others..) have the "Assertion `blkSize == pkt->getSize()' failed" even if using the same block_size. 
+My question is:  What will be the reason for getting this assertion problem when number of threads goes increasing evenif the same architecture is working for single threads? Could you please provide me some suggestions so that i could run all the simulations successfully.
+Thanks in advance,devraj- Show quoted text -On Sat, May 2, 2009 at 9:20 PM, nathan binkert <nate@binkert.org> wrote:
+Are you certain that all runs were done with the same block_size?  My
+guess is that some runs were using your old configuration.
+On Fri, May 1, 2009 at 10:38 AM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+> hi Steve,
+> When I used the same block_size for L1, L2 and L3, I got result for
+> simulations like: 2 core 1 thread, 2 core 2 threads, 4 core 1 thread, 8 core
+> 1 thread and 16 core 1 thread. But when I increase the number of threads
+> like 2 core 8 threads, 4 core 2 threads, 8 core 2 threads and 16 core 2
+> threads, I got the "Assertion `blkSize == pkt->getSize()' failed" problem.
+> What would be the reason the same configuration does not work when number of
+> threads increase?
+> Could you please help me to figure out the problem and solve it?
+> Thanks in advance,
+> devraj
+>
+>
+>
+> On Wed, Apr 29, 2009 at 8:41 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>> The coherence protocol expects all caches to have the same block size.
+>>
+>> Steve
+>>
+>> On Wed, Apr 29, 2009 at 12:42 PM, Devraj Chapagain <drchapagain@gmail.com>
+>> wrote:
+>>>
+>>> Hi, everyone,
+>>> I am testing 2 core simulation using SPEC CPU 2006 in SE mode. I got the
+>>> result using the fixed size (64) block_size for L1, L2 and L3 (in the file
+>>> Caches.py within directory common). When i have changed the block_size for
+>>> L1, L2 and L3 as stated in the list below, i encountered the error as :
+>>>
+>>> ............................................................................................
+>>> warn: Increasing stack size by one page.
+>>> m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool
+>>> Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&,
+>>> PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()'
+>>> failed.
+>>> Program aborted at cycle 2903472000
+>>>
+>>> ..........................................................................................
+>>> //recent Caches.py which causes the error
+>>> class L1Cache(BaseCache):
+>>>     assoc = 2
+>>>     block_size = 16
+>>>     latency = '1ns'
+>>>     mshrs = 10
+>>>     tgts_per_mshr = 5
+>>> class L2Cache(BaseCache):
+>>>     assoc = 8
+>>>     block_size = 32
+>>>     latency = '2ns'
+>>>     mshrs = 20
+>>>     tgts_per_mshr = 12
+>>>
+>>> ## added code for L3 Cache
+>>> class L3Cache(BaseCache):
+>>>     assoc = 16
+>>>     block_size = 64
+>>>     latency = '4ns'
+>>>     mshrs = 30
+>>>     tgts_per_mshr = 12
+>>>
+>>> // previous Caches.py which gives the output
+>>> class L1Cache(BaseCache):
+>>>     assoc = 2
+>>>     block_size = 64
+>>>     latency = '1ns'
+>>>     mshrs = 10
+>>>     tgts_per_mshr = 5
+>>> class L2Cache(BaseCache):
+>>>     assoc = 8
+>>>     block_size = 64
+>>>     latency = '10ns'
+>>>     mshrs = 20
+>>>     tgts_per_mshr = 12
+>>> class L3Cache(BaseCache):
+>>>     assoc = 16
+>>>     block_size = 64
+>>>     latency = '4ns'
+>>>     mshrs = 30
+>>>     tgts_per_mshr = 12
+>>> ==========================================
+>>> Could you please have any idea related to this problem?
+>>> Thanks in advance,
+>>> devraj
+>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

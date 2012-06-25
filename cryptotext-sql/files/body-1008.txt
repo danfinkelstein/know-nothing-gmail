@@ -1,0 +1,68 @@
+You should be able to look at the version information from the cross
+compiler to see what options it has. It probably doesn't generate EV6 code
+by default, however -march=EV6 -mtune=EV6 should to the trick. There are a
+few EV6 instructions that we don't implement, so you might end up having to
+implement some of them to make it work.
+With precise exceptions it doesn't seem that trapb is needed and you could
+try removing the IsSerializing flags on the instruction and that would turn
+them into a no-op.
+The MFPR/MTPR are a bit trickier. Reads and writes to these registers can
+have side-effects. For example, an MTPR can change the IPL. If the IPL
+hasn't been raised and later instructions are operating in a supposedly IPL
+protected region that is problematic. So there are some operations that are
+safe, but many of them are not. I believe this is handled in the EV6 with a
+scoreboard of outstanding mtpr/mfpr instructions and their destinations.
+Future instructions check the scoreboard to see if they can go.
+Additionally, there are dependencies through the instructions that must be
+preserved (read IPL before write IPL).
+Ali
+On Mon, 24 Aug 2009 12:16:31 -0700, Rick Strong <rstrong@cs.ucsd.edu>
+wrote:
+- Show quoted text -> Hi all,
+>
+> Parsec 2.0 simulation for large scale systems on M5 have brought two
+> issues to my attention that maybe someone else has seen and has some
+> thoughts. The basic phenomena is that the rename stage of the O3 model
+> blocks approximately 30-50% of the time due to an instruction that
+> causes all instructions after it to stall until the backend commits all
+> instructions. I hypothesize that this serialization action is reducing
+> IPC and giving suboptimal performance results for the parsec benchmark
+> suite. The 3 types of instructions that cause the serialize stall are:
+> (1) trapb, (2) hw_mfpr, and (3) hw_mtpr
+>
+> (1) The math library from stdlib for alphaev67-unknown-linux-gnu adds
+> trapb instructions in many of its functions like sqrt(). As far as I can
+> tell, such an instruction was used in cases where the architecture did
+> not support precise exceptions and you wanted to have a notion of where
+> the error occurred. As far as I can tell, the alpha EV6 implements
+> precise instructions but the IEEE standard in the stdlib can be compiled
+> to be compliant with inexact exceptions. Does anyone know if I can
+> remove the trapb instructions or turn on an option during creation of
+> the cross_compiler that would remove these instructions? I hypothesize
+> that maybe the m5sim.org cross compiler was not compiled with compiler
+> options -mcpu=EV6.
+>
+> (2) The hw_mfpr and hw_mtpr instructions cause a serialization stall in
+> the O3 pipeline. Based on comments from rename_impl.hh (pasted below),
+> it appears that these serializations are not strictly necessary, but
+> based on limited support. Does someone know how I could could go about
+> enabling support to allow the hw_mfpr and hw_mtpr instructions execute
+> out of order?
+>
+>         // In this model, IPR accesses are serialize before
+>         // instructions, and store conditionals are serialize after
+>         // instructions.  This is mainly due to lack of support for
+>         // out-of-order operations of either of those classes of
+>         // instructions.
+>
+> Thanks in advance,
+> -Rick
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

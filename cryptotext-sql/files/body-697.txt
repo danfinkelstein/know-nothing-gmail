@@ -1,0 +1,13 @@
+What about m5 version? The stable repository probably has issues, but the
+normal one should be fine now.
+Ali
+On Fri, 20 Nov 2009 13:55:52 -0600, junli gu <gujunli@gmail.com> wrote:
+> I am sorry. the version of gcc is gcc version 4.4.1 (Ubuntu
+4.4.1-4ubuntu8)
+> .
+> Target: i486-linux-gnu
+> 32 bit  Intel(R) Xeon(R) CPU            5150  @ 2.66GHz
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

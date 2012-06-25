@@ -1,0 +1,12 @@
+if it's something that came directly from busybox, it should play nice, but not always.  it would be helpful to see some stats and data.1) what kernel headers are you compiling against in linux-dist?
+2) what kernel have you compiled?3) most importantly, what are your error messages?  lisa- Show quoted text -On 2/28/07, Brad Penoff <
+penoff@cs.ubc.ca> wrote:Greetings,I've been having a series of problems that I was hoping to get some help
+on.  Long story short, when I build disk images and add ONLY Shell &Console Tools->BusyBox->Coreutils->env after cloning, the resulting imagecauses the kernel to panic, and I don't understand why...  I have been
+able to build and boot disks using the same method successfully.The reason I wish to add env is because when I ran my series ofapplications, it complained that it didn't exist. So, there is this issue
+of "why did the kernel panic?" but more generally, I seek advice for howto add in my own applications the proper way.  I'm guessing you haveexperience with this seeing as how you have so many advanced benchmarks
+available within the default system.  Is there a list/person where Iwrite to ask about your experiences of getting complex applications to runinside m5?  Is this the right list to ask such questions?Thanks!
+brad_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

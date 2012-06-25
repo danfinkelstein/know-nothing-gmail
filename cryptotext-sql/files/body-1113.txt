@@ -1,0 +1,197 @@
+Thank you Steve.- Show quoted text -On Sun, Aug 2, 2009 at 9:50 PM, Steve Reinhardt <stever@gmail.com> wrote:
+Hmm, that does seem like it must be some bug in the O3 CPU model
+that's not happy about using so many threads.  What I would do to
+debug this is dump execution traces (something like
+--trace-flags=Exec,-ExecTicks so you don't get cycle counts), then
+filter them by thread, and compare them to the beginnings of the
+traces from the successful run to see where the execution diverges.
+Then once you know where that's happening, you'd have to go in to gdb
+and see if you can figure out why.
+Steve
+On Sun, Aug 2, 2009 at 11:48 AM, Devraj Chapagain<drchapagain@gmail.com> wrote:
+> hi Steve,
+> I have posted the run window here for each 16 core 1 thread, 8 core 2
+> threads and 2 core 8 threads as:
+> A. Simulation for 2 core 8 threads
+> max_insts_all_threads = 10000000
+> num of cpus = 2
+> num threads per cpu = 8
+> system.cpu[0].workload = [Mybench.gcc(), Mybench.soplex(),
+> Mybench.cactusADM(), Mybench.gromacs(), Mybench.leslie3d(),
+> Mybench.libquantum(), Mybench.milc(), Mybench.sjeng()]
+> system.cpu[1].workload = [Mybench.gobmk(), Mybench.hmmer(), Mybench.bzip2(),
+> Mybench.bzip2(), Mybench.hmmer(), Mybench.cactusADM(), Mybench.sjeng(),
+> Mybench.libquantum()]
+> Global frequency set at 1000000000000 ticks per second
+> **** REAL SIMULATION ****
+> Exiting @ cycle 9223372036854775807 because simulate() limit reached
+> In this case, the simulation terminates within few seconds and gives 0
+> values in all parameters in output file.
+>
+> B. Simulations for 16 core 1 thread
+> max_insts_all_threads = 10000000
+> num of cpus = 16
+> num threads per cpu = 1
+> system.cpu[0].workload = [Mybench.gcc()]
+> system.cpu[1].workload = [Mybench.soplex()]
+> system.cpu[2].workload = [Mybench.cactusADM()]
+> system.cpu[3].workload = [Mybench.gromacs()]
+> system.cpu[4].workload = [Mybench.leslie3d()]
+> system.cpu[5].workload = [Mybench.libquantum()]
+> system.cpu[6].workload = [Mybench.milc()]
+> system.cpu[7].workload = [Mybench.sjeng()]
+> system.cpu[8].workload = [Mybench.gobmk()]
+> system.cpu[9].workload = [Mybench.hmmer()]
+> system.cpu[10].workload = [Mybench.bzip2()]
+> system.cpu[11].workload = [Mybench.bzip2()]
+> system.cpu[12].workload = [Mybench.hmmer()]
+> system.cpu[13].workload = [Mybench.cactusADM()]
+> system.cpu[14].workload = [Mybench.sjeng()]
+> system.cpu[15].workload = [Mybench.libquantum()]
+> Global frequency set at 1000000000000 ticks per second
+> **** REAL SIMULATION ****
+> Exiting @ cycle 5140346500 because all threads reached the max instruction
+> count
+> In this case, this simulation takes few minutes to run and gives required
+> parameters.
+>
+> C. Simulation for 8 core 2 threads
+> max_insts_all_threads = 10000000
+> num of cpus = 8
+> num threads per cpu = 2
+> system.cpu[0].workload = [Mybench.gcc(), Mybench.soplex()]
+> system.cpu[1].workload = [Mybench.cactusADM(), Mybench.gromacs()]
+> system.cpu[2].workload = [Mybench.leslie3d(), Mybench.libquantum()]
+> system.cpu[3].workload = [Mybench.milc(), Mybench.sjeng()]
+> system.cpu[4].workload = [Mybench.gobmk(), Mybench.hmmer()]
+> system.cpu[5].workload = [Mybench.bzip2(), Mybench.bzip2()]
+> system.cpu[6].workload = [Mybench.hmmer(), Mybench.cactusADM()]
+> system.cpu[7].workload = [Mybench.sjeng(), Mybench.libquantum()]
+> Global frequency set at 1000000000000 ticks per second
+> **** REAL SIMULATION ****
+> Abort
+>
+> Abort reason::
+> warn: Increasing stack size by one page.
+> panic: Tried to access unmapped address 0.
+>  @ cycle 60429500
+> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+> Program aborted at cycle 60429500
+> This simulation also takes few minutes and abort from the running.
+> The only thing i want to remind you is: I have used the same set of
+> benchmarks for each set of total number of benchmarks (here, 16 benchmarks).
+>  What would be the reason for such different errors for same set of
+> benchmarks?
+>
+> Thanks in advance,
+> drc
+>
+>
+> On Sat, Aug 1, 2009 at 2:17 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>> What about 8 cores 2 threads?
+>>
+>> On Fri, Jul 31, 2009 at 8:17 AM, Devraj Chapagain<drchapagain@gmail.com>
+>> wrote:
+>> > On Wed, Jul 29, 2009 at 7:29 AM, Steve Reinhardt <stever@gmail.com>
+>> > wrote:
+>> >>
+>> >> Are you sure you're not running out of memory as you go from 8 total
+>> >> benchmarks to 16?
+>> >
+>> > I think I'm not running out of memory as i could run 16 total benchmarks
+>> > too, like 16 core 1 thread.
+>> > I get problem when number of threads increase like 2 core 8 threads, 4
+>> > core
+>> > 4 threads, ....
+>> >
+>> >>
+>> >> On Wed, Jul 29, 2009 at 1:14 AM, Devraj
+>> >> Chapagain<drchapagain@gmail.com>
+>> >> wrote:
+>> >> > Hi,
+>> >> > I am testing simulations using SPEC CPU 2006 benchmarks in newly
+>> >> > updated
+>> >> > M5
+>> >> > (using hg clone http://repo.m5sim.org/m5 newm5 ) in SE mode. I'm
+>> >> > facing
+>> >> > problems on running simulations as it gives 0 values on almost all
+>> >> > parameters while running 2 core 8 threads. But i'm not getting such
+>> >> > problems
+>> >> > on 2 core 2 threads and 2 core 4 threads. Please have a look for: The
+>> >> > simulation A works well but Simulation B has 0 values on stats.txt
+>> >> > file
+>> >> > under output folder:
+>> >> > Simulation A:
+>> >> > num of cpus = 2
+>> >> > num threads per cpu = 2
+>> >> > system.cpu[0].workload = [Mybench.bzip2(), Mybench.libquantum()]
+>> >> > system.cpu[1].workload = [Mybench.gobmk(), Mybench.soplex()]
+>> >> > Global frequency set at 1000000000000 ticks per second
+>> >> > **** REAL SIMULATION ****
+>> >> > info: Entering event queue @ 0.  Starting simulation...
+>> >> > Exiting @ cycle 102500 because all threads reached the max
+>> >> > instruction
+>> >> > count
+>> >> >
+>> >> > Simulation B:
+>> >> > num of cpus = 2
+>> >> > num threads per cpu = 8
+>> >> > system.cpu[0].workload = [Mybench.gromacs(), Mybench.cactusADM(),
+>> >> > Mybench.bzip2(), Mybench.gobmk(), Mybench.leslie3d(),
+>> >> > Mybench.hmmer(),
+>> >> > Mybench.soplex(), Mybench.sjeng()]
+>> >> > system.cpu[1].workload = [Mybench.libquantum(), Mybench.milc(),
+>> >> > Mybench.gcc(), Mybench.gcc(), Mybench.libquantum(), Mybench.milc(),
+>> >> > Mybench.gobmk(), Mybench.sjeng()]
+>> >> > Global frequency set at 1000000000000 ticks per second
+>> >> > **** REAL SIMULATION ****
+>> >> > info: Entering event queue @ 0.  Starting simulation...
+>> >> > Exiting @ cycle 9223372036854775807 because simulate() limit reached
+>> >> >
+>> >> > I have read the previous posts related to similar problems but i'm
+>> >> > not
+>> >> > getting much benefits. Could any one please help me just providing
+>> >> > how
+>> >> > can I
+>> >> > fix this problem?
+>> >> >
+>> >> >
+>> >> > Thanks in advance,
+>> >> > drc
+>> >> >
+>> >> > _______________________________________________
+>> >> > m5-users mailing list
+>> >> > m5-users@m5sim.org
+>> >> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

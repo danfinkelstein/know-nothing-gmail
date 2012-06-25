@@ -1,0 +1,8 @@
+hi all,but in my simulation results i did not
+see any statistics on page faults. here's my simulation result with
+this email. my command line is%./build/ALPHA_FS/m5.opt  configs/example/fs.py -b NetperfMaerts -t -d 
+do i miss anything?Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

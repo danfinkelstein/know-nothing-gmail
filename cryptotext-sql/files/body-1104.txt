@@ -1,0 +1,20 @@
+>    Thank you for your comment. So, does that also mean that if I
+> include any of the file in the m5/src/ directory in the EXTRAS=foo/bar
+> file, I need to specify that file in the path that is relative to the
+> foo/bar directory?
+> Let's say that I have my foo/bar file in /home and m5/src is also in
+> home. So the path is
+> /home/m5/src
+> /home/foo/bar
+>    For all my files in the foo/bar directory to include a simple.hh
+> file in the m5/src directory, I need to specify that
+> #include "../m5/src/simple.hh"
+>    Is that right?
+No, it would just be simple.hh
+Think of m5/src and foo/bar as the search path for header files, and
+any time you present a relative path, those are searched for it.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

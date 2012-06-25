@@ -1,0 +1,136 @@
+In the model of L1 cache, is " miss under miss"
+supported?
+If yes, How many misses can be send to the bus from
+L1? Is there any limit on bus bandwidth?
+- Show quoted text -
+--- Steve Reinhardt <stever@gmail.com> escribió:
+> The CPU isn't directly connected to the bus so you
+> still have to go
+> through the L1 cache.  Not sure what you're trying
+> to do, but you may
+> need to add a new MemCmd to put in the request
+> packet, then add code
+> to the cache model to recognize that new command and
+> process it how
+> you want.
+>
+> Steve
+>
+> On Nov 20, 2007 10:17 AM, abc def
+> <jose_6154@yahoo.es> wrote:
+> > Right, but for my case i know before that the line
+> i
+> > am going to invalidate is in shared state. So, to
+> > force a write miss is it possible to do an
+> > invalidation first (without regard of mesi, from
+> the
+> > processor itself) and then issue the write
+> request?
+> >
+> > which function can i use for this? i need
+> something
+> > which can do this thing internally without
+> actually
+> > generating any write request.
+> >
+> >
+> >
+> > --- Steve Reinhardt <stever@gmail.com> escribió:
+> >
+> >
+> > > On Nov 20, 2007 6:49 AM, abc def
+> > > <jose_6154@yahoo.es> wrote:
+> > > > Suppose in my simulation i have L1 cache and
+> no
+> > > L2.
+> > > > Now i want some request to access cache but
+> some
+> > > > should be forced to go to network as if there
+> is
+> > > no
+> > > > L1.
+> > > > How to do this efficiently?
+> > >
+> > > If you have a distinct set of uncacheable
+> addresses,
+> > > then you can just
+> > > set the UNCACHEABLE bit in the flags field of
+> the
+> > > Request object.
+> > >
+> > > If you want to bypass the L1 sometimes (and
+> > > sometimes not) for the
+> > > same address, then this won't work, as you might
+> > > bypass the L1 when
+> > > that's where the only up-to-date copy is.
+> > >
+> > > >
+> > > > In cpu.cc there is a boolean variable called
+> > > do_access
+> > > > which is stated to control cache access. But
+> in
+> > > the
+> > > > code there is nothing mentioned what happens
+> > > do_access
+> > > > is false:
+> > > >
+> > > > /*
+> > > > if (do_access) {
+> > > >             if
+> > > (!dcachePort.sendTiming(dcache_pkt)) {
+> > > >                 _status = DcacheRetry;
+> > > >             } else {
+> > > >                 _status = DcacheWaitResponse;
+> > > >                 // memory system takes
+> ownership
+> > > of packet
+> > > >                 dcache_pkt = NULL;
+> > > >             }
+> > > >         }
+> > > > */
+> > >
+> > > When do_access is false, the access is not
+> > > performed.  If you look a
+> > > little more carefully at how that flag is used,
+> > > you'll see that it
+> > > only gets set when there's a store-conditional
+> that
+> > > is guaranteed to
+> > > fail so there's no point in even going to the
+> cache
+> > > with it.
+> > >
+> > > Steve
+> >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> >
+> >
+> >
+> >
+> > ______________________________________________
+> > ¿Chef por primera vez?
+> > Sé un mejor Cocinillas.
+> > http://es.answers.yahoo.com/info/welcome
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+______________________________________________
+- Show quoted text -¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

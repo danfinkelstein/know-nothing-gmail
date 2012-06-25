@@ -1,0 +1,156 @@
+I tried using following command line:
+build/ALPHA_FS/m5.opt configs/example/fs.py  -n 4 -r 1
+--timing --caches -w 50000000000, so that it switches
+to timing simple cpu only after warming up caches with
+atomic simple cpu.
+But nothing is happening in console. It is not getting
+restored from checkpoint.
+I am using system files from version b3.
+Can you please forward me the command  line you use
+for booting up timing simple cpu.
+- Show quoted text -
+--- Ali Saidi <saidi@umich.edu> escribió:
+> It's another bug, but since we never really boot
+> with timing and
+> caches it's not surprising that we haven't seen it
+> before.
+>
+> Ali
+>
+> On Dec 16, 2007, at 11:43 PM, Nathan Binkert wrote:
+>
+> > This could honestly be just because it takes a
+> long time.  With
+> > timing and caches, the simulator is pretty slow.
+> >
+> >> This is working if caches option is not used.
+> >>
+> >> But with L1,L2 cache present and with multiple
+> cpus it
+> >> is still getting stuck while booting.
+> >>
+> >> command line used:
+> >> build/ALPHA_FS/m5.opt configs/example/fs.py  -n 4
+> >> --timing --caches --l2cache
+> >>
+> >> --- Ali Saidi <saidi@umich.edu> escribió:
+> >>
+> >>> There is an issue in b4 with when the CPU ids
+> get
+> >>> assigned to CPUs
+> >>> that can cause some weird behavior in all
+> >>> multi-processor
+> >>> configurations (2,3,4, xxx cpus). The attach
+> patch
+> >>> fixes those problems.
+> >>>
+> >>>>
+> >>>
+> >>> Ali
+> >>>
+> >>> On Dec 16, 2007, at 2:53 AM, Ali Saidi wrote:
+> >>>
+> >>>> Yea, you found a bug. I found the changeset
+> that
+> >>> caused the problem,
+> >>>> and I'll try to figure out what is going on
+> >>> tomorrow and post a patch.
+> >>>>
+> >>>> In the future please create a new topic on the
+> >>> mailing list by
+> >>>> sending a new message to m5-users@m5sim.org
+> >>> instead of replying to a
+> >>>> current topic and changing the subject.
+> Replying
+> >>> to the same topic
+> >>>> and just changing the subject preserves the
+> >>> In-Reply-To mail header
+> >>>> and makes it more difficult to reconstruct
+> threads
+> >>> of conversation
+> >>>> on the mailing list.
+> >>>>
+> >>>> Ali
+> >>>>
+> >>>> On Dec 15, 2007, at 7:57 PM, abc def wrote:
+> >>>>
+> >>>>> Timing simple cpu in full system mode in m5
+> beta
+> >>> 4  is
+> >>>>> not booting up. In the console it is getting
+> >>> stuck
+> >>>>> into "NET: Registered protocol family 2" and
+> is
+> >>> not
+> >>>>> proceeding forward.
+> >>>>>
+> >>>>> System files are from:
+> >>>>>
+> >>>
+> >>
+>
+http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+> >>>>>
+> >>>>> This is happening if 4 cpus are used for
+> booting.
+> >>> For
+> >>>>> 1 cpu it is ok.
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>> ______________________________________________
+> >>>>> ¿Chef por primera vez?
+> >>>>> Sé un mejor Cocinillas.
+> >>>>> http://es.answers.yahoo.com/info/welcome
+> >>>>>
+> _______________________________________________
+> >>>>> m5-users mailing list
+> >>>>> m5-users@m5sim.org
+> >>>>>
+> >>>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>>
+> >>>>
+> >>>> _______________________________________________
+> >>>> m5-users mailing list
+> >>>> m5-users@m5sim.org
+> >>>>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>>>
+> >>>
+> >>>> _______________________________________________
+> >>> m5-users mailing list
+> >>> m5-users@m5sim.org
+> >>>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >>
+> >>
+> >>
+> >> ______________________________________________
+> >> ¿Chef por primera vez?
+> >> Sé un mejor Cocinillas.
+> >> http://es.answers.yahoo.com/info/welcome
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >>
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+______________________________________________
+- Show quoted text -¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

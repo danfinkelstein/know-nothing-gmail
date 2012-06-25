@@ -1,0 +1,26 @@
+There's no existing support for that.  You could certainly just run N
+simulations with different cache sizes.  If you want to do single-pass
+stack-based simulation to get multiple sets of results in a single run
+you'd have to hack that into the cache model yourself.
+Steve
+- Show quoted text -
+On Mon, Apr 28, 2008 at 11:53 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+>
+>
+> Hello,
+>         How do I obtain miss rate curves (for varying cache sizes) using M5?
+> Do I have to rerun the simulation and calculate for every point or can the
+> cache size be swept  automatically? Also how do I obtain a CPI histogram?
+>
+> Thanks
+> Sujay
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

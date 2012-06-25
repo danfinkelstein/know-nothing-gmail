@@ -1,0 +1,58 @@
+ok Thanks Steve.
+- Show quoted text -
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, June 08, 2008 10:43 PM
+Subject: Re: [m5-users] assertion failed running M4 beta 5 in FS mode
+> OK, I believe you can just get rid of the assertion.  That used to be
+> an invariant, but with the new bus timing code in b5 it turns out that
+> there's a corner case when there are multiple CPUs sharing an L1 cache
+> where that assertion can get violated but everything else is still OK.
+> And it just so happens that if you say --l2cache but not --caches
+> then you get an L2 but not L1s, and the L2 acts like a shared L1.
+>
+> Steve
+>
+> On Sat, Jun 7, 2008 at 9:22 AM, Steve Reinhardt <stever@gmail.com> wrote:
+>> Thanks for the heads up... I'll take a look at it.
+>>
+>> Steve
+>>
+>> On Fri, Jun 6, 2008 at 1:20 PM, Sujay Phadke <sphadke@eecs.umich.edu>
+>> wrote:
+>>> Hello,
+>>>         I get the following error when I am running M5 beta 5 in FS
+>>> mode.
+>>>
+>>> m5.opt: build/ALPHA_FS/mem/tport.cc:110: void
+>>> SimpleTimingPort::schedSendTiming(Packet*, Tick): Assertion
+>>> `waitingOnRetry
+>>> || (sendEvent->scheduled() && sendEvent->when() <= when)' failed.
+>>>
+>>> command line:
+>>>
+>>> ./build/ALPHA_FS/m5.opt configs/example/fs.py -t -n 4 --l2cache -b
+>>> NetperfMaerts
+>>>
+>>>
+>>> It works fine if I remove the --l2cache option. What seems to be the
+>>> problem?
+>>>
+>>> - Sujay
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

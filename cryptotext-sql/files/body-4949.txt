@@ -1,0 +1,25 @@
+There are a handful of errors in the cache system that we've fixed in the last week or so internally.  We've actually been making a pretty intense push in the last week or so to get the new 2.0 memory system finished up and get out a complete 2.0 release.  We are getting very close.  We might call this one 2.0 RC1 or beta 2 or something to give people a chance to see if all of their bugs are fixed before we release an offical 2.0.  Details of the release will come in another message at the time of the release... we're hoping early next week.
+Thanks for your participation and your patience.
+Steve & the rest of the M5 team- Show quoted text -
+Michael Van Biesbrouck wrote:
+I'm having similar problems in SE mode for the O3CPU when I set cache
+latencies all to 1.  In that case I get the validCpuAndThreadNums
+error.  Using real latencies I get a different error that was not
+mentioned by Nikos Anastopoulos.  The errors occur both with SMT and
+single-threaded execution, albeit at different cycles.
+m5.opt: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:125: void
+BaseDynInst<Impl>::initVars() [with Impl = O3CPUImpl]: Assertion
+`instcount <= 1500' failed.
+Program aborted at cycle 7197
+My cache is based upon the simple-timing.py test script.  Removing the
+caches removes the errors.
+I have installed the patch.
+Michael
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

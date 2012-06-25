@@ -1,0 +1,13 @@
+On Mon, Jun 9, 2008 at 11:25 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> By the way, is there any effort
+> currently to validate the memory timing model?
+None that I know of... the memory timing model is kind of abstract, so
+it's not clear what you would validate it against.  It's a good idea
+though.  For the most part it's just been "validated" by looking at
+traces and seeing if they make sense, which is admittedly rather
+limited.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

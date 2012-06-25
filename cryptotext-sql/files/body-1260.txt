@@ -1,0 +1,23 @@
+Hi everyone,
+I'm running an AtomicSimpleCPU using ALPHA_SE. Usually, at the end of
+simulation I get the standard message:
+Exiting @ cycle 1297500 because target called exit()
+But, for one of my programs (gcc), I don't get this at all. The
+simulation just stops when the program has finished. The stats and
+config files are written just fine and the simulator exits normally, but
+it doesn't print that message. It seems that the simulate() function
+never returns so the simulator must be exiting elsewhere. I can't figure
+out where though.
+Could anyone shed some light on why this might be happening or where I
+should look to try to find out what's wrong with this? Is there some way
+that the simulation could finish without control passing to the user's
+python script?
+Thanks
+Tim
+--
+The University of Edinburgh is a charitable body, registered in
+Scotland, with registration number SC005336.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

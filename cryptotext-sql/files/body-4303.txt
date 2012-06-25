@@ -1,0 +1,7 @@
+Excellent!  Glad you got it to work.  Did you have to do anything to get it to run?  If so, please share it so that others can benefit.  (Feel free to register on the wiki and create a page there if you want.)Let us know if you run into anything else.
+Steve- Show quoted text -On 9/10/07, Elliott Cooper-Balis <eeeealmo@yahoo.com> wrote:
+Steve,   So after rebuilding the crosscompiler without TLS, the benchmarks worked!  Thanks again for all the help and patience.  Elliott
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

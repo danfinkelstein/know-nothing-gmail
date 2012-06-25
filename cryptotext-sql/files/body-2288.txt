@@ -1,0 +1,10 @@
+Not related to m5 but just asking:
+Currently, I have something like:
+system.busAB   =[Bus()    for i in xrange(c)]
+Now I want, busAB[0], busAB[1] to be not one Bus but, each of form:
+[Bus() for i in xrange(c)]
+Any idea?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

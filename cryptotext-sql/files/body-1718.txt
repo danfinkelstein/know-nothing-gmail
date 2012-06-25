@@ -1,0 +1,16 @@
+> Hi Gabe, thanks for your reply.  Do you mean that the image should contain a
+> kernel like vmlinux or something like that ? If it doesn't contain one, then
+> I should compile one myself, is that right ?
+>
+> I downloaded the stage3 from the net, how can I possibly know what kernel
+> they use?
+>
+> Thanks for you guiding on how to replace the init script, I hope that works.
+> Thank you !
+M5 *never* runs the kernel off the disk image.  The kernel is provided
+as a parameter to M5 configuration file.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

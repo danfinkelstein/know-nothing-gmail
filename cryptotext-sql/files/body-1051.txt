@@ -1,0 +1,8 @@
+I have a 3-level cache hierarchy, full system mode. Everything is fine with monolithic shared bus. When I enhance the bus to make an interconnect as shown in attached pdf file, the l3 cache fails the following assertion:
+if (pkt->memInhibitAsserted()) {
+        assert(!pkt->req->isUncacheable());
+The fact is that in attached figure the path of requests is same, snooping is atomic, and the shown bridges are only adding a certain delay to requests. I don't see the reason very clear, any take on this is appreciated.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

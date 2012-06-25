@@ -1,0 +1,6 @@
+hi all,  How do you know if the Event that was scheduled was processed? Is it possible to trace the EventQueue(is it pragmatic to do so)? I'd like to know if my event was "process()'d" or not. I tried the "Event" flag but I can only see that my event was scheduled... Another approach I thought of was to put a printf() in the process() although I doubt if this is a good idea. Any inputs would be greatly appreciated.
+sincerely,Dean Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

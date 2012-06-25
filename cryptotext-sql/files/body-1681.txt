@@ -1,0 +1,95 @@
+I compiler splash benchmarks using the cross-compiler on downlaods page compiled using m4 macro for implementation of POXIS threads.
+Things do seem to work fine with aomic cpu but before I take a look at things pointed by Ali, one question I have is is this the correct rcS file, because as I increase the data set, the number of simulated instructions does not increase a lot and sometimes even decrease?
+#!/bin/sh
+cd /splash2
+/sbin/m5 resetstats
+./RADIX -p 4 -n 10000 -r 4 -m 32
+/sbin/m5 exit
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 20 Mar 2009 10:35:56 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] halt
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>Ali's post makes me wonder... Are you trying to run a binary compiled
+>with the splash se-mode library under fs mode?  I think that would
+>explain it.
+>
+>If you want to run a splash benchmark in fs mode it should be compiled
+>for regular linux pthreads.
+>
+>Steve
+>
+>
+>On 3/20/09, Ali Saidi <saidi@umich.edu> wrote:
+>> Something is calling callpal halt which isn't normally done in FS
+>> mode. It only occurs if some kind of fatal error is happening. I don't
+>> have time to dig into this right now, but perhaps someone else can.
+>> What does the console say? Do you happen to have a callpal halt in the
+>> radix binary? If you look at the linux source code, there are very few
+>> places where call_pal halt is called, and they all mean something
+>> horrible has happened. Have you modified the simulator?
+>>
+>> Ali
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>> On Mar 19, 2009, at 1:35 PM, Steve Stephen wrote:
+>>
+>>> ALPHA ISA detailed mode....
+>>>
+>>> ---- Original message ----
+>>> >Date: Thu, 19 Mar 2009 14:09:11 -0400
+>>> >From: Gabriel Michael Black <gblack@eecs.umich.edu>
+>>> >Subject: Re: [m5-users] halt
+>>> >To: M5 users mailing list <m5-users@m5sim.org>, Steve Stephen
+>>> > <sstephen66@yahoo.com
+>>> >
+>>> >Cc: m5-users@m5sim.org
+>>> >
+>>> >Which ISA are you using?
+>>> >
+>>> >Quoting Steve Stephen <sstephen66@yahoo.com>:
+>>> >
+>>> >> when running radix benchmark (splash) using 4 cpus in FS mode using
+>>> >> provided fs.py
+>>> >>
+>>> >> 56993956000: system.cpu3..break_event: break event panic triggered
+>>> >> panic: Halt not implemented!
+>>> >>
+>>> >>
+>>> >>
+>>> >
+>>> >
+>>> >
+>>> >_______________________________________________
+>>> >m5-users mailing list
+>>> >m5-users@m5sim.org
+>>> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>--
+>Sent from my mobile device
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

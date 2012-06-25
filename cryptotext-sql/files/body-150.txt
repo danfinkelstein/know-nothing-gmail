@@ -1,0 +1,24 @@
+On Fri, 21 May 2010, Malek Musleh wrote:
+> In the long run, i am interested in running the parsec benchmarks on
+> the X86 ISA, (SE simulation is fine) and would like to know if the
+> current stable version requires relatively modest
+> modifications/improvements for my studies, and if not, if the current
+> dev-repo is a viable alternative.
+you're going to need to run the development tree.
+You'll also need additional patches.  You can see here:
+   http://www.csl.cornell.edu/~vince/projects/m5/m5_x86_64_se_status.html
+for the status of m5 for x86_64, at least with the SPEC2000 benchmarks.
+There's at least 8 patches or so there that would need to be applied
+before SPEC2000 ran, I've been meaning to clean them up and submit them at
+some point, but graduating/getting a new job has sucked up all my time.
+In general, none of the x87 floating point support will work.  You'll need
+to compile your binaries using SSE only.
+I also am not sure what the status of multi-threaded programs is in X86_SE
+mode, I imagine it will take a bit of work to get stock compiled PARSEC
+running.
+Vince
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

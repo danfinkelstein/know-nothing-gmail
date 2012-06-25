@@ -1,0 +1,28 @@
+You should be able to add another PhysicalMemory with a different
+range parameter (to put it at a different address range) and different
+latency to reflect the SRAM speed.
+Steve
+2008/6/25 邓宁 <dunning2006@gmail.com>:
+- Show quoted text -> i want to add something to my question about sram, since i want to add the
+> sram which is unified in memory address space but seperated in layout(sram
+> is on-chip but dram is off-chip)...i can't derive it from cache since there
+> is no tag...so i am puzzled, can i derive it from PhysicalMemory ? what else
+> should i do then?
+> many thks：）
+> --
+> Regards
+> Dengning
+>
+> School Of Computer Science and Technology
+> Beijng Institute of Technology, China, 100081
+> dunning2006@gmail.com
+> dnenging@bit.edu.cn
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

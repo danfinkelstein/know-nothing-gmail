@@ -1,0 +1,10 @@
+Hi,
+Does M5 currently support cache coherence (in full system or syscall
+emulation modes) ?
+Thank you,
+Ramazan Bitirgen
+Cornell University
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

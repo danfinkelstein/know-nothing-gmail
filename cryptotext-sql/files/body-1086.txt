@@ -1,0 +1,13 @@
+Hello,
+  I am trying to collect memory traces running 
+specweb in FS mode. However, if I use the traceflags to collect traces (say 
+MemoryAccess), it starts collecting all memory requests, including the OS 
+booting up. I want to collect only when the benchmark start running. How do I do 
+this.?
+ 
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

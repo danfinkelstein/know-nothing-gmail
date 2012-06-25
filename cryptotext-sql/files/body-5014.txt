@@ -1,0 +1,40 @@
+  
+Hi Yu,
+What changes did you make to the ethernet dev file?  If you only get 2k
+packets, maybe it's only during the 200e6 period that it's actually
+running (the 1e9 period is much longer).  If you can figure out when
+packets stop transmitting, you can try using the various Ethernet trace
+flags (see base/traceflags.py) to try to track what's going wrong with
+the Ethernet device by outputting a trace around that time.  To start
+tracing at a specific cycle, add "--Trace.start=<cycle num>" to
+the command line, and use "--Root.max_tick=<max cycle num>" to
+limit your simulation length.
+I hope this helps,
+Kevin
+Zhang, Yu wrote:
+- Show quoted text -
+  
+  
+  
+  Hi all,
+   
+  I'm using M5_1.1 version. Under
+original condition, when I'm running netperf-maerts benchmark, and do
+the sampling with 'Sampler(periods = [1e9, 200e6])', it always gives me
+about 67k packets transmitted during this period. However, after I
+modified the ethernet dev file a little bit, it only gave me about 2k
+packets transmitted, and there is almost no statistics in the output
+file. It seems like nothing is excuting during the 200e6 cycles. How to
+figure out this problem?
+   
+  Thanks,
+  Yu
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

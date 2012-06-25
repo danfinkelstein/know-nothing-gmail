@@ -1,0 +1,11 @@
+Hello,
+      Could someone give 
+an update on the integration on M5 and Wattch. Is anyone working on this 
+now?
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

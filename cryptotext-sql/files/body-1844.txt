@@ -1,0 +1,8 @@
+hi,      I am trying to run SPEC CPU 2006 benchmarks on m5-2.0b6(ALPHA_SE mode),
+and some of them are showing the following error messages.hmmer  ---            error(fatal: syscall mremap (#341) unimplemented.) gromacs ---           error(fatal: syscall mremap (#341) unimplemented.)soplex    ---           error(fatal: syscall mremap (#341) unimplemented.)
+I made changes according to the given site ( http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks ), and tried but it does not work. 
+Could anyone please let me know what i need to do to remove these errors. Thanking you, Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

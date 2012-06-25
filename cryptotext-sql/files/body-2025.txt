@@ -1,0 +1,9 @@
+I would like to get an assembly trace of the instructions being run
+and I'm not sure where to begin.  Any help would be
+appreciated.
+Thanks,
+Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

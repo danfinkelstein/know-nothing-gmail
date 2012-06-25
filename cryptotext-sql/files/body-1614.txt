@@ -1,0 +1,13 @@
+If it already has a shared copy, yes.
+- Show quoted text -
+On Fri, Apr 3, 2009 at 5:53 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+> The way m5 coherence protocol is set-up, if a core need exclusive access to a block, it send an upgrade request on bus and all sharers invalidatethe blocks?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

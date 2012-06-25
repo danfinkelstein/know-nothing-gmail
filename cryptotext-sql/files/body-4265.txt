@@ -1,0 +1,13 @@
+Hi Nate, Ali,I'm doing AVF calculations, and I'd like to account for the edge effect at the end of simulation by draining currently 'live' objects from my structures before computing the final statistics.  I just added some registerExitCallback() calls and it seems to work, although I haven't had time to test it extensively yet.
+What's the difference between this and registerResetCallback?  At a quick glance, it looks like registerResetCallback is called every time reset() is called (more than once per simulation), while registerExitCallback() is called just once at the end of simulation.  Are there other more subtle differences?  Is registerResetCallback called at the end of simulation?
+Practically speaking, I think registerExitCallback will do what I need as long as it's called before the final stats are printed out (and it seems to be -- I update some stats in that function), although it may not work in more complicated situations (switching out CPU models and so on).  But at least for me, this seems to be fine.
+   -Vilas- Show quoted text -On 9/19/07, Nathan Binkert <nate@binkert.org> wrote:
+> (I feel like I or someone else has asked this before, but I can't seem to> find it in the archives.)>> Does M5 call a specific function at the end of simulation (similar to the> calls to regStats() at the beginning of simulation) for cleanup code?  I
+> need to do some additional processing at the end of simulation (before stats> are calculated and printed) and was wondering if there's a standard place I> can put my code.  I can't seem to find anything like this in the code or
+> documentation, but thought I may be missing something.What exactly are you trying to do?  There's a function calledregisterResetCallback that might be what you want.  If not, it'd probably
+be easy enough to add a registerDumpCallbakc that would occur when dump iscalled.   Nate_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

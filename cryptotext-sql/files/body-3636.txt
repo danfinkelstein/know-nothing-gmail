@@ -1,0 +1,9 @@
+ Hi everybody,
+   I know this email seems a little off-topic but has anyone here tried porting a Basic Block Vector Generator in M5 for use in Simpoints? Would appreciate if you can provide diff files. Also, If I use the BBV generator from SimpleScalar(sim-fast)[1] will I get the same results(since it has been said in the documentation that M5 is based on SimpleScalar,and also considering I use the ALPHA ISA)?
+thanks,
+-dean
+[1]http://www.cs.ucsd.edu/~calder/simpoint/simplescalar-bbv.htm
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,19 @@
+hello, everybody,
+recently I met with the unmapped address problem. So  I looked up every where , and found a strange thing when submitting the job to the server.
+had you met with this signal( like no job control...) before when you submit the cmp.py/ cmp.sh  job to the server?
+and what are the possible result of this?
+//**************************************************
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+....
+//*************************************************
+thanks in advance
+York
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

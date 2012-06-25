@@ -1,0 +1,17 @@
+Hi all,
+ 
+I've observed a strange thing in m5stats.txt that I can't explain.  I have I've looked on google and the m5 website for an explanation of what we're seeing and haven't found it.  
+ 
+The sim_freq of our m5stats.txt file says 1,000,000,000,000.  If I'm interpreting that correctly, that's saying that our system was running at 1Terahertz.  Is that correct?  We specified our CPU and bus frequencies to be 1GHz so we would have expected it to say 1,000,000,000.  Why is it off by a factor of 1000?  It does not make sense to me.  
+ 
+Furthermore, our sim_ticks says 79163591000.  Dividing our sim_ticks by our sim_freq we get our sim_seconds = .079164 seconds which is what the m5stats.txt file says.  This seems too quick for the large amount of work we are doing.  If we instead divide by 1GHz we get 
+79.164 seconds which seems more correct.  It seems that we are missing some understanding about the simulator.  Could someone please explain what's going on?
+ 
+Any help is greatly appreciated.
+ 
+Thanks,
+Julian
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

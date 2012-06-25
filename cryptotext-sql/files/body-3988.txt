@@ -1,0 +1,9 @@
+Sorry, I forgot to mention some points.  I'm running M5 2.0b3 and am
+trying to run the benchmarks in SE mode.
+--
+Julian Bui
+julianbui@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,46 @@
+You don't have enough virtual memory on your machine to support that
+much simulated physical memory.  There are two causes:
+1) You're on a 32-bit OS and you just don't have the virtual address
+space available.  There's nothing you can do here.
+2) You don't have enough RAM + SWAP to cover the amount of physical
+memory you want to support.  You can add a swap partition or file and
+that will solve your problem.
+- Show quoted text -
+On Fri, Nov 14, 2008 at 4:23 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+> hi,
+>
+> I have encountered a problem while simulating a configuration(.py) file.
+>
+> The error is:
+> fatal: Out of memory, please increase size of physical memory.
+>  @ cycle 0
+> [new_page:build/ALPHA_SE/sim/system.cc, line 230]
+> Memory Usage: 2295488 KBytes
+>
+> Then in order to remove this error, i changed the allocated physical memory
+> size, i.e., initially was "2056 MB" then changed to "16GB" step by step but
+> got still the same problem.
+>
+> When i increase the physical memory to 32 GB for checking, at this time the
+> error is as:
+> mmap: Cannot allocate memory
+> fatal: Could not mmap!
+>  @ cycle 0
+> [PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 66]
+> Memory Usage: 131804 KBytes
+>
+>
+> Could you please help me, i could not fix this problem.....
+>
+> Thank you,
+> devraj
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+A bridge is only needed to connect two buses.  Anything that's not a
+bus can connect directly to a bus.
+Steve
+- Show quoted text -
+On Thu, Mar 12, 2009 at 1:02 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, all, when the fs.py making a LinuxAlphaSystem which it invoke a function
+> makeLinuxAlphaSystem in FSConfig.py, there is a bridge connecting membus and
+> iobus.  But in fs.py, the cache is connected directly to membus, so where is
+> the bridge ?  Sorry for such silly question, but it really confuse me.
+> Thanks !
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

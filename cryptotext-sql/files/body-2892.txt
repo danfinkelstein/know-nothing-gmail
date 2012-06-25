@@ -1,0 +1,11 @@
+> so is there a reason not to write it as num_cpus in the first place? In the
+> beta 4 t is written as num_cpus.
+It was changed because hyphens are the standard for command line
+options for just about every program out there.  The existence of an
+underscore was just an accident and confused people.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

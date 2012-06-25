@@ -1,0 +1,6 @@
+as i understand it, a tick is equivalent to a clock cycle in m5. that is, it defines what could happen in a cycle. calling fetch.tick() tells the fetch module to do what it does in a cycle, and thus  fetch.tick() is called in every "cycle". is this correct?
+also, i noticed in fetch_impl.hh that Default_fetch.tick calls on DefaultFetch<Impl>::fetch which in turn calls on DefaultFetch<Impl>::fetchCacheLine. Does this mean that for every tick/"cycle", a cache line is fetched? Also, does this mean that only one instruction is fetched every tick/"cycle"? I'm assuming that there is a one to one conversion from instruction to Static inst and then Dyn inst. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

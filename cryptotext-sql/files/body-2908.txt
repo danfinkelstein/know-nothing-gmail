@@ -1,0 +1,273 @@
+The first error is because you're not using a 64bit version of Python.
+The version of Python that comes with OS X 10.5 is 64bit, but if you
+compile one from MacPorts you'll get a 32bit version. M5 is way faster
+with a 64bit host, so I suggest you use the python that comes with OS X.
+The second error is a bug is SCons v20071212d or newer. There have
+been a couple of patches sent to the list over  the last month that
+implement a workaround in our SConscripts for it.
+Ali
+- Show quoted text -
+On Jun 13, 2008, at 5:12 PM, Rick Strong wrote:
+> Hi,
+>
+> I am trying to build M5 on mac osx leopard and am getting an error
+> related the Python.h header. When I check the scons config log, I get
+> the infamous '#error "LONG_BIT definition appears wrong for platform
+> (bad gcc/glibc config?).' I checked around and a related post
+> suggested
+> commenting out all the env.Append(CCFLAGS='-arch x86_64') around line
+> 396 in SConstruct. However, this solution does not work either. Has
+> anyone had this error and found a way around it? I have copied my
+> output
+> from running scons, the scons_config.log and running scons after
+> removing the x86_64 support.
+>
+> _*The error on the terminal is:*_
+> =>scons
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... no
+> Error: can't find Python.h header in /opt/local/include/python2.5
+>
+> _*The scons log file shows:*_
+>
+> file /Users/rickstrong/research/m5/m5-2.0b5/SConstruct,line 386:
+> Configure(confdir = build/.scons_config)
+> scons: Configure: Checking for C header file Python.h...
+> build/.scons_config/conftest_0.c <-
+> |
+> |#include <Python.h>
+> |
+> |
+> gcc -o build/.scons_config/conftest_0.o -c -arch x86_64 -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -arch
+> x86_64 -Iext/dnet -I/opt/local/include/python2.5
+> build/.scons_config/conftest_0.c
+> In file included from /opt/local/include/python2.5/Python.h:57,
+> from build/.scons_config/conftest_0.c:2:
+> /opt/local/include/python2.5/pyport.h:761:2: error: #error "LONG_BIT
+> definition appears wrong for platform (bad gcc/glibc config?)."
+> scons: Configure: no
+>
+> _*Running Scons After removing the 64bit support environment variables
+> *_
+> scons
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... no
+> Error: can't find Python.h header in /opt/local/include/python2.5
+> rickstrong@m5-2.0b5*14:04:26=>vi SConstruct
+> rickstrong@m5-2.0b5*14:09:34=>make
+> scons build/ALPHA_SE/m5.debug
+> CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... yes
+> Adding /opt/local/lib to LIBPATH for python2.5
+> Checking for C library python2.5... yes
+> Checking for accept(0,0,0) in C++ library None... yes
+> Checking for zlibVersion() in C++ library z... yes
+> Checking for C header file fenv.h... yes
+> Reading /Users/rickstrong/research/m5/m5-2.0b5/src/arch/alpha/
+> SConsopts
+> Reading /Users/rickstrong/research/m5/m5-2.0b5/src/arch/mips/SConsopts
+> Reading /Users/rickstrong/research/m5/m5-2.0b5/src/arch/sparc/
+> SConsopts
+> Reading /Users/rickstrong/research/m5/m5-2.0b5/src/cpu/o3/SConsopts
+> Reading /Users/rickstrong/research/m5/m5-2.0b5/src/cpu/simple/
+> SConsopts
+> Building in /Users/rickstrong/research/m5/m5-2.0b5/build/ALPHA_SE
+>
+> scons: warning: The env.Copy() method is deprecated; use the
+> env.Clone()
+> method instead.
+> File "/Users/rickstrong/research/m5/m5-2.0b5/SConstruct", line 703, in
+> <module>
+> Options file
+> /Users/rickstrong/research/m5/m5-2.0b5/build/options/ALPHA_SE not
+> found,
+> using defaults in build_opts/ALPHA_SE
+> Compiling in ALPHA_SE with MySQL support.
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> Defining FULL_SYSTEM as 0 in build/ALPHA_SE/config/full_system.hh.
+> /opt/local/bin/python2.5 build/ALPHA_SE/arch/isa_parser.py
+> build/ALPHA_SE/cpu/cpu_models.py build/ALPHA_SE/arch/alpha/isa/
+> main.isa
+> build/ALPHA_SE/arch/alpha AtomicSimpleCPU O3CPU TimingSimpleCPU
+> yacc: Generating LALR parsing table...
+> Generating build/ALPHA_SE/arch/alpha/decoder.hh
+> Generating build/ALPHA_SE/arch/alpha/decoder.cc
+> Generating build/ALPHA_SE/arch/alpha/atomic_simple_cpu_exec.cc
+> Generating build/ALPHA_SE/arch/alpha/o3_cpu_exec.cc
+> Generating build/ALPHA_SE/arch/alpha/timing_simple_cpu_exec.cc
+> Generating build/ALPHA_SE/arch/alpha/max_inst_regs.hh
+> createSimObjectParam(["build/ALPHA_SE/params/AlphaDTB.hh"],
+> ['AlphaDTB'])
+> createSimObjectParam(["build/ALPHA_SE/params/AlphaITB.hh"],
+> ['AlphaITB'])
+> Generating switch header build/ALPHA_SE/arch/types.hh
+> Defining USE_MYSQL as 1 in build/ALPHA_SE/config/use_mysql.hh.
+> Generating switch header build/ALPHA_SE/arch/interrupts.hh
+> Generating switch header build/ALPHA_SE/arch/isa_traits.hh
+> Generating switch header build/ALPHA_SE/arch/regfile.hh
+> Generating switch header build/ALPHA_SE/arch/syscallreturn.hh
+> Generating switch header build/ALPHA_SE/arch/tlb.hh
+> Generating switch header build/ALPHA_SE/arch/utility.hh
+> Generating static_inst_exec_sigs.hh: AtomicSimpleCPU, O3CPU,
+> TimingSimpleCPU
+> Defining ALPHA_TLASER as 0 in build/ALPHA_SE/config/alpha_tlaser.hh.
+> traceFlagsHH(["build/ALPHA_SE/base/traceflags.hh"], [('Annotate', (),
+> ''), ('GDBAcc', (), ''), ('GDBExtra', (), ''), ('GDBMisc', (), ''),
+> ('GDBRead', (), ''), ('GDBRecv', (), ''), ('GDBSend', (), ''),
+> ('GDBWrite', (), ''), ('SQL', (), ''), ('StatEvents', (), ''),
+> ('GDBAll', ('GDBMisc', 'GDBAcc', 'GDBRead', 'GDBWrite', 'GDBSend',
+> 'GDBRecv', 'GDBExtra'), ''), ('Activity', (), ''), ('Commit', (), ''),
+> ('Context', (), ''), ('Decode', (), ''), ('DynInst', (), ''),
+> ('ExecEnable', (), ''), ('ExecCPSeq', (), ''), ('ExecEffAddr', (),
+> ''),
+> ('ExecFetchSeq', (), ''), ('ExecOpClass', (), ''), ('ExecRegDelta',
+> (),
+> ''), ('ExecResult', (), ''), ('ExecSpeculative', (), ''),
+> ('ExecSymbol',
+> (), ''), ('ExecThread', (), ''), ('ExecTicks', (), ''), ('Fetch', (),
+> ''), ('IntrControl', (), ''), ('PCEvent', (), ''), ('Quiesce', (),
+> ''),
+> ('Exec', ('ExecEnable', 'ExecTicks', 'ExecOpClass', 'ExecThread',
+> 'ExecEffAddr', 'ExecResult', 'ExecSymbol'), ''), ('MemTest', (), ''),
+> ('CommitRate', (), ''), ('IEW', (), ''), ('IQ', (), ''), ('FreeList',
+> (), ''), ('LSQ', (), ''), ('LSQUnit', (), ''), ('MemDepUnit', (), ''),
+> ('O3CPU', (), ''), ('ROB', (), ''), ('Rename', (), ''), ('Scoreboard',
+> (), ''), ('StoreSet', (), ''), ('Writeback', (), ''), ('O3CPUAll',
+> ('Fetch', 'Decode', 'Rename', 'IEW', 'Commit', 'IQ', 'ROB',
+> 'FreeList',
+> 'LSQ', 'LSQUnit', 'StoreSet', 'MemDepUnit', 'DynInst', 'O3CPU',
+> 'Activity', 'Scoreboard', 'Writeback'), ''), ('SimpleCPU', (), ''),
+> ('Bus', (), ''), ('BusAddrRanges', (), ''), ('BusBridge', (), ''),
+> ('LLSC', (), ''), ('MMU', (), ''), ('MemoryAccess', (), ''), ('Cache',
+> (), ''), ('CachePort', (), ''), ('CacheRepl', (), ''), ('HWPrefetch',
+> (), ''), ('IIC', (), ''), ('IICMore', (), ''), ('Split', (), ''),
+> ('Config', (), ''), ('Event', (), ''), ('Fault', (), ''), ('Flow', (),
+> ''), ('IPI', (), ''), ('IPR', (), ''), ('Interrupt', (), ''),
+> ('Loader',
+> (), ''), ('Stack', (), ''), ('SyscallVerbose', (), ''), ('TLB', (),
+> ''),
+> ('Thread', (), ''), ('Timer', (), ''), ('VtoPhys', (), '')])
+> createSimObjectParam(["build/ALPHA_SE/params/MemObject.hh"],
+> ['MemObject'])
+> createEnumParam(["build/ALPHA_SE/enums/MemoryMode.hh"],
+> ['MemoryMode'])
+> createSimObjectParam(["build/ALPHA_SE/params/System.hh"], ['System'])
+> createEnumParam(["build/ALPHA_SE/enums/OpClass.hh"], ['OpClass'])
+> Defining NO_FAST_ALLOC as 0 in build/ALPHA_SE/config/no_fast_alloc.hh.
+> createSimObjectParam(["build/ALPHA_SE/params/SimObject.hh"],
+> ['SimObject'])
+> Generating switch header build/ALPHA_SE/arch/stacktrace.hh
+> Generating switch header build/ALPHA_SE/arch/vtophys.hh
+> createSimObjectParam(["build/ALPHA_SE/params/AlphaTLB.hh"],
+> ['AlphaTLB'])
+> g++ -o build/ALPHA_SE/arch/alpha/ev5.do -c -pipe -fno-strict-aliasing
+> -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA
+> -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/opt/local/include/python2.5
+> -Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+> build/ALPHA_SE/arch/alpha/ev5.cc
+> g++ -o build/ALPHA_SE/arch/alpha/faults.do -c -pipe -fno-strict-
+> aliasing
+> -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA
+> -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/opt/local/include/python2.5
+> -Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+> build/ALPHA_SE/arch/alpha/faults.cc
+> g++ -o build/ALPHA_SE/arch/alpha/floatregfile.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/floatregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/intregfile.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/intregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/ipr.do -c -pipe -fno-strict-aliasing
+> -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA
+> -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/opt/local/include/python2.5
+> -Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+> build/ALPHA_SE/arch/alpha/ipr.cc
+> g++ -o build/ALPHA_SE/arch/alpha/miscregfile.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/miscregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/pagetable.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/pagetable.cc
+> g++ -o build/ALPHA_SE/arch/alpha/regfile.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/regfile.cc
+> createSimObjectParam(["build/ALPHA_SE/params/PhysicalMemory.hh"],
+> ['PhysicalMemory'])
+> g++ -o build/ALPHA_SE/arch/alpha/remote_gdb.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/remote_gdb.cc
+> g++ -o build/ALPHA_SE/arch/alpha/tlb.do -c -pipe -fno-strict-aliasing
+> -Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA
+> -DDEBUG -DTRACING_ON=1 -Iext/dnet -I/opt/local/include/python2.5
+> -Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+> build/ALPHA_SE/arch/alpha/tlb.cc
+> g++ -o build/ALPHA_SE/arch/alpha/utility.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/utility.cc
+> g++ -o build/ALPHA_SE/arch/alpha/process.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/process.cc
+> g++ -o build/ALPHA_SE/arch/alpha/linux/linux.do -c -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+> -I/opt/local/include/python2.5 -Ibuild/libelf -I/usr/local/mysql/
+> include
+> -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/linux/linux.cc
+> In file included from build/ALPHA_SE/arch/alpha/linux/linux.cc:31:
+> build/ALPHA_SE/arch/alpha/linux/linux.hh:34:31: error:
+> kern/linux/linux.hh: No such file or directory
+> build/ALPHA_SE/arch/alpha/linux/linux.hh:41: error: expected class-
+> name
+> before ‘{’ token
+> build/ALPHA_SE/arch/alpha/linux/linux.hh:46: error:
+> ‘OpenFlagTransTable’
+> does not name a type
+> build/ALPHA_SE/arch/alpha/linux/linux.cc:36: error:
+> ‘OpenFlagTransTable’
+> does not name a type
+> build/ALPHA_SE/arch/alpha/linux/linux.cc:71: error: ‘openFlagTable’ is
+> not a member of ‘AlphaLinux’
+> build/ALPHA_SE/arch/alpha/linux/linux.cc:71: error: ‘openFlagTable’ is
+> not a member of ‘AlphaLinux’
+> scons: *** [build/ALPHA_SE/arch/alpha/linux/linux.do] Error 1
+> scons: building terminated because of errors.
+> make: *** [sedebug] Error 2
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

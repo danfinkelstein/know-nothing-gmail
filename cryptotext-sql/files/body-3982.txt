@@ -1,0 +1,12 @@
+Hi,
+As Steve said, M5 provides point-to-point link, but switch
+model is needed to hook up more than two systems. So my
+question is: Can I have several systems(> 2) work together
+with each two having a distinct point-to-point link for data
+transfer? It is somehow like a fully-connected network. In this
+way, is switch model still needed? Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

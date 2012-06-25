@@ -1,0 +1,76 @@
+I was actually thinking about this on and off...
+First off, I totally agree with Nate. It wiill take a pretty big code
+overhaul to get the CPUs to be ISA dependent.
+Second, the ways I thought it might work is:
+(1) Somehow link 2 M5 binaries and have them interface through the
+same EventQueue. I'm not sure how ISA independent devices/memory are
+though so another opinion would be needed to flesh out the feasibility
+of that idea.
+(2) Turn the "TheISA" namespace into an object. A overly conservative
+way to do it would be to capture all of the ISA information into say
+an "AlphaISA" class containing literally everything in the
+src/arch/alpha/* folder (regfiles, process objects, etc.). Then, you
+could just pass the ISA into the CPU model and wherever you see a
+TheISA::func() you can turn it into a theISA->func(). Mind you, that
+would be a not-so efficient way to do things but on a first cut that
+is what makes sense to me if you want to start making ISA objects
+portable instead of hard-coded in.
+Again, not-so-easy to do and definitely a good chunk of time/effort.
+- Show quoted text -
+On Wed, May 20, 2009 at 12:12 PM, nathan binkert <nate@binkert.org> wrote:
+> Heterogeneous ISAs would require a significant amount of work.  It's
+> certainly not impossible, but it would require the removal of the
+> THE_ISA define and a bunch of compiler stuff to create CPUs for each
+> ISA.
+>
+>  Nate
+>
+> On Wed, May 20, 2009 at 12:02 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>> It is supported as long as you use a single-isa for all the cores. At
+>> most, you will just have to hack on the configuration of the cores you
+>> want. Multiple-ISAs might be possible, but Nathan knows more about the
+>> issues that you would need to develop through.
+>>
+>> Good luck,
+>> -Rick
+>>
+>> ASHMAWY Amr wrote:
+>>> Hi,
+>>>
+>>> I'm starting research on scheduling for heterogeneous multicore
+>>> I was advised to try M5 simulator, I couldn't find guidance whether it supports
+>>> such architecture or not.
+>>>
+>>> Can someone help me if it's supported or not?
+>>> TIA
+>>>
+>>> Best Regards
+>>> --------------------------------------------------
+>>> Amr M. M. Ashmawy
+>>> Doctor Student
+>>> Japan Advanced Institute of Science and Technology
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

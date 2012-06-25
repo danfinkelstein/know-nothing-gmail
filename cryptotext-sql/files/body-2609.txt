@@ -1,0 +1,65 @@
+Philip,
+I think that is a pretty reasonably idea, however as you state the con
+is reasonably high. I don't think we would want to distribute them
+with M5 proper, because it would be difficult to verify that all the
+configurations still work. I think the best option is to have a
+contribution section on the wiki. People could post full scripts, or
+snippets along with information and comments. I don't think file
+uploading is enabled on the website at this moment, but I'll work on
+making that happen.
+Ali
+- Show quoted text -
+On Aug 19, 2008, at 4:13 AM, Philip Machanick wrote:
+> As a more general concept, would it not be a useful concept to start
+> building a "contributions" collection? I see quite a lot of questions
+> on the list along the lines of I am trying to simulate configuration X
+> where X is a slight variation on what others may be doing.
+>
+> Benefits:
+> * in the interests of science, better repeatability (someone
+> claiming to have a
+>  better idea than published work can actually use it directly -- and
+> check the
+>  results)
+> * fewer questions like the above on the list
+>
+> Costs:
+> * extra maintenance, possible to mitigate by making it clear that
+>  "contributions" are not maintained, and the original author
+>  should be asked questions on details
+>
+> On 8/19/08, richard strong <rstrong@hp.com> wrote:
+>> HI all,
+>>
+>> I am wondering if anyone has tried to model a niagara processor in M5
+>> and would be willing to share their expertise on how to do so? This
+>> is
+>> going to be used to validate a re-implementation of Wattch that I
+>> will
+>> make available to all M5 users.
+>>
+>> Thanks in advance,
+>> -Rick
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> --
+> Philip Machanick (Visiting Academic, School of ITEE, University of
+> Queensland)
+> 39 Cunningham Street, Taringa, Qld 4068, Australia
+> http://opinion-nation.blogspot.com/
+> +61-7-3871-0963 (office 3365-1624) skype philipmach
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,37 @@
+Sujay Phadke wrote:
+Hello,
+  I just started using M5. I am trying to compile the beta3. It gives the following output:
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Checking for main() in C library python2.5... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Building in /n/rtcl20/home/sphadke/research/m5/m5-2.0b3/build/ALPHA_SE
+Options file /n/rtcl20/home/sphadke/research/m5/m5-2.0b3/build/options/ALPHA_SE not found,
+ using defaults in build_opts/ALPHA_SE
+scons: done reading SConscript files.
+scons: Building targets ...
+It does run thru and build finally, but hy does it not find the options file? Is that required?
+It's just a standard notification the first time you build in a new directory... it didn't find any saved build options from the last time you built (since there was no last time), so it's initializing the saved options with the default values.  If this was actually an error it would say "error" or something like that.
+http://www.m5sim.org/wiki/index.php/Compiling_M5#Compiling
+http://www.m5sim.org/wiki/index.php/SCons_build_system
+Also, I cannot build anything other than the debug. If I try opt on either FS or SE it gives:
+scons build/ALPHA_SE/m5.opt
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Checking for main() in C library python2.5... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Building in /n/rtcl20/home/sphadke/research/m5/m5-2.0b3/build/ALPHA_SE
+Using saved options file /n/rtcl20/home/sphadke/research/m5/m5-2.0b3/build/options/ALPHA_SE
+scons: *** Error converting option: CPU_MODELS
+Invalid value(s) for option: <built-in function all>
+File "SConstruct", line 611, in <module>
+It looks like it's having problems reloading the saved options... I'm guessing this is just because it's the second time you've tried to build something, and not anything to do with opt vs debug etc.  What version of scons do you have?  ("scons -v")  I don't see this problem with v0.96.92.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

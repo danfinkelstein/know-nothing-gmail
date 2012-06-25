@@ -1,0 +1,13 @@
+I was told that I could generate ‘dot’ plots
+from profile data created during a simulation run.  Could someone give a quick
+primer on how to do this?
+ 
+Geoff
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008 10:26 AM
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

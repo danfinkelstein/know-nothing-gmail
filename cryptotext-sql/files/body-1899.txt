@@ -1,0 +1,11 @@
+It's part of the C++ that's auto-generated from the ISA description.  http://m5sim.org/wiki/index.php/ISA_description_systemSee also the *.isa files under src/arch/* and src/arch/isa_parser.py.
+SteveOn Thu, Feb 19, 2009 at 6:37 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+I seem to find the initiateAcc that I want, the src/ directory doesn't contain this but the build/ALPHA_FS directory does, the initiateAcc is generated during the build.What confuse me now is how this code generated? Can somebody give me some hints? It seems that would help me understand the M5 better. Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

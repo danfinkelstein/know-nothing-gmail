@@ -1,0 +1,10 @@
+hi,    I updated from the development repository ("http://repo.m5sim.org/m5/rev/9fe574944f31") for mremap(), i run scons for ALPHA_SE it ran fine, when i tried to run for SPARC_SE it is giving following error message.
+build/SPARC_SE/mem/page_table.cc: In member function âvoid PageTable::remap(Addr, int64_t, Addr)â:build/SPARC_SE/mem/page_table.cc:106: error: âstruct SparcISA::TlbEntryâ has no member named âupdateVaddrâ
+voidPageTable::remap(Addr vaddr, int64_t size, Addr new_vaddr){    assert(pageOffset(vaddr) == 0);    assert(pageOffset(new_vaddr) == 0);    DPRINTF(MMU, "moving pages from vaddr %08p to %08p, size = %d\n", vaddr,
+            new_vaddr, size);    for (; size > 0; size -= pageSize, vaddr += pageSize, new_vaddr += pageSize) {        PTableItr iter = pTable.find(vaddr);        assert(iter != pTable.end());
+        pTable[new_vaddr] = pTable[vaddr];        pTable.erase(vaddr);        pTable[new_vaddr].updateVaddr(new_vaddr);   // line # 106
+        updateCache(new_vaddr, pTable[new_vaddr]);    }}what could be the problemPavan.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

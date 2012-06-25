@@ -1,0 +1,11 @@
+>     I am now reading the source code of M5 and trying to figure out how the
+> M5 start to work. I have no idea where the M5 begins to run ? Which file
+> does it execute first ? Is there any document about this ? I just need an
+> outline of its execute path.
+Start with the documentation on m5sim.org about running m5.  There's
+also a tutorial on there.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

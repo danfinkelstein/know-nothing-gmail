@@ -1,0 +1,15 @@
+Has anyone run the ALPBenchmarks on M5 System Emulator mode?
+I have built the statically linked binaries for ALPBench using a cross compiler.
+First I got the error of: 'unimplemented system call' (_systcl: which i changed to ignore system call).
+Is that a type-o?  I assyme that was supposed to be sysctl?  That syscall is comparable to reading a variable in /proc, and depending on the variable, values could be hardcoded for that.
+then I get the error : fatal: Syscall 427 out of range
+What version of m5 are you running?  Is this M5 1.1?  Syscall 427 is fstat64 which is implemented in 2.0b2.  If you want to stick with 1.1, you could backport the syscall.
+I also had another fundamental question, if in my run.py script for the SE mode, I specify 4 CPUs, and my application has 4 threads, then it would schedule a thread on each of the CPUs,right?
+I'm no expert on the threading stuff in SE mode, but it's not just a matter of running a threaded program in SE mode.  We don't fully implement the user-level threading stuff since you can just run in FS mode and get everything.  [ Steve, Kevin: what exactly can we do here? ]
+Also, can anyone tell me the significance of the code in the encumbered directory?
+That code is stuff with a more restrictive license than our own.  You can use it provided that you are happy with the license.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

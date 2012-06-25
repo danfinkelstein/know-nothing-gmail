@@ -1,0 +1,38 @@
+This page describes the situation with Splash benchmarks, but it
+basically applies to running parallel codes in general:
+http://www.m5sim.org/wiki/index.php/Splash_benchmarks
+If you want to run codes that you've developed yourself on MIPS,
+you'll have to do some work to implement fork() or something similar
+in SE mode.  In general it's easiest to just use pthreads and run in
+FS mode, but unfortunately we don't have MIPS_FS up yet.
+Steve
+- Show quoted text -
+On Dec 21, 2007 2:58 PM, Panayiotis Petridis <p_tottis@hotmail.com> wrote:
+>
+> Hi all,
+>
+>  I am trying to run some simple benchmarks on M5 using CMP architecture. My
+> question is how can i run my benchmark parallel i.e. if i have 2 processors
+> how do i schedule the instructions for each one?
+>
+>  Do i have to configure my system, for example on se.py file , and define
+> the workload to each processor or do i have to make the scheduling within
+> the benchmark, for example using pthreads?
+>
+>  I want to simulate MIPS architecture on SE mode
+>
+>  Thanks
+>  Panayiotis
+>
+> ________________________________
+> Express yourself instantly with MSN Messenger! MSN Messenger
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

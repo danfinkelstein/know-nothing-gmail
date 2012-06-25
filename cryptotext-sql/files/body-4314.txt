@@ -1,0 +1,43 @@
+Hi Sanyal,
+It appears as though you're compiling an x86 version of the kernel instead of an Alpha one.
+Take a look at:
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+Ali
+On Sep 5, 2007, at 11:20 AM, sutirtha sanyal wrote:
+Hi All,
+I am using M5 2.0b2. Currently i can only simulate
+only upto 4 cores.
+But for my project it is a very small number.
+To enable m5 for 64 core support as i understand i
+need to compile the changed kernel provided in
+m5base-2.6.13.
+But compilation is giving errors.
+"include/asm/mpspec_def.h:78: warning:
+&#8216;packed&#8217; attribute ignored for field of
+type &#8216;unsigned char[6]&#8217;
+init/calibrate.c: In function
+&#8216;calibrate_delay&#8217;:
+init/calibrate.c:143: error: too many arguments to
+function &#8216;__delay&#8217;
+init/calibrate.c:161: error: too many arguments to
+function &#8216;__delay&#8217;
+make[1]: *** [init/calibrate.o] Error 1
+make: *** [init] Error 2"
+I am absolutely new in complining linux kernel and
+this was my first try.
+Can any body please suggest a step by step method on
+how to do this.
+Any help will be greatly appreciated.
+-Regards,
+Sanyal
+      ____________________________________________________________________________________
+Shape Yahoo! in your own image.  Join our Network Research Panel today!   http://surveylink.yahoo.com/gmrs/yahoo_panel_invite.asp?a=7
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

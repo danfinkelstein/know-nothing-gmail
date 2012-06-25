@@ -1,0 +1,77 @@
+The crosstools mailing list is probably a better place for these type of questions. I don't know the exact answer to your solution, but here is a link to a matrix of builds that work: http://www.kegel.com/crosstool/crosstool-0.43/buildlogs/ and here is a link to a set of patches against tools to help them build: http://www.kegel.com/crosstool/crosstool-0.43/patches/
+Searching the crosstools mailing list is usually provides some helpful results as well
+Ali- Show quoted text -
+On Dec 9, 2007, at 7:35 AM, Gabriel Michael Black wrote:
+        Unfortunately, there are many combinations of versions of glibc, gcc,
+binutils, etc. that won't work together. The only solution I've found to
+this sort of problem is fiddling around with the version numbers until I
+find one that works. I believe there's a website which lists known
+working ones, but I've had mixed success with the combinations they suggest.
+Gabe
+dean michael ancajas wrote:
+hi everybody,
+   I do not know if this is the appropriate list for this. I used Dan
+Kegel's crosstool to build a toolchain for the Alpha processor. I used
+gcc-3.4.5 and glibc 2.3.5, binutils-2.15. It gives me the following error:
+-glibc-2.3.5/binutils-2.15/bfd/../intl -I../intl   -W -Wall
+-Wstrict-prototypes -Wmissing-prototypes -g -O2 -c
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/dwarf1.c
+gcc -DHAVE_CONFIG_H -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I. -D_GNU_SOURCE -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../include
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../intl
+-I../intl -W -Wall -Wstrict-prototypes -Wmissing-prototypes -g -O2 -c
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/dwarf1.c
+-o dwarf1.o
+/bin/sh ./libtool --mode=compile gcc -DHAVE_CONFIG_H -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I. -D_GNU_SOURCE     -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../include
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../intl
+-I../intl   -W -Wall -Wstrict-prototypes -Wmissing-prototypes -g -O2 -c
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c
+gcc -DHAVE_CONFIG_H -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I. -D_GNU_SOURCE -I.
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../include
+-I/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/../intl
+-I../intl -W -Wall -Wstrict-prototypes -Wmissing-prototypes -g -O2 -c
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c
+-o coff-alpha.o
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c:
+In function 'alpha_adjust_reloc_in':
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c:671:
+warning: comparison is always true due to limited range of data type
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c:
+In function 'alpha_relocate_section':
+/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/binutils-2.15/bfd/coff-alpha.c:1458:
+error: invalid lvalue in assignment
+make[3]: *** [coff-alpha.lo] Error 1
+make[3]: Leaving directory
+`/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/build-binutils/bfd'
+make[2]: *** [all-recursive] Error 1
+make[2]: Leaving directory
+`/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/build-binutils/bfd'
+make[1]: *** [all-recursive-am] Error 2
+make[1]: Leaving directory
+`/home/dean/m5/crosstool-0.43/build/alpha-unknown-linux-gnu/gcc-3.4.5-glibc-2.3.5/build-binutils/bfd'
+make: *** [all-bfd] Error 2
+Can someone pls shine a light on this. My GCC version is gcc version
+4.1.3 20070929 (prerelease) (Ubuntu 4.1.2-16ubuntu2)
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

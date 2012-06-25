@@ -1,0 +1,23 @@
+HI,
+      It works with Stats::Value and using the functor in the regStats declaration. However, I have another problem. I want to have an array of floating point metrics, and I want to print them out at the end. One way is to name the various stats with a "_<index>", and print out n of those, but its messy. Is there a way I can use a vector stat and use this "value" type in order to have floating point in it?
+Another question, which I think has been asked before, but I cant find an example. Can I do this by writing a function which would just print out the stats for me in the format I like. I would have to have this function called at the end of simulation. How do I do this?
+- Sujay
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "Sujay Phadke" <sphadke@eecs.umich.edu>
+Cc: <m5-users@m5sim.org>
+Sent: Wednesday, October 17, 2007 12:06 AM
+Subject: Re: [m5-users] Float in stats
+- Show quoted text -
+First, please keep your questions to the list and not to me directly for everyone else's benefit.
+Another follow up to my previous mail:
+I tried using a static variable (float), doing all calculations with it. Now I want to dump the value of this at the end, so I tried assigning it to oa Formula stat so that it is printed out at the end.
+Stats:: Formula energy;
+in the regStats,
+energy = static_variable;
+Problem is this stat is not being printed at all. Any ideas?
+If you don't at least give a stat a name (using the .name() function), it won't print.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

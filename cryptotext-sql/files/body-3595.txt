@@ -1,0 +1,7 @@
+Hi,
+Does anyone have an idea of how long it will be till x86 support is good enough to run something like Xen. I haven't tried running any x86 applications on M5 and was wondering if anyone has a good idea of when it might good to dive into ....
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

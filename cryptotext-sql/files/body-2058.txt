@@ -1,0 +1,21 @@
+Have you modified the simulator, particularly the memory system, in
+any way? This error occurs when an object in the memory system
+receives a packet it was not expecting. If you have modified the
+simulator, the problem probably has to do with the modifications
+you've made, if you haven't modified it then you should enable some
+trace flags like Bus, Cache, etc to see what happens leading up to
+this error. With that data you should be able to better understand
+what is going wrong and begin to realize how to fix it.
+Ali
+On Jan 2, 2009, at 5:48 PM, Eduardo Olmedo Sanchez wrote:
+> ck, canneal, swaptions in a 4 core system,
+> in Full System mode, with 4 threads and with the small workload.
+>
+> warn: allocating bonus target for snoop
+> m5.opt: build/ALPHA_FS/mem/tport.cc:97: virtual bool
+> SimpleTimingPort::recvTiming(Packet*): Assertion `pkt->isResponse()'
+> failed.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

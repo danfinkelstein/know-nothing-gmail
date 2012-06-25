@@ -1,0 +1,24 @@
+       Changing the counter type to double is complicated, since it gives
+errors during compilation. It seems I'll have to change it in the
+functions which uses it too.
+I tried using the Stats::Value, but am getting errors. In the stats used
+in src/sim/stat_control.cc, which are of type ::Value, like hostSeconds
+(which prints out a double at the end), the stats have some .functor
+declared in it, which is doing the calculation. I dont know how this
+works, and when it gets called, but I was looking for something simpler.
+It's not that complicated.  It just calls a function
+If I declare my stat as a Stats::Value mystat
+and then try doing something like mystat += mystat * time_since_access
+Statistics can only be assigned to.  You cannot use them in the rhs of an expression.  Can you instead just do:
+mystat *= time_since_access + 1;
+It should be mathematically equivalent.
+Is there a simpler way, with a static variable or another global variable
+defined in some top level file. I should be able to use that global
+variable to keep storing the values every cycle and finally dump it at the
+end (maybe assign it to some stat at the end?)
+Let me ask a more fundamental question.  What are you storing that needs to be a float?  In my experience, most things can be expressed as integers and then you can use a formula to calculate some fractional value.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

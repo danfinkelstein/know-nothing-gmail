@@ -1,0 +1,31 @@
+On Sat, Jun 7, 2008 at 4:31 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> Hello,
+>      I get the following warnings multiple times when  I run splash2 in FS
+> mode under beta 5.
+>
+> (running fft here, numcpus=4)
+>
+> serial8250: too much work for irq4
+That's pretty common when you're logged in to the console interactively.
+>
+> warn: subt/su    f12,f23,f10: non-standard trapping mode not supported
+> warn: addt/su    f10,f13,f14: non-standard trapping mode not supported
+> warn: addt/su    f15,f14,f12: non-standard trapping mode not supported
+> warn: mult/su    f2,f10,f11: non-standard trapping mode not supported
+I wouldn't worry about these too much... the /su flags mean to provide
+a precise exception on underflow, which m5 doesn't support, bu as long
+as the operation doesn't actually underflow then it won't matter.
+> Are these normal?
+>
+> Thanks,
+> Sujay
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,61 @@
+I haven't run m5 under Cygwin in a long time, and it didn't work well
+last time I tried.  The easiest way to run m5 on a windows machine is
+to run it under linux in a virtual machine (there are several free
+ones, like VMware's freebie version and VirtualBox).
+Steve
+- Show quoted text -
+On Thu, Dec 31, 2009 at 11:59 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> Generally M5 is run in a linux/unix environment.  If you want to run on a
+> windows platform, you'd have to install cygwin and run it under that.  I
+> know Steve has some experience with this, but the general practice is to use
+> a *nix machine.
+> Lisa
+>
+> On Thu, Dec 24, 2009 at 10:54 AM, Uthaiwan Srimongkolpitak
+> <95srimongkol@cardinalmail.cua.edu> wrote:
+>>
+>> To whom it may concern,
+>>
+>>    This is my first time that plan to use m5 simulator on window xp. I
+>> don't know the basic installation of M5. Please help me out:
+>> 1.  I dowload files from http://repo.m5sim.org/ and full system file from
+>> http://m5sim.org/wiki/index.php/Download.
+>>
+>>      My question is which directory I should use to locate all extracted
+>> files? -->Right now I locate all in the subfolder, M5, under local drive,
+>> C:\ .
+>>
+>> 2. Then regarding on the instruction of how to compiling and installing on
+>> http://m5sim.org/wiki/index.php/Compiling_M5, I download g++, python, scons,
+>> swig, zlib, and m4.
+>>
+>>    My questions are:
+>>    (1) About m4, how to locate all extracted file of m4 and which version
+>> of m4 that you recommend? --> Right now, I did is separating each version
+>> under its subfolder of m4 folder which is under local drive,
+>> c:\m4\m4....(each version)
+>>
+>>    (2) Then, I have try to compile m5 using dos, cmd.exe, on several path,
+>> c:\ or c:\m5, or c:\m5\build_opts, with form,
+>> scons build/<arch>_<mode>/m5.<binary>.  The result is error message,
+>> 'scons' is not recognized as an internal or external command, operable
+>> program or batch file. I also try it on python and it is neither work.
+>> Please tell me how to compile on which tool?
+>>
+>> Please help me out.
+>> J&J Group
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,24 @@
+Hi Rick,
+There isn't a mechanism built-in, however you could create one
+reasonably easily by  adding a PC based even (like the
+DebugPrintkEvent) and have it break on the entSys symbol in the
+kernel. You would have to do some more work to change the syscall
+number into a name, but all that information exists in M5.
+Ali
+- Show quoted text -
+On Aug 13, 2008, at 12:54 PM, richard strong wrote:
+> Hi,
+>
+> Is there currently support to get a syscall trace (similar to the
+> SyscallVerbose) option while in Full System mode?
+>
+> -Rick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

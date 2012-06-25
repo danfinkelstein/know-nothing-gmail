@@ -1,0 +1,19 @@
+i am using cmp.py and Mybench.py file from this website,http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarksIn Mybench.py, for every benchmark i added simpoint
+for gccgcc.simpoint= 5*100E6command line i am using is:/home/pavanj/m5-2.0b6/build/ALPHA_SE/m5.opt -d /home/pavanj/m5-2.0b6/configs/cpu2006-linux-alpha-input/gcc /home/pavanj/m5-2.0b6/configs/cpu2006-linux-alpha-input/cmp.py  -t --caches --l2cache --benchmark gcc- Show quoted text -
+On Thu, May 14, 2009 at 9:45 AM, Korey Sewell <ksewell@umich.edu> wrote:
+So to Lisa's point, what are the command lines that you are using? and
+what config file (se.py?)??
+--
+===========
+Korey L Sewell
+PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+Hi Meng-Ju thanks for your answer, is that all?, it's very easy, when I saw the example I thought that if I put 8, 16 or whatever in the options.num_cpus what I'm doing is adding more cpus to the system not cores., so just changing that variable do I change the cores?. 
+ 
+Now I got another question. In your code you assign at the end a process to each core, and you initialize the process variable with files called Mybench.gobmk[i], can you post one of those files, I've try to create my own test file but when I try to simulate it in ALPHA_SE mode I get the following output: 
+ 
+warn: Unknown architecture: 3fatal: Object file is a dynamic executable however only static executables are supported!       Please recompile your executable as a static binary and try again.
+I suppose because I'm compiling incorrectly the file, to compile the file I do this gcc -static MyTest.c -o MyTest, anybody know how can I compile a test file for the ALPHA architecture. Thanks.
+ 
+Do you now where can I find how to assign programs to each core, I know h - Show quoted text -
+On Wed, Oct 1, 2008 at 1:30 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+Hi Eduardo,Here is a short example to run 8 gobmk programs on 8 cores CMPconfiguration in M5 SE.
+Meng-Ju# Simple test script## "m5 test.py"import m5from m5.objects import *import os, optparse, sysm5.AddToPath('./configs')import Simulationfrom Caches import *
+import Mybench# Get paths we might need.  It's expected this file is in m5/configs/example.config_path = os.path.dirname(os.path.abspath(__file__))print config_pathconfig_root = os.path.dirname(config_path)+"/configs"
+print config_rootm5_root = os.path.dirname(config_root)print m5_rootparser = optparse.OptionParser()# Benchmark optionsparser.add_option("-b", "--benchmark", default="",
+                help="The benchmark to be loaded.")parser.add_option("-c", "--chkpt", default="",                help="The checkpoint to load.")execfile(os.path.join(config_root, "configs", "Options.py"))
+(options, args) = parser.parse_args()if args:   print "Error: script doesn't take any positional arguments"   sys.exit(1)#process = EioProcess(file = options.eio)if options.benchmark == 'perlbench':
+  process = Mybench.perlbenchelif options.benchmark == 'gobmk':  process = [Mybench.gobmk, Mybench.gobmk1,Mybench.gobmk2,Mybench.gobmk3,Mybench.gobmk4,Mybench.gobmk5,Mybench.gobmk6,Mybench.gobmk7];
+elif options.benchmark == 'test':  process = Mybench.testif options.chkpt != "":  process.chkpt = options.chkpt(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+CPUClass.clock = '2GHz'np = options.num_cpus = 8cmt_cpus = [CPUClass(cpu_id = i) for i in xrange(np)]# ----------------------# Create a system, and add system wide objects# ----------------------
+system = System(cpu = cmt_cpus,               physmem = PhysicalMemory(range=AddrRange("2048MB")),               membus = Bus())system.toL2bus = Bus()system.l2 = L2Cache(size = '2MB')
+# ----------------------# Connect the L2 cache and memory together# ----------------------system.physmem.port = system.membus.portsystem.l2.cpu_side = system.toL2bus.portsystem.l2.mem_side = system.membus.port
+# ----------------------# Connect the L2 cache and clusters together# and the load balancer# ----------------------for cpu in cmt_cpus:   cpu.addPrivateSplitL1Caches(L1Cache(size = '64kB'),
+                               L1Cache(size = '64kB'))   cpu.mem = cpu.dcache   cpu.connectMemPorts(system.toL2bus)for i in xrange(np):   system.cpu[i].workload = [process[i]]root = Root(system = system)
+Simulation.run(options, root, system, FutureClass)_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+Thank you very much for your kindly reply.
+I use Valgrind to check the memory leakage of 410.bwaves on Pentium4.
+I use the test dataset. The program allocates 163 Mbytes, and it has
+no memory leakage.
+malloc/free: 355 allocs, 355 frees, 163,570,613 bytes allocated.
+I tried to run the alpha binary on M5.  M5 used  whole memory (2G
+physical memory +  2G swap) and it was killed by the system. What
+should I do to identify the cause of this problem?
+thanks
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

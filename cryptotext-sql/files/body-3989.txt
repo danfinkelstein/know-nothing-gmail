@@ -1,0 +1,15 @@
+Hi all,
+ 
+I have a question regarding the modeling of a shared L2 
+in M5v2beta3. How does M5 model contention, when several requests compete for 
+the same R/W port? Moreover, does M5 model banks in L2?
+ 
+What about M5v2beta4?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

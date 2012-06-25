@@ -1,0 +1,49 @@
+Did you include base/trace.hh?
+Ali- Show quoted text -
+On Dec 16, 2007, at 2:24 AM, dean michael ancajas wrote:
+hi steve,
+ all of the errors are from the line that that has DPRINTF(SimpleCPU .....
+ if i comment out the line would it be okay? (im guessing not)
+195    MyCPU::resume()
+196 {
+197     DPRINTF(SimpleCPU, "Resume\n");
+198     if (_status != SwitchedOut && _status != Idle) {
+199         assert(system->getMemoryMode() == Enums::atomic);
+200
+201         changeState(SimObject::Running);
+202         if (thread->status() == ThreadContext::Active) {
+203             if (!tickEvent.scheduled()) {
+204                 tickEvent.schedule(nextCycle());
+205             }
+206         }
+207     }
+208 }
+245 void
+246 MyCPU::activateContext(int thread_num, int delay)
+247 {
+248     DPRINTF(SimpleCPU, "ActivateContext %d (%d cycles)\n", thread_num, delay);
+249
+250     assert(thread_num == 0);
+251     assert(thread);
+252
+265 void
+266 MyCPU::suspendContext(int thread_num)
+267 {
+268     DPRINTF(SimpleCPU, "SuspendContext %d\n", thread_num);
+269
+270     assert(thread_num == 0);
+271     assert(thread);
+698 void
+699 MyCPU::tick()
+700 {
+701     DPRINTF(SimpleCPU, "Tick\n");
+702
+703     Tick latency = ticks(1); // instruc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

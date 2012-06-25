@@ -1,0 +1,17 @@
+> What is Squashed flag used for?
+If you squash an event, that means that it is not removed from the
+event queue, but it will not be run when the event's timer expires.
+This is an optimization because removal from the event queue is O(N).
+> Is there one main event queue that all modules (cpu, ...) use? or they
+> have their own queues and whenever schedule an event, insert it in the
+> main queue? I have seen that there are Event Wrapper classes which
+> assigns q = main event queue.
+There is currently one event queue, but I plan to allow each object to
+use a different event queue.  This is a step in the direction of
+parallelizing the simulator.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

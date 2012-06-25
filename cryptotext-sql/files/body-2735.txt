@@ -1,0 +1,10 @@
+Hi all,
+I was wondering how accurate time information gather from calls to
+sys/time.h using functions like gettimeofday(...). Mostly, I am
+wondering if there is any hack in place that might prevent such a
+function call that deals with time from making a lot of sense?
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

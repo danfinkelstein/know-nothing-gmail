@@ -1,0 +1,10 @@
+Hello,
+  I am not sure if this has been answered 
+before. Are there checkpoints available in M5 for workloads like web, 
+apache?
+ 
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

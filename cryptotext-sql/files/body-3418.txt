@@ -1,0 +1,53 @@
+M5 currently has the ability to simulate multi-core by instantiating
+CPU models of your choice in one system.
+However, The closest you'll get to a in-order publicly available for
+M5 is the SimpleCPU model which is a 1 CPI per machine that models the
+memory latency as well.
+Implementing an in-order model can be done by adjusting the O3CPU
+Out-of-Order parameters to represent a in-order machine (i.e. LDSTQ=1,
+ALUs=1, ROB size = size of pipeline, pipeline width = 1) OR
+implementing your own model for in-order.
+The O3CPU way would probably give you a good approximate of a in-order
+machine but depending on your needs it might not be what you want.
+There have been a few people that have started an in-order model (or
+have/had some version of it working) for M5 (Stephen Hines(?) &
+myself) but nothing has been put back in the tree as of yet.
+It's simply a matter of time before I can re-direct my time to
+integrating the in-order stuff back in the tree but I wouldnt wait on
+me for something you need.
+If you're interested in implementing a In-Order model from scratch the
+best way is probably to base it off of the O3CPU model.
+If you have any questions in doing that or need help, I'm sure the M5
+community would be more than happy to assist you on your way...
+- Show quoted text -
+On Mon, Mar 24, 2008 at 7:03 PM, Tony Frank <dtustudy@yahoo.com> wrote:
+> Hi,
+>
+> I would like to implement an in-order multicore architecutre in m5.
+>
+> Does m5 support in-order single-issue cores ?
+>
+> Can I implement 3D stack of dies in m5 ?
+>
+> thanks
+> Tony
+> Mar.  24  2008
+>
+>  ________________________________
+>
+> Looking for last minute shopping deals? Find them fast with Yahoo! Search.
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

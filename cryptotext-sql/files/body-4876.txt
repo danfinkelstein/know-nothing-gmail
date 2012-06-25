@@ -1,0 +1,24 @@
+Hi,
+I have successfully installed and run m5 2.0 in full
+system mode. I can run the benchmarks in full system
+and see the stats.
+But, I want to run two programs - one single-threaded
+and one multithreaded program on m5 in full system
+mode. I have installed cross compiler - crosstool-0.42
+from the kegel site mentioned in the m5 webpage.
+My question is -
+How can I compile and run my own programs on m5 and
+also how can I specify the threads to be run on
+different cores of the processor for the
+multi-threaded program?
+Eagerly waiting for a reply.
+Regards-
+Chaitali
+____________________________________________________________________________________
+Yahoo! Music Unlimited
+Access over 1 million songs.
+http://music.yahoo.com/unlimited
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

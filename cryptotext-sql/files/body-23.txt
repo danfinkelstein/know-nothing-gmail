@@ -1,0 +1,21 @@
+What is the expected number of instructions for your simulation?What is the number in the stats file after it exits?The answers to those questions will help you find where the deadlock point potentially is.
+Also, if you turn the progress intervals on you can see where the deadlock potentially is at well because you start seeing intervals of 0 instructions. (--prog_intvl=X on the command line.)- Show quoted text -
+On Tue, Jun 15, 2010 at 3:13 AM, Maximilien Breughe <Maximilien.Breughe@elis.ugent.be> wrote:
+Hi all,
+After executing a subset of MiBench I received this exit cause for a few benchmarks:
+Exiting @ cycle 9223372036854775807 because simulate() limit reached
+CRC32 and gsm encode with the large input set are the two benchmarks that cause this message.
+On the mailing list I read that this happens due to deadlocking for example.
+However, I run this code on a single InOrderCPU and I don't see where CRC could possibly deadlock. Besides, it executes correctly on the Atomic CPU.
+Does anybody have ideas about possible causes? Or did anybody ran CRC32/gsm encode large on the InOrderCPU to completeness?
+Regards,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

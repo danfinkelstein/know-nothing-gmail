@@ -1,0 +1,12 @@
+What do you mean, you mean whether it is from the icache or dcache?- Show quoted text -On Mon, Jun 15, 2009 at 2:53 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+- Show quoted text -Hi,I am interested in analyzing packets. I could not figure out that the requested packet is data or instruction. 
+Could anyone please help me,  what parameters tell us that the requested packet is whether data or instruction? 
+Thanks in advance,DRC
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,44 @@
+On 10/11/06, Ranjith Subramanian <ranji@cc.gatech.edu> wrote:
+Hi - I can't seem to find any information on how to get m5 to load and
+run an eio trace in SE mode? Can anyone help me with this?
+I have it working (partial script below), but there may be problems
+with using EIO files in m5.  For some programs I found that the
+instruction numbers were getting out of synch.  This isn't a problem
+if you comment out the following code in eio.cc (at line 444):
+   if (icnt != (Counter) exo_icnt->as_integer.val) {
+       ccprintf(cerr, "actual=%d, eio=%d\n", icnt,
+                (Counter) exo_icnt->as_integer.val);
+       fatal("%s: EIO trace inconsistency: ICNT mismatch", name());
+   }
+As long as the subsequent checks work out, there is no problem.
+Unfortunately, I have a small number of checkpoints for which there is
+a register-mismatch.  I need to investigate.
+Plug this into se.py, replacing the existing options:
+parser.add_option("-e", "--eio", default="",
+                 help="The eio trace to run in syscall emulation mode.")
+parser.add_option("-c", "--chkpt", default="",
+                 help="The checkpoint to load.")
+process = EioProcess(file = options.eio)
+if options.chkpt != "":
+   process.chkpt = options.chkpt
+if options.detailed:
+   #check for SMT workload
+   eios   = options.eio.split(';')
+   if len(eios) > 1:
+       process = []
+       smt_idx = 0
+       chkpts = []
+       if options.chkpt != "":
+           chkpts = options.chkpt.split(';')
+       for eio in eios:
+           smt_process = EioProcess()
+           smt_process.file = eio
+           if chkpts and chkpts[smt_idx]:
+               smt_process.chkpt = chkpts[smt_idx]
+           process += [smt_process, ]
+           smt_idx += 1
+Michael- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

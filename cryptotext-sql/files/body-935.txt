@@ -1,0 +1,6 @@
+Hi,I was looking in the archieve on how to use the cpu2000.py file for spec2000benchmarks. Though I found some help from the archieve, I was not able toget results using what was mentioned. I had created the same file structure
+that was mentioned in the archieves.Unable to find workload for gzip. This is what that I can see in the .e filewhen i run it..Thanks,
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

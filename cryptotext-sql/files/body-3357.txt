@@ -1,0 +1,42 @@
+You're referring to system.cpu.workload however, I don't believe that your cpus are children of your system object. cpu.workload should do the trick.
+Ali- Show quoted text -
+On Mar 24, 2008, at 3:22 PM, Sujay Phadke wrote:
+- Show quoted text -
+Hello,
+     I am trying to get Spec2K to run. (beta 4 or 5)  I have attached my example config script here, which tries to run only the gzip_log benchmark. I get the following error:
+> ./build/ALPHA_SE/m5.opt configs/spec2000/test2.py -b gzip
+M5 compiled Feb 18 2008 17:51:36
+M5 started Mon Mar 24 15:16:41 2008
+M5 executing on vm1
+command line: ./build/ALPHA_SE/m5.opt configs/spec2000/test2.py -b gzip
+Global frequency set at 1000000000000 ticks per second
+warn: This DRAM module has not been tested with the new memory system at all!
+panic: only one workload allowed
+ @ cycle 0
+[create:build/ALPHA_SE/cpu/simple/atomic.cc, line 817]
+Program aborted at cycle 0
+>
+It seems  the workload is not being assigned correctly, but I am not able to figure out why. The line in atomic.cc which issues the panic is:
+#if FULL_SYSTEM
+    params->profile = profile;
+    params->do_quiesce = do_quiesce;
+    params->do_checkpoint_insts = do_checkpoint_insts;
+    params->do_statistics_insts = do_statistics_insts;
+#else
+    if (workload.size() != 1)
+        panic("only one workload allowed");
+    params->process = workload[0];
+#endif
+So maybe the workload.size() is not evaluating correctly.
+Can someone help me out?
+Thanks,
+Sujay
+<test2.py>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

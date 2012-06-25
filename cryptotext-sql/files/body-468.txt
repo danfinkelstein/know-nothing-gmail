@@ -1,0 +1,42 @@
+Hi guys,
+ 
+I am interested in M5 for architecture simulating. I tried to build an ALPHA_FS version of the M5 simulator in my x86-64 computer, downloaded and installed the full-system binary and disk image files. Then I passed all the
+quick tests. The troubles arose when I tried to run the full-system using fs.py in m5/configs/examples.
+ 
+Can any of you give me some hints please? Or, should I do some work to modify the default fs.py to generate a new one before any simulating job?
+Thank you very much.
+ 
+Following are the errors detailed:
+mliu20@ubuntu:~/m5$ ./build/ALPHA_FS/m5.opt  configs/example/fs.py -b NetperfMaerts
+M5 Simulator System
+ 
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+ 
+ 
+M5 compiled Mar  2 2010 19:29:21
+M5 revision Unknown
+M5 started Mar  2 2010 19:34:11
+M5 executing on ubuntu
+command line: ./build/ALPHA_FS/m5.opt configs/example/fs.py -b NetperfMaerts
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/home/mliu20/m5/src/python/m5/main.py", line 359, in main
+    exec filecode in scope
+  File "configs/example/fs.py", line 124, in <module>
+    CacheConfig.config_cache(options, system)
+  File "/home/mliu20/m5/configs/common/CacheConfig.py", line 51, in config_cache
+    system.cpu[i].connectMemPorts(system.membus)
+AttributeError: 'function' object has no attribute 'cpu'
+ 
+---
+Mingliang Liu
+Graduate Intern Technical
+Cloud, Intel Labs China
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

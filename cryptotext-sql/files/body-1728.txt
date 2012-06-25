@@ -1,0 +1,16 @@
+Just n on ubuntu. M5 compiles fine but gives following error when try to run it....
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "build/ALPHA_SE/python/m5/__init__.py", line 79, in <module>
+    import internal
+  File "build/ALPHA_SE/python/m5/internal/__init__.py", line 29, in <module>
+    import core
+  File "build/ALPHA_SE/python/swig/core.py", line 18, in <module>
+    _core = swig_import_helper()
+  File "build/ALPHA_SE/python/swig/core.py", line 16, in swig_import_helper
+    if fp is not None: fp.close()
+UnboundLocalError: local variable 'fp' referenced before assignment
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

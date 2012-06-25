@@ -1,0 +1,5 @@
+ Hi,  I changed only the code of cache and recompiled it successfully. But it report the following error when running:    panic: stat check failed for      @ cycle 0     What's wrong? Thank you!    
+伊利525健康中国公益日_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

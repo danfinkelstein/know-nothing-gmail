@@ -1,0 +1,66 @@
+All of the caches are physically indexed/tagged so if it was
+previously mapped to something else the data would be stale.
+Ali
+- Show quoted text -
+On Feb 18, 2010, at 4:14 PM, Sujay Phadke wrote:
+> Hi Ali,
+>        I didn't get that. Why would the remapping onto a different
+> module
+> cause the cache to have a stale copy? I only want to change the
+> physical
+> page number it is mapped onto, not the virtual address. And the data
+> itself
+> is not changed.
+>
+> Sujay
+>
+> --------------------------------------------------
+> From: "Ali Saidi" <saidi@umich.edu>
+> Sent: Thursday, February 18, 2010 4:48 PM
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Subject: Re: [m5-users] page remapping between different memory
+> modules
+>
+>>
+>> It depends on what you're trying to do. If you just do a memcopy the
+>> caches
+>> might have a stale copy of the data.
+>>
+>> Ali
+>>
+>>
+>> On Thu, 18 Feb 2010 12:11:15 -0500, "Sujay Phadke"
+>> <sphadke@eecs.umich.edu>
+>> wrote:
+>>> Hello,
+>>>   I am running M5 in SE mode. I have created a system with 3
+>>> different
+>>>   physical memory modules. They are laid out sequentially in the
+>>> address
+>>>   space. (0-100, 101-200, etc). I want to remap pages between
+>>> them. I
+>> have
+>>>   the address of a page in module 1, and I want to move it to
+>>> another
+>>>   address in module 2. The data is stored in 3 different mmap'ed
+>>> regions
+>>>   of the host memory. Can I simply use memcpy to transfer data or
+>>> do I
+>>>   have to create packet requests and send it over the bus with write
+>>>   requests?
+>>>
+>>> Sujay
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

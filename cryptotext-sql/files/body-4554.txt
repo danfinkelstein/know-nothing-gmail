@@ -1,0 +1,16 @@
+Steve -I think I am using the latest 2.0 beta (m5-2.0b2).  I downloaded it at the beginning of April, I think.  I'm not sure that it's the bug that you mentioned, though, because I think I was basically seeing the same statistics if I ran for 100 mil ticks or 1 bil ticks or 10 bil, etc.  So, I'm guessing maybe it really was in livelock...
+I was (inadvertently!) running the scripts I got from Ron after my April 22 post in 03 CPU mode (even though he warned me that he wasn't sure they'd work in 03).  When I ran in simple CPU, I didn't get the livelock messages and my stats actually did look better.  So perhaps it was something about the way I was running it and setting up the coherence protocols that is actually what was causing this.  I managed to get the data I needed using Ron's patches and scripts in simple CPU mode, so I think I made out ok.
+Thanks,-Edith- Show quoted text -On 5/10/07, Steve Reinhardt <stever@eecs.umich.edu> wrote:
+Sorry for taking so long to reply.You're correct that the message about repeated store-conditionalfailures is supposed to be a warning about potential livelock.  Thelivelock would be more at the coherence protocol level than in the
+application though.What version of m5 are you using?  I believe in the recent 2.0 betareleases there's a bug where the failed-store-conditional counterdoesn't get reset, so it's possible to get this warning even when there
+isn't a problem.SteveEdith Hand wrote:> Hello again...>> Has anyone ever seen the subject error.  I'm in the process of using> --trace_flags and adding DPRINTFs to try and figure out exactly what's
+> going on.>> My interpretation of this error is that the store conditional is> basically always failing (I repeatedly get this message in increments of> 100000).  So, that's sounds pretty bad...  It makes me wonder if the
+> code being simulated is deadlocking (if it's using LL/SC to implement> locking and the SC keeps failing, maybe it can never acquire a lock?).>> If anyone has seen this type of message and know what it means, I'd
+> appreciate any feedback you can provide.>> FYI, I'm running ALPHA_SE.>> Regards,> -Edith>>> ------------------------------------------------------------------------
+>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

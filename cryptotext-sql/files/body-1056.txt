@@ -1,0 +1,7 @@
+Hello there,Do the precompiled spec2000 binaries distributed with Simplescalar work with M5? The file information for the executables displays:"COFF format alpha executable paged not stripped - version 3.11-10"
+There seems to have been some discussion regarding this in September of 2007 but I found out that the emails have been purged from the mail archive that is available online.regards,Soumyaroop.-- 
+Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

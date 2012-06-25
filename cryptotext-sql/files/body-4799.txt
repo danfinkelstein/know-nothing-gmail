@@ -1,0 +1,19 @@
+Hello all --First of all, thank you for the release of the M5 2.0 beta 2!  It seems to fix all the bugs I was hitting with beta 1.A question:  I would like to use a Simpoint-like method with M5 where I fast-forward for a specified number of instructions and then simulate for a specified number of instructions.  This has come up on the list a few times but I haven't really seen a good response on how to accomplish it.
+I think I've come up with a way of doing it (at least for single-processor mode) by modifying the Simulation.py script (in m5/configs/common/);  I'd like to post it here to get feedback and make sure it's doing the right thing :-).  I modeled the fast-forwarding on the provided --standard_switch option.  I've noted the additions to the scripts below;  if someone could take a look at it, I'd really appreciate it.  (I can send the full script if that's easier.)
+Thanks!    -VilasTo my controller script (my version of se.py in m5/configs/example/), I added the following options:parser.add_option("-f", "--fast_forward", type="int", action="store",
+                  help="fast_forward count in instructions:  must be used with --max_inst")parser.add_option("--max_inst", type="int", action="store",                  help="max_insts_any_thread value")
+Then in the run function in Simulation.py, I changed line 76-95 as follows (changes marked with <<<):    if options.standard_switch or options.fast_forward:                          <<<
+        switch_cpus = [TimingSimpleCPU(defer_registration=True, cpu_id=(np+i))                       for i in xrange(np)]        switch_cpus_1 = [DerivO3CPU(defer_registration=True, cpu_id=(2*np+i))                        for i in xrange(np)]
+        for i in xrange(np):                    switch_cpus[i].system =  testsys                   switch_cpus_1[i].system =  testsys            if not m5.build_env['FULL_SYSTEM']:                switch_cpus[i].workload = 
+testsys.cpu[i].workload                switch_cpus_1[i].workload = testsys.cpu[i].workload            switch_cpus[i].clock = testsys.cpu[0].clock            switch_cpus_1[i].clock = testsys.cpu[0].clock            
+            #if not options.caches:                # O3 CPU must have a cache to work.                #switch_cpus_1[i].addPrivateSplitL1Caches(L1Cache(size = '32kB'),                #                                         L1Cache(size = '64kB'))
+                #switch_cpus_1[i].connectMemPorts(testsys.membus)                        if options.fast_forward:                                                                   <<<                switch_cpus[i].max_insts_any_thread = 
+options.fast_forward   <<<                switch_cpus_1[i].max_insts_any_thread = options.max_inst   <<<                        testsys.switch_cpus = switch_cpus            testsys.switch_cpus_1
+ = switch_cpus_1            switch_cpu_list = [(testsys.cpu[i], switch_cpus[i]) for i in xrange(np)]            switch_cpu_list1 = [(switch_cpus[i], switch_cpus_1[i]) for i in xrange(np)]I then added the following prior to line 158 (if 
+options.take_checkpoints):    if options.fast_forward:        #        exit_event = m5.simulate(10000)        m5.changeToTiming(testsys)        m5.switchCpus(switch_cpu_list)        m5.resume(testsys)
+        exit_event = m5.simulate()        if exit_event.getCause() == "a thread reached the max instruction count":            print "Reached fast_forward count; simulating for --max_inst"
+        m5.switchCpus(switch_cpu_list1)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

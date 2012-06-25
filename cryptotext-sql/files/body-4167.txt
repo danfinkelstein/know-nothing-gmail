@@ -1,0 +1,14 @@
+Hi,
+ 
+I want to implement an out-of-order memory access scheduling with M5 simulator 2.0.3 edition. First, I will put some packets in a buffer and schedule it, then as soon as a latency of one packet is obtained through my algorithm, it will be sent by calling SimpleTimngPort::sendTiming. 
+ So, instead of called by SimpleTimingPort::recvTiming in the tport.cc, the sendTiming is called in my function and get a latency calculated by the function as an argument of sendTiming However, when I recompile the source and run the simulator in full system mode, the m5term cannot connect the host and shows information as follows:
+ 
+==== m5 slave console: Console 0 ====
+ 
+What causes m5 to stop here?  What's wrong with my implementation? I wonder if I could put the sendTiming in somewhere else instead of its original SimpleTimingPort::recvTiming. Thank you very much!
+ 
+Jun Pang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,73 @@
+I am trying out that change now. I will let you know how that goes.
+Best,
+-Rick
+- Show quoted text -
+gblack@eecs.umich.edu wrote:
+> I can't work on the code right now since I'm at work, but by inspection it looks
+> like I forgot to serialize bmiAddr and bmiSize. It would be a good idea for us
+> to have a regression test for this sort of thing.
+>
+> Gabe
+>
+> Quoting Rick Strong <rstrong@cs.ucsd.edu>:
+>
+>
+>> Hi,
+>>
+>> After resuming a checkpoint, I keep getting the same panic for any
+>> bechmark I try:
+>> panic: IDE controller access to invalid address: 0x801fc008016
+>> [dispatchAccess:/home/rstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_ctrl.cc,
+>> line 467]
+>>
+>> I know that Gabe has been cleaning this up lately, so any ideas?  I get
+>> the same error for a simple
+>> getpid benchmark and subset of parsec that worked fine a week ago.
+>>
+>> Best,
+>> -Rick
+>>
+>> Detailed error reports per application. Not very informative, but just
+>> corroborating the same
+>> invalid address happens in several applications.
+>>
+>> Simple getpid microbenchmark that calls getpid 100 times:
+>> panic: IDE controller access to invalid address: 0x801fc008016
+>>
+>>
+>> run:parsec_bodytrack:1:10G:dual:ss:mesh:vanilla
+>>
+>>     836 panic: IDE controller access to invalid address: 0x801fc008016
+>>     837  @ cycle 3004894384513
+>>     838
+>> [dispatchAccess:/home/rstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_ctrl.cc,
+>> line 467]
+>>
+>> run:parsec_ferret:1:10G:dual:ss:mesh:vanilla
+>>     524 panic: IDE controller access to invalid address: 0x801fc008016
+>>     @ cycle 2968677743013
+>>
+>> [dispatchAccess:/home/rstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_ctrl.cc,
+>> line 467]
+>>
+>> run:parsec_freqmine:1:10G:dual:ss:mesh:vanilla
+>>    panic: IDE controller access to invalid address: 0x801fc008016
+>>     @ cycle 2976949207513
+>>
+>> [dispatchAccess:/home/rstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_ctrl.cc,
+>> line 467]
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

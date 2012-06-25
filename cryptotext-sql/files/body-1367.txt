@@ -1,0 +1,21 @@
+Thanks... I grabbed your binary and now I get the same assertion
+failure even with my simple random latency hack.  So it is something
+weird in our code for sure.  The really strange thing is that it
+initially hit the assertion after something like 8.6B ticks, but when
+I turned tracing on it hit it after only 9M ticks.  For tracing to
+affect the simulation like that I'm guessing it's some kind of bad
+pointer or memory allocation bug.  I'm running under valgrind now but
+haven't turned up anything yet.
+I'll keep you posted...
+>The method of calculating
+> latencies based upon some known state at the time the packet arrives
+> won't work for me, because the latency is not only variable but is also
+> nondeterministic at that point. A later request could have higher
+> priority than earlier ones and thus dynamically increase the latency of
+> the earlier requests.
+Yea, that makes sense.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,175 @@
+Here is what I have determined so far:
+I first create a checkpoint for ammp using (Note, ammp instantiation is within myse.py):  r --trace-flags="MMU" configs/example/myse.py  --max_checkpoints=1  --take_checkpoints="3000000,1000"  --checkpoint_dir=./checkpoints. See the "AMMP checkpoint MMU trace:"  trace below
+I then try to run this checkpoint under atomic cpu with: "build/ALPHA_SE/m5.debug --trace-flags=MMU configs/example/se.py -r 1 --checkpoint_dir=./checkpoints".  The python is able to execute  m5.restoreCheckpoint (root,joinpath(cptdir, "cpt.%s" % cpts[cpt_num - 1])) without a problem. It is in src/sim/main.cc "PyRun_SimpleString("m5.main.main()");" that the system fails. At the point in sim/process.cc:argsInit(int intSize, int pageSize), "pTable->allocate(stack_min, roundUp(stack_size, pageSize));" causes an exception. This exception is  "fatal: PageTable::allocate: address 0x11ff92000 already mapped @ cycle 3000000". See "AMMP Already Mapped error:" for the output of M5.
+At this point, one solution was the comment out the pTable->allocate(...) in sim/process.cc:394. This code does reach the event queue, but quickly dies with "warn: Entering event queue @ 3000000.  Starting simulation...panic: Page table fault when accessing virtual address 0xffffffffffff8610"
+I then attempted going closer to the source and change src/mem/page_table.cc:allocate(), and replace fatal with warn on line 110, and have it return after giving a warning (see code 1 below). This results in an exception the same as above: "panic: Page table fault when accessing virtual address 0xffffffffffff8610@ cycle 3035000 " a little further into the binary (5000 ticks). This has the output given under heading "AMMP remove fault and return" below.
+   code 1:
+   if (iter != pTable.end()) {
+       // already mapped
+       warn ("PageTable::allocate: address 0x%x already mapped", vaddr);
+       return;//FIXME: Was fatal
+   }
+My final attempt was to remove the return of code 1 and just let the code allocate two page table entries for the same page. This gets a little further, but ends with "panic: Page table fault when accessing virtual address 0xffffffffffff8d88 @ cycle 3026000" (6000 ticks).
+This brings up some questions. Steve guessed that the machine is trying to set itself up (which I think happens in LiveProcess::argsInit()), and the checkpoint is trying to overwrite it (which I think occurs in python Simulation.py "m5.restoreCheckpoint(root,joinpath(cptdir, "cpt.%s" % cpts[cpt_num - 1]))"). If these are indeed the functions doing this, then the opposite appears to be happening. restoreCheckpoint(...) is called first in Simulations.py and then the argsInit is called in C++, which finds that the checkpoint code has already added entries and caused the fault. When I then replace the fault with a warn and return, the code reaches execution but is unable to translate some of the entries. This seems to suggest either that the checkpoint didn't record all of the entires, the restore did not load all of the entries, or I am jumping to the wrong place in the binary (a location whose page table entries are not present) but that the binary is trying to do a store. Any ideas of how to proceed with this interesting problem.
+-Richard
+"AMMP checkpoint MMU trace:"
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 24 2007 12:16:01
+M5 started Wed Oct 24 12:24:07 2007
+M5 executing on rickshin-2.local
+command line: /Library/WebServer/Documents/research/m5/m5-2.0b3/build/ALPHA_SE/m5.debug --trace-flags=MMU configs/example/myse.py --max_checkpoints=1 --take_checkpoints=3000000,1000 --checkpoint_dir=./checkpoints
+Global frequency set at 1000000000000 ticks per second
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+     0: global: Allocating Page: 0x120000000-0x120002000
+     0: global: Allocating Page: 0x120002000-0x120004000
+     0: global: Allocating Page: 0x120004000-0x120006000
+     0: global: Allocating Page: 0x120006000-0x120008000
+     0: global: Allocating Page: 0x120008000-0x12000a000
+     0: global: Allocating Page: 0x12000a000-0x12000c000
+     0: global: Allocating Page: 0x12000c000-0x12000e000
+     0: global: Allocating Page: 0x12000e000-0x120010000
+     0: global: Allocating Page: 0x120010000-0x120012000
+     0: global: Allocating Page: 0x120012000-0x120014000
+     0: global: Allocating Page: 0x120014000-0x120016000
+     0: global: Allocating Page: 0x120016000-0x120018000
+     0: global: Allocating Page: 0x120018000-0x12001a000
+     0: global: Allocating Page: 0x12001a000-0x12001c000
+     0: global: Allocating Page: 0x12001c000-0x12001e000
+     0: global: Allocating Page: 0x12001e000-0x120020000
+     0: global: Allocating Page: 0x120020000-0x120022000
+     0: global: Allocating Page: 0x120022000-0x120024000
+     0: global: Allocating Page: 0x120024000-0x120026000
+     0: global: Allocating Page: 0x120026000-0x120028000
+     0: global: Allocating Page: 0x120028000-0x12002a000
+     0: global: Allocating Page: 0x12002a000-0x12002c000
+     0: global: Allocating Page: 0x12002c000-0x12002e000
+     0: global: Allocating Page: 0x12002e000-0x120030000
+     0: global: Allocating Page: 0x120030000-0x120032000
+     0: global: Allocating Page: 0x120032000-0x120034000
+     0: global: Allocating Page: 0x120034000-0x120036000
+     0: global: Allocating Page: 0x120036000-0x120038000
+     0: global: Allocating Page: 0x120038000-0x12003a000
+     0: global: Allocating Page: 0x12003a000-0x12003c000
+     0: global: Allocating Page: 0x12003c000-0x12003e000
+     0: global: Allocating Page: 0x12003e000-0x120040000
+     0: global: Allocating Page: 0x120040000-0x120042000
+     0: global: Allocating Page: 0x120042000-0x120044000
+     0: global: Allocating Page: 0x120044000-0x120046000
+     0: global: Allocating Page: 0x120046000-0x120048000
+     0: global: Allocating Page: 0x120048000-0x12004a000
+     0: global: Allocating Page: 0x12004a000-0x12004c000
+     0: global: Allocating Page: 0x12004c000-0x12004e000
+     0: global: Allocating Page: 0x12004e000-0x120050000
+     0: global: Allocating Page: 0x120050000-0x120052000
+     0: global: Allocating Page: 0x120052000-0x120054000
+     0: global: Allocating Page: 0x120054000-0x120056000
+     0: global: Allocating Page: 0x120056000-0x120058000
+     0: global: Allocating Page: 0x120058000-0x12005a000
+     0: global: Allocating Page: 0x12005a000-0x12005c000
+     0: global: Allocating Page: 0x12005c000-0x12005e000
+     0: global: Allocating Page: 0x140000000-0x140002000
+     0: global: Allocating Page: 0x140002000-0x140004000
+     0: global: Allocating Page: 0x140004000-0x140006000
+     0: global: Allocating Page: 0x140006000-0x140008000
+     0: global: Allocating Page: 0x140008000-0x14000a000
+     0: global: Allocating Page: 0x14000a000-0x14000c000
+     0: global: Allocating Page: 0x14000c000-0x14000e000
+     0: global: Allocating Page: 0x14000e000-0x140010000
+     0: global: Allocating Page: 0x140010000-0x140012000
+     0: global: Allocating Page: 0x140012000-0x140014000
+     0: global: Allocating Page: 0x11ff92000-0x11ff9c000
+warn: Entering event queue @ 0.  Starting simulation...
+   500: global: Allocating Page: 0x11ff90000-0x11ff92000
+warn: Increasing stack size by one page.
+291500: global: Allocating Page: 0x140014000-0x140016000
+291500: global: Allocating Page: 0x140016000-0x140018000
+291500: global: Allocating Page: 0x140018000-0x14001a000
+291500: global: Allocating Page: 0x14001a000-0x14001c000
+291500: global: Allocating Page: 0x14001c000-0x14001e000
+291500: global: Allocating Page: 0x14001e000-0x140020000
+291500: global: Allocating Page: 0x140020000-0x140022000
+Writing checkpoint
+Exiting @ cycle 3000000 because maximum 1 checkpoints dropped
+Simulation done.
+Program exited normally.
+"AMMP Already Mapped error:"
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 24 2007 12:16:01
+M5 started Wed Oct 24 12:39:05 2007
+M5 executing on rickshin-2.local
+command line: /Library/WebServer/Documents/research/m5/m5-2.0b3/build/ALPHA_SE/m5.debug --trace-flags=MMU configs/example/se.py -r 1 --checkpoint_dir=./checkpoints
+Global frequency set at 1000000000000 ticks per second
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+Restoring checkpoint ...
+Restoring from checkpoint
+Done.
+Simulation starting: no checkpoints
+3000000: global: Allocating Page: 0x12005e000-0x120060000
+3000000: global: Allocating Page: 0x120060000-0x120062000
+3000000: global: Allocating Page: 0x120062000-0x120064000
+3000000: global: Allocating Page: 0x120064000-0x120066000
+3000000: global: Allocating Page: 0x120066000-0x120068000
+3000000: global: Allocating Page: 0x120068000-0x12006a000
+3000000: global: Allocating Page: 0x12006a000-0x12006c000
+3000000: global: Allocating Page: 0x12006c000-0x12006e000
+3000000: global: Allocating Page: 0x12006e000-0x120070000
+3000000: global: Allocating Page: 0x120070000-0x120072000
+3000000: global: Allocating Page: 0x120072000-0x120074000
+3000000: global: Allocating Page: 0x120084000-0x120086000
+3000000: global: Allocating Page: 0x120086000-0x120088000
+3000000: global: Allocating Page: 0x120088000-0x12008a000
+3000000: global: Allocating Page: 0x12008a000-0x12008c000
+3000000: global: Allocating Page: 0x12008c000-0x12008e000
+3000000: global: Allocating Page: 0x11ff92000-0x11ff9c000
+fatal: PageTable::allocate: address 0x11ff92000 already mapped
+@ cycle 3000000
+[allocate:build/ALPHA_SE/mem/page_table.cc, line 110]
+Memory Usage: 0 KBytes
+Program exited with code 01.
+"AMMP remove fault and return":
+M5 compiled Oct 24 2007 13:46:15
+M5 started Wed Oct 24 13:46:50 2007
+M5 executing on rickshin-2.local
+command line: /Library/WebServer/Documents/research/m5/m5-2.0b3/build/ALPHA_SE/m5.debug -d ../results --trace-flags=MMU configs/example/se.py -r 1 --checkpoint_dir=./checkpoints
+Global frequency set at 1000000000000 ticks per second
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+     0: system.membus: port list has 1 entries
+Restoring checkpoint ...
+Restoring from checkpoint
+Done.
+Simulation starting: no checkpoints
+3000000: global: Allocating Page: 0x12005e000-0x120060000
+3000000: global: Allocating Page: 0x120060000-0x120062000
+3000000: global: Allocating Page: 0x120062000-0x120064000
+3000000: global: Allocating Page: 0x120064000-0x120066000
+3000000: global: Allocating Page: 0x120066000-0x120068000
+3000000: global: Allocating Page: 0x120068000-0x12006a000
+3000000: global: Allocating Page: 0x12006a000-0x12006c000
+3000000: global: Allocating Page: 0x12006c000-0x12006e000
+3000000: global: Allocating Page: 0x12006e000-0x120070000
+3000000: global: Allocating Page: 0x120070000-0x120072000
+3000000: global: Allocating Page: 0x120072000-0x120074000
+3000000: global: Allocating Page: 0x120084000-0x120086000
+3000000: global: Allocating Page: 0x120086000-0x120088000
+3000000: global: Allocating Page: 0x120088000-0x12008a000
+3000000: global: Allocating Page: 0x12008a000-0x12008c000
+3000000: global: Allocating Page: 0x12008c000-0x12008e000
+3000000: global: Allocating Page: 0x11ff92000-0x11ff9c000
+warn: PageTable::allocate: address 0x11ff92000 already mapped
+warn: Entering event queue @ 3000000.  Starting simulation...
+panic: Page table fault when accessing virtual address 0xffffffffffff8610
+@ cycle 3035000
+[invoke:build/ALPHA_SE/sim/faults.cc, line 65]
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+I see that but what I am trying to accomplish here is when you have multiple memory object types (caches and bridges), how to selectively register some ports as snoop. Ofcourse, I will have to make bridges etc coherent or change their functionality to ignore certain packets. In particular, say I have memsideports of all l2 caches, cpusideport of l3 and two bridgeports connected to a bus. when a packets hits the bus i want all l2s to snoop, packet be sent to l3 and bridges simple return true from recvTiming. Do you have something in mind how to automate it in current bus implementation.
+---- Original message ----
+>Date: Thu, 13 Aug 2009 07:51:30 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] Interconnect Enhancement/Uncacheable requests
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>A memory object registers to receive snoop messages as part of the
+>address-range finding process; for example, see the
+>getDeviceAddressRanges() methods in cache_impl.hh, which register the
+>memory-side port as snooping and the cpu-side port as not.
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

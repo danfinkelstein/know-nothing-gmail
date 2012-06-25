@@ -1,0 +1,12 @@
+Hi,m5-users，
+    I have checked FuncUnitConfig.py and find the RdWrPort is configurated with "count = 4". Does that mean that the CPU can execute 4 Load/Restore insts simultaneously?
+    If my L1 caches are not configurated with multi-ports, so my cache cannot be accessed by more than one insts simultaneously. In this case , the configuration about RdWrPort above will be invalid, is that right?
+    Btw: Can my L1 cache be configurated with multi-ports? If so, how to maintain the conherence of Regs file because of multi-accesses to L1 cache simultaneously? I want to know whether that case is considered or not in M5.
+Thanks and Best Regards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2007-01-05
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

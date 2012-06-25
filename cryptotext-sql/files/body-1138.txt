@@ -1,0 +1,14 @@
+Hello,
+ 
+I have some patch for m5-2.0beta5, but this version doesn’t
+works with GCC-4.3-2. If anyone has used m5-2.0beta5, can you please tell me
+which version of GCC, scons, swig, python would be compatible with m5-2.0beta5.
+ Is there any where in m5 repository I can find this information.
+ 
+Thanks & Regards,
+-Shiva
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

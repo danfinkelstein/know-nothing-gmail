@@ -1,0 +1,21 @@
+Hi Richard,
+Normally we use an AtomicSimpleCPU to generate the checkpoints (as it's the fastest). You currently can't use a CPU with caches because any dirty lines won't be written back when the checkpoint is generated. If you execute m5.opt configs/example/se.py --help you'll see various options for creating and restoring from checkpoints. Normally I do something like this:
+./build/ALPHA_FS/m5.opt  configs/example/se.py  --max_checkpoints=2  --take_checkpoints="10000,100"  --checkpoint_dir=/path/to/checkpoint/dir
+which would generate 2 checkpoints one at 10000 ticks and another at 10100 ticks (these are very small numbers of ticks).
+./build/ALPHA_FS/m5.opt  configs/example/se.py  -t --caches --l2cache -s -w 20000000000 -r 1 --checkpoint_dir=/path/to/checkpoint/dir -
+Which would restore checkpoint #1 in the checkpoint dir, warmup with a timing simple cpu for 20000000000 ticks and then switch to a detailed cpu.
+With the AtomicCPU an instruction is executed every clock cycle so if you wanted to run to instruction 50 and the CPU was 1GHz you would run to 50000 ticks.
+An important note is that I don't know that I've ever created a checkpoint in syscall emulation mode, so I'm not sure that it will work. I use the checkpoint facility all the time for full system simulation. Briefly looking at the source code it appears that the PageTable and all the syscall state is saved, but like I said I've never tried it.
+Ali- Show quoted text -
+On Oct 12, 2007, at 7:36 PM, Rick Strong wrote:
+Hi,
+Also, if anyone has a script or knows which options to use in M5 to setup checkpoints on existing binaries, that would also be helpful. At this point, it isn't quite clear which CPU type I need to use in order to create a checkpoint. If I want to make checkpoint up to some instruction and then start using a detailed simulation, can I use atomic cpu to make the checkpoint? Also, how do I make a checkpoint up to a certain instruction number?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

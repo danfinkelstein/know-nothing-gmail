@@ -1,0 +1,6 @@
+Hello, m5 users,I am using m5sim on a server, where I do not have root privilege.Does anyone know how to add files to disk image as normal user?The m5 wiki only mentions one method, which requires root to mount the image.
+Thank you very much!Zhenyu YeEindhoven University of Technology
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+I'd like to create a statistic which can be updated by all caches (in this case, it's a histogram corresponding to the frequency of certain events). Is there any way to do this using the m5 statistics package? As I understand it, by default all statistics are local to the instance of their simobject, and I'm not sure that there's any simple way to have a statistic shared across all instances of a simobject.
+If the statistics package doesn't support it, what might be another good way to implement this tracking? As far as I can tell the only other way would be have one cache, say cache 0, be the one to coordinate, while all caches are provided a shared variable which they write to and cache0 reads from to update the histogram.
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+hi there,I am working on 64 bit OS with 16 GB RAM to simulate the configuration file. While simulating  the configuration(.py) file, i have encountered a problem as:fatal: Out of memory, please increase size of physical memory.
+ @ cycle 0[new_page:build/ALPHA_SE/sim/system.cc, line 230]
+Memory Usage: 2295488 KBytesThen
+in order to remove this error, i changed the allocated physical memory
+size, i.e. physmem = PhysicalMemory(range = AddrRange("2056MB")), initially was to "16GB" step by step
+but got still the same problem.What would be the possible solution to this problem?Please help!!!Thank you,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

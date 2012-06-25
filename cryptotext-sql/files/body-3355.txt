@@ -1,0 +1,15 @@
+it's probably fine... I think it's just saying that the instruction is supposed to trap on overflow and we don't support that, but as long as the instruction doesn't actually overflow (which it shouldn't) it shouldn't matter.  And even if we did support that trap there's no trap handler in SE mode.
+ 
+Steve 
+- Show quoted text -On 4/1/08, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+- Show quoted text -
+I see this warning when running mesa in SE mode in beta5. I havent seen this warning before with any other benchmark, so just want to make sure its fine:
+ 
+warn: cvtts/su   f2,f0: non-standard trapping mode not supported
+ 
+- Sujay
+ _______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

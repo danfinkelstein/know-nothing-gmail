@@ -1,0 +1,16 @@
+It should compile just fine with gcc on Solaris.
+Ali
+- Show quoted text -
+On Jun 30, 2008, at 6:12 PM, Robert Pulumbarit wrote:
+> We have an UltraSPARC T1 running Solaris.  Is it possible to compile
+> and run M5 on this machine?  The M5 compilation page mentions that
+> M5 can be ported to Unix-like OSes.  Are there any extra steps
+> needed to compile and run M5 on Solaris?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

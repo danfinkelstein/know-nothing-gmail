@@ -1,0 +1,50 @@
+I have attached a diagram(pdf file) of configuration and fs2.py. Please note that the problem occurs because of l3Bridge (commented in fs2.py).
+Ofcourse, I have a solution to maintain coherence at
+the back end.
+- Show quoted text -
+---- Original message ----
+>Date: Mon, 4 May 2009 15:04:57 -0400
+>From: "Geoffrey Blake" <blakeg@umich.edu>
+>Subject: Re: [m5-users] Range Error
+>To: "'M5 users mailing list'" <m5-users@m5sim.org>
+>
+>If you haven't modified any code, it is most likely with how your fs.py
+>configures the devices.  You have to make sure no device can pass its
+>address range back through multiple paths (ie. devices cannot be connected
+>to multiple bridges that connect to one bus), and no two devices have the
+>same address ranges set. The best way is to post your fs.py file so some
+>here can help if they are able.
+>
+>Geoff
+>
+>-----Original Message-----
+>From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+>Behalf Of Shoaib Akram
+>Sent: Monday, May 04, 2009 2:40 PM
+>To: m5-users@m5sim.org
+>Subject: [m5-users] Range Error
+>
+>I am getting a "Two devices with same range" error. I have never been
+>involved with the Range business. Can some one give hints as to where to
+>look for the problem. I am running fs.py with a few extra bridges. Is this
+>problem need to be resolved at the front-end or tweaking bus.cc?
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>No virus found in this incoming message.
+>Checked by AVG - www.avg.com
+>Version: 8.5.287 / Virus Database: 270.12.16/2094 - Release Date: 05/03/09
+>16:51:00
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

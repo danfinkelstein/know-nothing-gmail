@@ -1,0 +1,41 @@
+Matt,
+Yes, there already is a simple TM model which is based on LogTM from UWisc
+working in M5. But it has not been merged into the main releases.  I'm
+currently the only student working on it, so progress has been slow, but
+steady.
+I would be interested in some collaborative efforts to help maintain better
+support for what I have so far.  What models for TM were you interested in?
+I can't see any potential problems as of yet with considering a
+collaborative effort.
+You can reach me at blakeg@umich.edu if you would like to talk more.
+Thanks
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Matthew James Horsnell
+Sent: Wednesday, August 01, 2007 10:00 AM
+To: m5-users@m5sim.org
+Subject: [m5-users] Transactional Memory support in M5
+Hi,
+I've got a few quick questions about M5 and Transactional Memory, and
+would really appreciate any answers from the M5 community.
+* Are there any efforts underway to support TM in M5?
+* Would anyone else be interested in starting some form of collaborative
+effort to bring some of the TM models to M5?
+* Can anyone foresee any potential problems/issues/blocks to pursuing
+such an effort?
+Thanks,
+--
+Matt Horsnell
+Research Associate,
+Advanced Processor Technologies Group,
+University of Manchester.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

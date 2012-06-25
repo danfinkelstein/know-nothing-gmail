@@ -1,0 +1,19 @@
+> I am looking for something else that could be used to place a load just on the CPU and stress the rest of the node very little. On real nodes I use the complier gcc or g++ to compile a small program continuously. To increase the CPU load I submit multiple instances of this script (using &).
+You could do the same in M5
+> Have you already ported gcc or some equivalent to M5 or is this something that can be easily done?
+There's not really any porting that needs to be done.  You just need a
+gcc alpha compiler.  It may even be on the disk image.  In any case it
+should be easy.
+If the disk image doesn't work for you, what I've done lately is take
+gentoo's stage3 tarball for alpha and put that on a disk image.  It's
+got most of what you need on there.  The rest you can cross compile.
+(Or compile on a real alpha if you have one.)  I haven't tried it yet,
+but I believe that gentoo can do pretty much everything automatically
+via cross compile, so if you had an x86 gentoo install, you should be
+able to build whatever you want for alpha.  (Maybe when gabe gets some
+free time, he can look into that. or when I do.)
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

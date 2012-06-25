@@ -1,0 +1,6 @@
+Hi, everyone  I am trying to use M5 in a step by step way, which means to pause the simulator for every given interval (e.g. 100k insts), dump stats, reset stats and continue. I found both the debugDumpStats() and resetStats() function but only first one works and resetStats() doesn't. (actually that function is empty)
+  I am using ALPHA_SE and inorder cpu.  Could any one help me to reset stats?Thanks!-- Runjie ZhangComputer EngineeringUniversity of Virginia
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

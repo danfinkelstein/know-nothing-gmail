@@ -1,0 +1,22 @@
+M5 simulates the network at the Ethernet layer, so any protocol
+supported by Linux will work (udp/ip, tcp/ip, icmp, ...).
+You could generate artificial cpu loads under m5 just as you would on
+a real machine (by running a dummy program that eats cpu cycles).
+That would chew up a lot of simulation time though.  A more efficient
+approach that might be useful (depending on what you're studying)
+would just be to slow the cpu down by running it at a lower frequency.
+Steve
+- Show quoted text -
+On Dec 10, 2007 10:53 AM,  <lanierwatkins@bellsouth.net> wrote:
+> Is it possible to simulate nodes passing udp traffic in m5? Also, is it possible to simulate arbitrary cpu loads on the node to test affects or cpu load on network traffic?
+>
+> Lanier
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

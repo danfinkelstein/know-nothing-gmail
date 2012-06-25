@@ -1,0 +1,13 @@
+Hi,
+ 
+When I tried to trace the access to the main memory
+using M5_Writer, I collected some statistics of ‘writeback’
+command. What’s this writeback about? Should I just treat these ‘writeback’
+command as write to the main memory, or I should just ignore it?
+ 
+Thanks,
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

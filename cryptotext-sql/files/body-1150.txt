@@ -1,0 +1,18 @@
+Either InOrder or TimingCPU.O3 stands for out-of-order, so you definitely don't want that if you want an in-order core.TimingCPU is a 1CPI machine that can be attached to a timing memory model.
+InOrder is new, and Korey can speak more to it, but I believe it is a mildly pipelined in-order CPU, more realistic than TimingCPU.  However, I am not positive, nor do I know if it is really production ready - Korey?
+Lisa- Show quoted text -On Tue, Jul 28, 2009 at 9:21 AM, soumyaroop roy <sroy@cse.usf.edu> wrote:- Show quoted text -
+Hi there,
+To be able to perform a detailed timing on a CPU with an inorder
+execution core, should I be using the DerivO3CPU model or the
+InOrderCPU model?
+regards,
+Soumyaroop.
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

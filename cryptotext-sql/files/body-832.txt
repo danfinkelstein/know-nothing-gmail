@@ -1,0 +1,7 @@
+Do you know how to specify the max_insts parameter for each cpu? Is
+this done in the python run script (e.g run.py)?NOTE:"So if you were using the se.py, you might edit it to say:
+MyCPU.max_insts_... = X "Did you get try this yet?-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

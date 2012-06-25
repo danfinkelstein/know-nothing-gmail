@@ -1,0 +1,49 @@
+Just changing cache sizes should not affect the results.  Are you
+using the latest m5 from the development repository?  Have you changed
+anything other than the cache sizes?
+I noticed you said the default L1 cache is 32B, but the default block
+size is 64, and all caches must use the same block size.
+Steve
+- Show quoted text -
+On Wed, Jun 9, 2010 at 4:23 PM, Weixun Wang <wewang@cise.ufl.edu> wrote:
+> Hi all,
+>
+> I'm trying to run selected benchmarks from MiBench in M5. The system is
+> configured into multi-core (CMP) mode with each core has its own L1 caches
+> and all cores share a unified L2 cache. Each core is assigned a different
+> benchmark. However, I found the following error:
+>
+> When I use the L1 cache configuration of (32kB, 2 assoc, 32B) and L2 of
+> (4MB, 8 assoc, 64B), which are the default values, everything is OK.
+> However, when I try to change the cache configuration, for example, L1 with
+> a size of 8kB and L2 with 128kB or L1 with 16kB and L2 with 1MB, the
+> simulation terminates with the error:
+>
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7001
+> panic: Tried to execute unmapped address 0.
+>  @ cycle 1494306000
+> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+> Memory Usage: 119756 KBytes
+> For more information see: http://www.m5sim.org/panic/95542d88
+> Program aborted at cycle 1494306000
+> Abort
+>
+> Am I missing something?
+>
+> Thanks.
+>
+> --
+> Best Regards,
+>
+> Wang, Weixun
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

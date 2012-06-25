@@ -1,0 +1,10 @@
+hi,I am using 16 copies of SPEC CPU2006 benchmarks in SE mode for simulation. I got the error as:________________________________________________________________________________
+system.cpu[0].workload = [Mybench.libquantum(), Mybench.bzip2(), Mybench.h264ref(), Mybench.gobmk(), Mybench.bzip2(), Mybench.libquantum(), Mybench.gobmk(), Mybench.h264ref()]
+system.cpu[1].workload = [Mybench.libquantum(), Mybench.h264ref(), Mybench.bzip2(), Mybench.gobmk(), Mybench.gobmk(), Mybench.libquantum(), Mybench.bzip2(), Mybench.h264ref()]Global frequency set at 1000000000000 ticks per second
+m5.opt: build/ALPHA_SE/cpu/o3/cpu.cc:270: FullO3CPU<Impl>::FullO3CPU(typename Impl::O3CPU*, DerivO3CPUParams*) [with Impl = AlphaSimpleImpl]: Assertion `params->numPhysIntRegs >= numThreads * AlphaISA::NumIntRegs' failed.
+Program aborted at cycle 0_________________________________________________________________________________
+I had gone through the m5 report also but i can't get the idea for this. Could you please inform me what type of error is this and how can i solve it? Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

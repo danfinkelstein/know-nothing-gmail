@@ -1,0 +1,57 @@
+What version of M5 is this?  It must be pretty old because M5
+definitely builds on 9.10.
+  Nate
+2010/5/3 徐敏超 <xu.minchao@stu.xjtu.edu.cn>:
+- Show quoted text -> Hi everyone
+>      I tried to build the M5. It gave following compilation error in ubuntu
+>  9.10 64 bit machine. Could you please let me know how to fix it.
+>
+> xmc@ubuntu:~/桌面/m5-e46d048f7e69$ scons build/ALPHA_SE/m5.debug
+> scons: Reading SConscript files ...
+> Checking for leading underscore in global variables...(cached) no
+> Checking for C header file Python.h... (cached) yes
+> Checking for C library pthread... (cached) yes
+> Checking for C library dl... (cached) yes
+> Checking for C library util... (cached) yes
+> Checking for C library m... (cached) yes
+> Checking for C library python2.6... (cached) yes
+> Checking for accept(0,0,0) in C++ library None... (cached) yes
+> Checking for zlibVersion() in C++ library z... (cached) yes
+> Checking for C header file fenv.h... (cached) yes
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/power/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/alpha/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/sparc/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/arm/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/x86/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/arch/mips/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/cpu/inorder/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/cpu/ozone/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/cpu/checker/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/cpu/simple/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/cpu/o3/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/mem/protocol/SConsopts
+> Reading /home/xmc/桌面/m5-e46d048f7e69/src/mem/ruby/SConsopts
+> Building in /home/xmc/桌面/m5-e46d048f7e69/build/ALPHA_SE
+> Using saved variables file /home/xmc/桌面/m5-e46d048f7e69/build/variables/ALPHA_SE
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> isa_desc_action(["build/ALPHA_SE/arch/alpha/decoder.cc", "build/ALPHA_SE/arch/alpha/decoder.hh", "build/ALPHA_SE/arch/alpha/max_inst_regs.hh", "build/ALPHA_SE/arch/alpha/atomic_simple_cpu_exec.cc", "build/ALPHA_SE/arch/alpha/inorder_cpu_exec.cc", "build/ALPHA_SE/arch/alpha/o3_cpu_exec.cc", "build/ALPHA_SE/arch/alpha/timing_simple_cpu_exec.cc"], ["build/ALPHA_SE/arch/alpha/isa/main.isa", 'AtomicSimpleCPU', 'InOrderCPU', 'O3CPU', 'TimingSimpleCPU'])
+> scons: *** [build/ALPHA_SE/arch/alpha/max_inst_regs.hh] Explicit exit, status /home/xmc/桌面/m5-e46d048f7e69/build/ALPHA_SE/arch/alpha/isa/main.isa:437: illegal character '#'
+> scons: building terminated because of errors.
+> /home/xmc/桌面/m5-e46d048f7e69/build/ALPHA_SE/arch/alpha/isa/main.isa:437: illegal character '#' xmc@ubuntu:~/桌面/m5-e46d048f7e69$
+>
+>
+>
+>
+>
+> thanks in advance
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

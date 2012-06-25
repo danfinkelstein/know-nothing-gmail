@@ -1,0 +1,19 @@
+Hello,
+    I get the following error 
+running equake:
+ 
+equake:  too many subdomains(0), rerun slice 
+using -s1
+ 
+Has anyone seen this before?
+ 
+Secondly, in our local cpu2000 repository, the 
+benchmarks/cpu2000/data/equake/lgred/input contains the mcf.in... This seems to 
+be wrong. Has anyone got the right file?
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

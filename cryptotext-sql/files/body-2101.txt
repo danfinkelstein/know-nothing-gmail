@@ -1,0 +1,15 @@
+Hello:
+I have to differentiate the different buses, such as tol2bus or
+physmem bus... . I think that the best way to do this is create a new
+parameter in the src/mem/Bus.py file and after in my configuration
+file I give to this parameter the value that I want. But the think
+that I do not know is how is the connection between the c++ files and
+the python files done, I think that in somewhere the c++ files need to
+read the configuration file and then get the parameters, can anyone
+tell me how is this process done? I have not been able to find the
+code.
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

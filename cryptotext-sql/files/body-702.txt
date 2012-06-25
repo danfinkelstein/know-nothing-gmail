@@ -1,0 +1,6 @@
+Does anyone know that whether M5 support fullsystem mode other that alpha machine or not?-- - Show quoted text -************************************************Junli Gu--谷俊丽Coordinate Science LabUniversity of Illinois at Urbana-Champaign
+************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

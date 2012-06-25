@@ -1,0 +1,6 @@
+i'm trying to create my own CPU model, however I keep on running on the following error repeatedlybuild/ALPHA_SE/arch/alpha/mycpu_exec.cc:5693: error: invalid use of undefined type 'struct MyCPU'build/ALPHA_SE/cpu/static_inst.hh:56: error: forward declaration of 'struct MyCPU'
+build/ALPHA_SE/arch/alpha/mycpu_exec.cc:5701: error: invalid use of undefined type 'struct MyCPU'build/ALPHA_SE/cpu/static_inst.hh:56: error: forward declaration of 'struct MyCPU'...any ideas what could be causing this? i just followed the instructions in the website...
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,51 @@
+On Dec 2, 2007 8:24 AM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>
+>
+> Hi all,
+>
+> We have a mesh interconnection model and I'm thinking about refine it and
+> integrate it into M5. But I got several questions:
+>
+> 1.  it seems the bus is tightly coupled with address mapping
+> (findPort(addr)). I don't understand why and how to implement the same
+> functionality into the mesh. I'm planning to just identify ports with their
+> IDs (plus a reserved ID for broadcasting). Is this okay?
+For a given memory address, you need to know where the "home node" is
+(i.e. the memory module where that address resides, that normally
+responds to requests for that location).  In a real bus this is done
+by broadcasting the request to every device and seeing which one
+accepts it.  Our bus model uses the info from getDeviceAddressRanges()
+to avoid that unnecessary broadcast.
+>
+> 2. I'm not sure what the snoop ports are for. In the splash2 SE script, the
+> bus doesn't seem to have snoop ports.
+I'm confused... are you talking about the snoopPorts list in the Bus
+object?  Not sure how that relates to the splash2 SE script.  Anyway,
+it's just a list of normal ports that have indicated they want to
+snoop on coherence traffic (i.e., caches).  Again, a real bus would
+broadcast every transaction to every device, but there's no point in
+sending coherence traffic to devices that don't care about snooping.
+>
+> 3. I assume the functionality of  the bus/interconnection is to forward
+> packets from src to dst while modeling some sort of contention. Is there any
+> other roles this module plays? Does the bus in M5 carry any responsibilities
+> in coherence?
+Mostly the role it plays in coherence is just in making sure that all
+the devices that want to snoop get a chance to do so.  There's also
+the "express snoop" functionality that was added for the new
+multi-level coherence scheme.  Other than that it's agnostic about the
+coherence protocol.
+Steve
+>
+> Thanks!
+>
+> Jiayuan
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,28 @@
+The short answer is probably not in the very near term, but there is a lot of
+work and progress in this direction so it will work at some level in the medium
+term. X86 is a very complex ISA with with a substantial subset of features most
+people don't need, use, or care about like virtual 8086 mode, and support for
+those sorts of things will happen later if they're deemed worthwhile.
+Gabe
+- Show quoted text -
+Quoting Haseeb Malik <haseebmalik@yahoo.com>:
+> Hi,
+>
+> I just wanted to know whether m5 will be able to
+> support X86 in FS mode any time soon.
+>
+> Haseeb
+>
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

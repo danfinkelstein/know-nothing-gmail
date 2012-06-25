@@ -1,0 +1,10 @@
+I was wondering if there was any more complete documentation on
+resetstats and dumpstats than can be found at
+http://www.m5sim.org/wiki/index.php/M5ops ?
+resetstats, in particular does not appear to reset the total instruction count.
+I am using The m5-stable repository with the linux-spec.img.
+Adam
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

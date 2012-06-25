@@ -1,0 +1,30 @@
+It all sounds very useful. Basically, I want a system where I can just
+do simple queries and have interesting questions answered on the spot
+without extra scripting. I also want to know more about swig, the
+C/Python API, so count me in. The one issue is that I am still trying to
+get the performance in the directory coherence multi-banked patch
+up-to-par and am adding performance optimizations and working with
+Jiayuan to add MESI coherence protocol. I also wanted to get the memory
+tester into M5-dev, as I think it catches lots of memory bugs in actual
+applications. So I might be a bit slow on this project until that is
+done. In the meantime, I will try to get the current setup with the
+database working on my machine and ping you about cleaning up the API.
+Have a good weekend,
+-Rick
+- Show quoted text -
+>
+>
+> Ok, long e-mail.  I hope you find this stuff useful.  If you want to
+> learn a thing or two about python, databases, swig, and the C/Python
+> API, consider helping me out!  This sounds like a whole lot of stuff,
+> but in all honestly, a significant fraction of the code is written.
+> It's mostly a matter of putting the pieces together and cleaning it
+> all up.
+>
+>   Nate
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

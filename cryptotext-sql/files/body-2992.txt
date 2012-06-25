@@ -1,0 +1,5 @@
+ Hi, I added the following statement which is irrelevant to the stat in the constructor of the class Cache<TagStore>:       bank = new LRU( _numSets, _blkSize, 16, tags->getHitLatency() ); But it will cause the stat error as follows:    panic: stat check failed for      @ cycle 0    [check:build/ALPHA_SE/base/statistics.cc, line 244] What happened? Thank you!   
+伊利525健康中国公益日_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

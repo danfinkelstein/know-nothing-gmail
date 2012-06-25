@@ -1,0 +1,29 @@
+On Mar 11, 2010, at 6:40 PM, nathan binkert wrote:
+>> According to the OpenVMS chapter of the Alpha Manual, IPL 31 is
+>> machine
+>> check errors, which is baffling. I am curious to why their "seems"
+>> to be so
+>> many of these IPL changes to this level. It doesnt sound right if
+>> IPL 31
+>> correspond to machine check errors, I am wondering if this is
+>> incorrect. And
+>> exploring that their is a possible cross compiler bug.
+>
+> There are two different IPLs.  There's the IPL in the CPU and one
+> that's in the platform.  I believe that the IPL 31 is the platform IPL
+> whereas the mchk that you're talking about is the CPU IPL.
+The IPL gets changed around (local_irq_disable(), local_irq_save()):
+http://lxr.linux.no/linux+v2.6.33/arch/alpha/include/asm/system.h#L282
+Which choses a software IPL level between 0 and 7. That value gets
+changed to a CPU specific IPL in the palcode here:
+http://repo.m5sim.org/alpha-system/file/54e0019e3b94/palcode/osfpal.S#l3011
+by doing extracting the proper byte from the pt_intmask register that
+is created here:
+http://repo.m5sim.org/alpha-system/file/54e0019e3b94/palcode/platform.S#l1448
+IPL_MAX in linux (7) corresponds to IPL 0x1f for the CPU.
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

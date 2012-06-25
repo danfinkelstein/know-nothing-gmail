@@ -1,0 +1,19 @@
+> Is there some way to get the simulator to call the destructors of the
+> components in the test system (FS mode) or to receive an event signaling
+> that the simulation is exiting? I've tried adding print statements all
+> the way up the inheritance chain (starting with PhysicalMemory in my
+> case) and none seem to be called. I also did a leak check using valgrind
+> and this is confirmed (lots of data still in use at termination).
+Yeah, we're really bad at cleanup.  My suggestion is that you add a
+shutdown callback similar to how we have startup callbacks.  Then we
+can put an explicit call to a shutdown system before the simulation
+terminates.
+check out src/sim/startup.(cc|hh), src/python/swig/core.i.  You'll
+need to expose the shutdown core to the m5 python library.  probably
+src/python/m5/core.py
+ Let me know if this is unclear.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

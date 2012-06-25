@@ -1,0 +1,19 @@
+You can use the rpcc instruction (see util/ccdrv/devtime.c) or the rpns
+pseudo-instruction (see util/m5).
+Ali
+- Show quoted text -
+On Wed, 10 Feb 2010 11:29:59 -0500, Amir Hossein Hormati
+<hormati@eecs.umich.edu> wrote:
+> Hi,
+> Does m5 implement any sort of timer that I can access from within my
+> benchmark to time different parts of the program? I know I can
+> use Linux timers but is there a lighter version implemented by m5 that
+just
+> returns the number of simulation ticks ?
+>
+> Thanks,
+> Amir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Hi all,
+I want to find a full system simulator which can be used to test the
+access of  multicore architecture to the cache, main memory, harddisk
+or even flash. Can M5 help me  realize it?
+thanks
+Jibang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+set these parameters at the front end.
+---- Original message ----
+>Date: Thu, 2 Jul 2009 13:27:30 -0700
+>From: Devraj Chapagain <drchapagain@gmail.com>
+>Subject: [m5-users] How to dump bus_id and bus_name carrying the packet
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Hi,
+>   I have dumped the traces in between caches and
+>   memory. While dump_tracing, I found bus_id is not
+>   implemented and always give zero value. I have two
+>   questions:
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

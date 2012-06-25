@@ -1,0 +1,100 @@
+I've included a diff that fixes most of the memory leaks that were in the simulated memory system.  There is still one leak associated with Uncacheable accesses that I am tracking down, but that shouldn't matter for Syscall Emulation mode.
+-Ron
+--- m5-2.0b2/src/mem/cache/cache_impl.hh        2006-12-06 16:09:58.000000000 -0500
++++ cache_impl.hh       2007-03-12 16:17:27.000000000 -0500
+@@ -204,8 +204,10 @@
+        }
+     }
+     while (!writebacks.empty()) {
+-       missQueue->doWriteback(writebacks.front());
++        PacketPtr wbPkt = writebacks.front();
++       missQueue->doWriteback(wbPkt);
+        writebacks.pop_front();
++        delete wbPkt;
+     }
+     DPRINTF(Cache, "%s %x %s\n", pkt->cmdString(), pkt->getAddr(),
+@@ -215,12 +217,7 @@
+        // Hit
+        hits[pkt->cmdToIndex()][0/*pkt->req->getThreadNum()*/]++;
+        // clear dirty bit if write through
+-        if (pkt->needsResponse())
+-           respond(pkt, curTick+lat);
+-        if (pkt->cmd == Packet::Writeback) {
+-            //Signal that you can kill the pkt/req
+-            pkt->flags |= SATISFIED;
+-        }
++        respond(pkt, curTick+lat);
+         return true;
+     }
+@@ -238,13 +235,12 @@
+     if (pkt->flags & SATISFIED) {
+        // happens when a store conditional fails because it missed
+        // the cache completely
+-        if (pkt->needsResponse())
+-           respond(pkt, curTick+lat);
++        respond(pkt, curTick+lat);
+     } else {
+        missQueue->handleMiss(pkt, size, curTick + hitLatency);
+     }
+-    if (pkt->cmd == Packet::Writeback) {
++    if (!pkt->needsResponse()) {
+         //Need to clean up the packet on a writeback miss, but leave the request
+         delete pkt;
+     }
+@@ -355,8 +351,10 @@
+            blk = tags->handleFill(blk, (MSHR*)pkt->senderState,
+                                   new_state, writebacks, pkt);
+            while (!writebacks.empty()) {
+-                   missQueue->doWriteback(writebacks.front());
+-                    writebacks.pop_front();
++                PacketPtr wbPkt = writebacks.front();
++                missQueue->doWriteback(wbPkt);
++                writebacks.pop_front();
++                delete wbPkt;
+            }
+        }
+         missQueue->handleResponse(pkt, curTick + hitLatency);
+@@ -681,8 +679,10 @@
+            // There was a cache hit.
+            // Handle writebacks if needed
+            while (!writebacks.empty()){
+-               memSidePort->sendAtomic(writebacks.front());
++                PacketPtr wbPkt = writebacks.front();
++               memSidePort->sendAtomic(wbPkt);
+                writebacks.pop_front();
++                delete wbPkt;
+            }
+            hits[pkt->cmdToIndex()][0/*pkt->req->getThreadNum()*/]++;- Show quoted text -
+On Mon, 12 Mar 2007, Ronald George Dreslinski Jr wrote:
+Joe,
+There is currently a memory leak in the simulated memory system related to packets and requests that are created but never destroyed.  The problem usually manifests itself slowly and for short simulation runs doesn't usually cause a problem.  If the simulated memory system is designed in a way such that it has a large number of writebacks occuring (small L1 cache for example) the problem becomes larger more quickly and even short simulations run into memory limitations.  We are currently trying to locate the source of the memory leak.
+-Ron
+On Fri, 9 Mar 2007, Joe Gross wrote:
+Hello,
+I'm trying to run several benchmarks, including spec2000 and stream (http://www.cs.virginia.edu/stream/) on the 2.0b2 release, using g++ 3.4.3 as the cross-compiler and gcc3.4.3,4.0.2,4.1.1 as the compiler of m5 and all combinations have the same problem of the m5 binary progressively using more and more memory, until it fills all the memory on the system(up to 1.7gb now). I'm executing the se.py script using --caches and --detailed as well. Memcheck shows these problems as well as others when running tests/test-progs/hello/bin/alpha/linux/hello:
+==16789== 1047232 bytes in 32726 blocks are definitely lost in loss record 369 of 374
+==16789==    at 0x1B904C07: operator new(unsigned) (vg_replace_malloc.c:133)
+==16789==    by 0x8114C77: CoherenceProtocol::CoherenceProtocol(std::string const&, std::string const&, bool) (statistics.hh:398)
+==16789==    by 0x8115219: CoherenceProtocolBuilder::create() (param.hh:237)
+==16789==    by 0x8164822: SimObjectClass::createObject(IniFile&, std::string const&) (builder.cc:136)
+==16789==
+==16789==
+==16789== 2290960 bytes in 28637 blocks are definitely lost in loss record 372 of 374
+==16789==    at 0x1B904C07: operator new(unsigned) (vg_replace_malloc.c:133)
+==16789==    by 0x806E36F: Stats::Formula::Formula() (statistics.cc:65)
+==16789==    by 0x8187875: _GLOBAL__I_hostInstRate (stat_control.cc:52)
+==16789==    by 0x82CFEE4: (within m5.opt)
+I'm wondering if I need to configure something differently, if the cross-compiled binary (stream) could be doing this (although it makes no malloc calls), if this is some issue with the compiler or if this is a known problem. Any help is appreciated.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,43 @@
+The linux scheduler can do all kinds of interesting things, especially
+during short runs. As threads start, there are a lot of locks in the
+memory system to allocate memory and map the pages for the threads.
+Additionally, it can take some time (relative to the length of the
+simulation) for the schedule to migrate a process from the CPU it
+started on to a new CPU. To address the first problem you can
+allocated all the threads and have them wait at a barrier to start. At
+the barrier you should execute the m5 pseudo-operation to reset
+statistics. For the second problem you can use sched_setaffinity() to
+bind the threads to a particular CPU.
+Ali
+- Show quoted text -
+On Nov 6, 2008, at 11:50 PM, Aaron Williams wrote:
+> Hello All,
+>
+> I am noticing an interesting thing in some simulation results and I
+> was wondering if anyone has an explanation.  I have implemented a
+> short time fourier transform algorithm and mapped it across between
+> 1 and 4 processors and simulated it in the M5 simulator.  I am
+> noticing that one of the processors will have a very large amount of
+> ticks spent in user mode and the other processors have between 10
+> and 100 times less ticks spent in USER mode.  I am wondering why
+> this time discrepancy is occurring.  The way I have split the
+> algorithm each core should have the same amount work to do on an
+> equal amount of data.  I have implemented it with Pthreads.  Any
+> input?
+>
+> Aaron
+>
+> --
+> Aaron S. Williams
+> Graduate Student
+> Arizona State University
+> Department of Electrical Engineering
+> aswilli@gmail.com
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

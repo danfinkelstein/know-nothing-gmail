@@ -1,0 +1,47 @@
+Hi, Nate, Thanks very much for your kindly help. I did some study on the linux device driver these days and decided to write a device like RAM but cheat it as a I/O device in linux kernel, and then open the address range to the application by the linux kernel, which is what you suggested in your last letter.
+Writing a device driver may be not very difficult but adding a device in the o3 cpu seems a little confuse to me. I have to add it in somewhere that all the cpus can see it and access it from a address range that are not used by other devices or cpus. The confusion may come from the unfamiliarity of o3 cpu model.This work may take quite some time to finish.
+Thanks again for your kindly help ! 
+> HI, Nate, could you give some more specific hints on how to implement an
+> extra structure in M5 and get it accessd from user code?
+What exactly are you trying to provide to user code?  You may have
+mentioned this a while ago, but I forgot.
+> The major problem
+> may be the address allocation, how can I make this structure accessed by an
+> address range that I designated myself?
+This isn't a trivial exercise because the kernel is designed to not
+give user processes access to physical addresses.  As you say, you can
+create a simulator object and place it at a particular address and
+mmap /dev/mem in your user process.  Is this not sufficient?  Another,
+more involved way, is to create a device model and a device driver and
+teach the device driver to support mmap.  I think that no matter what
+you try to do, you're going to end up needing mmap.
+> How does M5 open an address range
+> to the linux and to the application ? Thank you!
+M5 provides address ranges to linux, it does not provide ranges to
+applications, linux does that part.  Depending on what you choose to
+do, you generally provide addresses to linux by creating MemObjects
+that have ports and connect them to the memory system.  The simplest
+thing to do is create an object like PhysicalMemory.  You can
+configure the (physical) address range to either be cacheable or
+uncacheable by the address you choose.  Look in the src/dev/alpha
+directory for things that have uncacheable addresses.  Now, the thing
+is, if you add something, linux needs to be able to find it.  Right
+now, M5 is really only set up to tell the kernel about one cacheable
+address range (I think), so you may have to use a kernel command line
+parameter to tell it about more.  As for uncacheable addresses, it's
+likely that you will have to create some sort of device model and
+driver, unless that same command line parameter for cacheable
+addresses works for uncacheable ones.  All that said, you need to be
+careful with the linux command line parameters since you probably
+don't want linux to actually treat the addresses as normal RAM.
+Hopefully that all made sense.  For me personally, if I were building
+something that was not to be treated like RAM, I would create a PCI
+device model for it, and write a simple device driver.  It's really
+not all that much work (someone who knew what they were doing would be
+able to do it in a day), but I'll admit that the learning curve is
+steep.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,26 @@
+Note though, that maxtick is in terms of ticks, and not instructions.I believe max-tick only works post-checkpoint or fastforwarding, but it's easy to extend.  Just grep for how options.max_inst is used in Simulation.py and extrapolate - you can easily add it to stop on a non-ff or non-checkpointed run in your own se/fs.py.
+Lisa- Show quoted text -On Sun, Feb 22, 2009 at 8:41 PM, Korey Sewell <ksewell@umich.edu> wrote:
+not sure why max. inst isnt working, but try --maxtick=X.
+On Sun, Feb 22, 2009 at 3:58 PM, Steve Stephen <sstephen66@yahoo.com> wrote:
+> --max-inst does not work with simple cpu? is there a way to stop a
+> simulation running simple cpu?
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

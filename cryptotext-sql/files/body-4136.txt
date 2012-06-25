@@ -1,0 +1,14 @@
+FS mode does not work on cygwin, because FS mode uses signals to handle asynchronous I/O and cygwin does not support signals properly.  SE mode does work (better) since it doesn't use signals, although I believe there are some syscalls that aren't properly emulated, so YMMV.  You're much better off to use a free virtualization package like VMware Server to install Linux in a VM if you really need to run on a Windows host.
+Steve- Show quoted text -On 10/22/07, wangx@umd.edu <wangx@umd.edu> wrote:
+Hi all,It is my first time to use the M5 simulator and I had troublefiguring out how to use it. I am running M5 on cygwin. Aftercompiling M5 in FS mode, I tried to run some benchmark on it.For example:
+$ ./build/alpha_fs/m5.opt ./configs/example/fs.py -b MutexTestThe output is as follows:M5 Simulator SystemCopyright xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxM5 compiled xxxxxxxxxxxM5 started xxxxxxxxxx
+M5 executing on xxxxxxxxcommand line: ./build/alpha_fs/m5.opt ./configs/example/fs.py -b MutexTestGlobal frequency set at 100000000000 ticks per second0: system.tsunami.io.rtc: Real-time clock set to xxxxxx
+Listening for system connection on port 34560: system.remote_gdb.listener: listening for remote gdb #0 on port 7000warn: Entering event queue @ 0. Starting simulation...warn: divt/c  f0,f1,f0: non-standard rounding mode not supported
+panic: Wrong Handler@ cycle 37797000[handleALRM:build/alpha_fs/base/pollevent.cc, line 272]AbortedCould you tell me how to deal with this problem?BTW: I am not very familiar with Linux/Unix, so please explain
+as detailedly as you could. Thanks a lot.In my research, I need to run an application in parallel on some parallel system(network of workstations). Could I useM5 to simulate the parallel system and have the application
+run on it? If yes,according to my understanding, I just needto modify file fs.py  and recompile the application with somealpha compiler. Correct me if I am wrong.Xin_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

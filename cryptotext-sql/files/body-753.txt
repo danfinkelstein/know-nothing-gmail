@@ -1,0 +1,12 @@
+I was wondering, in the case of the O3 cpu model, is there a way to
+calculate the number of cycles an instruction spends in stalls at the
+head of the ROB?For the most part, if there isnt a statistic available that you see from the stats file then it's something you need to calculate yourself off of current stats or something you need to get your hands dirty on add some code to get the data you need.
+So, 1st, check the current stat outputs and see what commit stage and ROB stats are given. Then, if you have to do your own thing, your going to have to figure out specifically of what stat you need to generate because currently its a bit ambigous:
+- Do you want an average cycles per instruction for the ROB? (- Do you want the total cycles?- Do you want some fraction of cycles in the ROB before commit?- etc. etc.Check the m5sim.org page for some light documentation on Stats types (averages, distributions, formulas, etc.) that can help you to start and then there are plenty of examples in the code. If you've tried something and need a hint or two to figure out a problem, the m5-dev list can be a pretty good community. 
+ There is already flags per instruction that tell you where it is in the pipeline (cpu/dyn_inst.hh I believe), so you can say someting like inst->isInRob() or something like that to verify. maybe you can add something to keep track of the cycle that an instruction enters the ROB and then when an instruction commits, you can use that info to generate whatever stat you need... (rob_impl.hh, and commit_impl.hh will be relevant files I would think)
+Also, for the simple cpu model, is there a ROB? I would think that it
+doesn't, but I just want to make sure.Nope. Nothing simple about out of order execution :)-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

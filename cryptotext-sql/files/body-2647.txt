@@ -1,0 +1,13 @@
+Hi,
+Have you ever seen this message:
+for config run:ex_tpcb:1:10G:dual:mini:nodelay:asisa-fs4/system.terminal:
+STARTING SIMULATION tx=1
+[4194005.336066] smp_call_function_on_cpu: initial timeout -- trying
+long wait
+[4194008.028448] smp_call_function_on_cpu: response 2.71 seconds into
+long wait
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

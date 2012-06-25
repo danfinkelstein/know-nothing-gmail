@@ -1,0 +1,13 @@
+Hi all,
+I have several questions about cache in M5:
+1) First and most importantly, is it under developing to support different block sizes in different cache levels / cores? If not, is it possible to modify M5 to make it support this (and what is the estimating workload for this extension)?
+2) MSHR (miss status holding registers) is not playing any role (or does not  make any difference) in TimingSimpleCPU or InorderCPU, right?
+3) system.cpu.numCycles has in-cooperated all the timing issue in memory hierarchy (cache, bus, memory) if the memory access mode is "timing", right?
+Thanks.
+-- 
+Best Regards,
+Wang, Weixun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

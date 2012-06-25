@@ -1,0 +1,24 @@
+On Tue, Feb 26, 2008 at 7:21 PM, Vilas Sridharan
+<vilas.sridharan@gmail.com> wrote:
+> My reading of the code is that on a cache request, the CPU calls
+> sendTiming() on its cache port, which in turn calls the cache recvTiming()
+> function on the cache's CpuSidePort (cache_impl.hh:1252).  recvTiming()
+> calls myCache()->timingAccess(), which contains the following code
+> (cache_impl.hh:406-418):
+Oh, good point... my fault for trying to respond too quickly and
+looking in the wrong place.  You're right, that comment explains the
+point nicely, and I can see how that messes up stats.  You're also
+correct that the messing up of the stats was not intentional :-).
+I'll have to think about this a bit... I think the right answer is
+actually to keep a bit in the tag that tracks this state, as that
+would not only fix the stats but also speed up the simulation by
+avoiding the expensive MSHR lookup in the common case.
+> Can you clarify what is changing in b5?  Will the L2 now keep a copy of
+> blocks that are exclusive in the L1, or will the writebacks of these blocks
+> allocate into L2?
+The latter.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

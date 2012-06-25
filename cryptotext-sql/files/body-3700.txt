@@ -1,0 +1,22 @@
+I'm not sure which version you're referring to... there is an issue
+with b4 where writebacks don't hit in the L2 when you think they
+should (due to some changes with the coherence protocol), so if you're
+seeing low numbers of writeback hits, that could be the case.
+- Show quoted text -
+On Dec 15, 2007 10:26 AM,  <giotis@umich.edu> wrote:
+> Hi
+>
+> I have noticed that writeback hits are not counted in the m5stats. Is
+> that correct?
+>
+> -panos
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

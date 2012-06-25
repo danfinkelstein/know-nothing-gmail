@@ -1,0 +1,35 @@
+FYI, just to be specific: if I find (mshr->hasTargets()==false), I assume this is a duplicated response and discard it in Cache<TagStore>::handleResponse() .  This triggers the following error in the following ticks:m5.debug: build/ALPHA_SE/mem/cache/miss/mshr.cc:114: void MSHR::TargetList::clearDownstreamPending(): Assertion `mshr->downstreamPending' failed.back trace: #3  0x000000000063c502 in MSHR::TargetList::clearDownstreamPending (this=0xe8ab20) at build/ALPHA_SE/mem/cache/miss/mshr.cc:114#4  0x000000000063c7df in MSHR::markInService (this=0xe88798) at build/ALPHA_SE/mem/cache/miss/mshr.cc:176#5  0x000000000063dd05 in MSHRQueue::markInService (this=0xe86c28, mshr=0xe88798)    at build/ALPHA_SE/mem/cache/miss/mshr_queue.cc:197#6  0x00000000005c0dbd in BaseCache::markInServiceInternal (this=0xe86bf0, mshr=0xe88798)    at build/ALPHA_SE/mem/cache/base_cache.hh:178#7  0x00000000005c0e4b in Cache<LRU>::markInService (this=0xe86bf0, mshr=0xe88798) at build/ALPHA_SE/mem/cache/cache_impl.hh:216#8  0x00000000005d66a9 in Cache<LRU>::MemSidePort::sendPacket (this=0xeda370) at build/ALPHA_SE/mem/cache/cache_impl.hh:1414#9  0x00000000005d6d34 in Cache<LRU>::MemSidePort::processSendEvent (this=0xeda370) at build/ALPHA_SE/mem/cache/cache_impl.hh:1453Thanks!JiayuanFrom: jerrygonair@hotmail.comTo: m5-users@m5sim.orgSubject: RE: [m5-users] help with broadcast/snoop handlingDate: Sun, 9 Dec 2007 17:44:29 +0000- Show quoted text -
+I have another guess about how M5 manages duplicated responses:if a broadcast packet find a response in a snoop port, the pkt is tagged "memInhibit" and responded to the upper level.Because the pkt is a pointer, memInhibit will be seen by other ports, and they will no longer respond to that packet.As a result, there will be no duplicated response. Am I getting the point?Unfortunately, when modeling the traffic of the interconnection, I have to duplicate the packets for broadcasting, and there is no guarantee that packets will probe snoop ports before the dest ports (which was done in bus::recvTiming). as a result, the memInhibit for one packet won't be seen by its dulicates, and multiple responses may occur. In this case, I try to ignore and discard the duplicated packet in Cache<TagStore>::handleResponse, but this results in other faults. Do you know any way out of this ?Thanks!JiayuanFrom: jerrygonair@hotmail.comTo: m5-users@m5sim.orgDate: Sun, 9 Dec 2007 14:28:43 +0800Subject: [m5-users] help with broadcast/snoop handling
+Hi all,
+ 
+I'm modeling the interconnection, when modeling the interconnection and 
+simulate all the routers, I am following the bus that broadcast a packet to all 
+the snoop ports if dest is broadcast.
+ 
+However, I came to this during debugging in timing mode with my 
+interconnection prototype:
+m5.debug: build/ALPHA_SE/mem/cache/miss/mshr.hh:211: MSHR::Target* 
+MSHR::getTarget(): Assertion `hasTargets()' failed.
+ 
+triggered in Cache::handleResponse at the statement:
+cache_impl.hh:707:  MSHR::Target *initial_tgt = 
+mshr->getTarget();
+ 
+doing a trace reveals that the broadcast request got two requests 
+(ReadExResp) from two nodes. (an L1 cache's memSidePort receives response first 
+from a peer L1's memSidePort, and then from the L2's memSidePort).
+ 
+Is there any clue on top of your head about how this happens? My guess 
+is the peer's L1 snoops the packet and found a match, so both the peer L1 and L2 
+both responsed the request, the second request got missed in the mshr 
+because the target has already been fulfilled. What do you think?
+ 
+Thanks!
+ 
+Jiayuan
+Share life as it happens with the new Windows Live. Share now!
+- Show quoted text -Share life as it happens with the new Windows Live. Share now!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

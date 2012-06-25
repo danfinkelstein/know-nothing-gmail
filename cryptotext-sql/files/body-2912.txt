@@ -1,0 +1,10 @@
+Is there a way to pass config parameters to create a .rcS file 
+to use those? For example I want to pass the number of cpus parameters to the 
+rcS file, which will invoke the benchmark with that parameter.
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

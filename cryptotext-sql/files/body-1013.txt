@@ -1,0 +1,13 @@
+Hello,
+     I want to generate memory 
+traces and associate them with the thread ID or process ID. Is there a way to do 
+this? I am running m5 in FS mode and want to differentiate the memory accesses 
+of a particular process from those of others, including the OS. I looked into 
+the "Thread" and "ExecThread" traceflags but they dont help.
+ 
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

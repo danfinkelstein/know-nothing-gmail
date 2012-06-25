@@ -1,0 +1,53 @@
+Hi All,
+Thanks. The reason was that Swig was not installed
+properly. I have now successfully
+installed and compiled m5 in full system mode.
+The binaries "m5.opt" and "m5.debug" have been
+successfully built in ALPHA_FS directory. I have also
+run the regression tests to see that the build works
+properly.
+But when I am running m5 simulator in full system mode
+using the command -
+"build/ALPHA_FS/m5.debug -d ../m5_2.0_output
+configs/example/fs.py"
+I am getting the following error -
+----------------------------------------------
+command line: build/ALPHA_FS/m5.debug -d
+../m5_2.0_output configs/example/fs.py
+Error creating object 'system.cpu':
+  parameter 'mem': not found
+Program aborted at cycle 0
+Aborted
+----------------------------------------------
+Can anyone help me fixing the error ?
+Regards-
+Chaitali
+--- Hsiong Christopher En Ping <chsiong@umich.edu>
+wrote:
+- Show quoted text -
+> Hi,
+>
+> I had that problem when I first installed M5 too. To
+> fix that, make
+> sure you have the correct versions of the required
+> software - Python
+> 2.4.4, SCons 0.96.91 and Swig 1.3.28. Most other
+> combination of
+> versions don't work (for whatever reasons).
+>
+> Hope that helps.
+>
+> Christopher
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+____________________________________________________________________________________
+Want to start your own business?
+Learn how on Yahoo! Small Business.
+http://smallbusiness.yahoo.com/r-index
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

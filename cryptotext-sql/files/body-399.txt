@@ -1,0 +1,15 @@
+I don't know what you mean by version 5 (unless you mean 2.0b5), but
+you should use the stable repo (or perhaps even the dev repo as it has
+been pretty stable and we'll probably update stable sooner or later.)
+As for ruby_se.py, there is an effort to integrate the Ruby memory
+system from GEMS into M5.
+  Nate
+- Show quoted text -
+> After some respite, I recently picked up M5 again for a new project. I see
+> ruby_se.py in stable version of M5. Does anyone know what is this new
+> development about? In general, are there good reasons to shun version 5 and
+> move to stable version?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

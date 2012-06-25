@@ -1,0 +1,6 @@
+hello,i am getting unimplemented instruction error for the following.soplex    ---           error (panic: attempt to execute unimplemented instruction 'for' (inst 0x7c99b30f88))astar     ---           error (panic: attempt to execute unimplemented instruction 'fpadd32s' (inst 0x5385b18a63))
+Could anyone give help me to solve this problem, or how to ignore these instructions.Thanks,Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

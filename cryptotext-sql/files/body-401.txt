@@ -1,0 +1,14 @@
+Hi, Unless there is already a instruction copy function, you may need to write your own that copies all of the relevant fields in a DynInstPtr to another DynInstPtr.If you just need to add extra state to the instruction, you can add whatever flags (there are a lot of examples to follow) you need in the actual DynInst class (src/cpu/base_dyn_inst.hh/cc) and use them in your ROB code.
+Lastly, since this is more of a code development question it's probably best to carry the conversation on m5-dev rather than m5-users.
+- Show quoted text -On Wed, Mar 17, 2010 at 5:09 PM, Syed Shazli <zafarshazli@gmail.com> wrote:- Show quoted text -
+Hi All,I am trying to implement an error recovery technique for errors occurring in ROB. For injecting the fault, I need to modify bits in one instruction in ROB (like modifying the destination register). As ROB maintains a list of DynInstrPtr, I am trying to replace one of the pointers by another (fault injected) pointer. I can define something like  
+DynInstPtr faulty_instIs it possible to copy the contents pointed to by original inst pointer to the new faulty_inst pointer. Note that I still need to keep the original inst (so other structures will use the original inst)
+Best,Syed
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

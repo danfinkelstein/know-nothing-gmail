@@ -1,0 +1,9 @@
+Hi,
+I was wondering if pal source code was available for the alpha so we can
+compile our personal versions of it.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

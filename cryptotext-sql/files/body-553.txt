@@ -1,0 +1,61 @@
+M5 works using an event queue. When an object (a CPU, device, etc.)
+wants something to happen at some point in the future, it schedules an
+event on the queue. M5's execution is drivern by going through the
+queue in time order and executes each event as it comes up. These
+events, which could be a CPU cycle, a harddrive access completing,
+etc., would then schedule other events, send messages to other
+objects, etc.
+The CPUs will all schedule their next cycle as independent events
+which are executed one at a time end to end (but otherwise in a
+semi-arbitrary order) by the event queue at the right point in
+simulated time.
+Gabe
+- Show quoted text -
+Quoting Veydan Wu <veydanwu@gmail.com>:
+> Thank you for your reply, Gabe. But how does M5 switch among multiple
+> simulated CPUs? There must be some points where it does such as change. Is
+> there any possibility that these CPUs' execution will general race
+> condition? Thank you!
+>
+> 2010/2/11 Gabe Black <gblack@eecs.umich.edu>
+>
+>> M5 is single threaded right now, so they should all be mutually
+>> exclusive by default.
+>>
+>> Gabe
+>>
+>> Veydan Wu wrote:
+>> > Hi, is there any lock or something else I can use in order to achieve
+>> > mutual exclusive in M5? For example, I want to implement a piece of
+>> > code in the CPU model, such as in the postExecute() function. There
+>> > are 4 cpu in my simulation, so every cpu will execution this extra
+>> > code without any order guarantee. How can I make them mutual
+>> > exclusive? Should I implement a lock by myself or is there anything I
+>> > can use in M5. Thank you very much!
+>> > ------------------------------------------------------------------------
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+>
+> --
+> ???
+> ?????? ??????0853
+> ??????????6? 100190
+> (86-10)6260-0853   (86-10)8268-3196
+> (86)138-112-10636
+> veydanwu@gmail.com
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

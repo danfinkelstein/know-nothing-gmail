@@ -1,0 +1,19 @@
+If you know what tick the benchmark starts at, just don't begin your traceflagging until that point (i.e. --trace-start=Tick)Lisa- Show quoted text -On Mon, Aug 3, 2009 at 9:22 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+- Show quoted text -
+Hello,
+  I am trying to collect memory traces running 
+specweb in FS mode. However, if I use the traceflags to collect traces (say 
+MemoryAccess), it starts collecting all memory requests, including the OS 
+booting up. I want to collect only when the benchmark start running. How do I do 
+this.?
+ 
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

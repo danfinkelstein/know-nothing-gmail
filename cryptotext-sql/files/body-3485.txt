@@ -1,0 +1,102 @@
+Currently, the x86 code only works in syscall emulation mode, but Gabe started working on the linux boot process a little while ago and has already made progress.  He can comment more on where things are.  As for the parallel version, it's hard to say.  My initial attempts will probably be available in a month or two, but if there are problems with the way I'm going about it, I might have to think hard about how to fix it.  I'm more or less following the wisconsin wind tunnel approach (which Steve is of course an expert on.), hopefully it works well for us.
+  Nate - Show quoted text -Using that code, would it be possible to use x86 simulation in full-system
+mode, or just in syscall emulation mode? Do you have any time estimate as
+to when the parallel version will be available?
+-- Sasha
+On Wed, 5 Mar 2008, nathan binkert wrote:
+> I'm sorry, maybe my e-mail was confusing.  Nothing that we've released so
+> far has had any license problems with HP.  There is a considerable amount of
+> code that I have outstanding that is not in the M5 tree at all that fixes
+> various problems and begins the process of parallelizing the simulator.  The
+> big thing is that we have a significant start at x86 support thanks to
+> Gabe.  This code is in the M5 internal tree, but owned by HP.  Now that we
+> have a proper license from HP for that code, there are no licensing problems
+> with anything in our source tree, and as soon as we have the actual proper
+> license text added to all files, we will be able to make all of these
+> unreleased changes and the source repository itself public.
+>
+> Is that clearer?
+>
+>  Nate
+>
+> On Tue, Mar 4, 2008 at 2:13 PM, Philip Machanick <philip.machanick@gmail.com>
+> wrote:
+>
+>> Which specific parts are owned by HP? Anything to do with their
+>> ownership of Alpha?
+>>
+>> On Wed, Mar 5, 2008 at 5:42 AM, nathan binkert <nate@binkert.org> wrote:
+>>> Hello everyone,
+>>>
+>>> I just got some great news, and I wanted to pass it on to those who may
+>> be
+>>> following M5 development.
+>>>
+>>> HP has agreed to release infrastructure changes to M5 under a BSD
+>> license.
+>>> In addition, I will be allowed to release all of the x86 ISA code that
+>> we
+>>> have developed so far under a non-commercial license.  I'm not sure
+>> exactly
+>>> what the mechanism of the release will be like (hopefully we'll make it
+>>> transparent and not a separate repository/download), but I have to work
+>> out
+>>> the details with HP lawyers.
+>>>
+>>> I'd like to also let everyone know that now that we are able to release
+>> HP's
+>>> code, we will be able to clear up all of the license issues in our
+>> source
+>>> repository and make the repository available to all users.  We use a
+>>> distributed revision control tool called mercurial to manage our
+>> repository
+>>> and we will allow public read access to this repository.  This will
+>> likely
+>>> mean that we will change from our periodic release model to a model
+>> where we
+>>> request that most people track our development more closely since it
+>> will be
+>>> so much easier to follow our changes more closely.
+>>>
+>>> If you have any questions, please feel free to ask.  There are some
+>> details
+>>> of the release of all of this code that we will have to work out over
+>> the
+>>> next two weeks, but we will try to get it all sorted out as soon as
+>>> possible.
+>>>
+>>> We'll post more information about the new changes with a detailed list
+>> as
+>>> soon as we can.
+>>>
+>>>   Nathan Binkert, HP Labs Researcher
+>>>
+>>> _______________________________________________
+>>>  m5-users mailing list
+>>>  m5-users@m5sim.org
+>>>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>>
+>> --
+>> Philip Machanick (Visiting Fellow, School of ITEE, University of
+>> Queensland)
+>> 39 Cunningham Street, Taringa, Qld 4068, Australia
+>> http://opinion-nation.blogspot.com/
+>> +61-7-3871-0963 <http://opinion-nation.blogspot.com/+61-7-3871-0963>(office 3365-1190) skype philipmach
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

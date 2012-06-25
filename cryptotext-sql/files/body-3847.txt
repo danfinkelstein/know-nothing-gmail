@@ -1,0 +1,9 @@
+Hello folks,Since the free space within the solaris disk image (from opensparc) is not enough for me,I'm trying to add 2nd disk image storing large benchmark programs.But the problem is that at the beginning of the simulation it terminates with errors:
+# start of error messagepanic: Two devices with same range @ cycle 0# end of error messageThe error seems pretty obvious but I can't figure it out where in the M5 source code the disk device's address range is assigned to.
+I'd really appreciate your help.Here's what I've done to the makeSparcSystem (FSConfig.py):    self.disk0 = CowMmDisk()    self.disk0.childImage(disk('disk.s10hw2'))    self.disk0.pio
+ = self.iobus.port#################### start of lines added    self.disk1 = CowMmDisk()    self.disk1.childImage(disk('disk_500mb.img'))    self.disk1.pio = self.iobus.port# end of lines added
+###################
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

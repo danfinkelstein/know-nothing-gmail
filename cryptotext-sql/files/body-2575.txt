@@ -1,0 +1,29 @@
+You generally don't want to use printf itself, but the easiest thing
+would probably still be to print something from your process function.
+You'd want to use the DPRINTF family of functions for that. Usually
+there is a traceflag that turns them on and off, but you can use
+DPRINTFN to always print. The syntax is basically the same as printf.
+Gabe
+- Show quoted text -
+Dean Michael Ancajas wrote:
+> hi all,
+>   How do you know if the Event that was scheduled was processed? Is it
+> possible to trace the EventQueue(is it pragmatic to do so)? I'd like
+> to know if my event was "process()'d" or not. I tried the "Event" flag
+> but I can only see that my event was scheduled... Another approach I
+> thought of was to put a printf() in the process() although I doubt if
+> this is a good idea. Any inputs would be greatly appreciated.
+>
+> sincerely,
+> Dean Ancajas
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

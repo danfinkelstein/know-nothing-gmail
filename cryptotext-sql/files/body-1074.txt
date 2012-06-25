@@ -1,0 +1,94 @@
+I meant to say something vastly smaller than the simpoint, I understand
+that if max-instructions is reached before the checkpoint 'drops' it is
+going to exit.
+Sorry,
+Will
+- Show quoted text -
+William George Beazley Jr wrote:
+>Lisa,
+>
+>Ash and I are seeing some benchmarks exiting before the checkpoint is
+>taken with:
+>
+>Exiting @ cycle 1784286478500
+>because target called exit()
+>
+>I am not confident on the relationship between cycle and instructions,
+>but I have seen this value at less then half the simpoint.
+>
+>If I set the simpoint manually to something smaller than
+>max-instructions it drops the checkpoints as expected.
+>
+>Any ideas?
+>
+>Thanks,
+>Will
+>
+>
+>Lisa Hsu wrote:
+>
+>
+>>Simpoints are an intrinsic feature of workloads - if you want to take a
+>>checkpoint at a simpoint, you must do --take-checkpoint 0 --simpoint, as
+>>described in our asplos tutorial.  If you look in cpu2000.py, the
+>simpoint
+>>parameters are part of each benchmark.
+>>Lisa
+>>
+>>
+>>On Fri, Aug 7, 2009 at 3:12 PM, Ashutosh Jain <ashujain7@gmail.com>
+>wrote:
+>>
+>>> Hi
+>>> I want to use the simpoint values of the benchmarks. I do add the
+>command
+>>> line parameters "-simpoint --take-checkpoint=100000000". Also I have
+>tried
+>>> to run the simulations with taking 0 simpoint value and  benchmark
+>simpoint
+>>> value.
+>>>
+>>> The result in the stats file doesn't get effected, its same every
+>time. So
+>>> it seems that simpoint is not working. But when I set the simpoint
+>value, it
+>>> reflected changes in config.ini file with the same assigned simpoint
+>value(
+>>> whether it is 0 or some value). So it is not clear whether it is
+>working or
+>>> not.
+>>>
+>>> Thanks in advance
+>>> Ashutosh Jain
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>
+>
+>------------------------------------------------------------------------
+>
+>
+>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>-----------------------------------
+>Will Beazley|Sys. Software Analyst
+>409.880.7847|wgbeazley@my.lamar.edu
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

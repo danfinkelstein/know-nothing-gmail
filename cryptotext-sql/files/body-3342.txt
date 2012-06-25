@@ -1,0 +1,61 @@
+Thanks, Korey!I have a few more questions though.I thought that there is a one to one conversion between binary
+instruction and dynamic instruction since it was mentioned in the Wiki
+that the StaticInst "allows a 1 to 1 mapping of StaticInst to unique
+binary machine instructions." . I assumed that the DynamicInst is just
+a more detailed encapsulation of the binary instruction. But while it is not 1 to 1, it is close, right?
+Also, I understand that there could be several instructions in a cache line. Therefore, the fetch stage could fetch more than one instruction from the cache. However, the conversion from Static Inst to Dynamic Inst occurs only once in the code, so I'm assuming that happens only once in a CPU tick.  Does this mean that the fetch stage fetches several instructions  from the cache, but only sends one instruction to the next stage per CPU tick? Or "architecturally", how many binary instructions are passed to the next stage per clock cycle? I was thinking there'd be four instructions sent to the next stage per cycle since the the 03cpu was loosely modelled on the 21264.
+Again, thanks! You've been very helpful.- Show quoted text -On Thu, Apr 3, 2008 at 1:03 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> as i understand it, a tick is equivalent to a clock cycle in m5.
+yes and no.  A tick is equal to a cycle but every component isnt run at the same
+frequency so you cant assume they all even out perfectly.
+The tick is based off the global system frequency/clock that is defined
+in configs/common/Simulation.py
+I think that's set to '1ps' per tick by default.
+Then, your CPU is based on a certain clock, which I think is by
+default "2 GHz".
+Thus, one cpu cycle is worth X (500?) amount of system ticks. That is
+what you are
+going to see when you see your simulation output and it tells you how
+many system
+cycles/ticks you spent.
+> Does this mean that for every
+> tick/"cycle", a cache line is fetched?
+In the actual CPU code, yes it is trying to fetch a cache line once per tick,
+but take not that is once per CPU tick not system tick.
+>  Also, does this mean that only one
+> instruction is fetched every tick/"cycle"?
+No, the # of instructions fetched per cycle is an CPU parameter.
+Remember, that fetch fetches a
+cache line, but a cache line could have multiple instructions in it
+that can be "fetched".
+>  I'm assuming that there is a one
+> to one conversion from instruction to Static inst and then Dyn inst.
+Close but not really. The DynInst encapsulates the static inst object.
+Check out the WIKI pages on static and dyninst and let us know if
+things make sense:
+http://www.m5sim.org/wiki/index.php/StaticInst
+http://www.m5sim.org/wiki/index.php/DynInst
+Hope that helped clear things up. Please feel free to look at the
+documenation though as
+we always strive to make those documents as clear as possible for
+users. It's important
+that people can look at that and have a general idea of things. If you
+see something that
+needs changing, it's a WIKI so you can change it or bring it to the
+community's attention
+for a potential change...
+Good luck with your work!
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

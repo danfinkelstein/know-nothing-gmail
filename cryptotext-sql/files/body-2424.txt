@@ -1,0 +1,16 @@
+It's a transition from S->E.
+The cache has a block in a shared state and requires an exclusive copy
+so it can write to it.
+Ali
+- Show quoted text -
+On Oct 16, 2008, at 4:26 PM, Shoaib Akram wrote:
+> what does memory commands UpgradeReq and UpgradeResp correspond to?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

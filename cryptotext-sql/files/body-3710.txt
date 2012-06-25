@@ -1,0 +1,10 @@
+I want to simulate the following system:
+A total of four cores each with L1 private L1 caches. Two cores connected by a shared bus. The other two cores also connected by a shared bus. The two clusters connected together by a point to point link or something.
+In essence, the goal is to have two separate shared bus fabrics in the system.
+Any idea how to model this in m5. I know m5 has this bridge mechanism but has anybody used it successfully?
+Regards,
+Shoaib
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

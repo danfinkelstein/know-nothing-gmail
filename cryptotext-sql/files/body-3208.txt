@@ -1,0 +1,29 @@
+Do 8 different runs at the same time if you have enough RAM to support
+the workload.
+- Show quoted text -
+On Fri, Apr 25, 2008 at 8:39 AM, Reza Farivar <farivar2@uiuc.edu> wrote:
+> Hi everyone
+>
+> I was introduced to m5 in the ASPLOS 08 workshop, and now we're using it for
+> a project here at UIUC.
+>
+>  I have a Newbie question. We have an 8 core server. Is there any way to run
+> m5 on it so that it uses all CPUs? (m5 is kind of slow as it is right now,
+> and we are using full system simulation).
+>
+> Thanks,
+> Reza
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Philip Machanick (Visiting Fellow, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
+http://opinion-nation.blogspot.com/
++61-7-3871-0963 (office 3365-1624) skype philipmach
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

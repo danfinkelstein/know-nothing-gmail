@@ -1,0 +1,18 @@
+They are scattered in with the CC code (e.g. src/cpu/BaseCPU.py) and are included in the build with Scons (e.g. SimObject('BaseCPU.py') )
+Ali- Show quoted text -
+On Nov 9, 2007, at 1:37 PM, Sujay Phadke wrote:
+- Show quoted text -
+Hello,
+       In the m5 beta 4, I cant find any directory called "object" within /src/python/m5. Has been moved somewhere else? The se.py script still uses
+import m5
+from m5.objects import *
+so I was wondering where the python object files are.
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+On Tue, 27 Oct 2009, CCCP Group wrote:
+>
+> 1- What is the status of x86 support? Is it robust enough to handle spec2006
+> benchmarks compiled with gcc 4.x?
+Not withot a fair number of patches.  See
+   http://www.csl.cornell.edu/~vince/projects/m5
+to see m5 current x86 status, at least with regard to the spec2k binaries.
+With about 15 different patches applied (I'm slowly getting them merged)
+maybe about 1/2 of the spec2k benchmarks will run on the simple atomic
+processor in syscall emulation mode.
+Vince
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

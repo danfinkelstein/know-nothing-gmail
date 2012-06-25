@@ -1,0 +1,46 @@
+Hello,
+For my research I am working with the in-order CPU core of M5. I'm
+working in system emulation mode for Alpha: ALPHA_SE. The version of M5
+is 2.0.
+I have a problem concerning the adjustment of the latency of
+multiply-operations.
+-----------------------------------------------------------------------
+I adjusted the latency of the multiply-operations to 3, to get a more
+realistic execution. This schedules a multiply operation at the correct
+Tick (namely 1500 Ticks later). The problem is that the execution of the
+multiply-instruction takes as long as if the latency was still set to 1.
+This means that the instruction doesn't stall in any of the stages.
+Since the Write-Back stage happens (just after but) at the same Tick as
+the multiply-event there is no inconsistency.
+I've debugged a little bit more to clarify the problem. I set the
+latency to 4. The multiply-event happens one tick after the write-back
+stage, but the instruction could still call the graduation unit even
+without the execution of the multiply-event!
+I think the bug is in cpu/inorder/resources/mult_div_unit.cc
+When MultDivUnit::execute gets called it schedules the Event for
+multiplication at the desired Tick. After this it calls
+mult_div_req->setCompleted().
+This makes the instruction proceed through all pipeline stages without
+stalling.
+I can provide you some more details. The call stack is
+MultDivUnit::execute
+Resource::scheduleExecution
+Resource::request
+ResourcePool::request
+PipelineStage::processInstSchedule
+PipelineStage::processInsts
+The MultDivUnit gets called when the instruction is in stage 1. It gets
+called a second time in stage 2. I don't know why the latter happens:
+another event gets scheduled 1 tick later then the first one.
+--------------------------------------------------------------------------
+What should I modify to the code so that it will work correctly? do I
+need to remove "setCompleted"? Where do I place it?
+Thanks and kind regards,
+Maximilien
+PhD Student at ELIS
+Ghent University
+Belgium
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

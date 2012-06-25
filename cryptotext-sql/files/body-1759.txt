@@ -1,0 +1,59 @@
+    Hi, Nathan, I mistook your meaning in my last letter, you mean that the 0xffff fdxx xxxx xxxx is the uncached access address.     But the M5 configs that   ALPHA_TLASER   is 0, which is in build/ALPHA_FS/config/alpha_tlaser.hh.  In this case, uncache access bit is the 43 bit, which is the highest bit of the "d" in 0xffff fdxx xxxx xxxx.  So the difference between cached and uncached access address should be 0xffff f7xx xxxx xxxx and 0xffff f800 xxxx xxxx. Is that right ? Thank you !
+     I run a program writing somthing in 0xffff f810 0000 0000, but got an segmentation fault. The writing code is simply like this:   *(unsigned long*)addr = 0xaaaaa;       ( addr is defined as 0xffff f810 0000 0000 )
+     I thought that's at least a valid PIO address. What may be the reason of this ? Thanks !- Show quoted text -
+You have to be careful to differentiate the physical address space
+from the virtual address space.  The stuff you got from isa_traits.hh
+is virtual address space and describes the superpage stuff that you
+can find in the processor documentation.  the address with the high
+bit set that you've described is a physical address (with the high bit
+set so you can do an uncached access.
+Assuming that you want to do an uncached access to a specific physical
+address, you're probably going to want an address that looks like
+0xfffffdxxxxxxxxxx.  The 0xfffffc part is the K0Seg super page.  The
+bit that turns the 'c' into a 'd' should be the uncacheable bit.  You
+can look through the configuration files to find other examples of
+uncached addresses.
+  Nate
+On Sun, Mar 1, 2009 at 7:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi all, Is the address space identical to the tsunami system address space,
+> which is from the 0x800 0000 0000 is the space for PIO, the low 4G space is
+> system memory ?
+>
+> ?I read the arch/alpha/isa_trait.h and got this:
+>
+> // User Virtual
+> const Addr USegBase = ULL(0x0);
+> const Addr USegEnd = ULL(0x000003ffffffffff);
+>
+> // Kernel Direct Mapped
+> const Addr K0SegBase = ULL(0xfffffc0000000000);
+> const Addr K0SegEnd = ULL(0xfffffdffffffffff);
+>
+> // Kernel Virtual
+> const Addr K1SegBase = ULL(0xfffffe0000000000);
+> const Addr K1SegEnd = ULL(0xffffffffffffffff);
+>
+> Every time I write something into 0x801 0000 0000, which is a valid PIO
+> address according to tsunami handbook, a segmentation fault occur.
+>
+> This is a bit different from the one above, did I miss anything?
+>
+> Thank you !
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 32, Issue 1
+***************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

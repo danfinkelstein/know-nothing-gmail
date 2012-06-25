@@ -1,0 +1,41 @@
+It was my mistake in my cpu model which is derived
+from timing cpu. So, the statement i made in my
+earlier mail is not completely correct.
+If restored from a checkpoint (which was taken with an
+atomic cpu), multiple timing cpus with caches is
+working and running programs.
+However, there is still a problem in the sense that
+multiple timing simple cpus doesnt boot from scratch
+(without any checkpoint) if caches are present. This
+is true even after applying the patch.
+--- Steve Reinhardt <stever@gmail.com> escribió:
+- Show quoted text -
+> On Dec 27, 2007 11:49 AM, abc def
+> <jose_6154@yahoo.es> wrote:
+> >
+> > Real problem is however something different, beta
+> 4
+> > seems not to be working with more than 1 timing
+> simple
+> > cpu and caches present. Even if i restore it from
+> > checkpoint, it gets successfully restored but then
+> > while running program, it gives core dump.
+>
+> Are you referring to the CPU ID problem Ali recently
+> posted a patch
+> for, or is this something different?
+>
+> Steve
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

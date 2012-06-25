@@ -1,0 +1,41 @@
+Following up: I noticed the stick is implemented. I was able to switch
+to using that as my clock driver and things work for me.
+-Gedare
+- Show quoted text -
+On Thu, May 6, 2010 at 2:02 PM, Gedare Bloom <gedare@gwmail.gwu.edu> wrote:
+> So after removing the panic when writing to the tick compare register,
+> I eventually find a "tick compare not implemented"  -- would it be
+> difficult to implement this feature?
+>
+> -Gedare
+>
+> On Thu, May 6, 2010 at 1:17 PM, Gedare Bloom <gedare@gwmail.gwu.edu> wrote:
+>> Hi,
+>>
+>> I am trying to use the M5 simulator with the SPARC_FS to do OS-arch
+>> research.  I have managed to build and boot SPARC_FS with the
+>> OpenSolaris / OpenSparc binaries and images.  Now I have also managed
+>> to boot a custom OS.  However, I cannot get my OS's clock driver to
+>> work, whenever I try to use the tick compare register feature of the
+>> SPARC_FS cpu, I get a panic:
+>>  panic: writing to TICK compare register 0XABFDB48
+>>   @ cycle 90147862000
+>>  [setFSReg:build/SPARC_FS/arch/sparc/ua2005.cc, line 116]
+>>  Memory Usage: 399712 KBytes
+>>  For more information see: http://www.m5sim.org/panic/10ab535e
+>>  Program aborted at cycle 90147862000
+>>  Aborted
+>>
+>> I checked out the source code referenced, and sure enough there is a
+>> panic statement that appears like it will always be triggered  by
+>> using this register.  Is there a reason for this panic?  Or is the
+>> panic a typo and it should actually be a printf, like the next case
+>> (for MISCREG_STICK_CMPR)?
+>>
+>> -Gedare
+>>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

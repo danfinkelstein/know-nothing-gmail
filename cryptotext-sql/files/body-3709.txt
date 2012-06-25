@@ -1,0 +1,18 @@
+The reason is that the traceflag SimpleCPU is only added if the AtomicSimpleCPU or TimingSimpleCPU are being compiled:
+Change src/cpu/simple/SConscript to:
+if 'AtomicSimpleCPU' in env['CPU_MODELS'] or \
+       'TimingSimpleCPU' in env['CPU_MODELS'] or \
+       'MyCPU' in env['CPU_MODLES']:
+    TraceFlag('SimpleCPU')
+Ali- Show quoted text -
+On Dec 16, 2007, at 2:54 AM, dean michael ancajas wrote:
+hi ali,
+ I've included the base/trace.hh in the mycpu.cc file but the same errors showed up.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

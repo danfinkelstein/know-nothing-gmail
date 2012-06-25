@@ -1,0 +1,31 @@
+Hi Tor,I don't have a lot of experience with this myself, so I'm forwarding your request to the m5-users list.Can anyone else out there help?Steve---------- Forwarded message ----------
+From: Tor M.Aamodt <aamodt@ece.ubc.ca>Date: Aug 25, 2007 10:28 PMSubject: SPEC 2000 alpha binary problems on M5
+To: stever@eecs.umich.eduCc: "Tor M. Aamodt" <aamodt@ece.ubc.ca>
+Hi Steve,I'm having some trouble getting a few SPEC 2000 alpha binaries to compile and run in system emulation mode on your M5 simulator (m5-2.0b3).   I've searched around and found the following documentation which talks a bit about building alpha tools to get alpha binaries:
+<
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5> (a) RE: "gcc-3.4.3-glibc-2.3.5.dat" -- this does not seem to want to build under a native 
+gcc-4.1 system (which is what we happen to have here).  Seems that it is always hard to build older versions of gcc with newer versions...(b) RE: "however we have lately had some success with 
+gcc-4.0.2 coupled with glibc-2.3.6."  -- In contrast, I've successfully built gcc-4.0.2 coupled with glibc-2.3.6 (using crosstool-0.43), but the following SPEC INT 2000 benchmarks are having problems (with the test inputs):
+vprgccperlbmkvortex
+I'm wondering if I'm doing something wrong somewhere, or whether you folks have seen problems with these same benchmarks under gcc-4.0.2 coupled with glibc-2.3.6.  Any insight?
+Thanks,Tor 
+--
+Tor M. Aamodt, Ph.D., P.Eng.
+Assistant Professor
+Department of Electrical and Computer Engineering
+University of British Columbia
+Fred Kaiser Building, 2332 Main Mall, Office 4043
+Vancouver, B.C. V6T 1Z4, CANADA
+tel: 
+  +1.604.827.4116
+fax:   
++1.604.822.5949
+email: 
+aamodt@ece.ubc.ca
+URL: 
+  
+http://www.ece.ubc.ca/~aamodt
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

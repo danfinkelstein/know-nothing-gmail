@@ -1,0 +1,19 @@
+Hi，all
+       
+      I am trying to use spec2000 in FS mode. I found from m5 index that cpu2000.py can be used to do it. 
+When I put the compiled benchmarks in the disk-img, and specify directory in cpu2000.py,  workload 
+containing the benchmark should be defined according to M5 documentation. However I notice that the 
+concept of workload is only used in se.py, it doesn’t appear in fs.py. 
+     
+      Should I change fs.py or cpu2000.py to run benchmark in FS mode? Can cpu2000.py be used
+ in FS mode? Could anybody tell me how to change it in order that I can use it in FS mode? I will appreciate
+ very much if someone give me some detail examples. 
+       
+       Shi Lei
+ 
+ 
+  
+杀70万种木马病毒，瑞星2008版免费_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

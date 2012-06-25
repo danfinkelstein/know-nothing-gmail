@@ -1,0 +1,18 @@
+I'm not clear on what you're trying to achieve... you want each thread
+to suspend when it reaches a certain instruction count?  What I'd do
+then is create your PauseThreadEvent in the CPU constructor where you
+have access to the thread context pointer(s) so you can pass it in to
+your PauseThreadEvent constructor.  This should look a lot like the
+spot in the BaseCPU constructor where the CountedExitEvents are
+created, only you'll have to put it in the derived CPU class's
+constructor since the thread contexts aren't created yet in the
+BaseCPU constructor.
+> another question: what file will I modify so that Scons will know that I
+> want my pause_thread_event.hh/cc to be compiled in M5?
+That's an easy one: assuming your file is in src/sim, just add
+Source('pause_thread_event.cc') to src/sim/SConscript.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,38 @@
+(1) you could always just put a cout statement in the destructor, run
+a Hello World program and make sure it's called.
+(2) But I'm pretty sure it is being called. To understand caches you
+need to understand templates and polymorphism (derived classes).
+Note that a cache object takes in a templated "Tags" object. The Tags
+object will be LRU, FA_LRU, IIC, etc.
+(3) Look in the file mem/cache/builder.cc (or something close to that
+name). In that file, you'll see everything get instantiated and also
+destructed in terms of cache tags and things of that nature ...
+2008/5/24 fractal218 <fractal218@126.com>:
+- Show quoted text ->  Hi,
+>  I found that the destructor of the class LRU and the class Cache are not
+> called. But my experiment depends on that. So, Is there some method to
+> ensure the destructor to be called? Or else, can we get the information that
+> the execution of the application in the m5 is over?
+>
+> Thank you!
+>
+>
+>
+>
+> ________________________________
+> 中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

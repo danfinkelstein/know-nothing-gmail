@@ -1,0 +1,17 @@
+> I like the idea, but not the name. m5-out or m5_out or maybe just
+>  output seem like better names.
+I just randomly picked it.  Add "m5out" to the list? Any other
+opinions?  While I'm at it, should I change any other default names?
+Maybe:
+m5stats.txt -> stats
+config.ini -> config
+console.foo.sim_console -> foo.console
+None of this is required.  Just if I'm going to change one default and
+there is a desire to change others, doing all at once would probably
+be a good idea.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

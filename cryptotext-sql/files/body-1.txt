@@ -1,0 +1,11 @@
+You can import your contacts and mail from Yahoo!, Hotmail, AOL, and many
+other web mail or POP accounts. If you want, we'll even keep importing your
+mail for the next 30 days.
+Import contacts and mail »
+We know it can be a pain to switch email accounts, and we hope this makes
+the transition to Gmail a bit easier.
+- The Gmail Team
+Please note that importing is not available if
+you're using Internet Explorer 6.0. To take advantage of the latest Gmail
+features, please
+upgrade to a fully supported browser.

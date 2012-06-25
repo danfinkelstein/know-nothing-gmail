@@ -1,0 +1,9 @@
+HiI am dealing with simpoint and checkpoint values. I have setup simpoint with the benchmarks. Also using the checkpoint on the command line as shown;command line:
+ /home/ashutoshj/newm5/build/ALPHA_SE/m5.opt -d ./spcp2000/cmp02_thds02_L2cache01/2C2T/Esimoutput100M /home/ashutoshj/newm5/configs/cpu2000/cmp02_thds02_L2cache01.py --detailed --caches --l2cache -S --take-checkpoint=100000000
+I have been using the max_insts_all_thread = 100000000 (100M) under the configuration file for running the benchmarks. My query is how this checkpoint is computed in M5? Whether the max instruction all threads means "sum of simpoint value + checkpoint" or just the " checkpoint value".
+One more thing do the checkpoint and simpoint value have any relation with statement like the following appeared at the end of simulation        "Exiting @ cycle 62465151500 because all threads reached the max instruction count"
+Thanks in advanceAshutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

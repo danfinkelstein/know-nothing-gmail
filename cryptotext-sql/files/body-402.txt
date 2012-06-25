@@ -1,0 +1,57 @@
+Hello,
+I want to modify the pipeline depth next to the latencies of the
+functional units.
+The extra stages that I want to add shouldn't do anything since I'm only
+interested in the change in CPI they cause.
+Did anybody do this before?
+I tried it by modifying cpu/inorder/pipeline_traits.cc and
+cpu/inorder/pipeline_traits.hh (see below).
+The result of my execution is correct but however it takes 20 times as
+much time!!!
+I debugged the code a little bit and found that there is some problem in
+the instruction fetch:
+In cpu/inorder/resources/cache_unit.cc addrList accumulates a lot of
+instructions because CacheUnit::setAddrDependency is called more than
+CacheUnit::removeAddrDependency.
+This happens only for the calls to the instruction cache (and thus
+originating from the 0th stage (instruction fetch))!
+Before modifying the code this did not happen.
+Does anyone has an idea to fix this problem?
+Thanks!
+Max
+diff -r 33d2b758697b src/cpu/inorder/pipeline_traits.cc
+--- a/src/cpu/inorder/pipeline_traits.cc        Mon Feb 01 14:27:16 2010
+-0800
++++ b/src/cpu/inorder/pipeline_traits.cc        Thu Mar 11 11:10:56 2010
++0100
+@@ -77,6 +77,13 @@
+      D->needs(Decode, DecodeUnit::DecodeInst);
+      D->needs(BPred, BranchPredictor::PredictBranch);
+      D->needs(FetchSeq, FetchSeqUnit::UpdateTargetPC);
++
++
++    //new stages
++    inst -> addStage();
++    inst -> addStage();
++    inst -> addStage();
++
+  }
+  bool createBackEndSchedule(DynInstPtr &inst)
+diff -r 33d2b758697b src/cpu/inorder/pipeline_traits.hh
+--- a/src/cpu/inorder/pipeline_traits.hh        Mon Feb 01 14:27:16 2010
+-0800
++++ b/src/cpu/inorder/pipeline_traits.hh        Thu Mar 11 11:11:48 2010
++0100
+@@ -48,7 +48,7 @@
+   */
+  namespace ThePipeline {
+      // Pipeline Constants
+-    const unsigned NumStages = 5;
++    const unsigned NumStages = 8;
+      const ThreadID MaxThreads = 8;
+      const unsigned StageWidth = 1;
+      const unsigned BackEndStartStage = 2;
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

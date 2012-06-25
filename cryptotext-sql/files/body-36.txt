@@ -1,0 +1,145 @@
+  
+  
+Hi,
+After running some (spec2006 and MiBench) benchmarks I noticed the
+following:
+Most of the time a memory request packet triggers the "doAtomicAccess"
+function. However sometimes "doFunctionalAccess" is called.
+I noticed the latter happens after a syscall. 
+What's the philosophy behind it?
+Max- Show quoted text -
+On 06/07/2010 10:09 AM, Maximilien Breughe wrote:
+  
+  
+Thanks,
+  
+I got it =), it was easier than I thought ;)
+  
+Regards,
+Max
+On 06/04/2010 06:35 PM, Korey Sewell wrote:
+  Thanks Lisa.
+    
+I should've payed more attention to his configuration: "I'm running one
+core, with one thread, split level 1 caches and physical memory."
+    
+MSHRs arent really a big deal in that case.
+    
+Max,
+if you just go into the physical memory object and create relevant
+read/write statistics you can be sure of the values you get.
+    
+    On Fri, Jun 4, 2010 at 12:23 PM, Lisa Hsu <hsul@eecs.umich.edu>
+wrote:
+    I
+assume
+the
+InOrderCPU has blocking caches in which case you will
+definitely have no mshr hits, since each core only has one outstanding
+memory request at a time.
+      
+      
+      Lisa
+      
+      
+      
+      On Fri, Jun 4, 2010 at 12:46 AM,
+Maximilien Breughe <Maximilien.Breughe@elis.ugent.be>
+wrote:
+      
+        Korey,
+        
+Could it be that in the InOrderCPU, all mshr accesses are misses? But
+only for the dcache.
+I have over a hundred traces of programs that have executed more than
+140 million instructions all showing the same thing:
+overall_mshr_hits=0.
+The overal_misses of the dcache equals overall_mshr_misses of the
+dcache.
+        
+If it would help I could send my config-file.
+This entry in the config-file says that I do have mshrs for the dcache:
+[system.cpu.dcache]
+.....
+mshrs=10
+.....
+        
+Regards,
+Max
+        
+        
+On 06/03/2010 03:08 PM, Korey Sewell wrote: 
+        
+        
+          
+          
+          
+          The
+number
+of
+memory
+writes will be more difficult to calculate: it equals
+[number of evicted cache lines that were written] plus [number of data
+cache WriteReq_misses].
+          
+          Check the stats for "MSHR" misses there (and
+corresponding
+code
+if you want to know when that gets updated). Y
+          
+You could technically have a miss to the same block that a MSHR is
+handling, so that "miss" is kind of being double-serviced so to speak. 
+          
+          
+          
+-- 
+- Korey
+          
+          
+          
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+        
+        
+        
+        
+_______________________________________________
+m5-users mailing list
+        m5-users@m5sim.org
+        http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+      
+      
+      
+      
+      
+      
+      
+_______________________________________________
+m5-users mailing list
+      m5-users@m5sim.org
+      http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+    
+    
+    
+    
+-- 
+- Korey
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

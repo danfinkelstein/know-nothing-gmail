@@ -1,0 +1,167 @@
+So I think the bug report that pertains to this a bit is:
+http://www.m5sim.org/flyspray/task/304
+A new bug might need to be filed for this one because that bug alludes
+to a related might not same problem.
+I will say this whole should a thread start in "Unallocated" or
+"Suspended" seems like a re-run. I'm not even really sure what is what
+anymore. What's the error when you switch it to "Suspended"? Is there
+a patch for that so I can look at it?
+I think running SMT for SPLASH in O3 hasnt been tested to my knowledge.
+Only threads that all start from the beginning worked in SE mode I believe.
+- Show quoted text -
+On Tue, Jun 24, 2008 at 1:03 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> I'm thinking I detailed some of this problem maybe in Feb./Mar. ....
+> I'll try to find that email and file the appropriate bug report
+>
+> On Tue, Jun 24, 2008 at 10:45 AM, Steve Reinhardt <stever@gmail.com> wrote:
+>> Unfortunately what I've found is that the O3 dynamic thread creation
+>> code is broken, beyond a quick fix.  I'll try and file a bug report on
+>> it with more details later.
+>>
+>> Steve
+>>
+>> On Tue, Jun 24, 2008 at 8:51 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+>>> Thanks for looking into it Steve. Let me know if you find anything.
+>>>
+>>> ----- Original Message -----
+>>> From: "Steve Reinhardt" <stever@gmail.com>
+>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>> Sent: Monday, June 23, 2008 11:57 PM
+>>> Subject: Re: [m5-users] error running O3 directly with more than 1 cpu
+>>>
+>>>
+>>>> OK, I tracked it down a little further... the problem with having O3
+>>>> initialize threads to Unallocated is in the activate() method in
+>>>> cpu/o3/thread_context_impl.hh, where the CPU checks to make sure that
+>>>> there are enough resources to activate a thread if it's in Unallocated
+>>>> state (as opposed to Suspended state, where it assumes those resources
+>>>> are already allocated).  There must be a bug in that code since even
+>>>> if the very first thread is in Unallocated it still doesn't start up
+>>>> properly.  However there's potentially a more general problem if the
+>>>> CPU doesn't reserve the physical registers for a thread from the very
+>>>> beginning.  I'll keep probing as time permits...
+>>>>
+>>>> Steve
+>>>>
+>>>> On Mon, Jun 23, 2008 at 8:41 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>>>> It's a bug in M5.  The SE threading code expects the "idle" contexts
+>>>>> to be in state Unallocated (see nxm_thread_createFunc in
+>>>>> src/kern/tru64/tru64.hh), which is what SimpleCPU does.  However O3
+>>>>> initializes unused threads to Suspended (see
+>>>>> src/cpu/o3/alpha/cpu_impl.hh).  Unfortunately just changing the O3
+>>>>> initialization to Suspended caused other problems which I haven't
+>>>>> figured out yet.
+>>>>>
+>>>>> Steve
+>>>>>
+>>>>> On Mon, Jun 23, 2008 at 2:47 PM, Sujay Phadke <sphadke@eecs.umich.edu>
+>>>>> wrote:
+>>>>>> Well I wanted to run the O3 (n>1) for testing wattch. Is it wrong to run
+>>>>>> it
+>>>>>> in detailed mode directly w/o using any switching?
+>>>>>> If so, can you give me an example file and command line which does
+>>>>>> switching
+>>>>>> for say Splash2?
+>>>>>>
+>>>>>> thanks,
+>>>>>> Sujay
+>>>>>>
+>>>>>> ----- Original Message -----
+>>>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>>>> Sent: Monday, June 23, 2008 5:39 PM
+>>>>>> Subject: Re: [m5-users] error running O3 directly with more than 1 cpu
+>>>>>>
+>>>>>>
+>>>>>>>
+>>>>>>> On Jun 23, 2008, at 1:23 PM, Sujay Phadke wrote:
+>>>>>>>
+>>>>>>>> Hello,
+>>>>>>>>         If I try to run O3 in SE mode directly, without using any
+>>>>>>>> fastforwarding, it gives me the error:
+>>>>>>>>
+>>>>>>>>  build/ALPHA_SE/m5.opt configs/splash2/runsplash.py -d -n4 -b
+>>>>>>>> OceanContig
+>>>>>>>>
+>>>>>>>> warn: Increasing stack size by one page.
+>>>>>>>> warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+>>>>>>>> warn: ignoring syscall sigprocmask(3, 0, ...)
+>>>>>>>> warn: ignoring syscall sigaction(8, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(11, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(10, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(4, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(7, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(6, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(12, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(5, 4831387552, ...)
+>>>>>>>> warn: ignoring syscall sigaction(13, 4831387552, ...)
+>>>>>>>> nxm_thread_create: no idle contexts available.
+>>>>>>>> Program aborted at cycle 378945000
+>>>>>>>> It works fine of numcpus (-n) = 1, or if I use atomic or timing
+>>>>>>>> mode. The statement
+>>>>>>>>
+>>>>>>>> thread->setStatus(ThreadContext::Unallocated);
+>>>>>>>>
+>>>>>>>> appears in src/cpu/simple/base.cc and src/cpu/o3/
+>>>>>>>> thread_context_impl.hh.
+>>>>>>>>
+>>>>>>> The statement and the context the statement is in are two different
+>>>>>>> things. From a cursory look of the O3CPU, it appears as though the
+>>>>>>> state of the thread context is never initialized when the thread
+>>>>>>> context is created, and the places where it is set to unallocated are
+>>>>>>> for switching CPUs. Initializing it to Unallocated should solve the
+>>>>>>> problem.
+>>>>>>>
+>>>>>>> Are you planning on running a detailed CPU for the entirety of the
+>>>>>>> benchmark?
+>>>>>>>
+>>>>>>> Ali
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+>
+> --
+> ----------
+> Korey L Sewell
+> Graduate Student - PhD Candidate
+> Computer Science & Engineering
+> University of Michigan
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

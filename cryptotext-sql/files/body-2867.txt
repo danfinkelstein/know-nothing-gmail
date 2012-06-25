@@ -1,0 +1,9 @@
+Hi guys,    Is it possible in M5 to start two different Simple CPUs (executing different threads) and then switch to an O3-detailed SMT at some instruction count...? here's a sample case.1. start ammp and equake on 2 different simple CPU's for fastforwarding
+2. after Nth instruction of ammp and Mth instruction of equake (N & M could be Simpoints) switch to a single O3 SMT CPU(with ammp and equak being the two threads)3. run for P number of instructions then stop
+Some questions would be:1. The two threads have different memory objects from the start, if I switch to a single SMT O3 CPU then the memory mapping(and addresses) are bound to collide. Any pointers on how to resolve this?
+2. The two 'threads' does not finish fastforwarding simultaneously, is it possible for the O3 CPU to wait for all the threads to finish before starting to execute?3. How about cache warming up of the switched O3 CPU? should I make the switch earlier .. say (N-1000000 cycles) so that the SMT can warm its own cache?
+thanks, Dean Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

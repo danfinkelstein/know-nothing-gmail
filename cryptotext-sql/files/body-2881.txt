@@ -1,0 +1,378 @@
+   The way glibc is set up, the _start symbol, the standard entry point of the binary, does a minimal amount of setup to the programs environment like capping off the end of the stack, and then it passes control to other functions that do the real work. I would guess, comparing between the two traces, that one of two things was happening. First, in the working trace, the second instruction is a branch, but in the other one it looks like a shift. It could be that this instruction is being decoded incorrectly and control isn't going where it should. Second, it could be that the fourth instruction which isn't shown (and which is faulting) is using a value set up by m5 which isn't being initialized correctly. This might be the value of r2. You can use a cross compiled gdb to disassemble the _start function and check. There are a lot of small things specified in the ABI sometimes and it's easy to miss one or two and have things work, so this is my guess. You might need to look in the glibc source to see what exactly it's trying to do, but I've found the comments in there can sometimes be a little underwhelming.
+Gabe- Show quoted text -
+David Robert White wrote:
+Hi,
+I ran the simulator on the example provided with M5, then I ran with my own binary.
+Please see the outputs below.
+Thanks for your help,
+David
+-
+M5 running with example provided with the simulator
+build/MIPS_SE/m5.debug --trace-flags=Exec configs/example/se.py --cmd=tests/test-progs/hello/bin/mips/linux/hello --maxtick=10000 > trace.out
+Output to terminal:
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+Contents of trace.out:
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Mar 12 2008 10:16:30
+M5 started Thu Mar 13 14:23:46 2008
+M5 executing on pc307
+command line: build/MIPS_SE/m5.debug --trace-flags=Exec configs/example/se.py --cmd=tests/test-progs/hello/bin/mips/linux/hello --maxtick=10000
+Global frequency set at 1000000000000 ticks per second
+**** REAL SIMULATION ****
+     0: system.cpu T0 : @__start : addu       r0, r31, r0     : IntAlu :  D=0x0000000000000000
+   500: system.cpu T0 : @__start+4 : bal        0x4001ac        : IntAlu :  D=0x00000000004001ac
+  1000: system.cpu T0 : @__start+8 : nop                        : No_OpClass :
+  1500: system.cpu T0 : @__start+12 : lui        r28, 0xfc1      : IntAlu :  D=0x000000000fc10000
+  2000: system.cpu T0 : @__start+16 : addiu      r28, r28, -12828 : IntAlu :  D=0x000000000fc0cde4
+  2500: system.cpu T0 : @__start+20 : addu       r28, r28, r31   : IntAlu :  D=0x000000001000cf90
+  3000: system.cpu T0 : @__start+24 : addu       r31, r0, r0     : IntAlu :  D=0x0000000000000000
+  3500: system.cpu T0 : @__start+28 : lw         r4, -32616(r28) : MemRead :  D=0x00000000004003e0 A=0x10005028
+  4000: system.cpu T0 : @__start+32 : lw         r5, 0(r29)      : MemRead :  D=0x0000000000000001 A=0x7fff6000
+  4500: system.cpu T0 : @__start+36 : addiu      r6, r29, 4      : IntAlu :  D=0x000000007fff6004
+  5000: system.cpu T0 : @__start+40 : addiu      r1, r0, -8      : IntAlu :  D=0x00000000fffffff8
+  5500: system.cpu T0 : @__start+44 : and        r29, r29, r1    : IntAlu :  D=0x000000007fff6000
+  6000: system.cpu T0 : @__start+48 : addiu      r29, r29, -32   : IntAlu :  D=0x000000007fff5fe0
+  6500: system.cpu T0 : @__start+52 : lw         r7, -31232(r28) : MemRead :  D=0x000000000040fe40 A=0x10005590
+  7000: system.cpu T0 : @__start+56 : lw         r8, -29704(r28) : MemRead :  D=0x000000000040ff08 A=0x10005b88
+  7500: system.cpu T0 : @__start+60 : nop                        : No_OpClass :
+  8500: system.cpu T0 : @__start+64 : sw         r8, 16(r29)     : MemWrite :  D=0x000000000040ff08 A=0x7fff5ff0
+  9000: system.cpu T0 : @__start+68 : sw         r2, 20(r29)     : MemWrite :  D=0x0000000000000000 A=0x7fff5ff4
+  9500: system.cpu T0 : @__start+72 : sw         r29, 24(r29)    : MemWrite :  D=0x000000007fff5fe0 A=0x7fff5ff8
+ 10000: system.cpu T0 : @__start+76 : lw         r25, -31012(r28) : MemRead :  D=0x000000000040f930 A=0x1000566c
+Exiting @ cycle 10000 because simulate() limit reached
+-- 
+M5 running with binary I've created:
+build/MIPS_SE/m5.debug --trace-flags=Exec configs/example/se.py --cmd=/local/d0p6/drw/tmp/helloworld_mips/a.out --maxtick=10000 > trace2.out
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Entering event queue @ 0.  Starting simulation...
+panic: Page table fault when accessing virtual address 0x1c3c
+@ cycle 1500
+[invoke:build/MIPS_SE/sim/faults.cc, line 66]
+Program aborted at cycle 1500
+Aborted
+Contents of trace2.out:
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Mar 12 2008 10:16:30
+M5 started Thu Mar 13 14:25:40 2008
+M5 executing on pc307
+command line: build/MIPS_SE/m5.debug --trace-flags=Exec configs/example/se.py --cmd=/local/d0p6/drw/tmp/helloworld_mips/a.out --maxtick=10000
+Global frequency set at 1000000000000 ticks per second
+**** REAL SIMULATION ****
+     0: system.cpu T0 : @__start : addi       r0, r8, -8189   : IntAlu :  D=0x00000000ffffe003
+   500: system.cpu T0 : @__start+4 : sllv       r2, r8, r0      : IntAlu :  D=0x0000000000000000
+  1000: system.cpu T0 : @__start+8 : nop                        : No_OpClass :
+-- 
+Korey Sewell wrote:
+If you are failing after a few instructions, then that's odd...
+First, I would check the trace output of the simulation to see if it's trying to jump to a bad address. Do that by running the simulation with the Instruction trace flag:
+build/MIPS_SE/m5.debug --trace-flags=Exec ...
+Then, I would double check that against the working hello-world mips example:
+build/MIPS_SE/m5.debug --trace-flags=Exec configs/example/se.py --cmd=tests/test-progs/hello/mips/linux/hello --maxtick=10000 > trace.out
+The traces wont be exactly the same (diff. compilers)
+Usually, when something breaks that early in a SimpleCPU it had to do with the binary compiled wrong or something like that, but maybe it's jumping to a bad address or ???? Maybe the instruction trace (since it's only like 3 insts right?) can give some hings...
+On Thu, Mar 13, 2008 at 10:03 AM, David Robert White <drw@cs.york.ac.uk <mailto:drw@cs.york.ac.uk>> wrote:
+    Hi Ali,
+    The cross-compiler (gcc) is not TLS-enabled - I used crosstool to
+    compile it without.
+    Thanks
+    David
+    Ali Saidi wrote:
+    > Here again is a guess, but I noticed that our test for TLS is only
+    > done on Alpha. Is it possible that you're using a cross-compiler
+    that
+    > has TLS enabled?
+    >
+    > Ali
+    >
+    > On Mar 12, 2008, at 12:14 PM, David Robert White wrote:
+    >
+    >> The problem with the alpha simulator was just that I missed an
+    option
+    >> in the program's arguments.  Didn't check for it in the code
+    and seem
+    >> to have forgotten it somewhere in the process of trying to get
+    things
+    >> to work... (doh).  My bad.
+    >>
+    >> I'm not trying to run the same program on MIPS, I'm just trying a
+    >> simple HelloWorld program with one printf.  And receiving the "Page
+    >> table fault" error.  Any ideas?
+    >>
+    >> Thanks
+    >>
+    >> David
+    >>
+    >> Korey Sewell wrote:
+    >>> what was the problem with the Alpha simulation? a null pointer in
+    >>> your program?
+    >>>
+    >>> Are you trying to run the same program for MIPS? Did you make
+    sure you
+    >>> recompile it with the new changes that you made for the NULL
+    pointer
+    >>> fix?
+    >>>
+    >>> On Wed, Mar 12, 2008 at 11:52 AM, David Robert White
+    >>> <drw@cs.york.ac.uk <mailto:drw@cs.york.ac.uk>> wrote:
+    >>>
+    >>>> Thanks a lot Ali, I found the problem and now Alpha simulation
+    >>>> works fine.
+    >>>>
+    >>>> Going back to the MIPS simulator, I still get an error when
+    running a
+    >>>> HelloWorld program:
+    >>>>
+    >>>>
+    >>>> **** REAL SIMULATION ****
+    >>>> warn: Entering event queue @ 0.  Starting simulation...
+    >>>> panic: Page table fault when accessing virtual address 0x1c3c
+    >>>>  @ cycle 1500
+    >>>> [invoke:build/MIPS_SE/sim/faults.cc, line 66]
+    >>>> Program aborted at cycle 1500
+    >>>> Aborted
+    >>>> ---
+    >>>>
+    >>>> Thanks,
+    >>>>
+    >>>> David
+    >>>>
+    >>>>
+    >>>>
+    >>>> Ali Saidi wrote:
+    >>>> > In that case this panic is pretty much the exact same thing
+    as a
+    >>>> > segfault when running a program without M5. My best guess
+    is that
+    >>>> you
+    >>>> > have a null pointer somewhere.
+    >>>> >
+    >>>> > Ali
+    >>>> >
+    >>>> > On Mar 12, 2008, at 11:10 AM, David Robert White wrote:
+    >>>> >
+    >>>> >> Apologies for the confusion.  I've actually been trying both
+    >>>> MIPS and
+    >>>> >> Alpha binaries.
+    >>>> >>
+    >>>> >> To prevent any further confusion, please ignore my original
+    >>>> email and
+    >>>> >> consider only the problem with Alpha binaries.
+    >>>> >>
+    >>>> >> So, I'm trying to run an alpha binary and receiving the error:
+    >>>> >>
+    >>>> >> **** REAL SIMULATION ****
+    >>>> >> warn: Entering event queue @ 0.  Starting simulation...
+    >>>> >> warn: Increasing stack size by one page.
+    >>>> >> panic: Tried to access unmapped address 0.
+    >>>> >> @ cycle 2118000
+    >>>> >> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]
+    >>>> >> Program aborted at cycle 2118000
+    >>>> >> --
+    >>>> >>
+    >>>> >> Thanks (sorry!)
+    >>>> >>
+    >>>> >> David
+    >>>> >>
+    >>>> >>
+    >>>> >> Ali Saidi wrote:
+    >>>> >>> Hi David,
+    >>>> >>>
+    >>>> >>> There are a couple of inconsistencies here. Are you
+    running MIPS
+    >>>> >>> binaries? The error below says ALPHA, so I'm a bit confused.
+    >>>> >>>
+    >>>> >>> Ali
+    >>>> >>>
+    >>>> >>> On Mar 12, 2008, at 10:52 AM, David Robert White wrote:
+    >>>> >>>
+    >>>> >>>> Hi Lisa
+    >>>> >>>>
+    >>>> >>>> Thanks for your help.
+    >>>> >>>>
+    >>>> >>>> I've used the native GCC compiler, i.e. x86 targeted, to
+    >>>> compile m5.
+    >>>> >>>> I've used the cross-compiler to compile a simple C
+    program, and
+    >>>> >>>> then tried to run the resulting output using m5.  That's
+    why I
+    >>>> >>>> needed the cross-compiler.  I attempted to run it using
+    se.py and
+    >>>> >>>> by supplying a "-c a.out" option to run the results of
+    >>>> compiling my
+    >>>> >>>> code.
+    >>>> >>>>
+    >>>> >>>> I have managed to get a very simple "HelloWorld" program
+    working,
+    >>>> >>>> but trying something more complicated now gives me:
+    >>>> >>>>
+    >>>> >>>> ---
+    >>>> >>>> **** REAL SIMULATION ****
+    >>>> >>>> warn: Entering event queue @ 0.  Starting simulation...
+    >>>> >>>> warn: Increasing stack size by one page.
+    >>>> >>>> panic: Tried to access unmapped address 0.
+    >>>> >>>> @ cycle 2118000
+    >>>> >>>> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]
+    >>>> >>>> Program aborted at cycle 2118000
+    >>>> >>>> ---
+    >>>> >>>>
+    >>>> >>>> Any ideas?
+    >>>> >>>>
+    >>>> >>>> David
+    >>>> >>>>
+    >>>> >>>> Lisa Hsu wrote:
+    >>>> >>>>> Hi David,
+    >>>> >>>>>
+    >>>> >>>>> Are you using the crosstool gcc to compile the
+    m5.debug?   You
+    >>>> >>>>> want m5.debug to be compiled with the native compiler, the
+    >>>> >>>>> crosstool is for compiling any potential binaries you
+    woudl want
+    >>>> >>>>> to use during simulation.  Since you're using using se.py,
+    >>>> there's
+    >>>> >>>>> nothing thus far that you've needed the crosstool for.
+    >>>> >>>>>
+    >>>> >>>>> Lisa
+    >>>> >>>>>
+    >>>> >>>>> On Wed, Mar 12, 2008 at 7:32 AM, David Robert White
+    >>>> >>>>> <drw@cs.york.ac.uk <mailto:drw@cs.york.ac.uk>
+    <mailto:drw@cs.york.ac.uk <mailto:drw@cs.york.ac.uk>>> wrote:
+    >>>> >>>>>
+    >>>> >>>>>   Hi,
+    >>>> >>>>>
+    >>>> >>>>>   I'm a new user of M5 and I'm having some problems
+    trying to
+    >>>> get a
+    >>>> >>>>>   basic
+    >>>> >>>>>   "Hello World" test program running.
+    >>>> >>>>>
+    >>>> >>>>>   I've used crosstool to compile GCC targeted for the MIPS
+    >>>> >>>>> architecture
+    >>>> >>>>>   (without TLS), and I've compiled m5.debug for MIPS in
+    SE mode.
+    >>>> >>>>>
+    >>>> >>>>>   I compile an example program, statically linked, but when
+    >>>> >>>>> running M5
+    >>>> >>>>>   using configs/example/se.py with the -c option, I
+    receive the
+    >>>> >>>>>   following
+    >>>> >>>>>   output:
+    >>>> >>>>>
+    >>>> >>>>>   - - -
+    >>>> >>>>>   Global frequency set at 1000000000000 ticks per second
+    >>>> >>>>>   0: system.remote_gdb.listener: listening for remote
+    gdb #0
+    >>>> on port
+    >>>> >>>>>   7000
+    >>>> >>>>>   **** REAL SIMULATION ****
+    >>>> >>>>>   warn: Entering event queue @ 0.  Starting simulation...
+    >>>> >>>>>   panic: Page table fault when accessing virtual
+    address 0x1c3c
+    >>>> >>>>>    @ cycle 1500
+    >>>> >>>>>   [invoke:build/MIPS_SE/sim/faults.cc, line 66]
+    >>>> >>>>>   Program aborted at cycle 1500
+    >>>> >>>>>   Aborted
+    >>>> >>>>>   - - -
+    >>>> >>>>>
+    >>>> >>>>>   I'm probably making an elementary mistake, can anyone
+    suggest
+    >>>> >>>>> what I
+    >>>> >>>>>   might be doing wrong?
+    >>>> >>>>>
+    >>>> >>>>>   Thanks
+    >>>> >>>>>
+    >>>> >>>>>   David
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>   _______________________________________________
+    >>>> >>>>>   m5-users mailing list
+    >>>> >>>>>   m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    <mailto:m5-users@m5sim.org <mailto:m5-users@m5sim.org>>
+    >>>> >>>>>   http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>>
+    ------------------------------------------------------------------------
+    >>>>
+    >>>> >>>>>
+    >>>> >>>>>
+    >>>> >>>>> _______________________________________________
+    >>>> >>>>> m5-users mailing list
+    >>>> >>>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> >>>> _______________________________________________
+    >>>> >>>> m5-users mailing list
+    >>>> >>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> >>>>
+    >>>> >>>
+    >>>> >>> _______________________________________________
+    >>>> >>> m5-users mailing list
+    >>>> >>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> >> _______________________________________________
+    >>>> >> m5-users mailing list
+    >>>> >> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> >>
+    >>>> >
+    >>>> > _______________________________________________
+    >>>> > m5-users mailing list
+    >>>> > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>> _______________________________________________
+    >>>> m5-users mailing list
+    >>>> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>>>
+    >>>>
+    >>>
+    >>>
+    >>>
+    >>>
+    >> _______________________________________________
+    >> m5-users mailing list
+    >> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    >>
+    >
+    > _______________________________________________
+    > m5-users mailing list
+    > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

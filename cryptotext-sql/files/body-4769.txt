@@ -1,0 +1,23 @@
+Yes, the "count = 4" refers to 4 read/write ports that are available to be used simultaneously. If you want only 1 read/write port, set that count to 1. You can do this either by modifying FuncUnitConfig.py, or creating your own class for the Read/write ports and defining a new FUPool class that uses it. See FUPool.py for how the FUPool is used. Then you can select which FUPool to use by setting the O3CPU's fuPool parameter to the FUPool class you desire. This is a little more work, but more flexible in the end because you'd be able to select in your script which architecture you want.
+If I understand your question properly, then yes, the L1 cache can be configured with multiple read/write ports. As you can see, that's actually the default behavior. The register file is maintained properly through the standard renaming techniques for out-of-order processors. If this doesn't answer your question, then please explain more and we'll try to answer it.
+Kevin
+xiaojun.chen wrote:
+- Show quoted text -
+Hi,m5-users,
+    I have checked FuncUnitConfig.py and find the RdWrPort is configurated with "count = 4". Does that mean that the CPU can execute 4 Load/Restore insts simultaneously?       
+    If my L1 caches are not configurated with multi-ports, so my cache cannot be accessed by more than one insts simultaneously. In this case , the configuration about RdWrPort above will be invalid, is that right?
+    Btw: Can my L1 cache be configurated with multi-ports? If so, how to maintain the conherence of Regs file because of multi-accesses to L1 cache simultaneously? I want to know whether that case is considered or not in M5.
+Thanks and Best Regards!
+                                
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2007-01-05
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

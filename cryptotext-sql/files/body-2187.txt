@@ -1,0 +1,75 @@
+Hi Steve,
+Thanks for the reply. I managed to implement cache flushing by
+iterating over the blocks and copying the dirty ones to the memory. So
+now my simulations are running fine with caches as well! This approach
+is OK for me since I am not too concerned about the timing.
+> Where is the page copy taking place?  I think the easier solution
+> (both in m5 and in real life) is just to do the copy using coherent
+> accesses, and then you don't have to worry about flushing the caches
+> at all.
+I agree this is a cleaner solution. I do the page migration based on
+number of reads/writes to specific pages, of which I keep a tab at the
+physical memory level. I am running in SE mode, so there is no OS,
+which might do the coherent copy for me. I am not sure if it is
+possible to do this in my setup.
+Thanks,
+-Gaurav
+- Show quoted text -
+> On Sun, Nov 30, 2008 at 9:04 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> I can't really give you any insights into the cache itself. However, I
+>> would go about accomplishing this with a new packet type (e.g.
+>> FlushReq). Are you executing some instructions to simulate the time to
+>> do these operations or do they just happen instantly? If the former, I
+>> would just add a new instruction that caused the FlushReq to be sent.
+>> The latter would be a bit more complicated. Each cache that received
+>> the FlushReq would flush any dirty data it had and forward the request
+>> on. In that way it would work similar to a ReadReq looking for the
+>> most recent copy of some data.
+>>
+>> Ali
+>>
+>>
+>>
+>> On Nov 30, 2008, at 9:40 PM, Gaurav Dhiman wrote:
+>>
+>>> Hi All,
+>>>
+>>> I am implementing a page migration mechanism, where I would want to
+>>> remap a virtual address to a different physical page. I am using M5 in
+>>> the SE mode. I am trying to do the following for the same: 1) Allocate
+>>> a new page, 2) Flush dirty cache blocks corresponding to that page, 3)
+>>> Flush the TLB entry for that page, 4) Copy contents to the new page,
+>>> 5) Modify the page table to map the virtual address to the new page. I
+>>> have already implemented all these steps except 2), i.e. the cache
+>>> flushing part. The implementation looks fine to me, as the simulation
+>>> without caches (page migration enabled) runs absolutely fine.
+>>>
+>>> Although I have already spent some time with the cache code of M5, I
+>>> am still not sure how to accomplish the flushing part. It would be
+>>> great if someone more familiar with the code can give me some insights
+>>> on how to go about implementing it. Also, is there a way to configure
+>>> caches as write-through, so that I might not need to flush the dirty
+>>> cache blocks?
+>>>
+>>> Thanks in advance,
+>>> -Gaurav
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

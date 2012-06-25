@@ -1,0 +1,7 @@
+Hello All,I am wondering which parameter would reflect the work done by a thread assigned to that core in m5stats.txt.  I should have the stats being reset after all the threads are created and for some reason I am not seeing a very uniform distribution of ticks spent in "user" mode on each core if I split my work load up over 2 or 4 threads on a system with 2 or 4 cores.  
+Also a strange thing that happens is when I run one thread on a system with 4 cores, It spends the same number of ticks in "user" mode for each core.  This is leading me to think I am looking at the wrong parameter.  Which should I be looking at instead to see how much time each thread takes on its core.  
+Thanks!-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

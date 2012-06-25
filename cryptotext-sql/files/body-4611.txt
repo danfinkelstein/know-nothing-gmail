@@ -1,0 +1,37 @@
+Sorry that the code disappeared from the website, it's back there now.
+Ali- Show quoted text -
+On Apr 2, 2007, at 5:30 AM, Richard R. Zhang wrote:
+Hi all,
+I'm sorry for this problem. I use tsb_osfpal from m5 v1.1 instead
+of ts_osfpal, and it works. Is the source code of `console' and
+`ts_osfpal' still available? I find Steve had posted the source
+code, but it can not be found.
+Thanks.
+------------------                              
+Richard R. Zhang
+2007-04-02
+-------------------------------------------------------------
+From：Richard R. Zhang
+Date：2007-04-02 19:01:41
+To：M5 users mailing list
+CC：
+Subject：[m5-users] How many CPUs can m5 2.0b2 support?
+Hi all,
+I have tried m5 2.0b2 FS to setup 8 CPUs, it does not work. Setting up 4
+CPUs is OK. I want to know how many CPUs can m5 2.0b2 support?
+Thanks.
+------------------                              
+Richard R. Zhang
+2007-04-02
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

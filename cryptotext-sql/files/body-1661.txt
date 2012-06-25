@@ -1,0 +1,7 @@
+Hi Ryan,
+You can use linux32-i386-gcc42.cfg and replace the gcc with your cross-compiler.
+Meng-Ju
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

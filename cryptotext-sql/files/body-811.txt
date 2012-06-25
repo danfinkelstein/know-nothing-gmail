@@ -1,0 +1,11 @@
+I figured out that there are 4 "stages" each instruction needs to pass.Should be 5 stages right? FDXMW... there is light documentation on m5sim.org that you might want to check out.
+ 
+Each stage calls the resources of the in-order core.
+I tried to modify the "stageWidth"-parameter in the hope that more
+buffer slots would be available at each stage but unfortunately nothing
+changed. Unfortunately, the stageWidth param in the python interface doesnt translate to the inorder design just yet. We plan to get everything fully configurable thorugh the Python command line interface in due time.
+For now, you want to edit the "StageWidth" constant in file src/cpu/inorder/pipeline_traits.hh and recompile. That probably will do the trick.-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi,
+I am trying to access the size that was set for the AlphaISA::DTB(ITB)
+from an instance of DerivO3CPUParams (call it do3p for this email).
+However, it would seem that do3p->dtb{itb} points to an actual
+AlphaISA::DTB structure that has already been created. I am not sure
+what file I need to include so the compiler will recognize
+AlphaISA::DTB  so I can do something along the lines of wattch.dtb.size
+= do3p->dtb->params()->size. Any help would be appreciated.
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

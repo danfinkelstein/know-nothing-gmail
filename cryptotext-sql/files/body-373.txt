@@ -1,0 +1,14 @@
+Sorry to bother all! I'm transitioning from GEMS to ruby in M5 to
+study the memory performance of CMP systems. I've run the simple
+timing cpu with ruby enabled (RUBY=1 passed to scons build command)
+successfully. But when under the OoO cpu simulation, the system hangs
+and has no progress. After some debugging and code reading, I haven't
+got any useful information.
+So, my question is, is it possible to make the OoO cpu simulation with
+the evolving ruby memory system in the M5 simulator? If it does not
+already work, could anybody here do me a favor to provide any hints
+about it? Thanks very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

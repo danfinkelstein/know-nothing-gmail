@@ -1,0 +1,78 @@
+Hi steve,
+   Thanks for replying me!
+   I am using M5 b3 version now. My SDRAM model is implemented from
+scratch in SE mode.
+   I have another question: If I create a Memory port in my SDRAM object,
+how to connect this port to the bus, or how to set the peer port?
+   Maybe this question is stupid, but I am not really clear about the
+usage and implementation of port object.
+Rongrong
+- Show quoted text -
+> I'm a little confused... memory system timing is basically the same in
+> SE and FS modes.  If you're using an old version of M5, it's true that
+> different main-memory objects got used in those two modes, but that's
+> not true anymore in b4; they both use PhysicalMemory.  (Actually I
+> think that change happened in b3, or maybe even earlier.)
+>
+> It's probably easiest to derive from PhysicalMemory, though you could
+> write your own object from scratch.  If you're working with b4 (which
+> you probably should), then I'd recommend the following approach:
+>
+> - derive your SDRAM object from PhysicalMemory
+> - inside your SDRAM object, create a MemoryPort class that derives
+> from PhysicalMemory::MemoryPort
+> - in SDRAM::MemoryPort, override the recvTiming() function (which is
+> currently defined in SimpleTimingPort) with a version that's the same
+> as in SimpleTimingPort except leave out the "schedSendTiming(pkt,
+> curTick + latency);" line.
+> - later when you know what tick the response will be ready, call
+> "port->schedSendTiming(pkt, doneTick);".  Note that you'll either have
+> to record the port the packet came in on, or override
+> PhysicalMemory::getPort() to only allow one non-functional port to be
+> created.  (I'm not sure when if ever PhysicalMemory needs multiple
+> non-functional ports...)
+>
+> I haven't actually tried this, but if I were trying to do a detailed
+> DRAM model that's how I'd go about it.
+>
+> Steve
+>
+> On 11/13/07, rlai@mtu.edu <rlai@mtu.edu> wrote:
+>> Hi,
+>>
+>>    I have some questions about adding a new SDRAM model with
+>> out-of-order
+>> memory access scheduling into FS mode. This SDRAM model can run
+>> correctly in SE mode.
+>>     In SE mode, once a memory access is scheduled, the response time
+>> will
+>> be sent out by calling the callback function -
+>> slaveInterface->respond().
+>>     In FS mode, there is no such callback function. Instead,
+>> sendTiming(pkt, latency) is called to send the latency to EventQueue.
+>> This function is called every packet and the calculated memory access
+>> latency is fixed.
+>>     My questions are :
+>>     1. Should I derive my SDRAM class from physicalMemory? In SE mode,
+>> this SDRAM model is derived from SimObject class.
+>>     2. In our SDRAM model, memory accesses are scheduled every memory
+>> cycle, could I just call sendTiming(pkt, latency) in my code once the
+>> latency is obtained?
+>>     3. How to set the port to my SDRAM model?
+>>
+>> Thanks,
+>> Tracy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

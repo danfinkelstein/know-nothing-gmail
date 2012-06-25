@@ -1,0 +1,32 @@
+equake comes with eqinp.in. mcf.in is for mcf benchmark. I guess if you use the right file, it will work.
+- Show quoted text -
+---- Original message ----
+>Date: Thu, 24 Apr 2008 13:34:26 -0400
+>From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>Subject: [m5-users] error running equake
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   Hello,
+>       I get the following error running equake:
+>
+>   equake:  too many subdomains(0), rerun slice using
+>   -s1
+>
+>   Has anyone seen this before?
+>
+>   Secondly, in our local cpu2000 repository, the
+>   benchmarks/cpu2000/data/equake/lgred/input contains
+>   the mcf.in... This seems to be wrong. Has anyone got
+>   the right file?
+>
+>   - Sujay
+>
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

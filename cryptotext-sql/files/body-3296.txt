@@ -1,0 +1,16 @@
+That's set using python. If you look at the src/cpu/o3/O3CPU.py, you can see what all the parameters are on o3 cpu objects which are available to your configuration scripts. That file is used to generate the params.hh file you found which helps to connect the python and C++ versions of objects.
+Gabe
+nathaniel jones wrote:
+- Show quoted text -
+Hello all,
+How does one change cpu pipeline parameters such as Fetchwidth or Decodewidth? Which files should be edited? I tried looking for it but I couldn't find it. I found params.hh in m5/build/ALPHA_SE/cpu/o3 where the parameters are listed but I doubt that that's it since the parameters were only declared and not defined. Are these parameters determined at the C++ level, or does it come from the Python level?
+Thanks!
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

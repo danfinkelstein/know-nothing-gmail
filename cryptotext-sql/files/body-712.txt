@@ -1,0 +1,16 @@
+Try using the full path to the mpiexec command.Lisa2009/11/16 junli gu <gujunli@gmail.com>- Show quoted text -
+Hi everyone: My simulator can run  non-MPI programs successfully.I am trying to run MPI programs on fullsystem mode. I have done he following steps:1.install MPICH on the disk image binded with  the alpha compiler on the disk image
+and set the Path in /etc/profile for MPICH 2.install MPICH on my real OS using cross compiler of alpha machine, using  the same configuration as the installation on disk image3.compile MPI programs using the MPICH on my real system, and copy the binary into disk image
+mpicc helloworld.c -static -o hellocp hello /mnt/point/benchmark4, write a rcS file to execute the binary:#! /bin/shecho "executing mpi_scatter.c"#eval /benchmark/scatter
+mpiexec -np 4 /benchmark/scatter
+echo "mpi_scatter done.Ready to exit"/sbin/m5 exit4. run the simulation : ./build/ALPHA_FS/m5.opt  configs/example/fs.py --script configs/mybenchmark/scatter.rcS5.the error from m5term is:
+loading script...executing mpi_scatter.c/tmp/script: line 4: mpiexec: command not foundmpi_scatter done.Ready to exitWhy dose the simulator can not find the mpiexec command? I have already installed it on the image!  
+-- ************************************************Junli Gu--谷俊丽PHD Candidate of Tsinghua University************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

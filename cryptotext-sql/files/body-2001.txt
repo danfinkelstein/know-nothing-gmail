@@ -1,0 +1,6 @@
+Hi there,I am using fast forwarding technique using simpoint defined in cpu2000.py file. I want to know how should we detect the number of instructions skipped during the fast forwarding after setting the simpoint. 
+Thanks in advance,-- Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

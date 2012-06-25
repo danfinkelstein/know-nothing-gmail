@@ -1,0 +1,40 @@
+Hi Nate,
+It still gives me the same message. I tried 4.2.2 (which is created in Jan
+2007 and 2.0b5 is created in Feb 07) and 4.1.3.
+Now I am trying to move to 2.0b6. I have a query here:
+In 2.0b5 version, in cpu_builder.cc file. This returns a cpu
+DerivO3CPU(params) with params which is of AlphaSimpleParams type.
+This object do not exist in 2.0b6 version, I want to know how do you pass
+parameters like these to the cpu in 2.0b6 version.
+    params->BTBEntries = BTBEntries;
+    params->BTBTagSize = BTBTagSize;
+    params->RASSize = RASSize;
+    params->LQEntries = LQEntries;
+    params->SQEntries = SQEntries;
+    params->SSITSize = SSITSize;
+    params->LFSTSize = LFSTSize;
+Also I could not find this file which is included in cpu_builder.cc file
+#include "params/DerivO3CPU.hh"
+Could you please tell me where do I find this file?
+Thanks & Regards,
+-Shiva
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of nathan binkert
+Sent: Wednesday, July 22, 2009 4:38 AM
+To: M5 users mailing list
+Subject: Re: [m5-users] compiler options to scons build?
+- Show quoted text -> Which gcc version would work with 2.0b5, if I install that gcc is it going
+> to work?
+I'm guessing 4.2 would work.  I'd say that if you want to be sure,
+find out what the latest version of gcc was when we created 2.0b5 and
+use that.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

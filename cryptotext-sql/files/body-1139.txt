@@ -1,0 +1,26 @@
+Hi All:
+    I am trying to create a new class that extends SimObject class. It
+compiles fine but there is an error when linking takes place.
+class Oracle : SimObject {
+.....
+public:
+Oracle(Params *p);
+}
+in the constructor, I define
+Oracle::Oracle(Params *p) : SimObject(p) {
+ ......
+}
+build/X86_SE/params/params_wrap.do: In function `_wrap_OracleParams_create':
+/proj/radl_rtl/users/conwang/m5/build/X86_SE/params/params_wrap.cc:19999:
+undefined reference to `OracleParams::create()'
+collect2: ld returned 1 exit status
+scons: *** [build/X86_SE/m5.debug] Error 1
+scons: building terminated because of errors.
+    Any suggestion? Thanks for any comment in advance.
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

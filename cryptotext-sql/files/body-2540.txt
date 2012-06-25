@@ -1,0 +1,11 @@
+Hello,
+I am a simplescalar user. I am trying to cross-compile splash benchmarks
+on an alpha machine. The corss-compiler generates a executable but it is
+not recognisable by simplescalar (ECOFF and OSF format conflicts).
+Any help regarding this is appreciated.
+Thank you,
+Niranjan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

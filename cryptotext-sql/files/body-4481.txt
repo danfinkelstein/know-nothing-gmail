@@ -1,0 +1,6 @@
+Hi all,      I am Viswanath Krishanmurthy from Iowa State univ.  Can anyone please tell me as to how to run SPEC2000 benchmarks ( alpha  binaries) on the M5 simulator?..I already have the alpha binaries with  me. But I am not familiar as to how to run these benchmarks on the M5  simulator.        Thanks,        Regards        Viswanath Krishnamurthy 
+		 
+What kind of emailer are you? Find out today - get a free analysis of your email personality. Take the quiz at the Yahoo! Mail Championship._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

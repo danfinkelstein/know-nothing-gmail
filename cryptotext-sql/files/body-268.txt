@@ -1,0 +1,11 @@
+turn on the trace flags it might helptry m5.opt --trace-help fs.pythen to --trace-flags=cache,bus,memmaybe some others that should help- Show quoted text -On Wed, Apr 21, 2010 at 1:42 AM, Pritha Ghoshal <pritha9987@tamu.edu> wrote:
+- Show quoted text -Hi, We found out that in the cache_impl.hh, if there is a miss, it calls sendatomic through memsideport - testsys.cpu.icache-mem_side_port, which in turn calls recvatomic through the peer port - testsys.tol2bus-p1 which is the bus. We are not able to understand the flow of the packet after this, how does the bus connect and send the packet to the L2? 
+-- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

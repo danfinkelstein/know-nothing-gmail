@@ -1,0 +1,23 @@
+On May 29, 2010, at 1:28 PM, Stijn Souffriau wrote:
+> In case you are referring to me I feel obliged to answer since everyone on
+> this list has been so generous with their help.
+>
+> First, what happened to me? : I had a lot of work finishing my thesis and I
+> still have a lot of work to do  ;-).
+> I would still like to commit my (working) parallel code (or at least the base-
+> algorithms) once I'm done but my thesis advisers reminded me that my code is
+> the property of the university so I will have to see what is possible. I spent
+> to much time on this to let it go to waist so there must be something I can
+> contribute. At the very least I will send an extended abstract with my results
+> so the people here know what is possible.
+> As a reminder: My goal was to parallelize a multi-core simulation. By now, I
+> have and I get good speedups.
+Hi Stijn,
+Obviously we would be very happy to have a parallel version of M5. If we can do anything to help, please let us know. Most of the code in M5 is owned by some university (Michigan, Wisconsin, Florida State, Edinburgh, etc), so it generally is possible, however in some cases it can be a lengthy process.
+Thanks,
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

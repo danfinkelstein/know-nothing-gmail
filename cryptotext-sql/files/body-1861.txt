@@ -1,0 +1,41 @@
+Hi RickAs I have said earlier we have assigning each process to different cores with the following set of spec cpu 2006 benchmarks --sphinx3, gobmk, bwaves, bzip2, bwaves, bwaves, sphinx3, libquantum, gobmk, h264ref, namd, bzip2, libquantum, h264ref, libquantum, namd. assigning in following way:
+max_insts_all_threads = 10000000
+num of cpus = 8
+num threads per cpu = 2
+system.cpu[0].workload = [Mybench.sphinx3, Mybench.gobmk]
+system.cpu[1].workload = [Mybench.bwaves, Mybench.bzip2]
+system.cpu[2].workload = [Mybench.bwaves, Mybench.bwaves]
+system.cpu[3].workload = [Mybench.sphinx3, Mybench.libquantum]
+system.cpu[4].workload = [Mybench.gobmk, Mybench.h264ref]
+system.cpu[5].workload = [Mybench.namd, Mybench.bzip2]
+system.cpu[6].workload = [Mybench.libquantum, Mybench.h264ref]
+system.cpu[7].workload = [Mybench.libquantum, Mybench.namd]We got results on m5stats file with some cpu's values to be 0. But on the otherhand when I changed the order of the benchmarks, it produces the desired result with values in all the cpu's. I have tested the benchmarks on m5 and we are using only those benchmarks that works ok when tested for a uniprocessor(single core single thread). We are not understanding why we got a such result where for one set of benchmarks assigned to different cores, it didn't work but on the otherhand with the same set of benchmarks but different assignments, it worked. Please let us out from such an ambiguous situation
+ThanksAshutosh Jain- Show quoted text -On Thu, Feb 12, 2009 at 4:03 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+HIOn Tue, Feb 10, 2009 at 12:13 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+----------------------------------------------------------------------------------------------------------------------------
+>
+> *Do i need  to hack configs/example/se.py  or use the use the patch by
+> Jiayuan Meng ?*
+>
+> Thanks
+> HARI
+You need to do both. Jiayuan's patch is designed to run a single
+benchmark with a mesh model. If you want to run a workload, you need to
+assign each process to a different core in configs/example/se.py.While starting simulation we have.......
+max_insts_all_threads = 100000000
+num of cpus = 8
+num threads per cpu = 2
+system.cpu[0].workload = [Mybench.sphinx3, Mybench.gobmk]
+system.cpu[1].workload = [Mybench.bwaves, Mybench.bzip2]
+system.cpu[2].workload = [Mybench.bwaves, Mybench.bwaves]
+system.cpu[3].workload = [Mybench.sphinx3, Mybench.libquantum]
+system.cpu[4].workload = [Mybench.gobmk, Mybench.h264ref]
+system.cpu[5].workload = [Mybench.namd, Mybench.bzip2]
+system.cpu[6].workload = [Mybench.libquantum, Mybench.h264ref]
+system.cpu[7].workload = [Mybench.libquantum, Mybench.namd]
+With the above running simulation, its clear that we are assigning each process to different cores. Again the situation is still the same as while running the simulation we got statistics file(m5stats.txt) with some cpu(s) have all the result values to be 0. We dont understand why this is happening even when we are assigning each process to different cores.
+ThanksAshutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

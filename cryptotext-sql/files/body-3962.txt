@@ -1,0 +1,16 @@
+Things haven't really changed in the stats package, did your stuff work before?  Are you registering stats correctly?  There are many examples of vector stats being used throughout the code.  Are you registering your stats the same way?- Show quoted text -
+Hello,
+      I am having trouble declaring my own vector stats in the new beta 4 version of M5. for example, if I declare:
+Stats::Vector<> mem_row_access;
+in dram.hh.
+Compiling goes through corrctly, no errors. However, when I run a benchmark (i am using SE mode), it aborts immediately with the following error:
+panic: stat check failed for
+@ cycle 0
+-------------
+This worked perfectly in M5 v2 beta 3.
+Also, using my own scalar stats in beta 4 is working fine. There seems to be some problem with vector stats.
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

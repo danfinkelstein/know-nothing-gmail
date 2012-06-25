@@ -1,0 +1,87 @@
+Ha... looking at it now, I think that fixes the same bug that Joe was
+running into that I just emailed a patch for.  Too bad we didn't get
+it in the tree or it would have saved me a decent bit of time.
+That said, I think my patch is slightly more elegant...
+Steve
+- Show quoted text -
+On Tue, Sep 22, 2009 at 4:59 PM, nathan binkert <nate@binkert.org> wrote:
+> Did this diff ever make it into the tree?  Was it correct?
+>
+>  Nate
+>
+> On Wed, May 13, 2009 at 9:06 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>> Starring at code and traces, it appears that a fetch attempt occurs
+>> after waiting for a long latency icache block. The rest of the cpu
+>> has nothing to do because a jump instruction executed that caused the
+>> rob to have multiple instructions flushed. The L1 cache unblocks
+>> because it satisfied an icache request for the cpu for one of the
+>> squashed instructions. The fetch unit now fetches to new PC of the
+>> target of
+>> the last jump instruction. An itbmiss occurs and fetchStatus[tid] ==
+>> TrapPending. Fetch now deactivates itself but the rest of the core's stages
+>> are deactivated. The trap is never handled.   Now I see the note:
+>>
+>> "// Send the fault to commit.  This thread will not do anything
+>>        // until commit handles the fault.  The only other way it can
+>>        // wake up is if a squash comes along and changes the PC.
+>> "
+>>
+>> What happens if commit currently is not an activated stage? Would the
+>> result be the forever sleeping CPU I see here? The following change
+>> fixes the problem. Ignore the first diff set as it relates to mesh
+>> patch. The second part reschedules the Commit Stage that the fault will
+>> be handled. I hope this helps someone.
+>>
+>> --- a/src/cpu/o3/fetch_impl.hh
+>> +++ b/src/cpu/o3/fetch_impl.hh
+>> @@ -627,7 +627,7 @@
+>>         PacketPtr data_pkt = new Packet(mem_req,
+>>                                         MemCmd::ReadReq,
+>> Packet::Broadcast);
+>>         data_pkt->dataDynamicArray(new uint8_t[cacheBlkSize]);
+>> -
+>> +        data_pkt->setSrc(cpu->cpuId());
+>>         cacheDataPC[tid] = block_PC;
+>>         cacheDataValid[tid] = false;
+>>
+>> @@ -1266,6 +1266,7 @@
+>>         DPRINTF(Fetch, "[tid:%i]: Blocked, need to handle the
+>> trap.\n",tid);
+>>
+>>         fetchStatus[tid] = TrapPending;
+>> +        cpu->activateStage(O3CPU::CommitIdx);
+>>         status_change = true;
+>>
+>>         DPRINTF(Fetch, "[tid:%i]: fault (%s) detected @ PC %08p",
+>>
+>>
+>> Korey Sewell wrote:
+>>> Hi Rick,
+>>> looks like the activity count went to 0. In the O3, if the activity
+>>> count is 0 it will sleep the CPU until something wakes it up.
+>>>
+>>> I'm thinking that usually what happens is that if the CPU is waiting
+>>> for a long cache miss, it will just sleep the CPU and then when the
+>>> cache event completes it will update the activity count.
+>>>
+>>> Maybe what's happening is the ITB miss happens, but then it never gets
+>>> to the code in fetch where the activity count is updated, thus
+>>> sleeping the CPU indefinitely...???
+>>>
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

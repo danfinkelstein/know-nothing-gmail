@@ -1,0 +1,33 @@
+Hi,
+ 
+I am tryng to run SPEC2000 benchmarks on SE mode. Specifically crafty, vortex, gcc and gap
+For running crafty I use
+ 
+>>build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c crafty00.peak.ev6 -I 1000000 -i crafty.in
+This works very fine. 
+ 
+However while running vortex ( vortex00.peak.ev6 lendian2.raw) I give
+>> build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c vortex00.peak.ev6 -o "lendian2.raw" -i lendian2.raw
+ 
+But the simulation aborts with the following message
+ 
+M5 compiled Jun  1 2009 08:45:13M5 started Mon Jun  1 09:30:53 2009M5 executing on 358-1.ece.northwestern.educommand line: build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c vortex00.peak.ev6 -o lendian2.raw -i lendian2.raw
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb on port 7000**** REAL SIMULATION ****warn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack size by one page.
+panic: Tried to access unmapped address 0. @ cycle 465986500[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 200]Program aborted at cycle 465986500Abort (core dumped)
+ 
+I am using the example se.py script that has the lines as below:
+ 
+if options.bench:    try:        if m5.build_env['TARGET_ISA'] != 'alpha':            print >>sys.stderr, "Simpoints code only works for Alpha ISA at this time"
+            sys.exit(1)        exec("workload = %s('alpha', 'tru64', 'ref')" % options.bench)        process = workload.makeLiveProcess()    except:        print >>sys.stderr, "Unable to find workload for %s" % options.bench
+        sys.exit(1)else:    process = LiveProcess()    process.executable = options.cmd    process.cmd = [options.cmd] + options.options.split()
+if options.input != "":    process.input = options.input
+ 
+In case anyone has run these benchmarks on SE mode, could you please tell how? Any pointer in this direction will be helpful.
+ 
+Thanks
+ 
+Anitha
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

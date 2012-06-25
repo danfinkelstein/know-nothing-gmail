@@ -1,0 +1,92 @@
+What you've said below is mostly correct. There is some basic x87 and
+SSE support, but it's very incomplete. Full system support is coming
+along well, but there are some big issues to work through before that's
+ready to use. These aren't any bigger than many other issues that have
+been solved already, so it should just be a matter of time. A few months
+seems reasonable.
+Gabe
+Steve Reinhardt wrote:
+>
+>
+> On Fri, Mar 28, 2008 at 6:04 PM, Jeff Diamond <jdiamond@cs.utexas.edu
+- Show quoted text -> <mailto:jdiamond@cs.utexas.edu>> wrote:
+>
+>     Thanks the info, Steve.  :)
+>
+>     I've heard you're pretty high up in the M5 development team.  What do
+>     you think are the chances of getting "native execution" support on any
+>     platform other than x86?
+>
+>
+> If you write the code, we'd be happy to incorporate it as soon as you
+> get it working :-).  I don't know of anyone else who's looking for this
+> capability though so as a result I don't think there's anyone working on it.
+>
+> I'd guess that some of the x86 native execution support would be generic
+> enough that it would be useful in porting the capability to other ISAs
+> though.
+>
+>
+>     And would you venture a guess as to the time
+>     frame of the x86's model/system release to the public?
+>
+>
+> I believe the current code will be available soon... we've got all the
+> major legal issues out of the way and what's left is mostly the grunt
+> work of updating licenses etc.
+>
+> What we have now is somewhat limited (syscall emulation only, no x87 or
+> SSE support); I'd estimate a few more months until we have more complete
+> full system support (Gabe can speak up if he thinks otherwise).
+>
+> Steve
+>
+>
+>
+>
+>     Thanks.
+>     - Jeff
+>
+>     Steve Reinhardt wrote:
+>     > Just to clarify... that's "Nope, your assumption is wrong".  The
+>     > answer to "Or could I?" is "Sure you can!"
+>     >
+>     > On Fri, Mar 28, 2008 at 4:50 PM, Steve Reinhardt <stever@gmail.com
+>     <mailto:stever@gmail.com>
+>     > <mailto:stever@gmail.com <mailto:stever@gmail.com>>> wrote:
+>     >
+>     >     Nope, m5 is all straight-up C++ and Python with no host
+>     >     architecture dependences.  So you can boot Solaris on a simulated
+>     >     SPARC with m5 running on an x86 host just fine.  It's even in our
+>     >     regression tests; just give scons this argument:
+>     >
+>     >
+>     build/SPARC_FS/tests/fast/long/80.solaris-boot/sparc/solaris/t1000-simple-atomic
+>     >
+>     >     The only situation where there's any host dependence at all is
+>     >     endianness, and that's just a matter of testing.  So while both
+>     >     big- and little-endian targets work fine on little-endian hosts
+>     >     (since we do practically all our development on x86), there may be
+>     >     lurking bugs if you try and run a little-endian target on a
+>     >     big-endian host (like x86 on SPARC).  But those would be bugs and
+>     >     not design dependencies.
+>     >
+>     >     Steve
+>     >
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

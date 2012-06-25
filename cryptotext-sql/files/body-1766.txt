@@ -1,0 +1,15 @@
+Hi all,
+I have been trying to compile 2.6.18 linux kernel on my Athlon 4200
+using the alpha cross compiler available at
+http://www.m5sim.org/wiki/index.php/Download. This results in a kernel
+panic on boot. I have also used Nate'ss cross compiler and have built my
+own compiler from www.kegel.com/crosstool, which all result in a kernel
+panic. So at this point, I am wondering if there is some AMD problem, as
+the crosscompiler works on intel machines that I can use. Has anyone
+else noticed this?
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

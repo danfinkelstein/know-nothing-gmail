@@ -1,0 +1,14 @@
+Hi,
+I have followed the steps shown in the documents,but I still
+got the following error:
+$ sh demo-alpha.sh
+........
+applying patch /home/x/crosstool-0.43/patches/glibc-2.3.5/arm-ctl_bus_isa.patch
+getandpatch.sh: 1: patch: not found
+patch /home/x/crosstool-0.43/patches/glibc-2.3.5/arm-ctl_bus_isa.patch failed
+Does anyone know how to solve it? Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

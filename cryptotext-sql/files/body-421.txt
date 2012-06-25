@@ -1,0 +1,8 @@
+I just want my I/O device to run in parallel with CPU. Does the CPUs run over and over? More specifically speaking, CPU may send something to the I/O device to handle, but the time is not fixed. So it is better to let the device keep running and when it receive data ( by the write() function ), it can handle it. I do want the handling invoked within the write() function, I want it to act like a real hardware device. Is there any way I can do this? Thank you very much!
+Weidan在 2010年3月12日 下午4:44，Gabe Black <gblack@eecs.umich.edu>写道：
+What are you implementing that needs to run over and over so often?
+Gabe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

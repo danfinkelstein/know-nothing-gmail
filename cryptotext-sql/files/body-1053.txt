@@ -1,0 +1,14 @@
+I am sorry for rushing this one out but thanks for your reply anyway. If you did go throguh the diagram, the problem is that I have extra snoop ports in caches, and a snoop bus as shown. When recvTiming is called on snoopPorts, I call myCache->snoopTiming(). But in bus.cc, when pkt with dest=-1 hits the snoop bus, sendTiming() is not called on all snoopPorts of other caches. (How MemInhibitAsserted was true is another story but I got that one.)
+Now my question would be how to register ports on a bus as snoop ports. I thought it was done automatically? The implementation of SnoopPorts in cache is similar to MemSidePorts.
+---- Original message ----
+>Date: Wed, 12 Aug 2009 21:52:16 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] Interconnect Enhancement/Uncacheable requests
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>It's pretty hard to know what's going on from such basic information.
+>There is something very strange if the memInhibit signal is
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

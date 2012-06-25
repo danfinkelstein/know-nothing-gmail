@@ -1,0 +1,9 @@
+Hi,
+one quick question: what does fastmem option do? Can
+we get speedup in simulation time using this option?
+______________________________________________
+¿Con Mascota por primera vez? Sé un mejor Amigo. Entra en Yahoo! Respuestas http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

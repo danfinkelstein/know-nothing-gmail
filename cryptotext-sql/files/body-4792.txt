@@ -1,0 +1,26 @@
+It should be initStage() that it adds lines to, and removes those same lines from DefaultFetch() (maybe I did the directory ordering backwards?).  The problem with setting the cacheBlkSize at the time of the constructor is that the icache object is not known yet.  I'm glad that you got it working though.  Let us know if you run into any other problems.
+Kevin- Show quoted text -
+Quoting Jonas Diemer <j.diemer@tu-bs.de>:
+Hi Kevin,
+The patch didn't apply cleanly in my source. It changed InitStage(), not DefaultFetch() (which both set cacheBlkSize). That seemed to fix it though.
+Manually fixing DefaultFetch() according to your diff resulted in a segmentation fault:
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread -1211881808 (LWP 6914)]
+DefaultFetch (this=0x888a8e0, params=0x888a098) at build/ALPHA_SE/mem/port.hh:215
+215         int peerBlockSize() { return peer->deviceBlockSize(); }
+Jonas
+Kevin Lim schrieb:
+Hi Jonas, regarding problem 2 on your list, I forgot to update the O3 CPU's
+code to grab the cache line size from the cache itself.  It was being
+hardcoded to 64 bytes.  This diff below shows how to fix it.  Simple testing
+with 32 byte cache lines works, but let me know if you run into any other
+problems.
+ ...
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

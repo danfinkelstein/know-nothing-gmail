@@ -1,0 +1,6 @@
+HI,When tracing simulations, we got the tick time. Isn't that tick time CPU cycle? If not, which parameter define the CPU cycle?I want to dump the latency of the packet transmission, how can i do this?
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

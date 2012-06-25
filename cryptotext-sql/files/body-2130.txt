@@ -1,0 +1,57 @@
+Prefetches are speculative, where either the SW or HW is trying to
+load something into the cache in advance without knowing for sure that
+it will be needed.  Demand accesses are driven by program loads and
+stores and are necessary for the program to proceed.  They are both
+just accesses to the L2, but they're flagged differently in the
+request.  In a real system the cache could choose to deprioritize or
+even drop prefetches since they're not critical to forward progress,
+but I don't believe we do that in our models.
+- Show quoted text -
+On Thu, Dec 18, 2008 at 1:37 PM, Bob Nagel <nasmloe@gmail.com> wrote:
+> Hello, thanks for your answer Steve, I am very new to this world, and
+> I do not see the difference between prefecth and demand, can you
+> please expalin this to me?. For me both are the same just accesses to
+> the L2.
+>
+> Thanks.
+>
+> 2008/12/18, Steve Reinhardt <stever@gmail.com>:
+>> "demand" is the complement of "prefetch".  "overall" includes both.
+>>  by default there's no prefetching enabled, which is why they are
+>>  typically the same.
+>>
+>>
+>>  On Thu, Dec 18, 2008 at 1:05 PM, Bob Nagel <nasmloe@gmail.com> wrote:
+>>  > Hello,
+>>  >
+>>  > Exploring the statistics genreated for the simulator, I do not
+>>  > understand the difference between this two outputs:
+>>  >
+>>  > system.l2.overall_accesses                        482
+>>  >     # number of overall (read+write) accesses
+>>  >
+>>  > system.l2.demand_accesses                         482
+>>  >     # number of demand (read+write) accesses
+>>  >
+>>  > What is the difference between overall and demand, can anyone please
+>>  > clarify me this?, thank you.
+>>
+>> > _______________________________________________
+>>  > m5-users mailing list
+>>  > m5-users@m5sim.org
+>>  > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>  >
+>>  _______________________________________________
+>>  m5-users mailing list
+>>  m5-users@m5sim.org
+>>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

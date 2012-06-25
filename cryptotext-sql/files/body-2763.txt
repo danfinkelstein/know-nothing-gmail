@@ -1,0 +1,8 @@
+HIi all!!I amt trying to run 16 core O3CPU with 1 thread each core. I am getting error like:$ ../../build/ALPHA_SE/m5.opt -d out2 cmp16py --caches --detailedwarn: Entering event queue @ 0.  Starting simulation...
+m5.opt: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:132: void BaseDynInst<Impl>::initVars() [with Impl = O3CPUImpl]: Assertion `instcount <= 1510' failed.Program aborted at cycle 3642000in file base_dyn_inst_impl.hh , i found that
+    ++instcount;    if (instcount > 1500) {        cpu->dumpInsts();#ifdef DEBUG        dumpSNList();#endif        assert(instcount <= 1500);    }why is the instcount hardcoded to be less that 1500? highly appreciated,  if someone could put some light on it.
+Thanks in advanceprannav
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

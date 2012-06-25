@@ -1,0 +1,14 @@
+> Thanks Nate. Correct me if I'm wrong: in file
+> "m5-stable/build/ALPHA_SE/python/m5/objects/__init__.py", all the imports
+> will include the corresponding .py files for each components from src/
+> directory, and those .py files are the source where I can learn about all
+> the available classes and parameters in script writing, right?
+Yes, that's roughly correct.  The SimObject statement in the
+SConscript files tells the build system about .py files that will go
+into m5/objects.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

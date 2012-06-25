@@ -1,0 +1,20 @@
+Hi all
+I am trying to understand the output that M5 produces. I am running my
+program with m5 (v2.05) in x86 Syscall emulation mode.
+At the end of the simulation M5 writes a line that says that 'Target
+exited at cycle xyz since it called exit()'. The value xyz reported
+corresponds to the sim_ticks value in m5stats.txt. What I noticed is a
+1-1 correlation between CPU frequency / CPU width and the sim_ticks
+value.
+What I mean is this: For a fixed workload, if I double the frequency
+or width values, the sim_ticks value reported at the end of the
+simulation is reduced by half.
+Which stat should I be using it as a measure of performance?
+Is there a page on the m5 wiki that gives details on the output stats
+and the way to interpret it? I wasn't able to locate any.
+--
+Ananth Narayan S
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,42 @@
+SPM = Scratch-pad memory
+It is an embedded thing, not necessarily an ARM thing. He already sent me a
+message off-list about it and I have replied to the best of my knowledge. Any
+other questions he might have will probably just have to deal with the M5 cache
+components, but he hasn't sent any specific questions about that just yet.
+Steve
+------------------------------
+Stephen Hines
+hines@cs.fsu.edu
+http://www.cs.fsu.edu/~hines
+- Show quoted text -
+On Sat, 31 May 2008, nathan binkert wrote:
+> What's spm?  Is it an ARM thing?  If so, I think it's up to the arm
+guys to speak up.
+  Nate
+On Sat, May 31, 2008 at 1:49 AM, 邓宁 <dunning2006@gmail.com> wrote:
+> Hi All,
+> I am doing my experiment under m5-arm(supported by steve), but firstly i
+> need to add the spm into m5, i am reading everything about m5 and its
+> modification... can anyone help me and give me some suggestion about it?
+> thanks a lot...
+>
+> --
+> Regards
+> Dengning
+>
+> School Of Computer Science and Technology
+> dnenging@bit.edu.cn
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

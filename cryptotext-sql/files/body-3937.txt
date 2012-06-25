@@ -1,0 +1,72 @@
+ok I looked at the output and I think what is happening only 1 processor ie being assigned to the benchmark, ragardless of what value i put. But I dont know why this is happening. I type:
+./build/ALPHA_SE/m5.opt configs/splash2/runsplash.py -n 4 -k 4 -b FFT
+and still at the end of simulation using beta 4, it reports this:
+  1024 Complex Doubles
+  1 Processors
+  65536 Cache lines
+  16 Byte line size
+  4096 Bytes per page
+if I use beta3, this is what is reported:
+  1024 Complex Doubles
+  4 Processors
+  65536 Cache lines
+  16 Byte line size
+  4096 Bytes per page
+the line in the config script that invokes fft is:
+class FFT(LiveProcess):
+   cwd = options.rootdir + '/kernels/fft'
+   executable = options.rootdir + '/kernels/fft/FFT'
+   cmd = 'FFT -p' + str(options.numcpus) + ' -m18'
+If I do a print options.numcpus here, it correctly prints out "4". So n=4 is definitely being passed onto fft.
+I dont know why in beta 4, the correct numcpus is not being used by fft, or some other benchmarks.
+Any ideas?
+Thanks for your help.
+- Sujay
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Thursday, November 15, 2007 12:03 AM- Show quoted text -
+Subject: Re: [m5-users] sims with m5 beta4 - cache stats - any update on this?
+I don't recall what the output files are called... each benchmark is a
+little different in splash.  You're looking for the benchmark output
+in addition to the m5 output... I'm guessing something bad happened
+and the benchmark quit because it encountered an error.
+On Nov 14, 2007 4:26 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Ok. Though I dont know what to look for, since there's nothing that I have
+changed since beta3. Which output files should I examine?
+The benchmarks ends because m5 reports "target called exit()".
+- Sujay
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Wednesday, November 14, 2007 6:31 PM
+Subject: Re: [m5-users] sims with m5 beta4 - cache stats - any update on
+this?
+> Thanks, this is very interesting.  Have you looked at the output from
+> the benchmarks that are producing weird results?  I'd say from those
+> stats (and your comment that those benchmarks are finishing "extremely
+> fast") that the real problem is that the benchmark is terminating
+> early, before it even gets to forking off threads on the other CPUs,
+> due to some error.  Presumably the output is indicating what the
+> problem is if you look in the right place.
+>
+> So there's still some problem with b4 if you weren't encountering that
+> error in b3, but it's not that the cache statistics are broken.
+>
+> Steve
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

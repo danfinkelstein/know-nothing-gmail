@@ -1,0 +1,6 @@
+I am trying to run gcc benchmark in \tests\test-progs\gcc\bin with file name cc1-cccp.cp1.....when i specify it as an executable to  a Liveprocess()...i get the following error...Can't load object file. Is it not the binary file? What do I need to do to run the gcc benchmark using this file?
+      Never miss a thing.   Make Yahoo your homepage.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

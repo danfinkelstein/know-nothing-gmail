@@ -1,0 +1,14 @@
+- Show quoted text -> If I want to let the latency of accessing different parts in L2 cache is
+> different, so the latency is not uniform. Is it possible in m5? how can I
+> get it and where can I edit the code?
+> Any suggestion is really appreciated.
+I.e. you want to implement NUCA of some sort?  I don't anyone has
+modeled this yet, so you'd have to hack on the cache model a bit.  I
+honestly don't think this should be all that difficult to do depending
+on how complicated your NUCA model is.
+Anyone like to correct me?
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

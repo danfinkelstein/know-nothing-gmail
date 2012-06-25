@@ -1,0 +1,89 @@
+You could correctly satisfy a read if you could get the rest of the block. The only problem I see with having the cache issues a functional read further down in the hierarchy to get the rest of the block when this case happens is: what if the block in question is somewhere else in the cache (maybe the block is being evicted and is currently waiting to be transmitted out of the cache)? The functional access is going to go down to the next level, so it will never been seen.
+Right now we have the simple case of you call checkFunctional() on two packets and it "does the right thing," and then tells the calling function to either continue sending functional access through the memory hierarchy or not (or panics). To make something like this work there would need to be a closer coupling between checkFunctional() and the code calling checkFunctional() so there would be some interface to other places packets could be hiding in each memory object before continuing on to the next level.
+Ali- Show quoted text -
+On Dec 2, 2007, at 3:48 PM, Steve Reinhardt wrote:
+Yea, that looks like exactly what's happening here: the CPU has issued
+a store (8 bytes) that missed in the cache, and then went and did a
+write() on the buffer it just wrote to, and the functional read that's
+getting the buffer contents for the write() is running into the
+buffered store in the MSHR.
+One fix would be to break the functional read into smaller chunks...
+8-byte chunks would solve this particular problem, but in reality
+there's no reason it couldn't be a byte store, so you'd need to do
+1-byte reads to really fix the problem.  Unfortunately that could be
+really slow for large accesses, but maybe it doesn't happen often
+enough to matter.
+I also think the valid-bit-per-byte thing could work; I'm not sure
+what you mean by "no way to check the next place in the cache"... as
+long as checkFunctional() doesn't signal that it's completed the
+request, the system will keep searching for additional places to find
+the data.
+Steve
+On Dec 2, 2007 12:00 AM, Ali Saidi <saidi@umich.edu> wrote:
+There can still be a problem if there is an outstanding write to the
+block you're reading from because the request will see the new updated
+write data, but the cache doesn't have the rest of the block yet so it
+can't be satisfied. The only easy solution is to write in smaller
+chunks. A more difficult solution is to have a valid bit for each byte
+of the packet or maybe some kind of nested functional access, where
+the functional access would try to continue down the hierarchy looking
+for the fullest chunk of data and recombined itself on the way up.
+Trouble is most memory devices would have a problem with this because
+there is no way to check the next place in the cache for example.
+Ali
+On Dec 1, 2007, at 8:17 PM, Steve Reinhardt wrote:
+Just to clarify: it's using BaseBufferArg::copyIn() and not
+VirtualPort::CopyIn(), right?  I just noticed that these are two
+different functions with totally opposite semantics (explaining Ali's
+earlier confusion).
+Can you print the values of 'size' and 'getSize()' at the point in
+Packet::checkFunctional() where you get this assertion failure?  One
+solution is probably to do the readFunctional() in smaller chunks, but
+I don't know what size chunks it's already using.  If it's trying to
+do the whole buffer and we need to do it in cache-block chunks, that's
+reasonable.  If it's already doing cache-block chunks and still
+failing, then that's a little more puzzling.
+Steve
+On Nov 30, 2007 3:54 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+Hey all,
+I'm adding my own benchmarks which spawns multiple threads each
+printing out
+a string.
+Things are fine at beginning but when I scale the number of threads
+to 100,
+a panic takes place:
+"Memory value only partially satisfies the functional request. Now
+what?"
+This panic takes place in Packet::checkFunctional(Addr addr, int
+size,
+uint8_t* data) (mem/packet.cc). A backtrace with gdb reveals that
+it is
+triggered by the writeFunc( ) system call (sim/syscall_emul.cc),
+which is
+trying to use CopyIn to emulate printing to the screen. The CopyIn
+sends a
+functional read request which in turn caused the panic.
+I appreciate your help.
+Thanks!
+Jiayuan
+p.s. patch is available, just let me know how to send it to you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

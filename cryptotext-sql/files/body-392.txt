@@ -1,0 +1,22 @@
+For SE mode, Process::startup calls tc->activate() during
+initialization which schedules the initial tick event for the main
+thread for that process.  I'm not sure what the path is in FS mode,
+but I'd guess it's something similar.
+Steve
+- Show quoted text -
+On Sat, Mar 20, 2010 at 5:27 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, all. I am new to the M5 ALPHA FS mode. I wonder how the first event (
+> tickEvent ) be inserted into the mainEventQueue. It seems that the
+> simulate() is called right after the phthon function, I cannot find the code
+> where the tickEvent inserted into the mainEventQueue before the simulated()
+> is called. Could anybody give me a hint on this? Thank in advance.
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

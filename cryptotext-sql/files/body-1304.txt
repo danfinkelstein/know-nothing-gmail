@@ -1,0 +1,13 @@
+Sorry for the big delay in replying to this, I was just cleaning out my inbox and noticed this question.What you want is a context_id.  Theoretically, in an SMT system there are context_ids, which are unique across the system, and cpu_ids, which are unique to each core, and thread_ids, which are unique within a core.  So, if you have a 2-core 2-way SMT platform, you'd have cpu_id 0, 1, context_ids 0, 1, 2, 3, and cpu 0 would have thread 0 and thread 1, and cpu 1 would also have thread 0 and thread 1.
+If you are running in FS, there is no SMT support so all thread id's will be 0.  What you are looking for is context_id.Good luck,Lisa
+On Fri, May 8, 2009 at 1:30 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+Hi all, I am running a multi-thread program on M5 under ALPHA-FS mode. When I tried to get the thread ID, it always return 0, and I cannot distinguish them between different threads.  I tried to get the thread ID throught the function in thread_state structure, which is supposed to return the thread ID. 
+My test program is implemented by POSIX thread library. Should I use the function in the thread_state structure to get the thread ID ? Is those functions supposed to return different thread ID? Sorry for such silly question, but it really confuses me. Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+> I hoped to create a script that does all of the copying, but I
+> don't really use CPU2000 and couldn't justify the extra time.
+> We'd love it if someone did this and contributed it.
+I started a SPEC2000 script for M5 v1.1. It works enough for my
+purposes, details from last time this cropped up on the list:
+http://osdir.com/ml/emulators.m5.users/2006-09/msg00035.html
+James
+--
+James.Srinivasan@cl.cam.ac.uk
+http://www.cl.cam.ac.uk/~jrs53/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

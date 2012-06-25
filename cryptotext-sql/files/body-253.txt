@@ -1,0 +1,21 @@
+I managed to make the cross-compiler (4.2.1 now).The m5thread tests compile successfully. But are failing:M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights Reserved
+M5 compiled Mar 30 2010 13:15:01M5 revision 94c016415053+ 6283+ default tipM5 started Apr 26 2010 19:31:49M5 executing on bellatrixcommand line: ./build/SPARC_SE/m5.fast configs/splash2/teste.py -n 4 -b test_barrier
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb on port 70020: system.remote_gdb.listener: listening for remote gdb on port 70030: system.remote_gdb.listener: listening for remote gdb on port 7000
+0: system.remote_gdb.listener: listening for remote gdb on port 7001info: Entering event queue @ 0.  Starting simulation...fatal: Syscall 1040 out of range @ cycle 2856000[syscall:build/SPARC_SE/sim/process.cc, line 644]
+Memory Usage: 197728 KBytesFor more information see: http://www.m5sim.org/fatal/a659939c--Eberle A. Rambo.
+On Mon, Apr 26, 2010 at 5:53 PM, Eberle <rambo.ufsc@gmail.com> wrote:
+Thank you. I appreciate your help.One more question: Which values should I use for 'sysrootdir' and 'prefixdir'?Prefixdir is the folder where I want my new compiler.And where should I point the sysrootdir?
+I use Ubuntu.--Eberle A. Rambo.Federal University of Santa Catarina (UFSC)
+On Mon, Apr 26, 2010 at 3:26 PM, Daniel Sanchez <sanchezd@stanford.edu> wrote:
+Eberle wrote:
+Good afternoon, Daniel.
+I'm forwarding to you because maybe you can help me.
+I'd appreciate your help. I really need to be able to compile the benchmarks.
+The message:
+Thank you very much.
+I am using the Sparc cross-compiler available in the M5 website (version 3.4.5). This happened when I ran make:
+Please use gcc 4.2.1+, binutils 2.18+, with glibc 2.3.6 and NPTL or linuxthreads. That's what the code is tested for. You'll have to build your own toolchain, because the one on the M5 website is ancient. I've attached a script that does this automatically, using the debian repositories for some key things. You may have to tweak the script to work since the names of the packages may have changed.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,71 @@
+Greetings,
+I ended up solving my current problem.  The solution is a bit embarrassing but, for those curious, I figured I'd post what happened...
+The problem was environment variables.  I unset my CFLAGS and LD_LIBRARY_PATH and in SuSe, it still didn't build.  This ended up being because the tcp_wrappers_7.6 would not build due to the setting of the STYLE environment variable on SuSe.  Having STYLE set would corrupt the generated CFLAGS.  But after unsetting STYLE, it built (with the ptxconfig I posted)!
+So beware of the STYLE env variable on SuSe during ptxdist go!  Make sure your env lacks STYLE (har har),
+brad- Show quoted text -
+On Tue, 20 Feb 2007, Brad Penoff wrote:
+Greetings,
+I've just started playing with m5 and I find it amazing but unfortunately I've reached a halt in progress that I was hoping I could get some help with.
+Following the directions from this page...
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+... I was trying to put python 2.4 and OpenSSH into my disk image.  Each of these are possible choices in the menu system provided by ptxdist menuconfig. The resulting ptxconfig is here:
+http://cs.ubc.ca/~penoff/ptxconfig_err.txt
+After a while of compiling, it eventually failed when making zlib (output below).  Is this a known problem?  I couldn't find anyone having issues with this from a brief search.
+This is my first experience making a disk image but I'm sure my cross-compiler works because I have used to create my own kernels and ran them in m5 (I needed a kernel with SCTP compiled in and not as a module). I'm trying to add python and ssh because eventually I want to attempt to simulate runs of applications that use MPICH2 with SCTP.  I'm still learning about how to cross-compile that in alpha though just I was jumping the gun to see if I could build an image with python and ssh into it first that could later append to using your mount technique on the FAQ, but no dice...
+So, I guess the questions are:
+Do you see anything wrong with my ptxconfig?  Does this same ptxconfig work for others when they use their cross compiler?  If so, why does it bust on my setup if the cross-compiled kernels run?  Any light you could shed on this would be most appreciated!
+Thanks ahead of time!
+brad
+Compilation errors during ptxdist go:
+<snip snip>
+Finished target zlib.prepare
+--------------------
+target: zlib.compile
+--------------------
+PATH=/var/tmp/brad/m5/myroots/test1/local/bin:/var/tmp/brad/m5/myroots/test1/local/usr/bin:$PATH cd /var/tmp/brad/m5/myroots/test1/build-target/zlib-1.2.3 && make
+make[1]: Entering directory `/var/tmp/brad/m5/myroots/test1/build-target/zlib-1.2.3'
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o example.o example.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o adler32.o adler32.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o compress.o compress.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o crc32.o crc32.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o gzio.o gzio.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o uncompr.o uncompr.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o deflate.o deflate.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o trees.o trees.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o zutil.o zutil.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o inflate.o inflate.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o infback.o infback.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o inftrees.o inftrees.c
+alpha-unknown-linux-gnu-gcc -g -DMPICH_DBG_OUTPUT -DUSE_MMAP   -c -o inffast.o inffast.c
+alpha-unknown-linux-gnu-gcc -shared -Wl,-soname,libz.so.1 -o libz.so.1.2.3 adler32.o compress.o crc32.o gzio.o uncompr.o deflate.o trees.o zutil.o inflate.o infback.o inftrees.o inffast.o
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _length_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+/var/tmp/brad/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib/gcc/alpha-unknown-linux-gnu/3.4.3/../../../../alpha-unknown-linux-gnu/bin/ld: trees.o: gp-relative relocation against dynamic symbol _dist_code
+collect2: ld returned 1 exit status
+make[1]: *** [libz.so.1.2.3] Error 1
+make[1]: Leaving directory `/var/tmp/brad/m5/myroots/test1/build-target/zlib-1.2.3'
+make: *** [/var/tmp/brad/m5/myroots/test1/state/zlib.compile] Error 2
+error: a command in the pipe returned 2, bailing out
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

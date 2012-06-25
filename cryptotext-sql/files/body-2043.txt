@@ -1,0 +1,31 @@
+On Jan 5, 2009, at 4:20 PM, Bob Nagel wrote:
+> Hello I have a couple of questions regarding the instructions counter
+> that are in the statistics
+>
+> My post is related with this one
+> http://thread.gmane.org/gmane.comp.emulators.m5.users/3324/focus=3328,
+> I have read it but I still have some questions.
+>
+> - What is this value,  system.cpu0.num_insts    2    # Number of
+> instructions executed? and why is so low?. For all my CPUs I have a
+> similar low number.
+Because you probably switched from one cpu type to another in your
+simulation. If you started with an atomic CPU and immediately
+transitioned to a timing CPU, the atomic CPU probably only executed 2
+instructions
+>
+> - What is the difference between system.cpu0.num_insts   and
+> system.switch_cpus0.num_insts?
+They are different CPUs (in this case before and after the switch
+respectively)
+>
+>
+> - What is commit.COM:loads?, is the number of accesses to the memory?
+The number of committed loads that were executed (this doesn't include
+issued and subsequently squashed loads because of miss speculation).
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

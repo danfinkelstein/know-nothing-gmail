@@ -1,0 +1,29 @@
+Perhaps we should change m5.simulate() to take an absolute tick number rather than a delta... it was really an arbitrary choice on my part, and now it looks like maybe it wasn't the best one...
+Steve- Show quoted text -
+Stewart, Chris (Solutions Alliances) wrote:
+- Show quoted text -
+Never mind -- I found my own problem (which I had previously fixed in a different implementation). In fs.py, the event loop can sometimes generate a num_cycles value less than zero. I solved this by replacing the event loop with the following code:
+ while exit_event.getCause() == "checkpoint":
+    m5.checkpoint(root, "cpt.%d")
+    if maxtick == -1:
+        exit_event = m5.simulate(maxtick)
+    else:
+        exit_event = m5.simulate(maxtick - m5.curTick())
+ This accounts for a test being run without a maxtick specified (i.e. run until complete), which sets maxtick to be -1. If you don't address this issue, then the test will exit with a fatal error after the first checkpoint (because maxtick - m5.curTick() will invariably be a negative value).
+Chris Stewart  
+------------------------------------------------------------------------
+*From:* m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] *On Behalf Of *Stewart, Chris (Solutions Alliances)
+*Sent:* Tuesday, October 17, 2006 11:14 AM
+*To:* m5-users@m5sim.org
+*Subject:* [m5-users] M5stats.txt
+I'm running into a problem running the v2 Specweb benchmark. The benchmark works fine and completes fine, but when it completes on its own, I get a zero-length m5stats.txt file. However, when I ctl-C out of the test before it completes, I get data written to m5stats.txt. I've included an explicit command in the client-side rcS file, m5 dumpstats, to get these stats out, but I'm confused as to this behavior.
+Chris Stewart
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+hi Joel,now it's ok when the core number is no more than 4. but when i set more than 4 cores, it will show information: clear IPI for CPU #num, but NO IPI all the time. and the system.terminal shows that the booting stopped at this process:
+Slave CPU 4 console command STARTSlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb FFFFFC0000018B80 my_rpb_phys 18B80is there anything wrong? i download the disk image of PARSEC from the website:http://userweb.cs.utexas.edu/~cart/parsec_m5/
+Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

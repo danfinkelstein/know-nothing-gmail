@@ -1,0 +1,12 @@
+Hi William,
+In Meng's patches, you can change the code to schedule/deschedule the
+threads as you want. It can give you a very precise control on thread
+scheduling. If you want to pollute the L2,  you can just spawn two
+threads on two different cores and suspend one. Then you can
+deschedule the first thread and active the second one.
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

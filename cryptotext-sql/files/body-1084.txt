@@ -1,0 +1,7 @@
+Hello,I am going through the code in src/mem/bus.cc and I see that a default port is created for each bus. However when I do traceflags=Configs, I see only the iobus has a default port:  0: system.iobus-default: setting peer to system.iobus.responder-pioport
+  0: system.iobus.responder-pioport: setting peer to system.iobus-defaultWhat about membus or other buses, where are their default ports? Do I need to enable this, as I could not find the code to do this...
+ThanksEF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

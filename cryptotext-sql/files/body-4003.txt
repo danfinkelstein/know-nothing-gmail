@@ -1,0 +1,18 @@
+Hello,
+       When I try to 
+execute splash2 bemchmarks in SE mode, I get the following error if I use the -d 
+(detailed CPU switch)
+ 
+nxm_thread_create: no idle contexts 
+available.Program aborted at cycle 281737000
+ 
+What does this mean? 
+ 
+The timing or atomic CPU runs fine.
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

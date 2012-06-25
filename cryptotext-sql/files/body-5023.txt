@@ -1,0 +1,22 @@
+Unfortunately the support for MP benchmarks like Splash in SE mode is tied to Tru64 (and furthermore requires special M5-specific implementations of the PARMACS macro library).
+We'd very much like to be able to run Linux pthreads programs in SE mode, but we aren't actively working on that.
+The easiest way to get them running would be to use FS mode and just run them right on top of the Linux kernel.  The added hassle of having to copy the binaries to a disk image and boot the OS is pretty small compared to the effort required to get them running in SE mode.
+Steve
+Chenjie Yu wrote:
+- Show quoted text -
+Hi,
+ I am using M5 to study cache coherence things. I am trying to use splash2 as benchmarks. But seems they are not easily compilable. I tried to link the kernels with pthread library. But that gives segamentation error when executed in the simulator. Does anyone have experience porting them on Linux?
+ Thanks,
+ Chenjie
+------------------------------------------------------------------------
+Do you Yahoo!?
+Get on board. You're invited <http://us.rd.yahoo.com/evt=40791/*http://advision.webevents.yahoo.com/mailbeta> to try the new Yahoo! Mail.
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

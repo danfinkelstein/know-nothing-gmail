@@ -1,0 +1,66 @@
+If you look through src/mem/cache/cache_impl.hh, you'll see that all
+of the places that once had pkt->req->threadId() as an index for
+per-thread stats are hardwired to 0 now.  To be honest I don't
+remember the reason for that (it was almost three years ago that that
+happened, according to mercurial), but it probably had something to do
+with dealing with requests that don't have a thread ID.
+If you really need per-thread cache stats, you can try changing all
+those indexes back and see if that works.  If someone else has already
+done this, please speak up.  If someone gets it to work robustly, it
+would be great to fix that in the repository.
+Steve
+- Show quoted text -
+On Mon, Aug 10, 2009 at 4:21 AM, Ashutosh Jain<ashujain7@gmail.com> wrote:
+> Hi
+> I am running multi-core multi-thread (2 core X 4 threads per core) in SE
+> mode. I do get results.
+> Most of the results like
+> system.cpu0.cpi_0                            2.683886
+> # CPI: Cycles Per Instruction
+> system.cpu0.cpi_1                            2.509380
+> # CPI: Cycles Per Instruction
+> system.cpu0.cpi_2                            5.760678
+> # CPI: Cycles Per Instruction
+> system.cpu0.cpi_3                            4.374111
+> # CPI: Cycles Per Instruction
+> system.cpu0.cpi_total                        0.852292
+> # CPI: Total CPI of All Threads
+> depicts the usage of multi threads
+> But some results like
+> system.cpu0.dcache.overall_miss_rate     <err: div-0>
+> # miss rate for overall accesses
+> system.cpu0.dcache.overall_miss_rate_0       0.084201
+> # miss rate for overall accesses
+> system.cpu0.dcache.overall_miss_rate_1   <err: div-0>
+> # miss rate for overall accesses
+> system.cpu0.dcache.overall_miss_rate_2   <err: div-0>
+> # miss rate for overall accesses
+> system.cpu0.dcache.overall_miss_rate_3   <err: div-0>
+> # miss rate for overall accesses
+> system.l2a.overall_miss_rate             <err: div-0>
+> # miss rate for overall accesses
+> system.l2a.overall_miss_rate_0               0.652409
+> # miss rate for overall accesses
+> system.l2a.overall_miss_rate_1           <err: div-0>
+> # miss rate for overall accesses
+> system.l2a.overall_miss_rate_2           <err: div-0>
+> # miss rate for overall accesses
+> system.l2a.overall_miss_rate_3           <err: div-0>
+> # miss rate for overall accesses
+> do not show the correct usage of threads.
+>
+> I am not understanding why only one overall_miss_rate is having the value,
+> rest doesn't.
+>
+> Thanks in advance
+> Ashutosh Jain
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

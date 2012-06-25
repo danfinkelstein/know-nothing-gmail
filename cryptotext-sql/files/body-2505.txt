@@ -1,0 +1,14 @@
+Hi thanks for all your answers:
+I have been able to simulate some test in the ALPHA_SE mode, but I don;t know how I can get the performance results, time of execution, speed..., when I run the simulation I said that I want the output in /tmp/output but in the file that is written m5stats.txt, there is nothing. How can I get those results?, thanks.- Show quoted text -
+ 
+On Wed, Oct 1, 2008 at 3:00 PM, Philip Machanick <philip.machanick@gmail.com> wrote:
+On Thu, Oct 2, 2008 at 7:41 AM, Eduardo Olmedo Sanchez<eolmsan2@gmail.com> wrote:> Hi Meng-Ju thanks for your answer, is that all?, it's very easy, when I saw
+> the example I thought that if I put 8, 16 or whatever in the> options.num_cpus what I'm doing is adding more cpus to the system not> cores., so just changing that variable do I change the cores?.
+"cores" is marketing terminology for CPUs that happen to be on thesame chip. The only architectural difference (relevant to simulation)from CPUs on separate dies is relative speed of communication (e.g. a
+shared L2 bus can run at an on-chip speed).--Philip Machanick (Institute for Molecular Bioscience, University of Queensland)39 Cunningham Street, Taringa, Qld 4068, Australiahttp://opinion-nation.blogspot.com/
++61-7-3871-0963 office +61 7 3346 2641 skype philipmach
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

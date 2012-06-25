@@ -1,0 +1,37 @@
+Hi Isuru,
+  I have checked these two links you gave me. However, the m5
+multi-thread patch only support using its own APIs ("The
+multi-threaded programs have to be coded with M5 thread APIs (included
+in the patch"). It means that I need to rewrite SpecOMP to execute
+them in m5-multithread. This costs a lot of effort. I will try other
+easier approaches first. However, if all other approaches do not work,
+I will try to rewrite SpecOMP by the M5 thread APIs.
+regards,
+  sitos
+2009/1/21 Isuru Herath <isuru81@yahoo.com>:
+- Show quoted text -> Dear Sitos,
+>
+> Check the following link.
+>
+> http://www.cs.virginia.edu/~jm6dg/fractal/smp.htm
+> and this forum post.
+> http://comments.gmane.org/gmane.comp.emulators.m5.users/3953
+>
+> It might be helpful. to be honest, still I havent tried this. Hopefully within
+> coming two weeks will do.
+>
+> regards,
+> Isuru
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

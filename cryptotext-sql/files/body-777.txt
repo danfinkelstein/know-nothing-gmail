@@ -1,0 +1,9 @@
+Hi,
+   I'm a new user of M5. I would like to integrate dramsim1.0/2.0 with M5. Could you please send me the patch.
+ 
+thanks,
+-mark
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

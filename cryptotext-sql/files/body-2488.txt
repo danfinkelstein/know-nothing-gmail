@@ -1,0 +1,183 @@
+I would agree to some of what both of you are saying.
+I believe that the initial thread is set up in Suspended but all
+unused threads should be "Unallocated".
+Does that setup work Rick?
+- Show quoted text -
+On Mon, Oct 6, 2008 at 7:14 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> The way multithreaded programs are supposed to be set up in SE mode is that
+> all of the CPUs/threads assigned to a program should be given a pointer to
+> the same workload object in the python config.  The workload code will then
+> enable one of the threads to run the initial serial code and leave all the
+> other threads unallocated to be enabled when the initial thread calls
+> fork/spawn/whatever.
+>
+> If you need more details, you should be able to look at the Process and
+> SimpleCPU code to see how it's supposed to work.
+>
+> Steve
+>
+> On Mon, Oct 6, 2008 at 3:02 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>>
+>> This is for SE mode.
+>>
+>>
+>> So I changed src/cpu/alpha/cpu_impl.hh to set the thread status to
+>> Unallocated if i >= params->workload.size().  I reverse the signs in
+>> activateWhenReady(...) of src/cpu/o3/cpu.cc, and modified
+>> LSQ<Impl>::numFreeEntries to return min(LQEntries -1, SQEntries -1) if
+>> activeThreads->size() == 0. However, the problem I have now is that each
+>> cpu must be assigned a workload in order to be instantiated (in this
+>> case, several dummy workloads). At this assignment all cpu thread
+>> contexts are assigned to Suspended. If I change this assignment of
+>> Unallocated, it appears that nothing is assigned to the eventq to run,
+>> as the simulation finishes in a few seconds. Do I need to assign the
+>> Suspended to one cpu and assign the rest to Unallocated?
+>>
+>> Thanks,
+>> -Rick
+>>
+>> Korey Sewell wrote:
+>> > This is SE or FS mode? ...
+>> >
+>> > Hmmmm, I kind of feel like this is a reoccurring problem since I
+>> > remember a mailing list thread way way back when Ron was real active
+>> > on M5 saying that he switched the threads to start off at Unallocated
+>> > to get SPLASH to work for O3.  However, it's tagged and not fixed yet
+>> > as a bug report so I believe the flyspray thread captures the problem
+>> > appropriately...
+>> >
+>> > The fixes would be:
+>> > (1) switch the thread to start off as Unallocated and edit
+>> > activateWhenReady to handle this case now.
+>> > (2) switch over from SimpleCPU ...
+>> >
+>> > I think you can edit the activate() function like you say and
+>> > alleviate the problem.
+>> >
+>> > And on another end, this kind of motivates me the need to roll through
+>> > SMT regression tests back into M5 because without that
+>> > we can't really "re-prove" code works or not after subtle changes to
+>> > M5 inevitably happens...
+>> >
+>> > Until I can get that pushed, then I'm happy to help on bug fixes...
+>> >
+>> > I need to try to recreate your bug and look closely at it before I can
+>> > give further advice.
+>> >
+>> > On Mon, Oct 6, 2008 at 2:45 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>> >
+>> >> This is just for creating new threads on a different O3CPU. I am using
+>> >> the
+>> >> script in configs/splash2/run.py, but when --detailed is used we run
+>> >> into
+>> >> the problem that O3CPU thread context is initially allocated as
+>> >> Suspended.
+>> >> If you try to add a hack that allocates O3CPU thread context as
+>> >> Unallocated,
+>> >> you run into the problem that no available resource can be found for a
+>> >> new
+>> >> thread in function activateWhenReady(...).  I guess the hack to get
+>> >> around
+>> >> this to start everything as atomic or simple timing and then switch.
+>> >> However, it seems that a slight modification to
+>> >> O3ThreadContext<Implh>::activate could also solve the problem as long
+>> >> as we
+>> >> check that no thread currently exists?
+>> >>
+>> >> Best,
+>> >> -Rick
+>> >>
+>> >> Korey Sewell wrote:
+>> >>
+>> >>> Rick,
+>> >>> do we want to create new SMT threads or do we want to create new
+>> >>> threads on a different O3 CPU?
+>> >>>
+>> >>> On Mon, Oct 6, 2008 at 2:27 PM, Steve Reinhardt <stever@gmail.com>
+>> >>> wrote:
+>> >>>
+>> >>>
+>> >>>> If you take a look at the flyspray bugs I posted based on this you'll
+>> >>>> see
+>> >>>> that they're still outstanding:
+>> >>>>
+>> >>>> http://www.m5sim.org/flyspray/task/317
+>> >>>> http://www.m5sim.org/flyspray/task/318
+>> >>>>
+>> >>>> As the comments on these bug reports show, I tried a simple fix but
+>> >>>> it
+>> >>>> didn't work.  The code for deciding when you can allocate new threads
+>> >>>> on
+>> >>>> the
+>> >>>> fly in O3 is basically broken (looks like it was never tested).  At
+>> >>>> the
+>> >>>> time
+>> >>>> a general fix by anyone other than Korey looked too complicated.  I
+>> >>>> don't
+>> >>>> know if Korey's looked into it or not (Korey?).
+>> >>>>
+>> >>>> It could be that if you don't want to use SMT then coming up with a
+>> >>>> fix
+>> >>>> that
+>> >>>> works only for the 0->1 transition might be easier, but of course a
+>> >>>> more
+>> >>>> general fix for N->N+1 would be better yet.
+>> >>>>
+>> >>>> Steve
+>> >>>>
+>> >>>> On Mon, Oct 6, 2008 at 10:21 AM, Rick Strong <rstrong@cs.ucsd.edu>
+>> >>>> wrote:
+>> >>>>
+>> >>>>
+>> >>>>> Hi all,
+>> >>>>>
+>> >>>>> So I tried to run splash benchmarks with more than 1 O3 cpu, and I
+>> >>>>> get
+>> >>>>> the error message, "nxm_threade_create: no idle contexts available".
+>> >>>>> It
+>> >>>>> appears that the O3CPU thread contexts are not being set to
+>> >>>>> unallocated
+>> >>>>> according to some emails I saw involving Sujay Phadke. Did we ever
+>> >>>>> commit the fix to the O3CPU? If so, i don't see it.
+>> >>>>>
+>> >>>>> Best,
+>> >>>>> -Rick
+>> >>>>>
+>> >>>>> _______________________________________________
+>> >>>>> m5-users mailing list
+>> >>>>> m5-users@m5sim.org
+>> >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>>>
+>> >>>>>
+>> >>>> _______________________________________________
+>> >>>> m5-users mailing list
+>> >>>> m5-users@m5sim.org
+>> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>>
+>> >>>>
+>> >>>>
+>> >>>
+>> >>>
+>> >>>
+>> >>
+>> >
+>> >
+>> >
+>> >
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

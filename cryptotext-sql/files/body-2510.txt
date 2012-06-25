@@ -1,0 +1,67 @@
+Statistics are dumped to the file right before m5 exits with a python
+exit handler. What status does m5 exit with (type echo $? <enter>
+immediately after m5 ends)?  If you set a break point on
+'Stats::dump()' does it get reached? What if you don't use -d? Does an
+m5stats.txt appear in the directory you're running m5 from. Does it
+have any statistics in it?
+Ali
+- Show quoted text -
+On Oct 2, 2008, at 10:44 AM, Eduardo Olmedo Sanchez wrote:
+> Hi Meng thanks for your answer I did my test with the example code
+> that it's here /configs/example/se.py, and this is the command that
+> I used to run the simulation:
+>
+> $  build/ALPHA_SE/m5.debug -d /tmp/output configs/example/se.py
+> And this is the output that I get:
+>
+> M5 Simulator System
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+> M5 compiled Oct  1 2008 09:26:38
+> M5 revision Unknown:Unknown
+> M5 commit date Unknown
+> M5 started Oct  2 2008 07:40:01
+> M5 executing on x86-7
+> command line: build/ALPHA_SE/m5.debug -d /tmp/output configs/example/
+> se.py
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port
+> 7000
+> **** REAL SIMULATION ****
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack size by one page.
+> Hello world!
+> Exiting @ cycle 3248000 because target called exit()
+>
+> The execution of the simulation seems fine and in /tmp/output M5
+> create a new text file called m5stats.txt but it's empty. Maybe
+> there is a problem with the compilation, to compile the ALPHA_SE I
+> used this command scons build/ALPHA_SE/m5.debug. Any ideas?
+>
+> Thanks again.
+> On Thu, Oct 2, 2008 at 6:54 AM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Could you post the command line you use to run the simulation?
+>
+> I think there are two directions you can try.
+>
+> (1) Write a "Hello World!!!" program, compile it, and see if M5 can
+> give you the right output.
+> (2) If the m5stats.txt is empty, there must have some things wrong. Do
+> you see any error message on screen?
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

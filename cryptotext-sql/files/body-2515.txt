@@ -1,0 +1,12 @@
+Hi all,
+I add a page in M5 wiki FAQ to show how to run the SPEC2006 on M5 SE
+mode. I am focusing on parallel programs now, so I don't have much
+time to work on the SPEC2006. I re-simulated the whole SPEC2006 last
+weekend to test the testing data set and get the timing results. This
+wiki page shows what we have done so far at UMD. I hope our
+experiences can help everyone who wants to simulate SPEC2006 on M5.
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

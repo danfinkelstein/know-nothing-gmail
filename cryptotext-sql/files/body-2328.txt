@@ -1,0 +1,10 @@
+I am trying to run a benchmark that works in m5_1.1 using the eio traces and about 15 minutes into the simulation i am getting some errors with the code.  i have successfully run smaller benchmarks with no problems.  i am using a 3 level cache hierarchy in my simulations.
+./largeSim.pyM5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Nov  2 2008 15:47:02M5 revision 5589:733318abb7b1a4995cad43f94b5b0f7c7f547189
+M5 commit date Thu Oct 09 02:20:16 2008 -0400M5 started Nov  2 2008 15:52:26M5 executing on leif.cs.lamar.educommand line: /home/pauls/m5/m5-vanilla/m5-stable/build/ALPHA_SE/m5.opt ./largeSim.py
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000**** REAL SIMULATION ****warn: Entering event queue @ 0.  Starting simulation...
+m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Program aborted at cycle 92206054000AbortedHas anyone experienced this before or can provide me with some more details about whats happening?thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

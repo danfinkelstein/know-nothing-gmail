@@ -1,0 +1,19 @@
+Dear Lisa,
+Thanks a lot for your quick response. The reason I was trying to use SE mode is,
+when cpu is issuing an data request I need that to be something relate to my
+program. I was thinking that if I am running my code in FS mode all the
+addresses issued by the cpu will not be relate to my program. Please correct me
+if I am wrong.
+Any suggestion on how to proceed further/ any advice on changing the direction
+is greatly appreciated cos I am feeling completely dark :-(
+Further a small question. Could you please tell me how to execute a simple
+helloworld program in FS mode. I know this is straightforward in SE mode with -c
+option. I looked for this all the places, but could not found the answer, may be
+its too newbie..
+- Show quoted text -
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

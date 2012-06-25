@@ -1,0 +1,56 @@
+Hi,
+  Another member of my research group, Mark Gebhart, and I have been working on putting together a disk image for use with M5 that contains the PARSEC benchmark binaries.
+  To date, we have compiled all of the benchmarks for ALPHA and placed them on a disk image.  We are still ironing out bugs with some of them, but the image contains 9+ working benchmarks.  I have placed a link to the image on my website:
+    http://www.cs.utexas.edu/~hestness/links/linux-parsec-golden.img.bz2
+  Also, I have placed a README next to it that contains the current status of the PARSEC benchmarks on the image:
+    http://www.cs.utexas.edu/~hestness/links/linux-parsec-golden-status.txt
+  Here is the current status:
+ 
+--------------------------
+The binaries on this disk image are located at /parsec/install/bin
+The input sets on this disk image are located at /parsec/install/inputs
+linux-parsec-golden.img (as of 11/17/08):
+This matrix indicates if the benchmarks complete with many threads running on the specified input sets:
+                 simsmall:              simmedium:          simlarge:
+- blackscholes   complete               complete            complete
+- bodytrack      complete               complete
+- canneal        complete               complete
+- dedup          complete
+- facesim        
+- ferret         complete               complete
+- fluidanimate   complete               complete
+- freqmine       complete               complete
+- streamcluster  fail-kernel bug
+- swaptions      fail-unaligned trap
+- vips           complete               complete
+- x264           complete               
+--------------------------
+ 
+  If you have fully working binaries for any of the benchmarks that we don't currently have working, I will definitely welcome links to them and can update the image.  When we get all of the PARSEC benchmarks working, we will make this image available through the M5 site.
+  Thanks,
+  Joel
+ 
+  Joel Hestness
+  Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin
+ 
+ 
+ 
+---------- Forwarded message ----------
+From: <eduardo.olmedo.sanchez@alumnos.upm.es>
+Date: Thu, Nov 20, 2008 at 3:13 PM
+Subject: alpha_fs disk image with the PARSEC benchmarks
+To: hestness@cs.utexas.edu
+Hello I am doing research with the M5 simulator, and we are planning to use
+your benchmarks at our lab here in the Technical University of Madrid, I
+have seen in this message
+https://lists.cs.princeton.edu/pipermail/parsec-users/2008-July/000160.html
+that you have a disk image with the binares of some benchmarks on it, it
+will be really appreciable if you can send me the image because in that way
+you will save me many time, thank you.
+Best,
+Ed
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

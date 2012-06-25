@@ -1,0 +1,12 @@
+On Wed, Apr 2, 2008 at 11:18 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> StaticInst "allows a 1 to 1 mapping of StaticInst to unique binary machine
+> instructions." . I assumed that the DynamicInst is just a more detailed
+> encapsulation of the binary instruction. But while it is not 1 to 1, it is
+> close, right?
+Sorry, I misread that. Yea, one DynInst contains one StaticInst.
+Just to be a little more precise on this: each DynInst corresponds to a single StaticInst, but a StaticInst generates a new DynInst every time it is executed, so it's many-to-one in the other direction.  For a single-CPU system with a SimpleCPU model you'll only have one DynInst in existence at any point in time, but once you go to multiple CPUs and/or a pipelined CPU model you could have multiple DynInsts for a single StaticInst existing concurrently.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

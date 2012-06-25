@@ -1,0 +1,16 @@
+- Show quoted text ----------- Forwarded message ----------From: Dean Michael Ancajas <dbancajas@gmail.com>Date: Jul 13, 2007 4:54 PM
+Subject: Re: [m5-users] m5-2.0b3 cannot build,error in pythonTo: m5-users@m5sim.orgThanks Ali,      the Python.h is located in the /usr/local/include/python2.5/ directory and then I made a softlink to the /usr/include/python2.5/ directory just in case the compiler will look into that directory. I still got the same error.
+These are the contents of the file build/scons_config.log, i really do not know what to do with the 'undefined reference' messages at the bottom part, does this mean I have to rebuild my glibc? If yes, how? can you please point me to some useful websites as a starting point. thanks again. =)
+-- Dean Michael B. Ancajas**********************START HERE***********************************file /net/libra/home/dean/gradfiles/m5/m5-2.0b3/SConstruct,line 287:        Configure(confdir = build/.scons_config)
+scons: Configure: Checking for C header file Python.h...build/.scons_config/conftest_0.c <-  |  |#include <Python.h>  |  |gcc -o build/.scons_config/conftest_0.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -Iext/dnet -I/usr/local/include/python2.5 build
+/.scons_config/conftest_0.cscons: Configure: yesscons: Configure: Checking for C library python2.5...build/.scons_config/conftest_1.c <-  |  |  |  |int  |main() {  |  |return 0;
+  |}  |gcc -o build/.scons_config/conftest_1.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -Iext/dnet -I/usr/local/include/python2.5 build/.scons_config/conftest_1.cgcc -o build/.scons_config/conftest_1 build/.scons_config/conftest_1.o -L/usr/local/lib -
+lpython2.5/usr/local/lib/libpython2.5.so: undefined reference to `__memcpy_chk@GLIBC_2.3.4'/usr/local/lib/libpython2.5.so: undefined reference to `__strcpy_chk@GLIBC_2.3.4'/usr/local/lib/libpython2.5.so: undefined reference to `__vfprintf_chk@GLIBC_2.3.4'
+/usr/local/lib/libpython2.5.so: undefined reference to `__fprintf_chk@GLIBC_2.3.4'/usr/local/lib/libpython2.5.so: undefined reference to `__realpath_chk@GLIBC_2.4'/usr/local/lib/libpython2.5.so: undefined reference to `__strncpy_chk@GLIBC_2.3.4'
+/usr/local/lib/libpython2.5.so: undefined reference to `__vsnprintf_chk@GLIBC_2.3.4'/usr/local/lib/libpython2.5.so: undefined reference to `__printf_chk@GLIBC_2.3.4'/usr/local/lib/libpython2.5.so: undefined reference to `__sprintf_chk@GLIBC_2.3.4'
+collect2: ld returned 1 exit statusscons: Configure: no***************************** end here **************************
+-- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

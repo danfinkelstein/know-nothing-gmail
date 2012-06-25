@@ -1,0 +1,28 @@
+On Mon, May 12, 2008 at 1:50 AM, Dionysus <shinrairis@gmail.com> wrote:
+> I am new to M5 simulator. I have finished the documents on the web
+> site couple days ago. However, I could not find the detail about how
+> to run applications in syscall emulation mode. If I miss anything
+> important, please give me some hint about it.
+Did you look at these?
+http://www.m5sim.org/wiki/index.php/Running_M5
+http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions
+> There is another question if I run a multi-threaded application in
+> syscall emulation mode. How would M5 deal with the thread scheduling
+> problem?
+If you go to http://www.m5sim.org/wiki/index.php/Mailing_Lists and
+search past traffic on the mailing lists (m5-users particularly) you
+will find something. If I recall rightly you really need to go to full
+system mode to get thread support (since in that case you have the
+full OS underneath you, scheduling is handled in the kernel).
+I did a quick check and found some activity on Gmane but The Mail
+Archive while finding the headers appears to have lost the content of
+older messages.
+--
+Philip Machanick (Visiting Fellow, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
+http://opinion-nation.blogspot.com/
++61-7-3871-0963 (office 3365-1624) skype philipmach
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

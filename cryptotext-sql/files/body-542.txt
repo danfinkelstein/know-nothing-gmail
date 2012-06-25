@@ -1,0 +1,6 @@
+Hi, everyone,I am working on a sampler that dumps the L2 statistics on every 10^7 executed instructions in the context of timing cpu. Would you please give me some hints about how a certain event can be triggered on every 10^7 instructions or how can I get the current instruction count in mem/cache/lru.cc?
+Thanks a lot!Leonard-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

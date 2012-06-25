@@ -1,0 +1,2947 @@
+# HG changeset patch
+# User Clint Smullen <cws3k@cs.virginia.edu>
+# Date 1232732406 18000
+# Node ID a95dd3a28ecb82a074de030367fe641d52aaf148
+# Parent  0397aa216e2290a50fb7138bd28563926573c929
+Beta patch for M5 2.0 DRAMsim implemention.
+NOTE: None of the DRAMsim files meet the M5 style requirements, so if that
+module is enabled, it will present a large series of messages when you try
+to apply the patch.
+Most parameters that the test program accepted are also accepted through M5,
+but most settings are present in a SPD file, regardless.  Stats have not yet
+been integrated with M5's stats, and the power modeling has also not been
+connected. The debug options are, however, connected.
+Suggestions for improving the usability of the interface are welcome.
+   - Clint Smullen (cws3k@cs.virginia.edu)
+diff --git a/src/mem/DRAMsim.py b/src/mem/DRAMsim.py
+new file mode 100644
+--- /dev/null
++++ b/src/mem/DRAMsim.py
+@@ -0,0 +1,43 @@
++from m5.params import *
++from m5.proxy import *
++from PhysicalMemory import *
++
++class DRAMsim(PhysicalMemory):
++    type = 'DRAMsim'
++
++    biu_depth = Param.Int(32, 'Number of entries in the BIU queue')
++    biu_delay = Param.Int(10, 'Delay of BIU in CPU ticks')
++    biu_selection_policy = Param.String('FCFS',
++        'The BIU transaction selection policy ' +
++        '[FCFS, RIFF, HSTP, OBF, Wang, Most_Pending, Least_Pending, Greedy]')
++    transaction_granularity = Param.Int(64,
++        'Size of each transaction ' +
++        '(should match the size that requests will be)')
++    strict_ordering = Param.Bool(False,
++        'Enable strict ordering of memory operations');
++
++    #-Configuration files
++    spd_file = Param.String('', 'The SPD configuration file')
++    power_file = Param.String('', 'The power configuration file')
++
++    #-Override parameters in the spec file
++    dramtype = Param.String('', '[SDRAM, DDR2, FBD-DDR2, DDR3]')
++    frequency = Param.Clock('0t', 'DRAM Frequency')
++    channel_count = Param.Int(0, 'Number of channels')
++    channel_width = Param.Int(0, 'Width of channel in bytes')
++
++    #-Debug flags
++    debug_all = Param.Bool(False, 'Enable all debugging')
++    debug_biu = Param.Bool(False, 'Enable BIU debugging')
++    debug_transaction = Param.Bool(False, 'Enable transaction debugging')
++    debug_dram = Param.Bool(False, 'Enable DRAM debugging')
++    debug_wave = Param.Bool(False, 'Enable wave debugging')
++    debug_cas = Param.Bool(False, 'Enable CAS debugging')
++    debug_bundle = Param.Bool(False, 'Enable bundle debugging')
++    debug_amb = Param.Bool(False, 'Enable AMB debugging')
++
++    debug_threshold = Param.Int(0,
++        'Transaction ID after which debugging is displayed')
++    watch_trans = Param.Int(0, 'Transaction ID to watch')
++    watch_refresh_trans = Param.Int(0, 'Refresh transaction ID to watch')
++
+diff --git a/src/mem/SConscript b/src/mem/SConscript
+--- a/src/mem/SConscript
++++ b/src/mem/SConscript
+@@ -57,3 +57,21 @@
+ TraceFlag('LLSC')
+ TraceFlag('MMU')
+ TraceFlag('MemoryAccess')
++
++#-DRAMsim stuff
++SimObject('DRAMsim.py')
++Source('dramsim.cc')
++Source('dramsim/mem-fileio.c')
++Source('dramsim/mem-dram.c')
++Source('dramsim/mem-dram-helper.c')
++Source('dramsim/mem-dram-power.c')
++Source('dramsim/mem-amb-buffer.c')
++Source('dramsim/mem-commandissuetest.c')
++Source('dramsim/mem-statemachine.c')
++Source('dramsim/mem-bundle.c')
++Source('dramsim/mem-biu.c')
++Source('dramsim/mem-stat.c')
++Source('dramsim/mem-refresh.c')
++Source('dramsim/mem-issuecommands.c')
++Source('dramsim/mem-address.c')
++Source('dramsim/mem-transactions.c')
+diff --git a/src/mem/bus.cc b/src/mem/bus.cc
+--- a/src/mem/bus.cc
++++ b/src/mem/bus.cc
+@@ -198,8 +198,15 @@
+     DPRINTF(Bus, "recvTiming: src %d dst %d %s 0x%x\n",
+             src, pkt->getDest(), pkt->cmdString(), pkt->getAddr());
+-    Tick headerFinishTime = pkt->isExpressSnoop() ? 0 : calcPacketTiming(pkt);
+-    Tick packetFinishTime = pkt->isExpressSnoop() ? 0 : pkt->finishTime;
++    Tick headerFinishTime, packetFinishTime;
++    if (pkt->isExpressSnoop()) {
++       headerFinishTime = 0;
++       packetFinishTime = 0;
++       pkt->firstWordTime = pkt->finishTime = curTick;
++    } else {
++       headerFinishTime = calcPacketTiming(pkt);
++       packetFinishTime = pkt->finishTime;
++    }
+     short dest = pkt->getDest();
+     int dest_port_id;
+diff --git a/src/mem/dramsim.cc b/src/mem/dramsim.cc
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim.cc
+@@ -0,0 +1,265 @@
++/*
++ * Copyright (c) 2004
++ * The Regents of The University of Michigan
++ * All Rights Reserved
++ *
++ * This code is part of the M5 simulator.
++ *
++ * Permission is granted to use, copy, create derivative works and
++ * redistribute this software and such derivative works for any
++ * purpose, so long as the copyright notice above, this grant of
++ * permission, and the disclaimer below appear in all copies made; and
++ * so long as the name of The University of Michigan is not used in
++ * any advertising or publicity pertaining to the use or distribution
++ * of this software without specific, written prior authorization.
++ *
++ * THIS SOFTWARE IS PROVIDED AS IS, WITHOUT REPRESENTATION FROM THE
++ * UNIVERSITY OF MICHIGAN AS TO ITS FITNESS FOR ANY PURPOSE, AND
++ * WITHOUT WARRANTY BY THE UNIVERSITY OF MICHIGAN OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE. THE REGENTS OF THE UNIVERSITY OF MICHIGAN SHALL NOT BE
++ * LIABLE FOR ANY DAMAGES, INCLUDING DIRECT, SPECIAL, INDIRECT,
++ * INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WITH RESPECT TO ANY CLAIM
++ * ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE, EVEN
++ * IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH
++ * DAMAGES.
++ *
++ * Authors: Ali G. Saidi
++ *          Ronald G. Dreslinski Jr
++ */
++
++/**
++ * @file
++ * Definition of a DRAM like main memory.
++ */
++
++#include <cstdlib>
++#include <string>
++
++#include "mem/dramsim.hh"
++
++biu_t *global_biu;
++
++DRAMsim::DRAMsim(const Params *p)
++    : PhysicalMemory(p), pending(0), control(*this)
++{
++    init_biu(&biu);
++    set_biu_depth(&biu, p->biu_depth);
++
++    init_dram_system();
++
++    biu_set_mem_cfg(&biu, get_dram_system_config());
++
++    if (p->biu_selection_policy == "FCFS") {
++        set_transaction_selection_policy(&biu, FCFS);
++    } else if (p->biu_selection_policy == "RIFF") {
++        set_transaction_selection_policy(&biu, RIFF);
++    } else if (p->biu_selection_policy == "HSTP") {
++        set_transaction_selection_policy(&biu, HSTP);
++    } else if (p->biu_selection_policy == "OBF") {
++        set_transaction_selection_policy(&biu, OBF);
++    } else if (p->biu_selection_policy == "Wang") {
++        set_transaction_selection_policy(&biu, WANG);
++    } else if (p->biu_selection_policy == "Most_Pending") {
++        set_transaction_selection_policy(&biu, MOST_PENDING);
++    } else if (p->biu_selection_policy == "Least_Pending") {
++        set_transaction_selection_policy(&biu, LEAST_PENDING);
++    } else if (p->biu_selection_policy == "Greedy") {
++        set_transaction_selection_policy(&biu, GREEDY);
++    } else {
++        set_transaction_selection_policy(&biu, FCFS);
++    }
++
++    //-Set defaults
++    set_dram_type(DDR3);
++    set_dram_frequency(800);
++    set_dram_channel_width(8);
++
++    set_dram_transaction_granularity(p->transaction_granularity);
++
++    //-Load the SPD file
++    if (p->spd_file != "") {
++        FILE *file = fopen(p->spd_file.c_str(), "r");
++        if (!file)
++            fatal("Failed to open the SPD file '%s'!", p->spd_file.c_str());
++        read_dram_config_from_file(file, get_dram_system_config());
++        fclose(file);
++    }
++
++    //-Load the power file
++    if (p->power_file != "") {
++        FILE *file = fopen(p->power_file.c_str(), "r");
++        if (!file)
++            fatal("Failed to open the power file '%s'!", p->spd_file.c_str());
++        read_power_config_from_file(file, &get_dram_system_config()->dram_power_config);
++        fclose(file);
++    }
++
++    //-Override as necessary
++    if (p->dramtype == "")
++        ;
++    else if (p->dramtype == "SDRAM")
++        set_dram_type(SDRAM);
++    else if (p->dramtype == "DDR")
++        set_dram_type(DDRSDRAM);
++    else if (p->dramtype == "DDR2")
++        set_dram_type(DDR2);
++    else if (p->dramtype == "FBD-DDR2")
++        set_dram_type(FBD_DDR2);
++    else if (p->dramtype == "DDR3")
++        set_dram_type(DDR3);
++    else
++        fatal("Unknown DRAMsim type: ", p->dramtype);
++
++    if (p->frequency)
++        set_dram_frequency(p->frequency);
++    //-We set the CPU frequency to match the DRAM frequency, since we are cycle-based
++    ticks_per_dram_cycle = Clock::Int::us / get_dram_frequency();
++    set_cpu_frequency(&biu, get_dram_frequency());
++    if (p->channel_count)
++        set_dram_channel_count(p->channel_count);
++    if (p->channel_width)
++        set_dram_channel_width(p->channel_width);
++
++    set_strict_ordering(p->strict_ordering);
++    set_biu_delay(&biu, p->biu_delay);
++
++    //-Finalize the ratio
++    set_cpu_memory_frequency_ratio(&biu, get_memory_frequency());
++
++    //-Finish initialization
++    mem_gather_stat_init(GATHER_BUNDLE_STAT,              0,      0      );
++    mem_gather_stat_init(GATHER_BUS_STAT,                 0,      0      );
++    mem_gather_stat_init(GATHER_TRAN_QUEUE_VALID_STAT,    0,      0      );
++    mem_gather_stat_init(GATHER_BIU_SLOT_VALID_STAT,      0,      0      );
++    init_extra_bundle_stat_collector();
++
++    init_amb_buffer();
++    convert_config_dram_cycles_to_mem_cycles();
++
++    set_biu_debug(global_biu, p->debug_biu);
++    set_dram_debug(p->debug_dram);
++    set_transaction_debug(p->debug_transaction);
++
++    set_debug_tran_id_threshold(p->debug_threshold);
++    set_wave_debug(p->debug_wave);
++    set_wave_cas_debug(p->debug_cas);
++    set_bundle_debug(p->debug_bundle);
++    set_amb_buffer_debug(p->debug_amb);
++
++    if (p->debug_all){
++        set_biu_debug(global_biu, TRUE);
++        set_dram_debug(TRUE);
++        set_transaction_debug(TRUE);
++        set_wave_debug(FALSE);
++    } else if (p->debug_wave){
++        set_biu_debug(global_biu, FALSE);
++        set_dram_debug(FALSE);
++        //set_transaction_debug(FALSE);
++        set_wave_debug(TRUE);
++    }
++
++    dram_dump_config(stdout);
++}
++
++void
++DRAMsim::regStats()
++{
++    using namespace Stats;
++
++}
++
++void DRAMsim::sendResponse(int sid) {
++    //-We look up the PacketPtr we gave to the BIU and send it out
++    ResponseData *rd = (ResponseData*)biu.slot[sid].mp;
++    assert(rd);
++
++    if (rd->pkt->isResponse())
++        //-We'd prefer to try sending it now, but tport doesn't let us.
++        ports[rd->idx]->schedSendTiming(rd->pkt, curTick + 1);
++    else {
++        delete rd->pkt;
++    }
++
++    delete rd;
++
++    pending--;
++}
++
++void DRAMsim::tick() {
++    set_current_cpu_time(&biu, curTick / ticks_per_dram_cycle);
++
++    update_dram_system(curTick / ticks_per_dram_cycle);
++
++    tick_t t = get_current_cpu_time(&biu) + 1;
++
++    int sid = find_critical_word_ready_slot(&biu, MEM_STATE_INVALID);
++    if (sid != MEM_STATE_INVALID) {
++        sendResponse(sid);
++    } else {
++        sid = find_completed_slot(&biu, MEM_STATE_INVALID, t);
++        if (sid != MEM_STATE_INVALID) {
++            int access_type = get_access_type(&biu, sid);
++            if (access_type == MEMORY_READ_COMMAND && callback_done(global_biu, sid) == FALSE){
++                sendResponse(sid);
++            }
++
++            release_biu_slot(&biu, sid);
++        }
++    }
++}
++
++bool DRAMsim::doTiming(PacketPtr pkt, int idx) {
++    //-Check to see if it was a snoop
++    if (pkt->memInhibitAsserted()) {
++        DPRINTF(MemoryAccess, "mem inhibited on 0x%x: not responding\n", pkt->getAddr());
++        return true;
++    }
++    assert(!pkt->isExpressSnoop());
++
++    //-Find a free slot
++    int slot_id = find_free_biu_slot(&biu, MEM_STATE_INVALID);
++    if (slot_id == MEM_STATE_INVALID)
++        return false;
++
++    //-Map options to DRAMsim, and fill the slot
++    static unsigned long long rid = 0;
++    Addr baddr = pkt->getAddr();
++
++    int access_type = MEM_STATE_INVALID;
++    if (pkt->isReadWrite()) {
++        fatal("I don't know how to handle ReadWrites!");
++    } else if (pkt->isRead()) {
++        access_type = MEMORY_READ_COMMAND;
++    } else if (pkt->isWrite()) {
++        access_type = MEMORY_WRITE_COMMAND;
++    }
++
++    //-Do the functional operation now to ensure ordering
++    doAtomicAccess(pkt);
++
++    //-If it wasn't a read or a write, then we really can't give it to DRAMsim
++    if (access_type != MEM_STATE_INVALID) {
++        int priority = 0;
++
++        ResponseData *rd = new ResponseData(pkt, idx);
++        pending++;
++
++        fill_biu_slot(&biu, slot_id, MEM_STATE_INVALID, curTick / ticks_per_dram_cycle, rid, baddr, access_type, priority, rd);
++
++        if (pending == 1)
++            schedule(control, curTick + ticks_per_dram_cycle);
++
++        rid++;
++    } else {
++        //-We need to schedule the packet to be sent out on the side.
++        ports[idx]->schedSendTiming(pkt, curTick + 1);
++    }
++
++    return true;
++}
++
++DRAMsim* DRAMsimParams::create() {
++    return new DRAMsim(this);
++}
+diff --git a/src/mem/dramsim.hh b/src/mem/dramsim.hh
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim.hh
+@@ -0,0 +1,175 @@
++/*
++ * Copyright (c) 2003, 2004
++ * The Regents of The University of Michigan
++ * All Rights Reserved
++ *
++ * This code is part of the M5 simulator.
++ *
++ * Permission is granted to use, copy, create derivative works and
++ * redistribute this software and such derivative works for any
++ * purpose, so long as the copyright notice above, this grant of
++ * permission, and the disclaimer below appear in all copies made; and
++ * so long as the name of The University of Michigan is not used in
++ * any advertising or publicity pertaining to the use or distribution
++ * of this software without specific, written prior authorization.
++ *
++ * THIS SOFTWARE IS PROVIDED AS IS, WITHOUT REPRESENTATION FROM THE
++ * UNIVERSITY OF MICHIGAN AS TO ITS FITNESS FOR ANY PURPOSE, AND
++ * WITHOUT WARRANTY BY THE UNIVERSITY OF MICHIGAN OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE. THE REGENTS OF THE UNIVERSITY OF MICHIGAN SHALL NOT BE
++ * LIABLE FOR ANY DAMAGES, INCLUDING DIRECT, SPECIAL, INDIRECT,
++ * INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WITH RESPECT TO ANY CLAIM
++ * ARISING OUT OF OR IN CONNECTION WITH THE USE OF THE SOFTWARE, EVEN
++ * IF IT HAS BEEN OR IS HEREAFTER ADVISED OF THE POSSIBILITY OF SUCH
++ * DAMAGES.
++ *
++ * Authors: Ronald G. Dreslinski Jr
++ *          Ali G. Saidi
++ */
++
++/**
++ * @file
++ * Derrive a class from PhysicalMemory that support DRAM like timing access.
++ */
++#ifndef __MEM_DRAMSIM_HH__
++#define __MEM_DRAMSIM_HH__
++
++#include "base/statistics.hh"
++#include "mem/physical.hh"
++#include "params/DRAMsim.hh"
++
++extern "C" {
++#include "dramsim/mem-biu.h"
++}
++
++class DRAMsim : public PhysicalMemory {
++    friend class DRAMsimPort;
++protected:
++    class DRAMsimPort : public SimpleTimingPort {
++        friend class DRAMsim;
++    private:
++        DRAMsim &d;
++        int idx;
++
++    public:
++        DRAMsimPort(const std::string &name, DRAMsim &d, int idx)
++            : SimpleTimingPort(name, &d), d(d), idx(idx) { }
++
++        bool recvTiming(PacketPtr pkt) {
++            return d.doTiming(pkt, idx);
++        }
++
++        Tick recvAtomic(PacketPtr pkt) {
++            return d.doAtomicAccess(pkt);
++        }
++
++        void recvFunctional(PacketPtr pkt) {
++            pkt->pushLabel(d.name());
++
++            if (!checkFunctional(pkt)) {
++                // Default implementation of SimpleTimingPort::recvFunctional()
++                // calls recvAtomic() and throws away the latency; we can save a
++                // little here by just not calculating the latency.
++                d.doFunctionalAccess(pkt);
++            }
++
++            pkt->popLabel();
++        }
++
++        void recvStatusChange(Status status) {
++            d.recvStatusChange(status);
++        }
++
++        void getDeviceAddressRanges(AddrRangeList &resp, bool &snoop) {
++            d.getAddressRanges(resp, snoop);
++        }
++    };
++
++    std::vector<DRAMsimPort*> ports;
++
++    biu_t biu;
++
++    Tick ticks_per_dram_cycle;
++
++    struct ResponseData : public FastAlloc {
++        PacketPtr pkt;
++        int idx;
++
++        ResponseData(PacketPtr pkt, int idx)
++            : pkt(pkt), idx(idx) { }
++    };
++
++    unsigned int pending;
++
++    void sendResponse(int sid);
++    void tick();
++
++    class Control : public Event {
++    private:
++        DRAMsim &d;
++    public:
++        Control(DRAMsim &d)
++            : Event(), d(d) { }
++
++        const char* description() const {
++            return "DRAMsim control event";
++        }
++
++        void process() {
++            d.tick();
++
++            if (d.pending)
++                d.schedule(this, curTick + d.ticks_per_dram_cycle);
++        }
++    };
++    Control control;
++
++    bool doTiming(PacketPtr pkt, int idx);
++
++public:
++    void init() {
++        if (ports.size() == 0) {
++            fatal("PhysicalMemory object %s is unconnected!", name());
++        }
++
++        for (std::vector<DRAMsimPort*>::iterator pi = ports.begin(); pi != ports.end(); ++pi) {
++            if (*pi)
++                (*pi)->sendStatusChange(Port::RangeChange);
++        }
++    }
++
++    Port* getPort(const std::string &if_name, int idx) {
++        if (if_name == "functional") {
++            return new DRAMsimPort(name() + "-functional", *this, -1);
++        }
++
++        if (if_name != "port")
++            panic("Octopus::getPort: unknown port '%s' requested", if_name);
++
++        if (idx >= ports.size())
++            ports.resize(idx+1);
++
++        if (ports[idx] != NULL)
++            panic("DRAMsim::getPort: port %d already assigned", idx);
++
++        DRAMsimPort *port = new DRAMsimPort(csprintf("%s-port%d", name(), idx), *this, idx);
++
++        ports[idx] = port;
++
++        return port;
++    }
++
++    typedef DRAMsimParams Params;
++    DRAMsim(const Params *p);
++
++    const Params* params() const {
++        return dynamic_cast<const Params*>(_params);
++    }
++
++    virtual void regStats();
++};
++
++#endif// __MEM_DRAMSIM_HH__
++
+diff --git a/src/mem/dramsim/.svn/entries b/src/mem/dramsim/.svn/entries
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/entries
+@@ -0,0 +1,344 @@
++8
++
++dir
++357
++svn+ssh://power6/home/cws3k/svnroot/3dstacking/dramsim
++svn+ssh://power6/home/cws3k/svnroot
++
++
++
++2008-09-18T15:03:13.433332Z
++307
++cws3k
++
++
++svn:special svn:externals svn:needs-lock
++
++
++
++
++
++
++
++
++
++
++
++8a1e63a9-b3cf-4bce-b19c-205de1c34190
++
++mem-dram.c
++file
++
++
++
++
++2008-10-15T18:36:55.000000Z
++2df0e071237fcd536e7cf9a01d7e822a
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++mem-test.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++2ddf7c870cbed416377a23257046eb1d
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-biu.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++d7d53464f55c3c4021222701edf65344
++2008-09-18T15:03:13.433332Z
++307
++cws3k
++
++mem-address.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++224e981f48dac1eead82fd421c825355
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-commandissuetest.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++f502d8a50759829d9fad5a2832bf17b8
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-system.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++ea20e871b882139139dda1052b6a0ff8
++2008-09-10T21:27:44.261441Z
++302
++cws3k
++
++mem-pagetable.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++ec3168bf73636da51d58881c2f0cd9a1
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++Changes1.2
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++b752b4c506b2c7ce628ce7d79551ea9a
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-refresh.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++0c9bea7d4d1a3e3f9310ce2f1b95c7c8
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++README
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++f07bdc93fa20522b086330cc97d72f5e
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-dram-helper.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++56b14c10a65a7ac193e1b6fec83b595b
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++test.cpp
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++c8de58307210ff78a91734fd9d6655d6
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem_system_def
++dir
++
++mem-statemachine.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++0ef63bf76ac2b25b5dfaaa7c1d22951f
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-interface.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++163818cfbb85725622fb788746ba2c6b
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-amb-buffer.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++512cb52852e2e008f1e2c6827e03529f
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-fileio.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++db73741e8c6efaf9c55962c06caba684
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-tokens.h
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++faedd8d63d786abb6dd28e6d872a1796
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-transactions.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++da0b6a1a2dcdaa349b58129c034b0bd0
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++mem-bundle.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++62628ededd927317ee39c3ed7e10f93e
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-issuecommands.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++b5807c35e622b205f56be3ecf751fc72
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++mem-stat.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++cfef2302f30e439a1002a487d5a046fa
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-dram-power.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++9daab395d8d996669d10a71367bf262c
++2008-09-08T19:25:26.446065Z
++301
++cws3k
++
++mem-biu.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++011f29948f750c2862a57fd12c4e45b5
++2008-09-18T15:03:13.433332Z
++307
++cws3k
++
++mem-test.c
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++e156066d2f5ce8d9b7c020a511b04c23
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++Makefile
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++223a2d565e80a22dcc3dc825349a4600
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++
++run.pl
++file
++
++
++
++
++2008-10-15T18:36:56.000000Z
++b66ca6376caa1b187446a504c26c9bee
++2008-09-15T05:46:29.260802Z
++303
++cws3k
++has-props
++
+diff --git a/src/mem/dramsim/.svn/format b/src/mem/dramsim/.svn/format
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/format
+@@ -0,0 +1,1 @@
++8
+diff --git a/src/mem/dramsim/.svn/prop-base/run.pl.svn-base b/src/mem/dramsim/.svn/prop-base/run.pl.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/prop-base/run.pl.svn-base
+@@ -0,0 +1,5 @@
++K 14
++svn:executable
++V 1
++*
++END
+diff --git a/src/mem/dramsim/.svn/text-base/Changes1.2.svn-base b/src/mem/dramsim/.svn/text-base/Changes1.2.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/Changes1.2.svn-base
+@@ -0,0 +1,8 @@
++1. The unified transaction queue has been replaced by a per-channel transaction
++queue.
++2. The command statemachine is no longer accessed - unless the waveform debug
++flag is enabled.
++3. Open page support for FB-DIMM has been added.
++4. Some of the command issue logic has been cleaned up.
++5. Auto precharge is no longer supported. ( It was an untested feature in
++release 1)
+diff --git a/src/mem/dramsim/.svn/text-base/Makefile.svn-base b/src/mem/dramsim/.svn/text-base/Makefile.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/Makefile.svn-base
+@@ -0,0 +1,54 @@
++SHELL=bash
++CC = g++
++OFLAGS = -O3 -funroll-all-loops -ffast-math -fno-exceptions -D__STDC_FORMAT_MACROS
++OFLAGS += -DDEBUG
++CFLAGS = -g -Wall -DMEM_TEST -fbounds-check $(OFLAGS)
++
++SRC = mem-biu.c mem-stat.c mem-dram.c mem-statemachine.c mem-address.c mem-dram-helper.c mem-commandissuetest.c mem-fileio.c mem-transactions.c mem-bundle.c mem-amb-buffer.c mem-refresh.c mem-issuecommands.c mem-dram-power.c
++
++OBJ = $(SRC:.c=.o)
++
++%.o : %.c Makefile
++       @echo -e "\e[36;1mCompiling $<\e[0m"
++       @$(CC) -c $(CFLAGS) $*.c
++
++.PHONY : all
++all : DRAMsim
++
++DRAMsim : $(OBJ) mem-test.o
++       @echo -e "\e[33;1mLinking $@\e[0m"
++       @$(CC) $(CFLAGS) $(OFLAGS) -o DRAMsim $^ -lm
++
++mem-fileio.o: mem-fileio.c mem-tokens.h mem-system.h
++
++mem-dram.o: mem-dram.c mem-system.h mem-biu.h
++
++mem-dram-helper.o: mem-dram-helper.c mem-system.h mem-biu.h
++
++mem-dram-power.o: mem-dram-power.c mem-system.h
++
++mem-commandissuetest.o: mem-commandissuetest.c mem-system.h mem-biu.h
++
++mem-statemachine.o: mem-commandissuetest.c mem-system.h
++
++mem-bundle.o: mem-bundle.c mem-system.h mem-biu.h
++
++mem-biu.o: mem-biu.c mem-system.h mem-biu.h
++
++mem-stat.o: mem-stat.c mem-system.h mem-biu.h
++
++mem-refresh.o: mem-refresh.c mem-system.h mem-biu.h
++
++mem-issuecommands.o: mem-issuecommands.c mem-system.h
++
++mem-address.o: mem-address.c mem-system.h
++
++mem-test.o: mem-test.c mem-system.h mem-biu.h
++
++mem-transactions.o: mem-transactions.c mem-system.h mem-biu.h
++
++.PHONY : clean
++clean:
++       @-$(RM) -f *.o DRAMsim *~
++       @echo -e "\e[31;1mAll clean!\e[0m"
++
+diff --git a/src/mem/dramsim/.svn/text-base/README.svn-base b/src/mem/dramsim/.svn/text-base/README.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/README.svn-base
+@@ -0,0 +1,24 @@
++
++
++To Build
++
++Type make at the command line to create the DRAMsim executable.
++
++To Run
++
++The run.pl perl script can be used to run the simulator in stand-alone mode.
++
++The required configuration files for the various DRAM types reside in the
++mem_system_def directory. For dram types where both power and performance
++simulation is supported, there are two configuration files - an spd file for
++the timing parameters and a dsh file for the power parameters.
++
++Trace file can also be used as input to the simulator.
++
++For more documentation refer to our white paper and the simulator manual.
++
++For porting the mem-interface.c is to be used as specified in the white paper.
++The mem-interface.h provides definitions of data types etc.
++The function defintion of fill_biu_slot (decalred in mem-biu.h and defined in
++mem-biu.c) might require modification.
++
+diff --git a/src/mem/dramsim/.svn/text-base/mem-address.c.svn-base b/src/mem/dramsim/.svn/text-base/mem-address.c.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/mem-address.c.svn-base
+@@ -0,0 +1,433 @@
++/*
++ * mem-address.c - address conversion functions. takes a mapping policy and an
++ * address and parses address data
++ *
++ * This is released as part of the sim-dram infrastructure for power/timing
++ * simulation of the memory system. Sim-dram can run stand-alone or be
++ * integrated with any standard CPU simulator.
++ *
++ * Copyright (c) 2004 by David Wang Brinda Ganesh Bruce Jacob
++ * Brinda Ganesh, David Wang, Bruce Jacob
++ * Systems and Computer Architecture Lab
++ * Dept of Electrical & Computer Engineering
++ * University of Maryland, College Park
++ * All Rights Reserved
++ *
++ * This software is distributed with *ABSOLUTELY NO SUPPORT* and
++ * *NO WARRANTY*.  Permission is given to modify this code
++ * as long as this notice is not removed.
++ *
++ * Send feedback to Brinda Ganesh brinda@eng.umd.edu
++ *                              or David Wang davewang@wam.umd.edu
++ *               or Bruce Jacob blj@eng.umd.edu
++ *
++ */
++
++#ifndef MEMORY_SYSTEM_H
++#include "mem-system.h"
++#endif
++#ifndef BIU_H
++#include "mem-biu.h"
++#endif
++
++int convert_address(int mapping_policy, dram_system_configuration_t *config, addresses_t  *this_a){
++       unsigned int input_a;
++       unsigned int temp_a, temp_b;
++       unsigned int bit_15,bit_27,bits_26_to_16;
++       int     chan_count, rank_count, bank_count, col_count, row_count;
++       int     chan_addr_depth, rank_addr_depth, bank_addr_depth, row_addr_depth, col_addr_depth;
++       int     col_size, col_size_depth;
++
++               col_size        = config->channel_width;
++       chan_count = config->channel_count;
++       rank_count = config->rank_count;
++       bank_count = config->bank_count;
++       row_count  = config->row_count;
++       col_count  = config->col_count;
++       chan_addr_depth = sim_dram_log2(chan_count);
++       rank_addr_depth = sim_dram_log2(rank_count);
++       bank_addr_depth = sim_dram_log2(bank_count);
++       row_addr_depth  = sim_dram_log2(row_count);
++       col_addr_depth  = sim_dram_log2(col_count);
++       col_size_depth  = sim_dram_log2(col_size);
++
++       input_a = this_a->physical_address;
++       input_a = input_a >> col_size_depth;
++
++       if(mapping_policy == BURGER_BASE_MAP){          /* Good for only Rambus memory really */
++               /* BURGER BASE :
++                * |<-------------------------------->|<------>|<------>|<---------------->|<----------------->|<----------->|
++                *                           row id     bank id   Rank id   Column id         Channel id          Byte Address
++                *                                                          DRAM page size/   sim_dram_log2(chan. count)   within packet
++                *                                                          Bus Width         used if chan. > 1
++                *
++                *               As applied to system (1 chan) using 256 Mbit RDRAM chips:
++                *               512 rows X 32 banks X 128 columns X 16 bytes per column.
++                *               16 ranks gets us to 512 MByte.
++                *
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *             |<---------------------->| |<---------->| |<------->| |<---------------->|  |<------>|
++                *                      row id                 bank         rank          Col id            16 byte
++                *                      (512 rows)              id           id           2KB/16B            packet
++                */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> chan_addr_depth;
++               temp_a  = input_a << chan_addr_depth;
++               this_a->chan_id = temp_a ^ temp_b;              /* strip out the channel address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> col_addr_depth;
++               temp_a  = input_a << col_addr_depth;
++               this_a->col_id = temp_a ^ temp_b;               /* strip out the column address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> rank_addr_depth;
++               temp_a  = input_a << rank_addr_depth;
++               this_a->rank_id = temp_a ^ temp_b;              /* this should strip out the rank address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> bank_addr_depth;
++               temp_a  = input_a << bank_addr_depth;
++               this_a->bank_id = temp_a ^ temp_b;              /* this should strip out the bank address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> row_addr_depth;
++               temp_a  = input_a << row_addr_depth;
++               this_a->row_id = temp_a ^ temp_b;               /* this should strip out the row address */
++               if(input_a != 0){                               /* If there is still "stuff" left, the input address is out of range */
++                       return ADDRESS_MAPPING_FAILURE;
++               }
++
++       } else if(mapping_policy == BURGER_ALT_MAP){
++               this_a->chan_id = 0;                            /* don't know what this policy is.. Map everything to 0 */
++               this_a->rank_id = 0;
++               this_a->bank_id = 0;
++               this_a->row_id  = 0;
++               this_a->col_id  = 0;
++               return ADDRESS_MAPPING_FAILURE;
++       } else if(mapping_policy == SDRAM_HIPERF_MAP){          /* works for SDRAM and DDR SDRAM too! */
++
++               /*
++                *               High performance SDRAM Mapping scheme
++                *                                                                    5
++                * |<-------------------->| |<->| |<->|  |<--------------->| |<---->| |<---------------->|  |<------------------->|
++                *                row id    rank  bank       col_id(high)     chan_id   col_id(low)             column size
++                *                                                                      sim_dram_log2(cacheline_size)   sim_dram_log2(channel_width)
++                *                                                                      - sim_dram_log2(channel_width)
++                *  Rationale is as follows: From LSB to MSB
++                *  min column size is the channel width, and individual byes within that "unit" is not addressable, so strip it out and throw it away.
++                *  Then strip out a few bits of physical address for the low order bits of col_id.  We basically want consecutive cachelines to
++                *  map to different channels.
++                *  Then strip out the bits for channel id.
++                *  Then strip out the bits for the high order bits of the column id.
++                *  Then strip out the bank_id.
++                *  Then strip out the rank_id.
++                *  What remains must be the row_id
++                *
++                *  As applied to system (1 dram channel, 64 bit wide. 4 ranks of 256 Mbit chips, each x16. 512 MB system)
++                *
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *             |<------------------------------->| |<->| |<->|  |<------------------------>|  |<--->|
++                *                       row id                    rank  bank       Column id                  (8B wide)
++                *                                                  id    id        2KB * 4 / 8B               Byte Addr
++                *
++                *  As applied to system (2 dram channel, 64 bit wide each. 1 GB system)
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *          |<------------------------------->| |<->| |<->| |<---------------->|  ^  |<--->|  |<--->|
++                *                    row id                    rank  bank      Column id high   chan col_id  (8B wide)
++                *                                               id    id        2KB * 4 / 8B     id    low    Byte Addr
++                *
++                *  As applied to system (1 dram channel, 128 bit wide. 1 GB system)
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *          |<------------------------------->| |<->| |<->| |<------------------------->|  |<------>|
++                *                       row id                  rank  bank       Column id                (16B wide)
++                *                                               id    id        2KB * 4 / 8B               Byte Addr
++                *
++                *  As applied to system (2 dram channel, 128 bit wide each. 2 GB system)
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *       |<------------------------------->| |<->| |<->| |<------------------->|  ^  |<>|  |<------>|
++                *                    row id                 rank  bank      Column id high     chan  col  (16B wide)
++                *                                            id    id        2KB * 4 / 8B       id   idlo  Byte Addr
++                *
++                */
++
++               int cacheline_size;
++               int cacheline_size_depth;       /* address bit depth */
++               int col_id_lo;
++               int col_id_lo_depth;
++               int col_id_hi;
++               int col_id_hi_depth;
++
++               cacheline_size = config->cacheline_size;
++               cacheline_size_depth = sim_dram_log2(cacheline_size);
++
++               col_id_lo_depth = cacheline_size_depth - col_size_depth;
++               col_id_hi_depth = col_addr_depth - col_id_lo_depth;
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> col_id_lo_depth;
++               temp_a  = input_a << col_id_lo_depth;
++               col_id_lo = temp_a ^ temp_b;                    /* strip out the column low address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> chan_addr_depth;
++               temp_a  = input_a << chan_addr_depth;
++               this_a->chan_id = temp_a ^ temp_b;              /* strip out the channel address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> col_id_hi_depth;
++               temp_a  = input_a << col_id_hi_depth;
++               col_id_hi = temp_a ^ temp_b;                    /* strip out the column hi address */
++
++               this_a->col_id = (col_id_hi << col_id_lo_depth) | col_id_lo;
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> bank_addr_depth;
++               temp_a  = input_a << bank_addr_depth;
++               this_a->bank_id = temp_a ^ temp_b;              /* strip out the bank address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> rank_addr_depth;
++               temp_a  = input_a << rank_addr_depth;
++               this_a->rank_id = temp_a ^ temp_b;              /* strip out the rank address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> row_addr_depth;
++               temp_a  = input_a << row_addr_depth;
++               this_a->row_id = temp_a ^ temp_b;               /* this should strip out the row address */
++               if(input_a != 0){                               /* If there is still "stuff" left, the input address is out of range */
++                       return ADDRESS_MAPPING_FAILURE;
++               }
++       } else if(mapping_policy == SDRAM_BASE_MAP){            /* works for SDRAM and DDR SDRAM too! */
++
++               /*
++                *               Basic SDRAM Mapping scheme (As found on user-upgradable memory systems)
++                *                                                                    5
++                * |<---->| |<------------------->| |<->|  |<--------------->| |<---->| |<---------------->|  |<------------------->|
++                *   rank             row id         bank       col_id(high)   chan_id   col_id(low)            column size
++                *                                                                      sim_dram_log2(cacheline_size)   sim_dram_log2(channel_width)
++                *                                                                      - sim_dram_log2(channel_width)
++                *  Rationale is as follows: From LSB to MSB
++                *  min column size is the channel width, and individual byes within that "unit" is not addressable, so strip it out and throw it away.
++                *  Then strip out a few bits of physical address for the low order bits of col_id.  We basically want consecutive cachelines to
++                *  map to different channels.
++                *  Then strip out the bits for channel id.
++                *  Then strip out the bits for the high order bits of the column id.
++                *  Then strip out the bank_id.
++                *  Then strip out the row_id
++                *  What remains must be the rankid
++                *
++                *  As applied to system (2 dram channel, 64 bit wide each. 1 GB system)
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *          |<->| |<------------------------------->| |<->| |<---------------->|  ^  |<--->|  |<--->|
++                *           rank         row id                       bank     Column id high   chan col_id  (8B wide)
++                *           id                                        id       2KB * 4 / 8B     id    low    Byte Addr
++                *
++                *  As applied to system (1 dram channel, 128 bit wide. 1 GB system)
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *          |<->| |<------------------------------->| |<->| |<------------------------->|  |<------>|
++                *           rank         row id                       bank     Column id                   (16B wide)
++                *           id                                        id       2KB * 4 / 8B     id    low   Byte Addr
++                *
++                */
++
++               int cacheline_size;
++               int cacheline_size_depth;       /* address bit depth */
++               int col_id_lo;
++               int col_id_lo_depth;
++               int col_id_hi;
++               int col_id_hi_depth;
++
++               cacheline_size = config->cacheline_size;
++               cacheline_size_depth = sim_dram_log2(cacheline_size);
++
++               col_id_lo_depth = cacheline_size_depth - col_size_depth;
++               col_id_hi_depth = col_addr_depth - col_id_lo_depth;
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> col_id_lo_depth;
++               temp_a  = input_a << col_id_lo_depth;
++               col_id_lo = temp_a ^ temp_b;                    /* strip out the column low address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> chan_addr_depth;
++               temp_a  = input_a << chan_addr_depth;
++               this_a->chan_id = temp_a ^ temp_b;              /* strip out the channel address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> col_id_hi_depth;
++               temp_a  = input_a << col_id_hi_depth;
++               col_id_hi = temp_a ^ temp_b;                    /* strip out the column hi address */
++
++               this_a->col_id = (col_id_hi << col_id_lo_depth) | col_id_lo;
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> bank_addr_depth;
++               temp_a  = input_a << bank_addr_depth;
++               this_a->bank_id = temp_a ^ temp_b;              /* strip out the bank address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> row_addr_depth;
++               temp_a  = input_a << row_addr_depth;
++               this_a->row_id = temp_a ^ temp_b;               /* this should strip out the row address */
++
++               temp_b = input_a;                               /* save away original address */
++               input_a = input_a >> rank_addr_depth;
++               temp_a  = input_a << rank_addr_depth;
++               this_a->rank_id = temp_a ^ temp_b;              /* strip out the rank address */
++
++               if(input_a != 0){                               /* If there is still "stuff" left, the input address is out of range */
++                       return ADDRESS_MAPPING_FAILURE;
++               }
++       } else if(mapping_policy == INTEL845G_MAP){
++
++               /*  Data comes from Intel's 845G Datasheets.  Table 5-5
++                *  DDR SDRAM mapping only.
++                *
++                *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++                *          |<->| |<---------------------------------->| |<->| |<------------------------->|  |<--->|
++                *          rank               row id                    bank             Column id           (64 bit wide bus)
++                *           id                                           id             2KB * 4 / 8B          Byte addr
++                *     row id goes like this: addr[27:15:26-16]
++                 *     rank_id is addr[29:28]  This means that no device switching unless memory usage goes above 256MB grainularity
++                *     No need to remap address with variable number of ranks.  Address just goes up to rank id, if there is more than XXX MB of memory.
++                *     Draw back to this scheme is that we're not effectively using banks.
++                */
++               input_a = this_a->physical_address >> 3;        /* strip away byte address */
++
++               temp_b = input_a;                               /* save away what is left of original address */
++               input_a = input_a >> 10;
++               temp_a  = input_a << 10;                                /* 11-3 */
++               this_a->col_id = temp_a ^ temp_b;               /* strip out the column address */
++
++               temp_b = input_a;                               /* save away what is left of original address */
++               input_a = input_a >> 2;
++               temp_a  = input_a << 2;                         /* 14:13 */
++               this_a->bank_id = temp_a ^ temp_b;              /* strip out the bank address */
++
++               temp_b = this_a->physical_address >> 15;
++               input_a =  temp_b >> 1;
++               temp_a  = input_a << 1;                         /* 15 */
++               bit_15 = temp_a ^ temp_b;                       /* strip out bit 15, save for later  */
++
++               temp_b = this_a->physical_address >> 16;
++               input_a =  temp_b >> 11;
++               temp_a  = input_a << 11;                        /* 26:16 */
++               bits_26_to_16 = temp_a ^ temp_b;                /* strip out bits 26:16, save for later  */
++
++               temp_b = this_a->physical_address >> 27;
++               input_a =  temp_b >> 1;
++               temp_a  = input_a << 1;                         /* 27 */
++               bit_27 = temp_a ^ temp_b;                       /* strip out bit 27 */
++
++               this_a->row_id = (bit_27 << 13) | (bit_15 << 12) | bits_26_to_16 ;
++
++               temp_b = this_a->physical_address >> 28;
++               input_a = temp_b >> 2;
++               temp_a  = input_a << 2;                         /* 29:28 */
++               this_a->rank_id = temp_a ^ temp_b;              /* strip out the rank id */
++
++               this_a->chan_id = 0;                            /* Intel 845G has only a single channel dram controller */
++
++       }else if(mapping_policy == SDRAM_CLOSE_PAGE_MAP){
++        /*
++         *               High performance closed page SDRAM Mapping scheme
++         *                                                                    5
++         * |<------------------>| |<------------>| |<---->|  |<---->| |<---->| |<----------------->| |<------------------->|
++         *                row id    col_id(high)     rank      bank     chan      col_id(low)           column size
++         *                                          sim_dram_log2(cacheline_size)    sim_dram_log2(channel_width)
++         *                                  - sim_dram_log2(channel_width)
++         *
++         *  Rationale is as follows: From LSB to MSB
++         *  min column size is the channel width, and individual byes within that "unit" is not addressable, so strip it out and throw it away.
++         *  Then strip out a few bits of physical address for the low order bits of col_id.  We basically want consecutive cachelines to
++         *  map to different channels.
++         *  Then strip out the bits for channel id.
++         *  Then strip out the bank_id.
++         *  Then strip out the rank_id.
++         *  Then strip out the bits for the high order bits of the column id.
++         *  What remains must be the row_id
++         *
++         *  As applied to system (1 dram channel, 64 bit wide each. 2 GB system)
++         *    31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
++         *       |<------------------------------------->| |<---------------->|  ^  |<--->|  |<--->|  |<--->|
++         *                    row id                         Column id high     rank  bank    col_id  (8B wide)
++         *                                                   1KB     / 8B        id    id      low    Byte Addr
++         */
++        int cacheline_size;
++        int cacheline_size_depth;   /* address bit depth */
++        int col_id_lo;
++        int col_id_lo_depth;
++        int col_id_hi;
++        int col_id_hi_depth;
++
++        cacheline_size = config->cacheline_size;
++        cacheline_size_depth = sim_dram_log2(cacheline_size);
++
++        col_id_lo_depth = cacheline_size_depth - col_size_depth;
++        col_id_hi_depth = col_addr_depth - col_id_lo_depth;
++
++           temp_b = input_a;               /* save away original address */
++        input_a = input_a >> col_id_lo_depth;
++        temp_a  = input_a << col_id_lo_depth;
++        col_id_lo = temp_a ^ temp_b;            /* strip out the column low address */
++
++        temp_b = input_a;               /* save away original address */
++        input_a = input_a >> chan_addr_depth;
++        temp_a  = input_a << chan_addr_depth;
++        this_a->chan_id = temp_a ^ temp_b;          /* strip out the channel address */
++
++        temp_b = input_a;               /* save away original address */
++        input_a = input_a >> bank_addr_depth;
++        temp_a  = input_a << bank_addr_depth;
++        this_a->bank_id = temp_a ^ temp_b;          /* strip out the bank address */
++
++        temp_b = input_a;               /* save away original address */
++        input_a = input_a >> rank_addr_depth;
++        temp_a  = input_a << rank_addr_depth;
++        this_a->rank_id = temp_a ^ temp_b;          /* strip out the rank address */
++
++        temp_b = input_a;               /* save away original address */
++        input_a = input_a >> col_id_hi_depth;
++        temp_a  = input_a << col_id_hi_depth;
++        col_id_hi = temp_a ^ temp_b;            /* strip out the column hi address */
++
++        this_a->col_id = (col_id_hi << col_id_lo_depth) | col_id_lo;
++
++        temp_b = input_a;               /* save away original address */
++        input_a = input_a >> row_addr_depth;
++        temp_a  = input_a << row_addr_depth;
++        this_a->row_id = temp_a ^ temp_b;       /* this should strip out the row address */
++
++    }else {
++               this_a->chan_id = 0;                            /* don't know what this policy is.. Map everything to 0 */
++               this_a->rank_id = 0;
++               this_a->bank_id = 0;
++               this_a->row_id  = 0;
++               this_a->col_id  = 0;
++#ifndef SIM_MASE
++               if(addr_debug() || get_transaction_debug() ){
++                       fprintf(stderr," Error!  Mapping policy unknown\n");
++               }
++#endif
++       }
++#ifndef SIM_MASE
++       if(addr_debug()){
++               print_addresses(this_a);
++       }
++#endif
++       return ADDRESS_MAPPING_SUCCESS;
++}
++
++void print_addresses(  addresses_t     *this_a){
++       fprintf(stderr,"thread_id[%d] physical[0x%8"PRIx64"] chan[%d] rank[%d] bank[%d] row[%x] col[%x]\n",
++                               this_a->thread_id,
++                               //this_a->virtual_address,
++                               this_a->physical_address,
++                               this_a->chan_id,
++                               this_a->rank_id,
++                               this_a->bank_id,
++                               this_a->row_id,
++                               this_a->col_id);
++}
+diff --git a/src/mem/dramsim/.svn/text-base/mem-amb-buffer.c.svn-base b/src/mem/dramsim/.svn/text-base/mem-amb-buffer.c.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/mem-amb-buffer.c.svn-base
+@@ -0,0 +1,268 @@
++/*
++ * mem-amb-buffer.c - Portion of the dram simulator which tracks and updates
++ * the occupancy state of the AMB buffer. Note this is required only for
++ * FB-DIMM code.
++ *
++ * This is released as part of the sim-dram infrastructure for power/timing
++ * simulation of the memory system. Sim-dram can run stand-alone or be
++ * integrated with any standard CPU simulator.
++ *
++ * Copyright (c) 2004 by David Wang Brinda Ganesh Bruce Jacob
++ * Brinda Ganesh, David Wang, Bruce Jacob
++ * Systems and Computer Architecture Lab
++ * Dept of Electrical & Computer Engineering
++ * University of Maryland, College Park
++ * All Rights Reserved
++ *
++ * This software is distributed with *ABSOLUTELY NO SUPPORT* and
++ * *NO WARRANTY*.  Permission is given to modify this code
++ * as long as this notice is not removed.
++ *
++ * Send feedback to Brinda Ganesh brinda@eng.umd.edu
++ *                              or David Wang davewang@wam.umd.edu
++ *               or Bruce Jacob blj@eng.umd.edu
++ */
++
++
++#ifndef MEMORY_SYSTEM_H
++#include "mem-system.h"
++#endif
++#ifndef BIU_H
++#include "mem-biu.h"
++#endif
++
++/*
++ * The DRAM system is a globally observable object.
++ */
++
++extern dram_system_t           dram_system;
++extern biu_t                   *global_biu;
++
++int has_up_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++  int i;
++  dram_controller_t *this_dc;
++  this_dc = &(dram_system.dram_controller[chan_id]);
++  assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++  for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++       if (this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id == tid) {
++         return TRUE;
++       }
++  }
++  return false;
++}
++
++int has_down_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++  int i;
++  dram_controller_t *this_dc;
++  this_dc = &(dram_system.dram_controller[chan_id]);
++  assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++  assert(this_dc);
++  assert(rank_id >=0 && rank_id < dram_system.config.rank_count);
++  for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++       if(this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id == tid) {
++         return TRUE;
++       }
++  }
++  return FALSE;
++
++}
++
++int is_up_buffer_free (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++       for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++               if ( (this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == FALSE) ||
++                       (this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id == tid)) {
++                       return TRUE;
++               }
++       }
++#ifdef DEBUG
++       if (get_tran_watch(tid) ) {
++                       fprintf(stdout,"[%llu]DATA (%"PRIu64") amb not available  ",dram_system.current_dram_time, tid);
++                       print_buffer_contents(chan_id,rank_id);
++       }
++#endif
++
++       return FALSE;
++}
++
++int is_down_buffer_free (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++        assert(this_dc);
++        assert(rank_id >=0 && rank_id < dram_system.config.rank_count);
++       for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++
++               if ((this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == FALSE ) ||
++                       (this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id == tid)) {
++                 return TRUE;
++               }
++       }
++       return FALSE;
++}
++
++int get_open_up_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++       // first see if you already have an open buffer
++       for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++               if (this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id == tid) {
++                       return i;
++               }
++       }
++       // if not, find the first free one
++       for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++               if (this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == FALSE) {
++                       return i;
++               }
++       }
++       return -1;
++}
++
++int get_open_down_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++       // first see if you already have an open buffer
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++       for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++               if (this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == TRUE && this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id == tid) {
++                       return i;
++               }
++       }
++       // if not, find the first free one
++       for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++               if ( this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == FALSE ) {
++                       return i;
++               }
++       }
++       return -1;
++}
++
++void print_buffer_contents (int chan_id, int rank_id) {
++       int i;
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++
++       fprintf(stdout,"chan[%d]        rank[%d] free[%d] DOWN BUFFERS: ", chan_id, rank_id,this_dc->rank[rank_id].my_dimm->num_down_buffer_free);
++       for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++               fprintf(stdout,"buff[%d]    occupied[%d]        tid[%"PRIu64"]          value[%d]       |", i,
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied,
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id,
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].value);
++       }
++       fprintf(stdout,"\nchan[%d]      rank[%d] free[%d] UP  BUFFERS: ", chan_id, rank_id,this_dc->rank[rank_id].my_dimm->num_up_buffer_free);
++       for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++               fprintf(stdout,"buff[%d]        occupied[%d] tid[%"PRIu64"]             value[%d]       |", i,
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied,
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id,
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].value);
++       }
++       fprintf(stdout, "\n");
++       fprintf(stdout, "-------------------------------------\n");
++}
++
++/********************
++ * This function releases the down buffers.
++ * This function is called when the Drive commands complete.
++ * The buffer data held is set to zero and the associated transaction id to
++ * invalid
++ * *******************/
++
++void release_down_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++       this_dc = &(dram_system.dram_controller[chan_id]);
++
++       for (i = 0; i < dram_system.config.down_buffer_cnt; i++) {
++               if (this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id == tid &&
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied == TRUE) {
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].value = 0;
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].occupied = FALSE;
++                       this_dc->rank[rank_id].my_dimm->down_buffer[i].tran_id = 0;
++                       this_dc->rank[rank_id].my_dimm->num_down_buffer_free++;
++
++                       return;
++               }
++       }
++#ifdef DEBUG
++        if (amb_buffer_debug()) {
++          fprintf(stdout,"Releasing down buffers tid %"PRIu64"\n",tid);
++          print_buffer_contents(chan_id, rank_id);
++        }
++#endif
++
++}
++
++/********************
++ * This function releases the up buffers.
++ * This function is called when the Drive commands complete.
++ * The buffer data held is set to zero and the associated transaction id to
++ * invalid
++ * *******************/
++
++void release_up_buffer (int chan_id, int rank_id, int bank_id, uint64_t tid) {
++       int i;
++       dram_controller_t *this_dc;
++        assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++       this_dc = &(dram_system.dram_controller[chan_id]);
++#ifdef DEBUG
++
++        if (amb_buffer_debug()) {
++          fprintf(stdout,"Releasing down buffers tid %"PRIu64"\n",tid);
++          print_buffer_contents(chan_id, rank_id);
++        }
++#endif
++       for (i = 0; i < dram_system.config.up_buffer_cnt; i++) {
++               if (this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id == tid &&
++                   this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied == TRUE) {
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].value = 0;
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].occupied = FALSE;
++                       this_dc->rank[rank_id].my_dimm->up_buffer[i].tran_id = 0;
++                       this_dc->rank[rank_id].my_dimm->num_up_buffer_free++;
++                       return;
++               }
++       }
++}
++
++/**********************
++ * This function locks a buffer to a command.
++ * The buffer is associated with the command .
++ * *******************/
++
++void lock_buffer(command_t* this_c , int chan_id) {
++
++  int buffer_id;
++  dram_controller_t *this_dc;
++
++  assert(chan_id >= 0 && chan_id < dram_system.config.channel_count);
++  this_dc = &(dram_system.dram_controller[chan_id]);
++  if (this_c->command == DATA) { //write fills up the up buffers
++       buffer_id = get_open_up_buffer(chan_id, this_c->rank_id, this_c->bank_id, this_c->tran_id);
++       assert( buffer_id >= 0 && buffer_id < dram_system.config.up_buffer_cnt);
++       this_dc->rank[this_c->rank_id].my_dimm->up_buffer[buffer_id].value += 1;
++       this_dc->rank[this_c->rank_id].my_dimm->up_buffer[buffer_id].occupied = TRUE;
++       this_dc->rank[this_c->rank_id].my_dimm->up_buffer[buffer_id].tran_id = this_c->tran_id;
++       if (this_dc->rank[this_c->rank_id].my_dimm->up_buffer[buffer_id].value == 1) {
++               this_dc->rank[this_c->rank_id].my_dimm->num_up_buffer_free--;
++       }
++  }
++  else if (this_c->command == CAS || this_c->command == CAS_WITH_DRIVE) { //read fills up the down buffers
++       buffer_id = get_open_down_buffer(chan_id, this_c->rank_id, this_c->bank_id, this_c->tran_id);
++
++       assert( (buffer_id >=0) && buffer_id < dram_system.config.down_buffer_cnt) ;
++
++       this_dc->rank[this_c->rank_id].my_dimm->down_buffer[buffer_id].value += 1;
++       this_dc->rank[this_c->rank_id].my_dimm->down_buffer[buffer_id].occupied = TRUE;
++       this_dc->rank[this_c->rank_id].my_dimm->down_buffer[buffer_id].tran_id = this_c->tran_id;
++       if (this_dc->rank[this_c->rank_id].my_dimm->down_buffer[buffer_id].value == 1)
++               this_dc->rank[this_c->rank_id].my_dimm->num_down_buffer_free--;
++  }
++}
+diff --git a/src/mem/dramsim/.svn/text-base/mem-biu.c.svn-base b/src/mem/dramsim/.svn/text-base/mem-biu.c.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/mem-biu.c.svn-base
+@@ -0,0 +1,820 @@
++/*
++ * mem-biu.c - simulates bus interface unit to memory controller/DRAM system
++ *
++ * This is released as part of the sim-dram infrastructure for power/timing
++ * simulation of the memory system. Sim-dram can run stand-alone or be
++ * integrated with any standard CPU simulator.
++ *
++ * Copyright (c) 2004 by David Wang Brinda Ganesh Bruce Jacob
++ * Brinda Ganesh, David Wang, Bruce Jacob
++ * Systems and Computer Architecture Lab
++ * Dept of Electrical & Computer Engineering
++ * University of Maryland, College Park
++ * All Rights Reserved
++ *
++ * This software is distributed with *ABSOLUTELY NO SUPPORT* and
++ * *NO WARRANTY*.  Permission is given to modify this code
++ * as long as this notice is not removed.
++ *
++ * Send feedback to Brinda Ganesh brinda@eng.umd.edu
++ *                              or David Wang davewang@wam.umd.edu
++ *               or Bruce Jacob blj@eng.umd.edu
++ */
++
++#include "mem-biu.h"
++
++/*
++ * BIU initialization.
++ */
++
++biu_t *global_biu;
++
++void init_biu(biu_t *this_b){
++       int i;
++       if(this_b == NULL) {
++               this_b = (biu_t *)calloc(1,sizeof(biu_t));
++       }
++       global_biu = this_b;
++       this_b->current_cpu_time = 0;
++       this_b->bus_queue_depth = 0;
++       for(i=0;i<MAX_BUS_QUEUE_DEPTH;i++){
++               this_b->slot[i].thread_id = -1;
++               this_b->slot[i].status = MEM_STATE_INVALID;
++               this_b->slot[i].critical_word_ready = FALSE;
++               this_b->slot[i].callback_done = TRUE;
++       }
++       this_b->delay = 1;
++       this_b->debug_flag = FALSE;
++       for(i=0;i<MEMORY_ACCESS_TYPES_COUNT;i++){
++               this_b->access_count[i] = 0;
++       }
++       this_b->prefetch_biu_hit = 0;
++       this_b->current_dram_time = 0;
++       this_b->last_transaction_type = MEM_STATE_INVALID;
++       this_b->max_write_burst_depth = 8;                      /* sweep at most 8 writes at a time */
++       this_b->write_burst_count = 0;
++       this_b->biu_trace_fileptr = NULL;
++       this_b->active_slots = 0;
++       this_b->critical_word_rdy_slots = 0;
++       this_b->fixed_latency_flag = 0;
++}
++
++void biu_set_mem_cfg(biu_t*this_b,dram_system_configuration_t * cfg_ptr) {
++       this_b->dram_system_config = cfg_ptr;
++}
++biu_t *get_biu_address(){
++       return global_biu;
++}
++
++void set_biu_address(biu_t *this_b){           /* for use by cms-dram */
++       global_biu = this_b;
++}
++
++void set_biu_depth(biu_t *this_b, int depth){
++       this_b->bus_queue_depth = MAX(1,depth);
++}
++
++int  get_biu_depth(biu_t *this_b){
++       return this_b->bus_queue_depth;
++}
++
++void set_biu_delay(biu_t *this_b, int delay_value){
++       this_b->delay = MAX(0,delay_value);
++}
++
++int  get_biu_delay(biu_t *this_b){
++       return this_b->delay;
++}
++
++void  set_dram_chan_count_in_biu(biu_t *this_b, int count){
++       //this_b->dram_system_config.channel_count = count;
++}
++
++void  set_dram_cacheline_size_in_biu(biu_t *this_b, int size){
++       //this_b->dram_system_config.cacheline_size = size;
++}
++
++void  set_dram_chan_width_in_biu(biu_t *this_b, int width){
++       //this_b->dram_system_config.channel_width = width;
++}
++
++void  set_dram_rank_count_in_biu(biu_t *this_b, int count){
++       //this_b->dram_system_config.rank_count = count;
++       this_b->last_rank_id = count - 1;
++}
++
++void  set_dram_bank_count_in_biu(biu_t *this_b, int count){
++       //this_b->dram_system_config.bank_count = count;
++       this_b->last_bank_id = count - 1;
++}
++
++void  set_dram_row_count_in_biu(biu_t *this_b, int count){
++       //this_b->dram_system_config.row_count = count;
++}
++
++void  set_dram_col_count_in_biu(biu_t *this_b, int count){
++       //this_b->dram_system_config.col_count = count;
++}
++
++void  set_dram_address_mapping_in_biu(biu_t *this_b, int policy){
++       //this_b->dram_system_config.physical_address_mapping_policy = policy;
++}
++
++/***
++ * This function sets the raito of the cpu 2 memory controller frequency
++ * Note in FBDIMM only is the memory controller freq diff from the dram freq
++ * Old function in Daves original code set_cpu_dram_frequency_ratio
++ * **/
++void set_cpu_memory_frequency_ratio(biu_t *this_b, int mem_frequency){
++       int cpu_frequency;
++       cpu_frequency = this_b->cpu_frequency;
++       this_b->mem2cpu_clock_ratio  = (double) mem_frequency / (double) cpu_frequency;
++       this_b->cpu2mem_clock_ratio  = (double) cpu_frequency / (double) mem_frequency;
++}
++
++/*
++ * If there is a prefetch mechanism, the prefetch request could be in the biu
++ * slot already.  If there is an entry in the BIU already, then return the sid.
++ * If the incoming request is a prefetch, and its priority is lower than the
++ * existing entry, do nothing, but still return sid.  If its priority is higher
++ * than the existing entry, update and go on.
++ */
++
++int biu_hit_check(biu_t *this_b,
++               int access_type,
++               unsigned int baddr,
++               int priority,
++               int rid,
++               tick_t now){
++
++       int i, match_found;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       match_found = FALSE;
++       for(i=0;i<bus_queue_depth && (match_found == FALSE);i++){
++               if((this_b->slot[i].status != MEM_STATE_INVALID) &&
++                               (this_b->slot[i].address.physical_address == baddr) &&
++                               (this_b->slot[i].access_type == MEMORY_PREFETCH)){
++                       if((access_type == MEMORY_IFETCH_COMMAND) ||
++                                       (access_type == MEMORY_READ_COMMAND)){
++
++                               this_b->slot[i].rid = rid;
++                               this_b->prefetch_biu_hit++;
++                               this_b->slot[i].access_type = access_type;
++                               this_b->slot[i].callback_done = FALSE;
++                               match_found = TRUE;
++                       } else if (access_type == MEMORY_PREFETCH){
++                               if(priority < this_b->slot[i].priority){
++                                       this_b->slot[i].priority = priority;
++                               }
++                               match_found = TRUE;
++                       }
++               }
++       }
++       return match_found;
++}
++
++/*
++ *  Low Priority number == High priority.   Priority of 0 means non-speculative.
++ *  This function finds a free slot in the BIU.
++ */
++
++int find_free_biu_slot(biu_t *this_b, int priority){
++       int i,victim_id = MEM_STATE_INVALID,victim_found = false;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++
++       if (this_b->active_slots != bus_queue_depth) {
++
++               for(i=0;i<bus_queue_depth;i++){
++                       if(this_b->slot[i].status == MEM_STATE_INVALID){
++                               return i;
++                       }
++               }
++       }
++       /* Nothing found, now look for speculative prefetch entry to sacrifice */
++       victim_found = FALSE;
++       for(i=0;i<bus_queue_depth;i++){
++               if((this_b->slot[i].access_type == MEMORY_PREFETCH) &&
++                               (this_b->slot[i].status == MEM_STATE_VALID)){
++                       if(victim_found){
++                               if(this_b->slot[i].priority > this_b->slot[victim_id].priority){        /* higher priority number has less priority */
++                                       victim_id = i;
++                               }
++                       } else {
++                               victim_found = TRUE;
++                               victim_id = i;
++                       }
++               }
++       }
++       if((victim_found == TRUE) &&
++                       ((priority == MEM_STATE_INVALID) || (priority < this_b->slot[victim_id].priority))){
++               this_b->active_slots--;
++               return victim_id;       /* kill the speculative prefetch */
++       } else {
++               return MEM_STATE_INVALID;               /* didn't find anything */
++       }
++}
++
++/*
++ *  Note Put the entry into BIU slot with slot id
++ *  Note that the fill_biu_slot definition has references to the driver code.
++ *  To interface to the simulator you will no longer need to modify this
++ *  function definition
++ */
++
++void fill_biu_slot(biu_t *this_b,
++               int slot_id,
++               int thread_id,
++               tick_t now,
++               int rid,
++               unsigned int baddr,
++               int access_type,
++               int priority,
++
++               void *mp
++               ){
++       int now_high;
++       int now_low;
++
++       if( biu_debug(this_b)){
++               fprintf(stdout,"BIU: acquire sid [%2d] rid [%3d] tid[%3d] access_type[", slot_id, rid,thread_id);
++               print_access_type(access_type,stdout);
++               fprintf(stdout,"] addr [0x%8X] Now[%d]\n", baddr, (int)now);
++       }
++       if(biu_fixed_latency(this_b)){  /* fixed latency, no dram */
++               this_b->slot[slot_id].status = MEM_STATE_COMPLETED;
++               this_b->slot[slot_id].start_time = now + get_biu_delay(this_b);
++       } else {        /* normal mode */
++               this_b->slot[slot_id].status = MEM_STATE_VALID;
++               this_b->slot[slot_id].start_time = now;
++       }
++       this_b->slot[slot_id].thread_id = thread_id;
++       this_b->slot[slot_id].rid = rid;
++       this_b->slot[slot_id].address.physical_address = (unsigned int)baddr;
++       convert_address(this_b->dram_system_config->physical_address_mapping_policy,
++                       this_b->dram_system_config,
++                       &(this_b->slot[slot_id].address));
++       if(thread_id != -1){ // Fake Multi-processor workloads
++               this_b->slot[slot_id].address.bank_id = (this_b->slot[slot_id].address.bank_id + thread_id) %
++                       this_b->dram_system_config->bank_count;
++       }
++       this_b->slot[slot_id].access_type = access_type;
++       this_b->slot[slot_id].critical_word_ready = FALSE;
++       this_b->slot[slot_id].callback_done = FALSE;
++       this_b->slot[slot_id].priority = priority;
++       this_b->slot[slot_id].mp = mp;
++       // Update the stats
++       this_b->active_slots++;
++       // Update the time for the last access and gather stats
++       mem_gather_stat(GATHER_BIU_ACCESS_DIST_STAT,now);
++       if(this_b->biu_trace_fileptr != NULL){
++               fprintf(this_b->biu_trace_fileptr,"0x%8X ",baddr);
++               switch(access_type){
++                       case MEMORY_UNKNOWN_COMMAND:
++                               fprintf(this_b->biu_trace_fileptr,"UNKNOWN");
++                               break;
++                       case MEMORY_IFETCH_COMMAND:
++                               fprintf(this_b->biu_trace_fileptr,"IFETCH ");
++                               break;
++                       case MEMORY_WRITE_COMMAND:
++                               fprintf(this_b->biu_trace_fileptr,"WRITE  ");
++                               break;
++                       case MEMORY_READ_COMMAND:
++                               fprintf(this_b->biu_trace_fileptr,"READ   ");
++                               break;
++                       case MEMORY_PREFETCH:
++                               fprintf(this_b->biu_trace_fileptr,"P_FETCH");
++                               break;
++                       default:
++                               fprintf(this_b->biu_trace_fileptr,"UNKNOWN");
++                               break;
++               }
++               now_high = (int)(now / 1000000000);
++               now_low = (int)(now - (now_high * 1000000000));
++               if(now_high != 0){
++                       fprintf(this_b->biu_trace_fileptr," %d%09d\n",now_high,now_low);
++               } else {
++                       fprintf(this_b->biu_trace_fileptr," %d\n",now_low);
++               }
++       }
++}
++/*
++ * When a BIU slot is to be released, we know that the data has fully returned.
++ */
++
++void release_biu_slot(biu_t *this_b,  int sid){
++       if(biu_debug(this_b)){
++               fprintf(stdout,"BIU: release sid [%2d] rid [%3d] access_type[", sid, this_b->slot[sid].rid);
++               print_access_type(this_b->slot[sid].access_type,stdout);
++               fprintf(stdout,"] addr [0x%8"PRIx64"]\n", this_b->slot[sid].address.physical_address);
++       }
++
++       this_b->slot[sid].status = MEM_STATE_INVALID;
++       this_b->slot[sid].thread_id = MEM_STATE_INVALID;
++       this_b->slot[sid].rid = MEM_STATE_INVALID;
++       this_b->access_count[this_b->slot[sid].access_type]++;
++       this_b->slot[sid].access_type = MEM_STATE_INVALID;
++       this_b->slot[sid].critical_word_ready = FALSE;
++       this_b->slot[sid].callback_done = FALSE;
++       this_b->active_slots--;
++}
++
++/* look in the bus queue to see if there are any requests that needs to be serviced
++ * with a specific rank, bank and request type, if yes, return TRUE, it not, return FALSE
++ */
++
++int next_RBRR_RAS_in_biu(biu_t *this_b, int rank_id, int bank_id){
++       int i,bus_queue_depth;
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       for(i=0;i<bus_queue_depth;i++){
++               if((this_b->slot[i].status == MEM_STATE_VALID) &&
++                               ((this_b->slot[i].access_type == MEMORY_READ_COMMAND) ||
++                                (this_b->slot[i].access_type == MEMORY_IFETCH_COMMAND)) &&
++                               (this_b->slot[i].address.bank_id == bank_id) &&
++                               (this_b->slot[i].address.rank_id == rank_id) &&
++                               ((this_b->current_cpu_time - this_b->slot[i].start_time) > this_b->delay)){
++                       return i;
++               }
++       }
++       return MEM_STATE_INVALID;
++}
++
++
++/* look in the bus queue to see if there are any requests that needs to be serviced
++ * Part of the logic exists to ensure that the "slot" only becomes active to the
++ * DRAM transaction scheduling mechanism after this_b->delay has occured.
++ */
++
++int get_next_request_from_biu(biu_t *this_b){
++       int     i,found,candidate_id = MEM_STATE_INVALID;
++       tick_t  candidate_time = 0;
++       int     candidate_priority = 0;
++       int     bus_queue_depth;
++       int     priority_scheme;
++       int     last_transaction_type;
++
++       priority_scheme = this_b->transaction_selection_policy;
++       last_transaction_type = this_b->last_transaction_type;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       found = FALSE;
++       if(priority_scheme == HSTP){
++               for(i=0;i<bus_queue_depth;i++){
++                       if((this_b->slot[i].status == MEM_STATE_VALID) &&
++                                       ((this_b->current_cpu_time - this_b->slot[i].start_time) > this_b->delay)){
++                               if(found == FALSE){
++                                       found = TRUE;
++                                       candidate_priority = this_b->slot[i].priority;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].priority < candidate_priority){
++                                       candidate_priority = this_b->slot[i].priority;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].priority == candidate_priority){
++                                       if(this_b->slot[i].start_time < candidate_time){
++                                               candidate_priority = this_b->slot[i].priority;
++                                               candidate_time = this_b->slot[i].start_time;
++                                               candidate_id = i;
++                                       }
++                               }
++                       }
++               }
++               if(found == TRUE){
++                       return candidate_id;
++               } else {
++                       return MEM_STATE_INVALID;
++               }
++       }else {
++               for(i=0;i<bus_queue_depth;i++){
++                       if((this_b->slot[i].status == MEM_STATE_VALID) &&
++                                       ((this_b->current_cpu_time - this_b->slot[i].start_time) > this_b->delay)){
++                               if(found == FALSE){
++                                       found = TRUE;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].start_time < candidate_time){
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               }
++                       }
++               }
++               if(found == TRUE){
++                       return candidate_id;
++               } else {
++                       return MEM_STATE_INVALID;
++               }
++       }
++       return MEM_STATE_INVALID;
++}
++
++/* look in the bus queue to see if there are any requests that needs to be serviced
++ * Part of the logic exists to ensure that the "slot" only becomes active to the
++ * DRAM transaction scheduling mechanism after this_b->delay has occured.
++ * This mechanism ensures that the biu can move transactions based on commands
++ * - address translation is done in the biu. Assuming biu and tq are on the
++ *   smae structure -
++ */
++
++int get_next_request_from_biu_chan(biu_t *this_b,int chan_id){
++       int     i,found,candidate_id = MEM_STATE_INVALID;
++       tick_t  candidate_time = 0;
++       int     candidate_priority = 0;
++       int     bus_queue_depth;
++       int     priority_scheme;
++       int     last_transaction_type;
++
++       priority_scheme = this_b->transaction_selection_policy;
++       last_transaction_type = this_b->last_transaction_type;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       found = FALSE;
++       if(priority_scheme == HSTP){
++               for(i=0;i<bus_queue_depth;i++){
++                       if((this_b->slot[i].status == MEM_STATE_VALID) &&
++                                       (this_b->slot[i].address.chan_id == chan_id) &&
++                                       ((this_b->current_cpu_time - this_b->slot[i].start_time) > this_b->delay)){
++                               if(found == FALSE){
++                                       found = TRUE;
++                                       candidate_priority = this_b->slot[i].priority;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].priority < candidate_priority &&
++                                               this_b->slot[i].address.chan_id == chan_id){
++                                       candidate_priority = this_b->slot[i].priority;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].priority == candidate_priority &&
++                                               this_b->slot[i].address.chan_id == chan_id){
++                                       if(this_b->slot[i].start_time < candidate_time){
++                                               candidate_priority = this_b->slot[i].priority;
++                                               candidate_time = this_b->slot[i].start_time;
++                                               candidate_id = i;
++                                       }
++                               }
++                       }
++               }
++               if(found == TRUE){
++                       return candidate_id;
++               } else {
++                       return MEM_STATE_INVALID;
++               }
++       }else {
++               for(i=0;i<bus_queue_depth;i++){
++                       if((this_b->slot[i].status == MEM_STATE_VALID) &&
++                                       (this_b->slot[i].address.chan_id == chan_id) &&
++                                       ((this_b->current_cpu_time - this_b->slot[i].start_time) > this_b->delay)){
++                               if(found == FALSE){
++                                       found = TRUE;
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               } else if(this_b->slot[i].start_time < candidate_time &&
++                                               (this_b->slot[i].address.chan_id == chan_id)){
++                                       candidate_time = this_b->slot[i].start_time;
++                                       candidate_id = i;
++                               }
++                       }
++               }
++               if(found == TRUE){
++                       return candidate_id;
++               } else {
++                       return MEM_STATE_INVALID;
++               }
++       }
++       return MEM_STATE_INVALID;
++}
++
++
++int bus_queue_status_check(biu_t *this_b, int thread_id){
++       int i;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       if(thread_id == MEM_STATE_INVALID){     /* for mase code */
++               for(i=0;i<bus_queue_depth;i++){         /* Anything in biu, DRAM must service */
++                       if((this_b->slot[i].status == MEM_STATE_VALID) || (this_b->slot[i].status == MEM_STATE_SCHEDULED)){
++                               return BUSY;
++                       }
++               }
++       } else { /* for cms code */
++               for(i=0;i<bus_queue_depth;i++){
++                       if((this_b->slot[i].thread_id == thread_id) &&
++                                       ((this_b->slot[i].status == MEM_STATE_VALID) || (this_b->slot[i].status == MEM_STATE_SCHEDULED))){
++                               return BUSY;
++                       }
++               }
++               if(num_free_biu_slot(this_b) <= 5){      /* hard coded... */
++                       return BUSY;            /* even if I have no requests outstanding, if the bus queue is filled up, it needs to be serviced */
++               }
++       }
++       return IDLE;
++}
++
++int dram_update_required(biu_t *this_b, tick_t current_cpu_time){
++       tick_t expected_dram_time;
++       double mem2cpu_clock_ratio;
++
++       mem2cpu_clock_ratio = this_b->mem2cpu_clock_ratio;
++
++       expected_dram_time = (tick_t) ((double)current_cpu_time * mem2cpu_clock_ratio);
++       /*
++        *                 fprintf(stdout,"cpu[%d] dram[%d] expected [%d]\n",
++        *                              (int)this_b->current_cpu_time,
++        *                              (int)this_b->current_dram_time,
++        *                              (int)expected_dram_time);
++        *
++        */
++       if((expected_dram_time - this_b->current_dram_time) > 1){
++               return TRUE;
++       } else {
++               return FALSE;
++       }
++}
++
++int find_critical_word_ready_slot(biu_t *this_b, int thread_id){
++       int i;
++       int latency;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++
++       if (this_b->active_slots == 0)
++               return MEM_STATE_INVALID;
++       if (this_b->critical_word_rdy_slots== 0)
++               return MEM_STATE_INVALID;
++
++       for(i=0;i<bus_queue_depth;i++){
++               if((this_b->slot[i].thread_id == thread_id) &&
++                               (this_b->slot[i].critical_word_ready == TRUE) &&
++                               (this_b->slot[i].callback_done == FALSE)) {
++                       this_b->critical_word_rdy_slots--; // Keeps track of those whose callback you want to do
++                       this_b->slot[i].callback_done = TRUE;
++                       latency = (int) (this_b->current_cpu_time - this_b->slot[i].start_time);
++                       if((this_b->slot[i].access_type == MEMORY_IFETCH_COMMAND) ||
++                                       (this_b->slot[i].access_type == MEMORY_READ_COMMAND)){  /* gather stat for critical reads only */
++                               mem_gather_stat(GATHER_BUS_STAT, latency);
++                               if(biu_debug(this_b)){
++                                       fprintf(stdout,"BIU: Critical Word Received sid [%d] rid [%3d] access_type[",
++                                                       i,
++                                                       this_b->slot[i].rid);
++                                       print_access_type(this_b->slot[i].access_type,stdout);
++                                       fprintf(stdout,"] addr [0x%8"PRIx64"] Now[%d] Latency[%4d]\n",
++                                                       this_b->slot[i].address.physical_address,
++                                                       (int)this_b->current_cpu_time,
++                                                       (int)(this_b->current_cpu_time-this_b->slot[i].start_time));
++                               }
++                       }
++                       return i;
++               }
++       }
++       return MEM_STATE_INVALID;
++}
++int find_completed_slot(biu_t *this_b, int thread_id, tick_t now){
++       int i;
++       int access_type,latency;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++
++       if (this_b->active_slots == 0)
++               return MEM_STATE_INVALID;
++       for(i=0;i<bus_queue_depth;i++){
++               if((this_b->slot[i].status == MEM_STATE_COMPLETED) && (this_b->slot[i].thread_id == thread_id)){
++                       access_type = get_access_type(this_b,i);
++                       latency = (int) (this_b->current_cpu_time - this_b->slot[i].start_time);
++                       if((callback_done(this_b,i) == FALSE) && ((access_type == MEMORY_IFETCH_COMMAND) || (access_type == MEMORY_READ_COMMAND))){
++                               mem_gather_stat(GATHER_BUS_STAT, latency);
++                       }
++                       return i;
++               }
++       }
++       return MEM_STATE_INVALID;
++}
++/*
++ * Determine the Number of free biu slots currently available
++ * Used by simulators to probe for MEM_RETRY situations
++ */
++int num_free_biu_slot(biu_t *this_b){
++       int i,j;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       for(i=0,j=0;i<bus_queue_depth;i++){
++               if(this_b->slot[i].status == MEM_STATE_INVALID){
++                       j++;
++               }
++       }
++       return j;
++}
++
++int get_rid(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].rid;
++}
++
++int get_access_type(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].access_type;
++}
++
++tick_t get_start_time(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].start_time;
++}
++
++unsigned int get_virtual_address(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].address.virtual_address;
++}
++
++unsigned int get_physical_address(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].address.physical_address;
++}
++
++void set_critical_word_ready(biu_t *this_b, int slot_id){
++       this_b->critical_word_rdy_slots++;
++       this_b->slot[slot_id].critical_word_ready = TRUE;
++}
++
++int critical_word_ready(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].critical_word_ready;
++}
++
++void set_biu_slot_status(biu_t *this_b, int slot_id, int status){
++       this_b->slot[slot_id].status = status;
++}
++
++int get_biu_slot_status(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].status;
++}
++
++int callback_done(biu_t *this_b, int sid){
++       return this_b->slot[sid].callback_done;
++}
++
++void *biu_get_access_sim_info(biu_t *this_b,int slot_id) {
++       //  return this_b->slot[slot_id].
++       return NULL;
++}
++void set_biu_fixed_latency(biu_t *this_b, int flag_status){
++       this_b->fixed_latency_flag = flag_status;
++}
++
++int  biu_fixed_latency(biu_t *this_b){
++       return this_b->fixed_latency_flag;
++}
++
++void set_biu_debug(biu_t *this_b, int debug_status){
++       this_b->debug_flag = debug_status;
++}
++
++int biu_debug(biu_t *this_b){
++       return this_b->debug_flag;
++}
++
++void print_access_type(int type,FILE *fileout){
++       switch(type){
++               case MEMORY_UNKNOWN_COMMAND:
++                       fprintf(fileout,"UNKNOWN");
++                       break;
++               case MEMORY_IFETCH_COMMAND:
++                       fprintf(fileout,"IFETCH ");
++                       break;
++               case MEMORY_WRITE_COMMAND:
++                       fprintf(fileout,"WRITE  ");
++                       break;
++               case MEMORY_READ_COMMAND:
++                       fprintf(fileout,"READ   ");
++                       break;
++               case MEMORY_PREFETCH:
++                       fprintf(fileout,"P_FETCH");
++                       break;
++               default:
++                       fprintf(fileout,"UNKNOWN");
++                       break;
++       }
++}
++
++void print_biu(biu_t *this_b){
++       int i;
++       int bus_queue_depth;
++
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       for(i=0;i<bus_queue_depth;i++){
++               if(this_b->slot[i].status != MEM_STATE_INVALID){
++                       fprintf(stdout,"Entry[%2d] Status[%2d] Rid[%8d] Start_time[%8d] Addr[0x%8"PRIx64"] ",
++                                       i, this_b->slot[i].status, this_b->slot[i].rid,
++                                       (int)this_b->slot[i].start_time,
++                                       this_b->slot[i].address.physical_address);
++                       print_access_type(this_b->slot[i].access_type,stdout);
++                       fprintf(stdout,"\n");
++               }
++       }
++}
++
++void print_biu_access_count(biu_t *this_b,FILE *fileout){
++       int i;
++       int total_count;
++       total_count = 1;
++       if (fileout == NULL)
++               fileout =stdout;
++       for(i=0;i<MEMORY_ACCESS_TYPES_COUNT;i++){
++               total_count += this_b->access_count[i];
++       }
++       fprintf(fileout,"TOTAL   Count = [%8d]  percentage = [100.00]\n",total_count);
++       for(i=0;i<MEMORY_ACCESS_TYPES_COUNT;i++){
++               print_access_type(i,fileout);
++               fprintf(fileout," Count = [%8d]  percentage = [%5.2lf]\n",
++                               this_b->access_count[i],
++                               100.0 * this_b->access_count[i]/ (double) total_count);
++       }
++       fprintf(fileout,"\n");
++}
++
++tick_t get_current_cpu_time(biu_t *this_b){
++       return this_b->current_cpu_time;
++}
++
++void set_current_cpu_time(biu_t *this_b, tick_t current_cpu_time){
++       this_b->current_cpu_time = current_cpu_time;
++}
++
++void set_cpu_frequency(biu_t *this_b, int freq){
++       if(freq < MIN_CPU_FREQUENCY){
++               this_b->cpu_frequency   = MIN_CPU_FREQUENCY;
++               fprintf(stdout,"\n\n\n\n\n\n\n\nWARNING: CPU frequency set to minimum allowed frequency [%d] MHz\n\n\n\n\n\n",this_b->cpu_frequency);
++       } else if (freq > MAX_CPU_FREQUENCY){
++               this_b->cpu_frequency   = MAX_CPU_FREQUENCY;
++               fprintf(stdout,"\n\n\n\n\n\n\n\nWARNING: CPU frequency set to maximum allowed frequency [%d] MHz\n\n\n\n\n\n",this_b->cpu_frequency);
++       } else {
++               this_b->cpu_frequency        = freq;
++       }
++}
++
++int get_cpu_frequency(biu_t *this_b){
++       return this_b->cpu_frequency;
++}
++
++void set_last_transaction_type(biu_t *this_b, int type){
++       this_b->last_transaction_type = type;
++}
++int  get_last_transaction_type(biu_t *this_b){
++       return this_b->last_transaction_type;
++}
++
++void set_transaction_selection_policy(biu_t *this_b, int policy){
++       this_b->transaction_selection_policy = policy;
++}
++int  get_transaction_selection_policy(biu_t *this_b){
++       return this_b->transaction_selection_policy;
++}
++
++/* As a thread exits, last thing it should do is to come here and clean of the biu with stuff that belongs to it */
++/* CMS specific */
++
++void scrub_biu(biu_t *this_b, int thread_id){
++       int i;
++       int bus_queue_depth;
++       bus_queue_depth = this_b->bus_queue_depth;
++       assert (bus_queue_depth <= MAX_BUS_QUEUE_DEPTH);
++       for(i=0;i<bus_queue_depth;i++){
++               if(this_b->slot[i].thread_id == thread_id){
++                       release_biu_slot(this_b,i);
++               }
++       }
++}
++
++int get_thread_id(biu_t *this_b, int slot_id){
++       return this_b->slot[slot_id].thread_id;
++}
++
++void set_thread_count(biu_t *this_b, int thread_count){
++       this_b->thread_count = thread_count;
++}
++
++int get_thread_count(biu_t *this_b){
++       return this_b->thread_count;
++}
++bool is_biu_busy(biu_t* this_b){
++       bool busy = false;
++       if (this_b->active_slots > 0) {
++               busy = true;
++       }
++       return busy;
++}
++
++void gather_biu_slot_stats(biu_t *this_b) {
++       mem_gather_stat(GATHER_BIU_SLOT_VALID_STAT, this_b->active_slots);
++}
++
++int get_biu_queue_depth (biu_t *this_b){
++       return this_b->bus_queue_depth;
++}
+diff --git a/src/mem/dramsim/.svn/text-base/mem-biu.h.svn-base b/src/mem/dramsim/.svn/text-base/mem-biu.h.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/mem-biu.h.svn-base
+@@ -0,0 +1,172 @@
++/*
++ * mem-biu.h - header file for mem-biu.c
++ *
++ * This is released as part of the sim-dram infrastructure for power/timing
++ * simulation of the memory system. Sim-dram can run stand-alone or be
++ * integrated with any standard CPU simulator.
++ *
++ * Copyright (c) 2004 by David Wang Brinda Ganesh Bruce Jacob
++ * Brinda Ganesh, David Wang, Bruce Jacob
++ * Systems and Computer Architecture Lab
++ * Dept of Electrical & Computer Engineering
++ * University of Maryland, College Park
++ * All Rights Reserved
++ *
++ * This software is distributed with *ABSOLUTELY NO SUPPORT* and
++ * *NO WARRANTY*.  Permission is given to modify this code
++ * as long as this notice is not removed.
++ *
++ * Send feedback to Brinda Ganesh brinda@eng.umd.edu
++ *                              or David Wang davewang@wam.umd.edu
++ *               or Bruce Jacob blj@eng.umd.edu
++ */
++
++#ifndef MEMORY_SYSTEM_H
++
++#ifndef MEM_TEST
++#include "memory.h"
++#endif
++
++#include "mem-system.h"
++#endif
++
++#define BIU_H 1010987
++
++/***********************************************************************
++ Here are the data structures for the BIU
++ ***********************************************************************/
++#define MAX_PROCESSOR 32
++typedef struct biu_slot_t {
++       int             status;         /* INVALID, VALID, SCHEDULED, CRITICAL_WORD_RECEIVED or COMPLETED */
++       int             thread_id;
++       int             rid;            /* request id, or transaction id given by CPU */
++       tick_t          start_time;     /* start time of transaction. unit is given in CPU ticks*/
++       int             critical_word_ready;    /* critical word ready flag */
++       int             callback_done;  /* make sure that callback is only performed once */
++       addresses_t address;    /* Entire Address structure */
++       int             access_type;    /* read/write.. etc */
++       int             priority;       /* -1 = most important, BIG_NUM = least important */
++       void            *mp;
++} biu_slot_t;
++
++typedef struct biu_t {
++       tick_t          current_cpu_time;
++       int             bus_queue_depth;
++       int     active_slots;
++       int     critical_word_rdy_slots;
++       biu_slot_t      slot[MAX_BUS_QUEUE_DEPTH];
++       int             fixed_latency_flag;
++       tick_t          delay;          /* How many CPU delay cycles should the bus queue add? */
++                                                       /* debug flags turns on debug printf's */
++       int             debug_flag;
++       int             access_count[MEMORY_ACCESS_TYPES_COUNT];
++       int             proc_request_count[MAX_PROCESSOR];
++                                                       /* where to dump out the stats */
++       FILE            *biu_stats_fileptr;
++       FILE        *biu_trace_fileptr;
++
++       int             prefetch_biu_hit;               /* How many were eventually used? */
++       int             prefetch_entry_count;           /* how many prefetches were done? */
++       int             cpu_frequency;                  /* cpu frequency now kept here */
++       int             mem_frequency;                  /* a "copy" of memory frequency is kept here so sim-cms can do a bit of an optimization */
++       tick_t          current_dram_time;              /* this is what biu expects the DRAM time to be based on its own computations, not the
++                                                       real DRAM time. The real DRAM time should be the same as this one, but it's kept inthe dram system */
++       int             transaction_selection_policy;
++       int             thread_count;                   /* how many threads are there on the cpu? */
++       double          mem2cpu_clock_ratio;
++       double          cpu2mem_clock_ratio;
++       int             max_write_burst_depth;          /* If we're doing write sweeping, limit to this number of writes*/
++       int             write_burst_count;              /* How many have we done so far?*/
++       dram_system_configuration_t  *dram_system_config; /* A pointer to the DRAM system configuration is kept here */
++       int     last_bank_id;
++       int     last_rank_id;
++       int     last_transaction_type;
++} biu_t;
++
++/***********************************************************************
++ Here are the functiona prototypes for the BIU
++ ***********************************************************************/
++
++void init_biu(biu_t *);
++biu_t *get_biu_address();
++void set_biu_address(biu_t *);
++void set_dram_chan_count_in_biu(biu_t *, int);
++void set_dram_chan_width_in_biu(biu_t *, int);
++void set_dram_cacheline_size_in_biu(biu_t *, int);
++void set_dram_rank_count_in_biu(biu_t *, int);
++void set_dram_bank_count_in_biu(biu_t *, int);
++void set_dram_row_count_in_biu(biu_t *, int);
++void set_dram_col_count_in_biu(biu_t *, int);
++void set_dram_address_mapping_in_biu(biu_t *, int);
++void set_biu_depth(biu_t *, int);
++int  get_biu_depth(biu_t *);
++void set_biu_delay(biu_t *, int);
++int  get_biu_delay(biu_t *);
++void set_cpu_dram_frequency_ratio(biu_t *, int);
++void set_cpu_memory_frequency_ratio(biu_t *, int);
++int  biu_hit_check(biu_t *, int, unsigned int, int, int, tick_t);      /* see if request is already in biu. If so, then convert transparently */
++int  find_free_biu_slot(biu_t *, int);
++
++void fill_biu_slot(biu_t *, int, int, tick_t, int, unsigned int, int, int, void *);    /* slot_id, thread_id, now, rid, block address */
++
++void *biu_get_access_sim_info(biu_t *this_b,int slot_id) ;
++void release_biu_slot(biu_t *, int);
++int  get_next_request_from_biu(biu_t *);                               /* find next occupied bus slot */
++int  get_next_request_from_biu_chan(biu_t *,int);                              /* find next occupied bus slot */
++int  bus_queue_status_check(biu_t *, int);
++int  dram_update_required(biu_t *, tick_t);
++int  find_critical_word_ready_slot(biu_t *, int);
++int  find_completed_slot(biu_t *, int, tick_t);
++int  num_free_biu_slot(biu_t *);
++void squash_biu_entry_with_rid(biu_t *, int);
++
++int  get_rid(biu_t *, int);
++int  get_access_type(biu_t *, int);
++tick_t get_start_time(biu_t *, int);
++unsigned int get_virtual_address(biu_t *, int);
++unsigned int get_physical_address(biu_t *, int);
++void set_critical_word_ready(biu_t *, int);
++int  critical_word_ready(biu_t *, int);
++int  callback_done(biu_t *, int);
++
++void set_biu_slot_status(biu_t *, int, int);
++int  get_biu_slot_status(biu_t *, int);
++
++void set_biu_debug(biu_t *, int);
++int  biu_debug(biu_t *);
++void set_biu_fixed_latency(biu_t *, int);
++int  biu_fixed_latency(biu_t *);
++
++void print_access_type(int,FILE *);
++void print_biu(biu_t *);
++void print_biu_access_count(biu_t *,FILE *);
++void set_current_cpu_time(biu_t *, tick_t);                            /* for use with testing harness */
++void set_cpu_frequency(biu_t *,int);
++int  get_cpu_frequency(biu_t *);
++tick_t get_current_cpu_time(biu_t *);
++
++void set_transaction_selection_policy(biu_t *,int);
++int  get_transaction_selection_policy(biu_t *);
++
++void set_last_transaction_type(biu_t *,int);
++int  get_previous_transaction_type(biu_t *);
++int get_biu_queue_depth (biu_t *this_b);
++
++int next_RBRR_RAS_in_biu(biu_t *this_b, int rank_id, int bank_id);
++/* cms specific stuff */
++
++int  get_thread_id(biu_t *, int);
++void set_thread_count(biu_t *, int);
++int  get_thread_count(biu_t *);
++
++void scrub_biu(biu_t *,int);
++void biu_set_mem_cfg(biu_t*this_b,dram_system_configuration_t * cfg_ptr);
++bool is_biu_busy(biu_t* this_b);
++void gather_biu_slot_stats(biu_t*);
++
++extern int shmid;
++extern int semid;
++extern int thread_id;
++
++extern biu_t *global_biu;
++
+diff --git a/src/mem/dramsim/.svn/text-base/mem-bundle.c.svn-base b/src/mem/dramsim/.svn/text-base/mem-bundle.c.svn-base
+new file mode 100644
+--- /dev/null
++++ b/src/mem/dramsim/.svn/text-base/mem-bundle.c.svn-base
+@@ -0,0 +1,438 @@
++/*
++ * mem-bundle.c - This file contains all the routines which check if commands
++ * for the FB-DIMM configuration can be scheduled into bundles or not.
++ *
++ * This is released as part of the sim-dram infrastructure for power/timing
++ * simulation of the memory system. Sim-dram can run stand-alone or be
++ * integrated with any standard CPU simulator.
++ *
++ * Copyright (c) 2004 by David Wang Brinda Ganesh Bruce Jacob
++ * Brinda Ganesh, David Wang, Bruce Jacob
++ * Systems and Computer Architecture Lab
++ * Dept of Electrical & Computer Engineering
++ * University of Maryland, College Park
++ * All Rights Reserved
++ *
++ * This software is distributed with *ABSOLUTELY NO SUPPORT* and
++ * *NO WARRANTY*.  Permission is given to modify this code
++ * as long as this notice is not removed.
++ *
++ * Send feedback to Brinda Ganesh brinda@eng.umd.edu
++ *                              or David Wang davewang@wam.umd.edu
++ *               or Bruce Jacob blj@eng.umd.edu
++
++ */
++#ifndef MEMORY_SYSTEM_H
++#include "mem-system.h"
++#endif
++#ifndef BIU_H
++#include "mem-biu.h"
++#endif
++
++/*
++ * The DRAM system is a globally observable object.
++ */
++
++extern dram_system_t           dram_system;
++extern biu_t                   *global_biu;
++
++int no_conflict_with_bundle_cmd(command_t * this_c,command_t *bundle[],int command_count);
++void schedule_for_aging(int sched_policy,command_t *bundle[],int *command_count,tick_t now,int chan_id,char *debug_string) ;
++void create_bundle(int sched_policy,command_t *bundle[],int *command_count,tick_t now,int chan_id,char *debug_string) ;
++void create_lp_bundle(int sched_policy,command_t *bundle[],int *command_count,tick_t now,int chan_id,char *debug_string) ;
++void create_RW_bundle(int sched_policy,command_t *bundle[],int *command_count,tick_t now,int chan_id,char *debug_string) ;
++void schedule_trans_cmd_in_bundle(tick_t now,
++       transaction_t *this_t,
++       int tindex,
++       command_t *bundle[],
++       int *command_count,
++       char *debug_string
++       );
++
++/*  This function will set up bundles and the timing
++ *  related to the overall bundle.
++ */
++
++bool is_bank_open(int chan_id,int rank_id,int bank_id, int row_id) {
++       if (dram_system.dram_controller[chan_id].rank[rank_id].bank[bank_id].row_id == row_id &&
++               dram_system.dram_controller[chan_id].rank[rank_id].bank[bank_id].ras_done_time > dram_system.dram_controller[chan_id].rank[rank_id].bank[bank_id].rp_done_time)
++         return true;
++       else
++         return false;
++
++
++}
++
++void commands2bundle(tick_t now, int chan_id,char * debug_string)
++{
++  int i = 0;
++  int command_count = 0;
++  command_t *this_c;
++  command_t *bundle[BUNDLE_SIZE]; /* bundle */
++  /** First check if the bus is free **/
++  if (up_bus_idle(chan_id) == FALSE)
++       return;
++  /** First reset all bundle commands to be null **/
++  for ( i=0; i < BUNDLE_SIZE; i ++) {
++       bundle[i] = NULL;
++  }
++
++  /** First check to see if a refresh can be issued **/
++  if (dram_system.config.auto_refresh_enabled == TRUE ){
++       command_t * rq_c;
++       rq_c = dram_system.dram_controller[chan_id].refresh_queue.rq_head;
++       /* Traverse through the refresh queue and see if you can issue refresh
++        * commands in the same bundle **/
++       while (command_count < BUNDLE_SIZE && rq_c != NULL ) {
++         this_c = rq_c;
++         while (command_count < BUNDLE_SIZE && this_c != NULL ) {
++               if (this_c->status == IN_QUEUE && can_issue_refresh_command(rq_c,this_c)) {
++                 bundle[command_count] = this_c;
++                 command_count ++;
++                 issue_fbd_command(now,this_c,chan_id,NULL,debug_string);
++               }
++               this_c = this_c->next_c;
++         }
++         rq_c = rq_c->rq_next_c;
++       }
++  }
++  i = 0;
++
++  // Now what ??
++  int sched_policy = get_transaction_selection_policy(global_biu);
++  if (  dram_system.dram_controller[chan_id].transaction_queue.transaction_count > 0 &&
++         (dram_system.current_dram_time - dram_system.dram_controller[chan_id].transaction_queue.entry[0].arrival_time > dram_system.config.arrival_threshold)) {
++         schedule_for_aging(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++  }
++  if (sched_policy == GREEDY ) {
++       create_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++  }else if (sched_policy == FCFS) {
++       create_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++  }else if (sched_policy == LEAST_PENDING ) {
++       create_lp_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++  }else if (sched_policy == MOST_PENDING ) {
++       create_lp_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++  }else if (sched_policy == OBF) {
++       create_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++       if (command_count < BUNDLE_SIZE)
++               create_bundle(GREEDY, bundle,&command_count,now,chan_id,debug_string);
++  }else if (sched_policy == RIFF) {
++       create_RW_bundle(sched_policy, bundle,&command_count,now,chan_id,debug_string);
++    }
++  if (command_count != BUNDLE_SIZE) { /* we need to insert some no-ops */
++  }
++  if (command_count > 0) {
++       issue_bundle(now, chan_id, bundle);
++       mem_gather_stat(GATHER_BUNDLE_STAT, command_count);
++       gather_extra_bundle_stats(bundle, command_count);
++       update_amb_power_stats(bundle,command_count,now);
++  }
++  else { /** No commands or bundle to issue therefore bus is idle */
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++       //this_dc->up_bus.completion_time = dram_system.current_dram_time;
++  }
++}
++
++void issue_bundle(tick_t now, int chan_id, command_t *bundle[]) {
++       dram_controller_t *this_dc;
++       this_dc = &(dram_system.dram_controller[chan_id]);
++
++       this_dc->bundle_id_ctr++;
++       this_dc->up_bus.status = BUS_BUSY;
++       this_dc->up_bus.completion_time = dram_system.current_dram_time + dram_system.config.t_bundle;
++#ifdef DEBUG
++       if (bundle_debug()) {
++               print_bundle(now,bundle,chan_id);
++       }
++#endif
++}
++
++int no_conflict_with_bundle_cmd(command_t * this_c,command_t *bundle[],int command_count) {
++  int j;
++  /*** Check if there is a conflict with a previous command
++   * in the queue i.e. there should be no 2 commands i.e.
++   * dram commands and not the data /drive commands , which
++   * are for the same rank ***/
++  for (j = 0; j< command_count; j++) {
++       if (bundle[j] != NULL &&
++               bundle[j]->chan_id == this_c->chan_id && /** Should be true ***/
++               bundle[j]->rank_id == this_c->rank_id) {
++         switch ( bundle[j]->command ) {
++               case REFRESH:
++               case PRECHARGE:
++               case PRECHARGE_ALL:
++               case CAS:
++               case CAS_WRITE:
++               case RAS_ALL:
++                 if (this_c->command == RAS || this_c->command == PRECHARGE ||
++                         this_c->command == RAS_ALL || this_c->command == PRECHARGE_ALL ||
++                         this_c->command == CAS        || this_c->command == CAS_WRITE ||
++              this_c->command == CAS_WITH_DRIVE || this_c->command == CAS_AND_PRECHARGE || this_c->command == CAS_WRITE_AND_PRECHARGE)
++                       return FALSE;
++                 break;
++               case RAS: if (this_c->command == RAS || this_c->command == PRECHARGE ||
++                                         this_c->command == RAS_ALL || this_c->command == PRECHARGE_ALL)
++                                       return FALSE;
++                 else if (this_c->command == CAS || this_c->command == CAS_WRITE ||
++              this_c->command == CAS_WRITE_AND_PRECHARGE || this_c->command == CAS_AND_PRECHARGE) {
++                       /*** If posted cas then proceed else false **/
++                       if (dram_system.config.posted_cas_flag == TRUE) {
++                         /** If to the same row and bank then allow .. else return
++                          * false **/
++                         if (!(bundle[j]->bank_id == this_c->bank_id && bundle[j]->row_id == this_c->row_id))
++                               return FALSE;
++                       }else
++                         return FALSE;
++                       break;
++
++
++                 }
++         }
++       }
++  }
++  return TRUE;
++}
++/* This function checks if the first transaction needs to be explicitly
++ * scheduled earlier
++ */
++void schedule_for_aging
++(int sched_policy,command_t *bundle[],int *command_count,tick_t now,int chan_id,char *debug_string) {
++
++  int i = 0;
++  transaction_t *this_t;
++  bool first_queued_transaction = false;
++
++  if (dram_system.dram_controller[...[Message clipped]  View entire message

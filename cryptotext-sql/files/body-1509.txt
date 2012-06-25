@@ -1,0 +1,72 @@
+You can add:
+m5.disableAllListeners()
+To your script.  This will turn off remote gdb and if you're in full
+system mode, the terminal.
+  Nate
+- Show quoted text -
+On Mon, May 4, 2009 at 4:51 PM, Gaurav Dhiman <dimanuec@gmail.com> wrote:
+> Thanks for the reply. In my case, I am not attempting to debug with
+> GDB, so I guess something is attempting to connect to the GDB port. I
+> will try to track down the source. But in any case, what is the
+> cleanest way of disabling the gdb port? Can I simply set rgdb_enable
+> (in sim/system.cc) to false?
+>
+> Thanks,
+> -Gaurav
+>
+>
+> On Sun, May 3, 2009 at 4:05 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> Are you attempting to debug your experiment with GDB at the time? If
+>> not I would guess that something is coming by and attempting to
+>> connect to the GDB port (7000+). If you are then that is probably a
+>> incompatibility with GDB and M5 that we need to address. In the prior
+>> case you can disable the gdb port although if you don't know what is
+>> attempting to connect it might be good to track that down.
+>>
+>> Ali
+>>
+>>
+>>
+>> On May 1, 2009, at 10:34 PM, Gaurav Dhiman wrote:
+>>
+>>> Hi All,
+>>>
+>>> I am running into a strange problem while doing simulations with M5.
+>>> Sometimes, the simulator gets into an endless loop of generating the
+>>> following debug message:
+>>>
+>>> "warn: could not read byte from debugger"
+>>>
+>>> I looked up for this message in the source code and found it in the
+>>> function BaseRemoteGDB::getbyte(). I am not sure about the usage of
+>>> this function. The problem is that for some runs of my simulations
+>>> this happens and for some other runs it works and completes well. I am
+>>> simulating an ALPHA based processor in SE mode for running SPEC2K
+>>> benchmarks, and have made some modifications to the physical memory
+>>> class. I suspect the changes might have something to do with this.
+>>> Can anyone please give some insight into what might be happening (as
+>>> in why this message shows up), and some ways to prevent it?
+>>>
+>>> Thanks in advance,
+>>> -Gaurav
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi Vilas,
+Good point, the workload does need to be defined on both CPUs.  That way they both know what they're running and can setup everything appropriately.
+As for the assertion, I wouldn't worry too much about it unless you're planning on changing memory timing modes between CPUs.  If you are, just make sure you've switched over to Timing mode before using the O3 CPU (it only works in Timing mode).  You're right that the assertion is useful, but right now the O3 CPU doesn't take a pointer to the System object in SE mode (an oversight on our part).  We'll try to fix this for the future.
+The switchCpus function does replace fast-forwarding.  You can handle doing fast-forwarding totally via your script now.  Your script directs how long to simulate M5, and when to switch between models (like in the example on the FAQ page).  You can use standard loops in Python to have it repeat as many times as desired.  Just be sure that when switching models back you change the order that they're in the list -- they're always in tuples (oldCPU, newCPU), where old CPU is the currently running CPU and newCPU is the CPU you want to switch in.
+Kevin
+Vilas Sridharan wrote:
+Hello all,
+I'm fairly new to M5, but was watching this thread with interest since I am trying to do something similar to James (but in syscall emulation mode).  Thanks, Kevin, for the explanation - this seems to work, although I believe in SE mode the 'workload' parameter needs to be set for both CPUs as well (at least, I need to do so in order to get it to run).
+One further question related to doing this in SE mode:
+When trying to switch in the O3 CPU model, it reliably core-dumps in the resume() function, at the assert statement on line 821 of src/cpu/o3/cpu.cc.  It appears that the 'system' object is referenced, but is only defined in FS mode.  For now I've commented out the assert, but I wanted to know whether there's a more robust fix (the assert seems important).
+Incidentally, I assume the switchCpus function essentially takes the place of 'fast-fowarding' (eg, in SimpleScalar), since I don't see any other way to do this?
+Thanks,
+   -Vilas
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

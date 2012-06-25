@@ -1,0 +1,320 @@
+Hi Steve,
+I am really stuck at this point...I get all sorts of assertion failed
+mesgs. I changed my script to run with only one benchmark, like you
+explained in the earlier email. It is not working. Can you please tell
+me what process parameters are being overwritten?
+I have a few questions:
+1. When i check the config.ini file created, the numThreads and
+smtNumFetchingThreads is set to 1 for the CPU's. What does this mean?
+2. If I want to run splash benchmark FFT 4 way on 2 two way SMT
+machines, can I set my workload as "FFT -p4 <input fie>" and make all
+threads point to this workload.
+Thank you,
+Sahithi
+- Show quoted text -
+On 5/6/08, Steve Reinhardt <stever@gmail.com> wrote:
+> If you're still using the script you sent out before, there's a chunk of
+> code in there that overwrites the process variable that's probably causing
+> you trouble.
+>
+> Steve
+>
+> On Mon, May 5, 2008 at 10:58 AM, sahithi krishna <sahithi.krishna@gmail.com>
+> wrote:
+>
+> > Hi Steve,
+> >
+> > I really appreciate you quick response. I want to understand what you
+> > explained in you earlier mail clearly...so that I get it right:
+> >
+> > I think I have done the same thing you explained  in my earlier script...
+> > I am assigning workload for each thread here. I create a thread for each
+> > workload.
+> >
+> > elif options.detailed:
+> >     cpus = [DerivO3CPU(cpu_id = i,
+> >                        clock=options.frequency)
+> >             for i in xrange(options.numcpus)]
+> >
+> >     if options.cmd:
+> >         #check for SMT workload
+> >         commands = options.cmd.split(':')
+> >
+> >         process = []
+> >
+> >         for cmmd in commands:
+> >                 if cmmd == 'Cholesky':
+> >                         smt_process = Cholesky()
+> >                 elif cmmd == 'FFT':
+> >                         smt_process = FFT()
+> >                 elif cmmd == 'LUContig':
+> >                         smt_process = LU_contig()
+> >                 elif cmmd == 'LUNoncontig':
+> >                         smt_process = LU_noncontig()
+> >                 elif cmmd == 'Radix':
+> >                         smt_process = Radix()
+> >                 elif cmmd == 'Barnes':
+> >                         smt_process = Barnes()
+> >                 elif cmmd == 'FMM':
+> >                         smt_process = FMM()
+> >                 elif cmmd == 'OceanContig':
+> >                         smt_process = Ocean_contig()
+> >                 elif cmmd == 'OceanNoncontig':
+> >                         smt_process = Ocean_noncontig()
+> >                 elif cmmd == 'Raytrace':
+> >                         smt_process = Raytrace()
+> >                 elif cmmd == 'WaterNSquared':
+> >                         smt_process = Water_nsquared()
+> >                 elif cmmd == 'WaterSpatial':
+> >                         smt_process = Water_spatial()
+> >                 else:
+> >                         print >> sys.stderr, """The --cmd environment
+> > variable was set to something improper.
+> >                 Use Cholesky, FFT, LUContig, LUNoncontig, Radix, Barnes,
+> > FMM, OceanContig,
+> >                 OceanNoncontig, Raytrace, WaterNSquared, or
+> > WaterSpatial"""
+> >                         sys.exit(1)
+> >                 process += [smt_process, ]
+> >
+> > After this I assign the workload to the CPU's
+> >
+> > root = Root(system = system)
+> > root.workload = process
+> >
+> > for cpu in cpus:
+> >     cpu.workload = root.workload
+> >
+> > Say if I want to run two bench marks(FFT,Radix) on 2 two-way SMT CPU's:
+> > Command line: m5.debug sahi.py -d -n2 -cFFT:Radix
+> >
+> > wont my code assign them in the following way:
+> >
+> > CPU0.thread1 = FFT
+> > CPU0.thread2 = Radix
+> > CPU1.thread1 = FFT
+> > CPU2.thread2 = Radix
+> >
+> > Why is it giving me an error then?
+> >
+> > Thanks,
+> > Sahithi
+> >
+> > On Mon, May 5, 2008 at 12:40 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> >
+> > > You just set the workload for each thread to point to the same workload
+> > > object.  Note that in an SMT machine the CPU takes a list of workloads,
+> one
+> > > for each thread context.
+> > >
+> > > So to run a two-thread copy of FFT on a two-way SMT CPU you'd do
+> > > something like:
+> > >
+> > > bm = FFT()
+> > > cpu.workload = [bm, bm]
+> > >
+> > > If you want to rn a four-thread copy of FFT on two two-way SMT CPUs:
+> > >
+> > > cpu0.workload = [bm, bm]
+> > > cpu1.workload = [bm, bm]
+> > >
+> > > Note that you have to make sure the workload object is created with the
+> > > right command-line parameters to use the proper number of threads.
+> > >
+> > >
+> > > Steve
+> > >
+> > >
+> > > On Mon, May 5, 2008 at 10:17 AM, sahithi krishna <
+> > > sahithi.krishna@gmail.com> wrote:
+> > >
+> > > > Hi Steve,
+> > > > I donot know how to associate the same workload object to multiple
+> > > > thread contexts. Can you please tell me how to do this?
+> > > >
+> > > > Thanks,
+> > > > Sahithi
+> > > >
+> > > >
+> > > > On Mon, May 5, 2008 at 12:04 PM, Steve Reinhardt <stever@gmail.com>
+> > > > wrote:
+> > > >
+> > > > > I just looked at your script briefly, but it looks like you're only
+> > > > > configuring the workload to use a single thread context on the SMT
+> CPU.  For
+> > > > > multithreaded workloads like SPLASH, you have to associate the same
+> workload
+> > > > > object with multiple thread contexts (whether they're SMT CPU
+> contexts or on
+> > > > > separate CPUs) so that when the application creates new threads
+> there is
+> > > > > somewhere to run them.  The error you're getting indicates that the
+> > > > > application is creating a new thread but has nowhere to run it.
+> > > > >
+> > > > > Steve
+> > > > >
+> > > > >
+> > > > > On Mon, May 5, 2008 at 8:57 AM, sahithi krishna <
+> > > > > sahithi.krishna@gmail.com> wrote:
+> > > > >
+> > > > > > Hi Steve,
+> > > > > > I modified the run.py to deal with the SMT part and when I run the
+> > > > > > script it aborts. Here is the error:
+> > > > > >
+> > > > > > M5 compiled Apr 26 2008 10:12:48
+> > > > > > M5 started Mon May  5 10:51:52 2008
+> > > > > > M5 executing on sunshyin.local
+> > > > > > command line: /Users/Sunshyin/m5/build/ALPHA_SE/m5.debug sahi.py
+> > > > > > -d -n2 -cFFT:Radix
+> > > > > > Global frequency set at 1000000000000 ticks per second
+> > > > > > 0: system.remote_gdb.listener: listening for remote gdb #0 on port
+> > > > > > 7000
+> > > > > > 0: system.remote_gdb.listener: listening for remote gdb #1 on port
+> > > > > > 7001
+> > > > > > 0: system.remote_gdb.listener: listening for remote gdb #2 on port
+> > > > > > 7002
+> > > > > > 0: system.remote_gdb.listener: listening for remote gdb #3 on port
+> > > > > > 7003
+> > > > > > warn: Entering event queue @ 0.  Starting simulation...
+> > > > > > warn: Increasing stack size by one page.
+> > > > > > warn: Increasing stack size by one page.
+> > > > > > warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+> > > > > > warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+> > > > > > warn: ignoring syscall sigprocmask(3, 0, ...)
+> > > > > > warn: ignoring syscall sigaction(8, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(11, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(10, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(4, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(7, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(6, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(12, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(5, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(13, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigprocmask(3, 0, ...)
+> > > > > > warn: ignoring syscall sigaction(8, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(11, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(10, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(4, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(7, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(6, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(12, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(5, 4831387552, ...)
+> > > > > > warn: ignoring syscall sigaction(13, 4831387552, ...)
+> > > > > > nxm_thread_create: no idle contexts available.
+> > > > > > Program aborted at cycle 163629500
+> > > > > > Abort trap
+> > > > > >
+> > > > > > Do you know why this is happening? I am attaching the config file
+> > > > > > with this email.
+> > > > > >
+> > > > > > Thanks,
+> > > > > > Sahithi
+> > > > > >
+> > > > > > On Sat, May 3, 2008 at 8:59 PM, Steve Reinhardt <stever@gmail.com>
+> > > > > > wrote:
+> > > > > >
+> > > > > > > As far as I know, SPLASH benchmarks should work fine with SMT.
+> > > > > > > (Someone speak up if they know otherwise.)  You'd have to modify
+> the
+> > > > > > > configs/splash2/run.py script to deal with that though.
+> > > > > > >
+> > > > > > > I haven't done this before, so I can't provide any general
+> > > > > > > directions, but if you have more specific questions we can try
+> and answer
+> > > > > > > those.
+> > > > > > >
+> > > > > > > Steve
+> > > > > > >
+> > > > > > > On Sat, May 3, 2008 at 9:04 AM, sahithi krishna <
+> > > > > > > sahithi.krishna@gmail.com> wrote:
+> > > > > > >
+> > > > > > > > Hi,
+> > > > > > > >
+> > > > > > > > As a part of my course project, my group is trying to study
+> > > > > > > > the SMT/CMP hybrid architectures and study their performance.
+> As a part of
+> > > > > > > > the project we need to vary the parameters like number of
+> cores and number
+> > > > > > > > of threads supported for each core and run simulations. As per
+> my
+> > > > > > > > understanding, such configurations can be defined using M5,
+> but I am
+> > > > > > > > confused as to how to run the simulations and what benchmarks
+> to use. I am
+> > > > > > > > new to the M5 simulator and I trying to figure out the best
+> way to work on
+> > > > > > > > my project.
+> > > > > > > > The spec cpu benchmarks have lincense issues and currently I
+> > > > > > > > donot have access to them. So I wanted to try the SPLASH
+> benchmark suite.
+> > > > > > > > Can some one help me understand how I can run these
+> simulations using SPLASH
+> > > > > > > > benchmarks (if it is possible). It looks like the current
+> binaries for
+> > > > > > > > splash benchmarks on the M5 website work only in ALPHA SE mode
+> and they
+> > > > > > > > donot work with SMT cores. If I try to work in ALPHA FS mode,
+> will I be able
+> > > > > > > > to simulate SMT/CMP architecture workloads.
+> > > > > > > > If some one has already done these kind of simulations, your
+> > > > > > > > suggestions would be very useful. I am trying to run the
+> simulations on
+> > > > > > > > MacOs Leopard, will I be able to use linux-dist to build my
+> libraries
+> > > > > > > > properly.
+> > > > > > > >
+> > > > > > > > Thank you,
+> > > > > > > > Sahithi
+> > > > > > > >
+> > > > > > > > _______________________________________________
+> > > > > > > > m5-users mailing list
+> > > > > > > > m5-users@m5sim.org
+> > > > > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > > > _______________________________________________
+> > > > > > > m5-users mailing list
+> > > > > > > m5-users@m5sim.org
+> > > > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > > > > >
+> > > > > >
+> > > > > >
+> > > > > > _______________________________________________
+> > > > > > m5-users mailing list
+> > > > > > m5-users@m5sim.org
+> > > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > > > >
+> > > > >
+> > > > >
+> > > > > _______________________________________________
+> > > > > m5-users mailing list
+> > > > > m5-users@m5sim.org
+> > > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > > >
+> > > >
+> > > >
+> > > > _______________________________________________
+> > > > m5-users mailing list
+> > > > m5-users@m5sim.org
+> > > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > >
+> > >
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> >
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hi,I am trying to figure out the following issue:When I run a "null" program (empty main function without anything), there are still more than 160 dcache misses, and more than 200 icache misses. Is that normal? Or where do they come from?
+I am using SE mode with one core and the version is 1.1Thanks a lot,Qingyuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

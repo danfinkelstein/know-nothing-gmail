@@ -1,0 +1,11 @@
+Hi there,
+    Is there anyone can tell me what is the meaning of "--caches" for the sample fs.py? If I didn't specify the option "--caches",does it mean there is no L1 cache for the CPU or it will use another default value?
+  Another problem is that I found when I specify the "--caches" for the TimingSimpleCPU model, there is error message as follows,
+  [invalidTransition:build/ALPHA_FS/mem/cache/coherence/coherence_protocol.cc, line 465]
+  I use the recent m5-2.0b3 version.Thank you very much for your reply.
+                                                                                        Yue
+                                                                                       09-10-2007
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

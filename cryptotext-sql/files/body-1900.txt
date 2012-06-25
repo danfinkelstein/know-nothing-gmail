@@ -1,0 +1,32 @@
+Thank you ! Steve. I have found the line this->fault = this->staticInst->initiateAcc(this, this->traceData);in the executeLoad/executeStore function of lsq_unit_impl.h.I guess there must be something I still not understand yet, because I could not find the initiateAcc of StaticInst object.
+The "memory access instruction object" in your letter is unclear for me. Is it in the arch/alpha/isa/mem.isa. How can I find the initiateAcc() of an o3 cpu model? That's really what I need to modify now.
+I search the initiateAcc under the source directory using   grep initiateAcc * -r, what I got seemed of no use. The only thing that I found maybe useful is this:initiateAccTemplate = eval(exec_template_base + 'InitiateAcc')
+But I do not quite understand that.  Could you please tell me where can I find the execution body of initiateAcc?  Thand you !
+Message: 1
+Date: Tue, 17 Feb 2009 10:07:09 -0800
+From: Steve Reinhardt <stever@gmail.com>
+Subject: Re: [m5-users] where does the effective address calculated
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <28fce2300902171007j776d14aq3fcb93ca023eab06@mail.gmail.com>
+Content-Type: text/plain; charset="iso-8859-1"
+The effective addresses are calculated by the memory access instruction
+objects, either in the execute() method (for the simple atomic CPU) or in
+initiateAcc() (for the timing CPU models where memory accesses are split
+into two parts).
+Steve
+On Tue, Feb 17, 2009 at 1:35 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi all, I am reading the source code of M5, but I can not find where the
+> effective address of a memory access instruction calculated.
+>
+> I thought that the address should be calculated in the IEW stage, so I
+> searched in the iew_impl.hh, lsq_impl.hh and lsq_unit_impl.hh, I only found
+> the executeLoad/executeStore functions, but those functions seem do
+> something else.
+>
+> Can anyone tell me where should I find? Where a memory access instuction is
+> actually executed? Thand you!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

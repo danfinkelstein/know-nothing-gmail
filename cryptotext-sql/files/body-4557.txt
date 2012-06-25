@@ -1,0 +1,18 @@
+Hi all,
+ 
+I am a starter on M5, and I'm interested in simulating a 
+multithreaded program on a CMP architecture. My question is, can M5 run programs 
+written with pthreads? what crosscompiler do you recommend to compile C or C++ 
+code on a x86 host to SPARC/ALPHA binaries that can be run on M5?
+ 
+I tried to compile helloworld code on UltraSparc IIIi/SunOS 
+using gcc version 3.3.6. However, the sparc binary generates faults when the 
+code is run on M5. Would you please give me some hints?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

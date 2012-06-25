@@ -1,0 +1,24 @@
+What disk image are you using as well? You need to make sure the libraries in the disk image you are running are compatible with the benchmarks  libc (your compiler) as well. As libc is not entirely statically link.- Show quoted text -
+On Wed, Mar 24, 2010 at 2:44 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+Hi Bhusan,  Can you attach the output from the simulation and let us know which version of the linux kernel you are using?  Thanks,  Joel
+On Wed, Mar 24, 2010 at 2:02 PM, Bhushan <mohan@cs.virginia.edu> wrote:
+Hi, I'm a newbie to m5 and trying to run PARSEC 2.1on m5 under alpha in full system mode. First, I would like to thank people in UT Austin for publishing a tech report on this, it was very helpful. 
+Now coming to the issue, even though I was able to boot the kernel in m5, when I try to run the any application in parsec suite, the app segfaults.
+Here are some more details:# ./build/ALPHA_FS/m5.opt ./configs/example/fs.py -n 1 --detailed --caches --l2cacheand once the kernel boots, I do (as was  mentioned in the tech report):/parsec/install/bin/blackscholes 64 /parsec/install/inputs/blackscholes/in_64K.txt /parsec/install/inputs/blackscholes/prices.txt
+This segfaults.The stack trace after crash looks like this:#0  0x0000000120016d8c in __libc_message ()#1  0x000000012001714c in __libc_fatal ()#2  0x000000012000c9cc in __libc_start_main ()#3  0x0000000120000218 in _start ()
+This happens with all other applications in parsec suite. However, a simple hello world program does run correctly. My guess is there are some library incompatibilities which causes this  crash.I used the kernel available in the m5 website (http://www.m5sim.org/wiki/index.php/Download) under the Full System files section. I used the disk image from the UT Austin website (http://www.cs.utexas.edu/~parsec_m5/linux-parsec-2-1-m5-with-test-inputs.img.bz2) for the parsec suite.
+So how do I go about fixing this and make PARSEC 2.1 work correctly with m5?-- Regards,
+Bhushan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,79 @@
+Hi,
+  Thank you for your reply!
+  Now I have SPEC2000 alpha binaries and input sets. I know I should add
+these binaries and input sets into disk imag to run them. But how?
+  I checked the M5 mail achive, but didn't find the answer.
+  Does anyone can explain that to me?
+  Thanks.
+Rongrong
+- Show quoted text -
+> I think you're misreading the email archives... cpu2000.py is not intended
+> for direct use in FS mode, just in SE mode, but it can be useful to read
+> it
+> to figure out what needs to be done in FS mode.
+>
+> There was a fair amount of dicsussion on the list in early August and
+> early
+> September about this.
+>
+> If someone would be willing to summarize on the wiki (if it's not there
+> already) that would be much appreciated.  I see that we already have a
+> page
+> started at http://m5sim.org/wiki/index.php/SPEC2000_benchmarks but it's
+> woefully inadequate.
+>
+> Steve
+>
+> On 9/28/07, laymanyang <laymanyang@163.com> wrote:
+>>
+>> Hi，all
+>>
+>>
+>>
+>>       I am trying to use spec2000 in FS mode. I found from m5 index that
+>> cpu2000.py can be used to do it.
+>>
+>> When I put the compiled benchmarks in the disk-img, and specify
+>> directory
+>> in cpu2000.py,  workload
+>>
+>> containing the benchmark should be defined according to M5
+>> documentation. However
+>> I notice that the
+>>
+>> concept of workload is only used in se.py, it doesn't appear in fs.py.
+>>
+>>
+>>
+>>       Should I change fs.py or cpu2000.py to run benchmark in FS mode?
+>> Can
+>> cpu2000.py be used
+>>
+>>  in FS mode? Could anybody tell me how to change it in order that I can
+>> use it in FS mode? I will appreciate
+>>
+>>  very much if someone give me some detail examples.
+>>
+>>
+>>
+>>        Shi Lei
+>>
+>>
+>>
+>>
+>>
+>> ------------------------------
+>> 杀70万种木马病毒，瑞星2008版免费<http://pro.163.com/event.ng/Type=click&FlightID=96648&AdID=98138&TargetID=635&Values=31,43,51,60,72,82,91,100,110,312,330,332,499,587,702,733,734&Redirect=http://ad.cn.doubleclick.net/clk;134682177;20226578;k%3Fhttp://www.rising.com.cn/2008/trial/index.htm>
+- Show quoted text ->> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

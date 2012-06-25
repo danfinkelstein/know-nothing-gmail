@@ -1,0 +1,50 @@
+I added the following in bus.cc in occupyPacket():
+tickNextIdle+=snoop_bit ? ((numCycles * clock)+clock) : numCycles*clock;
+snoop_bit is set to 1 in recvtiming() if packet is a broadcast and set to 0 in occupyPacket().
+- Show quoted text -
+---- Original message ----
+>Date: Sun, 18 Nov 2007 16:56:38 -0600
+>From: Nicolas Zea <nzea2@uiuc.edu>
+>Subject: Re: [m5-users] Changing Bus Latency for Packet
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>What is the code that you added?
+>
+>
+>On Nov 18, 2007, at 4:47 PM, Shoaib Akram wrote:
+>
+>> I want to have extra bus cycles added for certain type of packets.
+>> If I add a busCycle, tickNextIdle+=clock, something anomalous
+>> happens. At one point after first 4000 cycles, the tickNextIdle gets
+>> calculated to a negative number, which the following trace on bus
+>> shows: Please suggest whats the right way to add busCycles. If I add
+>> processor cycles (tickNextIdle+=100), I dont have negative numbers
+>> but the traces show results not expected !
+>>
+>> 1001: system.membus: recvTiming: packet src 1 dest -1 addr 0x140 cmd
+>> ReadReq
+>> 1001: system.membus:   found addr 0x140 on device 0
+>> 1001: system.membus: The bus is now occupied from tick 1001  to 4000
+>> 1002: system.membus: recvTiming: packet src 0 dest 1 addr 0x140 cmd
+>> ReadResp
+>> 1002: Event_10318838: Waiting on retry
+>> 4000: system.membus: Received a retry
+>> 4000: system.membus: Sending a retry
+>> 4000: system.membus: recvTiming: packet src 0 dest 1 addr 0x140 cmd
+>> ReadResp
+>> 4000: system.membus: The bus is now occupied from tick 4000 to
+>> -243651592
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,101 @@
+Thanks for the reply. I created a module that interfaces two buses, simply receives packets from a bus (connected above to l2 cache) , extract the senderState field, set the downstreampending, inservice and markPending fields acordingly and sends it to shared l3 cache below. However, when response reaches the l2 cache, i get segmentation fault at this point.
+    std::memcpy(blk->data, pkt->getPtr<uint8_t>(),
+Is it because I corrupted the packet as it was sent from the cache above(l2) to cache below(l3).
+- Show quoted text -
+---- Original message ----
+>Date: Mon, 6 Oct 2008 07:00:22 -0700
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] MSHR downStreamPending
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   Ali's right... the bridge wasn't designed to support
+>   coherence (just I/O accesses), or conversely
+>   coherence wasn't designed to support bridges.
+>
+>   You could build a module that does what you want and
+>   supports coherence; basically it would have to act
+>   like a 0-byte cache.  It would need to forward
+>   express snoops as Ali mentioned, and also do some
+>   request/response matching, and probably keep MSHRs
+>   too.
+>
+>   Of course, the M5 coherence protocol was not
+>   developed to be ultra-realistic (see
+>   http://m5sim.org/wiki/index.php/Coherence_Protocol),
+>   so if you're proposing a new style of interconnect
+>   then you probably really want to implement a more
+>   realistic protocol to give yourself a more realistic
+>   evaluation.  It's not that hard to do so if you have
+>   a fixed topology; most of the complexity and
+>   artificiality of the current model is because it
+>   supports nearly arbitrary levels of cache and
+>   numbers of caches at each level.
+>
+>   Steve
+>
+>   On Sun, Oct 5, 2008 at 9:39 PM, Shoaib Akram
+>   <sakram3@illinois.edu> wrote:
+>
+>     In case Steve wants a closer look at the system
+>     being implemented, attached is a pdf file. The
+>     shared bus I am implementing is a bit complex than
+>     I explained below.
+>     ---- Original message ----
+>     >Date: Mon, 6 Oct 2008 00:03:54 -0400
+>     >From: Ali Saidi <saidi@umich.edu>
+>     >Subject: Re: [m5-users] MSHR downStreamPending
+>     >To: M5 users mailing list <m5-users@m5sim.org>
+>     >
+>     >The bridge isn't supported in the middle of a
+>     coherent hierarchy.
+>     >Steve can probably comment more about why, but
+>     minimally it would need
+>     >to support passing the express-snoops and it
+>     currently doesn't.
+>     >
+>     >Ali
+>     >
+>     >On Oct 5, 2008, at 11:21 PM, Shoaib Akram wrote:
+>     >
+>     >> I am simulating a multiprocessor system with a
+>     shared bus. Private
+>     >> L1,l2 and shared L3 (connected to shared bus
+>     through tol3bus). When
+>     >> I insert a bridge between the shared bus and
+>     tol3bus, the L2 cache
+>     >> on a miss, after allocating mshr and sending
+>     the bus packet on
+>     >> shared bus, calls cleardownStreamPending().
+>     This is not supposed to
+>     >> happen since cleardownStreamPending() should be
+>     called by last-
+>     >> level(L3) cache. cleardownStreamPending() is
+>     indeed called by the L3
+>     >> cache if there is no bridge. Any of the
+>     developers aware of the
+>     >> implementation of this feature can throw some
+>     light maybe?
+>     >> _______________________________________________
+>     >> m5-users mailing list
+>     >> m5-users@m5sim.org
+>     >>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >>
+>     >
+>     >_______________________________________________
+>     >m5-users mailing list
+>     >m5-users@m5sim.org
+>     >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>________________
+- Show quoted text ->_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

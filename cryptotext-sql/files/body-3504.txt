@@ -1,0 +1,17 @@
+hello daniel,     Have you tried using the se.py instead of the cpu2000.py? I'll try to run it then I'll email you any issues I have encountered.Thanks a bunch!-dean
+On Tue, Feb 26, 2008 at 8:45 AM, Daniel Alex Finkelstein <dfinke01@cis.poly.edu> wrote:
+Hi Dean,You can grab the binaries from here: http://cis.poly.edu/~dfinke01/spec/BTW, I'm having a killer time trying to get the SPEC benchmarks to run with the default inputs with ALPHA_SE. I've got my binaries and input files exactly the way they're supposed to be (Nate even sent me a listing of their file structure, and they match) so I think I'm doing something wrong...
+I read your posts on the mailing list but I wonder if you've got a simple way to, say, run gcc with a regular input set (like 'ref').Thanks,Dan
+ 
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA
+ 
+  -- Dean Michael B. Ancajas

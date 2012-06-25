@@ -1,0 +1,48 @@
+This WIKI page on SPEC2K might be able to help you out if you can get
+your spec distribution under a certain format:
+http://www.m5sim.org/wiki/index.php/SPEC2000_benchmarks
+There are a number of small changes from m5 1.1. to m5.2.0.b4 in terms
+of configuring your simulation so if you're looking to move to 2.0 you
+might have to scrap (or alter) your config files to the new way.
+For instance, I'm not sure configuring options in a
+'DetailedUniConfig.py' is file is necessary anymore (if I remember
+correctly that's how you configure m5-1.1. models by compiling them
+in).
+Rather, you may just have to use the '-d' command line option for the
+detailed model and in the configs/example/se.py file you can configure
+a Detailed model after it has been instantiated further down in the
+se.py file:
+CPUClass.<option> = <value>;
+Hope that helps you on your way...
+- Show quoted text -
+On Mon, Mar 10, 2008 at 1:56 AM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+> Hi
+>
+> Please help me regarding how to run spec cpu2000 under M5 2.0b4. I had run
+> spec cpu2000 under M5 1.1 but cant understand why its creating trouble for
+> me........might be bcoz i m storing DetailedUniConfig.py and MemConfig.py
+> under gcc folder only or i am not getting exactly where to put these files
+> in M5 2.0b4
+>
+>
+> --
+> Ashutosh Jain
+> M.S. Computer Science,
+> Lamar University, Texas
+>
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

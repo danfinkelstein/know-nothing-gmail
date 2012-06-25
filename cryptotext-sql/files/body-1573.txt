@@ -1,0 +1,325 @@
+I actually have a fix in my tree for this.  I'll push it soon.
+  Nate
+- Show quoted text -
+On Sat, Apr 18, 2009 at 1:53 AM, Gabe Black <gblack@eecs.umich.edu> wrote:
+> Compiling ARM is broken and I'll fix it in the next few days. It should
+> be working at changeset 0647c8b31a99 if you want to roll back to a
+> working version. As far actually running, it may work once it compiles
+> again, but we haven't tried to use it since integrating it into the main
+> repository and I don't know what will happen. O3 does not to my
+> knowledge currently support ARM.
+>
+> Gabe
+>
+> Javier Jose wrote:
+>> Hi thanks for the help,
+>>
+>> 1) I ran 3 days ago:
+>> hg clone http://repo.m5sim.org/m5 <http://repo.m5sim.org/m5-stable>
+>>
+>>
+>> 2) used this command line = build/ARM_SE/m5.debug
+>>                  gcc version = 4.2.4
+>>
+>> 3) Got the following errors:
+>> Building in /home/javier/m5/build/ARM_SE
+>> Using saved variables file /home/javier/m5/build/variables/ARM_SE
+>>
+>> NameError: name 'ArmITB' is not defined:
+>>   File "/home/javier/m5/SConstruct", line 894:
+>>     exports = 'env')
+>>   File "/usr/lib/scons-1.2.0.d20090223/SCons/Script/SConscript.py", line 612:
+>>
+>>     return apply(method, args, kw)
+>>   File "/usr/lib/scons-1.2.0.d20090223/SCons/Script/SConscript.py", line 549:
+>>     return apply(_SConscript, [self.fs,] + files, subst_kw)
+>>   File "/usr/lib/scons-1.2.0.d20090223/SCons/Script/SConscript.py", line 259:
+>>
+>>     exec _file_ in call_stack[-1].globals
+>>   File "/home/javier/m5/build/ARM_SE/SConscript", line 325:
+>>     exec('from m5.objects import %s' % simobj)
+>>   File "<string>", line 1:
+>>
+>>     None
+>>   File "/home/javier/m5/build/ARM_SE/SConscript", line 303:
+>>     exec file(srcfile, 'r') in mod.__dict__
+>>   File "/home/javier/m5/src/cpu/simple/AtomicSimpleCPU.py", line 31:
+>>
+>>     from BaseSimpleCPU import BaseSimpleCPU
+>>   File "/home/javier/m5/build/ARM_SE/SConscript", line 303:
+>>     exec file(srcfile, 'r') in mod.__dict__
+>>   File "/home/javier/m5/src/cpu/simple/BaseSimpleCPU.py", line 30:
+>>
+>>     from BaseCPU import BaseCPU
+>>   File "/home/javier/m5/build/ARM_SE/SConscript", line 303:
+>>     exec file(srcfile, 'r') in mod.__dict__
+>>   File "/home/javier/m5/src/cpu/BaseCPU.py", line 61:
+>>
+>>     class BaseCPU(MemObject):
+>>   File "/home/javier/m5/src/cpu/BaseCPU.py", line 113:
+>>     itb = Param.ArmTLB(ArmITB(), "Instruction TLB")
+>>
+>>
+>>
+>> I have not modified anything. I am running everything "as is".
+>>
+>> Another doubt that I have is should ARM work with O3/SMT CPU?
+>>
+>> Thanks,
+>>
+>> Javier Malave
+>> Texas A&M University
+>> Computer Science and Engineering Department
+>>
+>>
+>> On Thu, Apr 16, 2009 at 11:00 AM, <m5-users-request@m5sim.org
+>> <mailto:m5-users-request@m5sim.org>> wrote:
+>>
+>>     Send m5-users mailing list submissions to
+>>            m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>
+>>     To subscribe or unsubscribe via the World Wide Web, visit
+>>            http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>     or, via email, send a message with subject or body 'help' to
+>>            m5-users-request@m5sim.org <mailto:m5-users-request@m5sim.org>
+>>
+>>     You can reach the person managing the list at
+>>            m5-users-owner@m5sim.org <mailto:m5-users-owner@m5sim.org>
+>>
+>>     When replying, please edit your Subject line so it is more specific
+>>     than "Re: Contents of m5-users digest..."
+>>
+>>
+>>     Today's Topics:
+>>
+>>       1. ARM_SE compile error on M5 (Javier Jose)
+>>       2. Re: ARM_SE compile error on M5 (Gabriel Michael Black)
+>>       3. Re: ARM_SE compile error on M5 (nathan binkert)
+>>       4. a question about the decoder.cc (Veydan Wu)
+>>
+>>
+>>     ----------------------------------------------------------------------
+>>
+>>     Message: 1
+>>     Date: Wed, 15 Apr 2009 19:23:28 -0500
+>>     From: Javier Jose <javier.jose@gmail.com
+>>     <mailto:javier.jose@gmail.com>>
+>>     Subject: [m5-users] ARM_SE compile error on M5
+>>     To: m5-users@m5sim.org <mailto:m5-users@m5sim.org>,
+>>     m5-dev@m5sim.org <mailto:m5-dev@m5sim.org>
+>>     Message-ID:
+>>
+>>      <b050f5ff0904151723t55103214r9d04656178bec30d@mail.gmail.com
+>>     <mailto:b050f5ff0904151723t55103214r9d04656178bec30d@mail.gmail.com>>
+>>     Content-Type: text/plain; charset="iso-8859-1"
+>>
+>>     Hi everybody,
+>>
+>>     I have notices that there has been some modification to the ARM
+>>     architecture
+>>     on m5 repository.
+>>
+>>     I downloaded a few weeks ago the m5 with Mercurial and the ARM_SE
+>>     does not
+>>     compile. (I had been working with ALPHA but, research wise I need ARM)
+>>
+>>     I downloaded again from the repository and it still does not
+>>     compile; this
+>>     time with different errors.
+>>
+>>     Should it compile or is it not stable? Is there a stable version
+>>     of ARM on
+>>     m5 at the moment?
+>>
+>>     Thanks,
+>>
+>>     Javier Malave
+>>     Texas A&M University
+>>     Computer Science and Engineering Department
+>>     -------------- next part --------------
+>>     An HTML attachment was scrubbed...
+>>     URL:
+>>     http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090415/9e1f20e8/attachment.html
+>>
+>>     ------------------------------
+>>
+>>     Message: 2
+>>     Date: Wed, 15 Apr 2009 20:15:47 -0400
+>>     From: Gabriel Michael Black <gblack@eecs.umich.edu
+>>     <mailto:gblack@eecs.umich.edu>>
+>>     Subject: Re: [m5-users] ARM_SE compile error on M5
+>>     To: M5 users mailing list <m5-users@m5sim.org
+>>     <mailto:m5-users@m5sim.org>>
+>>     Message-ID: <20090415201547.2016919j2kue0zar@mail.eecs.umich.edu
+>>     <mailto:20090415201547.2016919j2kue0zar@mail.eecs.umich.edu>>
+>>     Content-Type: text/plain;       charset=ISO-8859-1;     DelSp="Yes";
+>>            format="flowed"
+>>
+>>     You shouldn't send any email to both m5-dev and m5-users. Almost
+>>     everyone that reads m5-dev also reads m5-users. What compile errors
+>>     are you getting and with what version of gcc? ARM_SE was just
+>>     integrated into our repository a little while ago and may not work,
+>>     but it should at least compile.
+>>
+>>     Gabe
+>>
+>>     Quoting Javier Jose <javier.jose@gmail.com
+>>     <mailto:javier.jose@gmail.com>>:
+>>
+>>     > Hi everybody,
+>>     >
+>>     > I have notices that there has been some modification to the ARM
+>>     architecture
+>>     > on m5 repository.
+>>     >
+>>     > I downloaded a few weeks ago the m5 with Mercurial and the
+>>     ARM_SE does not
+>>     > compile. (I had been working with ALPHA but, research wise I
+>>     need ARM)
+>>     >
+>>     > I downloaded again from the repository and it still does not
+>>     compile; this
+>>     > time with different errors.
+>>     >
+>>     > Should it compile or is it not stable? Is there a stable version
+>>     of ARM on
+>>     > m5 at the moment?
+>>     >
+>>     > Thanks,
+>>     >
+>>     > Javier Malave
+>>     > Texas A&M University
+>>     > Computer Science and Engineering Department
+>>     >
+>>
+>>
+>>
+>>
+>>
+>>     ------------------------------
+>>
+>>     Message: 3
+>>     Date: Wed, 15 Apr 2009 18:57:00 -0700
+>>     From: nathan binkert <nate@binkert.org <mailto:nate@binkert.org>>
+>>     Subject: Re: [m5-users] ARM_SE compile error on M5
+>>     To: M5 users mailing list <m5-users@m5sim.org
+>>     <mailto:m5-users@m5sim.org>>
+>>     Message-ID:
+>>
+>>      <217accd40904151857i372f394aq4e3ff1e0969cd624@mail.gmail.com
+>>     <mailto:217accd40904151857i372f394aq4e3ff1e0969cd624@mail.gmail.com>>
+>>     Content-Type: text/plain; charset=ISO-8859-1
+>>
+>>     Are you using the arm extras stuff from stephen hine's website, or are
+>>     you using the stuff that has been integrated into the development
+>>     tree?  (We only integrated it about a week or so ago)
+>>
+>>      Nate
+>>
+>>     On Wed, Apr 15, 2009 at 5:15 PM, Gabriel Michael Black
+>>     <gblack@eecs.umich.edu <mailto:gblack@eecs.umich.edu>> wrote:
+>>     > You shouldn't send any email to both m5-dev and m5-users. Almost
+>>     > everyone that reads m5-dev also reads m5-users. What compile errors
+>>     > are you getting and with what version of gcc? ARM_SE was just
+>>     > integrated into our repository a little while ago and may not work,
+>>     > but it should at least compile.
+>>     >
+>>     > Gabe
+>>     >
+>>     > Quoting Javier Jose <javier.jose@gmail.com
+>>     <mailto:javier.jose@gmail.com>>:
+>>     >
+>>     >> Hi everybody,
+>>     >>
+>>     >> I have notices that there has been some modification to the ARM
+>>     architecture
+>>     >> on m5 repository.
+>>     >>
+>>     >> I downloaded a few weeks ago the m5 with Mercurial and the
+>>     ARM_SE does not
+>>     >> compile. (I had been working with ALPHA but, research wise I
+>>     need ARM)
+>>     >>
+>>     >> I downloaded again from the repository and it still does not
+>>     compile; this
+>>     >> time with different errors.
+>>     >>
+>>     >> Should it compile or is it not stable? Is there a stable
+>>     version of ARM on
+>>     >> m5 at the moment?
+>>     >>
+>>     >> Thanks,
+>>     >>
+>>     >> Javier Malave
+>>     >> Texas A&M University
+>>     >> Computer Science and Engineering Department
+>>     >>
+>>     >
+>>     >
+>>     >
+>>     > _______________________________________________
+>>     > m5-users mailing list
+>>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>     >
+>>     >
+>>
+>>
+>>     ------------------------------
+>>
+>>     Message: 4
+>>     Date: Thu, 16 Apr 2009 23:39:34 +0800
+>>     From: Veydan Wu <veydanwu@gmail.com <mailto:veydanwu@gmail.com>>
+>>     Subject: [m5-users] a question about the decoder.cc
+>>     To: m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>     Message-ID:
+>>
+>>      <9090a0760904160839g3ede43bdva58d488a933d7c5c@mail.gmail.com
+>>     <mailto:9090a0760904160839g3ede43bdva58d488a933d7c5c@mail.gmail.com>>
+>>     Content-Type: text/plain; charset="iso-8859-1"
+>>
+>>     Hi all, I am confused about how the
+>>     build/ALPHA_FS/arch/alpha/decoder.cc
+>>     generated, it says in its header that the src/arch/alpha/isa/main.isa
+>>     generate it.  Now I want to add some attributes to some
+>>     instructions such as
+>>     Jsr.  In the decoder.cc:4061 there is a define for Jsr and assigne
+>>     some
+>>     attribute in the flas. If I want to add an extra one like
+>>      flags[isJsr] = true;
+>>
+>>     How can I modify the main.isa to let it generate what I want ?
+>>     Thanks !
+>>     -------------- next part --------------
+>>     An HTML attachment was scrubbed...
+>>     URL:
+>>     http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090416/4113e669/attachment-0001.htm
+>>
+>>     ------------------------------
+>>
+>>     _______________________________________________
+>>     m5-users mailing list
+>>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>     End of m5-users Digest, Vol 33, Issue 20
+>>     ****************************************
+>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

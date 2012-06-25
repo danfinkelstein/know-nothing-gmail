@@ -1,0 +1,73 @@
+If you are looking at the M5 Wiki, then you've found the documentation
+available.
+A lot of stuff you list below you'll just have to try and see if it
+works for you since it's kind of hard to anticipate what problems you
+may or may not have in the future.
+- Show quoted text -
+On Tue, Apr 28, 2009 at 9:14 AM, Javier Jose <javier.jose@gmail.com> wrote:
+> Hi Everyone,
+>
+> I know this question has been asked frequently now, but after looking
+> through tons of documentation and the mail-archive threads I am still not
+> clear at all how to get SPEC CPU2000 working on M5. Is it possible to find a
+> complete guideline/how_to that explains from source_code -> running (at
+> least in SE)?
+>
+> I have the CD and downloaded everything to my Ubuntu VM (where I have M5).
+> Since I've always used pre-compiled spec binaries I have never tried to
+> cross-compile the source code and it seems that a bunch of tools are needed
+> for it (for which the installation fails on my system) even if I just want
+> to cross-compile the source code using the alpha-gcc cross compiler given
+> the M5 wikipage.
+>
+> Thefore, in the case that i can't be redirected to a guidelin/how_to of some
+> sort, does anyone know how to succesfully do the following?:
+>
+> 1) Cross-compile SPEC CPU2000 benchmarks for ALPHA or at least get the
+> binaries.
+> 2) Run SPEC CPU 2000 in SE. Since I don't have the binaries I haven't been
+> able to try out the example given at the page
+>
+>             $ build/ALPHA_SE/m5.debug configs/example/se.py --cmd=eon00
+> --options="chair.control.cook
+>
+>             chair.camera chair.surfaces chair.cook.ppm ppm pixels_out.cook"
+>
+>                   Does it work? I really don't wish to use cpu2000.py since
+> I want to run SMT and multicore SMT configurations in SE mode.
+>
+> 3) For SMT and multicore SMT configurtions would the above example
+> (considering that it works for 1 CPU 1 Thread) work by just replicating the
+> workload as processes and assiging them to each thread per cpu? Just as the
+> hello_world example?
+>
+> 4) For the configuration in 3) , does SIMPOINT/FastFwd work?
+>
+> I am trying to run this benchmarks as my last resort for my course project
+> due this week (and also for further research) since other benchmarks such as
+> ALPBench and PARSEC run fine in singlethreaded mode but, when trying to do
+> multicore, SMT or both they abort and fail and I haven't been able to fix it
+> yet.
+>
+> I am running out of time and I'd appreciate any help.
+>
+> Thanks
+>
+> Javier
+> Texas A&M University
+> Computer Science and Engineering Department
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+===========
+Korey L Sewell
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

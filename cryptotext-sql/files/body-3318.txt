@@ -1,0 +1,41 @@
+ 
+    I am trying to run the spec cpu benchmark on simple timing cpu. I am using the se.py which is under the configs/example. I have done little modification on se.py and added L3 cache also in Caches.py under the configs/common folder. I am getting the little strange result of Instruction per cycle in m5stat.txt. The value for the number of instructions executed is 100000000 and number of cpu cycles simulated is 339719244. This looks very small IPC. I am using 2ns latency for L2 cache and 4 ns latency for L3 cache. Can you please suggest me why this strange result is obtained. I have attached my se.py and Caches.py. Also I am running this using the command: 
+  
+    >>>>/space/bipink/M5_5/m5-2.0b5/build/ALPHA_SE/m5.opt -d output /space/bipink/M5_5/m5-2.0b5/configs/example/se.py  -t -n 1
+ 
+My configuration file for the se.py  looks like:
+ 
+CPUClass.clock = '2GHz'
+np = options.num_cpus
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+              physmem = PhysicalMemory(range=AddrRange("512MB")),
+              membus = Bus(), mem_mode = test_mem_mode)
+system.physmem.port = system.membus.port
+ 
+# L3 Cache
+system.l3 = L3Cache(size='2MB')
+system.tol3Bus = Bus()
+system.l3.cpu_side = system.tol3Bus.port
+system.l3.mem_side = system.membus.port
+ 
+ 
+# end of L3 Cache
+system.l2 = L2Cache(size='1MB')
+system.tol2Bus = Bus()
+system.l2.cpu_side = system.tol2Bus.port
+system.l2.mem_side = system.tol3Bus.port
+ 
+for i in xrange(np): 
+     system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '16kB'),
+     L1Cache(size = '8kB')) 
+     system.cpu[i].connectMemPorts(system.tol2Bus)
+     system.cpu[i].workload = Benchmarks.SPECTWOLFEIO()
+     system.cpu[i].max_insts_all_threads = 100000000
+ 
+root = Root(system = system)
+ 
+Simulation.run(options, root, system, FutureClass)Also, what is "1t" means in "latency = Param.Latency('1t', "latency of an access")" in PhysicalMemory class in PhysicalMemory.py file.More immediate than e-mail? Get instant access with Windows Live Messenger.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

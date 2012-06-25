@@ -1,0 +1,17 @@
+Hi,
+ 
+I am attempting to add a new device to the
+full system mode. But during initialization, src/mem/bus.cc Bus::recvStatusChange(Port::Status
+status, int id) is called which sets the portId for all device ranges in
+portList (including the new one) to 0. The result is that memory receives pio
+access, because src/mem/bus.cc will recognize the address range, but the portId
+is now zero which is physical memory. The new pio_address is beyond physical
+memory so it is not clear why the memory is being assigned as the device for
+all pio accesses. Any thoughts would be helpful.
+ 
+Thanks,
+Richard.  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

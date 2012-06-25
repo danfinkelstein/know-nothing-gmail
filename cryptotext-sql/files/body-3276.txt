@@ -1,0 +1,5 @@
+Often times (for some workloads and configurations), my simulations end with message Aborted but the benchmarks seems to be working. No statistics are collected though. Under gdb it says program ended with code 03000.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

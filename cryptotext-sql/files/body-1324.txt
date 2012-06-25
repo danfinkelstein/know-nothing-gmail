@@ -1,0 +1,13 @@
+> Hi all, does M5 support SMT system?
+Yes, you can run SMT in SE mode. Currently, more SMT regressions are
+being added to ensure functionality across the board. Check "se.py"
+for the correct command line.
+> Can I instansitate more functional unit
+> to support it?
+Sure, the same way you can add more functional units to O3CPU.
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

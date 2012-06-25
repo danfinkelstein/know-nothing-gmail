@@ -1,0 +1,93 @@
+The first step to getting the O3 CPU to work is to get the timing CPU to
+work. It's probably a rather trivial fix, but the issue is where the fix
+should go. I imagine it has something to do with interrupts or timers
+(TICK/STICK compare), but exactly what is wrong I don't know. It's kind of
+hard know how long it will take to find the problem. Some issues can be
+tracked down rather quickly with the tracing built into M5, but since the
+interrupts are going to happen on different instructions because of the
+timing involved it's a bit trickier.
+Someone else on the mailing list would know better than I what it would
+take to make the O3 CPU work with SPARC_FS. Gabe did you changes for
+SPARC_SE o3 ever get merged into the repository? That seems like it would
+be the first step. Anyone else want to jump in?
+Thanks,
+Ali
+- Show quoted text -
+On Thu, 20 May 2010 12:19:24 -0700, Robert Chen <rchen@cs.ucla.edu> wrote:
+> Hello All,
+>
+> I am interested in getting the O3 CPU model to work for SPARC_FS.  My
+> research group is considering making these modifications ourselves.
+> Per the previous discussion below, it seems there are some issues with
+> getting this to work.  Would anyone be able to provide more details on
+> the issues that are preventing the timing and O3 CPUs from working in
+> SPARC_FS mode?  How much effort or development time would these issues
+> need?
+>
+> Thanks in advance!
+>
+> -Robert
+>
+>>Tue, 27 Apr 2010 02:29:14 -0700
+>>
+>>Hi Dave,
+>>
+>>M5 support for FS mode in SPARC is currently limited to a single core
+and
+>>an
+>>atomic CPU. While a lot of the code for multiple cores was written, it
+was
+>>never tested or completely finished. Additionally, there are some issues
+>>that
+>>prevent a timing CPU or the O3 CPU from working with SPARC in FS mode.
+>>
+>>Ali
+>>
+>>On Apr 26, 2010, at 7:24 PM, David Nellans wrote:
+>>
+>> Ali,
+>>
+>> Can you elaborate a more on the particularly useful bit?
+>>
+>> There might be others on the list, but there are at least a few of us
+>> are in the same boat that with Simic now being owned by windriver/intel
+>> there
+>> is a chance that academic licensing isn't going
+>> to play nearly as Virtutech did.  So at least at Utah we're trying to
+>> evaluate other options.  We were using SPARC under simics
+>> so that is what would be the least amount of work for us mentally
+>> transitioning to another platform like M5...
+>>
+>> cheers
+>> -dave
+>>
+>>
+>> On Mon, 2010-04-26 at 19:17 -0500, Ali Saidi wrote:
+>>> You can get the files from the opensparc website. However, unless
+you're
+>>> willing to put in a substantial amount of work I don't think you'll
+>>> find the
+>>> full-system SPARC support particularly useful.
+>>>
+>>> Ali
+>>>
+>>> On Apr 26, 2010, at 12:18 PM, Eberle wrote:
+>>>
+>>> > Does someone have a linux kernel and disk image for SPARC_FS, like
+the
+>>> > ones for ALPHA_FS?
+>>> > Or, at least, know how to build one?
+>>> >
+>>> > Thanks,
+>>> >
+>>> > --
+>>> > Eberle A. Rambo.
+>>> > Federal University of Santa Catarina (UFSC)
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

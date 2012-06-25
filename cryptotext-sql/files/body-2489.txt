@@ -1,0 +1,6 @@
+Hello All,I have written a piece of code using Pthreads which partitions a short time fourier transform across N threads.  I am now trying to collect some data to show that it actually goes faster with more threads in M5.  I am running my code in FS mode.  I just am having a problem figuring out which parameter will tell me the execution time or number of cycles it takes to execute a specific executable in the sim enviroment.  Any help?  Also, is it true the FS mode wont run more than two cores?  Is there a way I can force a thread to a speceific core in FS mode??
+Aaron-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

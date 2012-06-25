@@ -1,0 +1,178 @@
+I can shed a little light on the problem, though I don't have a solution... the key line is this:
+> Error in unproxying param 'cpu' of system.intrctrl
+If you look in src/python/m5/objects/IntrControl.py, you can see that the interrupt controller needs a pointer to the CPU, and the default value (the Parent.any "proxy") says go up the hierarchy and take the nearest CPU you find.  For sanity's sake, the resolution ("unproxying") process gives the "matched more than one" error if the result is ambiguous (>1 CPU at the first level at which it finds any CPUs), and that's what's happening with your two CPUs.
+So that's the problem, but I don't know how CPU switching is supposed to deal with the interrupt controller, so I can't tell you how to fix it... Kevin or someone else will have to do that.
+Steve
+James Anon wrote:
+- Show quoted text -
+Hi Kevin,
+Thanks again for the response.  I think I am following your instructions to a tee, however I still seem to be running into an error (specifically, it seems as though there is an ambiguity in the python with respect to the parent of the CPU).  My configuration is for the full system mode, so it is a bit more complicated than the example in the FAQ, but it essentially works as follows:
+run_cpu = AtomicSimpleCPU()
+switch_cpu = TimingSimpleCPU(defer_registration=True)
+mem_mode = 'timing'
+run_cpu.clock = '2GHz'
+switch_cpu.clock = '2GHz'
+switch_cpu_list = [(run_cpu,switch_cpu)]
+root = Root(clock = '1THz',
+            system = makeLinuxAlphaSystem(mem_mode, bm[0]))
+root.system.cpu = run_cpu
+root.system.switch_cpu = switch_cpu
+# I am a bit unsure about the next four lines, however the error is the
+# same with or without them
+run_cpu.connectMemPorts(root.system.membus)
+run_cpu.mem = root.system.physmem
+switch_cpu.connectMemPorts(root.system.membus)
+switch_cpu.mem = root.system.physmem
+m5.instantiate (root)
+m5.simulate(20000) m5.switchCpus(switch_cpu_list)
+exit_event = m5.simulate(maxtick)
+This causes the following error:
+Error in unproxying param 'cpu' of system.intrctrl
+Traceback (most recent call last):
+  File "<string>", line 1, in ?
+  File "build/ALPHA_FS/python/m5/main.py", line 314, in main
+    execfile(sys.argv[0], scope)
+  File "configs/example/fsSwap.py", line 65, in ?
+    m5.instantiate(root)
+  File "build/ALPHA_FS/python/m5/__init__.py", line 87, in instantiate
+    root.print_ini()
+  File "build/ALPHA_FS/python/m5/config.py", line 517, in print_ini
+    self._children[child].print_ini()
+  File "build/ALPHA_FS/python/m5/config.py", line 517, in print_ini
+    self._children[child].print_ini()
+  File "build/ALPHA_FS/python/m5/config.py", line 505, in print_ini
+    value = value.unproxy(self)
+  File "build/ALPHA_FS/python/m5/config.py", line 665, in unproxy
+    result, done = self.find(obj)
+  File "build/ALPHA_FS/python/m5/config.py", line 748, in find
+    return obj.find_any(self._pdesc.ptype)
+  File "build/ALPHA_FS/python/m5/config.py", line 466, in find_any
+    raise AttributeError, \
+AttributeError: parent.any matched more than one: <bound method TimingSimpleCPU.path of <m5.objects.SimpleCPU.TimingSimpleCPU object at 0xb78ff78c>> <bound method AtomicSimpleCPU.path of <m5.objects.SimpleCPU.AtomicSimpleCPU object at 0xb78ff74c>>
+This is the same error I have been getting (and actually why I replied before asking for a more specific example, as I thought I was doing something wrong in declaring the child to be instantiated).  As I said before, I know very little python, but it seems to be an ambiguity as to the parent of a CPU method.  Please let me know if you have any insight into what I can do to resolve this issue.
+Thank you once again,
+James
+On 9/13/06, *Kevin Lim* <ktlim@umich.edu <mailto:ktlim@umich.edu>> wrote:
+    Hi James,
+     
+    Sorry for the slow response.  I've had some pretty big deadlines due
+    recently, so I've been very busy with that.
+     
+    I looked at a config I had working a while ago for sampling and I
+    updated the Wiki with the information from it.  Basically you should
+    be able to assign the CPU you will switch in as a child of the
+    system that it will run in once it is switched in.  So if you had an
+    instantiation of System called my_system, you should be able to do
+    my_system.switch_cpu = my_switch_cpu.  In this case you're not
+    actually setting a parameter within System, but merely indicating
+    that it has a child object switch_cpu.
+     
+    Hopefully this helps,
+     
+    Kevin
+     
+    ------------------------------------------------------------------------
+    *From:* m5-users-bounces@m5sim.org
+    <mailto:m5-users-bounces@m5sim.org> [mailto:
+    m5-users-bounces@m5sim.org <mailto:m5-users-bounces@m5sim.org>] *On
+    Behalf Of *James Anon
+    *Sent:* Tuesday, September 05, 2006 4:07 PM
+    *To:* M5 users mailing list
+    *Subject:* Re: [m5-users] Using the SwitchCpu function
+     
+    Hi Kevin,
+    Thanks for the response.  I was wondering if you could expand a bit
+    upon exactly where to attach the child cpu list (possibly by just
+    providing a sample configuration file that uses the swithCpu).  I've
+    tried attaching it at both the root level, and at the system level;
+    but the problem is m5 dies with the error that there is no such
+    parameter at that level ( e.g. "AttributeError: Class Root has no
+    parameter cpuList").  I've looked through the root and system
+    objects and can't find any parameter associated with such a list.  I
+    also tried declaring a vector of cpus instead of just one ( e.g.        root.system.cpu = [cpu,cpu2]) to see if I could get it to
+    instantiate that way, but that usually ends in an error such as
+    "AttributeError: parent.any matched more than one:".  Finally, I've
+    also tried creating multiple systems ( root.testdsys and
+    root.drivesys), but I don't think that is giving me what I desire.
+    I'm still pretty new to Python so I apologize if there is a simple
+    way to look this up and I am just overlooking it, but as of this
+    moment I'm at a lost for how to solve this issue. 
+    James
+    On 9/3/06, *Kevin Lim* <ktlim@umich.edu <mailto:ktlim@umich.edu>> wrote:
+    I believe the problem here is that cpu and cpu2 need to be part of
+    the system (somewhere) in order to be instantiated by m5's
+    configuration parsing.  The error that it's giving you means that
+    you didn't have those two CPUs as part of the configuration that
+    actually gets instantiated.  Thus when it tries to switch between
+    the CPUs, it finds that the CPUs have no corresponding object within
+    the running instance of m5.  Try making your switch_cpu_list as a
+    child of either the root object or a system object (I believe you
+    should just be able to do "root.switch_cpus = switch_cpu_list" or
+    something along those lines).  I'll try to clean up the Wiki to
+    clarify that when I get a better example.
+     
+    Kevin
+     
+    ------------------------------------------------------------------------
+    *From:* m5-users-bounces@m5sim.org
+    <mailto:m5-users-bounces@m5sim.org>
+    [mailto:m5-users-bounces@m5sim.org
+    <mailto:m5-users-bounces@m5sim.org>] *On Behalf Of *James Anon
+    *Sent:* Friday, September 01, 2006 2:35 PM
+    *To:* m5-users@m5sim.org <mailto:m5-users@m5sim.org>- Show quoted text -
+    *Subject:* [m5-users] Using the SwitchCpu function
+     
+    I am trying to use the m5.switchCpus function to quickly simulate
+    pass the linux booting stage, and then switch to detailed mode after
+    the full system is booted.  I followed the wiki page and have made
+    minor modifications to the fs.py example script including:
+    cpu = AtomicSimpleCPU()
+    cpu2 = DetailedO3CPU()
+    mem_mode = 'timing'
+    .
+    .
+    .
+    switch_cpu_list = [(cpu,cpu2)]
+    m5.simulate(3663496423522)
+    m5.switchCpus(switch_cpu_list)
+    exit_event = m5.simulate(maxtick)
+    Most other options I've left the same from the fs.py script, but
+    when I run the simulator, it works perfectly until the switch point
+    and then dies with:
+    Switching CPUs
+    Traceback (most recent call last):
+      File "<string>", line 1, in ?
+      File "build/ALPHA_FS/python/m5/main.py", line 314, in main
+        execfile(sys.argv[0], scope)
+      File "configs/example/fsSwap.py", line 86, in ?
+        m5.switchCpus(switch_cpu_list)
+      File "build/ALPHA_FS/python/m5/__init__.py", line 206, in switchCpus
+        new_cpu.takeOverFrom(old_cpus[index])
+      File "build/ALPHA_FS/python/m5/config.py", line 570, in takeOverFrom
+        self._ccObject.takeOverFrom(cpu_ptr)
+    AttributeError: 'NoneType' object has no attribute 'takeOverFrom'
+    Is there something I'm forgetting to instantiate?  Any help would be
+    greatly appreciate.
+    Ps.  Thanks for setting up the WIKI page.  It has been a tremendous
+    help, and in my opinion a great improvement over the documentation
+    that was available for the previous version of m5.  I hope the
+    community continues to add to it!
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

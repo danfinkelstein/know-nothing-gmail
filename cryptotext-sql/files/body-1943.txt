@@ -1,0 +1,28 @@
+Hi, Rick,Where can I find the edition of Wattch you mentioned?Can you please send one copy of it to me?Thanks.Best regards,Xiongfei - Show quoted text -On Wed, Feb 11, 2009 at 2:09 AM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+I am not currently working on an update to Wattch. The edition that you
+received during the summer was the most recent. I am working on
+integrating a more modern power framework with the help of Sheng Li, but
+this is in development.
+Best,
+-Rick
+Sujay Phadke wrote:
+> Hello,
+>       Could someone give an update on the integration on M5 and
+> Wattch. Is anyone working on this now?
+>
+> - Sujay
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

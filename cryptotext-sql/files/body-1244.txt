@@ -1,0 +1,201 @@
+Hello,Make sure you are applying to the corresponding version of m5...more specfically the correct change set. Make sure u also apply the patches in correct order, and are not missing any other patches.- Show quoted text -
+On Tue, Jun 30, 2009 at 10:36 PM, Shivananda Reddy <shiva_b05781@neo.tamu.edu> wrote:- Show quoted text -
+Hello,
+ 
+I am getting the following errors while applying a patch “wattch.diff”
+using "hg qpush" command.
+Mercurial version used is 1.0.1. 
+Does anyone has any idea, how to fix these errors?
+ 
+Here is log of hg qpush command:
+applying wattch.diff
+patching file SConstruct
+Hunk #1 FAILED at 575
+Hunk #2 FAILED at 609
+2 out of 2 hunks FAILED --
+saving rejects to file SConstruct.rej
+patching file
+configs/common/Simulation.py
+Hunk #1 FAILED at 239
+1 out of 1 hunk FAILED --
+saving rejects to file configs/common/Simulation.py.rej
+patching file
+src/arch/alpha/tlb.hh
+Hunk #1 FAILED at 65
+1 out of 1 hunk FAILED --
+saving rejects to file src/arch/alpha/tlb.hh.rej
+patching file
+src/cpu/o3/alpha/cpu_builder.cc
+Hunk #1 FAILED at 193
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/alpha/cpu_builder.cc.rej
+patching file
+src/cpu/o3/bpred_unit.hh
+Hunk #1 FAILED at 59
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/bpred_unit.hh.rej
+patching file
+src/cpu/o3/bpred_unit_impl.hh
+Hunk #1 FAILED at 34
+Hunk #2 FAILED at 151
+Hunk #3 FAILED at 247
+3 out of 3 hunks FAILED --
+saving rejects to file src/cpu/o3/bpred_unit_impl.hh.rej
+patching file
+src/cpu/o3/commit_impl.hh
+Hunk #1 FAILED at 896
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/commit_impl.hh.rej
+patching file
+src/cpu/o3/cpu.cc
+Hunk #1 FAILED at 75
+Hunk #2 FAILED at 194
+Hunk #3 FAILED at 397
+3 out of 3 hunks FAILED --
+saving rejects to file src/cpu/o3/cpu.cc.rej
+patching file
+src/cpu/o3/cpu.hh
+Hunk #1 FAILED at 51
+Hunk #2 FAILED at 61
+Hunk #3 FAILED at 102
+Hunk #4 FAILED at 147
+4 out of 4 hunks FAILED --
+saving rejects to file src/cpu/o3/cpu.hh.rej
+patching file
+src/cpu/o3/fetch_impl.hh
+Hunk #1 FAILED at 112
+Hunk #2 FAILED at 638
+Hunk #3 FAILED at 1283
+3 out of 3 hunks FAILED --
+saving rejects to file src/cpu/o3/fetch_impl.hh.rej
+patching file
+src/cpu/o3/iew_impl.hh
+Hunk #1 FAILED at 1416
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/iew_impl.hh.rej
+patching file
+src/cpu/o3/inst_queue_impl.hh
+Hunk #1 FAILED at 793
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/inst_queue_impl.hh.rej
+patching file
+src/cpu/o3/lsq_unit.hh
+Hunk #1 FAILED at 584
+Hunk #2 FAILED at 668
+2 out of 2 hunks FAILED --
+saving rejects to file src/cpu/o3/lsq_unit.hh.rej
+patching file
+src/cpu/o3/lsq_unit_impl.hh
+Hunk #1 FAILED at 705
+Hunk #2 FAILED at 942
+2 out of 2 hunks FAILED --
+saving rejects to file src/cpu/o3/lsq_unit_impl.hh.rej
+patching file
+src/cpu/o3/rename_impl.hh
+Hunk #1 FAILED at 987
+1 out of 1 hunk FAILED --
+saving rejects to file src/cpu/o3/rename_impl.hh.rej
+patching file
+src/mem/cache/cache.hh
+Hunk #1 FAILED at 45
+Hunk #2 FAILED at 57
+2 out of 2 hunks FAILED --
+saving rejects to file src/mem/cache/cache.hh.rej
+patching file
+src/mem/cache/cache_impl.hh
+Hunk #1 FAILED at 69
+Hunk #2 FAILED at 262
+2 out of 2 hunks FAILED --
+saving rejects to file src/mem/cache/cache_impl.hh.rej
+patching file
+src/python/m5/simulate.py
+Hunk #1 FAILED at 35
+Hunk #2 FAILED at 51
+2 out of 2 hunks FAILED --
+saving rejects to file src/python/m5/simulate.py.rej
+patching file
+src/python/swig/core.i
+Hunk #1 FAILED at 66
+1 out of 1 hunk FAILED --
+saving rejects to file src/python/swig/core.i.rej
+patching file src/python/swig/pyobject.hh
+Hunk #1 FAILED at 68
+1 out of 1 hunk FAILED --
+saving rejects to file src/python/swig/pyobject.hh.rej
+patching file
+src/sim/eventq.hh
+Hunk #1 FAILED at 163
+1 out of 1 hunk FAILED --
+saving rejects to file src/sim/eventq.hh.rej
+patching file
+src/sim/simulate.cc
+Hunk #1 FAILED at 37
+Hunk #2 FAILED at 55
+Hunk #3 FAILED at 70
+3 out of 3 hunks FAILED --
+saving rejects to file src/sim/simulate.cc.rej
+patch failed, unable to
+continue (try -v)
+: No such file or
+directory
+: No such file or
+directoryy
+: No such file or
+directory
+: No such file or
+directoryr.cc
+: No such file or
+directory
+: No such file or
+directoryhh
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directoryhh
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+: No such file or
+directory
+cleaning up working
+directory...done
+abort: '\n' and '\r'
+disallowed in filenames: 'src/power/SConscript\r'
+ 
+ 
+Thanks in advance.
+ 
+Best Regards,
+-Shiva
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

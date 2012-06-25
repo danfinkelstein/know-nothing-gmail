@@ -1,0 +1,29 @@
+Hi all,
+I am attempting to run parsec with O3 but an itbmiss occurs and then I
+never see the cpu run again. Any ideas what might be happening? A
+partial trace is given below.
+Best,
+-Rick
+2067 FullO3CPU: Ticking main, FullO3CPU.
+   2068 2062353094000: system.detail_cpu0.fetch: Running stage.
+   2069 2062353094000: system.detail_cpu0.fetch: Attempting to fetch
+from [tid:0]
+   2070 2062353094000: system.detail_cpu0.fetch: [tid:0]: Attempting to
+translate and read instruction, starting at PC 0x120027078.
+   2071 2062353094000: global: DynInst: [sn:340354] Instruction created.
+Instcount for system.detail_cpu0 = 41
+   2072 2062353094000: system.detail_cpu0.fetch: [tid:0]: Blocked, need
+to handle the trap.
+   2073 2062353094000: system.detail_cpu0.fetch: [tid:0]: fault
+(itbmiss) detected @ PC 0x1200270782062353094000:
+system.detail_cpu0.fetch: Deactivating stag        e.
+   2074 2062353094000: system.detail_cpu0: Activity: 0
+   2075 2062353094000: system.detail_cpu0.decode: Processing [tid:0]
+   2076 2062353094000: system.detail_cpu0.decode: [tid:0]: Not blocked,
+so attempting to run stage.
+   2077 2062353094000: system.detail_cpu0.decode: [tid:0] Nothing to do,
+breaking out early.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

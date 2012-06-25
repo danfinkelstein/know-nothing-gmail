@@ -1,0 +1,46 @@
+Based on the results I am getting, for PARSEC benchmarks, the OoO
+preformance is really bad, there are to many hw_mfpr and hw_mtpr,
+instructions. I am trying to figure out why I am in the PALcode so
+often (any ideas on how to figure this out?). I am running
+Blackscholes, which is a relatively simple PARSEC benchmark.
+I need to do more research, but I dont think this is caused at all for
+itb and dtb misses (i made them really large just in case).
+Right now for blackscholes, which isnt close to finish executing
+(about 30%) I have it so it will execute  1e9 instructions (running
+two cores),  From my perl scripts it seems to have it fetched 13
+million hw_mfpr and mtpr instructions (fetched, not committed). There
+is something really wrong with that ratio.
+Thanks,
+EF
+- Show quoted text -
+On Mon, Oct 12, 2009 at 9:28 PM, nathan binkert <nate@binkert.org> wrote:
+>> I noticed that the M5 pal code is based on the ev5, is it possible to
+>> make it ev6 or ev67? Or are there no benefits?
+>>
+>> My main overall issue I am thinking about is  I am trying to see if
+>> their is any problems in my compiled benchmarks, as I have made them
+>> ev67 code, ev5 has given me lower ipc as well as a few problems in
+>> unimplemented SIMD like instructions. I am not happy about my compiled
+>> PARSEC benchmarks IPC, the main problem is I my simulations keep going
+>> into palmode, stalling my OoO processor, and killing IPC.
+>
+> While we model EV5 PAL, we more or less model the EV67 ISA (though,
+> there may very well be missing instructions as you've mentioned.)  The
+> issues that you're seeing have more to do with the fact that most pal
+> instructions are serializing.  It's just never been anything that
+> we've decided to optimize.  Fixing it would likely require both
+> rewriting some of the palcode and changing the way that we deal with
+> the pal instructions in o3.
+>
+> My first question is, why are you entering PAL so often?
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

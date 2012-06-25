@@ -1,0 +1,46 @@
+Hi Rick,
+         I was trying this very thing. I made a new simobject as suggested
+by Steve. I think we can pass a packet ptr to this which has a pointer to
+the system object. That object can access all the required variables. I have
+not been able to actually pass the params since the compiler keeps giving me
+en error.
+Maybe someone can elaborate more on this.
+- Sujay
+- Show quoted text -
+----- Original Message -----
+From: "Rick Strong" <rstrong@cs.ucsd.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Thursday, July 31, 2008 2:35 AM
+Subject: [m5-users] How to use Impl::Params of src/cpu/o3/cpu.hh FullO3CPU()
+in another file
+> Hi,
+>
+> I am adding support to dynamically set structure parameters sizes in
+> wattch and want to pass the struct DerivO3CPUParams to the wattch
+> initialization section. The easiest way to do this for every cpu  to
+> initialize its wattch structure during initialization of the cpu class.
+>
+> I decided to put the initialization call in
+> src/cpu/cpu.cc::FullO3CPU(...) constructor  and pass params
+> (Impl::Params) to the wattch initialization function. I then included
+> params/DerivO3CPU.hh in the wattch file, but the compiler does not like
+> this. I also tried to do a dynamic_cast<DerivO3CPUParams>(params) where
+> params is Impl::Params of src/cpu/cpu.hh::FullO3CPU class. I have
+> resigned that I have no idea how the params system is working ... lol.
+>
+> So my question is, what file do I have to include in wattch so I can
+> access the Impl::params parameter of FullO3CPU after I pass it to the
+> function. Also, do I need to do a dynamic_cast? If you could point me to
+> an example, that would be equally helpful.
+>
+> -Rick
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

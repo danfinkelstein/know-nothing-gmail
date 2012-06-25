@@ -1,0 +1,14 @@
+If you go to:
+        http://www.m5sim.org/wiki/index.php/Download
+And click the link that says "Full System Files". As the description
+states, it includes the pre-compiler Linux kernel, the PAL (I believe
+it includes the >4 core PAL code already built now), and a filesystem.
+        - Clint
+On Feb 5, 2009, at 3:30 PM, Bob Nagel wrote:
+> Hello Clint thanks for the answer, I have been looking for the kernel
+> that you mentioned but I could not find it, can you point me to the
+> download place?. Sorry for this silly question thank you.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

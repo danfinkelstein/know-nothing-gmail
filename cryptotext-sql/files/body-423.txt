@@ -1,0 +1,39 @@
+You could make your device actually process the data in the function
+that receives it. If you want that to have latency or to process the
+data gradually (although it sounds like you don't) you could use that
+function to schedule an event or events for later. Conceptually you'd be
+implementing an interrupt (or event, or callback, or ...) driven
+architecture instead of a polling architecture, but external to the
+device it would look the same. On top of being easier to implement, your
+simulation should run faster.
+Gabe
+Veydan Wu wrote:
+> I just want my I/O device to run in parallel with CPU. Does the CPUs
+> run over and over? More specifically speaking, CPU may send something
+> to the I/O device to handle, but the time is not fixed. So it is
+> better to let the device keep running and when it receive data ( by
+> the write() function ), it can handle it. I do want the handling
+> invoked within the write() function, I want it to act like a real
+> hardware device. Is there any way I can do this? Thank you very much!
+>
+> Weidan
+>
+> 在 2010年3月12日 下午4:44，Gabe Black <gblack@eecs.umich.edu
+> <mailto:gblack@eecs.umich.edu>>写道：
+>
+>     What are you implementing that needs to run over and over so often?
+>
+>     Gabe
+>
+>
+>
+- Show quoted text -> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

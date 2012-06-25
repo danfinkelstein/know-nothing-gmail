@@ -1,0 +1,23 @@
+nevermind, its fixed.
+---- Original message ----
+>Date: Thu, 19 Mar 2009 18:13:12 -0500 (CDT)
+>From: Shoaib Akram <sakram3@illinois.edu>
+>Subject: [m5-users] Regarding modified fs.py
+>To: m5-users@m5sim.org
+>
+>I changed fs.py to include private l2 caches and I am getting the following error.
+>
+>m5.opt: build/ALPHA_FS/cpu/simple/atomic.cc:547: Fault AtomicSimpleCPU::write(T, Addr, unsigned int, uint64_t*) [with T = uint64_t]: Assertion `!pkt.isError()' failed.
+>
+>Any idea? fs.py is attached for reference please. Thanks.
+>________________
+>fs.py (7k bytes)
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

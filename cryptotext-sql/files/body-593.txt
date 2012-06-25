@@ -1,0 +1,6 @@
+Hi, guys,I have a quick question about the cache victim's ready time issues. I read the source file "cache_impl.hh" and found that in the function "allocateBlock", the implementation directly evict the victim block ( or put it into the "writebacks" list if it is dirty) without considering the victim's "whenReady" field. Thus, I am wondering if the case that a victim's "whenReady" is greater than "curTick"+"hitLatency" exists. If the case does potentially exist, I suspect that directly evicting the block off the cache without adding extra latency will incur inaccuracy in computation. I don't know if my understanding is correct, and I would greatly appreciate your help!
+Thanks,Leonard-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

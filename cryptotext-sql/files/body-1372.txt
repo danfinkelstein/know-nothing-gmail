@@ -1,0 +1,80 @@
+By default, I have a bus frequency of 1ns and a cpu_ratio of 5. So that means that memory operates at 200MHz. Is this right? If so, can the access latencies be as small as 20-60 ps?
+- Sujay
+----- Original Message ----- From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, November 12, 2007 3:10 PM- Show quoted text -
+Subject: Re: [m5-users] 2.0b4 PhysicalMemory::doAtomicAccess()forExclusiveReads Problem
+It's in picoseconds.  In b4 the parameters were changed to be Latency numbers instead of ints forcing the parameter to be specified in units  of time (e.g. "1ns")
+Ali
+On Nov 12, 2007, at 2:37 PM, Sujay Phadke wrote:
+Thanks. How does the latency calculated in dram.cc translate to  actual latency? Is the latency calculated (which is of type int) in  terms of system clock cycles, or cpu clock cycles, or something else?
+Currently, I get lat values between 25 to 60, most of the times.
+- Sujay
+----- Original Message ----- From: "Steve Reinhardt"  <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, November 11, 2007 11:27 PM
+Subject: Re: [m5-users] 2.0b4 PhysicalMemory::doAtomicAccess() forExclusiveReads Problem
+I did; it's earlier in this thread (a posting from me just about a  day ago).
+Steve
+On 11/11/07, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+How did you do the random latency hack? Could you post the code?
+Thanks,
+Sujay
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Sunday, November 11, 2007 11:11 PM
+Subject: Re: [m5-users] 2.0b4 PhysicalMemory::doAtomicAccess() for
+ExclusiveReads Problem
+> Thanks... I grabbed your binary and now I get the same assertion
+> failure even with my simple random latency hack.  So it is
+something
+> weird in our code for sure.  The really strange thing is that it
+> initially hit the assertion after something like 8.6B ticks, but
+when
+> I turned tracing on it hit it after only 9M ticks.  For tracing to
+> affect the simulation like that I'm guessing it's some kind of bad
+> pointer or memory allocation bug.  I'm running under valgrind
+now but
+> haven't turned up anything yet.
+>
+> I'll keep you posted...
+>
+>>The method of calculating
+>> latencies based upon some known state at the time the packet
+arrives
+>> won't work for me, because the latency is not only variable but
+is >> also
+>> nondeterministic at that point. A later request could have higher
+>> priority than earlier ones and thus dynamically increase the
+latency >> of
+>> the earlier requests.
+>
+> Yea, that makes sense.
+>
+> Steve
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

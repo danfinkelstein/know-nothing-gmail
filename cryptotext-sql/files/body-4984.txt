@@ -1,0 +1,41 @@
+Alain Kalixte wrote:
+It seems to work well with the "hello test". However, when I use a program such as one of the spec benchmark, I have the following output:
+command line: build/ALPHA_SE/m5.debug -d /tmp/output.m5 configs/example/cmp-2609.py -t
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to 0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff8
+m5.debug: build/ALPHA_SE/mem/request.hh:229: int Request::getThreadNum(): Assertion `validCpuAndThreadNums' failed.
+Program aborted at cycle 1864793
+Aborted
+Have you applied patch 1 from the web site?  This looks like the bug that that fixes.
+In addition, even when I use the hello test and I try to play with the coherence protocol, I got an error. I tried to set the coherence protocol in class  L1 as follows:
+protocol = CoherenceProtocol(protocol='mesi')
+This is what I got:
+File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+  File "build/ALPHA_SE/python/m5/config.py", line 846, in __getattr__
+  File "build/ALPHA_SE/python/m5/config.py", line 842, in __getattr__
+RuntimeError: maximum recursion depth exceeded in cmp
+Error setting param L1.protocol to root
+It seems to me that the coherence protocol should be initialized in the cache, right ?
+This is an m5 bug... the CoherenceProtocol object definition isn't getting loaded when you import m5.objects.  Here's the (trivial) patch:
+===== src/python/m5/objects/__init__.py 1.33 vs edited =====
+--- 1.33/src/python/m5/objects/__init__.py      2006-09-04 10:52:24 -07:00
++++ edited/src/python/m5/objects/__init__.py    2006-09-18 10:54:44 -07:00
+@@ -14,6 +14,7 @@
+               'Bus',
+               'Bridge',
+               'Checker',
++             'CoherenceProtocol',
+               'Debug',
+               'Device',
+               'DiskImage',
+Unfortunately MP coherence isn't quite working in 2.0beta1, so you're going to be limited to multiprogrammed workloads in the short term (i.e. setting the coherence protocol won't matter).  We're hoping to get that taken care of very soon, like in the next week or so.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

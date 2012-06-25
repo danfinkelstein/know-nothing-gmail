@@ -1,0 +1,267 @@
+I'm not sure what's up with the MAKEDEV script, it obviously used to work but it has been a long time.  Actually, now that I think about it, it probably has to do with your platform, I bet the MAKEDEV shipped with ptx-dist doesn't work with your platform, and if you typed "which MAKEDEV" on your machine you'd find a local MAKEDEV that would work.
+However, I'm not sure there was anything wrong with what you saw earlier. If you were just running plain old fs.py, then it wasn't stalled, it was just behaving normally.  fs.py with no arguments just boots linux and does nothing after that, but continues to just...run.  it will go until you kill it.
+if you use the m5term utility, you can see the output from the boot process and note that it will boot, get to a prompt, and just wait for input from there.  Lisa- Show quoted text -On Wed, Jan 28, 2009 at 9:31 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+Hi, Lisa.I have tried to run it in this way, I began without sudo and NOT as root, and the initdev.sh asked me if I have a sudo access and I entered the password, and then an error came up!
+Is there any problem with the MAKEDEV, the error says the MAKEDEV fails to run as root.
+I built the image from the scratch because I want to run some programs I wrote myself on M5 in full system mode. I have compiled the alpha-fs mode and when I ran, everything seemed OK as the document says, but it just stalled there and nothing continued. It looked like this:
+M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Jan 10 2009 00:08:03M5 revision Unknown:UnknownM5 commit date Unknown
+M5 started Jan 29 2009 10:25:59M5 executing on ubuntucommand line: build/ALPHA_FS/m5.opt -d /tmp/output configs/example/fs.pyGlobal frequency set at 1000000000000 ticks per secondwarn: kernel located at: /media/Study/CPU/CPUsource/M5/m5-stable-733318abb7b1/dist/m5/system/binaries/vmlinux
+Listening for system connection on port 3456      0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 20090: system.remote_gdb.listener: listening for remote gdb #0 on port 7000**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...and nothing continues, the simulator just stalls here...I could not find out where the problem is and I have sent a question to the maillist but no one have encountered this.
+So I decided to build an image myself, I hope it will work.
+I think it was a problem with the initdev.sh script - what if you run
+ptxdist images NOT as root or sudo at all?  initdev.sh should ask you if you
+have sudo access, and just tell it yet and it will ask for your password
+from there.
+is there a reason you must build an image from scratch yourself?
+lisa
+On Wed, Jan 28, 2009 at 11:45 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, Lisa. Thanks for your reply.
+>
+> I have tried both ways, I ran it with sudo too but the error is the same.
+>
+> I have been working on this for several weeks and finally get to the last
+> step, that's frustrated !
+>
+>>
+>>
+>> I have a vague recollection of something like that happening.  I think,
+>> for
+>> some reason, the script worked if I ran it with sudo instead of as root.
+>>
+>> I'm changing the wiki now to warn that this whole ptx-dist process is
+>> pretty
+>> deprecated and not well-supported, but if you got that far, that's great!
+>>
+>> Lisa
+>>
+>> On Wed, Jan 28, 2009 at 6:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+>>
+>> > Hi, I used the ptxdist to create an full system image to run on M5, and
+>> I
+>> > have reached the last  step. When I run the command * ptxdist images*, I
+>> > just got an error !
+>> >
+>> > The error seems simple:
+>> >
+>> > *Failed to
+>> run*/media/Study/CPU/CPUsource/M5/linux-dist/lib/ptxdist-0.10.3/m5_files/MAKEDEV
+>> > -d /media/Study/CPU/CPUsource/M5/linux-dist/my_workspace/root/dev
+>> console
+>> > random urandom null hda hdb hdc hdd sda* as root*
+>> >
+>> > but the problem is I run the command under root
+>> >
+>> > root@ubuntu:/media/Study/CPU/CPUsource/M5/linux-dist/my_workspace#
+>> ptxdist
+>> > images
+>> >
+>> > Does anyone encounter such an problem yet? I have absolutely no idea now
+>> !
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> -------------- next part --------------
+>> An HTML attachment was scrubbed...
+>> URL:
+>> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090128/e12c7d01/attachment.htm
+>>
+>> ------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> End of m5-users Digest, Vol 30, Issue 25
+>> ****************************************
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090128/f29af26b/attachment-0001.htm
+------------------------------
+Message: 2
+Date: Wed, 28 Jan 2009 19:39:49 +0100
+From: Angela Carlsson <calendo@hotmail.com>
+Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+        implemention
+To: <m5-users@m5sim.org>
+Message-ID: <COL101-W368BFEA73333A5F0F87C3A1C80@phx.gbl>
+Content-Type: text/plain; charset="iso-8859-1"
+Hello Clint, thanks for your answer and for your advice of using the priority as a way to identify the cores, it is a good idea.
+I hope you can help me. I have been looking through the code about the policies trying to do what I am looking for, but the code is a little complex. Do you know if FCFS serves the first command that finds in the biu?. The reason to ask this, is that reordering the biu according to my policy is very simple, I am thinking that if I can reorder the biu and if FCFS take the first command, in this way is easy to do what I am trying to do. I just put in the first position of the biu an access of core x, and that's all.
+Regarding the statistics, is there any stat related with the hits and the misses?, I am printing the stats, with  mem_print_stat(...) but I do not see any parameter to print the hits and miss in the memory. Do you know any parameter to print that information?. Thank you.
+Thanks a lot for your help, it is really appreciable.
+From: cws3k@cs.virginia.eduTo: m5-users@m5sim.orgDate: Tue, 27 Jan 2009 13:36:31 -0500Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim implemention
+Ah, I see what you are saying, but that functionality actually resides within DRAMsim itself. The doTiming method of the DRAMsim M5 object can take as many packets as the network can give it, but it simply finds a free slot in the BIU and places it there for DRAMsim to process on the next memory controller cycle. On line 240, you will see the priority variable which is constantly set to zero. According to the DRAMsim code, that is intended for a purpose such as you are looking for, but I don't believe it does the correct thing right now. If you have the priority field set based on the core number, and then you modify/create a policy to do as you want within DRAMsim, you should be able to get the desired behavior.
+The biggest issue you may face is the fact that to actually make the system work, you would have to have requests arrive at (nearly) the same time. If the memory controller is connected to a bus, this is not possible, which would skew the results. If the pressure on the memory system is high enough, then it would be possible to see the selection policy in action, but it is more difficult to guarantee.
+Hopefully this information helps.
+- Clint
+On Jan 27, 2009, at 11:52 AM, Angela Carlsson wrote:
+Hello Clint thanks a lot for the patch. I have been testing it and it seems that works fine. Thanks a lot. I have a question regarding the reordering of the accesses. Do the selection policies Greedy, FCFS... work?. What I mean is that when there are several accesses at the *same* time all the accesses are stored inside of the transaction queue in DRAMSim? or on the contrary the accesses are sent one by one to DRAMSim (then DRAMSim process the petition and send the answer, in this case DRAMSim works as FCFS). In this last case then they are stored in the retry list in the bus.cc file. My interest for this is to give some priorities for accesses from some cores, that's why I am asking this, because I want to know who stores the petition, to reorder them there. I hope you knwo what I mean if not please let me know. Thanks a lot in advance. > Date: Fri, 23 Jan 2009 12:41:10 -0500> From: cws3k@cs.virginia.edu> To: m5-users@m5sim.org> Subject: [m5-users] [PATCH] Beta patch for M5
+ 2.0 DRAMsim implemention> > # HG changeset patch> # User Clint Smullen <cws3k@cs.virginia.edu>> # Date 1232732406 18000> # Node ID a95dd3a28ecb82a074de030367fe641d52aaf148> # Parent 0397aa216e2290a50fb7138bd28563926573c929> Beta patch for M5 2.0 DRAMsim implemention.
+Con el nuevo Windows Live lo tendr?s todo al alcance de tu mano _______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_________________________________________________________________
+Consigue gratis el nuevo Messenger. ?Desc?rgatelo!
+http://download.live.com/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090128/5651f368/attachment-0001.htm
+------------------------------
+Message: 3
+Date: Wed, 28 Jan 2009 14:06:15 -0500
+From: Clint Smullen <cws3k@cs.virginia.edu>
+Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+        implemention
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <B1E888B1-EC7B-4ACA-BCF6-09F08530846C@cs.virginia.edu>
+Content-Type: text/plain; charset="iso-8859-1"
+Changing the BIU ordering would change the order in which they are
+converted into transactions. The policy itself affects the
+transactions, so if you were able to reorder the entries in the BIU
+before it reached the transaction scheduler, you could make an FCFS
+system to whatever you wanted it to. The only issue, is that the
+policy applies not only to memory requests, but the commands that each
+request is made up of. The get_next_cmd_to_issue does the analog of
+get_next_request_from_biu for commands.
+By reordering the BIU and using the FCFS policy, what should happen is
+that the earlier requests will always have their commands executed
+before any other, though commands from multiple requests may still be
+executed in parallel when they do not conflict. If you actually
+changed the policy to enforce that all commands from an earlier
+request would go ahead of all others, then you would reduce the memory
+system performance in a very unrealistic way. However, reordering the
+BIU entries (as long as you pay attention to read and write ordering
+constraints) should not have any adverse effects on overall system
+performance.
+I'm not sure what you mean by hits and misses, as a centralized main
+memory always has 100% hit rate (since it is neither a cache nor a
+memory slice).
+        - Clint
+On Jan 28, 2009, at 1:39 PM, Angela Carlsson wrote:
+> Hello Clint, thanks for your answer and for your advice of using the
+> priority as a way to identify the cores, it is a good idea.
+>
+> I hope you can help me. I have been looking through the code about
+> the policies trying to do what I am looking for, but the code is a
+> little complex. Do you know if FCFS serves the first command that
+> finds in the biu?. The reason to ask this, is that reordering the
+> biu according to my policy is very simple, I am thinking that if I
+> can reorder the biu and if FCFS take the first command, in this way
+> is easy to do what I am trying to do. I just put in the first
+> position of the biu an access of core x, and that's all.
+>
+> Regarding the statistics, is there any stat related with the hits
+> and the misses?, I am printing the stats, with  mem_print_stat(...)
+> but I do not see any parameter to print the hits and miss in the
+> memory. Do you know any parameter to print that information?. Thank
+> you.
+>
+> Thanks a lot for your help, it is really appreciable.
+>
+>
+>
+> From: cws3k@cs.virginia.edu
+> To: m5-users@m5sim.org
+> Date: Tue, 27 Jan 2009 13:36:31 -0500
+> Subject: Re: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+> implemention
+>
+>
+> Ah, I see what you are saying, but that functionality actually
+> resides within DRAMsim itself. The doTiming method of the DRAMsim M5
+> object can take as many packets as the network can give it, but it
+> simply finds a free slot in the BIU and places it there for DRAMsim
+> to process on the next memory controller cycle. On line 240, you
+> will see the priority variable which is constantly set to zero.
+> According to the DRAMsim code, that is intended for a purpose such
+> as you are looking for, but I don't believe it does the correct
+> thing right now. If you have the priority field set based on the
+> core number, and then you modify/create a policy to do as you want
+> within DRAMsim, you should be able to get the desired behavior.
+>
+> The biggest issue you may face is the fact that to actually make the
+> system work, you would have to have requests arrive at (nearly) the
+> same time. If the memory controller is connected to a bus, this is
+> not possible, which would skew the results. If the pressure on the
+> memory system is high enough, then it would be possible to see the
+> selection policy in action, but it is more difficult to guarantee.
+>
+> Hopefully this information helps.
+>
+> - Clint
+>
+> On Jan 27, 2009, at 11:52 AM, Angela Carlsson wrote:
+>
+> Hello Clint thanks a lot for the patch. I have been testing it and
+> it seems that works fine. Thanks a lot.
+>
+> I have a question regarding the reordering of the accesses. Do the
+> selection policies Greedy, FCFS... work?. What I mean is that when
+> there are several accesses at the *same* time all the accesses are
+> stored inside of the transaction queue in DRAMSim? or on the
+> contrary the accesses are sent one by one to DRAMSim (then DRAMSim
+> process the petition and send the answer, in this case DRAMSim works
+> as FCFS). In this last case then they are stored in the retry list
+> in the bus.cc file. My interest for this is to give some priorities
+> for accesses from some cores, that's why I am asking this, because I
+> want to know who stores the petition, to reorder them there.
+>
+> I hope you knwo what I mean if not please let me know. Thanks a lot
+> in advance.
+>
+>
+> > Date: Fri, 23 Jan 2009 12:41:10 -0500
+> > From: cws3k@cs.virginia.edu
+> > To: m5-users@m5sim.org
+> > Subject: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim
+> implemention
+> >
+> > # HG changeset patch
+> > # User Clint Smullen <cws3k@cs.virginia.edu>
+> > # Date 1232732406 18000
+> > # Node ID a95dd3a28ecb82a074de030367fe641d52aaf148
+> > # Parent 0397aa216e2290a50fb7138bd28563926573c929
+> > Beta patch for M5 2.0 DRAMsim implemention.
+>
+> Con el nuevo Windows Live lo tendr?s todo al alcance de tu mano
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> Actual?zate, descubre el nuevo Windows Live Messenger. ?Desc?rgatelo
+> ya! _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090128/05e91195/attachment.htm
+------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 30, Issue 27
+****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

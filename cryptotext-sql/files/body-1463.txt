@@ -1,0 +1,84 @@
+Thank you very much for providing lots of hints .... On Tue, May 12, 2009 at 11:25 PM, Korey Sewell <ksewell@umich.edu> wrote:
+- Show quoted text -My guess is one of the threads in Simulation B started committed
+instructions from the wrong path but I cant be sure...
+The way I would debug it is quite involved since there are many
+threads running simultaneously. You need to figure out which CPU and
+which thread is causing the error...
+***Assuming your benchmarks already work on an AtomicSimpleCPU ***,
+First thing I would do is run GDB on simulation B, then backtrace to
+the frame that has "faults.cc". In that frame, you can query the CPU
+and hopefully the thread that caused the fault through a member
+function of the fault class. Or maybe, you can backtrace some more to
+the CPU code that calls the fault function and you can query that
+information there. Somewhere a "p this->cpuId()" in GDB would do the
+trick. The ThreadContext can be queried to figure out which thread.
+Once you figure out the CPU, I would then get traces of your
+benchmarks in AtomicCPU without the ticks (so you can compare). Run
+each sim individually with a traceflag like "Exec,-ExecTicks". I'm not
+sure which flag removes the thread number but you can find that in
+src/cpu/SConscript for the cpu trace flags.
+Next, get execution traces from your O3CPU simulation run and separate
+the the tracedata for each benchmark.
+Finally, you can diff the SMT (O3) individual traces with the Atomic
+individual traces to figure out where the first bad instruction is
+(which will lead you to the problem).
+Yea, I know that's quite involved but since the error message is so
+bland, I dont know what the quick fix would be.
+On Sat, May 9, 2009 at 2:22 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+> hi everyone,
+> I am testing simulations using SPEC CPU 2006 in SE mode.
+> Here, i have posted two simulations where simulation A works and Simulation
+> B doesn't work (Please see error message attached below  in simulation B).
+>
+> Simulation A:
+>
+> num of cpus = 2
+> num threads per cpu = 2
+> system.cpu[0].workload = [Mybench.bzip2(), Mybench.libquantum()]
+> system.cpu[1].workload = [Mybench.gobmk(), Mybench.soplex()]
+> ........
+> L1 I cache:  size= 32KB, L1 D cache: size= 32KB, block size= 64
+> L2   cache: size= 1MB,     block size= 64
+> L3   cache: size= 2MB,     block size= 64
+>
+> Simulation B:
+>
+> num of cpus = 2
+> num threads per cpu = 4
+> system.cpu[0].workload = [Mybench.milc(), Mybench.soplex(),
+> Mybench.gromacs(), Mybench.cactusADM()]
+> system.cpu[1].workload = [Mybench.gcc(), Mybench.leslie3d(),
+> Mybench.gobmk(), Mybench.hmmer()]
+> .........
+> L1 I cache:  size= 32KB, L1 D cache: size= 32KB, block size= 64
+> L2   cache: size= 1MB,     block size= 64
+> L3   cache: size= 2MB,     block size= 64
+>
+> error message:
+> ......................................................................................
+> warn: Increasing stack size by one page.
+> panic: Tried to execute unmapped address 0.
+>  @ cycle 7515000
+> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+> Program aborted at cycle 7515000
+> ........................................................................................
+>
+> Could anyone please help me to figure out how to solve this problem?
+>
+> Thanks in advance,
+> devraj.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

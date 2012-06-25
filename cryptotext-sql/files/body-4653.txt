@@ -1,0 +1,15 @@
+On Fri, 16 Mar 2007, Meeta Gupta wrote:
+Hi,
+The link on M5 page for v1.1 points to the linux-dist for v2.0
+Would that still be compatible for v 1.1? And is there any specific version of cross-compilers for v1.1 or linux kernel for v1.1?
+I am not sure if this is compatible. Unless you have a particularly strong reason to do so, I would try to use v2.0 because the support will be better.- Show quoted text -
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

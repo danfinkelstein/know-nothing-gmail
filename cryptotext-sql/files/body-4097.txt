@@ -1,0 +1,36 @@
+I've never seen it, but I can tell you what is going on which would hopefully help you get to the bottom of the problem. At the beginning of the simulation any device that responds to a range sends a sendStatusChange(Status:RangeChange) message to its peer. If the peer is interested in then asks for the addresses and they are propagated through the memory system. If you run with the trace flag BusAddrRanges set you'll see the range changes happen.
+I would guess you now have a new device in the system that isn't connected to anyone and so it's sends status change and it has no peer. Although I don't know why a device can do that would have a port that was defaulting to NULL.
+The trick is to find out which device it is and then see why that port isn't connected. If you're in gdb you should be able to call name() when sendStatusChange() is called and hopefully that will tell you what device/object that port belongs to. If not doing up one frame in the call stack and calling name() should provide some info.
+Ali- Show quoted text -
+On Oct 30, 2007, at 6:33 PM, Rick Strong wrote:
+Hi,
+I have recently tried check-pointing two threads (ammp, applu) running on two separate AtomicSimpleCPUs when the first thread reaches 100,000 instructions. An attempt to restore the checkpoint meets the error given below as "ERROR". Anyone see something like this before.
+-Richard
+ERROR:
+"""
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 30 2007 10:02:18
+M5 started Tue Oct 30 15:16:22 2007
+M5 executing on 0-16-cb-b8-f-b2.dynamic.ucsd.edu
+command line: /Library/WebServer/Documents/research/m5/m5-2.0b3/build/ALPHA_SE/m5.debug -d ../results configs/example/myse.py -r 1 --bench=applu;ammp --checkpoint_dir=checkpoints -d --caches --l2cache -n 2
+SMT workload :['ammp', 'applu']
+['ammp', 'applu']
+Running benchmark: applu;ammp
+Accessing cpu_class
+Global frequency set at 1000000000000 ticks per second
+Program received signal EXC_BAD_ACCESS, Could not access memory.
+Reason: KERN_PROTECTION_FAILURE at address: 0x00000008
+0x00184ed3 in Port::sendStatusChange (this=0x0, status=Port::RangeChange) at port.hh:210
+210        void sendStatusChange(Status status) {peer->recvStatusChange(status); }
+(gdb)
+"""
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

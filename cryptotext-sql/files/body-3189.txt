@@ -1,0 +1,13 @@
+I've never seen anything like that. We're going to need more information to figure out what's going on. An command line, instruction trace, same bit of the instruction trace for a timing cpu, etc.
+Ali- Show quoted text -
+On Apr 25, 2008, at 11:11 PM, Shoaib Akram wrote:
+I have run most spec benchmarks using timing mode. However, using detailed model I am getting the following error with almost every benchmark very early in the simulation. Is there any thing wrong with the parameters of my O3CPU. Following is one example for gap. System consist of four cores, private L1, pivate l2 and a shared L3 with Physical memory (not DRAM).
+panic: Tried to access unmapped address 0xffffffffffffffe0.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

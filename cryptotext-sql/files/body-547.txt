@@ -1,0 +1,51 @@
+Well, the remote debugger just sits there listening on port 7000 which
+anyone could probe.  You can turn it off by calling
+m5.debug.setRemoteGDBPort(0) at the top of your script.  You could
+also call m5.disableAllListeners() to disable all ports including the
+terminal ports.  (Generally a good idea if you're not debugging.)
+  Nate
+- Show quoted text -
+> Hi, Nate, thank you for your reply. Yes, my machine is on the public
+> internet, but why is this a problem? Should I run M5 on a machine without
+> internet connection? Thank you!
+>
+> 2010/2/10 nathan binkert <nate@binkert.org>
+>>
+>> My only guess is that there is some malware out there trying to probe
+>> that port.  Is your machine on the public internet?
+>>
+>>  Nate
+>>
+>> > Hi, all, I am using M5 ALPHA fs mode to run splash2. I compiled the
+>> > splash2
+>> > programs (CHOLESKY) myself and copied to the ramdisk to boot the linux.
+>> > Typically a splash2 program take several minutes to several dozens of
+>> > minutes to finish. But for this one, CHOLESKY, it never ends. Several
+>> > hours
+>> > later, the M5 kept output the following:
+>> >
+>> > warn: could not read byte from debugger
+>> >
+>> > I run M5 under fast mode and did not use gdb. Why does the M5 output
+>> > such a
+>> > sentence? I found that it is in base/remote_gdb.cc, but I can not figure
+>> > out
+>> > why the M5 goes into here. It is really wired. By the way, when I run
+>> > CHOLESKY in 4 threads mode, it is OK. But when the thread number becomes
+>> > 16
+>> > or 32, it never ends. Could anyone give me some hints about this
+>> > problem?
+>> > Thank you very much!
+>> >
+>> > Best regards,
+>
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+Hi,     Some of the benchmarks are running for only 1 sec and are simulating less number of instructions. i am running on ALPHA_SE mode
+For examplecalculix for input beampic.inp
+sim_insts                                       31853                       # Number of instructions simulatedhost_seconds                                     0.07                       # Real time elapsed on the host
+GemsFDTD for input test.in
+sim_insts                                       33616                       # Number of instructions simulatedhost_seconds                                     0.05                       # Real time elapsed on the host
+lbm for input 100_100_130_cf_a.of
+sim_insts                                       10659                       # Number of instructions simulatedhost_seconds                                     0.02                       # Real time elapsed on the host
+sphinx for input args.an4
+sim_insts                                        8944                       # Number of instructions simulatedhost_seconds                                     0.03                       # Real time elapsed on the host
+I am using the following file from this site ("http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks"), Mybench.py, cmp.py and even the inputs are same, but it is not give the result which are shown on your page;
+what i need to do to get the same result as on that page.And all are terminating like thisGlobal frequency set at 1000000000000 ticks per second**** REAL SIMULATION ****Exiting @ cycle 49489000 because target called exit()   
+Tue Mar  3 13:48:38 CST 2009is it correct way of termination.Thanks,Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+hi all,i have a problem with FS mode. when i set self.physmem = DRAMMemory(range = AddrRange(mdesc.mem())) in the FSConfig.py, and simulate using the command/build/ALPHA_FS/m5.opt  configs/example/fs.py -b NetperfMaerts
+it shows the following error:m5.opt: build/ALPHA_FS/sim/eventq.hh:477: void EventQueue::schedule(Event*, Tick): Assertion `(UTick)when >= (UTick)curTick' failed.Program aborted at cycle 2239810127606
+if i set self.physmem = PhysicalMemory(range = AddrRange(mdesc.mem())), then it will simulate successfully. As in physicalmemory.cc file, there's no stats parameter, so i cannot see any stats information about memory performance in the stats file.
+ So how to solve this error? i need see the memory performance.Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

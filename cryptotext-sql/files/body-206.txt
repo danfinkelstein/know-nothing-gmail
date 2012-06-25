@@ -1,0 +1,13 @@
+> That's probably that your read was to an address, 0xFFFFF00188, that wasn't
+> claimed by any memory, device, etc. That address may fall into a range with
+> a special purpose in Alpha, but I don't really know.
+This is a special purpose address, though I can't quite remember what
+it is.  I vaguely recall that this might be an EV6 IPR that is memory
+mapped (which means that it's for controlling the cache).  You can
+look it up in the manuals to figure it out, or try to get a backtrace
+of the kernel where this happens (using the remote debugger).
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

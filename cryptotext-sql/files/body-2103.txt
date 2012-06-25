@@ -1,0 +1,38 @@
+Ryan Markley <overgeo <at> gmail.com> writes:
+>
+> Hello:
+>
+> I have to differentiate the different buses, such as tol2bus or
+> physmem bus... . I think that the best way to do this is create a new
+> parameter in the src/mem/Bus.py file and after in my configuration
+> file I give to this parameter the value that I want. But the think
+> that I do not know is how is the connection between the c++ files and
+> the python files done, I think that in somewhere the c++ files need to
+> read the configuration file and then get the parameters, can anyone
+> tell me how is this process done? I have not been able to find the
+> code.
+>
+> Thanks.
+>
+Hi,
+I am also new to this simulator. I will try to answer according to the things
+that I have found so far (please correct if I mentioned anything wrong). In M5
+all the component are written in c++ and python act as a wrapper for the c++
+classes.We write the configuration in python using these wrapper python classes.
+The big comment in the following file describes this.
+src/python/m5/SimObject.py
+regarding the buses, membus, tol2bus are just names.they all are busses. what
+you have to do is first identify the components you need to build your
+system.then interconnect them using buses.
+(please correct me if I am wrong.)
+following forum post
+http://thread.gmane.org/gmane.comp.emulators.m5.users/3482 and the help from the
+user who posted the item and then taking the se.py as a base, writing your own
+configuration helped me understand this.
+regards,
+Isuru
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi,I would like to know if there is any way to run Intel binaries on M5 simulator. Can anybody send me some pointers regarding this since I was not able to locate this info in the M5 documentation manual.Thanks,  
+       
+Yahoo! Mail is the world's favourite email. Don't settle for less, sign up for your free
+account today._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

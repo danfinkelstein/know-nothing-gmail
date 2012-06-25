@@ -1,0 +1,51 @@
+The console code was indeed the problem. I posted an updated console
+binary for the ALPHA for anyone interested @
+http://rickshin.ucsd.edu/console
+Best,
+-Rick
+- Show quoted text -
+nathan binkert wrote:
+>> System.terminal:*
+>> Memory cluster 1 [392 - -262536]
+>> Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages FFFFFFFFFFFC0000
+>> ConsoleDispatch at virt 100008D8 phys 188D8 val FFFFFC00000100A8
+>> Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+>> unix_boot_mem ends at FFFFFC0000078000
+>> k_argc = 0
+>> jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1004)
+>> CallbackFixup 0 18000, t7=FFFFFC00006CC000
+>> Entering slaveloop for cpu 1 my_rpb=FFFFFC0000018400
+>> [4194001.852669] Linux version 2.6.18.8 (binkert@blue) (gcc version
+>> 4.0.2) #9 SMP Wed Feb 27 11:50:35 PST 2008
+>> [4194001.852669] Booting GENERIC on Tsunami variation DP264 using
+>> machine vector DP264 from SRM
+>> [4194001.852669] Major Options: SMP LEGACY_START VERBOSE_MCHECK
+>> [4194001.852669] Command line: root=/dev/hda1 console=ttyS0,9600
+>> init=/m5/bin/init.sh
+>> [4194001.852669] memcluster 0, usage 1, start        0, end      392
+>> [4194001.852669] memcluster 1, usage 0, start      392, end
+>> 18446744073709289472
+>>
+>
+> The first line of the terminal output is pretty suspect.  As is the
+> last line I've copied here.  My guess is that nobody ever tested the
+> console code with more than 2GB of memory and that there's some sort
+> of 32 bit signed integer in there.  The console code is actually not
+> too hard to change, but the real question is, how does linux get the
+> value?
+>
+> Actually, looking at the console code, it looks like Geoff Blake fixed
+> a bug in the console code when using >2GB of memory.  That fix was
+> dated Oct 19th 2007, though it's easily believable that you have a
+> console binary older than that.
+>
+>   Nate
+>
+>
+>   Nate
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

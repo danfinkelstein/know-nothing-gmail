@@ -1,0 +1,17 @@
+> I disagree... as Ali said, the addressing stuff is really a way to model
+> broadcast in a fashion that doesn't require you to send every packet to
+> every device on the bus.  That distinction shouldn't matter to you unless
+> you're working with the bus at a relatively low level, as Shoaib is.
+I think that the optimization is fine, but when you set the
+"Broadcast" target on a packet and don't actually get a broadcast, I
+think that's confusing.  For example, I was trying to use the bus for
+something else and was surprised by this.  Furthermore, when I
+implemented a network, it seemed strange to use "Broadcast" to mean,
+hey network, figure out the destination for me, as opposed to, hey
+network, make sure this packet gets to everyone.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

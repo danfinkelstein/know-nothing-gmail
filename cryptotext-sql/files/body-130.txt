@@ -1,0 +1,21 @@
+Hello,
+I was wondering what is the significance / implementation of the
+boolean function unCacheable() defined in the request.hh structure. I
+see that it is used the MSHR implementation as well as in some other
+instances, and i see that the corresponding comment in the request.hh
+file says that it indicates whether or not the request to the
+specified address is uncacheable, no additional comments found.
+How is / would an address be uncacheable? Does it correlate to an
+address possibly in memory or just a cache? I don't see why an address
+would not be cacheable in a cache, since replacement policy dictates
+the storage of addresses/data there.
+I guess I could see this being useful in replicating/indicating
+addresses volatile variables (variables in which local copies are not
+made to each private cache of a sharing core in order to minimize
+coherence traffic/issues.
+Thanks.
+Malek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

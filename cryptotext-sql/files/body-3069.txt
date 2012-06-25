@@ -1,0 +1,269 @@
+Though you can search the mailing list but just to save time, attached find the patches.
+---- Original message ----
+>Date: Wed, 14 May 2008 05:32:45 +0800
+>From: KE MENG <mengke97@hotmail.com>
+>Subject: RE: [m5-users] Re: The memory problem of timing CPU model and detailed CPU model in SE mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Does the tarball file for M5 beta 5 from the
+>   download page have all the patches applied? Or there
+>   are some patches I should download and apply them?
+>   If there are, is there any page listing all
+>   available patches? I would like to apply if there is
+>   any. Thank you.
+>
+>     ------------------------------------------------
+>
+>     Date: Tue, 13 May 2008 14:24:14 -0700
+>     From: stever@gmail.com
+>     To: m5-users@m5sim.org
+>     Subject: Re: [m5-users] Re: The memory problem of
+>     timing CPU model and detailed CPU model in SE mode
+>
+- Show quoted text ->     Hi Shoaib,
+>
+>     If you still think you're having problems, please
+>     let me know what benchmarks and inputs you're
+>     using.  I thought I had all the bugs fixed, but if
+>     that's not true, I'd like to try and fix the rest.
+>
+>     Thanks,
+>
+>     Steve
+>
+>     On Tue, May 13, 2008 at 2:17 PM, Shoaib Akram
+>     <sakram3@uiuc.edu> wrote:
+>
+>       I was having the same problem for spec2K
+>       benchmarks but after applying the patches for
+>       cache sent by Steve over the mailing list, the
+>       problem disappeared for several benchmarks
+>       though it still happens for a couple of them.
+>       When I run multi-programming workloads, it
+>       sometimes happen for benchmarks that work fine
+>       if I have a single processor, though way far in
+>       the simulation (beyond 2 billion insts).
+>       ---- Original message ----
+>       >Date: Tue, 13 May 2008 15:22:02 -0400
+>       >From: Gabe Black <gblack@eecs.umich.edu>
+>       >Subject: Re: [m5-users] Re: The memory problem
+>       of timing CPU model and detailed CPU model in SE
+>       mode
+>       >To: M5 users mailing list <m5-users@m5sim.org>
+>       >
+>       >Probably what's going on is there's a data
+>       dependence tracking/data
+>       >forwarding bug in the o3 cpu. The instruction
+>       that's having a problem is
+>       >likely trying to use a register which has the
+>       address of a structure and
+>       >an offset to get at a member of that structure.
+>       The register would come
+>       >back with a bad value, likely 0, the offset of
+>       0x10 would be added, and
+>       >then the bad access would happen. Since Kevin
+>       wrote most of o3 he would
+>       >be the person to talk to about the fine
+>       details, but basically you
+>       >should look through a trac! e of what the o3 is
+- Show quoted text ->       doing and try to find
+>       >where the value it's getting is coming from,
+>       where it -should- be coming
+>       >from, and why those two aren't the same. If you
+>       figure it out please let
+>       >us know.
+>       >
+>       >Gabe
+>       >
+>       >Meng-Ju Wu wrote:
+>       >> This is the  tracediff result on timing and
+>       detailed CPU model before
+>       >> the detailed model has a panic. I have no
+>       idea where the 0x10 comes
+>       >> from.
+>       >>
+>       >> Thanks.
+>       >>
+>       >> -/m5-2.0b5/build/ALPHA_SE/m5.debug -d
+>       tracediff-9003-1
+>       >> --trace-flags=Exec,-ExecTicks
+>        /configs/cmt.py -d --caches --l2cache
+>       >> --benchmark gobmk 2>&1 |
+>       >> +/m5-2.0b5/build/ALPHA_SE/m5.debug -d
+>       tracediff-9003-2
+>       >> --trace-flags=Exec,-ExecTicks /configs/cmt.py
+>       -t --caches --l2cache
+>       >> --benchmark gobmk 2>&1 |
+>       >> -0: system.remote_gdb.listener: listening for
+>       remote gdb #0 on port 7002
+>       >> +0:! system.remote_gdb.listener: listening
+>       for remote gdb #0 on port 7001
+>       >>  warn: Entering event queue @ 0.  Starting
+>       simulation...
+>       >>  M5 Simulator System
+>       >>
+>       >> ---------skip----------------------
+>       >>
+>       >> @@ -19910631 +19904749 @@
+>       >>  system.cpu T0 : @gtp_main_loop+472 : jsr
+>          r26,(r27)       :
+>       >> IntAlu :  D=0x00000001200770fc
+>       >>  system.cpu T0 : @strcmp : ldq_u
+>        r1,0(r16)       : MemRead :
+>       >> D=0x64616f6c00000000 A=0x11ff91848
+>       >>  system.cpu T0 : @strcmp+4 : xor
+>        r16,r17,r3      : IntAlu :
+>       >> D=0x000000003fedb0d1
+>       >> -system.cpu T0 : @strcmp+8 : ldq_u
+>        r2,0(r17)       : MemRead :
+>       >> D=0xffffffffffffffff A=0x12014a898
+>       >>  system.cpu T0 : @strcmp+8 : ldq_u
+>        r2,0(r17)       : MemRead :
+>       >>! D=0x6c6568007367616c A=0x12014a898
+>       >>  system.cpu T0 : @strcmp+12 : and
+>        r3,7,r3         : IntAlu :
+>       >> D=0x0000000000000001
+>       >>  system.cpu T0 : @strcmp+16 : lda
+>        r4,-1(r31)      : IntAlu :
+>       >> D=0xffffffffffffffff
+>       >> @@ -19910893 +19905010 @@
+>       >>  system.cpu T0 : @gtp_main_loop+472 : jsr
+>          r26,(r27)       :
+>       >> IntAlu :  D=0x00000001200770fc
+>       >>  system.cpu T0 : @strcmp : ldq_u
+>        r1,0(r16)       : MemRead :
+>       >> D=0x64616f6c00000000 A=0x11ff91848
+>       >>  system.cpu T0 : @strcmp+4 : xor
+>        r16,r17,r3      : IntAlu :
+>       >> D=0x000000003fed50c2
+>       >> -system.cpu T0 : @strcmp+8 : ldq_u
+>        r2,0(r17)       : MemRead :
+>       >> D=! 0xffffffffffffffff A=0x120144888
+>       >>  system.cpu T0 : @strcmp+8 : ldq_u
+>        r2,0(r17)       : MemRead :
+>       >> D=0x616c5f656c706d69 A=0x120144888
+>       >>  system.cpu T0 : @strcmp+12 : and
+>        r3,7,r3         : IntAlu :
+>       >> D=0x0000000000000002
+>       >>  system.cpu T0 : @strcmp+16 : lda
+>        r4,-1(r31)      : IntAlu :
+>       >> D=0xffffffffffffffff
+>       >> @@ -19913494 +19907610 @@
+>       >>  system.cpu T0 : @_IO_old_init+92 : ldl
+>        r1,128(r16)     :
+>       >> MemRead :  D=0x0000000000000000 A=0x12065e740
+>       >>  system.cpu T0 : @_IO_old_init+96 : zapnot
+>         r1,252,r1       :
+>       >> IntAlu :  D=0x0000000000000000
+>       >>  system.cpu T0 : @_IO_old_init+100 : stl
+>          r1,128(r16)     :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e740
+>       >&! gt; -system.cpu T0 : @_IO_old_init+104 : ldq
+>              r1,136(r16)     :
+>       >> MemRead :  D=0x0000000000000000 A=0x12065e748
+>       >> -system.cpu T0 : @_IO_old_init+108 : beq
+>          r1,0x1200f9060  : IntAlu :
+>       >> +system.cpu T0 : @_IO_old_init+104 : ldq
+>          r1,136(r16)     :
+>       >> MemRead :  D=0x000000012065e7a0 A=0x12065e748
+>       >> +system.cpu T0 : @_IO_old_init+108 : beq
+>          r1,0x1200f9060  : IntAlu :
+>       >> +system.cpu T0 : @_IO_old_init+112 : ldq
+>          r1,-32040(r29)  :
+>       >> MemRead :  D=0x0000000000000000 A=0x1204209a0
+>       >> +system.cpu T0 : @_IO_old_init+116 : beq
+>          r1,0x1200f9060  : IntAlu :
+>       >>  system.cpu T0 : @_IO_old_init+208 : ldq
+>          r26,0(r30)      :
+>       >> MemRead :  D=0x00! 000001200f90a4
+>       A=0x11ff90b20
+>       >>  system.cpu T0 : @_IO_old_init+212 : ldq
+>          r9,8(r30)       :
+>       >> MemRead :  D=0x0000000000000000 A=0x11ff90b28
+>       >>  system.cpu T0 : @_IO_old_init+216 : lda
+>          r30,32(r30)     :
+>       >> IntAlu :  D=0x000000011ff90b40
+>       >> @@ -19913506 +19907624 @@
+>       >>  system.cpu T0 : @_IO_no_init+64 : stq
+>        r31,48(r11)     :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e7f8
+>       >>  system.cpu T0 : @_IO_no_init+68 : ldq
+>        r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >>  system.cpu T0 : @_IO_no_init+72 : stq
+>        r31,56(r1)      :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e800
+>       >> -system.cpu T0 : @_IO_no_init+76 : ldq
+>        r1,160(r10)     :
+>       >> Mem! Read :  D=0x0000000000000000
+>       A=0x12065e760
+>       >> -panic: Tried to access unmapped address
+>       0x10.
+>       >> - @ cycle 7499042500
+>       >> -[invoke:build/ALPHA_SE/arch/alpha/faults.cc,
+>       line 201]
+>       >> -Program aborted at cycle 7499042500
+>       >> +system.cpu T0 : @_IO_no_init+76 : ldq
+>        r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >> +system.cpu T0 : @_IO_no_init+80 : stq
+>        r31,16(r1)      :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e7d8
+>       >> +system.cpu T0 : @_IO_no_init+84 : ldq
+>        r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >> +system.cpu T0 : @_IO_no_init+88 : stq
+>        r31,0(r1)       :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e7c8
+>       >> +system.cpu T0 : @_IO_no_init+9! 2 : ldq
+- Show quoted text ->          r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >> +system.cpu T0 : @_IO_no_init+96 : stq
+>        r31,8(r1)       :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e7d0
+>       >> +system.cpu T0 : @_IO_no_init+100 : ldq
+>        r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >> +system.cpu T0 : @_IO_no_init+104 : stq
+>        r31,24(r1)      :
+>       >> MemWrite :  D=0x0000000000000000
+>       A=0x12065e7e0
+>       >> +system.cpu T0 : @_IO_no_init+108 : ldq
+>        r1,160(r10)     :
+>       >> MemRead :  D=0x000000012065e7c8 A=0x12065e760
+>       >>
+>       _______________________________________________
+>       >> m5-users mailing list
+>       >> m5-users@m5sim.org
+>       >>
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>       >>
+>       >
+>       >_______________________________________________
+>       >m5-users mailing list
+>       >m5-users@m5sim.org
+>       >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>       _______________________________________________
+>       m5-users mailing list
+>       m5-users@m5sim.org
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>     ------------------------------------------------
+>
+>   Invite your mail contacts to join your friends list
+>   with Windows Live Spaces. It's easy! Try it!
+>________________
+- Show quoted text ->_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

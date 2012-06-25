@@ -1,0 +1,10 @@
+Hi 
+ 
+Please help me regarding how to run spec cpu2000 under M5 2.0b4. I had run spec cpu2000 under M5 1.1 but cant understand why its creating trouble for me........might be bcoz i m storing DetailedUniConfig.py and MemConfig.py under gcc folder only or i am not getting exactly where to put these files in M5 2.0b4
+ 
+-- Ashutosh JainM.S. Computer Science,Lamar University, Texas
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

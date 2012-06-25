@@ -1,0 +1,8 @@
+Hi, everyone,I have a question about the write quests in "src/mem/cache/cache_impl.hh". It seems to me that the current M5 stable version implements "write back" and "write allocate" caches. The following is my understanding of the implicaitons
+(1) when there is a write hit on L1, L1 will send an Upgrade request to L2 to invalidate the copy there;(2) when there is a write miss on L1, if the block is successfully allocated in L1, L1 will still send an Upgrade request to L2; otherwise, L2 will see a WriteReq request;
+(3) typically, L2 can only see a Writeback request rather than WriteReq from L1 unless L1 fails to allocate a block on a write miss as indicated in (2), but in both cases the block can not be in L1 any more;Here is my conclusion that needs to be verified with you guys: as long as L2 sees an Upgrade request, the corresponding block is in L1; as long as L2 sees any write quests (either Writeback or WriteReq), the block is not in L1 any more. 
+Am I correct in drawing such a conclusion?Thanks a lot!Leonard-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

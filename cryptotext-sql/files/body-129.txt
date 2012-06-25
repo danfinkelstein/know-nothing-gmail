@@ -1,0 +1,9 @@
+Hello,So in linux.2.6.27/kernel/m5struct.c I addedconst int pcb_thread_info = offsetof(struct  thread_info, pcb);const int pcb_struct_unique = offsetof(struct pcb_struct, unique);unique returns 0x20 however pcb_thread_info does not return offset of 0x20, does anyone know why?
+However when I manually entered in thread_info.h a new function:CopyOut(tc,&tid, 32 + curThreadInfo() + 32, sizeof(tid)); unique does print out! ( i basically entered 32+32+ curThreadInfo())!
+I dont think the CurTaskPID is working, dont quote me on this but from what I can tell it doesnt work, mostly because it was prints out 3211264 and when I tried messing with TID incorrect addresses were printing the value 3211264  as well.
+To get the true tid you will need to access the pthread struct located in libc/nptl/ (i think descr.h), I am guessing you will need to trace this from thread_info  starting from the kernel from there. Pthread Struct has TID as well as PID.
+Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+Hi Sheng,  The script generator that we distribute for running these puts the "switchcpu" command in each of the run scripts.  If you haven't specified a set of CPUs for M5 to switch to when the command is called, it will exit.
+  Our normal usage of M5 with the PARSEC run scripts uses atomic CPU simulation to fast-forward through Linux boot, and then it switches to the detailed CPUs just before running the benchmark (hence the switchcpu command).  If you want to do this, you will need to specify that you want to fast-forward using the command line parameter to the fs.py script.  If you would rather not fast-forward, but still run the PARSEC benchmark with this run script, you will need to comment out the switchcpu command.
+  Hope this helps,  Joel- Show quoted text -On Mon, Apr 26, 2010 at 11:54 AM, sheng qiu <herbert1984106@gmail.com> wrote:
+- Show quoted text -Hi all,i have a question about running PARSEC with 8 cores using M5. my script is:#!/bin/sh# File to run the blackscholes benchmark
+cd /parsec/install/bin/sbin/m5 switchcpu/sbin/m5 dumpstats
+/sbin/m5 resetstats./blackscholes 8 /parsec/install/inputs/blackscholes/in_4K.txt /parsec/install/inputs/blackscholes/prices.txtecho "Done :D"/sbin/m5 exit/sbin/m5 exitmy command line is: build/ALPHA_FS/m5.opt configs/example/fs.py --script=/../../blackscholes.rcS --caches --l2cache
+during the running it shows this information always: warn: clear IPI for CPU=#num, but NO IPI, is this normal?if i change to 4 cores, there is information at the end of running: Exiting @ cycle 2267922695500 because switchcpu
+is this a normal ending?Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

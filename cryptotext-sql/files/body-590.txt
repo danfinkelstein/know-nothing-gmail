@@ -1,0 +1,49 @@
+Are you sure you're compiling m5 with the same python install you're
+running it with?  See
+http://m5sim.org/wiki/index.php/Using_a_non-default_Python_installation.
+Steve
+- Show quoted text -
+On Tue, Jan 19, 2010 at 9:46 PM, Jie Meng <jiemeng719@gmail.com> wrote:
+> Hi,
+>
+> I'm very new to M5. I tried to installed M5 and ran the "se.py" example in M5's package and got the following errors:
+>
+> $ build/ALPHA_SE/m5.debug configs/example/se.py
+>
+>
+> ***********************************************************************************************************************
+>
+> Traceback (most recent call last):
+>  File "<string>", line 1, in <module>
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/importer.py", line 67, in load_module
+>    exec code in mod.__dict__
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/m5/__init__.py", line 116, in <module>
+>    from simulate import *
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/importer.py", line 67, in load_module
+>    exec code in mod.__dict__
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/m5/simulate.py", line 38, in <module>
+>    from main import options
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/importer.py", line 67, in load_module
+>    exec code in mod.__dict__
+>  File "/ad/eng/users/j/i/jiemeng/m5-stable/src/python/m5/main.py", line 30, in <module>
+>    import datetime
+>
+> ImportError: /ad/eng/users/j/i/jiemeng/lib/python2.6/lib-dynload/datetime.so: undefined symbol: _Py_ZeroStruct
+>
+>
+> ***********************************************************************************************************************
+>
+>
+> Does anybody have this problem before? Any suggestion would be appreciated!
+>
+> Best,
+> Jie
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

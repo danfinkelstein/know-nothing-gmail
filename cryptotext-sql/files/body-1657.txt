@@ -1,0 +1,44 @@
+You don't need to modify anything; the scons-local README is talking
+to people who write the documentation for a package that uses
+scons-local, not to people who would actually use it.  The only thing
+you need to change is how you invoke scons; something like:
+python scons.py build/ALPHA_SE/tests/debug/quick
+should work, assuming you installed scons-local such that scons.py
+ended up in your m5 directory.  If not, I think all you need to do is
+add the path to scons.py in the command above.
+Steve
+- Show quoted text -
+On Tue, Mar 24, 2009 at 9:14 PM, Devins Lombardi <devinslmbrd@gmail.com> wrote:
+> Hello,
+>
+> I am a newbie when it comes to M5, scons, python etc...I tried extensively
+> searching the web but could not find an answer. In my machine my only option
+> is using scons-local. I am having difficulty running:
+>  scons build/ALPHA_SE/tests/debug/quick
+> ->scons: Command not found.
+>
+> As scons obviously is not found.
+> The Scons local  read me says:
+>
+> Then modify the build/install instructions for your package to instruct
+> your users to execute SCons as follows (if you installed this package in
+> your top-level directory):
+>
+>         $ python scons.py
+>
+> So I assume I need to go to the:
+> Sconstruct file. However I have no idea what to modify!!
+>
+> Any help would be appreciated.
+> Thanks!
+> Devin
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

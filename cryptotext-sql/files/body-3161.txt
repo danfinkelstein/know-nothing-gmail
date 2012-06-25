@@ -1,0 +1,25 @@
+Hi,As
+a part of my course project, my group is trying to study the SMT/CMP
+hybrid architectures and study their performance. As a part of the
+project we need to vary the parameters like number of cores and number
+of threads supported for each core and run simulations. As per my
+understanding, such configurations can be defined using M5, but I am
+confused as to how to run the simulations and what benchmarks to use. I
+am new to the M5 simulator and I trying to figure out the best way to
+work on my project.
+The spec cpu benchmarks have lincense issues and currently I donot have
+access to them. So I wanted to try the SPLASH benchmark suite. Can some
+one help me understand how I can run these simulations using SPLASH
+benchmarks (if it is possible). It looks like the current binaries for
+splash benchmarks on the M5 website work only in ALPHA SE mode and they
+donot work with SMT cores. If I try to work in ALPHA FS mode, will I be
+able to simulate SMT/CMP architecture workloads. 
+If some one has already done these kind of simulations, your
+suggestions would be very useful. I am trying to run the simulations on
+MacOs Leopard, will I be able to use linux-dist to build my libraries
+properly.Thank you,
+Sahithi 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

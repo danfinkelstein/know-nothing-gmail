@@ -1,0 +1,24 @@
+On Jul 28, 2008, at 2:51 PM, claker wrote:
+>
+> In the following lines in configs/example/fs.py:
+> if options.caches:
+>    test_sys.bridge.filter_ranges_a=[AddrRange(0, Addr.max)]
+>    test_sys.bridge.filter_ranges_b=[AddrRange(0, size='8GB')]
+>    test_sys.iocache = IOCache(mem_side_filter_ranges=[AddrRange(0,
+> Addr.max)],
+>                       cpu_side_filter_ranges=[AddrRange(0x8000000000,
+> Addr.max)])
+>    test_sys.iocache.cpu_side = test_sys.iobus.port
+>    test_sys.iocache.mem_side = test_sys.membus.port
+> Here, what is the iocache used for? Do we have to use it in the fs
+> simulation?
+If you're simulation has caches in it yes. You need a device between
+the I/O devices which aren't coherent and the coherent memory system.
+We're using a very small cache to satisfy that requirement in our
+system.
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

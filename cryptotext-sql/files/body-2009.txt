@@ -1,0 +1,12 @@
+Dear All,
+Today I accidentally saw something called gem5 in the M5 repository with the
+description 'M5 source code -- gems & M5 integration'. If anybody can give me a
+brief explanation n current status of that it would be grateful. Hope M5
+administrators  will bear me being impatient and I apologies if I am abusing the
+purpose of the mailing list.
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

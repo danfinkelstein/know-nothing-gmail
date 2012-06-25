@@ -1,0 +1,45 @@
+Hi all,
+ 
+I am running SMT programs for
+the first time, and I encountered the following issues:
+ 
+1. In function removeThread()
+in cpu.cc, when a thread is removed, some physical registers allocated for this
+thread are freed from the rename map. However, a subset of these registers have
+actually been freed previously from the history buffer in rename stage. This
+make them to be freed twice, causing threads that are still executing to crash.
+I tried to fix this by not allowing registers to be added into the freelist
+more than one time. The simulator works for some workload combinations after
+this.
+ 
+2. For some other
+combinations, the simulator crashed at line 701 in cpu.cc:
+   
+assert(iew.ldstQueue.getCount(tid) == 0);
+This means that there are
+still outstanding memory instructions in the LSQ. I added the following code
+just before the above line:
+   
+iew.ldstQueue.squash(squash_seq_num, tid);
+And the simulator is working for
+those workloads.
+ 
+3. In se.py, when checking
+for SMT workload, the way smt_process.cmd is set seemed not working, since it
+was a string. I changed them similarly to line 39 in that file, and it is
+working now.
+ 
+Currently I the simulator is
+working for my SMT programs. However, I am wondering whether what I have done are
+correct, and there are things that may affect the simulator but I did not see
+now. Is anyone there working with SMT programs? Any ideas are appreciated. 
+ 
+I am running O3CPU in SE mode
+using M5 2.0b4.
+ 
+Thanks,
+--Nam
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+Running 'diff' shows no differences between the two '/platform' directories.One more thing I've found out is that booting into single-user mode ('boot-s') does work.It seems booting into multi-user mode activates some services that it shouldn't.
+But it's weird since the original disk image does not have such problem.After some googling, I found following page from SUN which seems to be relevant to my problem:
+http://docs.sun.com/source/819-2544-21/prod-note-general.html#91216It says I have to have access to ALOM console to fix it, and I wonder if it is possible in M5 (or legion)?p.s.By the way, ethernet device is attached to the PCI-E bus, right?
+Then by having no PCI controller, you mean the SPARC system in M5 has no support for network?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,92 @@
+Hi Ali,
+Thanks for the reply. Can you please point me to where I might find these ports?
+-Gaurav
+- Show quoted text -
+On Sun, Nov 30, 2008 at 8:43 PM, Ali Saidi <saidi@umich.edu> wrote:
+> As the warning that is printed with the DRAM object says, no testing
+> or validation of the results has been done so there could be a bug in
+> the model. If you really need accurate DRAM timing, I would suggest
+> you get one of the other DRAM models people have ported to M5 that
+> haven't made it into the tree yet.
+>
+> Ali
+>
+> On Nov 22, 2008, at 7:44 PM, Gaurav Dhiman wrote:
+>
+>> Hi Sujay,
+>>
+>> Thanks for the response. Even I initially thought that cpu_ratio is
+>> being used to normalize the difference in CPU and memory speeds. But,
+>> it seems the "lat" in this function is calculated in terms of
+>> simulation ticks, which is the number of 1THz cycles of M5. So in that
+>> case it should be actually independent of the fact that the memory
+>> operates at a slower speed than the CPU.
+>>
+>> Please correct me if my understanding is wrong here.
+>>
+>> Thanks,
+>> -Gaurav
+>>
+>>
+>> On Sat, Nov 22, 2008 at 1:34 PM, Sujay Sunil Phadke
+>> <sphadke@eecs.umich.edu> wrote:
+>>> I think its because the latency as seen by the CPU will be "lat"
+>>> times the
+>>> cpu_ratio. lat is calculated based on the delay of the memory module,
+>>> which
+>>> operates at a lower speed than the CPU.
+>>> Ali can elaborate on this.
+>>>
+>>> - Sujay
+>>>
+>>>
+>>> On Fri, 21 Nov 2008, Gaurav Dhiman wrote:
+>>>
+>>>> Hello All,
+>>>>
+>>>> I am working with the DRAM model for my simulations in SE mode. I
+>>>> use
+>>>> the default configuration in PhysicalMemory.py for the RAS, CAS, ACT
+>>>> etc times. It seems when the DRAMMemory object is initialized the
+>>>> cas_lat, act_lat etc timing parameters are set in ps or the number
+>>>> of
+>>>> simulation ticks. These variables are then used by the
+>>>> calculateLatency function to estimate the latency of the memory
+>>>> access
+>>>> in terms of simulation ticks. However, before returning this latency
+>>>> value, the calculateLatency function multiplies it with cpu_ratio
+>>>> (defined as ratio of CPU and memory bus frequency; set to 5 by
+>>>> default). This looks confusing and unintuitive, since all the prior
+>>>> calculations in the function are done in terms of simulation ticks
+>>>> only, so how does cpu_ratio come into the picture?
+>>>>
+>>>> Can anyone please provide insights here into what could be the
+>>>> possible reason for doing so?
+>>>>
+>>>> Thanks in advance,
+>>>> -Gaurav
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

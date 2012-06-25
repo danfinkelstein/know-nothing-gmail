@@ -1,0 +1,15 @@
+Hi,
+I'm porting an in house ISA to the M5 simulator. The architecture contains
+register windows. I'm wondering if anyone can explain in a little more
+detail what the current procedure is for maintaining register windows
+within the Sparc section of the code.
+I can see the CWP manipulation in the save/restore and return(presumably a
+rett?) operations. Having changed the CWP, by what process does a register
+read, say, now fetch the value from the correct physical register?
+Any help much appreciated, thanks.
+Kind Regards,
+Matt Horsnell
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

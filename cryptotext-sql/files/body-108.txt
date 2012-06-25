@@ -1,0 +1,21 @@
+   I have been looking into using M5 to run some full system disk IO
+tests by expanding the disk model, (I believe it currently using a
+flat timing model). M5 initially looks like a very good option since
+it was developed with IO in mind (I read "The M5 Simulator: Modeling
+Networked Systems") and it is open source.
+   I have spent a fair amount of time looking though the documentation
+and source code (for the full system alpha) and it seems to me that
+the disk model could be made more accurate by replacing the flat
+access time with a realistic access time.
+  My question is, do you think modeling the access time more
+accurately will allow M5 to properly model disks or are there other
+caveats in different parts of the system, like the IDE controller and
+PCI system, that will mess up my plans in ways I cannot foresee?
+Essentially, I am afraid there could be a timing issue that I didn't
+pick up on that would mess up my plan so I wanted to know that the
+experts thought.
+Ben Parsons
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

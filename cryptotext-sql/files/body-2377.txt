@@ -1,0 +1,74 @@
+Relative to a 2GHz or 4GHz CPU? One thing you could do to make this
+work reasonably easily is change the global tick rate to however fast
+you want to tick your CPU. Then all the latencies could be in terms of
+ticks (e.g. '5t') which would be 5 cycles at 2 or 4GHz. The CPU in
+this case could be 1t.
+Another options would be to have a global indicating the desired
+frequency/latency things should be relative to and add a new specified
+that multiplies by that frequency/latency.  You would need to modify
+src/python/m5/convert.py to understand your new system and add a new
+character to decode (e.g. '5r' would mean 5 clocks at whatever the
+global clock rate you've specified somewhere is).
+For a while we tried to have a 'c' specifier that was relative to the
+CPU the object was part of. However, this quickly became very
+complicated when you have multiple CPUs that could operate at
+different frequencies.
+Hope that helps,
+Ali
+- Show quoted text -
+On Oct 29, 2008, at 8:07 AM, Clint Smullen wrote:
+> I've not seen any such function, since M5 does not use a global clock
+> rate (only the global tick rate). In your script, however, you can
+> easily add a function that does the conversion.
+>
+> On Oct 29, 2008, at 12:39 AM, Shoaib Akram wrote:
+>
+>> I just want them to be set to constant number of cycles. And change
+>> the frequency. for instancem bridge should queue requets for 5
+>> cycles, at 2GHz or at 4GHz...
+>>
+>> ---- Original message ----
+>>> Date: Tue, 28 Oct 2008 21:22:47 -0700
+>>> From: Ali Saidi <saidi@umich.edu>
+>>> Subject: Re: [m5-users] specification of delay
+>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>
+>>> You can specify them is Hz I believe (e.g. 2GHz == .5ns) or are you
+>>> wanting it to be relative to the CPU frequency?
+>>>
+>>> Ali
+>>>
+>>>
+>>>
+>>> On Oct 28, 2008, at 9:15 PM, Shoaib Akram wrote:
+>>>
+>>>> is there a way to easily change the specification of delay for
+>>>> caches, bridges, and memory from 'ns' etc to actual number of
+>>>> cycles.
+>>>>
+>>>> This is useful when comparing across different frequencies since
+>>>> number of cycles remain constant.
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

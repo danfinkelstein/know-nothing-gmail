@@ -1,0 +1,19 @@
+On Jan 17, 2008 9:20 AM, nathan binkert <nate@binkert.org> wrote:
+> > Another (even more realistic) approach is to add some magic addresses
+> > to flush individual lines, then do it in software on the CPU (just
+> > like how you would do it on a real machine).
+> That is something we definitely need, but that only works on
+> addresses.  It's certainly  needed for the icache and self modifying
+> code.  (Since the icache is not coherent in many systems.)
+Often there are two types of special IPRs or memory regions (or ASIs
+in SPARC land): one that says "flush the cache line (if any) that
+matches this address" and another that says "flush the contents of the
+cache line at this physical index into the cache array".  So a generic
+cache flush would be a loop over the N lines in the cache using the
+second type of access, while if you're manually trying to keep a
+particular location coherent you might use the first type of access.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+I'm having similar problems in SE mode for the O3CPU when I set cache
+latencies all to 1.  In that case I get the validCpuAndThreadNums
+error.  Using real latencies I get a different error that was not
+mentioned by Nikos Anastopoulos.  The errors occur both with SMT and
+single-threaded execution, albeit at different cycles.
+m5.opt: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:125: void
+BaseDynInst<Impl>::initVars() [with Impl = O3CPUImpl]: Assertion
+`instcount <= 1500' failed.
+Program aborted at cycle 7197
+My cache is based upon the simple-timing.py test script.  Removing the
+caches removes the errors.
+I have installed the patch.
+Michael- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

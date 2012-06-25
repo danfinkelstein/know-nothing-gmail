@@ -1,0 +1,19 @@
+Hi Alex,
+The detailed model is loosely based on the Alpha 21264, which does use a squashing mechanism in both cases.  When loads try to access the memory system and the Dcache is stalled (i.e. all MSHRs are full), the 21264 uses a squash to control the flow of memory operations.  Similarly if a load has gone out of order with respect to an older store to the same address, the load and all younger instructions are squashed.  They probably did this because it's far simpler to use the existing squash mechanism rather than keeping track of load's dependencies and allowing for potentially lengthy replays.  It may theoretically be more efficient to replay only the instructions needed, but it's not necessarily more realistic.  I believe that the Pentium 4 is the only architecture with such a replay mechanism.
+Kevin
+Alex Cornejo wrote:
+- Show quoted text -
+After the IEW stage executes an instruction,  if it detects a memory order violation or if the memory system is blocked it sends a squash signal which eventually reaches the fetch stage and results in a pipeline flush and possible a cache access.
+I don't know what does it mean when m5 determines the memory system is blocked, but as far as memory order violations go, I think it would be more efficient and realistic to just reissue the instructions needed instead of flushing the whole pipeline and forcing the fetch stage to decode the instructions again (and possibly trigger a cache access, since it is quite possible that the fetch stage is in another cache line by then).
+Is there any reason why M5 chooses to flush the whole pipeline instead of replaying/reissuing the offending instructions (loads).
+Thanks,
+Alex
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

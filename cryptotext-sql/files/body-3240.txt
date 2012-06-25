@@ -1,0 +1,5 @@
+Can anybody tell me where can I find pthread implementation of PARMACS. I need it to run splash benchmarks in FS mode?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

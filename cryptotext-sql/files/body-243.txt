@@ -1,0 +1,65 @@
+Dear,
+ 
+I started installing M5 several days ago but no matter which version I use and whether I used EXTRA option or not, the eio related tests under command 
+scons build/ALPHA_SE/tests/debug/quick EXTRAS=encumbered USE_MYSQL=FALSE or scons build/ALPHA_SE/tests/debug/quick
+always failed. namely
+ 
+***** build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-atomic FAILED!
+Running test in build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing -re tests/run.py build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing/simerrscons: *** Error 1
+M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/quick/20.eio-short/alpha/eio/simple-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp -re tests/run.py build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp
+Redirecting stdout to build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp/simerrscons: *** Error 1
+M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-atomic-mp FAILED!
+Running test in build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp -re tests/run.py build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp
+Redirecting stdout to build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp/simerrscons: *** Error 1
+M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/quick/30.eio-mp/alpha/eio/simple-timing-mp FAILED!
+ 
+ 
+ 
+ 
+After these days, I figure out some reasons to explain to myself. But I still doubt them. Could you please help me move at the right direction?
+ 
+1. encumber files seem to be the source code of a EIO trace reader. EIO trace, I think, is a kind of file for tracing or debugging in M5 (http://osdir.com/ml/emulators.m5.users/2008-06/msg00139.html). But for licence reason, M5 didn't include the EIO trace reader code in the source tree. It has to use the EXTRA option of scons to compile the code in. (http://www.m5sim.org/wiki/index.php/Extras)
+ 2. The eio related regression tests failed because the folder containing the eio test has no EIO trace files not because m5 is installed wrongly. (http://www.mail-archive.com/m5-users@m5sim.org/msg00804.html). M5 gets no input and therefore has to exit and claims the test failed. Namely, in fact, m5 didn't run and no outcome at all. Generally, we define failure as the case where the new output is different with the old output provided by the simulator. However, here, the failure also contains the case where test didn't get run. 
+ if you refer to the compiling history carefully, you can find for successful tests, M5 gets run and outputs something. Then, one tool named diff is in charge of comparing the outcoming with the old one. But for the failed tests, only two lines records appear. That means m5 doesn't get run at all. It doesn't mean M5 is installed in a wrong way. If that's the case, why other tests can run? It at most means M5 doesn't have EIO support. But we compile it with encumber files. So, the most possible thing is that the test itself has no input files.
+ 
+ 
+However, I still get all tests failed when I run scons build/ALPHA_SE/tests/debug/long EXTRAS=encumbered USE_MYSQL=FALSEI don't know why. Some of them are not eio related. 
+ 
+ simple-atomicRedirecting stdout to build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-atomic/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-atomic/simerr
+scons: *** Error 1M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-atomic FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing/simerrscons: *** Error 1
+M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/long/50.vortex/alpha/tru64/simple-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/o3-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic -re tests/run.py build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-atomic FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/60.bzip2/alpha/tru64/simple-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing/simerrscons: *** Error 1
+M5 exited with non-zero status 1***** build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/inorder-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/o3-timing FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic -re tests/run.py build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-atomic FAILED!
+Running test in build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing.build/ALPHA_SE/m5.debug -d build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing -re tests/run.py build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing
+Redirecting stdout to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing/simoutRedirecting stderr to build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing/simerrscons: *** Error 1M5 exited with non-zero status 1
+***** build/ALPHA_SE/tests/debug/long/70.twolf/alpha/tru64/simple-timing FAILE
+ 
+ 
+ 
+Best Regards,
+Hongsheng Lu
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

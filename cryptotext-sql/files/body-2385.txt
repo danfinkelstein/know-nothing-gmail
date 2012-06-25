@@ -1,0 +1,46 @@
+Since you want to run the programs on particular CPUs, you might want to use SE
+mode where there is no scheduler and you can statically assign processes
+yourself. If you really want to use FS mode, you're going to need to get Linux
+(or maybe some other OS) to do what you want somehow. Looking at the resources
+Shoaib recommended is a good idea since it will get you started figuring things
+out.
+Gabe
+- Show quoted text -
+Quoting Shoaib Akram <sakram3@illinois.edu>:
+> since what you want is very basic, look into documentation page for "scripts
+> explained", some portions of ASPLOS talk, then try to understand the  script
+> se.py in configs/example/....
+>
+> ---- Original message ----
+> >Date: Wed, 29 Oct 2008 00:21:25 +0000
+> >From: <psrika01@students.poly.edu>
+> >Subject: [m5-users] Running Multiple Programs
+> >To: <m5-users@m5sim.org>
+> >
+> >
+> >Hello,
+> >        I am new to M5 and I am trying to familiarize myself with the
+> simulator. I ahve installed the full system version and I have a few
+> questions. Well, what i had in mind was very basic. I wanted to run 2 simple
+> programs together and i wanted to specify the number of processors, say, as 3
+> and then assign the workload for each processor myself. say, cpu 1 and 2 ran
+> just program 1 and cpu 2 ran program 2. So I wanted control over the
+> scheduling instead of the linux scheduler, as it is the case currently. I
+> looked at the mailing lists but I did not get a clear picture of what is
+> required. Thank You for any suggestions,
+> >
+> >Regards,
+> >Psrikanth
+> >_______________________________________________
+> >m5-users mailing list
+> >m5-users@m5sim.org
+> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

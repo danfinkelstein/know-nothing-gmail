@@ -1,0 +1,14 @@
+Hi,
+If i use the fs.py script in version 2.1 and give the following command
+./m5.opt fs.py -s -w 30000000000 -n 4 -d --caches
+then does this translate to using sampler, with switching happening after 30e9 cycles?
+but if so I see some printfs like
+warn: Entering event queue @ 15000.  Starting simulation (what would these mean? )
+After the warmup period the cpu model should be the detailed, right?
+I went through the Sampling documentation, and it says to give a [x y] figures, so what does the 'y' figure stand for? Does it mean the total time the period of switching between the two CPUs? Or does it mean for how long that simulation would run?
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

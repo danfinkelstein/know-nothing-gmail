@@ -1,0 +1,57 @@
+Hello,
+The real problem as mentioned before by Rick Strong, is that during
+simulation too many HW_MFPR and HW_MTPR instructions are being
+generated. Any ideas on why so many are produced?  Its responsible for
+50% of front engine stall!
+For Blackscholes, they are not many system calls being made, its a
+really simple program. Maybe the TLB is to small? Might be a linux
+issue?
+Any other ideas?
+Thanks
+- Show quoted text -
+On Fri, Oct 2, 2009 at 10:04 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> In terms of fetching,
+> Note the O3 is fetching a cache line at a time not a instruction at a time.
+> So theoretically, you only need to fetch one 64-byte line to "fetch" 8
+> instructions....
+>
+> On Fri, Oct 2, 2009 at 10:24 PM, ef <snorlaxgb@gmail.com> wrote:
+>>
+>> Hello,
+>>
+>> I am testing Blackscholes 2.1 on M5. Alpha FS Mode. It seems that the
+>> IPC is pretty low around .73, I noticed that the fetching rate is
+>> pretty low , avg fetch of .98 per cycle, out of a 4 wide machine.
+>> Going through traces, everything seems normal except: I get messages
+>> like this doing certain spots, which I believe is the culprit:
+>>
+>> 8039402330674: system.detail_cpu1.fetch: Running stage.
+>> 8039402330674: system.detail_cpu1.fetch: There are no more threads
+>> available to fetch from.
+>>
+>> This happens for several cycles, then fetching appears normal.
+>>
+>> Right now I have two cores running two threads. Is there anyways I can
+>> find out more about whats going on?
+>>
+>> Thanks,
+>> EF
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> - Korey
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,67 @@
+On Tue, Mar 25, 2008 at 8:46 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> also, can you tell me how you narrowed down to the problem? Was it by
+>  analysing memory traces?
+I'm replying in some detail and cc'ing the list on this since
+debugging strategies may be of general interest...
+"tracediff" was the key on this one... I rolled back to 2.0b4 since
+you said it worked (actually I had to go with a slightly newer
+changeset since the splash script was broken in 2.0b4), and verified
+that that gave the right answer.  Then I ran both the old version and
+the head under tracediff with "--trace-flags=Exec,-ExecTicks" so that
+I would get the instruction trace but without the timestamps (so that
+timing differences between the two wouldn't matter).  I got lucky in
+that there weren't any timing differences that resulted in a
+legitimate divergence between the two executions (e.g. CPUs getting
+locks in a different order due to coherence changes).
+So then I got this output from tracediff:
+@@ -108761507 +108761507 @@
+ system.cpu1 T0 : @slave_sort+2760 : s4addq     r20,r15,r20     :
+IntAlu : D=0x0000000140920348
+ system.cpu2 T0 : @slave_sort+2780 : addl       r23,1,r23       :
+IntAlu :  D=0x000000000002eb16
+ system.cpu2 T0 : @slave_sort+2784 : stl        r23,0(r20)      :
+MemWrite :  D=0x000000000002eb16 A=0x1409225d0
+-system.cpu1 T0 : @slave_sort+2764 : ldl        r22,0(r20)      :
+MemRead :  D=0x0000000000000000 A=0x140920348
++system.cpu1 T0 : @slave_sort+2764 : ldl        r22,0(r20)      :
+MemRead :  D=0x000000000005a6ee A=0x140920348
+So that pinpointed the instruction where things went wrong; the old
+code returned 0x5a6ee on one load but the new code returned 0 (I
+specified the new binary first to tracediff which is why the -/+ came
+out backward).
+Then to figure out what tick that was at, I had to rerun the new code
+with just --trace-flags=Exec, and then ran that through "head -n
+108762000" and looked around line 108761507 for the ldl instruction;
+turns out it was at tick 27448034000.  Running a more detailed trace
+around that time ("--trace-flags=All --trace-start=27445000000") gave
+me more information, like that the physical address for the block was
+13d4340.  Unfortunately that wasn't far enough back to capture the
+store that generated the value.  So I reran with
+--trace-start=27440000000, but piped that through "egrep
+'(1409203|13d43)[4-7][0-9a-f]'" to get just the lines that were
+related to that cache block.  Once I had that trace, I saw everything
+that happened to that block from the prior store to that address to
+the broken load (including timestamps), which included several
+writebacks and misses.
+Then I reran under gdb, and setting a few breakpoints in the cache
+code, and disabling them and using schedBreakCycle() to jump quickly
+between the interesting points, I was able to get to the point where I
+saw the writeback put something in the write buffer and realized that
+that didn't make any sense in atomic mode.
+> And I had a question about the spec2k alpha
+>  compiled benchmarks. What is the difference between using the 'linux' or
+>  'tru64'? Is it sufficient to execute only of 1 type? Is there any
+>  fundamental difference that would cause significant differences in results?
+The key difference from m5's perspective is just which OS they were
+compiled for, because that changes how the syscall emulation layer has
+to interpret the syscalls the program is making.  The key practical
+difference as far as the results go is that the tru64 binaries used
+Compaq's excellent proprietary cc compiler, while the linux binaries
+used gcc, which is less excellent as far as optimizations go, and if
+they're old linux binaries, they used an old version of gcc which was
+probably significantly inferior.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

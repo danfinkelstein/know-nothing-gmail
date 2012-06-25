@@ -1,0 +1,25 @@
+On Tue, 25 Mar 2008, bipin kadel wrote:
+> Hi,
+>          I am trying to run spec cpu benchmarks on 4 core CMP system in se mode. I am using ALPHA_SE. When I  see the m5stats.txt file, it shows that only instructions were executed on cpu[2]. The number of instructions for other cpus were zero. Below is my configuration for the CPU and benchmarks I assigned for each cpu. Could you please help me to figure about why instruction is not executed in other cpu. Also, I am using EioProcess. Configuration for the system is as follows:
+>
+> process1 = EioProcess()
+> process1.file = "/speccpu2000/perlbmk/perlbmk.eio.gz"
+>
+> process2 = EioProcess()
+> process2.file = "/speccpu2000/gap/gap.eio.gz"
+>
+> process3 = EioProcess()
+> process3.file = "speccpu2000/vortex/vortex.eio.gz"
+>
+> process4 = EioProcess()
+> process4.file = "/speccpu2000/twolf/twolf.eio.gz"
+>
+You are declaring absolute paths for process1, process2, and process4 (i.e.
+"/speccpu2000" and not just "speccpu2000"), thus only process3 is getting a
+valid eio trace to start with. If you remove the leading slash, it should work
+properly.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

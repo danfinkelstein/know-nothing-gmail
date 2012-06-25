@@ -1,0 +1,25 @@
+The real problem isn't clear from your description.  If you've changed the Bus model, one way to figure out if it the problem is in your changes or in M5 is to see if your simulation works with the original M5 code without your changes.
+Turning on some trace flags (see http://m5sim.org/wiki/index.php/Debugging_M5) is the best way to see what's going on in your simulation.M5 is totally deterministic as far as we know, so if you're seeing real non-determinism that's a major issue.  Often that comes from using uninitialized variables.
+Steve- Show quoted text -On Fri, May 2, 2008 at 11:32 PM, Choonghwan Lee <linjus.yi@gmail.com> wrote:
+I was running multiple programs in SE mode. My simulation got stuck, and one
+thing I found was that the parameter "until" for Bus::occupyBus() was not
+increasing. I continued to suspend to watch that value and to resume the
+application again and again, but the "until" parameter stopped increasing
+after 1???????? (Sorry, I forgot the number.)
+Since I modified some parts of Bus class, I'm not sure if this problem is
+originated from m5; but, it seems this problem exists in m5 2.0 beta 5
+because I observed the same problem by using m5 2.0 beta5 with patches Steve
+posted in the mailing list.
+It's hard to get any clues because it is not always deterministic. The only
+thing I am quite sure is that this problem happens only when --detailed is
+used.
+Thanks,
+Choonghwan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

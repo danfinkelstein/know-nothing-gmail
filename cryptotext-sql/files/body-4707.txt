@@ -1,0 +1,7 @@
+Hello M5 developers --I noticed comments in a couple places in the functional unit code that indicate that a functional unit (or, rather, an opClass) should have its issue latency set to either 1 or its opLatency (in the comment at line 54 of src/cpu/o3/fu_pool.hh, for example).  However, in the default 
+FuncUnitConfig.py, the IntDiv opClass has opLat == 20 and issueLat == 19, which doesn't seem to match these statements.Question:  are the comments out of date, or should the issue Latency be 20 on the IntDiv unit?
+Thanks!   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

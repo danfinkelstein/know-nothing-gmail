@@ -1,0 +1,17 @@
+The linux kernel for the alpha architecture can be found on the download
+page for M5 @ http://www.m5sim.org/wiki/index.php/Download
+- Show quoted text -Veydan Wu wrote:
+> Hi, does anybody have a linux kernel for alpha architecture. I want to
+> compile some device driver running on M5 FS mode, I only have kernel
+> for x86 now, it will take much time to compile using a cross compiler,
+> so if anyone have one, please send me a copy. Thanks very much !
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

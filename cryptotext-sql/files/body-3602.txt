@@ -1,0 +1,7 @@
+What would be the best way to go about scrubbing part or all of a cache? Is there a method already implemented for this? If not, which cache files and functions might I look into to support this?
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

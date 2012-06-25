@@ -1,0 +1,22 @@
+M5 is single threaded right now, so they should all be mutually
+exclusive by default.
+Gabe
+- Show quoted text -
+Veydan Wu wrote:
+> Hi, is there any lock or something else I can use in order to achieve
+> mutual exclusive in M5? For example, I want to implement a piece of
+> code in the CPU model, such as in the postExecute() function. There
+> are 4 cpu in my simulation, so every cpu will execution this extra
+> code without any order guarantee. How can I make them mutual
+> exclusive? Should I implement a lock by myself or is there anything I
+> can use in M5. Thank you very much!
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

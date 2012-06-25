@@ -1,0 +1,20 @@
+If your willing to dig into the code, anything is possible :)More specifically though, the instruction count event as well as many others are based off the event queue infrastructure inside of m5 (src/sim/eventq.hh).
+Adding your own callback could be done by just scheduling an event on the main event queue. I guess the most straightforward example of this is the "TickEvent" found in the O3 or InOrder CPU models. They derive from the "Event" base class and when their event is ready the queue calls the "process()" function. If you want to add your own code, you could define your own event and then write your own process function.
+There's examples of this throughout the src code but following how the "TickEvent" works is probably the best way to get started with that (src/cpu/inorder/cpu.hh,cc is an example).- Show quoted text -
+On Mon, Feb 1, 2010 at 4:29 PM,  <taozhao@umich.edu> wrote:
+In simics, we can use Haps to register a callback function, when some
+events happen, we can run our own codes to do something. Can we do this in
+m5?
+To be more specific, I want to simulate until some point, like a function
+call, then stop and do something. It seems now that I can only stop at some
+instruction count, but in practice we don't know at what instruction count
+an event will happen.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi,I'm trying to get started with M5. I am using detailed CPU model in SE version to simulate multiple applications on multi cores, each core with an independent application. All of the applications are memory intensive benchmarks. Can you tell me how is the memory allocated in this scenario? Will a core be allocated an independent bank?
+Thanks.
+-- Lide Zhang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

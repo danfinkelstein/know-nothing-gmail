@@ -1,0 +1,208 @@
+Hi,
+Last step in image creation, "ptxdist images" command
+is giving this error:
+Failed to run
+/home/ssanyal/image/lib/ptxdist-0.10.3/m5_files/MAKEDEV
+-d /home/ssanyal/workspace/root/dev console random
+urandom null hda hdb hdc hdd sda as root
+Even though i am using sudo. What can be the cause?
+The previous step "ptxdist go" completed though it
+halts MANY times in between for compilation errors or
+for missing library. After cross-compiling and
+installing librarires it starts again.
+-Sanyal
+--- sutirtha sanyal <sutirtha_sanyal77@yahoo.com>
+wrote:
+- Show quoted text -
+> Hi,
+>
+> Kernel is compiling ok. But disk image creation is
+> giving errors.
+>
+> After following the steps listed in wiki, ptxdist go
+> is throwing this error:
+>
+> **
+> gcc -c -pipe -O2 -m486 -fomit-frame-pointer -I../lib
+> -Wall -Wmissing-prototypes -Wstrict-prototypes
+> -DNCH=1
+>   -D_FILE_OFFSET_BITS=64 -DSBINDIR=\"/sbin\"
+> -DUSRSBINDIR=\"/usr/sbin\" -DLOGDIR=\"/var/log\"
+> -DVARPATH=\"/var\" -DLOCALEDIR=\"/usr/share/locale\"
+> -O2 llseek.c -o llseek.o
+> llseek.c:34: error: expected declaration specifiers
+> or
+> ‘...’ before ‘_llseek’
+> llseek.c:34: error: expected declaration specifiers
+> or
+> ‘...’ before ‘fd’
+> llseek.c:34: error: expected declaration specifiers
+> or
+> ‘...’ before ‘offset_high’
+> llseek.c:35: error: expected declaration specifiers
+> or
+> ‘...’ before ‘offset_low’
+> llseek.c:35: error: expected declaration specifiers
+> or
+> ‘...’ before ‘result’
+> llseek.c:36: error: expected declaration specifiers
+> or
+> ‘...’ before ‘origin’
+> llseek.c:50: warning: return type defaults to
+> ‘int’
+> llseek.c: In function ‘_syscall5’:
+> llseek.c:52: error: expected ‘=’,
+> ‘,’, ‘;’, ‘asm’
+> or
+> ‘__attribute__’ before ‘{’
+> token
+> llseek.c:68: error: expected ‘=’,
+> ‘,’, ‘;’, ‘asm’
+> or
+> ‘__attribute__’ before ‘{’
+> token
+> llseek.c:34: error: parameter name omitted
+> llseek.c:34: error: parameter name omitted
+> llseek.c:34: error: parameter name omitted
+> llseek.c:35: error: parameter name omitted
+> llseek.c:35: error: parameter name omitted
+> llseek.c:36: error: parameter name omitted
+> llseek.c:93: error: expected ‘{’ at end
+> of
+> input
+> make[1]: *** [llseek.o] Error 1
+> make[1]: Leaving directory
+>
+`/home/ssanyal/workspace/build-host/util-linux-2.12j/fdisk'
+> make: ***
+>
+[/home/ssanyal/workspace/state/host-util-linux.compile]
+> Error 2
+>
+> error: a command in the pipe returned 2, bailing out
+> **
+>
+> As lisa suggested, disabling host-util-linux and
+> module-init-tools is not working either.
+>
+> I am using gcc-4.1.2 in ubuntu. Cross compiler is
+> built for gcc-3.4.3-glibc-2.3.5.
+>
+> Any help will be highly appreciated.
+>
+> -Regards,
+> Sanyal
+>
+>
+> --- Ali Saidi <saidi@umich.edu> wrote:
+>
+> > Hi Sanyal,
+> >
+> > It appears as though you're compiling an x86
+> version
+> > of the kernel
+> > instead of an Alpha one.
+> >
+> > Take a look at:
+> > http://www.m5sim.org/wiki/index.php/Using_linux-
+> > dist_to_Create_Disk_Images_and_Kernels_for_M5
+> >
+> > Ali
+> >
+> > On Sep 5, 2007, at 11:20 AM, sutirtha sanyal
+> wrote:
+> >
+> > > Hi All,
+> > >
+> > > I am using M5 2.0b2. Currently i can only
+> simulate
+> > > only upto 4 cores.
+> > >
+> > > But for my project it is a very small number.
+> > >
+> > > To enable m5 for 64 core support as i understand
+> i
+> > > need to compile the changed kernel provided in
+> > > m5base-2.6.13.
+> > >
+> > > But compilation is giving errors.
+> > >
+> > > "include/asm/mpspec_def.h:78: warning:
+> > > ‘packed’ attribute ignored for field
+> > of
+> > > type ‘unsigned char[6]’
+> > > init/calibrate.c: In function
+> > > ‘calibrate_delay’:
+> > > init/calibrate.c:143: error: too many arguments
+> to
+> > > function ‘__delay’
+> > > init/calibrate.c:161: error: too many arguments
+> to
+> > > function ‘__delay’
+> > > make[1]: *** [init/calibrate.o] Error 1
+> > > make: *** [init] Error 2"
+> > >
+> > > I am absolutely new in complining linux kernel
+> and
+> > > this was my first try.
+> > >
+> > > Can any body please suggest a step by step
+> method
+> > on
+> > > how to do this.
+> > >
+> > > Any help will be greatly appreciated.
+> > >
+> > > -Regards,
+> > > Sanyal
+> > >
+> > >
+> > >
+> > >
+> >
+>
+______________________________________________________________________
+> >
+> > > ______________
+> > > Shape Yahoo! in your own image.  Join our
+> Network
+> > Research Panel
+> > > today!
+> >
+>
+http://surveylink.yahoo.com/gmrs/yahoo_panel_invite.asp?a=7
+> > >
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+>
+>
+>
+____________________________________________________________________________________
+> Take the Internet to Go: Yahoo!Go puts the Internet
+> in your pocket: mail, news, photos & more.
+> http://mobile.yahoo.com/go?refer=1GNXIC
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+____________________________________________________________________________________
+Take the Internet to Go: Yahoo!Go puts the Internet in your pocket: mail, news, photos & more.
+http://mobile.yahoo.com/go?refer=1GNXIC
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

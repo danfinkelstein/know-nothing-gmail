@@ -1,0 +1,17 @@
+> The easiest way to do to setup a pointer like this is to have the
+> python make the connection one way and in the constructor make the
+> pointer the other way.
+>
+> So the python code will instantiate a Daughter, then a Father and
+> give the Father the pointer to the Daughter. In the constructor the
+> Father can then can daughter->setBackPtr(this) or something similar.
+Thanks - that works great, can't believe I missed such a straightforward solution!
+- Show quoted text -
+James
+--
+James.Srinivasan@cl.cam.ac.uk
+http://www.cl.cam.ac.uk/~jrs53/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

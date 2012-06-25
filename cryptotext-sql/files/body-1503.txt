@@ -1,0 +1,38 @@
+Something like   env.Append(LIBS=['libhotspot']) after the first
+environment in the SConstruct file is created should do the trick.
+Ali
+- Show quoted text -
+On May 1, 2009, at 12:31 AM, Paul Lee wrote:
+> I am very new to scons and I was trying to link in a hotspot lib
+> into M5.  However, I am not getting how to do it correctly.  I tried
+> modifying the line in SConscript that begins with
+>
+> env.Program
+>
+> to
+>
+> newEnv.Program(bin, make_objs(cc_sources, newEnv),
+> LIBS=['libhotspot'], LIBPATH='.')
+>
+> I tried to follow the example at the bottom of the page in http://www.scons.org/doc/0.97/HTML/scons-user/x628.html
+> .
+> I know the LIBPATH is incorrect, but I'm not sure how to get scons
+> to copy the Hotspot directory into build/ALPHA_SE/ so that I can
+> just use Hotspot as the LIBPATH.
+> I am also unsure about how to properly add a folder with a header
+> file to the SConscript.
+>
+>
+> Thanks for any help,
+>
+> Paul
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

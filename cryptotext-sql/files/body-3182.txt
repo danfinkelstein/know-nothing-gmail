@@ -1,0 +1,19 @@
+Take a look at the util/m5 directory. There are examples of how we execute those instructions you noticed in decoder.isa.
+Ali- Show quoted text -
+On Apr 30, 2008, at 11:54 PM, Reza Farivar wrote:
+- Show quoted text -
+The Alpha ISA has a couple of reserved instructions. with opcodes ranging from 01 to 0E. The support for these is also present in m5, as seen in src/arch/alpha/isa/decoder.isa, lines 798 and onwards. We have added an instruction and required program logic to use two of these reserved opcodes as two new instructions.
+The problem we are facing in using these is that the inline gcc assembler doesn't recognize them. i.e:
+__asm__ ("OPC01");
+in a C program doesn't get assembled.
+Does anyone know what is a good solution in this case? I imagine this could be a common problem with m5 users, as they might want to add some logic to the processor which gets triggered by an assembly instruction.
+Thanks in advance for any help
+Reza
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

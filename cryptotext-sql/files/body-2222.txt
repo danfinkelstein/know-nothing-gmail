@@ -1,0 +1,7 @@
+- Show quoted text -Hi thereI am running the simulation for cache prediction and setup the configuration file and while running the simulation for 10000000(10 Million) instructions that runs ok......But when I ran the same simulation for 100000000(100 Million) I got the following error
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000warn: Entering event queue @ 0.  Starting simulation...m5.opt: /space1/ashutoshj/m5-2.0b5/build/ALPHA_SE/mem/cache/cache_impl.hh:311: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Program aborted at cycle 41449231000gzip: stdout: Broken pipeWhat kind of error is this and how can I sort this.............please helpThanks in advanceAshutosh JainM.S. Computer Science
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

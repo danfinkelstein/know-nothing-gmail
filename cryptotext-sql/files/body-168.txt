@@ -1,0 +1,6 @@
+Does the Sparc O3 processor implement the specified memory model? In this case, TSO and optionally PSO.Or is the program executed sequentially?If yes, does the simple processor model also implement it?
+Thanks in advance,--Eberle A. Rambo.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

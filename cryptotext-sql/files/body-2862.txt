@@ -1,0 +1,34 @@
+Hi Jibang,For questions 1 and 2, see here:http://m5.eecs.umich.edu/wiki/index.php/Frequently_Asked_Questions#How_many_CPUs_can_M5_run.3F
+you will just need to download the appropriate palcode and apply our linux patches and recompile for a >4 cpu platform.  if you don't want to build your own crosstool, you can download one on our download page for the recompilation.
+For question 3, if all you want is a larger disk image, there are simpler ways to do it, see here:http://m5.eecs.umich.edu/wiki/index.php/Frequently_Asked_Questions#What_if_I_need_more_space_than_is_available_on_the_disk_image.3F
+#1 is in my opinion the easiest way to get a larger image.Good luck.Lisa- Show quoted text -On Wed, Jun 18, 2008 at 3:44 PM, Jibang Liu <iamjbliu@gmail.com> wrote:
+Hi all
+I have several questions, can you give me some ideas?
+1) The sampled vmlinux downloaded from m5 website is only suitable for
+the case which has less than 4 cpu. Is this right?
+2) If I hope the number of CPU is more than 4, I need to recompile the
+linux kernel instead of the sampled vmlinux. In this case how can I do
+it? Or there is such new kernel we can download from m5 website?
+3) When I'm trying create a bigger image disk,I do it following the
+instruction "Compiling benchmarks for the image and creating the image
+with linux-dist". But I meet an error as following, how can I fix it?
+--15:13:04--
+ftp://ftp.handhelds.org/packages/ipkg-utils/ipkg-utils-1.7.tar.gz
+  (try:20) =>
+`/home/seasmile/m5/linux-dist/bin/myworkspace/src/ipkg-utils-1.7.tar.gz'
+Connecting to ftp.handhelds.org|128.31.0.22|:21... connected.
+Logging in as anonymous ...
+Error in server response, closing control connection.
+Giving up.
+Could not get packet via ftp!
+URL: ftp://ftp.handhelds.org/packages/ipkg-utils/ipkg-utils-1.7.tar.gz
+I really appreciate your helps.
+Jibang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

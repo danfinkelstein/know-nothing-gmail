@@ -1,0 +1,9 @@
+Hi all:
+I want to add some modifications to the page in/page out between main
+memory and disk in m5. Can I do it and which codes in m5 give such
+description?
+Thank you very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

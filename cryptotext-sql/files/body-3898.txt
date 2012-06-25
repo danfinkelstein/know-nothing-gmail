@@ -1,0 +1,12 @@
+Is there a quick way to generate statistics after
+running a program in m5, for example how many tlb
+misses, page faults, l1 miss, l2 miss etc for simple
+or timing  cpu?
+______________________________________________
+Pregunta, Responde, Descubre.
+Comparte tus consejos y opiniones con los usuarios de Yahoo! Respuestas
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

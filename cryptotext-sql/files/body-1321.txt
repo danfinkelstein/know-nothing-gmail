@@ -1,0 +1,28 @@
+Aaah, the problem was that I was putting the database name that I
+created instead of literally, "database". Thanks.
+Best,
+-Rick
+- Show quoted text -
+nathan binkert wrote:
+>> I was wondering if I could take a look at the schema you used for your
+>> database so I don't have to work backwards to figure out what to create, as
+>> I am guessing the types of fields you used at this point.
+>>
+>
+> The db_init.py file should cover everything.  Let me know if it's not
+> clear enough.
+>
+> Again, you can just do:
+> % python stats.py database init
+>
+> Now, the command won't run correctly at the moment because jobfile.py
+> was moved to src/python/m5/util, but that should be easy enough to
+> fix.
+>
+>   Nate
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

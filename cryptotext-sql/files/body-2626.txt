@@ -1,0 +1,16 @@
+Hi,
+If an m5 simulation terminates due to a simulation limit being reached,
+is it then possible that buffered I/O will not be sent out to the
+terminal? I noticed that output appears to buffered for quite a while
+until I see it hit the output terminal. Is there a simple way to flush
+the output to terminal more often or at least before teh simulation
+terminates.
+The root of this question is that I am trying to add the ex_tpcb
+database benchmark and in some cases I don't even see the unconditional
+printf at the beginning of main(), while at other times the entire
+benchmark works and I see all the printfs output to the terminal.
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

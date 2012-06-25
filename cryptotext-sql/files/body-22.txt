@@ -1,0 +1,13 @@
+Hi all,
+After executing a subset of MiBench I received this exit cause for a few benchmarks:
+Exiting @ cycle 9223372036854775807 because simulate() limit reached
+CRC32 and gsm encode with the large input set are the two benchmarks that cause this message.
+On the mailing list I read that this happens due to deadlocking for example.
+However, I run this code on a single InOrderCPU and I don't see where CRC could possibly deadlock. Besides, it executes correctly on the Atomic CPU.
+Does anybody have ideas about possible causes? Or did anybody ran CRC32/gsm encode large on the InOrderCPU to completeness?
+Regards,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

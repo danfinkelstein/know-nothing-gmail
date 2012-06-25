@@ -1,0 +1,17 @@
+Where does the kernel panic? What does it print out when it does?
+Normally to get a complex application running we start by running it on real hardware (could be alpha, but not necessarily). So we can make sure it compiles, figure out how to setup configuration files appropriately, etc. After it works on real hardware we build the application for alpha, copy it onto a disk image and get everything to work, and finally we'll integrate it into linux-dist.
+Ali- Show quoted text -
+On Feb 28, 2007, at 8:18 PM, Brad Penoff wrote:
+Greetings,
+I've been having a series of problems that I was hoping to get some help on.  Long story short, when I build disk images and add ONLY Shell & Console Tools->BusyBox->Coreutils->env after cloning, the resulting image causes the kernel to panic, and I don't understand why...  I have been able to build and boot disks using the same method successfully.
+The reason I wish to add env is because when I ran my series of applications, it complained that it didn't exist. So, there is this issue of "why did the kernel panic?" but more generally, I seek advice for how to add in my own applications the proper way.  I'm guessing you have experience with this seeing as how you have so many advanced benchmarks available within the default system.  Is there a list/person where I write to ask about your experiences of getting complex applications to run inside m5?  Is this the right list to ask such questions?
+Thanks!
+brad
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

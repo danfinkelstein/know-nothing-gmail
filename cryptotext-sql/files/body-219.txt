@@ -1,0 +1,126 @@
+Please try the development repository in case this is something we've
+already fixed.
+Gabe
+- Show quoted text -
+徐敏超 wrote:
+>
+> Hi, everyone
+> I tried to build the M5. It gave following compilation error in ubuntu
+> 9.10 64 bit machine. Could you give me some advice.
+>
+> xmc@ubuntu:~/m5-stable-94c016415053$ scons build/ALPHA_SE/m5.debug
+> scons: Reading SConscript files ...
+> Checking for leading underscore in global variables...(cached) no
+> Checking for C header file Python.h... (cached) yes
+> Checking for C library pthread... (cached) yes
+> Checking for C library dl... (cached) yes
+> Checking for C library util... (cached) yes
+> Checking for C library m... (cached) yes
+> Checking for C library python2.6... (cached) yes
+> Checking for accept(0,0,0) in C++ library None... (cached) yes
+> Checking for zlibVersion() in C++ library z... (cached) yes
+> Checking for C header file fenv.h... (cached) yes
+> Reading /home/xmc/m5-stable-94c016415053/src/arch/alpha/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/arch/sparc/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/arch/arm/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/arch/x86/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/arch/mips/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/cpu/inorder/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/cpu/ozone/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/cpu/simple/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/cpu/o3/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/mem/protocol/SConsopts
+> Reading /home/xmc/m5-stable-94c016415053/src/mem/ruby/SConsopts
+> Building in /home/xmc/m5-stable-94c016415053/build/ALPHA_SE
+> Using saved variables file
+> /home/xmc/m5-stable-94c016415053/build/variables/ALPHA_SE
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> g++ -o build/ALPHA_SE/base/bigint.do -c -Wno-deprecated -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -ggdb3 -Werror
+> -DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Ibuild/gzstream
+> -Ibuild/libelf -Iext -I/usr/include/python2.6 -Ibuild/ALPHA_SE
+> build/ALPHA_SE/base/bigint.cc
+> In file included from build/ALPHA_SE/base/bigint.cc:31:
+> build/ALPHA_SE/base/bigint.hh:39: error: 'uint64_t' does not name a type
+> build/ALPHA_SE/base/bigint.hh:40: error: 'uint64_t' does not name a type
+> build/ALPHA_SE/base/bigint.hh:43: error: ISO C++ forbids declaration
+> of 'uint64_t' with no type
+> build/ALPHA_SE/base/bigint.hh:43: error: expected ',' or '...' before 'x'
+> build/ALPHA_SE/base/bigint.hh:48: error: ISO C++ forbids declaration
+> of 'uint64_t' with no type
+> build/ALPHA_SE/base/bigint.hh:48: error: expected ',' or '...' before
+> 'x' build/ALPHA_SE/base/bigint.hh:55: error: expected type-specifier
+> before 'uint64_t'
+> build/ALPHA_SE/base/bigint.hh: In constructor
+> 'm5_twin64_t::m5_twin64_t(int)':
+> build/ALPHA_SE/base/bigint.hh:45: error: 'a' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:45: error: 'x' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:46: error: 'b' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh: In member function 'm5_twin64_t&
+> m5_twin64_t::operator=(int)':
+> build/ALPHA_SE/base/bigint.hh:50: error: 'a' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:50: error: 'x' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:51: error: 'b' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh: At global scope:
+> build/ALPHA_SE/base/bigint.hh:63: error: 'uint32_t' does not name a type
+> build/ALPHA_SE/base/bigint.hh:64: error: 'uint32_t' does not name a type
+> build/ALPHA_SE/base/bigint.hh:67: error: ISO C++ forbids declaration
+> of 'uint32_t' with no type
+> build/ALPHA_SE/base/bigint.hh:67: error: expected ',' or '...' before 'x'
+> build/ALPHA_SE/base/bigint.hh:72: error: ISO C++ forbids declaration
+> of 'uint32_t' with no type
+> build/ALPHA_SE/base/bigint.hh:72: error: expected ',' or '...' before 'x'
+> build/ALPHA_SE/base/bigint.hh:79: error: expected type-specifier
+> before 'uint32_t'
+> build/ALPHA_SE/base/bigint.hh: In constructor
+> 'm5_twin32_t::m5_twin32_t(int)':
+> build/ALPHA_SE/base/bigint.hh:69: error: 'a' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:69: error: 'x' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:70: error: 'b' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh: In member function 'm5_twin32_t&
+> m5_twin32_t::operator=(int)':
+> build/ALPHA_SE/base/bigint.hh:74: error: 'a' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:74: error: 'x' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.hh:75: error: 'b' was not declared in this
+> scope
+> build/ALPHA_SE/base/bigint.cc: In function 'std::ostream&
+> operator<<(std::ostream&, const Twin64_t&)':
+> build/ALPHA_SE/base/bigint.cc:39: error: 'const struct m5_twin64_t'
+> has no member named 'a'
+> build/ALPHA_SE/base/bigint.cc:39: error: 'const struct m5_twin64_t'
+> has no member named 'b'
+> build/ALPHA_SE/base/bigint.cc: In function 'std::ostream&
+> operator<<(std::ostream&, const Twin32_t&)':
+> build/ALPHA_SE/base/bigint.cc:45: error: 'const struct m5_twin32_t'
+> has no member named 'a'
+> build/ALPHA_SE/base/bigint.cc:45: error: 'const struct m5_twin32_t'
+> has no member named 'b' scons: *** [build/ALPHA_SE/base/bigint.do]
+> Error 1
+> scons: building terminated because of errors.
+> xmc@ubuntu:~/m5-stable-94c016415053$
+> <mailto:xmc@ubuntu:%7E/m5-stable-94c016415053$>
+>
+> thanks in advance
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

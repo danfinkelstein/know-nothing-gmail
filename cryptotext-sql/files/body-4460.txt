@@ -1,0 +1,50 @@
+Hey all,
+ 
+The mutex problem is back again! But this time, it seems to be 
+actually a coherence problem.
+ 
+It appears that my benchmark came to a situation where all 
+threads are waiting for the same lock. I traced the execution and found the 
+following piece of code very suspicious. 
+ 
+Here, cpu slave3(all slave cpus are TimingSimpleCPU) stores 0 
+to the lock address (0x1201c2468) to free the lock, while other cpus are waiting 
+for this lock.
+However, later on when slave7 loads the lock and read the 
+value in the next cycle, it's not 0 but 2(the value when the lock is locked). 
+Thus, it appears that slave3 didn't free the lock.
+ 
+1281328000: system.slaves3 T0 : @__diy_spin_unlock+4 : 
+stq        
+r31,0(r16)      : MemWrite :  D=0x0000000000000000 
+A=0x1201c2468 1281330000: system.slaves1 T0 : @__diy_mutex_lock+36 : 
+bsr        r26,0x120115624 : IntAlu :  
+D=0x0000000120115668 1281329000: system.slaves7 T0 : @__diy_spin_lock_locked 
+: ldq        
+r0,0(r16)       : MemRead :  
+D=0x0000000000000002 A=0x1201c2468  1281330000: system.slaves6 T0 : 
+@__diy_spin_lock_locked+8 : ret        
+(r26)           : IntAlu 
+:1281330000: system.slaves0 T0 : @__diy_spin_lock_solid+24 : 
+bis        
+r31,r9,r16      : IntAlu :  D=0x00000001201c2468 
+1281329000: system.slaves4 T0 : @__diy_spin_lock_locked : 
+ldq        
+r0,0(r16)       : MemRead :  
+D=0x0000000000000002 A=0x1201c2468  
+ 
+I am using a configuration where I have eight 
+TimingSimpleCPUs, each has a private L1 Icache and Dcache, and they share a big 
+L2 cache.
+ 
+Can you give me some hints?
+ 
+Thanks!
+ 
+Jiayuan
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

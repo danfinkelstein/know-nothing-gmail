@@ -1,0 +1,22 @@
+Hi,
+here's an obvious way to enhance simulation speeds: simply run multiple
+simulations in parallel. Of course, this only works if you have multiple
+simulations to run, e. g. when you are sweeping over a parameter (cache size,
+bus bandwidth, processor speeds etc.).
+- Jonas
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Tel.: +49 531 391 3752
+Fax:  +49 531 391 4587
+E-mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

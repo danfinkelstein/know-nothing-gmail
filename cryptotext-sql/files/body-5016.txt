@@ -1,0 +1,20 @@
+Hello all --Thanks for the responses re: CPU switching;  I seem to have gotten that working.I can now switch in the O3 CPU after some time running with the AtomicSimpleCPU, and it seems to function properly.  However, the CPI stat in the output seems suspicious.  When running with the AtomicSimpleCPU for 100k cycles and the O3 CPU for 100 cycles, I get the stats output attached at the end of this email.  Note the CPI is 747, despite the fact that it appears to have committed 134 instructions in 100 cycles.
+The reported CPI (747) is exactly (100100 / 134), or the total number of simulated cycles (AtomicSimpleCPU + O3CPU) over the number of insts committed by the O3 CPU.Is there something I could be doing in my 
+se.py
+ file that would cause this behavior, or is this a bug in the CPU model?  My thought is the latter - when I use the same se.py but switch in the AtomicSimpleCPU, both the initial CPU and the switched-in CPU report the correct numCycles value (100k and 100, respectively) - but I'm still not familiar enough with python to know for sure.
+Thanks in advance for the help!   -Vilasm5stats.txt-----sim_insts                                      100135                       # Number of instructions simulatedsim_ticks                                      100100                       # Number of ticks simulated
+system.cpu.idle_fraction                            0                       # Percentage of idle cyclessystem.cpu.not_idle_fraction                        1                       # Percentage of non-idle cycles
+system.cpu.numCycles                           100001                       # number of cpu cycles simulatedsystem.cpu.num_insts                           100001                       # Number of instructions executed
+system.cpu.num_refs                             49754                       # Number of memory referencessystem.cpu.workload.PROG:num_syscalls               3                       # Number of system callssystem.switch_cpu.commit.COM:branches
+               9                       # Number of branches committedsystem.switch_cpu.commit.COM:bw_lim_events            8                       # number cycles where commit BW limit reachedsystem.switch_cpu.commit.COM:bw_limited
+             0                       # number of insts not committed due to BW limitssystem.switch_cpu.commit.COM:committed_per_cycle.start_dist                     # Number of insts commited each cyclesystem.switch_cpu.commit.COM:committed_per_cycle.samples
+           88system.switch_cpu.commit.COM:count                134                       # Number of instructions committedsystem.switch_cpu.commit.COM:loads                 33                       # Number of loads committed
+system.switch_cpu.commit.COM:membars                0                       # Number of memory barriers committedsystem.switch_cpu.commit.COM:refs                  66                       # Number of memory references committed
+system.switch_cpu.commit.COM:swp_count              0                       # Number of s/w prefetches committedsystem.switch_cpu.commit.branchMispredicts            7                       # The number of times a branch was mispredicted
+system.switch_cpu.commit.commitCommittedInsts          134                       # The number of committed instructionssystem.switch_cpu.commit.commitSquashedInsts           72                       # The number of squashed insts skipped by commit
+system.switch_cpu.committedInsts                  134                       # Number of Instructions Simulatedsystem.switch_cpu.committedInsts_total            134                       # Number of Instructions Simulated
+system.switch_cpu.cpi                      747.014925                       # CPI: Cycles Per Instructionsystem.switch_cpu.cpi_total                747.014925                       # CPI: Total CPI of All Threads
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Hi everyone,
+   I have a multithreaded program running on m5-2.0b3 in full system mode. I can get the m5stats.txt which includes the statistics for each core. Is there anybody who can tell me how to get the statistics for each thread instead of each core by configuring m5?
+  Another problem is I found there are two frequency for simulator.One is 1THz for system and the other is 2GHz for CPU. But in the statistics file CPU and system have the nearly same cycle counts.So could you please why different clock frequency are used?
+    Thank you very much and best wishes to you!
+                                                            Yue Li
+                                                            06-28-2007
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

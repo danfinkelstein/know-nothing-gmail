@@ -1,0 +1,177 @@
+This patch was committed by Korey a few months ago to fix a multiplier
+bug. I will forward the bug details to you shortly. Max, are you
+working with the dev branch? Because, if you are then you are seeing a
+different problem. It is probably a new bug.
+-Soumyaroop
+---------- Forwarded message ----------
+From: Korey Sewell <ksewell@eecs.umich.edu>
+Date: Thu, Sep 17, 2009 at 2:34 PM
+Subject: [PATCH] [mq]: mult_bug
+To: sroy@cse.usf.edu, ksewell@umich.edu
+# HG changeset patch
+# User Korey Sewell <ksewell@umich.edu>
+# Date 1253216066 14400
+# Node ID db7015884c86dd7fcc640016ed7ee1f0b8006abe
+# Parent  0f7957bb4450006970b30f5e2f0108d85330f136
+[mq]: mult_bug
+diff --git a/src/cpu/inorder/resources/mult_div_unit.cc
+b/src/cpu/inorder/resources/mult_div_unit.cc
+--- a/src/cpu/inorder/resources/mult_div_unit.cc
++++ b/src/cpu/inorder/resources/mult_div_unit.cc
+@@ -91,7 +91,32 @@
+    Resource::freeSlot(slot_idx);
+ }
++//@TODO: Should we push this behavior into base-class to generically
++//       accomodate all multicyle resources?
++void
++MultDivUnit::requestAgain(DynInstPtr inst, bool &service_request)
++{
++    ResReqPtr mult_div_req = findRequest(inst);
++    assert(mult_div_req);
++    service_request = true;
++
++    // Check to see if this instruction is requesting the same command
++    // or a different one
++    if (mult_div_req->cmd != inst->resSched.top()->cmd) {
++        // If different, then update command in the request
++        mult_div_req->cmd = inst->resSched.top()->cmd;
++        DPRINTF(InOrderMDU,
++                "[tid:%i]: [sn:%i]: Updating the command for this
+instruction\n",
++                inst->readTid(), inst->seqNum);
++    } else {
++        // If same command, just check to see if memory access was completed
++        // but dont try to re-execute
++        DPRINTF(InOrderMDU,
++                "[tid:%i]: [sn:%i]: requesting this resource again\n",
++                inst->readTid(), inst->seqNum);
++    }
++}
+ int
+ MultDivUnit::getSlot(DynInstPtr inst)
+ {
+@@ -232,8 +257,13 @@
+        //      counting down the time
+        {
+            DPRINTF(InOrderMDU, "End MDU called ...\n");
+-            if (mult_div_req->getInst()->isExecuted())
++            if (mult_div_req->getInst()->isExecuted()) {
++                DPRINTF(InOrderMDU, "Mult/Div finished.\n");
+                mult_div_req->done();
++            } else {
++                mult_div_req->setCompleted(false);
++            }
++
+        }
+        break;
+diff --git a/src/cpu/inorder/resources/mult_div_unit.hh
+b/src/cpu/inorder/resources/mult_div_unit.hh
+--- a/src/cpu/inorder/resources/mult_div_unit.hh
++++ b/src/cpu/inorder/resources/mult_div_unit.hh
+@@ -82,6 +82,8 @@
+    /** Register extra resource stats */
+    virtual void regStats();
++    void requestAgain(DynInstPtr inst, bool &try_request);
++
+  protected:
+    /** Latency & Repeat Rate for Multiply Insts */
+    unsigned multRepeatRate;
+- Show quoted text -
+On Mon, Dec 14, 2009 at 11:31 AM, Korey Sewell <ksewell@umich.edu> wrote:
+> Hello,
+> myself and/or soumyaroop should have some non-committed patches for this bug
+> as we had a very similar discussion at least a month or so back.
+>
+> I haven't committed all the recent stuff lately because I reworked
+> everything to better function with multithreading but that patch should
+> hopefully be isolated enough...
+>
+> Any thoughts soumyaroop?
+>
+> I'll check out what I have tonight and send you a update...
+>
+> On Mon, Dec 14, 2009 at 5:13 AM, Maximilien Breughe
+> <maximilien.breughe@elis.ugent.be> wrote:
+>>
+>> Hello,
+>>
+>> For my research I am working with the in-order CPU core of M5. I'm
+>> working in system emulation mode for Alpha: ALPHA_SE. The version of M5
+>> is 2.0.
+>> I have a problem concerning the adjustment of the latency of
+>> multiply-operations.
+>>
+>> -----------------------------------------------------------------------
+>>
+>> I adjusted the latency of the multiply-operations to 3, to get a more
+>> realistic execution. This schedules a multiply operation at the correct
+>> Tick (namely 1500 Ticks later). The problem is that the execution of the
+>> multiply-instruction takes as long as if the latency was still set to 1.
+>> This means that the instruction doesn't stall in any of the stages.
+>> Since the Write-Back stage happens (just after but) at the same Tick as
+>> the multiply-event there is no inconsistency.
+>>
+>> I've debugged a little bit more to clarify the problem. I set the
+>> latency to 4. The multiply-event happens one tick after the write-back
+>> stage, but the instruction could still call the graduation unit even
+>> without the execution of the multiply-event!
+>>
+>> I think the bug is in cpu/inorder/resources/mult_div_unit.cc
+>> When MultDivUnit::execute gets called it schedules the Event for
+>> multiplication at the desired Tick. After this it calls
+>> mult_div_req->setCompleted().
+>> This makes the instruction proceed through all pipeline stages without
+>> stalling.
+>>
+>> I can provide you some more details. The call stack is
+>> MultDivUnit::execute
+>> Resource::scheduleExecution
+>> Resource::request
+>> ResourcePool::request
+>> PipelineStage::processInstSchedule
+>> PipelineStage::processInsts
+>>
+>> The MultDivUnit gets called when the instruction is in stage 1. It gets
+>> called a second time in stage 2. I don't know why the latter happens:
+>> another event gets scheduled 1 tick later then the first one.
+>>
+>> --------------------------------------------------------------------------
+>>
+>> What should I modify to the code so that it will work correctly? do I
+>> need to remove "setCompleted"? Where do I place it?
+>>
+>>
+>>
+>> Thanks and kind regards,
+>>
+>>
+>> Maximilien
+>> PhD Student at ELIS
+>> Ghent University
+>> Belgium
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> - Korey
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

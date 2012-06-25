@@ -1,0 +1,23 @@
+>  My question is, do you think modeling the access time more
+> accurately will allow M5 to properly model disks or are there other
+> caveats in different parts of the system, like the IDE controller and
+> PCI system, that will mess up my plans in ways I cannot foresee?
+> Essentially, I am afraid there could be a timing issue that I didn't
+> pick up on that would mess up my plan so I wanted to know that the
+> experts thought.
+I think that our PCI model is relatively reasonable.  It doesn't model
+the low level pci timing, but you do give busses a width and a
+frequency, so you are able to control bandwidth and latency.  I'm
+pretty certain that the IDE controller's timing model is pretty
+minimal and in fact, the bandwidth between the ide controller and the
+disk may not be constrained properly.  That said, as long as you get
+that bandwidth correct, I doubt that timing within an IDE controller
+will affect the disk much.  I could see you needing to do more stuff
+if you want to support tagged queuing properly, I'm not sure.  I think
+your only real risk is the IDE controller, but to be honest, I don't
+see you getting something better anywhere else.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

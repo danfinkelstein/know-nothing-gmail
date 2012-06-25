@@ -1,0 +1,20 @@
+> I think we would like to see those changes in m5 so MQ might be
+> better. With MQ you can still use hg view to see a list of all the
+> changes, I'm not sure that hg revert will work but you should be
+> careful about using it anyway, and you can commit changes in HQ with
+> hgqcommit.
+I'd just like to make a comment to M5 users in general.  If you're
+working on something that is beneficial to the community as a whole,
+you get some benefit by putting up the effort to get it committed to
+the mainstream tree.
+1) You don't have to merge anymore, it's in the tree
+2) More people can look for bugs
+3) New changes are less likely to break what you're working on since
+everyone will be compiling and using your code.
+4) Once I fix the regression system to make it easier to add tests,
+your code can automatically be tested by us by our regression system.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

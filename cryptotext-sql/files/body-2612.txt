@@ -1,0 +1,35 @@
+Since I am about to start on something completely unrelated (a
+research position in bioinformatics) I would be happy to help out with
+small details just to stay in touch.
+Let me know if anything shows up that needs independent checking.
+- Show quoted text -
+On 8/20/08, nathan binkert <nate@binkert.org> wrote:
+> > The wiki is what I had in mind. I don't think you'd want to maintain a
+>  > bunch of contributions as you'd pretty much have to if you distributed
+>  > them because whatever disclaimer to the contrary, if they were in the
+>  > distro, someone would complain if one didn't work.
+>
+>
+> Starting with a wiki would be fantastic, maybe something like an "M5
+>  Cookbook".  If things are useful, we can incorporate them.  I plan to
+>  work on improving the regression framework, so we could possibly
+>  provide a mechanism for adding cookbook stuff to the regressions,
+>  though failures would go to the owners of each recipe.  This would be
+>  a few months away at the earliest though.
+>
+>   Nate
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Philip Machanick (Visiting Academic, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
+http://opinion-nation.blogspot.com/
++61-7-3871-0963 (office 3365-1624) skype philipmach
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

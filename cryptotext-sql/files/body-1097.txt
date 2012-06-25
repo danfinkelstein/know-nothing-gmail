@@ -1,0 +1,52 @@
+Hi James,
+Don't take that example too literally... it's just showing the basic
+steps of setting up a new execution-driven CPU model by "cloning" the
+code for AtomicSimpleCPU, which just happens to derive from
+BaseSimpleCPU.  BaseSimpleCPU exists solely to factor out code that's
+common between AtomicSimpleCPU and TimingSimpleCPU; since they're both
+single-issue in-order non-pipelined blocking models with no real
+internal timing model they share a common framework even though the
+details of how they interact with the memory system are very
+different. If you're defining a new CPU model that's not an
+execution-driven single-issue in-order blocking model with no real
+internal timing then there's probably no point in deriving from
+BaseSimpleCPU.  Note that all of the other execution-driven CPU models
+(inorder and o3) derive from BaseCPU directly.
+Note that if you're not defining an execution-driven model at all, but
+rather a trace-driven model, it's not obvious to me that you'd want to
+derive even from BaseCPU... note that the existing (but broken)
+TraceCPU derives directly from SimObject.
+If anyone on the list has any good reasons why a trace-driven CPU
+should or should not derive from BaseCPU I'd be happy to hear them.  I
+can see some advantages (like inheriting some of the memory hierarchy
+helper functions, like addPrivateSplitL1Caches()), but you also end up
+having to support ThreadContext objects, which really make no sense in
+the context of a trace-driven CPU (where I specifically mean a CPU
+that's just playing back an address trace, not one that's consuming an
+instruction-level trace).
+Steve
+- Show quoted text -
+On Tue, Aug 4, 2009 at 11:41 AM, Cong Wang<jameswang99@yahoo.com> wrote:
+> Hi All:
+>    I have a question about how I should extend a cpu model. In the
+> tutorial on the website, it seems that one has to copy the base.cc and
+> base.hh files from src/cpu/simple directory and then inherent from
+> BaseSimpleCPU. I wonder if that copying is necessary, if so why? It
+> seems just the base.cc and base.hh files are just copied and nothing
+> is modified to them. Why wouldn't it be ok just to inherent from
+> BaseSimpleCPU, rather than copying the files and then inherent? Is it
+> that Scons has some restrictions or some other reason?
+>    Thank you for any comment in advance.
+>
+> --
+> Regards
+> James Wang
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

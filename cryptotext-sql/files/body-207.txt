@@ -1,0 +1,11 @@
+> We compiled our code using Crosscompiler available on the m5sim website and
+> then built it into the linux-image.
+> Are we missing something here??
+It's hard to know what's going on.  You haven't given us much data.
+Send us your changes to M5, send us the error messages on the
+terminal.  Send us any more info that you can think of.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

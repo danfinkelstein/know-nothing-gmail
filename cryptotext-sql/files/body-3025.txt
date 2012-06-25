@@ -1,0 +1,8 @@
+In InstructionQueue<Impl>::scheduleReadyInsts(), there's the main loop    while (total_issued < totalWidth &&           iewStage->canIssue() &&           order_it != order_end_it)
+when i try to set the total_issued limit to totalWidth/2, or any number less than totalWidth, the 03CPU fails in the regression tests. Why is this happening? I was thinking the 03CPU would be slower due to this "bottleneck" but I didn't expect that it wouldn't work.
+is it because of iewStage->incrWb(issuing_inst->seqNum)? or i2e_info->size++? or something else?I thought that setting the total_issued limit to greater than totalWidth(10 instead of the default 8) would cause regression test failure since the queues would be filled or something. Instead, setting it as such actually had no "adverse" effects on the CPU, or at least it passed the regression test.
+again, thank you very much. help would be appreciated. =)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

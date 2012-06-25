@@ -1,0 +1,6 @@
+Hi, We need to make some modifications to the Alpha ISA and insert a few more instructions. But while compiling a program through crosscompiler, we need to let the cross compiler know about the new instructions. I guess we need to modify the assembler code of gcc for that. 
+Could someone help us about how to do this and is there any other way? -- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

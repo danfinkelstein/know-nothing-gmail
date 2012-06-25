@@ -1,0 +1,46 @@
+Making sure we don't loose track of this question... anyone have a response yet?
+- Show quoted text -
+On Mon, Sep 21, 2009 at 3:07 PM, Aaron Williams <aswilli@gmail.com> wrote:
+> Steve Reinhardt <stever <at> gmail.com> writes:
+>
+>>
+>> I don't know all the ins and outs of how stats are accumulated
+>> (they're not always counting what you think they are), but do realize
+>> that in FS mode cores that aren't running user code are in the kernel
+>> idle loop (just like on a real machine).  So total ticks should
+>> normally be consistent across all the cores since the cores don't
+>> magically vanish and reappear based on whether they have something to
+>> do.  (Though there may be differences if you're simulating from boot
+>> and the OS actually enables the extra cores later in the boot
+>> process.)
+>>
+>> As for 2 vs 4 cores, that's more mysterious, but if your benchmark is
+>> too small then you could be getting eaten up by overheads.
+>>
+>> Steve
+>>
+>
+>
+> I am reposting this reply since I never heard a response on it...
+>
+> How can I tell how many of the kernel mode ticks are being used to handle the
+> pthreads management and how much is being spent in kernel mode idle loop?  Is
+> that what the two percentages are to the immediate right of the number of ticks
+> in the output file?  What are these percentages if not?
+>
+> Thanks!
+>
+> Aaron
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

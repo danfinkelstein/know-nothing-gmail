@@ -1,0 +1,12 @@
+> Can I get Tru64 image that m5 can boot? Has anyone tried running splash2 or
+> ALP  benchmarks using that image?
+I don't know that we can distribute the Tru64 image since it is
+licensed code.  Furthermore, it has probably been nearly 4 years since
+anyone has booted Tru64 and there are several known issues with trying
+to do so again. Is there some reason that you want to run Tru64
+instead of linux?
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

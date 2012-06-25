@@ -1,0 +1,16 @@
+I’ve found a bug in the beta 3 release of M5.  When
+running with more than one CPU and no L2 cache, I get an invalid transition
+abort from the coherence code while booting linux in FS mode.
+Just running this command line will produce the error:
+ 
+build/ALPHA_FS/m5.opt fs.py –t –n 4 –caches
+ 
+I have looked at the problem in GDB and it appears the
+problem is stemming from a packet getting on the memory bus that has a command
+MemCmd::WriteReq, which is causing the error.
+ 
+Geoff
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

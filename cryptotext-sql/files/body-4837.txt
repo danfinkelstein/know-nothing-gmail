@@ -1,0 +1,18 @@
+hi all,
+ I am trying to run 26 benchmark simulations on a single core processor
+using M5. The following problem crops up.
+fatal: out of lex buffer streams, increase MAX_STREAMS@cycle 0
+[yy_setstream:/z/stever/bk/m5/eio/exolex.l
+Memory Usage: 1530048 KBytes
+I have tried increasing MAX_STREAMS from 32 to nearly 300 in the
+configuration file, but still the problem persists. I would appreciate any
+suggestions that may lead to the solution to this problem.
+Thanking you all,
+KiranVarma Penmatsa
+MS Computer Science
+Lamar University
+Beaumont, TX-77705
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

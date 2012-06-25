@@ -1,0 +1,51 @@
+On Apr 23, 2008, at 2:39 AM, Choonghwan Lee wrote:
+Hi,
+I'm trying to execute splash2 benchmark with m5 2.0 beta 5. The host system
+is GNU/Linux i686, and I built m5 for alpha isa. I built full system because
+it seems this is robust as well as easy to build according to the document.
+I got pre-compiled cross-compiler from m5 website:
+http://www.m5sim.org/dist/current/alpha_crosstool.tar.bz2
+As a warning this compilers apparently doesn't support NPTL and uses LinuxThreads instead.
+By using this, I could build most programs in splash2 benchmark suite. (I
+referred to http://www.capsl.udel.edu/splash/Download.html )
+We have a precompiled set of SPLASH benchmarks on the d/l page. The easiest thing is probably to use them unless you would like the kernel overheads to be added in.
+I think two important steps still left:
+ 1. inject splash2 binaries into disk image
+ 2. execute benchmark driver.
+It seems m5 comes with scripts for splash2 in that there are run.py and
+cluster.py in the configs/splash2/ directory. When I executed run.py, I got
+an error.
+$ ./build/ALPHA_FS/m5.debug configs/splash2/run.py -n 4 -b Cholesky
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Apr 20 2008 02:00:04
+M5 started Wed Apr 23 01:00:48 2008
+M5 executing on linjus-ubuntu-grad11
+command line: ./build/ALPHA_FS/m5.debug configs/splash2/run.py -n 4 -b
+Cholesky --rootdir=/dist/splash2/codes
+Traceback (most recent call last):
+ File "<string>", line 1, in <module>
+ File "build/ALPHA_FS/python/m5/main.py", line 350, in main
+   execfile(sys.argv[0], scope)
+ File "configs/splash2/run.py", line 50, in <module>
+   class Cholesky(LiveProcess):
+NameError: name 'LiveProcess' is not defined
+The splash2 scripts only work with syscall emulation (SE) mode.
+I don't think there is any typo. /dist/splash2/codes exists. Also, I could
+run fs.py script by using the following command. I think it means that m5 is
+correctly built and directory structure is not incorrect.
+ $ ./build/ALPHA_FS/m5.debug configs/example/fs.py
+--script=./configs/boot/hello.rcS --timing
+As a beginner, it's not easy to find out how to solve this problem. I wish
+some gurus help me for this matter.
+Another question is how to inject splash2 binaries into disk images. Since I
+didn't want to build Linux kernel from scratch, I downloaded disk image from
+m5 website, http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+The FAQ on the webpage describes how to do this. However, I'm not sure that the precompiled binaries on the webpage will actually work in full-system mode since they use the PARAMACS threading library and not pthreads.
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

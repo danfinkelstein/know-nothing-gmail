@@ -1,0 +1,37 @@
+Hi Jonas,
+Previously the problem with allowing public access to our repository was that we were using a proprietary revision control system. We recently migrated to Mercurial (http://www.selenic.com/mercurial) and plan to allow public read access very soon.  Our hope is that this will accelerate the M5 development process giving those who want it the bleeding edge and allowing people to easily contribute by e-mailing patches from their repository directly.
+Ali- Show quoted text -
+On Sep 5, 2007, at 10:53 AM, Jonas Diemer wrote:
+Hi,
+I just ran into the same problem that Jiayuan ran into a few weeks ago
+(http://www.mail-archive.com/m5-users@m5sim.org/msg01121.html) - a bug that
+had already been fixed in the internal tree.
+It seems that it is happening quite frequently that people see bugs which are
+already fixed in the internal tree (just search for "our tree" in the ML
+archives). I was wondering if there is any way that you could allow public
+access to your latest tree (maybe via a public SVN read access), to reduce
+these kinds of problems.
+Of course I'd also understand that there might be reasons for you not wanting
+people to see/use your bleeding edge tree (unfinished/not working code etc.),
+but I thought I'd just ask :-).
+Best regards
+Jonas
+-- 
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

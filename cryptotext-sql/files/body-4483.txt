@@ -1,0 +1,102 @@
+Hi all,
+I am just starting using m5 and I have downloaded the v2 beta3 sources from the site. I have successfully compiled and run the tests for ALPHA_SE, but I have some compilation errors when trying to compile the FS version. Namely the compiler is complaining about not finding the files "encumbered/cpu/full/op_class.hh" and "mem/functional/functional.hh". In fact there is no "mem/functional" folder in the source files at all.
+I am attaching a file with all the compiler errors I am given.
+Any ideas?
+Thanks in advance,
+Nikolas
+g++ -o build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_ISA=ALPHA_ISA -DNDEBUG -DTRACING_ON=0 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.cc
+g++ -o build/ALPHA_FS/arch/alpha/full_cpu_exec.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_ISA=ALPHA_ISA -DNDEBUG -DTRACING_ON=0 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/arch/alpha/full_cpu_exec.cc
+In file included from build/ALPHA_FS/arch/alpha/full_cpu_exec.cc:9:
+build/ALPHA_FS/encumbered/cpu/full/dyn_inst.hh:44:43: error: encumbered/cpu/full/op_class.hh: No such file or directory
+In file included from build/ALPHA_FS/encumbered/cpu/full/dyn_inst.hh:45,
+                 from build/ALPHA_FS/arch/alpha/full_cpu_exec.cc:9:
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:39:40: error: mem/functional/functional.hh: No such file or directory
+In file included from build/ALPHA_FS/arch/alpha/full_cpu_exec.cc:9:
+build/ALPHA_FS/encumbered/cpu/full/dyn_inst.hh:47:45: error: encumbered/mem/functional/main.hh: No such file or directory
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:49: error: expected class-name before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:60: error: ISO C++ forbids declaration of ‘FunctionalMemory’ with no type
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:60: error: expected ‘;’ before ‘*’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:70: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:79: error: ‘FunctionalMemory’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:86: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:87: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:89: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:90: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:91: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:92: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:94: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:95: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:96: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:97: error: ‘MemReqPtr’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh: In member function ‘bool SpeculativeMemory::erase(Addr)’:
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:109: error: ‘mem_block_test’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh: At global scope:
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: ‘SpeculativeMemory::read’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: ‘Fault SpeculativeMemory::read’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: expected primary-expression before ‘&’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: ‘data’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:155: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: ‘SpeculativeMemory::read’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: ‘Fault SpeculativeMemory::read’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: expected primary-expression before ‘&’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: ‘data’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:156: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: ‘SpeculativeMemory::read’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: ‘Fault SpeculativeMemory::read’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: expected primary-expression before ‘&’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: ‘data’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:157: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: ‘SpeculativeMemory::read’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: ‘Fault SpeculativeMemory::read’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: expected primary-expression before ‘&’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:161: error: ‘data’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:162: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: ‘SpeculativeMemory::write’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: ‘Fault SpeculativeMemory::write’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: expected primary-expression before ‘data’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:204: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: ‘SpeculativeMemory::write’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: ‘Fault SpeculativeMemory::write’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: expected primary-expression before ‘data’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:205: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: ‘SpeculativeMemory::write’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: ‘Fault SpeculativeMemory::write’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: expected primary-expression before ‘data’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:206: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:210: error: ‘SpeculativeMemory::write’ declared as an ‘inline’ variable
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:210: error: ‘Fault SpeculativeMemory::write’ is not a static member of ‘class SpeculativeMemory’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:210: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:210: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:210: error: expected primary-expression before ‘data’
+build/ALPHA_FS/encumbered/cpu/full/spec_memory.hh:211: error: expected ‘,’ or ‘;’ before ‘{’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:119: error: ‘AlphaITB’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:119: error: ‘AlphaDTB’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:119: error: ‘FunctionalMemory’ has not been declared
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: ‘MemReqPtr’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: ‘req’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: expected primary-expression before ‘&’ token
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: ‘data’ was not declared in this scope
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: ISO C++ forbids initialization of member ‘read’
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: making ‘read’ static
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: error: invalid in-class initialization of static data member of non-integral type ‘Fault’
+build/ALPHA_FS/encumbered/cpu/full/spec_state.hh:137: confused by earlier errors, bailing out
+scons: *** [build/ALPHA_FS/arch/alpha/full_cpu_exec.fo] Error 1
+scons: building terminated because of errors.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

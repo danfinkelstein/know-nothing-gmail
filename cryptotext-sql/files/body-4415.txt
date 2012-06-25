@@ -1,0 +1,26 @@
+You should look at how the ethernet and ide devices do this.  You don't need to do these kind of modifications to the devices.  Instead, you should make your device implement the PCI configuration stuff and allocate an interrupt that way.  And in case you were worried, M5 doesn't actually require that a device that supports PCI actually be hooked up to some sort of PCI bus.  I've stuck "PCI" devices on the L1-L2 bus.
+  Nate- Show quoted text -
+I'm trying to create a new device (for alpha full-system) that interacts with the a device driver, that I wrote, in the linux kernel via interrupts.
+I have cross-compiled a device driver for alpha against the kernel being used by m5 (2.6.13).  I am able to load the kernel and start the device driver. The device driver does successfully request IRQ 5.
+(Here is the request call in the device driver:
+result = request_irq(short_irq, short_sh_interrupt,
+           SA_SHIRQ | SA_INTERRUPT,"short",
+           short_sh_interrupt);
+naturally short_irq=5 and short_sh_interrupt is a function)
+I call "tsunami->intrctrl->post(0, TheISA::INTLEVEL_IRQ5, 55);" to place the interrupt.  (I created INTLEVEL_IRQ5 in arch/alpha/isa_traits.hh to be 25 (right after IRQ 4). Furthermore, I am using only one CPU (currently) so the first parameter (0) should be correct.)
+Now, after the kernel is loaded, I start the device driver (which, again, reports that it successfully acquired IRQ 5).  Then I have m5 generate the interrupt via the call to tsunami and I get the following:
+panic: Unable to find responder for address pa = 0XFFFFF00188 va = 0XFFFFF00188  @ cycle 10311544851500
+I turned on the "Flow" trace flag and would get:
+10311544812000: global: Interrupt! IPLR=0 ipl=25 summary=2000000
+right before the panic.
+Does something need to be implemented, or am I setting this up wrong?
+Thanks,
+~Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

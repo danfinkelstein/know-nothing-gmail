@@ -1,0 +1,23 @@
+http://zeep.eecs.umich.edu/~saidi/fordan.tar.bz2 Please let me know when you've d/l it so I can delete it (130MB).
+Ali
+On Mar 2, 2008, at 9:22 AM, Daniel Alex Finkelstein wrote:
+I just wrote a few notes of things I'm looking for or will ask about, in case they're not covered:
+Create a basic test.py and run the workload
+Import the cpu2000.py into a test.py & run
+Modify a processor configuration for a simple test.py
+Use m5.prof and figure out the gmon.out -> program
+Use m5.debug to debug a test.py run
+Fast forwarding
+Also, can I get the Alpha OSF1/tru64 binaries of SPEC CPU 2000 from you? :)
+Danke,
+Dan
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA

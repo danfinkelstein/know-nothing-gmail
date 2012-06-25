@@ -1,0 +1,20 @@
+Hi Jiao,
+That question is answered in a number of places on the website (www.m5sim.org). Please take a look at the FAQ, the Tutorial slides from ASPLOS, or the video from ASPLOS for an explanation.
+Ali- Show quoted text -
+On Apr 1, 2008, at 4:42 PM, jia wang wrote:
+- Show quoted text -
+Hello, everybody:
+I am a student of Northeastern University and am trying to use M5 simulator for my research.
+I run M5 in full system mode, with pre-compiled Linux OS. I am trying to load application on to M5 - I mean, run it on top of Linux OS. (The complete procedure is: write a simple C program, compile it into executable using cross compiler target to ALPHA processor, then load it onto the Linux OS which runs on M5).
+I don't know how to load an executable onto M5 full system, is there any suggestion about that?
+Thanks and your help is really appreciated!
+Sincerely,
+Jiao
+You rock. That's why Blockbuster's offering you one month of Blockbuster Total Access, No Cost._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

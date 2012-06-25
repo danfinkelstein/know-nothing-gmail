@@ -1,0 +1,39 @@
+Hi Meng-Ju,
+The syntax changed slightly. You need to remove the eio from the EXTRAS= line (e.g. EXTRAS=/import/home1/mjwu/encumbered).
+Ali- Show quoted text -
+On May 30, 2008, at 5:25 PM, Meng-Ju Wu wrote:
+Hi,
+I tried to compile the encumbered  file (m5_2.0b5_encumbered.tar). I
+got the following error message.
+C_21:~/m5-2.0b5: scons EXTRAS=/import/home1/mjwu/encumbered/eio
+build/ALPHA_SE/m5.fast
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Adding /homes/mjwu/local/lib to LIBPATH for python2.4
+Checking for main() in C library python2.4... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Reading /import/home1/mjwu/m5-2.0b5/src/cpu/o3/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5/src/cpu/simple/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5/src/arch/mips/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5/src/arch/alpha/SConsopts
+Reading /import/home1/mjwu/m5-2.0b5/src/arch/sparc/SConsopts
+Building in /import/home1/mjwu/m5-2.0b5/build/ALPHA_SE
+Using saved options file /import/home1/mjwu/m5-2.0b5/build/options/ALPHA_SE
+Compiling in ALPHA_SE with MySQL support.
+scons: *** '.' already has a source directory:
+'/import/home1/mjwu/m5-2.0b5/src'.
+File "build/ALPHA_SE/SConscript", line 193, in ?
+How to solve it? I had tried to compile the encumbered file by using
+the m5-2.b3 version and everything is fine.
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

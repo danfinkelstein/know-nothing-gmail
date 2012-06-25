@@ -1,0 +1,12 @@
+Thanks, Korey. But I must run my program on FS mode, some of my testbenches fail to run on SE mode. 
+ 
+Maybe running a multi-thread program on a single cpu core is my only choice, but how to dinstinguish them against each other? Do you have any idea about that? I think M5 run only one thread on one cpu core at a time, as all the thread ID are 0. 
+ 
+- Show quoted text -> Hi all, does M5 support SMT system?Yes, you can run SMT in SE mode. Currently, more SMT regressions are
+being added to ensure functionality across the board. Check "se.py"for the correct command line.> Can I instansitate more functional unit> to support it?Sure, the same way you can add more functional units to O3CPU.
+--- Korey------------------------------_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+End of m5-users Digest, Vol 34, Issue 34****************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

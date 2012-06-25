@@ -1,0 +1,19 @@
+Hi,
+I am new to M5 and want to explore M5 with DRAMSim. I saw Clint's post
+with a patch.
+http://m5sim.org/cgi-bin/mailman/private/m5-users/2009-January/004014.html
+Am wondering if the patch is still available in the repositary. I did
+not see [mq] in the message.
+Pardon my ignorance, I am completely new to Mercury and don't know
+what's required to get the patch. But searching the patches on the
+repository did not
+show the patch anymore either.
+http://repo.m5sim.org/m5/log?rev=dram
+Could anybody point me to where and how to get your patches?
+Thanks a lot for your help in advance.
+Best regards,
+john
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

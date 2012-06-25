@@ -1,0 +1,15 @@
+I have seen previously discussion from the middle of March ([m5-users] error running splash2 in beta 5, with followups on [m5-dev]) discussing the following error message:
+        Assertion `tags->findBlock(mshr->addr) == __null' failed.
+Running full-system Alpha, I am able to get the error to occur with the addition of two configuration likes the the configs/example/fs.py as follows:
+        test_sys.physmem.latency = '10ns'
+        test_sys.l2.latency = '100ns'
+Running the simulator with '-n 4 --caches --l2cache', no need to specify a script, as it occurs even before reaching the prompt. This is booting the kernel off the website along with tsb_osfpal compiled from the alpha-system package. I am unable to get the error to occur with only one core, though it does occur with two cores, though it did not occur with eight.
+I attempted commenting out the assertion, as previously mentioned. The system is able to boot with four cores, but multithreaded workloads have a tendency to get fatal errors (fatal within the simulated machine, crashing only the program, not the simulated system).
+I am also getting this error in a less asinine custom configuration, where the speed difference between the cache and memory is small (40ns and 50ns, respectively), though these settings did not cause it in the example configuration.
+I could not find any further responses that had indicated this issue had been resolved, and was hoping someone would know something more.
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

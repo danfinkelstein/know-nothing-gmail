@@ -1,0 +1,9 @@
+Hello again --In working with the O3 CPU model in m5v2.0b2, I've noticed two slightly odd behaviors that I wanted to confirm were intended.The first question relates to commit.  Specifically, if an instruction is in the ROB and ready to commit (an ALU op, say), and there is a 
+younger instruction that needs to be squashed (a store that had a memory dependence violation, for example), the squash will prevent the older instruction from committing.  Thus, the older instruction sits at the head of the ROB for potentially many cycles while younger instructions are squashing.
+Is this intended behavior?  This is the way it's coded (it handles squashing before trying to commit, regardless of the age of the inst), but it doesn't seem correct to me;  I would think that the older instruction should commit before the squash is handled for the younger inst.
+The second question is regarding dispatch, and I just want to make sure that the CPU model is behaving as intended.  I've noticed that dispatch stalls on a full ldst queue regardless of the type of instruction that is trying to dispatch.  Is this how the 21264 behaved?  It seems that it could continue dispatching non-memory reference instructions, at the very least.  This stalling behavior can lead to an odd situation where the back end of the machine is completely empty (empty IQ, ROB, etc) except for the Store Buffer, which is backed up with committed stores (this is how I noticed it, anyway).
+Thanks!   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

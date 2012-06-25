@@ -1,0 +1,112 @@
+Thanks Nate for your response.
+I have a couple of follow-up questions to ask:
+In the case of a multi-core system as you said, the second bin (linked
+list) would potentially have more than a single event to be set for
+execution at a particular cycle, and although the current structural
+order implementation for execution is set for LIFO, there is no
+gurantee as to the relative order. I can see this as tending to be
+towards a more realistic approach, as real systems would be
+indeterministic in this regard.
+However, regardless of the order in which the events are executed,
+would you say or in some sense 'guarantee' that the events listed in
+the bin, would execute corresponding to the same timestamp cycle?
+For example, if the 'when' timestamp corresponded to simulation cycle:
+1000, and assume that all the priority levels of the events are
+equivalent,
+if the order in which 5 events let's say in the bin are executed in the order:
+event 1 -> event 3 -> event 2 -> event 5 -> event 4
+at simulated cycle 1001: would these particular events have already
+been set for execution?
+Also, how does the number of cpus determine (if it does assumingly) or
+impact whether or not the bin of events for a particular cycle is
+empty or not in the subsequent cycle? For example, would an event be
+scheduled onto an avialable core?
+It seems from your previous response that it is possible to have more
+events scheduled at the same time then there are available CPUs, and
+depending on which cpus's generated the event request, does that mean
+some of the events may not be set in execution at that particular
+timestamp (due to data hazards/dependencies or cpu resources?)
+Moreover, from your previous response it seems that it is possible
+(even if it is not the common case) for a single thread/core to set
+for execution more than a single event (whether or not in a multi-core
+system, if we just concern ourselves from perspective of a single
+thread/core).
+I see that there are functions available for event rescheduling, that
+would deal with such situations, but just to confirm, once an event is
+placed in this main queue, all such possibilities of needing to
+reschedule have already been determined, such that at this point,
+there is no reason for it to  be rescheduled or not be executed?
+Thanks.
+Malek
+- Show quoted text -
+On Fri, May 28, 2010 at 1:01 AM, nathan binkert <nate@binkert.org> wrote:
+>> My current understanding of the simulator's event queue, is that there
+>> is currently only one main Event Queue in which all the corresponding
+>> simobjects place their scheduled events into this single queue.
+> This is correct.
+>
+>> This is as opposed to having each SimObject have their own
+>> SelfEventQueue that feeds into the Main Event Queue (something that
+>> would lead towards parallelizing the simulator, not sure if this is
+>> currently being worked on?)
+> We don't want to give every SimObject their own event queue, rather we
+> want to have an event queue per host thread (one thread per core
+> probably) and assign SimObjects to certain event queues.  If an object
+> needs to post an event to multiple queues, then that object will have
+> to be a bit more intelligent.  I've taken the first baby steps to make
+> this happen by creating the EventManager class and making all
+> SimObjects use it to schedule events.
+>
+> There was someone that was going to work on completing this, but I
+> don't know what happened to him.  Other than that, nobody is actively
+> working on it.
+>
+>
+>> The comments describe the event queue as a linked list of linked lists
+>> such that each "bin" (i am assuming by bin it refers to a linked list)
+>> that is defined by when+priority (where when is the timestamp==cycle)
+>> in which the scheduled event should be executed.
+> True.
+>
+>> From my understanding, the way this is structured is such that
+>> multiple scheduled events can have the same 'when' timestamp,
+>> depending on the current cycle time + the latency derived by the
+>> scheduling SimObject.
+> True.
+>
+>> So from a storage perspective, i can see how several events might
+>> coincidentally have the same 'when' and possibly the same defined
+>> priority, but in terms of execution, how does the event queue decide
+>> which to execute? Because theoretically only one event can be set for
+>> execution per cycle (although many instructions for different events
+>> may be in execution simultaneously due to Instruction Level
+>> Parallelism?)
+> We provide no guarantees as to when events at the same when/priority
+> will be scheduled with respect to each other.  In actuality, it's LIFO
+> right now.  An example of why you may get multiple events at the same
+> time is if you're modeling two cores with the same clock frequency.
+>
+>> In the case, that the different events do not have the same 'when'
+>> timestamp, that means then each bin essentially contains only one
+>> element (event), and if this latter case is how it is actually set up,
+>> then what is the need to have multiple linked lists where each
+>> corresponds to a bin if there is only one element?
+> It is true that there is often only one event in the second list, but
+> it is also common for there to be dozens (multicore system for
+> example).
+>
+>> I apologize in advance for the long, detailed, and possibly confusing
+>> question, and would appreciate any help.
+>
+> No problem.
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

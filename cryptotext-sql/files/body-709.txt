@@ -1,0 +1,93 @@
+Python/swig files are configuration files - the config defined by python will dictate the config of the objects in C++ code, so if you are only looking to track things at runtime, then you should only worry about what's happening in the C++.  If you are looking to add new parameters to an object, then you will have to modify python/swig.
+Lisa- Show quoted text -On Wed, Nov 4, 2009 at 6:35 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+So, if I were to identify the events, i/d-tlb miss, i/d$ miss, and l2$
+miss, from within a (timing) CPU, then could I just follow ports from
+the cpu side to the memside traversing each of the MemObjects that
+exists in the path from the cpu to the memory? Or do I have to modify
+the python/swig files also?
+-Soumyaroop
+On Tue, Oct 13, 2009 at 4:47 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> Cache hits and misses are determined in the cache
+> (src/mem/cache/cache_impl.hh), not in the cpu model.  This code is
+> just figuring out whether there's a cache to send requests to or not
+> (or something... out of context, I don't know why that code exists).
+>
+> Steve
+>
+> On Tue, Oct 13, 2009 at 2:32 PM, Felix Loh <felixloh@umich.edu> wrote:
+>> In the atomic.cc code, do you know where the cache misses and hits are
+>> determined?
+>>
+>> It looks like it's in this portion (line 349 onwards):
+>>
+>> if (hasPhysMemPort && pkt.getAddr() == physMemAddr)
+>> {  dcache_latency += physmemPort.sendAtomic(&pkt);
+>> }
+>>
+>> else
+>> {  dcache_latency += dcachePort.sendAtomic(&pkt);
+>> }
+>>
+>> Thanks,
+>> Felix
+>>
+>>
+>>
+>> Quoting Shoaib Akram <sakram3@illinois.edu>:
+>>
+>>> one way, might catch such packets on the system bus. Packet has a
+>>> fields that would tell the command(load/store) and address that
+>>> generated the request.
+>>>
+>>> ---- Original message ----
+>>>> Date: Tue, 13 Oct 2009 16:41:48 -0400
+>>>> From: Felix Loh <felixloh@umich.edu>
+>>>> Subject: [m5-users] Tracing loads/stores that miss in the L2 cache
+>>>> To: "m5-users@m5sim.org" <m5-users@m5sim.org>
+>>>>
+>>>> Hello,
+>>>>
+>>>> I was wondering, is there a way to get a trace of only the memory
+>>>> operations (loads and stores) that miss in the L2 cache (i.e those
+>>>> that need to access main memory)? I'm currently using the AtomicSimple
+>>>> CPU model.
+>>>>
+>>>> Thanks,
+>>>> Felix
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

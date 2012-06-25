@@ -1,0 +1,12 @@
+Hi , I guess that if I want to run some MPI programs I have to install mpi executables on the disk image by the simulator. Before I try to install mpich on image by simulator. I try to compile a helloworld program by simultor.
+ I have put the cross compiler of alpha-gcc in /usr/bin in disk image. And I have set the PATH enviroment in /etc/profile.The command line is like this:/build/ALPHA_SE/m5.opt  configs/example/se.py --script configs/mybenchmark/gcc.rcS
+gcc.rcS is like this:#! /bin/shecho "compile gsim-augur"#cd /gsim/gsim-augur#makecd benchmarkgcc helloworld.c -o helloecho "done.Ready to exit"/sbin/m5 exit
+And I got the following error:"loading script...compile gsim-augur
+modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directorymodprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directory/tmp/script: line 6: /bin/gcc: cannot execute binary file
+"for the fatal error,there have the same situation on m5-users:http://www.mail-archive.com/m5-users@m5sim.org/msg01011.html
+But i don't know exactly the answers mean.Thank you.-- ************************************************Junli Gu--谷俊丽Coordinate Science LabUniversity of Illinois at Urbana-Champaign
+************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

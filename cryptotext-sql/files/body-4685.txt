@@ -1,0 +1,11 @@
+Nathan,I'm not sure that UnaryNode needs to be changed...it currently calls op(l->total()), which seems to be the right thing to do, assuming the underlying total() function does the right thing (which it should).  Right?
+Anyway, I've attached the diff of the BinaryNode total() function.  It seems to work correctly for me.   -Vilas- Show quoted text -On 3/5/07, Nathan Binkert
+ <nate@binkert.org> wrote:> I'm trying to use a Stats::Formula to multiply two Stats::Vectors, and am
+> having trouble with the reported total (using .flags(total)).> ...which is incorrect, at least according to what I think should be reported> (I think c.total() should be equivalent to Sum(c[i]);  in this case, it's
+> actually Sum(c[i]) * size()).>> Is this desired behavior for the Stats::Formula class, or is this a bug?I implemented this code, and I'd completely agree that this is incorrect.The correct thing to do is to probably make total in BinaryNode and
+UnaryNode call result() and then sum the values.  If you can give that ashot and send a diff, that'd be great.   Nate_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+hi there,We are using 16 copies of SPEC CPU2000 benchmarks for one
+simulation with 2GB physical memory in the configuration file. While simulating, we face the following error, =======================================================warn: Entering event queue @ 0.  Starting simulation...
+Exiting @ cycle 9223372036854775807 because simulate() limit reached======================================================Could you please inform me what type of error is this and what would be the solution???
+Thanking you,devraj   
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

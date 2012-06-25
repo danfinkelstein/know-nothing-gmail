@@ -1,0 +1,50 @@
+Hi Chaitali,I don't know how this got in there, but here's a fix:go into your linux-dist tree, and change rules/m5bench.in.  it should source pthread-mutex.in, not pthread_mutex.in
+then, redo your make install, and follow along the old instructions from there.  i'll repost a fixed tarball to the website.- Show quoted text -lisaOn 12/1/06, 
+Chaitali Gupta <chaitaligupta80@yahoo.com> wrote:
+Hi Lisa,I have downloaded the linux-dist.tgz from the m5website and untarred it. I have created a directory"diskimage" in the "m5_2.0" directory and performedthe following steps -
+    (i) cd linux-dist    (ii)./configure --prefix=$HOME/m5_2.0/diskimage    (iii) make    (iv) make installAfter these steps, the bin and lib directories werecreated within "diskimage".
+Then I did the following steps -    (i) set path to point to$HOME/m5_2.0/diskimage/bin    (ii) ptxdist clone m5-alpha ptxworkspace    (iii) cd ptxworkspace    (iv) ptxdist menuconfig
+    When I did the step (ii) above, I got a warning -"ptxdist: scanning ${PTXCONF_SETUP_PROJECTDIR}...not    found"And when I did "ptxdist menuconfig", I got the error -    "ptxdist: menuconfig...
+    rules/m5bench.in:7: can't open file    "rules/pthread_mutex.in"    ptxdist: silentoldconfig...    rules/m5bench.in:7: can't open file    "rules/pthread_mutex.in"    ptxdist: saving ptxconfig
+    ptxdist: cleanup..."Please let me know what I am doing wrong ?Regards-Chaitali--- Lisa Hsu <hsul@eecs.umich.edu> wrote:> what steps did you take with the linux-dist dir
+> after you untarred it?  it> almost seems like it wasn't fully installed, but i'm> not sure - never seen> that before.>> lisa>> On 12/1/06, Chaitali Gupta> <
+chaitaligupta80@yahoo.com> wrote:> >> > Hi Lisa,> >> > I was using a stock copy 2.6.13. But now I am> using> > linux-2.6.13
+ from the M5 site and it is working> now.> >> > But I am getting error while creating the disk> image.> > I am following the steps provided in> > "> >
+>http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+> > "> >> > When I am using the command> > "ptxdist clone m5-alpha <your workspace name>." I> am> > getting a msg> > "ptxdist: scanning
+> ${PTXCONF_SETUP_PROJECTDIR}...not> > found"> >> > Also, while doing "ptxdist menuconfig", I am> getting> > an> > error -> >> > "ptxdist: menuconfig...
+> > rules/m5bench.in:7: can't open file> > "rules/pthread_mutex.in"> > ptxdist: silentoldconfig...> > rules/m5bench.in:7: can't open file> > "rules/pthread_mutex.in"
+> > ptxdist: saving ptxconfig> > ptxdist: cleanup..."> >> > I found that no files had been copied to rules/> > directory.> >> > Any suggestions would be greatly appreciated.
+> >> > Regards-> > Chaitali> >> >> >> >> >> > --- Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> >> > > hi Chaitali,> > >> > > are you using a stock 2.6.13 or the one you've> > > downloaded from our website?> > >> > >> > > lisa
+> > >> > > On 11/28/06, Chaitali Gupta> > > <chaitaligupta80@yahoo.com> wrote:> > > >> > > > Hi,
+> > > >> > > > I am trying to compile the kernel and create> the> > > disk> > > > image with linux-dist.> > > >> > > > I have performed the following steps -
+> > > >> > > > (i) I untared linux-2.6.13.tar.bz2 in my home> > > > directory> > > > (ii) did "cd linux-2.6.13"> > > > (iii) ran "scripts/patch-kernel
+> ../linux-2.6.13"> > > > (iv) did "make clean && make mrproper"> > > > (v) "make menuconfig"> > > >> > > > After these steps, I ran the command "make
+> > > ARCH=alpha> > > >> CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-glibc-2.3.5> > > >> > >> >>/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-"
+> > > > mentioned in the M5 webpage> > > > "> > > >> > >> >> >>
+http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5> > > > "> > > >> > > > I am using gcc 3.4.3, glibc 2.3.5 and> > > > 
+linux-libc-headers-2.6.12.0> > > >> > > > But I am getting the error -> > > >> > > >> > >> >>******************************************************
+> > > >> > > > In file included from> include/linux/sched.h:36,> > > >                  from> > > > arch/alpha/kernel/asm-offsets.c:9:> > > > include/linux/seccomp.h:11:25: asm/seccomp.h:
+> No> > > such> > > > file or directory> > > > In file included from> include/linux/sched.h:36,> > > >                  from> > > > arch/alpha/kernel/asm-
+offsets.c:9:> > > > include/linux/seccomp.h: In function> > > > `secure_computing':> > > > include/linux/seccomp.h:18: error:> `TIF_SECCOMP'> > > > undeclared (first use in this function)
+> > > > include/linux/seccomp.h:18: error: (Each> > > undeclared> > > > identifier is reported only once> > > > include/linux/seccomp.h:18: error: for each> > > function
+> > > > it appears in.)> > > > include/linux/seccomp.h: In function> > > > `has_secure_computing':> > > > include/linux/seccomp.h:24: error:> `TIF_SECCOMP'
+> > > > undeclared (first use in this function)> > > > In file included from> > > > arch/alpha/kernel/asm-offsets.c:9:> > > > include/linux/sched.h: In function
+> > > > `lock_need_resched':> > > > include/linux/sched.h:1214: error: structure> has> > > no> > > > member named `break_lock'> > > > In file included from
+> > > > arch/alpha/kernel/asm-offsets.c:11:> > > > include/asm/io.h:231:2: #error "What system is> > > this?"> > > > In file included from> > > > arch/alpha/kernel/asm-
+offsets.c:11:> > > > include/asm/io.h: In function `ioport_map':> > > >> > > >> > >> >>******************************************************
+> > > >> > > > Any suggestion would be highly appreciated.> > > >> > > > Regards-> > > > Chaitali> > > >> > > >
+> > > >> > > >> > > >> > >> >> >>____________________________________________________________________________________> > > > Do you Yahoo!?
+> > > > Everyone is raving about the all-new Yahoo!> Mail> > > beta.> > > > http://new.mail.yahoo.com> > > >> _______________________________________________
+> > > > m5-users mailing list> > > > m5-users@m5sim.org> > > >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > >> > > >> > > >> _______________________________________________> > > m5-users mailing list> > > 
+m5-users@m5sim.org> > >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> >> >>=== message truncated ===>
+_______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+____________________________________________________________________________________Do you Yahoo!?Everyone is raving about the all-new Yahoo! Mail beta.
+http://new.mail.yahoo.com_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

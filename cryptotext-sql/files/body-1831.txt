@@ -1,0 +1,12 @@
+Thank you for all of these replies about "unable to open a initial console", I fixed this problem by creating the /dev/console, It's the problem of not creating device. 
+ 
+But now when the gentoo begin to load, I got another problem  * Mounting proc at /proc ...                                             [ ok ] * Mounting sysfs at /sys ...                                             [ ok ]
+ * Your kernel is too old to work with this version of udev. * Current udev only supports Linux kernel 2.6.15 and newer. * Mounting devpts at /dev/pts ...                                        [ ok ] * Checking root filesystem ...ext2fs_check_if_mount: No such file or directory while determining whether /dev/ROOT is mounted.
+fsck.ext3: No such file or directory while trying to open /dev/ROOT/dev/ROOT: The superblock could not be read or does not describe a correct ext2filesystem.  If the device is valid and it really contains an ext2
+filesystem (and not swap or ufs or something else), then the superblockis corrupt, and you might try running e2fsck with an alternate superblock:    e2fsck -b 8193 <device> * Filesystem couldn't be fixed :(
+                                                                          [ !! ]Give root password for maintenance(or type Control-D to continue):  * Unmounting filesystems * RebootingRestarting system.
+The system still could not start. Does anybody have any idea to deal with this? Thanks ! 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

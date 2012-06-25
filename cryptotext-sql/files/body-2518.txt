@@ -1,0 +1,30 @@
+The scripts will depend on how you lay out the workloads on the disk
+image. The scripts are really just shell scripts. Here is an example
+of one that I use:
+#!/bin/sh
+cd /package/FFT
+/sbin/m5 switchcpu
+/sbin/m5 resetstats
+./FFT -p4 -m22 -l6
+/sbin/m5 exit
+        - Clint Smullen
+- Show quoted text -
+On Sep 30, 2008, at 4:27 PM, Rick Strong wrote:
+> Hi all,
+>
+> I was wondering if their was a splash rcs script when running M5 in
+> full
+> system out there. It seems that the configs/splash is for ALPHA_SE
+> running true-64. If anyone knows a rcS script for full system when
+> running flash, I would be appreciative.
+>
+> Thanks,
+> -Rick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+I sent that last email, not Steve.  And you should pull from the latest tree, because I just pushed something.  Undo your implementation and see if the push works, and let me know how it goes.Lisa- Show quoted text -
+On Mon, Feb 16, 2009 at 6:22 PM, Pavan Kumar <jorrigal@gmail.com> wrote:
+Hi Steve,    Yes, it should work, but it is not working. Do you think is there any other changes i need to do to implement mremap.Pavan
+On Sat, Feb 14, 2009 at 12:24 AM, Steve Reinhardt <stever@gmail.com> wrote:
+If you actually made all the changes on that page, then you shouldn't be getting this error; the changes in this section specifically implement mremap:
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks#Expand_M5_system_call_functions
+SteveOn Fri, Feb 13, 2009 at 7:22 PM, Pavan Kumar <jorrigal@gmail.com> wrote:
+hi,      I am trying to run SPEC CPU 2006 benchmarks on m5-2.0b6(ALPHA_SE mode),
+and some of them are showing the following error messages.hmmer  ---            error(fatal: syscall mremap (#341) unimplemented.) gromacs ---           error(fatal: syscall mremap (#341) unimplemented.)soplex    ---           error(fatal: syscall mremap (#341) unimplemented.)
+I made changes according to the given site ( http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks ), and tried but it does not work. 
+Could anyone please let me know what i need to do to remove these errors. Thanking you, Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

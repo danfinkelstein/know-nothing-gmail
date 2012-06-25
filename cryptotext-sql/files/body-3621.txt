@@ -1,0 +1,83 @@
+Well, it seems this is most likely caused by a bug I reported for b3. The url is
+http://www.m5sim.org/flyspray/task/287
+And it seems the problem is not corrected in b4.
+----------------------------------------
+> Date: Wed, 9 Jan 2008 15:25:28 -0800
+> From: rstrong@cs.ucsd.edu
+> To: ktlim@umich.edu
+> Subject: Re: [m5-users] ALPHA SE Something is wrong with  sqrtt
+> CC: m5-users@m5sim.org
+- Show quoted text ->
+> To clarify, I set opLat=24 and issueLat=12  for FloatSqrt in
+> FuncUnitConfig.py in order to fix the problem.
+>
+> -Rick
+>
+> Rick Strong wrote:
+>> I think you may be right about the latency. I went into
+>> src/cpu/o3/FuncUnitConfig.py and set the latency of FloatSqrt to 12,
+>> and it appears to work. I hope that points someone in the right
+>> direction and towards a solution.
+>>
+>> -Rick
+>>
+>> Kevin Lim wrote:
+>>> Hi Rick,
+>>>
+>>> There may be an issue with the CPU thinking there's no activity left
+>>> due to the long latency of the instruction, and then not waking up
+>>> properly when the instruction completes.  I'm not sure why it'd be on
+>>> that instruction in particular though.  I'm going to try your example
+>>> and see if I can get some more information about why it might be
+>>> doing this.  This may take me some time as I don't have a clean up to
+>>> date tree at the moment.  Could you send me your exact command line,
+>>> as well as any diffs on any of the configuration files you made?
+>>>
+>>> In the meantime, try this: in your configuration file where you
+>>> select the O3CPU (most likely Simulation.py if you're just using our
+>>> default configs), try setting the parameter "activity" to 1.  This
+>>> should (hopefully) prevent the O3CPU from going to sleep if it's
+>>> inactive.  If the program runs properly as a result, then this is
+>>> most likely the culprit.  You may get very minor statistics
+>>> differences if you set this to 1.
+>>>
+>>> Kevin
+>>>
+>>> Rick Strong wrote:
+>>>> Hi all,
+>>>>
+>>>> I have been tracking down a problem with resuming a few benchmarks
+>>>> which include (fma3d, ammp, apsi, mgrid, and others) at certain
+>>>> checkpoints. The culprit appears to be a sqrtt (FloatSqrt) operation
+>>>> that gets stuck at the head of the queue and stalls the detailed
+>>>> model (O3CPU). If I run the benchmark in AtomicSimpleCPU there is no
+>>>> problem.  I have confirmed that sqrtt is at the head of the queue in
+>>>> four samples (two in ammp and two in apsi). The simulation ends with
+>>>> ("Exiting @ cycle 9223372036854775807 because simulate() limit
+>>>> reached.") . The same symptoms are seen in other benchmarks
+>>>> suffering a similar phenomena and I guess that sqrtt may also be the
+>>>> culprit. If anyone has some insight on what might be happening, it
+>>>> would be appreciated.
+>>>>
+>>>> -Rick
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>>
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_________________________________________________________________
+Express yourself instantly with MSN Messenger! Download today it's FREE!
+http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

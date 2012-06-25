@@ -1,0 +1,11 @@
+HI, Nate, could you give some more specific hints on how to implement an extra structure in M5 and get it accessd from user code ? The major problem may be the address allocation, how can I make this structure accessed by an address range that I designated myself ? How does M5 open an address range to the linux and to the application ? Thank you!
+> Does M5 support similar mechanism to allow me to access my own structure
+> from user code? I thought a cacheable address is not suitable for accessing
+> my own structure, so I want an uncached address. Thank you !
+In general, things that work in Linux should work in M5 FS mode.  We
+actually run the linux kernel, so you get what it gives you.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

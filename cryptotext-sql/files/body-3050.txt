@@ -1,0 +1,5 @@
+ Hi, I have a question.  There is an enum type in class Packet:enum Flag {        MemInhibit,        Shared,        ExpressSnoop,        SupplyExclusive,        NUM_PACKET_FLAGS    };     I don't know what's the meaning of the four member Can you tell me?     Thank you! 
+每人仅限一件！送你08年最惹火的礼物（多图）_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

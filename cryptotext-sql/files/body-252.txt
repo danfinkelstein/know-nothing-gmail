@@ -1,0 +1,141 @@
+Thank you very much.I am using the Sparc cross-compiler available in the M5 website (version 3.4.5). This happened when I ran make:eberle18@bellatrix:~/UFSC/Wannabe/m5threads/tests$ makeMakefile:43: warning: overriding commands for target `test_omp'
+Makefile:35: warning: ignoring old commands for target `test_omp'sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_stackgrow.o test_stackgrow.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_pthreadbasic.o test_pthreadbasic.cpp
+sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_pthread.o test_pthread.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_atomic.o test_atomic.cpptest_atomic.cpp: In function `int main(int, const char**)':
+test_atomic.cpp:102: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_barrier.o test_barrier.cpptest_barrier.cpp: In function `int main(int, const char**)':
+test_barrier.cpp:53: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_lock.o test_lock.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_malloc.o test_malloc.cpp
+test_malloc.cpp: In function `int main(int, const char**)':test_malloc.cpp:89: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_sieve.o test_sieve.cpp
+sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test___thread.o test___thread.cpptest___thread.cpp: In function `void* run(void*)':test___thread.cpp:54: warning: cast to pointer from integer of different size
+test___thread.cpp: In function `int main(int, char**)':test___thread.cpp:77: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-gcc -g -O3 -DM5_PROFILING -c ../pthread.c -o ../pthread.o
+sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING -fopenmp -c -o test_omp.o test_omp.cppcc1plus: error: unrecognized command line option "-fopenmp"make: *** [test_omp.o] Error 1And if remove the test_omp from the test list the following happens:
+eberle18@bellatrix:~/UFSC/Wannabe/m5threads/tests$ makesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_stackgrow.o test_stackgrow.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_pthreadbasic.o test_pthreadbasic.cpp
+sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_pthread.o test_pthread.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_atomic.o test_atomic.cpptest_atomic.cpp: In function `int main(int, const char**)':
+test_atomic.cpp:102: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_barrier.o test_barrier.cpptest_barrier.cpp: In function `int main(int, const char**)':
+test_barrier.cpp:53: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_lock.o test_lock.cppsparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_malloc.o test_malloc.cpp
+test_malloc.cpp: In function `int main(int, const char**)':test_malloc.cpp:89: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test_sieve.o test_sieve.cpp
+sparc64-unknown-linux-gnu-g++ -g -O3 -DM5_PROFILING  -c -o test___thread.o test___thread.cpptest___thread.cpp: In function `void* run(void*)':test___thread.cpp:54: warning: cast to pointer from integer of different size
+test___thread.cpp: In function `int main(int, char**)':test___thread.cpp:77: warning: cast to pointer from integer of different sizesparc64-unknown-linux-gnu-gcc -g -O3 -DM5_PROFILING -c ../pthread.c -o ../pthread.o
+sparc64-unknown-linux-gnu-g++  -static -o test_stackgrow  test_stackgrow.o ../pthread.o/l/archc/compilers/sparc64-unknown-linux-gnu/bin/../lib/gcc/sparc64-unknown-linux-gnu/3.4.5/../../../../sparc64-unknown-linux-gnu/bin/ld: ../pthread.o: check_relocs: unhandled reloc type 72
+../pthread.o: could not read symbols: File format not recognizedcollect2: ld returned 1 exit statusmake: *** [test_stackgrow] Error 1That also happens when I try to compile my multithreaded helloworld app.
+Why the format cannot be recognized?How can you compile your parallel software?Thanks in advance,--Eberle A. Rambo.System Design Automation Lab (LAPS) andInterdepartmental Core of Microelectronics (NIME)
+Department of Informatics and Statistics (INE)Federal University of Santa Catarina (UFSC)- Show quoted text -
+On Wed, Apr 21, 2010 at 8:53 PM, nathan binkert <nate@binkert.org> wrote:
+This message from Daniel (he's not on the m5-users list)
+  Nate
+---------- Forwarded message ----------
+From: Daniel Sanchez <sanchezd@stanford.edu>
+Date: Wed, Apr 21, 2010 at 4:46 PM
+Subject: Re: [m5-users] m5threads
+To: nathan binkert <nate@binkert.org>
+Cc: M5 users mailing list <m5-users@m5sim.org>
+nathan binkert wrote:
+>
+> The code was written by Daniel Sanchez.  Perhaps he can give you some
+> pointers, or maybe he even has some updates.
+>
+>
+First, please check whether you are able to run the test programs that
+come with m5threads. The makefile for the test programs also shows how
+to compile and link against the library.  If these fail, it might be a
+simulator or a library problem.
+Regards,
+Daniel
+>  Nate
+>
+> On Tue, Apr 20, 2010 at 7:13 AM, Eberle <rambo.ufsc@gmail.com> wrote:
+>
+>>
+>> I was able to successfuly compile my test program without calling
+>> pthread_join().
+>> But, when I run the executable on the platform with 2 SPARCs, the following
+>> happened:
+>>
+>> command line: ./build/SPARC_SE/m5.fast configs/splash2/teste.py -n 2 -b
+>> Helloworld
+>> Global frequency set at 1000000000000 ticks per second
+>> 0: system.remote_gdb.listener: listening for remote gdb on port 7000
+>> 0: system.remote_gdb.listener: listening for remote gdb on port 7001
+>> info: Entering event queue @ 0.  Starting simulation...
+>> Initiating
+>> experiment...
+>> <- This is the first of my helloworld printed outputs.
+>> panic: Tried to execute unmapped address 0.
+>>  @ cycle 76104000
+>> [invoke:build/SPARC_SE/arch/sparc/faults.cc, line 629]
+>> Memory Usage: 200844 KBytes
+>> For more information see: http://www.m5sim.org/panic/95542d88
+>> Program aborted at cycle 76104000
+>> Aborted
+>>
+>>
+>> I suppose it happens when I try to create a second thread.
+>> The teste.py script is the splash2/run.py modified to use my executable file
+>> instead.
+>>
+>> Has someone successfully compiled and ran a multithreaded Sparc software?
+>>
+>> --
+>> Eberle A. Rambo.
+>>
+>>
+>> On Tue, Apr 20, 2010 at 8:51 AM, Eberle <rambo.ufsc@gmail.com> wrote:
+>>
+>>>
+>>> Thanks for the reply.
+>>> I don't think that is the problem because the first pthread function
+>>> called in the hello.cpp was correctly found.
+>>> I was looking inside the pthreads library generated and I noticed that
+>>> this pthread_join function wasn't listed there. I really can't imagine a
+>>> reason.
+>>>
+>>> To create the library I executed the following two lines:
+>>>
+>>> sparc64-unknown-linux-gnu-gcc -c pthread.c -o m5pthread.o
+>>> sparc64-unknown-linux-gnu-ar csr libm5pthread.a m5pthread.o
+>>>
+>>>
+>>> Funny thing...
+>>>
+>>>
+>>> On Tue, Apr 20, 2010 at 1:13 AM, nathan binkert <nate@binkert.org> wrote:
+>>>
+>>>>>
+>>>>> I have created a m5threads static linkable library for Sparc, with the
+>>>>> files
+>>>>> available in the m5 repository. I used the Sparc compiler available in
+>>>>> the
+>>>>> m5 website.
+>>>>> The thing is: when I link my multithreaded helloworld app with this
+>>>>> lib, I
+>>>>> get the following error:
+>>>>>
+>>>>> eberle18@bellatrix:~/UFSC/Wannabe/helloworld$
+>>>>> sparc64-unknown-linux-gnu-g++
+>>>>> -static -L. -lm5pthread hello.cpp -o hello
+>>>>> /tmp/ccfh1vud.o(.text+0x2b0): In function `main':
+>>>>> : undefined reference to `pthread_join'
+>>>>> collect2: ld returned 1 exit status
+>>>>>
+>>>>
+>>>> I think your link order is bad.  generally, -l options need to come
+>>>> after object files, otherwise, the linker doesn't know to pull out the
+>>>> relevant functions.  (The linker processes files in order.)
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

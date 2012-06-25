@@ -1,0 +1,14 @@
+Hi,I've been attempting to modify the M5 v2.0b1 (patch1) for use in a parallel architecture class, specifically for use with exploring scalable multiprocessor ideas. I have run into some issues that any advice on would be very much appreciated.
+1) I had hoped to create multiple PhysicalMemory objects connected to separate processor buses and use a simple network interface unit to handle non-local requests to shared memory. However, the cpu model seems to require a reference to physical memory (
+cpu.mem?). Does this bypass the normal bus hierarchy to directly interact with the physical memory? I tried connecting two PhysicalMemory units to a common memory bus with non-overlapping address spaces which booted linux correctly but only detected the first memory unit. Is this related to how 
+cpu.mem is referenced during system bring-up?2) In lieu of multiple PhysicalMemory units, I attempted to simulate multiple memories by segmenting the memory access to a single PhysicalMemory, trapping all traffic into/outof the processor thru a bridge component that could route memory requests and introduce additional delay for non-local access. I tested this style of connection with the original unmodified 
+m5.bridge component which seems to correctly boot Linux but creates physical memory requirements which continue to expand as the linux system is booting. (~4.3GB by the time the bash prompt appears with a simulated PhysMemory=256MB, 
+m5.opt-fullsystem.I tested this with the following connection structure with TimingSimpleCPU w/o caches, FullSys, 256MB memory :def setupCPU_Bridge(cpu, membus, physmem):    cpu.bridge = Bridge()    cpu.toBridge
+ = Bus()    cpu._mem_ports = ['bridge.side_b'
+]    cpu.icache_port = cpu.toBridge.port    cpu.dcache_port = cpu.toBridge.port    cpu.bridge.side_a = cpu.toBridge.port    cpu.bridge.side_b = membus.port    cpu.mem = physmemIs there something wrong with how I'm connecting this bridge element that would cause the memory expansion?
+3) I have been trying to configure a simple uniprocessor-fullsys platform with L1/L2 caches but have encountered some errors that have been noted on the list before (a variety of cache impl assertions depending on Atomic/Timing/O3). Does the current v2 public distribution support caches (even uni-processor) in full system mode?
+If anyone has any advice including any tips/advice on any of the above issues, it would be greatly appreciated.Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

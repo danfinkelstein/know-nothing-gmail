@@ -1,0 +1,15 @@
+> The wiki is what I had in mind. I don't think you'd want to maintain a
+> bunch of contributions as you'd pretty much have to if you distributed
+> them because whatever disclaimer to the contrary, if they were in the
+> distro, someone would complain if one didn't work.
+Starting with a wiki would be fantastic, maybe something like an "M5
+Cookbook".  If things are useful, we can incorporate them.  I plan to
+work on improving the regression framework, so we could possibly
+provide a mechanism for adding cookbook stuff to the regressions,
+though failures would go to the owners of each recipe.  This would be
+a few months away at the earliest though.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

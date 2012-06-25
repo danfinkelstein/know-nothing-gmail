@@ -1,0 +1,17 @@
+Within m5 is simpoint (or can be) used apart from checkpointing?
+So far the only interesting uses of simpoint is from Simulation.py and
+it is tied to checkpointing:
+ checkpoint_inst = int(testsys.cpu[i].workload[0].simpoint) + offset
+and the related options file entry:
+parser.add_option("-S", "--simpoint", action="store_true",
+default=False,
+    help="""Use workload simpoints as an instruction offset for
+--checkpoint-restore or --take-checkpoint.""")
+And tons of settings for it with cpu2000.py
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

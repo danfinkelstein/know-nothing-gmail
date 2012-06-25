@@ -1,0 +1,52 @@
+If you're making a change that you don't expect to affect anything,
+the best way to figure out where things are going wrong is to use the
+tracediff script in the util directory to compare trace outputs from
+two runs of the simulator (with and without your change).  You can
+start with --trace-flags=All to catch any differences.
+Steve
+- Show quoted text -
+On Fri, Jan 9, 2009 at 7:03 AM, Isuru Herath <isuru81@yahoo.com> wrote:
+> Dear All,
+>
+> I wrote a component which has two otherPort references. I have a logic to select
+> which port to use. For example, in general when recvAtomic(PacketPtr pkt) is
+> called what we did is
+> return otherPort->sendAtomic(pkt);
+>
+> but in my case what I did is
+> if (logic success)
+>    return otherPort_1->sendAtomic(pkt);
+> else
+>    return otherPort_2->sendAtomic(pkt);
+>
+> but for the function recvStatusChange(Port::Status status) I can't implement my
+> logic because it only send me the status which is always 0. To make the system
+> work I add following lines to this method.
+>
+>        otherPort_1->sendStatusChange(status);
+>        otherPort_2->sendStatusChange(status);
+>
+> this works correctly (What I mean by correctly is, it gives me the same output
+> as with the normal configuration). But when I check the statistics there is a
+> huge difference between the normal configuration statistics and this
+> configuration. I think the wrong implementation of the recvStatusChange(Status
+> status) may causing this problem.
+>
+> for me to use my logic, I need a pointer to PacketPtr. Any explanation regarding
+> above function would be greatly appreciated. I read the comment in the Port
+> class, but I couldnot get the idea.
+>
+> thanks and regards,
+> Isuru
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

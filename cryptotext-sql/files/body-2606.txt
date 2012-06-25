@@ -1,0 +1,29 @@
+src/arch/alpha/tlb.hh. It would be great if you could make this work for all
+ISAs instead of just alpha. To get the tlb definition for whatever the current
+ISA is, include src/arch/tlb.hh. Instead of referring to it as AlphaISA::DTB,
+use TheISA::DTB. The one complication might be that the properties of all the
+ISA's TLBs aren't necessarily uniform, but that hopefully wouldn't be too hard
+to deal with.
+Gabe
+- Show quoted text -
+Quoting richard strong <rstrong@hp.com>:
+> Hi,
+>
+> I am trying to access the size that was set for the AlphaISA::DTB(ITB)
+> from an instance of DerivO3CPUParams (call it do3p for this email).
+> However, it would seem that do3p->dtb{itb} points to an actual
+> AlphaISA::DTB structure that has already been created. I am not sure
+> what file I need to include so the compiler will recognize
+> AlphaISA::DTB  so I can do something along the lines of wattch.dtb.size
+> = do3p->dtb->params()->size. Any help would be appreciated.
+>
+> -Rick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

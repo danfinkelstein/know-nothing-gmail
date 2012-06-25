@@ -1,0 +1,49 @@
+Hi all,
+ 
+I have two questions.
+(1). I am using the Statistics Package to get the memory 
+access time and number in bus.cc. I use several vector statistics, like 
+below.
+ 
+Stats::Scalar<> 
+totalMemoryAccessTime;Stats::Vector<> 
+memoryAccessTime; Stats::Vector<> memoryAccessNum;
+Stats::Vector<> icacheAccessNum;
+Stats::Vector<> nonOverlappingTime;
+ 
+For the first 4 statistics, it works fine and I can get 
+the right number when the simulation finishes. However, the vector statistics "nonOverlappingTime" get 
+very large numbers. 
+I assign the new value to nonOverlappingTime[i] every 
+time when this is a new request come back from main memory. And I 
+traced the value of  nonOverlappingTime[i] before and after I assign 
+the new value, and found that for the first few requests the 
+nonOverlappingTime[i]  values are right. 
+Then when a nonOverlappingTime[i] is assigned a new value, 
+it becomes a very large number, like below.
+ 
+1153750: system.membus: nonOverlappingTime[0]_before: 
+9659001153750: system.membus: newAccessTime[0]:1012750, 
+nonOverlappingTime[0]_after: 1.01275e+06
+ 
+So I assigned the value of newAccessTime[0] to 
+nonOverlappingTime[0], but I got a wrong number. 
+I also want to mention that there is no such problem 
+in  the 2.0 beta5.  So does any one know how to fix this 
+problem?
+ 
+(2)Another problem is that I use 
+pkt->req->getCpuNum() in bus.cc to get the requests' CPU id. But it does 
+not return the right number. In beta5, it returns 0. In beta 
+6, sometimes it returns the right number, the other time it returns 
+0.
+ 
+Thanks in advance!
+ 
+Fei
+ 
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,138 @@
+I was able to run mcf benchmark by using cpu2000.py. Input file is mcf.in but one can change the input file name accordingly. Just that, in case of mcf, process.input="mcf.in" doesnot seem to work. Dont know why !
+---- Original message ----
+>Date: Wed, 23 Apr 2008 17:45:08 -0400
+>From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>Subject: Re: [m5-users] mcf benchmark
+- Show quoted text ->To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   But the mcf, lucas, facerec, etc. all work without
+>   these changes too. The
+>   benchmarks/cpu2000/data/mcf/input actually
+>   contains mcf.in file, and it does run with this.
+>
+>
+>     ----- Original Message -----
+>     From: Vilas Sridharan
+>     To: M5 users mailing list
+>     Sent: Monday, April 21, 2008 12:37 PM
+>     Subject: Re: [m5-users] mcf benchmark
+>     Nate,
+>     Here's an attempt at a diff.  I say 'attempt'
+>     because (a) I have some local modifications to the
+>     cpu2000.py file, and (b) I haven't tested this
+>     since I'm working around these problems a
+>     different way.  I generated this diff using an
+>     unmodified version of cpu2000.py, though, and it
+>     looks okay, so hopefully it should apply cleanly.
+>        -Vilas
+>     On Sun, Apr 20, 2008 at 12:07 AM, nathan binkert
+>     <nate@binkert.org> wrote:
+>
+>       This doesn't appear to be in our tree right now.
+>        Can you send us a
+>       diff so we're sure to get it right?
+>
+>       Thanks,
+>        Nate
+>       On Sat, Apr 19, 2008 at 8:38 PM, Vilas Sridharan
+>       <vilas.sridharan@gmail.com> wrote:
+>       > There was a bug in the cpu2000.py file where
+>       mcf (and several of the other
+>       > SPEC2k benchmarks) were getting the wrong
+>       input files.  From the list
+>       > archives, this is what I sent out:
+>       >
+>       > gzip_source:  the second input should be '60',
+>       not '1'
+>       >  mcf:  should get inp.in as argument, not
+>       mcf.in
+>       >  parser:  needs ref.in on stdin
+>       > equake:  needs inp.in on stdin
+>       >  facerec:  needs ref.in on stdin
+>       > lucas:  needs lucas2.in on stdin
+>       >  sixtrack:  needs inp.in on stdin
+>       >
+>       > This was as of Jan 7 of this year; I don't
+>       know if this got fixed in a more
+>       > recent version (or which version you're
+>       using).
+>       >
+>       >    -Vilas
+>       >
+>       >
+>       > On Sun, Apr 20, 2008 at 8:45 PM, Gabe Black
+>       <gblack@eecs.umich.edu> wrote:
+>       > > We use mcf as a regression test so it at
+>       least works a little. If it only
+>       > runs a few thousand instructions, it's likely
+>       either the standard library
+>       > initialization is failing, or mcf itself is
+>       quiting with an error very early
+>       > in execution. If you haven't yet, you should
+>       check it's output and see if
+>       > there are any messages. Also, with so few
+>       instructions, it should be fairly
+>       > easy to add --trace-flags=Exec
+>       --trace-file=trace.out to your command line
+>       > and inspect what it's doing directly. The
+>       function it's executing last
+>       > should be a good clue as to what's going on.
+>       > >
+>       > > Gabe
+>       > >
+>       > >
+>       > >
+>       > >
+>       > > Shoaib Akram wrote:
+>       > >
+>       > > > Did anybody tried running mcf benchmark in
+>       SE mode. All of the other
+>       > SPEC CINT benchmarks I am using run for
+>       millions of instructions but mcf
+>       > runs for a couple of thousand even under ref
+>       input.
+>       >
+>       _______________________________________________
+>       > > > m5-users mailing list
+>       > > > m5-users@m5sim.org
+>       > > >
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>       > > >
+>       > > >
+>       > >
+>       > >
+>       _______________________________________________
+>       > > m5-users mailing list
+>       > > m5-users@m5sim.org
+>       > >
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>       > >
+>       >
+>       >
+>       >
+>       _______________________________________________
+>       >  m5-users mailing list
+>       >  m5-users@m5sim.org
+>       >
+>        http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>       >
+>       _______________________________________________
+>       m5-users mailing list
+>       m5-users@m5sim.org
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>     ------------------------------------------------
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>________________
+- Show quoted text ->_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Thanks a lot,
+I am using numCycles.value(), and it works fine for me now. My purpose
+is doing threads scheduling in the SE mode, so I need to be able to
+compare execution cycles.
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+I have noticed that BTBUpdate in bpred_unit.hh never gets called. Is this supposed to be such or is it that it depends upon certain parameters/type of predictor etc.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

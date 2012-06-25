@@ -1,0 +1,9 @@
+2008/5/22 fractal218 <fractal218@126.com>:
+ Hi, I have two questions.(1) Suppose there are two L1 caches. The first cache has a line which is not in BlkDirty state. Now, the second cache request to read the line. According to the coherence,  the first cache should send  response to the second  cache. 
+Since the block is not dirty, the memory copy is up to date, so it's perfectly valid for the second cache to get its copy from there (or from the L2). 
+(2)Suppose there are two L1 caches. The first cache has a line which is in BlkReadable state. Now, the second cache want to write the address. According to the coherence, the block in the first cache should be invalidated. But this will not happen. 
+ Because there is no corresponding code in the snooptiming() and handlesnoop() function to perform such action.It's there; look a little harder.Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,19 @@
+Thank you for replying so quickly.
+> Running under FS is a good idea.  Have you tried compiling and running
+> FFT natively on your x86 linux machine?  If that works, then it should
+> work under M5.
+I can run FFT on my x86 linux machine.
+> If you're still having trouble then the next thing would be to run under
+> gdb to see what's happening.  I doubt gdb is on the disk image (though I
+> could be wrong)... if it isn't, let us know and we can provide a copy.
+I checked my disk image, and my disk image don't have gdb.
+Could you provide me with copy  ?
+Best Regards,
+- Show quoted text -
+--
+Naoto Fukumoto
+E-mail:fukumoto@c.csce.kyushu-u.ac.jp
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

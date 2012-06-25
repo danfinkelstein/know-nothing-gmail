@@ -1,0 +1,15 @@
+Hello,
+I noticed that the M5 pal code is based on the ev5, is it possible to
+make it ev6 or ev67? Or are there no benefits?
+My main overall issue I am thinking about is  I am trying to see if
+their is any problems in my compiled benchmarks, as I have made them
+ev67 code, ev5 has given me lower ipc as well as a few problems in
+unimplemented SIMD like instructions. I am not happy about my compiled
+PARSEC benchmarks IPC, the main problem is I my simulations keep going
+into palmode, stalling my OoO processor, and killing IPC.
+Thanks,
+EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

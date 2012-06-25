@@ -1,0 +1,19 @@
+On Tue, Jul 14, 2009 at 11:23 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi,I am running a multi core multi-thread program on M5 under ALPHA-SE mode in SPEC CPU 2006. I can not get context id when tried to trace the parameters of packet. Is core id is context id or not? If not, how can we get the context id?
+The context ID is in req->contextId(). 
+The next problem is that when I dump the content of the block in packet, in some tick times it has no data value in it.
+Is it possible having no value in some tick values? if not, what can be the error for this?Some packets naturally do not have data (e.g., read requests as opposed to read responses).
+ 
+The last problem is when i use isInstFetch() to distinguish the content of packet as whether it is data or instruction, it always return 0 value. So, i can't distinguish whether the fetch content is data or instruction.
+Are you using the latest version of the code?  There was a bug fix within the past few months on this.  If you're still having problems, what CPU model are you using?  Are you tracing from the very beginning of the program?
+ 
+Could anyone please provide me hints to figure out these problems.
+Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

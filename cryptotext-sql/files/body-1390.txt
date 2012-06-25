@@ -1,0 +1,7 @@
+To be more precise, the built-in bus-based system has the notion of a "default" device that gets handed all of the requests for addresses that do not map to any other device, and on the main memory bus, that default device is a BadAddr device (see src/dev/Device.py) that simply returns a BadAddress error on any access.  So the notion of returning an error is not baked into the interconnect, which is a subtle but IMO good thing.
+Note that this setup changed slightly not that long ago; it's possible that if you're tracking the dev repository then this change has subtly messed you up.  Here's the cset:http://repo.m5sim.org/m5/rev/9af6fb59752f
+Note that the date is messed up on that cset for some unknown reason; it's really from April 2009 and not July 2008.Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,37 @@
+Yea, I think I spoke to you earlier (right?) about some performance
+patches I have yet to push for inorder. They mostly involving caching
+the instruction schedules similar to how the instructions are already
+cached.
+If you are interested in helping the tuning, I have some gprof outputs
+locally that I could share with you as well....
+- Show quoted text -
+On Thu, Aug 13, 2009 at 4:56 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+> Hello there,
+>
+> The performance of M5 in simulating an inorder-timing CPU seems to be
+> significantly lower than that in simulating an o3-timing CPU (0.33X for gzip
+> for 10 M instructions) in their default configurations. Does that sound
+> correct? I would expect it to be the other way around unless, of course,
+> there are differences in their implementations which affects the
+> performance. I am using the Alpha ISA in SE mode.
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

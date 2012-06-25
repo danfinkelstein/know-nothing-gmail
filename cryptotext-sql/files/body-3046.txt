@@ -1,0 +1,93 @@
+I thought it was, but it turns out it's x86/64, as is the 4.1 version of the alpha compiler.
+Ali- Show quoted text -
+On May 18, 2008, at 12:37 PM, Sherif wrote:
+Hi,
+At the risk of sounding like a complete noob, are the cross-compilers
+listed on the download page built for the x86 linux platform? I have
+downloaded the SPARC64 cross-compiler from this page and tried to run
+them on my x86 Ubuntu Linux system, but they do not execute. I even
+tried loading one of the files using gdb, but the debugger complained
+that the files are not in executable format.
+I apologize for barging in on this conversation, but my problem seemed
+very similar and I thought I would use the same thread.
+Thanks,
+Sherif Fadel
+On Sun, 2008-05-18 at 11:14 -0400, Ali Saidi wrote:
+There is a cross compiler available on the Download page. You could
+just use that one if you don't want to compile one yourself. If you do
+then follow Nick's advice and figure out why CFLAGS has been set.
+Ali
+On May 18, 2008, at 3:40 AM, Dennis wrote:
+Hello
+I am trying to run an simple c program in ALPHA_FS mode, so I need
+to cross compile the program and put it on.
+I follow every step mentioned in the document, but it could not work.
+I have done the following step:
+1.      Untar the crosstool tarball
+2.      Change the “eval” line in demo-alpha.sh parameter to ‘cat
+alpha.dat gcc-3.4.3-glibc-2.3.5.dat’
+3.      Change the LINUX_DIR to “linux-2.6.13” in gcc-3.4.3-
+glibc-2.3.5.dat
+4.      Run sh demo-alpha.sh
+When the script finished with some messages, there is nothing under /
+opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/
+Does anyone know what the problem is?
+Here is the output message from the script:
+applying patch /home/r96/Iris/crosstool-0.43/patches/glibc-
+linuxthreads-2.3.5/glibc-linuxthreads-2.3.5-cygwin.patch
+patching file linuxthreads/Makefile
+grep: /home/r96/Iris/crosstool-0.43/build/alpha-unknown-linux-gnu/
+gcc-3.4.3-glibc-2.3.5/binutils-2.15/patches/README: No such file or
+directory
+all.sh: line 124:  1295 terminated                    rm -rf
+$BUILD_DIR.del.$$
++ test '' = ''
++ '[' -d /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-
+gnu ']'
++ mkdir -p /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-
+gnu
++ mkdir -p /home/r96/Iris/crosstool-0.43/build/alpha-unknown-linux-
+gnu/gcc-3.4.3-glibc-2.3.5
++ cd /home/r96/Iris/crosstool-0.43/build/alpha-unknown-linux-gnu/
+gcc-3.4.3-glibc-2.3.5
++ test '' = ''
++ sh /home/r96/Iris/crosstool-0.43/crosstool.sh
+You set both LINUX_DIR and LINUX_SANITIZED_HEADER_DIR - ignoring
+LINUX_DIR
+GCC_CORE_DIR not set, so using gcc-3.4.3 for bootstrap compiler
+BINUTILS_EXTRA_CONFIG not set, so not passing any extra options to
+binutils' configure script
+GCC_EXTRA_CONFIG not set, so not passing any extra options to gcc's
+configure script
+GLIBC_EXTRA_CONFIG not set, so not passing any extra options to
+glibc's configure script
+GLIBC_EXTRA_ENV not set, so not passing any extra environment
+variables to glibc's configure script
+GLIBC_EXTRA_CC_ARGS not set, so not passing any extra options to gcc
+when building glibc
+EXTRA_TARGET_CFLAGS not set, so not passing any extra cflags to gcc
+when building glibc
+USE_SYSROOT not set, so not configuring with --with-sysroot
+GCC_BUILD not set, assuming BUILD=output of config.guess
+GCC_HOST not set, assuming HOST=BUILD
+SHARED_MODE not set, so defaulting to --enable-shared
+GLIBC_ADDON_OPTIONS not set, so guessing addons from
+GLIBCTHREADS_FILENAME and GLIBCCRYPT_FILENAME
+crosstool: Don't set CFLAGS, it screws up the build
+Dennis
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

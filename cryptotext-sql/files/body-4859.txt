@@ -1,0 +1,22 @@
+Hi Xiaojun,
+I'm assuming you're running full system. If that is the case there are two ways to do this. The first way is to use the m5 program on our disk image. In which case you would simply run m5 dumpresetstats <delay until the first dump> <period that you want to dump>. Both values are specified in ticks, so unless you've changed something picoseconds.
+The other thing you could do is embed the m5 instruction that does this in your program. If you take a look at m5/util/m5/m5.S you'll see how this can be done.
+Ali- Show quoted text -
+On Nov 21, 2006, at 8:17 AM, xiaojun.chen wrote:
+- Show quoted text -
+Hi,m5-users，
+   I want dump the stat data per 1 million cycles.
+   Should I use the "m5 dumpresetstat"? But I don't know how to use it.
+Thanks and BestRegards!
+                                
+　　　　　　　　xiaojun.chen
+　　　　　　　　chenxiaojun@software.ict.ac.cn
+　　　　　　　　　　2006-11-21
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+On Tue, Jun 8, 2010 at 5:56 PM, Malek Musleh <malek.musleh@gmail.com> wrote:
+> Hello,
+>
+> I was wondering what the use / purpose of the 'forwardSnoops' variable
+> in the handleSnoop Function located in the
+> /src/mem/cache/cache_impl.hh file. I see that this variable is set to
+> 'true' in the BaseCache.py file (line:49) in order to enable
+> forwarding from the memory side to the cpu side of the cache, but I
+> don't quite understand why that would need to be done?
+It's for maintaining coherence in general multi-level cache configurations.
+> Also, since it
+> is by default set to true, under which circumstances would it be
+> useful to set it to false?
+When you know that nothing on the cpu side of the cache needs to be
+snooped, and might not be able to handle snoop accesses.  Note that
+it's set to false for the IOCache in configs/common/Caches.py.
+Steve
+- Show quoted text -
+>
+> Thanks.
+>
+> Malek
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

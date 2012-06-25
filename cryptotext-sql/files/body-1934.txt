@@ -1,0 +1,10 @@
+> I want to find information about virtual memory in m5. Is there any code
+> in m5 related to such experiment? For example, I want to find the time
+> of the paging, and then set a delay to handle the paging. Can you give
+> some hints to deal with virtual memory in m5? Thank you.
+It's not really clear what you want to do.  Are you talking about
+paging to disk?  Page faults?
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

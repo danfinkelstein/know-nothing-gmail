@@ -1,0 +1,28 @@
+Yesterday, I discovered a compiler bug with the gcc-4.1.1 cross-
+compiler on the M5 website. The live value analysis in the compiler
+incorrectly handles the case where a call_pal that returns a value is
+succeeded immediately by a function call and another call_pal that
+uses the original return value. I found this to be the case
+particularly with the following code:
+local_irq_save(flags);
+some_function();
+local_irq_restore(flags);
+The flags variable is not preserved around the some_function() call
+and thus the interrupt priority level (IPL) isn't necessarily restored
+after. If the IPL was already high, then when it is restored it could
+end up at a lower level and no longer properly protect a critical
+section leading to erratic behavior.
+I've removed the gcc-4.1.1 cross-compiler on the website and replaced
+it with a gcc-4.3.2 cross compiler which does not exhibit the problem.
+If you are compiling linux kernels for M5, I strongly recommend that
+you do not use a gcc-4.1.X compiler to do so.
+Finally, in the process of building a new cross-compiler I ran across
+a new version of crosstool called crosstool-ng that is being actively
+updated (unlike the original crosstool). If you need to build a
+compiler I had a reasonable amount of success with it.
+Crosstool-NG can be downloaded at: http://ymorin.is-a-geek.org/dokuwiki/projects/crosstool
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

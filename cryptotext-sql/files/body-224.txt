@@ -1,0 +1,11 @@
+Hi,
+        In parmacs_to_pthreads library from UPC the system call times() is used to measure time in SPLASH-2 apps.
+        In Parsec 2.1/M5 , HOOKS library basically uses the system call gettimeofday() to measure time.
+        Doing simple basic tests like sleep(1), it seems that both above ways return reasonable numbers. If I want to run some applications and scale number of cores is it correct to just look at the time numbers output by the applications?
+        I would prefer to look at the simulator stats (ticks) and see some stat that  would be correspondent to that. So,  If I want to measure the execution time of an application just  using M5 stats, which stats should I look at? Is it "mode_ticks" for user mode ?
+        Thanks for any help,
+        Mario
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

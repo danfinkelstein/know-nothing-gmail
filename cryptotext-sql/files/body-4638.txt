@@ -1,0 +1,7 @@
+See http://www.m5sim.org/wiki/index.php/Sampling.  (Could someone make sure that page is up to date?)
+This documentation does look reasonably up-to-date with 2.0b2.  It was modified last month, so ought not be too far off.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

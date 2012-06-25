@@ -1,0 +1,26 @@
+On Tuesday 11 September 2007 17:16:25 Ali Saidi wrote:
+> Yea, if Elliott sends us a diff we'll be happy to commit it.
+Well, I guess Elliot wasn't able to test it yet, but I applied his changes and
+they work very well. Find the patch attached for inclusion in the main tree.
+> When we open up the repository, mailing a change should be as easy as  
+> typing a single command line. I hope people will contribute regularly  
+> when that happens. Publishing your fixing for a bug or new  
+> functionality can save someone the time of repeating the work later  
+> and ultimately increase the overall success of M5.
+Full ACK. An open repos will be very beneficial.
+- Show quoted text -
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

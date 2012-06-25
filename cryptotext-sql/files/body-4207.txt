@@ -1,0 +1,43 @@
+I'm trying to add a cache coherence protocol to add write-update to an existing once. (IE, When a shared cache line recieves a write from a cpu, it broadcasts the write to other shared caches lined, instead of invalidating them.)
+I added a packet to packet.hh and packet.cc:
+/* WriteUpdateReq */
+    { SET4(IsWrite, IsRequest, IsWriteUpdate, HasData),
+            InvalidCmd, "WriteUpdateReq" }
+added 'WriteUpdate' to Commands enum and 'IsWriteUpdate' to Attribute enum in MemCmd class.
+So in coherence_protocol.cc in the constructor at the end I added:
+     if(<doing the write-update protocol>){
+        tt[Shared][MC::WriteReq].onRequest(MC::WriteUpdate);
+        tt[Modified][MC::WriteReq].onRequest(MC::WriteUpdate);
+        tt[Owned][MC::WriteReq].onRequest(MC::WriteUpdate);
+        tt[Shared][MC::WriteUpdate].onResponse(Modified);
+        tt[Modified][MC::WriteUpdate].onResponse(Modified);
+        tt[Owned][MC::WriteUpdate].onResponse(Modified);
+        tt[Shared][MC::WriteUpdate].onSnoop(updateTrans);
+        tt[Modified][MC::WriteUpdate].onSnoop(updateTrans);
+        tt[Owned][MC::WriteUpdate].onSnoop(updateTrans);
+    }
+Which I think will send a WriteUpdate when a Shared, Modified, or Owned block recieves a write and then goto modified state.  Then any cache that
+snoops the WriteUpdate calls updateTrans which reads the packet into the block:
+if(blk){
+std::memcpy(blk->data + offset, pkt->getPtr<uint8_t>(), pkt->getSize());
+new_state = blk->status;
+}
+With just that, Alpha Full system runs, but I don't recieve any more/less l1 cache hits/misses/access when running some Splash2 with pthreads benchmarks. Here is my command line:
+build/ALPHA_FS/m5.fast configs/example/fs.py --caches --l2cache -n 2 --firefly
+The '--firefly' is my tag to tell the simulator to use a 'mosi' base protocol with the additions I'm discussing about.  I do get speed-ups with more cpus in my benchmarks.
+I put a printf in updateTrans and it does get called quite a bit in my benchmarks.  Furthermore, these benchmarks each last about a second (in sim_seconds stat context) which is long enough for speed-ups.
+Now, if I replace the setting of new_state in updateTrans with:
+'new_state = (blk->status) | Modified;'
+so the block will go to modified state, the m5term console only gets this far:
+==== m5 slave console: Console 0 ====
+M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+Got Configuration 623
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+Any thoughts or advice?  Am I forgetting/suppose to copy the data into the packet somewhere?
+Thanks,
+~Paul West
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

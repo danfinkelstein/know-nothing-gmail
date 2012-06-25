@@ -1,0 +1,45 @@
+The wiki is correct.
+Ali
+- Show quoted text -
+On Jul 18, 2008, at 9:18 AM, nathan binkert wrote:
+> Can you fix the wiki?
+>
+>  Thanks,
+>
+>    Nathan
+>
+> On Thu, Jul 17, 2008 at 10:16 PM, Meng-Ju Wu <mengjuwu@gmail.com>
+> wrote:
+>> Hi Ali,
+>>
+>> Thank you very much. You are right. I should use
+>> "all_cpu_list.append('MyCPU')"  in the SConsopts file. I modified the
+>> Sconsopts directly and didn't notice that I use
+>> "all_cpu_list.extend('MyCPU')" . After I corrected it and added the
+>> following lines, everything is fine now.
+>>
+>> Change src/cpu/simple/SConscript to:
+>> if 'AtomicSimpleCPU' in env['CPU_MODELS'] or \
+>>       'TimingSimpleCPU' in env['CPU_MODELS'] or \
+>>       'MyCPU' in env['CPU_MODLES']:
+>>    TraceFlag('SimpleCPU')
+>>
+>>
+>> Thanks again,
+>>
+>> Meng-Ju
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

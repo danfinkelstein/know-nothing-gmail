@@ -1,0 +1,9 @@
+Thanks for your reply Steve, I get the instruction trace and found out that it is because the OS intervnening, as I run my program on FS mode. 
+ 
+Sorry for the confusing description, I was confused myself when I wrote the last email.  - Show quoted text -
+Can you provide some instruction traces to illustrate the problem?  It'simpossible to say for sure what's happening from your description.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

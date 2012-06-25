@@ -1,0 +1,52 @@
+This is definitiely a problem with your setup and not a problem with
+M5.  What is the output of "ls -l linux-latest.img"?  What about the
+permissions of the parent directories?
+I  never run M5 as root and I  use Ubuntu every day and have used it
+on every version for the last 3 years.
+  Nate
+- Show quoted text -
+On Mon, May 26, 2008 at 2:30 PM, Blake Mason <bmason@ucdavis.edu> wrote:
+> Well, it appeared to be a permissions problem. I tried re-running the
+> simulator as root and it worked this time. I'm surprised because all my M5
+> files have 'all' permissions set. Does M5 operate in a way that isn't
+> user-mode friendly? Maybe it's just an Ubuntu issue.
+>
+> blake@ubuntu-vm:/dist/m5/system/disks$ md5sum linux-latest.img
+> 8897146232453a2ea7e84dd7ab454765  linux-latest.img
+>
+> -Blake
+>
+> -----Original Message-----
+> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+> Behalf Of Ali Saidi
+> Sent: Monday, May 26, 2008 19:56
+> To: M5 users mailing list
+> Subject: Re: [m5-users] panic: Attempt to perform CHS access, only supports
+> LBA
+>
+> Blake,
+>
+> Did you ever figure out what was happening? I messed around for a bit
+> and I'm pretty certain that you have a corrupt linux image. I
+> truncated the image to 50KiB (from 50MiB) and got the same error
+> message with similar output on the console.
+>
+> The md5sum of the file should be:
+> $ md5sum linux-latest.img
+> 8897146232453a2ea7e84dd7ab454765  linux-latest.img
+>
+> I imagine you ended up only downloading part of the m5 system files.
+>
+> Ali
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

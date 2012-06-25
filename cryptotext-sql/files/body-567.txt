@@ -1,0 +1,11 @@
+In simics, we can use Haps to register a callback function, when some
+events happen, we can run our own codes to do something. Can we do this in
+m5?
+To be more specific, I want to simulate until some point, like a function
+call, then stop and do something. It seems now that I can only stop at some
+instruction count, but in practice we don't know at what instruction count
+an event will happen.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

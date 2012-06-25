@@ -1,0 +1,17 @@
+Sorry, we can't provide SPEC binaries due to licensing issues.  If the
+same binaries worked on an older version of m5 then stopped working
+when you updated, though, then that's an m5 bug that we should fix.
+Unfortunately the stack backtrace doesn't provide enough information
+to figure out what went wrong.  It would be ideal if you could isolate
+the mercurial revision where your binary stopped working.
+The 'hg bisect' command offers a nice automated way to do that:
+http://hgbook.red-bean.com/read/finding-and-fixing-mistakes.html#sec:undo:bisect
+Or you can just do some quick tests of the revisions were
+elf_object.cc got changed, and see if things worked on the parent of
+one of these revisions and then stopped at that revision:
+http://repo.m5sim.org/m5/log/2ab58c54de63/src/base/loader/elf_object.cc
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,61 @@
+Hello,
+Is there some way to get the simulator to call the destructors of the
+components in the test system (FS mode) or to receive an event signaling
+that the simulation is exiting? I've tried adding print statements all
+the way up the inheritance chain (starting with PhysicalMemory in my
+case) and none seem to be called. I also did a leak check using valgrind
+and this is confirmed (lots of data still in use at termination).
+Essentially I have some compressed output streams that need to be
+flushed and closed at the end of simulation and I can't make them
+globals to ensure they are closed at termination. Thanks for any help.
+Joe
+- Show quoted text -
+Korey Sewell wrote:
+> (1) you could always just put a cout statement in the destructor, run
+> a Hello World program and make sure it's called.
+>
+> (2) But I'm pretty sure it is being called. To understand caches you
+> need to understand templates and polymorphism (derived classes).
+> Note that a cache object takes in a templated "Tags" object. The Tags
+> object will be LRU, FA_LRU, IIC, etc.
+>
+> (3) Look in the file mem/cache/builder.cc (or something close to that
+> name). In that file, you'll see everything get instantiated and also
+> destructed in terms of cache tags and things of that nature ...
+>
+>
+> 2008/5/24 fractal218 <fractal218@126.com>:
+>
+>>  Hi,
+>>  I found that the destructor of the class LRU and the class Cache are not
+>> called. But my experiment depends on that. So, Is there some method to
+>> ensure the destructor to be called? Or else, can we get the information that
+>> the execution of the application in the m5 is over?
+>>
+>> Thank you!
+>>
+>>
+>>
+>>
+>> ________________________________
+>> 中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+>
+>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

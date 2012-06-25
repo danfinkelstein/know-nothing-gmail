@@ -1,0 +1,6 @@
+Hi guys,     I still have problem executing splash2 benchmarks both in FS and SE modes. I searched in google and find the following link.     m5.eecs.umich.edu/dist/splash-alpha.tgz     However, it is no longer there now. Can anyone tell me where to find it?     Many thanks,     Chenjie 
+		Stay in the know. Pulse on the new Yahoo.com.  Check it out. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,40 @@
+A cache should never issue a LoadLockedReq or a StoreCondReq, so if
+you're seeing that on the L1-L2 bus, something is very wrong.  The
+same Request object is carried throughout the hierarchy though, so
+req->isLocked() will be true for some ReadReq and ReadExReq packets,
+but this should not affect their behavior.
+Steve
+- Show quoted text -
+On Fri, Aug 28, 2009 at 9:38 AM, Shoaib Akram<sakram3@illinois.edu> wrote:
+> I mean the shared bus. The one that connects all caches coherent.
+>
+> ---- Original message ----
+>>Date: Fri, 28 Aug 2009 07:28:03 -0700
+>>From: Steve Reinhardt <stever@gmail.com>
+>>Subject: Re: [m5-users] LoadLocked
+>>To: M5 users mailing list <m5-users@m5sim.org>
+>>
+>>Which bus?  Is this a system with caches?
+>>
+>>Steve
+>>
+>>On Thu, Aug 27, 2009 at 10:42 PM, Shoaib Akram<sakram3@illinois.edu> wrote:
+>>> I see some loadlocked/storecond requests over the bus. Is there a reason or them to come over the bus. These operations are completed corresponding a single processor. Are other processors being made aware of it?
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+> This is not really very easy because it puts WAY too much stuff in a
+> single class and would cause major compiler strain.
+Yea, I agree... One consequence is that it would allow a lot of the
+common ISA code to be fleshed out if you decided to optimize it.
+But I guess "overly conservative" isnt the all the way right word for
+that single class solution (i dont have a better word though!).
+What you would gain in immediate programmability (theISA->func()), you
+would probably definitely lose in performance.
+> Another way to do
+> it would be to use template specialization making every class that is
+> normally in the namespace, instead take an ISA class as a template
+> parameter.  (I REALLY wish you could use namespaces in template
+> parameters, or templatize namespaces, feh...)
+>
+> It would probably be easiest to add namespace wrappers around the CPU
+> objects and use the build system to automate this process.
+That's an interesting way to think about it....Thanks for making that point...
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,27 @@
+No, but there are things connected to the simple cpu that you might
+not be scaling.  There's the memory system, the devices, the frequency
+of various interrupts, etc.  In syscall emulation mode, there's not
+much that needs to be scaled, but in full system, there's a whole lot.
+   Nate
+- Show quoted text -
+On Mon, Dec 22, 2008 at 11:13 AM, Paul Lee <pl4u@virginia.edu> wrote:
+> I was just wondering if there is some performance degradation modeled for
+> the SimpleCPU as you keep increasing the clk frequency.  I'm noticing in my
+> simulations that after 16GHz, it seems that performance starts to decrease.
+>
+>
+>
+> Thanks,
+>
+>
+> Paul
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

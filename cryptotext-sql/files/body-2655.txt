@@ -1,0 +1,111 @@
+Gary (any everyone else for that matter),
+Several of the M5 developers are currently working on ASPLOS papers
+right now, so responses might be somewhat thin until the deadline has
+passed.
+The output that you have pasted is the output of the console (alpha's
+version of BIOS).  Basically the next thing that happens is that
+control is passed to the beginning of the kernel and the kernel is
+dying very early on.  I'd first check your config.ini file to make
+sure that it is pointing to the correct kernel file and correct
+palcode file.  If they are, I'd search the mailing list to make sure
+you have the latest tsb_osfpal.  I seem to vaguely remember something
+went out about that a few months ago.
+  Nate
+- Show quoted text -
+On Mon, Aug 4, 2008 at 10:49 AM, Gary <ameseacla@gmail.com> wrote:
+> Thanks for your reply, Here is the output of  console:
+>
+> ==== m5 slave console: Console 0 ====
+> M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+> Got Configuration 623
+> memsize 10000000 pages 8000
+> First free page after ROM 0xFFFFFC0000018000
+> HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000
+> l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv
+> 0xFFFFFC0000046000
+> kstart = 0xFFFFFC0001010000, kend = 0xFFFFFC0001466698, kentry =
+> 0xFFFFFC0001010000, numCPUs = 0x1
+> CPU Clock at 2000 MHz IntrClockFrequency=1024
+> Booting with 1 processor(s)
+> KSP: 0x20043FE8 PTBR 0x20
+> Console Callback at 0x0, fixup at 0x0, crb offset: 0x510
+> Memory cluster 0 [0 - 2056]
+> Memory cluster 1 [2056 - 30712]
+> Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 8000
+> ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8
+> unix_boot_mem ends at FFFFFC0000076000
+> k_argc = 0
+> jumping to kernel at 0xFFFFFC0001010000, (PCBB 0xFFFFFC0000018180 pfn 2612)
+> CallbackFixup 0 18000, t7=FFFFFC00011B0000
+>
+> Then m5 teminates.
+>
+> Steve Reinhardt wrote:
+>> The Linux kernel on the simulated machine is panicking; we added a
+>> special instruction in that code to force the simulator to stop
+>> instead of looping forever like a real machine would.  You need to
+>> look at the *.console output to see what the Linux kernel printed
+>> before it panicked.
+>>
+>> Steve
+>>
+>> On Sun, Aug 3, 2008 at 2:06 PM, Gary Chai <ameseacla@gmail.com
+>> <mailto:ameseacla@gmail.com>> wrote:
+>>
+>>     Hi all:
+>>
+>>     In order to run more than 4 cores in fs, I compile a new linux kernel
+>>     with patches:
+>>     (1)compile a new linux kernel with the BIG_TSUNANMI configuration
+>>     option
+>>     (2)use the tsb_osfpal file to replace ts_osfpal
+>>
+>>     When running the simulator, I get the following error:
+>>
+>>     command line: /home/m5-2.0b5/build/ALPHA_FS/m5.debug -d result
+>>     /home/m5-2.0b5/fs.py -t --caches -n 1 --l2cache -b hello
+>>     Global frequency set at 1000000000000 ticks per second
+>>     warn: kernel located at: /dist/m5/system/binaries/vmlinux
+>>     0: system.tsunami.io.rtc: Real-time clock set to Thu Jan 1
+>>     00:00:00 2009
+>>     Listening for system connection on port 3456
+>>     0: system.remote_gdb.listener: listening for remote gdb #0 on port
+>>     7000
+>>     **** REAL SIMULATION ****
+>>     warn: Entering event queue @ 0. Starting simulation...
+>>     44068861000: system.cpu.break_event: break event panic triggered
+>>     panic: M5 panic instruction called at pc=0xfffffc000101b5d0.
+>>     @ cycle 44072519000
+>>     [execute:build/ALPHA_FS/arch/alpha/timing_simple_cpu_exec.cc, line
+>>     11834]
+>>     Program aborted at cycle 44072519000
+>>     Aborted
+>>
+>>     If I use the original kernel and ts_osfpal, there is no problem.
+>>
+>>     Does anybody know the reason? please give me a help.
+>>     Thank you very much.
+>>
+>>
+>>     _______________________________________________
+>>     m5-users mailing list
+>>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

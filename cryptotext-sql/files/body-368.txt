@@ -1,0 +1,17 @@
+Hi Tarun,'maxub8' is an MVI extension to the ALPHA ISA. It should work if you grab the source from the dev branch. Otherwise, to prevent the generation of the instructions from the MVI extension, you'd have to compile with -mcpu=ev56 compiler option. The alpha cross-compiler available from the M5 page is configured for the ev67 cpu.
+regards,Soumyaroop- Show quoted text -On Thu, Apr 1, 2010 at 2:26 PM,  <tarun1985@neo.tamu.edu> wrote:
+Hi all,
+I am getting an error when I execute bzip2 in m5 SE mode.
+panic: attempt to execute unimplemented instruction 'maxub8' (inst 0x70430781, opcode 0x1c)
+Did anyone face this error? Is there a way to work around this error?
+Thanks,
+Tarun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

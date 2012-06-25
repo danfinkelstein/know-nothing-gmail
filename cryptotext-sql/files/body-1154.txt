@@ -1,0 +1,80 @@
+I havent tried quite yet, so I would assume the answer is no for now.- Show quoted text -On Wed, Jul 29, 2009 at 10:14 AM, nathan binkert <nate@binkert.org> wrote:
+Does it work for full system mode?
+On Wed, Jul 29, 2009 at 7:01 AM, Korey Sewell<ksewell@umich.edu> wrote:
+> Yup,
+> Lisa is correct.
+>
+> O3's for an of out of order design. If you want to approximate an in-order
+> using O3 you can restrict some of the out of order queues (IQ,LSQ,etc.)...
+>
+> However, the In-Order model in the m5-dev tree is ready to be tested and
+> used. I have one set of patches that I haven't pushed yet that optimize
+> memory usage by the model (but that should be coming soon). Otherwise, the
+> InOrder model has currently been tested for the ALPHA ISA and a few of the
+> spec2k benchmarks in SE mode (you can run the regression tests when you
+> download the latest copy).
+>
+> As always, more tests and more "testers" would be helpful before I guess we
+> would call it "production ready" but feel free to try as-is. Also,
+> documentation on m5sim.org would also be nice :)
+>
+>
+>
+> On Tue, Jul 28, 2009 at 1:11 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+>>
+>> Either InOrder or TimingCPU.
+>> O3 stands for out-of-order, so you definitely don't want that if you want
+>> an in-order core.
+>> TimingCPU is a 1CPI machine that can be attached to a timing memory model.
+>> InOrder is new, and Korey can speak more to it, but I believe it is a
+>> mildly pipelined in-order CPU, more realistic than TimingCPU.  However, I am
+>> not positive, nor do I know if it is really production ready - Korey?
+>> Lisa
+>>
+>> On Tue, Jul 28, 2009 at 9:21 AM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+>>>
+>>> Hi there,
+>>>
+>>> To be able to perform a detailed timing on a CPU with an inorder
+>>> execution core, should I be using the DerivO3CPU model or the InOrderCPU
+>>> model?
+>>>
+>>> regards,
+>>> Soumyaroop.
+>>>
+>>> --
+>>> Soumyaroop Roy
+>>> Ph.D. Candidate
+>>> Department of Computer Science and Engineering
+>>> University of South Florida, Tampa
+>>> http://www.csee.usf.edu/~sroy
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> - Korey
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

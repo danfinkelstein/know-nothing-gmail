@@ -1,0 +1,94 @@
+Hi Shoaib thanks for your answer:According to a previous answer of Steve since I  only want to change the bus's arbitration logic, I think that it's easier just change the code of the bus. I've been looking in the code of the bus, but in that code, it's only the code for the functions, I think that in other file should be the calls to those functions, and I think that to change the arbitration logic I should change how those functions are called, I hope that you guys understand what I mean. Does anyone know if I'm right, and to change the arbitration logic, I need to change how the functions arre called?. Thank you.- Show quoted text -
+On Wed, Oct 15, 2008 at 3:27 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+in cache_impl.hh, there are two functions, handleResponse and timingAccess, you should look for statements such as cpuSidePort->respond and change them with cpuSidePort[n].respond....Similarly if you want multiple ports on memory side, its not that difficult. Regarding which request goes to a given port, you can have another field in the packet cacheId, which gets set by the private cache in getBusTiming or getBusPacket (look cache_impl.hh)...and based upon that the shared bus can forward the request appropriate port. Implementing contention in cache_impl.hh should be fairly straightforward. You should also read the tutorial slides at m5 main page for adding more functionality. I dont know if adding more ports will help you much since currently caches are not banked.
+---- Original message ----
+>Date: Wed, 15 Oct 2008 12:19:51 -0700
+>From: "Eduardo Olmedo Sanchez" <eolmsan2@gmail.com>
+>Subject: Re: [m5-users] Policy used by the simulator for the cache access by the cores
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   Hi, I hope that someone can help me, Steve said that
+>   to change the policy I have to extend the cache and
+>   put multiple CPU-side ports and then put the
+>   arbitration logic in the cache between those ports.
+>   I have seen that this file
+>   /src/mem/cache/BaseCache.py is the configuration
+>   file for the cache, so to add more ports, Do I just
+>   need to add a code like this?,
+>
+>       #Before
+>       cpu_side = Port("Port on side closer to CPU")
+>       #After
+>       cpu_side = Port("Port on side closer to CPU")
+>       cpu_side_new = Port("New port")
+>
+>   And another question, where is the source code
+>   associated to the cpu_side port?.  Thanks.
+>
+>   On Tue, Oct 14, 2008 at 2:04 PM, Eduardo Olmedo
+>   Sanchez <eolmsan2@gmail.com> wrote:
+>
+>     Hello Steve thanks for your answer, yes I have to
+>     do something fancier for an assignment, can you
+>     tell me where is the source code for the policy?,
+>     I've been looking in the cache code and in the cpu
+>     code, but I can't still find it. And another one
+>     question is it possible to change the policy or do
+>     that is a complex task?. Thank you.
+>
+>     On Fri, Oct 10, 2008 at 5:42 PM, Steve Reinhardt
+>     <stever@gmail.com> wrote:
+>
+>       If you want multiple cores to access a single
+>       cache, you'll need to put a bus in between them,
+>       and the bus arbitration logic will determine the
+>       access pattern.  Basically it'll be round robin
+>       (if they all access at the same time), or FCFS
+>       if not.
+>
+>       If you want to do something fancier then you
+>       could extend the cache to have multiple CPU-side
+>       ports and put the arbitration logic in the cache
+>       between those ports.
+>
+>       Steve
+>
+>       On Fri, Oct 10, 2008 at 9:42 AM, Eduardo Olmedo
+>       Sanchez <eolmsan2@gmail.com> wrote:
+>
+>         Hi:
+>
+>         I have to change the policy that the simulator
+>         uses to access to the cache. And I got several
+>         questions for example if there are three cores
+>         that want to acces to the shared cache, what
+>         policy is used?, hit first, round robin...,
+>         where is the code of that policy?, and finally
+>         is it possible do this or it's a very complex
+>         task?.
+>
+>         Thank you so much for answer to all my
+>         questions, you guys do an excellent job with
+>         this mail list, thanks.
+>         _______________________________________________
+>         m5-users mailing list
+>         m5-users@m5sim.org
+>         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>       _______________________________________________
+>       m5-users mailing list
+>       m5-users@m5sim.org
+>       http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

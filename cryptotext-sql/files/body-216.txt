@@ -1,0 +1,35 @@
+Hi Max,
+I think that is a bug. Would you mind working up a diff, comment, etc. I'll volunteer to update all of our local regressions if you do.
+Thanks,
+Ali
+- Show quoted text -
+On May 3, 2010, at 4:28 AM, Maximilien Breughe wrote:
+> Hi all,
+>
+> I was digging a little bit in the implementations of your branch predictors and I think I bumped into a small bug (which might affect performance of the target machine a lot):
+> Around line 108 in cpu/pred/tournament.cc:
+>
+>    threshold = (1 << (localCtrBits - 1)) - 1;
+>    threshold = threshold / 2;
+>
+> Shouldn't this be
+>    threshold = (1 << (localCtrBits - 1)) - 1;
+>
+> ?
+>
+> When you take localCtrBits=2 for example, the threshold should be 1, not 0.
+>
+>
+>
+> Regards,
+>
+> Max
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

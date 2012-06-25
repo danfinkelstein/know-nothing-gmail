@@ -1,0 +1,12 @@
+Hello I have a quesiton regarding a simulation of more htan 4 cores in FS,
+In the FAQ it says that is is possible, and to do that you go to the
+download page and download some patches. My question is that in the
+downlad page those patches says that are only for obsolete versions
+and I am using the latest M5 version. So my question is: should I use
+those patches?, or since they are for the obsolote version they are
+not going to work in the new one.
+Thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

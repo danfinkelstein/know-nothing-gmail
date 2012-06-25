@@ -1,0 +1,17 @@
+> question 1:
+>     How can I configure a detailed cpu to have a perfect branch
+> predictor? I looked at bpred_unit_impl.hh and there are only two types
+> of predictor(local and tournament.) Does this mean I am going to add a
+> new object into M5(write C++ code for perfect_branch_predictor, then
+> instantiate it using python)?
+Now that we do execute-in-execute, this may be impossible to do.
+Kevin or Steve should chime in.
+>     How about a perfect L2 cache? Should I just increase the L2 cache
+> size to say 100MB to reduce the miss rate?
+Just get rid of the L2 cache and make the main memory have the
+performance of a cache.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

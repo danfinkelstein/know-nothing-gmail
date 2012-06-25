@@ -1,0 +1,35 @@
+Hi all,
+Recent experience with the mesh+directory coherence patch  and the
+parsec parallel benchmarks has been a coherency nightmare. DMA sometimes
+has weird errors, certain functions get stuck waiting for cache accesses
+and other nightmare-ish scenarios.
+I am wondering if anyone knows of any good ways of debugging memory
+coherency problems for directory coherence + mesh.
+I have two ideas:
+(1) Dump all the accesses out to a trace and then look for the time of
+each cache request and make sure they are all satisfied (you could also
+use a global system cache-coherency class  in the M5 simulator to do
+this verficiation). This makes sure the system isn't getting hung up on
+a memory access. In addition, you look at the access time ranges for a
+given cache line and look for intersections in the ranges for two
+different cpus. This would flag possible coherency scenarios (although
+the false positive rate would be high for detecting a problem). The more
+difficult case is figuring out if a cache entry is modified in a local
+cache, a remote cache does a read and for some reason it gets its copy
+from somewhere else besides the local cache.
+(2) Make a visual display for cache accesses between the various levels
+of the caches like in wireshark flow-model for tcp with time
+(picoseconds, nanoseconds) on the y-axis and different caches on the x
+axis.
+ From my perspective, option 2 is easy but still requires visual
+verification on my part. Option 1 is more difficult but is automated.
+Are there any other methods for verifying a coherency protocol?
+Also, are there any other models for directory coherence available? I
+wouldn't mind if it is an inaccurate hack that roughly mimicks directory
+coherence.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

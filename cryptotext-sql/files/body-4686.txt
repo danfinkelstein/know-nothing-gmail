@@ -1,0 +1,12 @@
+I'm not sure that UnaryNode needs to be changed...it currently calls
+op(l->total()), which seems to be the right thing to do, assuming the
+underlying total() function does the right thing (which it should).  Right?
+Hmmm, given that the only unary op is operator-, you're right.  If we were to implement some sort of other unary operator where that wasn't the case, probably not.  I'll probably do the same ot UnaryNode so they're consistent and so there are no surprises.
+Anyway, I've attached the diff of the BinaryNode total() function.  It seems
+to work correctly for me.
+That looks more or less exactly like what I had in mind.  The only difference is that I'd use a const VResult & instead of a VResult to avoid the copy, but the performance of this doesn't matter so much anyway.  I'll try to get this change into the tree soon.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

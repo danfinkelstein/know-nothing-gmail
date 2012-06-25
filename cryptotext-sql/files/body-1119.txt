@@ -1,0 +1,42 @@
+Generally, if you can't mmap at all, it's because of a limitation in
+the OS or hardware or something like that.  If you have a 32-bit
+machine, the limit is virtual memory address space.  If you have a
+64-bit machine, the limitation is probably total available virtual
+memory (RAM + swap) or the shell's resource limits (either ulimit or
+limit at the shell command line.)
+  Nate
+- Show quoted text -
+On Sat, Aug 1, 2009 at 1:38 PM, ef<snorlaxgb@gmail.com> wrote:
+> Hello,
+> Can anyone else allocate more than 2GB. For me after the bug fixes 2GB is
+> fine, but after that I get this error:
+>
+> mmap: Cannot allocate memory
+> fatal: Could not mmap!
+>  @ cycle 0
+> [PhysicalMemory:build/ALPHA_FS/mem/physical.cc, line 71]
+> Memory Usage: 54540 KBytes
+>
+>
+> I am not sure wether the servers I am running on  are capped or not, or
+> wether this is an M5 issue.
+>
+> I am not sure if this will help but:
+>
+> m5_test/m5-stable> free
+>              total       used       free     shared    buffers     cached
+> Mem:       8200324    6592984    1607340          0      55268    2832880
+> -/+ buffers/cache:    3704836    4495488
+> Swap:      2939852     157388    2782464
+>
+>
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

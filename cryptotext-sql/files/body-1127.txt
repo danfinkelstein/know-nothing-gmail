@@ -1,0 +1,94 @@
+I see one problem with this diff and a couple of nits.
+1) What happens if physical memory is not a multiple of chunksize?
+You don't actually deal with the tail end properly.  (As far as I
+know, physical memory is only required to be a multiple of pagesize.)
+2) You left commented out code in the function.  The old code should
+just be removed.
+3) The indentation seems screwed up (though, that could be because of
+the way you sent the diff).
+I'd really appreciate it if you fixed these things, tested the code
+and committed it.
+  Nate
+- Show quoted text -
+On Thu, Jul 30, 2009 at 4:15 PM, Rick Strong<rstrong@cs.ucsd.edu> wrote:
+> I fixed a similar problem with the following diff:
+>
+> diff --git a/src/mem/physical.cc b/src/mem/physical.cc
+> --- a/src/mem/physical.cc
+> +++ b/src/mem/physical.cc
+> @@ -476,6 +476,7 @@
+>  void
+>  PhysicalMemory::serialize(ostream &os)
+>  {
+> +    const int chunkSize = 16384;
+>     if (!pmemAddr)
+>         return;
+>
+> @@ -496,12 +497,20 @@
+>     if (compressedMem == NULL)
+>         fatal("Insufficient memory to allocate compression state for %s\n",
+>                 filename);
+> -
+> -    if (gzwrite(compressedMem, pmemAddr, params()->range.size()) !=
+> -        params()->range.size()) {
+> +
+> +    /*if (written_size != params()->range.size()) {
+>         fatal("Write failed on physical memory checkpoint file '%s'\n",
+>               filename);
+> -    }
+> +    }*/
+> +
+> +    uint64_t curSize = 0;
+> +    do {
+> +        unsigned int written_size = (unsigned
+> int)gzwrite(compressedMem, pmemAddr + curSize, chunkSize);
+> +        if (written_size <= 0) {
+> +            fatal("Write failed on physical memory checkpoint file
+> '%s'\n",filename);
+> +        }
+> +        curSize += written_size;
+> +    } while (curSize < params()->range.size());
+>
+>     if (gzclose(compressedMem))
+>         fatal("Close failed on physical memory checkpoint file '%s'\n",
+>
+> William George Beazley Jr wrote:
+>> Seems large than physical memory larger 1536MB suffers from:
+>>
+>> Writing checkpoint
+>> fatal: Write failed on physical memory checkpoint file
+>> 'system.physmem.physmem'
+>>  @ cycle 500
+>> [serialize:build/ALPHA_SE/mem/physical.cc, line 479]
+>> Memory Usage: 5395972 KBytes
+>>
+>> I should think this machine is large enough to support it:
+>> [williamb@trout ~]$ free
+>>              total       used       free     shared    buffers
+>> cached
+>> Mem:      66013472   17933008   48080464          0     284200
+>> 14918872
+>> -/+ buffers/cache:    2729936   63283536
+>> Swap:     78148152          0   78148152
+>> [williamb@trout ~]$
+>>
+>> -----------------------------------
+>> Will Beazley|Sys. Software Analyst
+>> 409.880.7847|wgbeazley@my.lamar.edu
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

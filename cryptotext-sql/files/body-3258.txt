@@ -1,0 +1,10 @@
+I have traced through on an error I was getting. The assertion says the following:
+        void Cache<TagStore>::handleResponse(Packet*) [with TagStore = LRU]:
+                Assertion `target->pkt->cmd == MemCmd::ReadResp' failed.
+I annotated the Cache trace printout to display what command the packet his right before that assertion and the one causing the error is a LoadLockedResp. Given that a LoadLockedResp is both an IsRead and an IsResponse, I was wondering if it was safe to modify the assertion to allow LoadLockedResp's as well, or if this would have other unintended side-effects.
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

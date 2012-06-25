@@ -1,0 +1,19 @@
+Hello! I'm new to the list.
+I have read on your website that "M5 models a DEC Tsunami system in
+sufficient detail to boot unmodified Linux 2.4/2.6, FreeBSD, or
+L4Ka::Pistachio".
+Given this wonderful capability, how can I use this software?
+I was expecting some documentation like the following one, detailing
+how to install and to run Debian GNU/Linux on MIPS machine emulated by
+QEMU.
+http://www.aurel32.net/info/debian_mips_qemu.php
+Ok, being more concrete,
+1. Can I boot to SRM console?
+2. Can I load initrd, in addition to kernel?
+3. Am I correct in that stripped kernel can't be used?
+-- 
+Seo Sanghyeon
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,28 @@
+What is Squashed flag used for?
+Is there one main event queue that all modules (cpu, ...) use? or they
+have their own queues and whenever schedule an event, insert it in the
+main queue? I have seen that there are Event Wrapper classes which
+assigns q = main event queue.
+Somayeh
+- Show quoted text -
+nathan binkert wrote:
+>> I want to know how M5 event queue works, but I could not find enough
+>> documents on website. Is there any way to get more information on event
+>> queue?
+>
+> There is no explicit documentation other than reading source code.
+> There are literally hundreds of examples of using the event queue in
+> the M5 code base.  src/sim/eventq.hh is even commented somewhat
+> (though it could of course be better done.)
+>
+> Is there something specific you can't figure out?
+>
+>   Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

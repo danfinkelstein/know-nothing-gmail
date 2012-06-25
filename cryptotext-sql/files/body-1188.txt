@@ -1,0 +1,63 @@
+Thanks Soumyaroop for your info.Actually, i'm familiar about these things but i do not have "contextId()" anywhere in source files. I think the M5 i'm using needs updated. If you are using it for long time, you may have idea about this. I really appreciate for your great replies.
+Thanks,devrajOn Thu, Jul 16, 2009 at 10:28 AM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+- Show quoted text -Hello Devraj,
+contextId() is defined in request.hh
+sroy@theoracle:~/work/m5-stable$ grep "contextId()" `find ./src/mem -name "*.hh"
+./src/mem/cache/blk.hh:           
+return (contextId == req->contextId());
+./src/mem/cache/blk.hh:            : contextId(req->contextId())
+./src/mem/request.hh:    contextId() const
+./src/mem/physical.hh:           
+return (contextId == req->contextId());
+./src/mem/physical.hh:             
+contextId(req->contextId())
+regards,
+Soumyaroop.On 7/15/09, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi Steve,Thanks lot for your reply.Probably, i have not updates all the latest one. When i search the contextId()
+in my M5 (within  /m5-2.0b6/src/mem/ ), I could not get it.
+ Is it already defined and assigned by M5 developers or i have to
+myself? 
+I'm really sorry for asking such minor things again and again.
+On Wed, Jul 15, 2009 at 6:20 AM, Steve Reinhardt <stever@gmail.com> wrote:
+On Tue, Jul 14, 2009 at 11:23 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi,I am running a multi core multi-thread program on M5 under
+ALPHA-SE mode in SPEC CPU 2006. I can not get context id when tried to
+trace the parameters of packet. Is core id is context id or not? If
+not, how can we get the context id?
+The context ID is in req->contextId(). 
+The next problem is that when I dump the content of the block in packet, in some tick times it has no data value in it.
+Is it possible having no value in some tick values? if not, what can be the error for this?Some packets naturally do not have data (e.g., read requests as opposed to read responses).
+ 
+The last
+problem is when i use isInstFetch() to distinguish the content of
+packet as whether it is data or instruction, it always return 0 value.
+So, i can't distinguish whether the fetch content is data or
+instruction.
+Are you using the latest version of the
+code?  There was a bug fix within the past few months on
+this.  If you're still having problems, what CPU model are you
+using?  Are you tracing from the very beginning of the program?
+ 
+Could anyone please provide me hints to figure out these problems.
+Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

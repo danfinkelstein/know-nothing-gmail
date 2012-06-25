@@ -1,0 +1,24 @@
+Hi Nate,Here is the output of "ldd m5.fast"(note I'm using m5 v2 beta 4). Yes, libpython is among them.        linux-vdso.so.1 =>  (0x00007fff4b6eb000)        libpython2.5.so.1.0 => /usr/lib/libpython2.5.so.1.0 (0x00007f7673825000)
+        libz.so.1 => /usr/lib/libz.so.1 (0x00007f767360e000)        libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f7673303000)        libm.so.6 => /lib/libm.so.6 (0x00007f7673082000)
+        libgcc_s.so.1 => /lib/libgcc_s.so.1 (0x00007f7672e74000)        libc.so.6 => /lib/libc.so.6 (0x00007f7672b12000)        libpthread.so.0 => /lib/libpthread.so.0 (0x00007f76728f6000)
+        libdl.so.2 => /lib/libdl.so.2 (0x00007f76726f2000)        libutil.so.1 => /lib/libutil.so.1 (0x00007f76724ef000)        /lib64/ld-linux-x86-64.so.2 (0x00007f7673b95000)
+LINKFLAGS only appear at the end of SConscript (at the highest level directory). I can't find the command where scon stick the LINKFLAGS. Here is how my modified SConscript (the line begins with "+++")
+# "Fast" binarymakeEnv('fast', '.fo', strip = True,        CCFLAGS = Split(ccflags['fast']),        CPPDEFINES = ['NDEBUG', 'TRACING_ON=0'])
+# Profiled binarymakeEnv('prof', '.po',        CCFLAGS = Split(ccflags['prof']),        CPPDEFINES = ['NDEBUG', 'TRACING_ON=0'],
+        LINKFLAGS = '-pg')+++ main.Append(LINKFLAGS='-static')Return('envList')Thanks,
+Jiayuan- Show quoted text -On Tue, Feb 16, 2010 at 4:06 PM, nathan binkert <nate@binkert.org> wrote:
+> Thanks. I tried to add the flag, but by doing an "ldd", it still seems
+> m5.fast is dynamically linked. Any clue?
+what libraries is it trying to dynamically load?  libpython.so is
+likely.  Also, the question is, where does scons stick LINKFLAGS on
+the command line?  Is it before the libraries?  If not, I don't know
+that it would try to link them statically.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

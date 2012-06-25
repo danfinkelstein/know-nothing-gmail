@@ -1,0 +1,27 @@
+In v1 SE mode there is no address translation, you are correct.
+The easiest thing from our perspective is to upgrade to v2.  In v2 SE mode we do maintain a physical address space and do address translations, so the modeling is more realistic and this problem goes away.
+We do have a hack in v1 to avoid false cache aliasing in SMT.  The ASID is written into the upper bits of the "physical" address (see the dummyTranslation() function in cpu/exec_context.hh).  Since this was just designed for SMT mode, though, the ASID is set equal to the thread number (i.e. 0 on any non-SMT CPU), which is why it does you no good for SMPs with shared caches running multiprogrammed workloads.  If you're stuck with v1 for some reason, the easiest fix is to modify the ASID maintained by each CPU.
+Steve- Show quoted text -
+Meng-Ju Wu wrote:
+Hi all,
+I have a L2 cache problem in the M5 1.1 SE mode. When I run 2
+different programs on 2 different cpus, I find that these 2 programs
+access the same address. For example, program A accesses it's data and
+read the address 0x01e5f2. Later, program B accesses it's data and
+read the same address 0x01e5f2, too.
+I dumped the req->paddr in the cache module, and It seems that the
+memory references of program A and program B are overlapped. This will
+make the L2 miss of program B become a L2 hit.
+Maybe I misunderstand the m5 cache model. If I am not, is there any
+easy way to separate the memory references of multi-programs in L2
+cache? Then the measurement will be more accurate in the M5 SE mode.
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

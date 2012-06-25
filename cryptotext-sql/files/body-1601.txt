@@ -1,0 +1,20 @@
+Hi all,
+I have two questions about the virtual memory implementation on M5
+ALPHA SE mode.
+(1) In M5, the virtual address is translated to the physical address
+before the cache access. Now, I want to do the padding in my
+application to control the data locality.  For example,  partition
+several datasets to fit all of them into the L2 cache, and each
+dataset is exactly mapped to its own sets in the cache. The
+application can only see the virtual address, and the L1/L2 caches are
+using physical address. Is it possible to do the padding to control
+the spectral locality in application level?
+(2) If I want to control the virtual to physically address mapping in
+the page level, where is the entry point of the M5 source codes? And
+how to do it?
+Thanks a lot,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

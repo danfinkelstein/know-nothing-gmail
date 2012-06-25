@@ -1,0 +1,18 @@
+Hi all:
+     I am trying to develop a trace driven system that uses physical
+address. I use physical memory to create a request object then send
+that to the memory hierarchy. As soon as my load operation send the
+physical address down into the memory system, a segmentation fault
+occurs. I trace the segmentation fault. It happens at an impossible
+place, src/mem/port.hh:186. In that line, I have
+ bool sendTiming(PacketPtr pkt) { assert(peer != NULL); return
+peer->recvTiming(pkt);}
+    So, in general, I must be doing something naively wrong about
+using physical memory. Any idea? Thanks for any comment in advance.
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

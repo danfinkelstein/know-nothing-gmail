@@ -1,0 +1,9 @@
+Hello all,
+      I am running the splash2 benchmarks. I want to get a trace of dram bank access patterns. How do I do this? The memory used is declared in the line:
+physmem = PhysicalMemory(range=AddrRange("512MB")
+When I look in the PhysicalMemory.py file, it has 2 class declarations. viz: PhysicalMemory and DRAMMemory. Why do we have both these objects? Do I need to declare the memory object as a DRAMobject and modify the associated .cc file?
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

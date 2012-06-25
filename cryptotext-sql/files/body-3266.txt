@@ -1,0 +1,38 @@
+I’m experimenting with moving the interrupt controller
+(cchip) up the memory hierarchy to be much closer to the CPUs for faster
+access.  But when I assign the cchip to be connected to the l2bus, m5
+panics immediately with this error:
+ 
+command line: ../../build/ALPHA_FS/m5.opt fs1.py -b
+thread_scaletest32 -k vmlinux.expbackoff -t -n 4 --caches --l2cache -m
+1500000000
+warning: overwriting port tsunami.cchip.pio value
+iobus.port[1] with tol2bus.port[1]
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at:
+/n/poolfs/z/home/blakeg/m5-dev/binaries/vmlinux.expbackoff
+      0: system.tsunami.io.rtc:
+Real-time clock set to Thu Jan  1 00:00:00 2009
+Listening for system connection on port 3456
+panic: pio port already connected to.
+ @ cycle 0
+[getPort:build/ALPHA_FS/dev/io_device.hh, line 210]
+Program aborted at cycle 0
+Aborted (core dumped)
+ 
+Looking in config.ini, the cchip is connected twice, once to
+the l2bus *and* to the iobus, which is causing the panic and before hand
+the warning.  I can’t find where the cchip is being always assigned
+to the iobus, especially after I override it by connecting it to the l2bus in
+fs.py.  Any ideas?
+ 
+Thanks,
+Geoff
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.524 / Virus Database: 269.23.2/1386 - Release Date: 4/18/2008 5:24 PM
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

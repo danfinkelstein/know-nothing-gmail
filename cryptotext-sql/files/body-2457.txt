@@ -1,0 +1,48 @@
+Hi Nate thanks for your answer, what do you mean with very limited, for example I got a program with 8 threads and I want two threads per core, is it possible do that?. And if does can you post some sample code about managing threads in the simulator, or where I can find that info, thank you so much again.
+2008/10/10 nathan binkert <nate@binkert.org>- Show quoted text -
+Yes, this is true.  Just so you know though, currently we only support
+a very limited form of threading in SE mode right now to support
+splash.  I have lofty goals of getting pthreads working, but it will
+be a few months.  If you want to help, let me know.  There is an
+existing user level pthreads implementation that we can leverage to
+make it work.
+  Nate
+On Thu, Oct 9, 2008 at 2:31 PM, Bob Nagel <nasmloe@gmail.com> wrote:
+> Hello:
+>
+> I got a couple of questions about the collaboration of different cores in
+> the same program:
+>
+> If I write the code like this for a Hello World program:
+>
+>     MyOwnProcess = process()
+>     system.cpu[i].workload = MyOwnProcess
+>
+> Then I get one output per core, so does this code mean that each core has
+> its own copy of the program?
+>
+>
+> And If i write the code like this:
+>
+>    system.cpu[i].workload = process
+>
+> Then I get only one Hello World, so I understand that all the cores are
+> collaborating in the same copy of the program?.
+>
+> Thanks.
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

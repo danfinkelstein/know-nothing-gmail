@@ -1,0 +1,4 @@
+If by Intel binaries you mean x86 or x86/64 binaries you can't, at least not yet, although we are working on it. If you'd like to help let us know.Ali- Show quoted text -On Jun 28, 2007, at 10:25 AM, viswanath krishnamurthy wrote:- Show quoted text -Hi,I would like to know if there is any way to run Intel binaries on M5 simulator. Can anybody send me some pointers regarding this since I was not able to locate this info in the M5 documentation manual.Thanks,         Yahoo! Mail is the world's favourite email. Don't settle for less, sign up for your free account today._______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

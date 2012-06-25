@@ -1,0 +1,43 @@
+> Has anyone tried to run M5 under Condor?  I am getting
+> very basic errors like "ImportError: No module named
+> m5.main" when running a test try.  I am wondering if
+> there are conflicts with the Python interpretter embedded in
+> the simulator since Condor doesn't support running Python
+> scripts directly.
+Yes, I run m5 (v1.1) regularly on a cluster managed by condor. It rather
+depends on how your condor is configured and also if anything relevant
+has changed in m5 v2 but I have a Python script called m5.launch running
+in the vanilla universe that sets up some environment variables
+(corresponding to which configuration and benchmark to run) which then
+does something like:
+process = subprocess.Popen(...)
+process.wait()
+So the condor submission file looks like this:
+# Condor submission file
+# Generic things
+universe        = vanilla
+executable      = /homes/jrs53/src/m5/m5/bin/m5.launch
+#requirements   = memory >= 4000
+output          = $ENV(M5_RESULTS)_condor/out.gzip_source
+error           = $ENV(M5_RESULTS)_condor/err.gzip_source
+log             = $ENV(M5_RESULTS)_condor/log.gzip_source
+arguments       = --benchmark=gzip_source
+--results=$ENV(M5_RESULTS)_gzip_source
+--fast_cycles=$ENV(M5_FAST_CYCLES)
+--detail_cycles=$ENV(M5_DETAIL_CYCLES) --con
+fig=$ENV(M5_CONFIG) --sim=$ENV(M5_SIM)
+queue           1
+(may wrap)
+This may be needlessly complex and was originally necessary to get
+around some file permissions issues on our system. If you can log in
+directly to the condor machines try running m5 from there and see what
+happens.
+Hope this helps,
+James
+--
+James.Srinivasan@cl.cam.ac.uk
+http://www.cl.cam.ac.uk/~jrs53/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

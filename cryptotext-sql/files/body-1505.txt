@@ -1,0 +1,11 @@
+> Thanks for the tip Ali.  But I'm now getting:
+> "Error: can't find Python library python2.5" which I don't quite understand.
+>  I think I will try linking the source files instead of the shared library.
+Have you tried to compile an unmodified m5?  You get that error
+normally if you don't have the python developer's package installed
+(python-dev in ubuntu)
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

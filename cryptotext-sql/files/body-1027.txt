@@ -1,0 +1,6 @@
+Hello,I am running some parsec benchmarks and I am getting segmentation faults in the middle of running these  benchmarks... not M5 (the issue is cross compiling). I am running ALPHA Fs  mode, and I dont have an Alpha machine. I dont have much to work with, any ideas on how to aide in debugging?
+Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,55 @@
+The test is checking ehdr.e_ident[EI_DATA] to see if it's equal to
+ELFDATA2LSB or ELFDATA2MSB.  I see we already do that in one place in
+elf_object.cc but only when we're trying to interpret another field.
+Steve
+- Show quoted text -
+On Mon, Mar 17, 2008 at 1:26 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+>     To just check the endianness and fail out if it's wrong, that should
+>  be a few lines in the loader to check a constant or two in the ELF
+>  header. To make it work, you would probably need to put an endian flip
+>  in the predecoder. You could either make the predecoder check whether
+>  the flip should be applied for every instruction, or put in a different
+>  predecoder in each case. The first could perform poorly but would be the
+>  easiest.
+>
+>  Gabe
+>
+>
+>
+>  Korey Sewell wrote:
+>  >  On M5's end, we should check
+>  >
+>  >     the endianness of binaries and either complain if it isn't
+>  >     supported, or
+>  >     make it work somehow.
+>  >
+>  > Good catch and points, Gabe...
+>  >
+>  > How easy is that to implement?
+>  >
+>  >
+>  >
+>  > --
+>  > ----------
+>  > Korey L Sewell
+>  > Graduate Student - PhD Candidate
+>  > Computer Science & Engineering
+>  > University of Michigan
+>  > ------------------------------------------------------------------------
+>
+>
+> >
+>  > _______________________________________________
+>  > m5-users mailing list
+>  > m5-users@m5sim.org
+>  > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

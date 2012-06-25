@@ -1,0 +1,51 @@
+Take a look at the bus bridge for an example. Briefly, the cpu will
+call sendTiming()/recvAtomic() on it's port which will end up calling
+recvTiming()/recvAtomic() on your port. At this point you can do
+whatever you want (E.g. modify(pkt), memSidePort->sendTiming(pkt);).
+Make Sense?
+Ali
+- Show quoted text -
+On Jan 2, 2009, at 8:40 AM, Isuru Herath wrote:
+> Dear Steve,
+>
+> Thanks a lot for the reply and your suggestions. I went through the
+> tutorial and
+> some codings. The component I am planning to write will have one
+> port for cpu
+> side and one port for mem side and one method to modify the
+> address(let say its
+> name is modify) something similar to the read and write methods in
+> HelloDevice
+> in the tutorial (slides 108-113). The question I am having is who is
+> going to
+> call my
+> function named 'modify' (same question i.e. who is going to call the
+> read and
+> write method in the HelloDevice).
+>
+> May be I am understanding the M5 concept in a wrong manner. I was
+> thinking, that
+> cpu will send the packet to the cache calling a method or a
+> constructor in
+> cache. But seems like that is not the case. Still wondering how the
+> interconnection among the methods in different classes are handled
+> in M5.
+>
+> Please bear with me if these questions are too newbie..
+> Thanks a lot for your kind concerns regarding this.
+>
+> regards,
+> Isuru
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

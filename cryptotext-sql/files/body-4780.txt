@@ -1,0 +1,62 @@
+hi,Rajdeep Bhowmik
+        perhaps you should use -static when you compile your program
+======= 2006-12-15 11:48:15 Wrote in your letter=======
+- Show quoted text -
+>Hi,
+>
+>I am trying to run a simple C++ program which uses
+>std::string. The code is -
+>
+>int main()
+>{
+>   string a("abcd efg");
+>   string b("xyz ijk");
+>   string c;
+>
+>   cout << "String is " << a << endl;
+>   c = a + b;
+>   cout << "Concatenated string " << c << endl;
+>   cout << "Length of the string " << c.length() <<
+>endl;
+>
+>   return 0;
+>}
+>
+>I was able to compile the code using cross compiler
+>but could not run the program on M5. It is giving me
+>an error -
+>
+>"/benchmarks/stringtest/stringtest: error while
+>loading shared libraries: libstdc++.so.6: cannot open
+>shared object file: No such file or directory"
+>
+>I found that the library mentioned above is not in the
+>precompiled linux dist.
+>
+>I am running M5 version 2.0 in Full System mode.
+>
+>Please let me know what can I do about this error ?
+>
+>Regards-
+>Rajdeep
+>
+>
+>
+>
+>____________________________________________________________________________________
+>Do you Yahoo!?
+>Everyone is raving about the all-new Yahoo! Mail beta.
+>http://new.mail.yahoo.com
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+= = = = = = = = = = = = = = = = = = = =
+Thanks and Best Regards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2006-12-15
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

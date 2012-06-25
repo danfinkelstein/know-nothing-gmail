@@ -1,0 +1,6 @@
+Hello,I was wondering if there is a way for m5 (not glibc or the kernel) to signal when a new thread is on a cpu. I have some benchmarks that create new threads in the middle of execution, and I would like to see output on them being pinned to processors (I have more threads than processors, FS MODE). I looked through and tested trace flags and I couldnt find anything. Is there such flag? 
+If not anyone know where I should implement a DPRINTF in m5 to do this? Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

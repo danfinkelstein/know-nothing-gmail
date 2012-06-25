@@ -1,0 +1,168 @@
+Rick,
+Once you confirm that they're working (did you have problems with the other ones Vilas mentioned as well?) please send us a diff.
+Thanks,
+Ali- Show quoted text -
+On Jan 7, 2008, at 8:41 PM, Vilas Sridharan wrote:
+- Show quoted text -
+Hi Rick,
+That's good to know -- I don't know that I had ever confirmed that.
+I realize now that I had noted a few other issues with the cpu2000.py script a long time ago but never sent them to the list, mostly because I've had trouble with a number of the other SPEC benchmarks as well (I think Rick has fixed most of those issues, though).
+Specifically:
+gzip_source:  the second input should be '60', not '1'
+mcf:  should get inp.in as argument, not mcf.in
+parser:  needs ref.in on stdin
+equake:  needs inp.in on stdin
+facerec:  needs ref.in on stdin
+lucas:  needs lucas2.in on stdin
+sixtrack:  needs inp.in on stdin
+This is all based on Ken Barr's SPEC2K command lines.  I don't have a diff, unfortunately -- I haven't made many of these changes locally since I've been having other troubles with SPEC -- but it should be a matter of just a few minutes for someone to apply these changes and create a diff.  Four of them are the ones that Rick was having trouble with.
+   -Vilas
+On Jan 7, 2008 8:26 PM, Rick Strong < rstrong@cs.ucsd.edu> wrote:
+This also appears to be the problem for facerec.
+Thanks again,
+-Rick
+Vilas Sridharan wrote:
+> Hi Rick,
+>
+> It think it may be the input file names.  Many of the SPEC2k
+> benchmarks get input files redirected to their STDIN.  For example,
+> parser has the following command line (from
+> http://kbarr.net/specint2000-commandlines):
+>
+>     parser 2.1.dict -batch < ref.in <http://ref.in> > ref.out 2> ref.err
+>
+> I think this code in cpu2000.py provides the input files to STDIN for
+> many of these benchmarks:
+>
+>        if not hasattr(self.__class__, 'stdin'):
+>             self.stdin = joinpath(inputs_dir, '%s.in' % self.name
+> <http://self.name>)
+>             if not isfile(self.stdin):
+>                 self.stdin = None
+>
+> It looks to me like, unless otherwise specified, parser would get a
+> STDIN of filename "parser.in <http://parser.in >".  Since this is
+> (likely) not a file in your SPEC directory, parser probably doesn't
+> get a proper input file.  I don't see anywhere else that the
+> self.stdin parameter is set for parser in cpu2000.py either.
+>
+> If this is the problem, renaming (or copying and renaming) the ref.in
+> < http://ref.in> file as "parser.in <http://parser.in>" would solve the
+> problem, or else add the line:
+>
+>         self.stdin = 'ref.in <http://ref.in>'
+>
+> ...to the cpu2000.py where it sets up the "parser" benchmark.
+>
+> Specifically, I believe I've gotten parser to run by doing the former
+> (creating a file parser.in <http://parser.in>).  I haven't tried
+> facerec or the others you mention, but according to Ken's website,
+> they all are similar (taking either ref.in <http://ref.in> or inp.in
+> < http://inp.in> on their STDIN).
+>
+>    -Vilas
+>
+>
+>
+> On Jan 7, 2008 4:52 PM, Steve Reinhardt <stever@gmail.com
+> <mailto:stever@gmail.com>> wrote:
+>
+>     If I had to make a wild guess, I think you may be having problems with
+>     input or output files not being accessible, or maybe being corrupted.
+>
+>     I'm not sure what compiler your binaries were compiled with, or if
+>     fortran error numbers are standardized, but error 24 is "End-of-file
+>     during read" for DEC Fortran:
+>
+>     http://www.helsinki.fi/atk/unix/dec_manuals/df90au52/dfum033.htm
+>     < http://www.helsinki.fi/atk/unix/dec_manuals/df90au52/dfum033.htm>
+>
+>     The rest of that error message just says that it tried to look up the
+>     text error message for that error number but couldn't find the file
+>     that does that.
+>
+>     SImilarly with lucas, if the program is calling exit() after 80K
+>     instructions it's because something very early went wrong, like it
+>     didn't like the command-line arguments or couldn't find an input file.
+>      I'm very surprised you're not getting an error message somewhere
+>     (from the app if not from m5).
+>
+>     That reminds me... could the command-line arg issues we were having
+>     with the splash scripts (where you need to manually split the command
+>     line into args) be an issue here too?
+>
+>     Steve
+>
+>     On Jan 7, 2008 1:40 PM, Ali Saidi < saidi@umich.edu
+>     <mailto:saidi@umich.edu>> wrote:
+>     > Are there any unimplemented syscall warnings printed?
+>     >
+>     > Ali
+>     >
+>     >
+>     >
+>     >
+>     > On Jan 7, 2008, at 3:16 PM, Rick Strong wrote:
+>     >
+>     > > Hi,
+>     > >
+>     > > I have been attempting to get all the Spec2000 benchmarks
+>     running.
+>     > > For each case, I was using the cpu2000.py script found with
+>     the web
+>     > > release of M5 2.0b4. All simulations are run in ALPHA SE with the
+>     > > AtomicSimpleCPU. All benchmarks are run from the beginning.
+>     > >
+>     > > 1) facerec('alpha','linux','ref') fails with the error given
+>     below.
+>     > > I have seen this error mentioned by Nathan, but no solution
+>     appears http://osdir.com/ml/emulators.m5.users/2005-06/msg00005.html
+>     > > .
+>     > >
+>     > >   forrtl: info: Fortran error message number is 24.
+>     > >   forrtl: warning: Could not open message catalog: for_msg.cat.
+>     > >   forrtl: info: Check environment variable NLSPATH and
+>     protection of
+>     > >    /usr/lib/nls/msg/en_US.ISO8859-1/for_msg.cat.
+>     > >    forrtl: severe (24): Message not found
+>     > >
+>     > > 2) gap('alpha','linux','ref') fails silently at 121,648,276
+>     > > instructions 71,547,478,968 ticks simulated.
+>     > >
+>     > > 3) lucas('alpha','linux','ref') exits too early, "Exiting @ cycle
+>     > > 47505108 because target called exit()" at 80,721 instructions.
+>      No
+>     > > clear reason why.
+>     > >
+>     > > 4) parser('alpha','linux','ref') fail silently at 267,811,574
+>     > > instructions 157499543208 tick simulated.
+>     > >
+>     > > -Richard
+>     > >
+>     > >
+>     > > _______________________________________________
+>     > > m5-users mailing list
+>     > > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     > >
+>     >
+>     > _______________________________________________
+>     > m5-users mailing list
+>     > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

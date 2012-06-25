@@ -1,0 +1,32 @@
+Hi again, you were right the development version compiles fine, so now finally after some days of problems I got M5 installed, thanks for all to the M5 community.- Show quoted text -
+ 
+On Mon, Sep 29, 2008 at 2:51 PM, nathan binkert <nate@binkert.org> wrote:
+This is because you're using gcc 4.3 which just came out and thestable version of m5 doesn't support.  If you get the development
+version of m5 (which should become the new stable version in a day orso), these things should be fixed.  I only just now committed the lastthing that makes ALPHA compile under gcc 4.3, so you do need the verylatest stuff.
+ Nate
+> Hi again Nate a new version is now installed but I;m getting some strange> errores following you can see my output:>> build/ALPHA_FS/arch/alpha/ev5.hh: In function âAddr
+> EV5::DTB_PTE_PPN(uint64_t)â:> build/ALPHA_FS/arch/alpha/ev5.hh:84: error: suggest parentheses around + or> - inside shift> build/ALPHA_FS/arch/alpha/ev5.hh:84: error: suggest parentheses around + or
+> - in operand of &> build/ALPHA_FS/arch/alpha/ev5.hh: In function âAddr> EV5::ITB_PTE_PPN(uint64_t)â:> build/ALPHA_FS/arch/alpha/ev5.hh:94: error: suggest parentheses around + or> - inside shift
+> build/ALPHA_FS/arch/alpha/ev5.hh:94: error: suggest parentheses around + or> - in operand of &> build/ALPHA_FS/sim/host.hh: At global scope:> build/ALPHA_FS/sim/host.hh:61: error: âMaxTickâ defined but not used
+> build/ALPHA_FS/arch/alpha/isa_traits.hh:164: error:> âAlphaISA::SyscallPseudoReturnRegâ defined but not used> scons: *** [build/ALPHA_FS/arch/alpha/ev5.do] Error 1> I think that is because I installed Python, Scons and everythin with my old
+> GCC version, do I need to reinstall all the packages with the new GCC> version?. Thanks for all your help.>>> On Mon, Sep 29, 2008 at 9:55 AM, nathan binkert <nate@binkert.org> wrote:
+>>>> A newer version should work fine.  I think you just got unlucky with>> your version number.  We generally always compile with versions >=>> 4.0, but I do compile with 3.4.6 on one machine and it works.
+>>>>  Nate>>>> On Mon, Sep 29, 2008 at 9:53 AM, Eduardo Olmedo Sanchez>> <eolmsan2@gmail.com> wrote:>> > Hi Nate thanks for your answer. I'm using g++ 3.4.3 version, do you
+>> > recommend to update the g++ to another version or use another one>> > different>> > than g++?. Thanks.>> >>> > On Mon, Sep 29, 2008 at 9:49 AM, nathan binkert <nate@binkert.org>
+>> > wrote:>> >>>> >> An internal compiler error is a problem with the compiler, not M5.  I>> >> suggest you use a different compiler.>> >>>> >>  Nate
+>> >>>> >> On Mon, Sep 29, 2008 at 9:21 AM, Eduardo Olmedo Sanchez>> >> <eolmsan2@gmail.com> wrote:>> >> > Hi whem I'm compiling the m5 with this option scons USE_MYSQL=False
+>> >> > build/ALPHA_FS/m5.debug, everything seems goes well but finally I get>> >> > this>> >> > output:>> >> >>> >> > build/ALPHA_FS build/ALPHA_FS/enums/Enum.cc
+>> >> > build/ALPHA_FS/enums/Enum.cc:5: internal compiler error: in>> >> > tree_low_cst, at>> >> > tree.c:3318>> >> > Please submit a full bug report,
+>> >> > with preprocessed source if appropriate.>> >> > See <URL:http://bugzilla.redhat.com/bugzilla> for instructions.
+>> >> > Preprocessed source stored into /tmp/cctdk24y.out file, please attach>> >> > this>> >> > to your bugreport.>> >> > scons: *** [build/ALPHA_FS/enums/Enum.do] Error 1
+>> >> > scons: building terminated because of errors.>> >> > Anyone know how I can solve this problem. Thanks in advance.>> >> > _______________________________________________
+>> >> > m5-users mailing list>> >> > m5-users@m5sim.org>> >> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>> >> _______________________________________________>> >> m5-users mailing list>> >> m5-users@m5sim.org>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>> >>> > _______________________________________________>> > m5-users mailing list>> > m5-users@m5sim.org>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>> _______________________________________________>> m5-users mailing list>> m5-users@m5sim.org>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

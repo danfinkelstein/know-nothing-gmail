@@ -1,0 +1,8 @@
+Hi,  When i tried to compile M5 I got this error. I am new to M5[root@iowa m5-2.0b3]# scons build/ALPHA_FS/tests/debug/quickscons: Reading SConscript files ...TypeError: putenv() argument 2 must be string, not instance:
+  File "/root/Desktop/m5-2.0b3/SConstruct", line 210:    env.Append(ENV = { 'M5_PLY' : Dir('ext/ply') })  File "/usr/local/lib/scons-0.97.0d20070918/SCons/Environment.py", line 1068:
+    orig[k] = v  File "/usr/local/lib/python2.5/os.py", line 476:    putenv(key, item)[root@iowa m5-2.0b3]#Could you please help me out what this error is and what should I do... 
+Thanks,Amit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

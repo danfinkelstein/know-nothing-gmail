@@ -1,0 +1,17 @@
+ Has anyone come across 
+such an issue or can any one suggest me what is the appropriate way of 
+finding out where the problem lies?Try using "valgrind" to check where the memory leak is coming from. It's a tremendously useful tool.you'll want to run on a debug binary and for a limited number of cycles as well..
+a command line such as "valgrind --tool=memcheck --leak-check=yes <cmd_line>" usually works for me. (it's a lot of output, be warned). 
+The GHB, prefetching mechanism works fine in all cases.Another 
+problem that i am currently facing is as follow:There are only 
+integers and floating point numbers in the application that i am trying 
+to run. Check the mailing list archives but I'm not sure Floating Point support is all the way there for x86. I'll let someone else chime in. 
+build/X86_SE/cpu/simple/timing.cc:438: Fault 
+TimingSimpleCPU::read(Addr, T&, unsigned int) [with T = uint64_t]: 
+Assertion `split_addr <= addr ||
+ split_addr - addr < block_size' failed.That looks like a error in the code trying to determine something with split accesses (accesses that span multiple cache blocks)...  
+It could be something to do with your prefetcher...Or it could be something with the memory leak corrupting values. -- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

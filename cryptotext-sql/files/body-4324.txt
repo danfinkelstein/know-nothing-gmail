@@ -1,0 +1,54 @@
+Tracy,
+It seems as though you added some statistics, so one question is are the statistics correct? Another possibility is that the latency that the DRAM device is returning when calculateLatency() is called is wrong or in the wrong units (perhaps it's returning nano-seconds?). Like the warning says the DRAM model hasn't been tested, and therefore hasn't been validated. It's been years since we used it for anything and M5 has gone through quite a few changes since then, including a change in what units Ticks are.
+At first glance it worries me that the cas/ras/etc parameters are all defined as Ints and not Ticks in the py file. Quickly running the model and printing out the latency returned by calculateLatency() seems to confirm this. All the latencies are on the order of 10 and  I don't think the difference between 10ps-30ps would cause sim_ticks to change much. You probably want to change all the latency parameters in the py file to be expressed in Latency and then define them in the correrct number of ns or ps.  Take a look at how the latency parameter of PhysicalMemory is set in PhysicalMemory.py for an example.
+Ali- Show quoted text -
+On Aug 7, 2007, at 3:01 PM, rlai@mtu.edu wrote:
+Hi,
+   I run simulations by using TimingSimpleCPU and SDRAM model for my
+different page placement algorithms. Benchmark is ValStream, and
+running 10 billion instructions for each simulation.
+   Different average  DRAM access latencies cause no difference in sim_ticks.
+   Can anybody explain that?
+Thanks,
+Tracy
+Hi,
+   I implement different page allocation algorithms(virtual to
+physical
+address translation algorithm) based on current DRAM model in full
+system(m5_2.0b). After running simulations(benchmark is
+ValStream), I
+could see more than 20% difference in average DRAM access latency
+within all these algorithms, but almost 0% difference in sim_ticks.
+   Is that because the caculated dram latency is not used? Can
+anybody
+explain that to me?
+   Thanks.
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

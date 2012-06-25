@@ -1,0 +1,6 @@
+Hi all, I encountered a strange problem, the linux cannot boot, I run the m5term and it break like this:Brought up 4 CPUsSMP: Total of 4 processors activated (15995.06 BogoMIPS).NET: Registered protocol family 16
+EISA bus registeredThe command I run is build/ALPHA_FS/m5.opt -d --cache -n 4     and    m5term localhost 3456I have successfully run this before but it just happened yesterday. I don't know what I should do now, I have searched the mail list, It seems that this problem has happened before, but I am not quite clear how to fix this? Does somebody have any idea ? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

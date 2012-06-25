@@ -1,0 +1,6 @@
+I never touched any thing outside the memory system. I am getting this assertion failur. Any idea what might be the problem?
+m5.opt: build/ALPHA_SE/cpu/o3/lsq_unit_impl.hh:882: void LSQUnit<Impl>::completeStore(int) [with Impl = O3CPUImpl]: Assertion `storeQueue[store_idx].inst' failed.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

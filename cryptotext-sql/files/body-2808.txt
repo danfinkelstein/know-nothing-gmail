@@ -1,0 +1,22 @@
+The ASPLOS tutorial has a section on defining a new SimObject.   Once
+you do that you'd just need to take all the wattch globals and make
+them fields in the C++ object, and put the wattch code in an object
+method.  You could then define parameters for that SimObject to pass
+in all the pointers and stuff you need from the python (number of
+cpus, pointers to cpu/syetem/whatever object, etc.).
+Slides & video from the tutorial are toward the bottom of the
+m5sim.org web page, under "documentation".
+Steve
+On Sat, Jun 28, 2008 at 8:30 PM, Sujay Phadke <sphadke@umich.edu> wrote:
+> Nate,
+>         Could you give me a simple example of wrapping code in a SimObject.
+> (or where I could find it)
+> Then I could take it from there. Sorry but I dont have much experience
+> writing C++ codeand the python-C link is confusing.
+>
+> - Sujay
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

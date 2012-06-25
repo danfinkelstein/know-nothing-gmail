@@ -1,0 +1,12 @@
+ 
+Question again :) 
+ 
+I notice that m5stats shows floating point up to only a few precisions, how do I make it prints out in %g format to specify more precisions?
+ 
+Thanks!
+ 
+JiayuanHelping your favorite cause is as easy as instant messaging. You IM, we give. Learn more.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

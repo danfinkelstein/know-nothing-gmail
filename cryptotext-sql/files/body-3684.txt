@@ -1,0 +1,51 @@
+I have fixed the problem... It was the cross compiler that i was using not compatible
+Thanks for your help
+Panayiotis
+________________________________
+> Date: Wed, 19 Dec 2007 10:42:48 -0800
+> From: ksewell@umich.edu
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] Cross compile for MIPS SE
+- Show quoted text ->
+> when you compilethe binaries, do you use the -static (statically link) option?
+>
+> On Dec 19, 2007 10:29 AM, Panayiotis Petridis <p_tottis@hotmail.com> wrote:
+>
+> Hi all,
+>
+> I have written some simple benchmarks on my own and i would like to compile them so i could run them on m5 for MIPS SE. What tool should i use?
+>
+> I have tried the crosstool 0.43 and build a mips compiler, when i run the script i get this message:
+>
+> panic: attempt to execute unimplemented instruction 'mfc2' (inst 0x48001c3c, opcode 0x12, binary:01001000000000000001110000111100)
+>  @ cycle 0
+> [execute:build/MIPS_SE/arch/mips/atomic_simple_cpu_exec.cc, line 232]
+> Program aborted at cycle 0
+> Aborted
+>
+> Any help would be very helpful
+>
+> Thanks
+> Panayiotis
+>
+> _________________________________________________________________
+> Express yourself instantly with MSN Messenger! Download today it's FREE!
+> http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/_______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> ----------
+> Korey L Sewell
+> Graduate Student - PhD Candidate
+> Computer Science & Engineering
+> University of Michigan
+_________________________________________________________________
+Express yourself instantly with MSN Messenger! Download today it's FREE!
+http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

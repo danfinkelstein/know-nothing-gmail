@@ -1,0 +1,54 @@
+Look at the tutorial about ISA descriptors and download a copy of the
+UltraSPARC Architecture 2005 manual.
+Ali
+- Show quoted text -
+On Feb 13, 2009, at 10:07 PM, Pavan Kumar wrote:
+> hi Ali,
+>
+>    Is these instructions are already defined for ALPHA, I don't know
+> how to implement, but what i need is an idea for implementing these
+> instructions.
+>
+>
+> Pavan
+>
+> On Fri, Feb 13, 2009 at 9:55 PM, Ali Saidi <saidi@umich.edu> wrote:
+> Like I mentioned in your previous question, you will need to implement
+> those instructions.
+>
+> Ali
+>
+> On Feb 13, 2009, at 9:46 PM, Pavan Kumar wrote:
+>
+> > hello,
+> >
+> > i am getting unimplemented instruction error for the following.
+> >
+> > soplex    ---           error (panic: attempt to execute
+> > unimplemented instruction 'for' (inst 0x7c99b30f88))
+> > astar     ---           error (panic: attempt to execute
+> > unimplemented instruction 'fpadd32s' (inst 0x5385b18a63))
+> >
+> > Could anyone give help me to solve this problem, or how to ignore
+> > these instructions.
+> >
+> > Thanks,
+> > Pavan
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

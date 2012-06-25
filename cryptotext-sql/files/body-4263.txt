@@ -1,0 +1,6 @@
+You can use the registerExitCallback() function to register a function that is called when the simulation is about to terminate (search in the code for some examples).
+This function is executed at program exit, so it would probably not do what you want.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

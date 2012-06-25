@@ -1,0 +1,18 @@
+On Nov 28, 2007, at 7:43 PM, Lee Henry wrote:
+Running 'diff' shows no differences between the two '/platform' directories.
+One more thing I've found out is that booting into single-user mode ('boot-s') does work.
+It seems booting into multi-user mode activates some services that it shouldn't.
+But it's weird since the original disk image does not have such problem.
+After some googling, I found following page from SUN which seems to be relevant to my problem:
+http://docs.sun.com/source/819-2544-21/prod-note-general.html#91216
+It says I have to have access to ALOM console to fix it, and I wonder if it is possible in M5 (or legion)?
+The fault would never be recorded by ALOM (because it doesn't exist), so it wouldn't need to be reset. However that page does suggest some other things than need to be modified on the disk image.
+p.s.
+By the way, ethernet device is attached to the PCI-E bus, right?
+Then by having no PCI controller, you mean the SPARC system in M5 has no support for network?
+That is correct. It shouldn't be that difficult to add support since Sun made available the documentation about the Fire chipset (PCI-E Bridge). You would just need a to write a model for the chipset, recompile the hypervisor to include pci-e support, and change some configuration files. Solaris supports the Intel e1000 NICs so that should work just fine. If you're interested in working on it, i'll point you in the right direction.
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

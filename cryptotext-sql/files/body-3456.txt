@@ -1,0 +1,32 @@
+Hi,
+I have two questions about the O3 load/store unit, specifically
+the code in src/cpu/o3/lsq_unit_impl.hh.
+Firstly, I notice that the code used to detect loads and stores
+to the same addresses appears to assume that accesses within the
+same 256 byte block will clash:
+>       if (loadQueue[load_idx]->effAddrValid &&
+>           (loadQueue[load_idx]->effAddr >> 8) ==
+>           (inst->effAddr >> 8)) {
+Should ">> 8" be "/ 8" (quadword rather than 256 byte block)?
+The comments say "this is extra conservative" so it might be
+deliberate :).
+Secondly, I am puzzled why carrying out _load_ operations with
+the same address in non-program order is a memory order violation.
+If your code is:
+>  000000378:   00 00 5b a0     ldl     t1,0(t12)
+>  00000037c:   00 00 66 a0     ldl     t2,0(t5)
+and t5 == t12, surely it does not matter if you execute 0x37c
+before 0x378 unless you are accessing some sort of memory mapped
+device, in which case you would use a memory barrier instruction
+anyway.
+I was wondering if someone would be able to explain the reason
+for this, as I assume I must be missing something.
+Thanks in advance,
+Jack
+--
+Jack Whitham
+jack@cs.york.ac.uk
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

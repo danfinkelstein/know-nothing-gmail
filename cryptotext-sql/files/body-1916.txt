@@ -1,0 +1,9 @@
+Hello,         I am trying to run SPEC CPU 2006 benchmarks on m5-2.0b6(SPARC_SE mode), and some of them are showing the following error messages.perlbench  ---           error (fatal: syscall gettimeofday (#116) unimplemented.)
+gcc           ---           error (fatal: syscall stat (#38) unimplemented.)bwaves     ---           error (fatal: syscall ioctl (#54) unimplemented.)gobmk      ---           error (fatal: fault (fp_disabled) detected @ PC 0x16e74c)
+soplex      ---           error (panic: attempt to execute unimplemented instruction 'for' (inst 0x7c99b30f88))povray      ---           error (fatal: syscall getcwd (#119) unimplemented.)hmmer     ---           error (fatal: syscall gettimeofday (#116) unimplemented.)
+ lbm          ---           error (fatal: syscall stat (#38) unimplemented.)astar        ---           error (panic: attempt to execute unimplemented instruction 'fpadd32s' (inst 0x5385b18a63))xalancbmk---           error (fatal: syscall gettimeofday (#116) unimplemented.)
+zeusmp    ---           error (fatal: syscall ioctl (#54) unimplemented.)    Could anyone please let me know what i need to do to remove these errors. Thanking you,Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

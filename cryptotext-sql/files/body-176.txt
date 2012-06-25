@@ -1,0 +1,9 @@
+Hi all,
+I'm running a 64-threads benchmark on M5 ALPHA_FS with 64 cores. But the stats result shows that only 32 cores are working (running the application). Is this a normal case?
+When I run it with 4 cores and 16 cores, the assignment is quite evenly. So I was wondering why it doesn't work for 64 cores ... Any suggestion would be appreciated.
+Thanks,
+Jie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

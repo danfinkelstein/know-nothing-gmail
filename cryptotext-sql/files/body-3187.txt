@@ -1,0 +1,6 @@
+hi i have a question about the FUPool in instqueue and iewi noticed that the FUPool is instantiated in iew viaFUPool fuPool;in instqueue, the same line can also be foundi know that instqueue is instantiated in IEW, but since no pointer is passed to instqueue, won't they end up with different instantiations of fuPool? something like iew.fuPool and iew.instqueue.fuPool?
+thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

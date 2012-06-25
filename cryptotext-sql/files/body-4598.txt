@@ -1,0 +1,17 @@
+Hi,
+ 
+I’m using M5_1.1. I wonder how to get information from
+the m5prof.* files using the profile python script. I ran the /util/profile-top
+file with the m5prof.* filename as the argument, such like:
+%: profile-top m5prof.client.full0
+ 
+However, I got ‘syntax error’ when the first line of
+the m5prof file is read. The python version is 2.4. I would like to know how
+can I figure this out.
+ 
+Thanks,
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

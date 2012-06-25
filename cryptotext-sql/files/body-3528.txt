@@ -1,0 +1,5 @@
+Hey all,Is there a way to do selectively sampling? I mean, when using the statistics, I'd like to say in my simulator: for every other 100 million ticks, record the statistics. Does beta 4 comes with this functionality?If it can, then can I just pick a subset of stats to be measured in some specified time interval, while others get measured as usual?Thanks for the help.JiayuanClimb to the top of the charts! Play the word scramble challenge with star power. Play now!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

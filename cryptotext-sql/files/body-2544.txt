@@ -1,0 +1,10 @@
+Hi,
+ 
+I would like to run some parallel benchmarks. Currently, Splash is the only well supported benchmarks on M5. Has any one successfully run parallel benchmarks such as PARSEC and Nas Parallel Benchmarks on M5?  Also, has any body successfully run SPEC CPU2006 on M5? If yes, could you give me some detailed information? 
+ 
+Thanks a lot!
+-Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

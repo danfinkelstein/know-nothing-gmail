@@ -1,0 +1,237 @@
+The phymem port is also declared in sim/system.cc, but I 
+cant see how they are being used there. Maybe these need to be deleted 
+too?
+ 
+  ----- Original Message ----- 
+  From: 
+  Steve Reinhardt 
+  
+  To: M5 users mailing list 
+  - Show quoted text -Sent: Wednesday, November 04, 2009 5:23 
+  PM
+  Subject: Re: [m5-users] adding another 
+  bus and memory module
+  So my initial reaction is that you should be fine because 
+  there's no reason for a CPU to need a direct port connection to a/the 
+  PhysicalMemory object.  Looking a little more closely at the examples you 
+  gave:(1) It looks like the physmem port in AtomicSimpleCPU is supposed 
+  to be a performance optimization:http://repo.m5sim.org/m5/rev/f1c856d8c460...but 
+  I don't see why it would be any faster than just assigning the PhysicalMemory 
+  object directly to both the icache and dcache ports (unless it's a matter of 
+  PhysicalMemory not supporting two ports... in which case this seems like an 
+  overly complex solution).  Does anyone (Ali, Nate, ??) see any reason why 
+  we need this?  Does anyone use it?(2) The physmem port in O3 
+  looks like a vestigial thing that's not used at all, if I'm looking at what 
+  you're asking about.  I just made the following deletions with no 
+  apparent ill effect:diff -r cf6a2dce697b src/cpu/o3/cpu.cc--- 
+  a/src/cpu/o3/cpu.cc Wed Nov 04 00:47:12 2009 -0500+++ b/src/cpu/o3/cpu.cc 
+  Wed Nov 04 14:20:23 2009 -0800@@ -200,7 +200,6 
+  @@       globalSeqNum(1), #if 
+  FULL_SYSTEM       
+  system(params->system),-      
+  physmem(system->physmem), #endif // 
+  FULL_SYSTEM       
+  drainCount(0),       
+  deferRegistration(params->defer_registration)diff -r cf6a2dce697b 
+  src/cpu/o3/cpu.hh--- a/src/cpu/o3/cpu.hh Wed Nov 04 00:47:12 2009 
+  -0500+++ b/src/cpu/o3/cpu.hh Wed Nov 04 14:20:23 2009 -0800@@ -669,9 
+  +669,6 @@ #if FULL_SYSTEM     /** Pointer to 
+  the system. */     System 
+  *system;--    /** Pointer to physical memory. 
+  */-    PhysicalMemory 
+  *physmem; #endif     /** Event to call 
+  process() on once draining has completed. */diff -r cf6a2dce697b 
+  src/cpu/o3/thread_context.hh--- 
+  a/src/cpu/o3/thread_context.hh      Wed Nov 04 
+  00:47:12 2009 -0500+++ 
+  b/src/cpu/o3/thread_context.hh      Wed Nov 04 
+  14:20:23 2009 -0800@@ -91,9 +91,6 @@     virtual 
+  System *getSystemPtr() { return cpu->system; } #if 
+  FULL_SYSTEM-    /** Returns a pointer to physical memory. 
+  */-    virtual PhysicalMemory *getPhysMemPtr() { return 
+  cpu->physmem; }-     /** Returns a pointer to 
+  this thread's kernel statistics. */     virtual 
+  TheISA::Kernel::Statistics *getKernelStats()     { 
+  return thread->kernelStats; }Steve
+  On Wed, Nov 4, 2009 at 11:35 AM, Sujay Phadke <sphadke@eecs.umich.edu> 
+  wrote:
+  Hello,I was able to add a second memory module and 
+    change the maximum mem_sizechecking code in /sim.system.cc to account for 
+    all memories. For now, what Ihave done is: (SE mode)- create a 
+    'physmem2' object, set its address range after the first'physmem'. eg: 
+    0-128MB, 128MB-256MB.- the page_ptr currently gets incremented without 
+    bound check. However, itseems to be working right, since requests beyond 
+    128MB go to the secondmemory module.- I modified the page_ptr 
+    code to allocate some pages in physmem2 ratherthan physmem.- 
+    However, I have not changed any code inside the atomic.cc or o3 cpu, 
+    whichuse physmem pointer to get the port address and create a functional 
+    andvirt_port.- I ran splash2/fft with '-t' to perform inverse 
+    and check. the checkpasses. I made sure the size(physmem) + 
+    size(physmem2) is sufficient. Thoughthis 1 test may not be checking all 
+    cases, it seems to recognize the secondphysmem object.So my 
+    question is: Is the range checking code automatically sending requeststo 
+    the physmem2, even though the ports for it and not created within 
+    theatomic or o3 cpu? if so, is it ok to create, say 2 or 3 more 
+    'physmem[x]'objects, but have the cpu's see only 1 port of the original 
+    'physmem'object?
+    Thanks for your help.Sujay
+    ----- Original Message -----From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+    
+    
+    To: "M5 users mailing list" <m5-users@m5sim.org>Sent: 
+    Tuesday, November 03, 2009 12:31 PMSubject: Re: [m5-users] adding 
+    another bus and memory module> Thanks Steve. I was looking at 
+    the way pages are allocated in memory.> (SE mode). The page_table.cc 
+    allocate() calls updates the PTE with the> PPN obtained from calling 
+    process->system->new_page().  In the system.cc> code, the 
+    new_page() simply increments the page_ptr and returns the new> addr. 
+    (checking if its within the range of physmem)>> now I want to 
+    add this new memory module and allocate some pages in the> second 
+    module, whereas some in the first. so I could have a page_ptr per> 
+    memory module, and return a addr offset-ed by the start of the new> 
+    memory module. When the memory request packet is generated, it 
+    should> have the address corresponding to a page in the second memory 
+    module.> will this work as I understand it. Or could you suggest a 
+    better> solution?>> thanks,>> 
+    Sujay>> On Sat, 2009-10-31 at 16:39 -0700, Steve Reinhardt 
+    wrote:>> Either one of those should work (I think)... #2 is 
+    obviously easier.>> The automatic address-range-setting code 
+    should cause the bus that's>> between the L1(s) and the L2s to 
+    figure out which address range is>> behind which L2 and direct the 
+    requests to the proper cache.>>>> 
+    Steve>>>> On Sat, Oct 31, 2009 at 4:27 PM, Sujay Phadke 
+    <sphadke@eecs.umich.edu>>> 
+    wrote:>>         Thanks Steve. I was thinking 
+    of:>>>>         1. adding a second 
+    port to L2 on the memside and connecting a>>       
+      second memory object on that port. (sequential no 
+    interleaved>>         as ali pointed out). Can 
+    I connect this to a new bus to which>>         
+    I connect the second memory object?>>>>     
+        2. Or can I have 2 L2 caches each connected to a 
+    memory>>         object. I want different 
+    properties (like bandwidth) for the 2>>       
+      busses.>>>>           
+    --- L2 --- mem0  (0x0-0xFFFFFFF)>>>>     
+          --- L2 --- mem1 
+    (0x10000000-0x2FFFFFFF)>>>>         
+    would the 2 L2's be seen as logically 1 larger L2? Which piece>> 
+            of code sets the address range 
+    here?>>>>         Thanks for your 
+    help>>>>         
+    Sujay>>>>>>         From: 
+    Steve Reinhardt>>         Sent: Saturday, 
+    October 31, 2009 7:18 PM>>         To: M5 
+    users mailing list>>         Subject: Re: 
+    [m5-users] adding another bus and memory 
+    module>>>>>>>>       
+      I can't speak to the Ruby side of things, but for the 
+    native>>         M5 memory system, if my 
+    mental model of what you are wanting>>         
+    to do is correct, I don't see any major problems.  You 
+    can't>>         connect the existing cache 
+    model to more than one bus on each>>         
+    side though, so a lot depends on how you solve that problem>> 
+            (and you can't solve it by inserting bridges, 
+    since coherence>>         does not work across 
+    a bridge).>>>>         
+    Steve>>>>         On Sat, Oct 31, 
+    2009 at 4:01 PM, Ali Saidi <saidi@umich.edu>>>   
+          wrote:>>           
+          If the memory was interleaved I think it would be 
+    a>>                 pain, 
+    however if>>               
+      the memory was sequential (e.g. 0x0-0xFFFFFFF,>>   
+                  
+    0x10000000-0x2FFFFFFF)>>             
+        it will probably just work. However, I haven't 
+    tried>>                 it 
+    so I make no>>               
+      guarantees.>>>>         
+            Ali>>>>>>   
+                  On Oct 31, 2009, at 5:40 
+    PM, Sujay Phadke wrote:>>>>         
+            >>>         
+            > anyone on this?>>     
+                >>>     
+                > 
+    -------------------------------------------------->>     
+                > From: "Sujay Phadke" <sphadke@eecs.umich.edu>>> 
+                    > Sent: Thursday, 
+    October 29, 2009 5:59 PM>>           
+          > To: <m5-users@m5sim.org>>> 
+                    > Subject: 
+    [m5-users] adding another bus and memory>>       
+              module>>       
+              >>>       
+              >> Hello,>>     
+                >>  I want to simulate 
+    a system which has 2 different>>         
+            main memory>>       
+              >> modules>>   
+                  >> and 2 buses which 
+    connect it to the L2, with>>           
+          different address>>       
+              >> ranges.>>   
+                  >> (something like a 
+    dancehall). Is it straightforward>>         
+            to do this or>>       
+              >> would>>     
+                >> it affect the coherency 
+    protocols, or something>>           
+          else in the system?>>       
+              >>>>       
+              >> Secondly, would the changes I 
+    make be any different>>             
+        if I use the ruby>>         
+            >> models instead of the inbuilt dram 
+    models?>>                 
+    >>>>                 
+    >> thanks,>>             
+        >> Sujay>>           
+          >>>>           
+          >>>>           
+          >> 
+    _______________________________________________>>     
+                >> m5-users mailing 
+    list>>                 
+    >> m5-users@m5sim.org>>   
+                  >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>> 
+                    >>>> 
+                    > 
+    _______________________________________________>>     
+                > m5-users mailing 
+    list>>                 
+    > m5-users@m5sim.org>> 
+                    > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>> 
+                    
+    >>>>>             
+        _______________________________________________>> 
+                    m5-users mailing 
+    list>>                 m5-users@m5sim.org>>   
+                  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>>>>>>>>> 
+            
+    ______________________________________________________________>> 
+            
+    _______________________________________________>>     
+        m5-users mailing list>>         
+    m5-users@m5sim.org>> 
+            http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>>> 
+            
+    _______________________________________________>>     
+        m5-users mailing list>>         
+    m5-users@m5sim.org>> 
+            http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>>> 
+    _______________________________________________>> m5-users mailing 
+    list>> m5-users@m5sim.org>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>> 
+    _______________________________________________> m5-users mailing 
+    list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+> Thanks for your reply~
+> My G++ version is 4.2.4.
+> The SWIG version is 1.3.29
+>
+> However, I have successfully built M5 on another machine with G++ 4.1.1
+> If you still need my core_wrap.cc, please let me know.
+I'd actually like to see it.  I think this was because of the version
+of swig, not gcc.
+> By the way, the release note mentioned that M5-2.0b6 supports gcc 4.3 or
+> upper.
+> Does it mean that we can run the benchmark compiled by gcc 4.3 cross
+> compiler on M5 FS mode?
+It means that M5 can be compiled with gcc 4.3.  You should be able to
+run anything that linux can run under FS mode.    Our disk image is
+admittedly pretty old though.  We'd love to have someone step up and
+get something newer out there.  I've personally been using gentoo
+alpha for my disk images lately.
+> I have built my own cross compiler using gcc 4.2.4 with the crosstool.
+> However, the executable could not correctly run on the M5-2.0b5 FS mode.
+> Could you provide the gcc 4.2 (or 4.3) cross compiler which could correctly
+> compile on the website?
+What happened?  I'm not sure when I'll be able to get a new crosstools
+build out, but I think that there are others on the mailing list that
+may have one available.  We'd be happy to have something newer on the
+website.
+Anyone want to volunteer to get a new disk image going and a new cross tools up?
+  Nathan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

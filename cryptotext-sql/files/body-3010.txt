@@ -1,0 +1,37 @@
+Blake,
+Did you ever figure out what was happening? I messed around for a bit and I'm pretty certain that you have a corrupt linux image. I truncated the image to 50KiB (from 50MiB) and got the same error message with similar output on the console.
+The md5sum of the file should be:
+$ md5sum linux-latest.img
+8897146232453a2ea7e84dd7ab454765  linux-latest.img
+I imagine you ended up only downloading part of the m5 system files.
+Ali- Show quoted text -
+On May 25, 2008, at 11:36 PM, Ali Saidi wrote:
+I would guess that some file (probably the disk image) is corrupt.
+Ali
+On May 25, 2008, at 11:07 PM, nathan binkert wrote:
+I even went back and started from scratch with 2.0b4. The exact commands I
+used were:
+% scons build/ALPHA_FS/m5.debug
+% build/ALPHA_FS/m5.debug configs/example/fs.py
+So, could there be a bug in the Full System Files with the pre-compiled
+Linux kernel? I've made no modifications to any of the files. I'm surprised
+no one has tested this since running the full system mode seems like a
+common task.
+People do this all the time.  There is something about your setup that
+is not correct.  I'll admit that we're not outputting a very good
+error message, but my guess is that you have a corrupt disk image
+file, or the access permissions to the file are screwed up.  Can you
+confirm that everything there is correct?
+Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

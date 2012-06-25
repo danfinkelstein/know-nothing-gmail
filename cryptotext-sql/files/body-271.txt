@@ -1,0 +1,13 @@
+Hi,I am new to M5 and have just started using the m5-dev repository for x86 simulation in SE mode. I could run hello world and other small programs but when i ran some other program i get the following message.
+What steps should i take to debug where the problem lies? When does this panic message show?
+M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Apr 21 2010 11:51:48M5 revision edde97a6ea7c+ 7069+ default tip
+M5 started Apr 21 2010 11:55:40M5 executing on inferno.eecs.umich.educommand line: ./build/X86_SE/m5.opt configs/cuda/runcuda.py -n 1 -b cudasdeGlobal frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000info: Entering event queue @ 0.  Starting simulation...warn: instruction 'fnstcw_Mw' unimplementedFor more information see: http://www.m5sim.org/warn/437d5238
+warn: instruction 'fldcw_Mw' unimplementedFor more information see: http://www.m5sim.org/warn/437d5238warn: instruction 'fstp' unimplemented
+For more information see: http://www.m5sim.org/warn/437d5238
+panic: Tried to read unmapped address 0x2. @ cycle 12523000[translate:build/X86_SE/arch/x86/tlb.cc, line 653]Memory Usage: 281140 KBytesFor more information see: http://www.m5sim.org/panic/d71dd0bc
+Program aborted at cycle 12523000Aborted
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

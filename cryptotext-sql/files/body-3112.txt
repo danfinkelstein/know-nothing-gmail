@@ -1,0 +1,5 @@
+hi, When  I use  m5, I get the fault:         panic: Page table fault when accessing virtual address 0What's wrong!My command is :m5.debug --trace-flag="Cache" --trace-file="/usr/local/Project/m5/dijkstra/trace-cache-1cpu" /usr/local/m5-2.0b3/configs/example/se.py -d --caches --l2cacheThank you!    
+送！送！送！正版瑞星2008半年免费！_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

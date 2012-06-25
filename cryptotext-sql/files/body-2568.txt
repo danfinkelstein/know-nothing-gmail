@@ -1,0 +1,42 @@
+Hi Meng-Ju,
+What version of M5 are you running? Nate committed a changeset about a
+month ago (http://repo.m5sim.org/m5/rev/6279e78a2df2). If you have
+that patch and call m5.disableAllListeners() from python before
+starting the simulation all listening sockets should be disabled.
+Ali
+- Show quoted text -
+On Sep 16, 2008, at 3:50 PM, Meng-Ju Wu wrote:
+> Hi,
+>
+> I tried to simulate 128 core cmp configuration under the m5-stable SE
+> mode. If I run only one simulation, it is fine. When I run two
+> simulations at the same time, one simulation will give me the
+> following error.
+>
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7499
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7500
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7501
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7502
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7503
+> 0: system.remote_gdb.listener: listening for remote gdb on port 7504
+> panic: Can't create socket:Too many open files in system !
+> @ cycle 0
+> [listen:build/ALPHA_SE/base/socket.cc, line 69]
+>
+>
+> I try to disable the "int rgdb_enable" in the system.cc and increase
+> the  linux file descriptor numbers to 65536. Both methods cannot solve
+> this problem.  What should I do to avoid this problem?
+>
+> Thanks,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

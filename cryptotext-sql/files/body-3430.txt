@@ -1,0 +1,58 @@
+Tons of stuff has changed since 1.1.  You haven't provided enough
+information to diagnose your error.  Can you please provide your
+script and any other changes that you may have made?  You should also
+use 2.0b5 if you can.
+  Nate
+- Show quoted text -
+On Thu, Mar 20, 2008 at 3:37 AM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+>
+> hi
+>
+> I am again getting the same Assertion error because of
+> SimObject.............How the SimObject of m51.1 differ from
+> m52.0b4...........Please explain in detail
+>
+> My error seems out to be:
+>
+>
+> [ashutoshj@kani example]$ ../../build/ALPHA_SE/m5.opt -d simout
+> ./simplesim.py
+> M5 Simulator System
+> Copyright (c) 2001-2006
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+> M5 compiled Mar 20 2008 04:28:08
+> M5 started Thu Mar 20 05:21:33 2008
+> M5 executing on kani.cs.lamar.edu
+> command line: ../../build/ALPHA_SE/m5.opt -d simout ./simplesim.py
+>  Traceback (most recent call last):
+>   File "<string>", line 1, in ?
+>   File "build/ALPHA_SE/python/m5/main.py", line 350, in main
+>   File "./simplesim.py", line 5, in ?
+>     import Benchmarks
+>    File "/space/ashutoshj/m5/m5_2.0b4/configs/test/Benchmarks.py", line 5,
+> in ?
+>     from Process import *
+>   File "/space/ashutoshj/m5/m5_2.0b4/configs/test/Process.py", line 5, in ?
+>     class Process(SimObject):
+>    File "build/ALPHA_SE/python/m5/SimObject.py", line 143, in __new__
+> AssertionError
+> [ashutoshj@kani example]$
+>
+>
+> Thanks in advance.............Please help............I am getting frustrated
+> with this error...........
+> --
+> Ashutosh Jain
+> M.S. Computer Science,
+>
+- Show quoted text -> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+hi everyone,I have encountered a problem while simulating a configuration(.py) file. The error message is as:m5.opt: build/ALPHA_SE/mem/bus.cc:225: bool Bus::recvTiming(Packet*): Assertio
+n `dest >= 0 && dest < maxId' failed. what would be the problem with it..?Help please!!Thank you,
+devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

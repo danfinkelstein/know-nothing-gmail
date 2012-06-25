@@ -1,0 +1,54 @@
+I just looked at your script briefly, but it looks like you're only configuring the workload to use a single thread context on the SMT CPU.  For multithreaded workloads like SPLASH, you have to associate the same workload object with multiple thread contexts (whether they're SMT CPU contexts or on separate CPUs) so that when the application creates new threads there is somewhere to run them.  The error you're getting indicates that the application is creating a new thread but has nowhere to run it.
+Steve- Show quoted text -On Mon, May 5, 2008 at 8:57 AM, sahithi krishna <sahithi.krishna@gmail.com> wrote:
+Hi Steve,I modified the run.py to deal with the SMT part and when I run the script it aborts. Here is the error:
+M5 compiled Apr 26 2008 10:12:48M5 started Mon May  5 10:51:52 2008M5 executing on sunshyin.localcommand line: /Users/Sunshyin/m5/build/ALPHA_SE/m5.debug sahi.py -d -n2 -cFFT:Radix
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 70000: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+0: system.remote_gdb.listener: listening for remote gdb #2 on port 70020: system.remote_gdb.listener: listening for remote gdb #3 on port 7003warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.warn: Increasing stack size by one page.warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+warn: ignoring syscall sigprocmask(3, 0, ...)warn: ignoring syscall sigaction(8, 4831387552, ...)warn: ignoring syscall sigaction(11, 4831387552, ...)warn: ignoring syscall sigaction(10, 4831387552, ...)
+warn: ignoring syscall sigaction(4, 4831387552, ...)warn: ignoring syscall sigaction(7, 4831387552, ...)warn: ignoring syscall sigaction(6, 4831387552, ...)warn: ignoring syscall sigaction(12, 4831387552, ...)
+warn: ignoring syscall sigaction(5, 4831387552, ...)warn: ignoring syscall sigaction(13, 4831387552, ...)warn: ignoring syscall sigprocmask(3, 0, ...)warn: ignoring syscall sigaction(8, 4831387552, ...)
+warn: ignoring syscall sigaction(11, 4831387552, ...)warn: ignoring syscall sigaction(10, 4831387552, ...)warn: ignoring syscall sigaction(4, 4831387552, ...)warn: ignoring syscall sigaction(7, 4831387552, ...)
+warn: ignoring syscall sigaction(6, 4831387552, ...)warn: ignoring syscall sigaction(12, 4831387552, ...)warn: ignoring syscall sigaction(5, 4831387552, ...)warn: ignoring syscall sigaction(13, 4831387552, ...)
+nxm_thread_create: no idle contexts available.Program aborted at cycle 163629500Abort trapDo you know why this is happening? I am attaching the config file with this email.
+Thanks,SahithiOn Sat, May 3, 2008 at 8:59 PM, Steve Reinhardt <stever@gmail.com> wrote:
+As far as I know, SPLASH benchmarks should work fine with SMT.  (Someone speak up if they know otherwise.)  You'd have to modify the  configs/splash2/run.py script to deal with that though.
+I haven't done this before, so I can't provide any general directions, but if you have more specific questions we can try and answer those.
+SteveOn Sat, May 3, 2008 at 9:04 AM, sahithi krishna <sahithi.krishna@gmail.com> wrote:
+Hi,As
+a part of my course project, my group is trying to study the SMT/CMP
+hybrid architectures and study their performance. As a part of the
+project we need to vary the parameters like number of cores and number
+of threads supported for each core and run simulations. As per my
+understanding, such configurations can be defined using M5, but I am
+confused as to how to run the simulations and what benchmarks to use. I
+am new to the M5 simulator and I trying to figure out the best way to
+work on my project.
+The spec cpu benchmarks have lincense issues and currently I donot have
+access to them. So I wanted to try the SPLASH benchmark suite. Can some
+one help me understand how I can run these simulations using SPLASH
+benchmarks (if it is possible). It looks like the current binaries for
+splash benchmarks on the M5 website work only in ALPHA SE mode and they
+donot work with SMT cores. If I try to work in ALPHA FS mode, will I be
+able to simulate SMT/CMP architecture workloads. 
+If some one has already done these kind of simulations, your
+suggestions would be very useful. I am trying to run the simulations on
+MacOs Leopard, will I be able to use linux-dist to build my libraries
+properly.Thank you,
+Sahithi 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

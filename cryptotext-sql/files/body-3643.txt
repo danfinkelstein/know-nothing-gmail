@@ -1,0 +1,25 @@
+The traces of execution check out fine up until the exit. The only difference is that when the O3CPU reads a memory location, it first returns some garbage  (like 0xffffffffffffffff) and the next line in the trace returns the same value as the AtomicSimpleCPU. After tracing through the O3CPU.py, it appears that execution hangs on a sqrtt (FloatSqrt) instruction, and the instruction is never able to commit even though it is the head of the queue. The instruction is @mm_fv_update_nonbon+5936 : sqrtt f22,f24. The O3CPU.py has a full IQ, but has slots open in the ROB. Any ideas on what might be happening.
+-Rick- Show quoted text -
+Ali Saidi wrote:
+I would compare the execution trace of the the atomicsimplecpu and the o3cpu after the checkpoint restore(util/tracediff is probably the fastest way to do it). They should be the same up to the point when the o3 cpu exits. If that is the case then tracing the memory system around that time is the right answer. If they're not the same the diff between the o3cpu and the atomicsimplecpu should provide you with a good place to look.
+Ali
+On Jan 7, 2008, at 4:47 PM, Rick Strong wrote:
+The number is 9223372036854775807. Would tracing the memory system be the way to go to figure out the problem?
+-Rick
+Ali Saidi wrote:
+Is the some number a really really large number? 9223372036854775807? If so then I would think the o3 model is waiting for an event that never happens (probably a request to memory that isn't returned). If it's some other number or random numbers I would guess that there is something wrong with the run xxx instructions code and the o3 cpu.
+Ali
+On Jan 7, 2008, at 4:17 PM, Rick Strong wrote:
+Hi all,
+A number of the spec2000 benchmarks have a problem during the resumption of a checkpoint. The problem is that the checkpoint resumes fine in O3CPU model (the checkpoint was made in AtomicSimpleCPU model), but it only simulates a fraction of the interval that it was supposed to. M5 spits out the message "Exiting  @ cycle <some number> because simulate() limit reached." However, if I resume the benchmarks in the AtomicSimpleCPU model, then they work.
+It seems like the cpu O3 model is getting stalled and the simulation tick fastforwards to its limit. If I resume simulation in AtomicSimpleCPU then all is well.  Any ideas of what is going on? If you want an example, take a checkpoint of ammp at 59*100E6 instructions (or at curTick=2,981,099,451,500) and resume that checkpoint to run for 100E6 instructions. The simulation will end after 248,483 instructions have been simulated.
+This seems to be the last big issue in getting everything working for spec2000 checkpoints. Any help is appreciated ... ^_^.
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

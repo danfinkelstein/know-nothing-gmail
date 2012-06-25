@@ -1,0 +1,28 @@
+It works fine for me. Try that actual ip: http://141.212.106.70 Maybe
+your DNS is down?
+Best,
+-Rick
+John Brunhaver wrote:
+> Has the wiki moved?
+>
+> Thanks,
+> John
+>
+> --
+> ===================
+> John S. Brunhaver II
+> 1 Comstock Circle
+> 108
+> Stanford Ca. 94305
+> jbrunhav@stanford.edu <mailto:jbrunhav@stanford.edu>
+> ===================
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

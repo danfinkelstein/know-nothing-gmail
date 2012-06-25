@@ -1,0 +1,33 @@
+what steps did you take with the linux-dist dir after you untarred it?  it almost seems like it wasn't fully installed, but i'm not sure - never seen that before.lisa- Show quoted text -On 12/1/06, 
+Chaitali Gupta <chaitaligupta80@yahoo.com> wrote:
+Hi Lisa,I was using a stock copy 2.6.13. But now I am usinglinux-2.6.13 from the M5 site and it is working now.But I am getting error while creating the disk image.I am following the steps provided in
+"http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5"
+When I am using the command"ptxdist clone m5-alpha <your workspace name>." I amgetting a msg"ptxdist: scanning ${PTXCONF_SETUP_PROJECTDIR}...notfound"Also, while doing "ptxdist menuconfig", I am getting
+anerror -"ptxdist: menuconfig...rules/m5bench.in:7: can't open file"rules/pthread_mutex.in"ptxdist: silentoldconfig...rules/m5bench.in:7: can't open file"rules/pthread_mutex.in"
+ptxdist: saving ptxconfigptxdist: cleanup..."I found that no files had been copied to rules/directory.Any suggestions would be greatly appreciated.Regards-Chaitali
+--- Lisa Hsu <hsul@eecs.umich.edu> wrote:> hi Chaitali,>> are you using a stock 2.6.13 or the one you've> downloaded from our website?
+>>> lisa>> On 11/28/06, Chaitali Gupta> <chaitaligupta80@yahoo.com> wrote:> >> > Hi,> >> > I am trying to compile the kernel and create the
+> disk> > image with linux-dist.> >> > I have performed the following steps -> >> > (i) I untared linux-2.6.13.tar.bz2 in my home> > directory> > (ii) did "cd 
+linux-2.6.13"> > (iii) ran "scripts/patch-kernel ../linux-2.6.13"> > (iv) did "make clean && make mrproper"> > (v) "make menuconfig"> >
+> > After these steps, I ran the command "make> ARCH=alpha> > CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-glibc-2.3.5> >>/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-"
+> > mentioned in the M5 webpage> > "> >>http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+> > "> >> > I am using gcc 3.4.3, glibc 2.3.5 and> > linux-libc-headers-2.6.12.0> >> > But I am getting the error -> >> >>
+******************************************************> >> > In file included from include/linux/sched.h:36,> >                  from> > arch/alpha/kernel/asm-offsets.c:9:> > include/linux/seccomp.h:11:25: asm/seccomp.h: No
+> such> > file or directory> > In file included from include/linux/sched.h:36,> >                  from> > arch/alpha/kernel/asm-offsets.c:9:> > include/linux/seccomp.h: In function
+> > `secure_computing':> > include/linux/seccomp.h:18: error: `TIF_SECCOMP'> > undeclared (first use in this function)> > include/linux/seccomp.h:18: error: (Each> undeclared
+> > identifier is reported only once> > include/linux/seccomp.h:18: error: for each> function> > it appears in.)> > include/linux/seccomp.h: In function> > `has_secure_computing':
+> > include/linux/seccomp.h:24: error: `TIF_SECCOMP'> > undeclared (first use in this function)> > In file included from> > arch/alpha/kernel/asm-offsets.c:9:> > include/linux/sched.h: In function
+> > `lock_need_resched':> > include/linux/sched.h:1214: error: structure has> no> > member named `break_lock'> > In file included from> > arch/alpha/kernel/asm-offsets.c
+:11:> > include/asm/io.h:231:2: #error "What system is> this?"> > In file included from> > arch/alpha/kernel/asm-offsets.c:11:> > include/asm/io.h: In function `ioport_map':
+> >> >>******************************************************> >> > Any suggestion would be highly appreciated.> >> > Regards-> > Chaitali
+> >> >> >> >> >>____________________________________________________________________________________> > Do you Yahoo!?> > Everyone is raving about the all-new Yahoo! Mail
+> beta.> > http://new.mail.yahoo.com> > _______________________________________________> > m5-users mailing list> > 
+m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >> >> > _______________________________________________
+> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+____________________________________________________________________________________Want to start your own business?Learn how on Yahoo! Small Business.
+http://smallbusiness.yahoo.com/r-index_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

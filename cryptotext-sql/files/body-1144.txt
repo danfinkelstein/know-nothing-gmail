@@ -1,0 +1,26 @@
+Hello,
+       I want to add 
+a new memory module in the system. (say NewMem).  It connects to dram on 
+one side. I need to include this NewMem in the instantiation of the system 
+as:
+ 
+system = System(cpu = [CPUClass(cpu_id=i) for i in 
+xrange(np)],                
+physmem = PhysicalMemory(range=AddrRange("512MB")),
+        
+        newmem = 
+NewMem(...)                
+membus = Bus(), mem_mode = test_mem_mode)
+ 
+ 
+Is this correct? For this, do I have to modify the 
+original system.cc file to include the definition for NewMem or is there a 
+better way of doing this?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

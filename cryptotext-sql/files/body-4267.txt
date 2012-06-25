@@ -1,0 +1,9 @@
+Hi there,
+   I am running M5 2.0 beta3 in full system mode and I use the default linux-latest.img file.But I found the capacity is only 50MB which doesn't allow me to copy a large benchmark into it.Is there any other way I can scale the capacity of current image file?
+  Thank you very much for your help.
+                                                                                                    Yue
+                                                                                                    09-19-2007
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,29 @@
+Hi:
+  I have built the page SpecOMP at
+http://m5sim.org/wiki/index.php/SpecOMP. If anyone try the steps and
+it doesn't work, please notice me. I will try to correct it. Thanks.
+regards,
+  sitos
+2009/2/10 nathan binkert <nate@binkert.org>:
+- Show quoted text ->> I am not very sure that I remember everything. However, the operation
+>> flow may help others who want to do the same thing. If there is any
+>> missing steps or mistakes, please correct me. And, I have a question.
+>> How do I post this on the wiki or where should I post it?
+>
+> Just create an account on the wiki (http://m5sim.org) and create a new
+> page titled "SpecOMP".  It should hopefully be pretty easy for you.
+>
+> We probably also need a workloads page that we can link it to, and
+> probably link the workloads page to running m5, but we can take care
+> of this if you don't want to.
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

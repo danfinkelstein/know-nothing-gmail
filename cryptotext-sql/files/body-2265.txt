@@ -1,0 +1,6 @@
+hi,Can somebody share the python script file to do the sampling for switching between CPU models periodicallyfor the following way of simulation|------------FF----------------|--cacheW-|----detailed---|------------FF----------------|--cacheW-|----detailed---| . . .. ..etc
+for fixed Fast forward interval , cache warming interval, detailed simulation intervalThanks,Mugunthan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

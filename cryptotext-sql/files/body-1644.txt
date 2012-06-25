@@ -1,0 +1,27 @@
+Given that it occurs after four hours of simulation, it would take days to even produce execution traces of that point in the code, so that is an intractable solution. Is there a way of getting a more informative error message at the point of the error?
+In short, yes.
+M5 allows you to print out the  execution trace starting at a specific tick. Check out the  M5-WIKI Docs for exactly how to do that.Once you see what cycle you are getting the "fatal" from,
+then you should be able to start the instruction trace a few hundred
+cycles before that and generate some debug code out with the different
+traceflags available (You'll find available traceflags amongst other
+places in src/cpu/SConscript & src/cpu/o3/SConscript).
+I'm guessing the traceflags: IEW, O3CPU, and Exec will be of interest to you.- Show quoted text -
+	- ClintOn Apr 1, 2009, at 3:13 PM, Korey Sewell wrote:
+You would need to know what type of CPU model (assuming O3), what ISA, and what instruction is causing that problem.You could probably look in the ISA description format (i.e. arch/alpha/mem.isa) or the generated code (i.e. build/ALPHA_SE/arch/alpha/o3_cpu_exec.cc) to figure out what code is being generated for that instruction.
+ Without knowing what "other" configurations work and what "other" ones don't work it's hard to analyze the problem.On a first-cut guess, I'm assuming that you are executing a privileged (misc.) instruction in O3 mode which doesn't support the split level access. 
+ What I would do is compare your broken simulation execution trace with that of the AtomicSimpleCPU's execution trace. Wherever the instructions differ, is probably where your problem is.
+ On Wed, Apr 1, 2009 at 3:07 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+        I am seeing this message in some of my simulations. Other workloads on the same configuration finish correctly, and the same workload on other configurations finishes fine. From my reading of the code, the
+ error should only occur if an instruction object was corrupted, since otherwise they would always be correctly built for the specific ISA, yes?         Does anyone have any other ideas for how to determine the error?
+         - Clint Smullen _______________________________________________ m5-users mailing list m5-users@m5sim.org http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ -- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan _______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users- Show quoted text --- ----------Korey L SewellGraduate Student - PhD Candidate
+Computer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

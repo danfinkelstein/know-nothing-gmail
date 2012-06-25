@@ -1,0 +1,61 @@
+It is based on the memory tester, but it works by plugging a device
+between the cpu mem-side and l1 cache cpu-side of a normal system
+running a benchmarks. Each memory debugger device is attached to
+functional memory to verify the read and write performed at every
+address. In addition, it times each memory access to make sure that it
+does not exceed a particular latency. So if you plug one between each
+cpu and each l1 cache and also between the iobus and the iocache, you
+can verify every read and write into the system. It also handles llsc.
+Best,
+-Rick
+Steve Reinhardt wrote:
+> Just curious: which memory tester are you referring to, and how does
+> it differ from the MemTest object that's already in src/memtest?
+>
+> Steve
+>
+> On Fri, Jun 5, 2009 at 6:19 PM, Rick Strong <rstrong@cs.ucsd.edu
+- Show quoted text -> <mailto:rstrong@cs.ucsd.edu>> wrote:
+>
+>     It all sounds very useful. Basically, I want a system where I can just
+>     do simple queries and have interesting questions answered on the spot
+>     without extra scripting. I also want to know more about swig, the
+>     C/Python API, so count me in. The one issue is that I am still
+>     trying to
+>     get the performance in the directory coherence multi-banked patch
+>     up-to-par and am adding performance optimizations and working with
+>     Jiayuan to add MESI coherence protocol. I also wanted to get the
+>     memory
+>     tester into M5-dev, as I think it catches lots of memory bugs in
+>     actual
+>     applications. So I might be a bit slow on this project until that is
+>     done. In the meantime, I will try to get the current setup with the
+>     database working on my machine and ping you about cleaning up the API.
+>
+>     Have a good weekend,
+>     -Rick
+>
+>     >
+>     >
+>     > Ok, long e-mail.  I hope you find this stuff useful.  If you want to
+>     > learn a thing or two about python, databases, swig, and the C/Python
+>     > API, consider helping me out!  This sounds like a whole lot of
+>     stuff,
+>     > but in all honestly, a significant fraction of the code is written.
+>     > It's mostly a matter of putting the pieces together and cleaning it
+>     > all up.
+>     >
+>     >   Nate
+>     >
+>     >
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+- Show quoted text ->     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

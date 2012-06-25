@@ -1,0 +1,75 @@
+Hi all,
+It appears that there is now an issue in setting up the network for the
+specweb95 benchmark (script surge-server.rcS) on the server.terminal
+side.  It appears that
+all the /sbin/ifconfig commands for eth0 are failing. Have there been
+changes to the device model or linux tree that I need to get inorder to
+remove this error?
+Best,
+-Rick
+Setting up network parameters...done.
+setting up network...
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFADDR: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+eth0: unknown interface: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFTXQLEN: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFADDR: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+eth0:1: unknown interface: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFTXQLEN: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFADDR: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+eth0:2: unknown interface: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFTXQLEN: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFADDR: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+eth0:3: unknown interface: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFTXQLEN: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFADDR: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+eth0:4: unknown interface: No such device
+modprobe: FATAL: Could not load /lib/modules/2.6.18.8/modules.dep: No
+such file or directory
+SIOCSIFTXQLEN: No such device
+mounting file set...[4194003.904426] EXT2-fs warning: mounting unchecked
+fs, running e2fsck is recommended
+done.
+starting httpd...modprobe: FATAL: Could not load
+/lib/modules/2.6.18.8/modules.dep: No such file or directory
+apache2: Could not determine the server's fully qualified domain name,
+using 127.0.0.1 for ServerName
+[Thu Jan 01 00:00:02 2009] [warn] NameVirtualHost *:80 has no VirtualHosts
+cat: /usr/share/apache2/logs/error_log: No such file or directory
+done.
+signal 192.168.0.10 to begin...Error: Couldn't create connection
+(err=-5): Network is unreachable
+done.
+starting bash...
+bash: no job control in this shell
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

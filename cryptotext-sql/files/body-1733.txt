@@ -1,0 +1,9 @@
+Hi Pavan,
+Do you see any error message that comes from the benchmark itself? I
+think one thing you can try is coping the input files into your
+working directory. Then the benchmarks should work.
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

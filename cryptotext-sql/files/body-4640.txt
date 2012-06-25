@@ -1,0 +1,10 @@
+I can move to 2.0b2. I had issues earlier with the compilation and hence had gone with v1.1 .
+Right now i cannot get the files in encumbered/cpu/full to be a part of my compilation. It picks the eio files but not the cpu/full files. Is there anything i need to change to make it compile that directory too?
+the FullCpu is disabled by default.  scons --help gives you the scons options, the one you're interested in is CPU_MODELS= for selecting which ones are compiled in.  We don't use FullCPU anymore.  Is there a reason you want that?  We're now working on the O3 CPU model.
+And can you also tell me how to add the sampler support in fs.py?
+I'll let someone else respond about this since they wrote the code (kevin? lisa?), but I think there should be some code about doing sampling in the example files.  Just so you know, sampling is handled much differently now in 2.0.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

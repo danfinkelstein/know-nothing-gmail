@@ -1,0 +1,7 @@
+You can look at this good reference.
+www.arctic.umn.edu/minnespec/253.perlbmk.makerand.profile.pdf
+It seems Perlbmk is  memory intensive.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

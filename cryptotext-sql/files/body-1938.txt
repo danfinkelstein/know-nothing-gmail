@@ -1,0 +1,31 @@
+Hi Meng-Ju,
+I'm just catching up on my inbox and I was wondering if you ever made
+more progress on this that you can share.
+Thanks,
+  Nate
+- Show quoted text -
+On Wed, Oct 1, 2008 at 12:20 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi Ali,
+>
+> I know that my implementation of mremap() is not correct. I let
+> remap() map to the previous block and only change the block size. It
+> is just a quick implementation for the SPEC2006 programs. For example,
+> 450.soplex and 454.calculix need this function, and this simple
+> implementation can let these two benchmarks finish correctly. I was
+> planing to correct the  mremap() in the past, but I began to work on
+> other stuffs. I will find a time to clean this implementation and make
+> it right.
+>
+> Thanks,
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

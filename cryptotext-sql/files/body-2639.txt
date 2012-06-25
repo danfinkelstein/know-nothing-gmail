@@ -1,0 +1,34 @@
+I use the following two command lines:
+(1) boot linux and create checkpoint
+m5.debug -d result fs.py --caches --l2cache -b createcheckpoint      
+## here "createcheckpoint" is a script to create checkpoint after boot
+(2) restore from the checkpoint, warmup and then detailed simulation
+m5.debug fs.py -t --caches --l2cache --checkpoint-dir result -r 1 -s -W 100000000 -I 1000000000 -b gzipOn Thu, Aug 7, 2008 at 11:30 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+Hi,
+        Did you figure out how to do this? If so can you share it?
+- Sujay
+----- Original Message ----- From: "Gary Chai" <ameseacla@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Tuesday, July 29, 2008 3:13 AM
+Subject: [m5-users] switch cpu command- Show quoted text -
+Hi all:
+I expect the following steps in full system simulation:
+(1) boot linux with atomic cpu and create a checkpoint after linux is
+booted.
+(2) restore from this checkpoint into timing cpu and warm up cache num1
+instructions
+(3) switch to a detailed cpu and run num2 instructions
+(4) record the result of the num2 instrutions
+let simulator: m5.debug
+config file: fs.py
+benchmark: gzip
+Can anyone tell me how to write a command to accomplish the above steps?
+Thank you very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

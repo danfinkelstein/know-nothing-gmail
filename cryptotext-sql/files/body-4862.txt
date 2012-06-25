@@ -1,0 +1,50 @@
+Ok, so I did it the painful way by backing up my changes, re-installing M5, and
+porting over my changes all over again. Still, I would like to know if there is
+a better way to do this?
+Thanks,
+Christopher
+- Show quoted text -
+Quoting Christopher Hsiong <chsiong@eecs.umich.edu>:
+> Hi all,
+>
+> I've been having some problems building m5 today. There were only two
+> possible
+> major changes I did that could have caused it. One, I installed crosstools.
+> Two, due to speed reasons I tried building m5.opt/debug on 64 bit machines.
+> For
+> some reason, not only did that not work, but now I can't even get
+> m5.opt/debug
+> to build on 32 bit machines anymore. Here are the error messages:
+>
+> For ALPHA_FS/m5.opt:
+> build/ALPHA_FS/base/stats/events.o: file not recognized: File format not
+> recognized
+>
+> For ALPHA_FS/m5.debug:
+> build/ALPHA_FS/cpu/base.do: file not recognized: File format not recognized
+>
+> For ALPHA_SE/m5.opt:
+> build/ALPHA_SE/base/stats/events.o: file not recognized: File format not
+> recognized
+>
+> For ALPHA_SE/m5.debug:
+> build/ALPHA_SE/mem/physical.do: file not recognized: File format not
+> recognized
+>
+> I'm pretty sure it was working last week and I could build w/o any problems.
+> And
+> I didn't make any changes to any file either. Would installing crosstools do
+> anything that could mess up m5? Or would running on 64bit machines
+> accidentally
+> change any configurations that needs resetting when I go back to 32bit? Any
+> help
+> would really be a godsend.
+>
+> Thanks,
+> Christopher
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

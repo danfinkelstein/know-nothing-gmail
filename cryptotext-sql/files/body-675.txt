@@ -1,0 +1,26 @@
+Upgrade you disk image. Both the kernel and the libc need to support it. A
+fast way to make it work is copy over the libraries from the cross compiler
+to the disk image.
+Ali
+- Show quoted text -
+On Mon, 23 Nov 2009 14:14:18 -0500, Amir Hossein Hormati
+<hormati@eecs.umich.edu> wrote:
+> Hi
+> I am trying to use sched_setaffinity function in one of my benchmarks.
+The
+> first time i tried it i got "sched_setaffinity: Function not
+implemented".
+> Then I found this
+>
+http://www.mail-archive.com/m5sim-users@lists.sourceforge.net/msg01925.html
+> which
+> says I should upgrade my kernel. So, then I upgraded my kernel to 2.6.27,
+> but still i get the same message when I run sched_setaffinity. Is there
+> anything else I should do? Should I config the kernel differently?
+>
+> Thanks
+> Amir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

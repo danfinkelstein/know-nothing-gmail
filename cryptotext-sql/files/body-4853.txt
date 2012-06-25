@@ -1,0 +1,40 @@
+Hi,
+I have a multithreaded program and I am pinning the
+threads to different CPUs explicitly by using the
+function "sched_setaffinity" and the macros "CPU_ZERO"
+and "CPU_SET" mentioned in the link
+"http://www-128.ibm.com/developerworks/linux/library/l-affinity.html"
+I have compiled the code using the cross compiler with
+the  option "-D_GNU_SOURCE". My compilation command
+looks like -
+"/opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+   multithread.c -o multithread -lpthread
+-D_GNU_SOURCE"
+Then I copied the compiled executable into the disk
+image (Pre-compiled version) provided in the M5
+webpage. But while running the executable on the m5
+simulator in full system mode, I got the following
+error msg -
+"mounting filesystems...
+EXT2-fs warning: maximal mount count reached, running
+e2fsck is recommended
+loading script...
+/benchmarks/multithread/multithread: /lib/libc.so.6.1:
+version `GLIBC_2.3.4' not found (required by
+/benchmarks/multithread/multithread)"
+I checked the /lib/ directory in the disk image and
+found that libc.so.6.1 is pointing to version 2.3.2 of
+glibc.
+I am not sure how to sort out this error.
+Any suggestions regarding this would be greatly
+appreciated.
+Regards-
+Chaitali
+____________________________________________________________________________________
+Want to start your own business?
+Learn how on Yahoo! Small Business.
+http://smallbusiness.yahoo.com/r-index
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

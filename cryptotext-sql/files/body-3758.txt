@@ -1,0 +1,86 @@
+Thanks Ali. I got it working.- Show quoted text -
+Ali Saidi wrote:
+This seems a lot like a ALPHA_SE configuration file, but not like an ALPHA_FS one. You should bas your configuration file off configs/examples/fs.py. In particular it doesn't appear that you ever call makeAlphaLinuxSystem() to generate all the bits of the system that are required for full system simulation (chipsets, i/o controllers, etc). The complaint you're seeing is an attempt to find an object that inherits from Platform (e.g. Tsunami) but the simulator not finding one so it's unable to make a required connection in the system.
+Ali
+On Dec 10, 2007, at 12:26 PM, Nikolas Galanis wrote:
+Hi all,
+I am trying to configure a simple 1-CPU FS system for some experiments but I am getting an error and I cannot figure out a solution. My configuration script which is a combination of o3-timing.py and run.py is as follows:
+---------------
+import  optparse, os, sys
+import m5
+from m5.objects import *
+m5.AddToPath('../common')
+from FSConfig import *
+from SysPaths import *
+import Simulation
+class L1Cache(BaseCache):
+  assoc = 2
+  block_size = 64
+  latency = '1ns'
+  mshrs = 10
+  tgts_per_mshr = 5
+  protocol = CoherenceProtocol(protocol='moesi')
+class L2Cache(BaseCache):
+  assoc = 8
+  block_size = 64
+  latency = '10ns'
+  mshrs = 20
+  tgts_per_mshr = 12
+if not m5.build_env['FULL_SYSTEM']:
+  m5.panic("This script requires full-system mode (ALPHA_FS).")
+cpu = DerivO3CPU(cpu_id=0)
+cpu.addTwoLevelCacheHierarchy(L1Cache(size = '128kB'), L1Cache(size = '128kB'),
+                            L2Cache(size = '2MB'))
+cpu.clock = '2GHz'
+system = System(cpu = cpu,
+              physmem = PhysicalMemory(),
+              membus = Bus())
+system.physmem.port = system.membus.port
+cpu.connectMemPorts(system.membus)
+root = Root(system = system)
+# set default maxtick... script can override
+# -1 means run forever
+maxtick = -1
+# instantiate configuration
+m5.instantiate(root)
+# simulate until program terminates
+exit_event = m5.simulate(maxtick)
+print 'Exiting @ tick', m5.curTick(), 'because', exit_event.getCause()
+----------
+The error message I am getting is:
+command line: ./build/ALPHA_FS/m5.debug configs/myConfigs/o3_timing.py
+Global frequency set at 1000000000000 ticks per second
+Error in unproxying param 'platform' of system.cpu.toL2Bus.responder
+Traceback (most recent call last):
+File "<string>", line 1, in <module>
+File "build/ALPHA_FS/python/m5/main.py", line 326, in main
+  execfile(sys.argv[0], scope)
+File "configs/myConfigs/o3_timing.py", line 47, in <module>
+  m5.instantiate(root)
+File "build/ALPHA_FS/python/m5/__init__.py", line 86, in instantiate
+  root.unproxy_all()
+File "build/ALPHA_FS/python/m5/SimObject.py", line 649, in unproxy_all
+  self._children[child].unproxy_all()
+File "build/ALPHA_FS/python/m5/SimObject.py", line 649, in unproxy_all
+  self._children[child].unproxy_all()
+File "build/ALPHA_FS/python/m5/SimObject.py", line 649, in unproxy_all
+  self._children[child].unproxy_all()
+File "build/ALPHA_FS/python/m5/SimObject.py", line 649, in unproxy_all
+  self._children[child].unproxy_all()
+File "build/ALPHA_FS/python/m5/SimObject.py", line 629, in unproxy_all
+  value = value.unproxy(self)
+File "build/ALPHA_FS/python/m5/proxy.py", line 94, in unproxy
+  (self.path(), self._pdesc.ptype_str, base.path())
+AttributeError: Can't resolve proxy 'any' of type 'Platform' from 'system.cpu.toL2Bus.responder'
+------------
+Any help would be welcome since I can't figure out what I am doing wrong.
+Regards,
+Nikolas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

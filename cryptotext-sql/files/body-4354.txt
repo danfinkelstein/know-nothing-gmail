@@ -1,0 +1,13 @@
+Using Alpha Syscall Emulation, I'm playing around with moving processes from one cpu to another, as well as having "floating processes" which do not start on any cpu until a later time. I'm running into an issue with getting a page fault when I try to load one of these floating processes onto a cpu. Could anyone shed some light onto what the necessary actions to take are?
+My setup has one system object with multiple cpu's within it, each with a private l1. I have storage for these floating processes, which are initialized to be different benchmarks in the configuration file. Currently, I perform the following when attempting to load an uninitialized process onto a core for the first time (where thecpu is the cpu object I want to run the new process on):
+(note: I drain the cpu first to make sure the previous process is in a steady state)
+                ((AlphaTC<AlphaSimpleImpl> *)(thecpu->threadContexts[0]))->thread->process = pkt->proc;  // attach the process
+                thecpu->registerThreadContexts();       // register the process
+                pkt->proc->startup();   // perform the initial write of program data into memory
+                thecpu->resume();       // resume the cpu
+This seems to work, as watching the fetch shows that things are happening, but inevitably I get a page fault. Any ideas?
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

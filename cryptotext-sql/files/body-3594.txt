@@ -1,0 +1,27 @@
+Hi Daniel,
+   How's the Spec2k binaries for linux doing? Have you compiled all of them without errors? Also, do you now have a link for those binaries where I can download them?
+-thanks,
+dean
+Daniel Alex Finkelstein wrote:
+Hi Dean,
+Sorry for the long delay. Yes, I've got the binaries -- generated with the help of Kegel's crosstool -- for Alpha Linux. There were a few that had some problems, which I'm tinkering with a bit to get them to compile properly (any time the system gets patched/updated, it seems the changes to libc and the host's compiler cause problems when rebuilding the SPEC CPU 2000 binaries). I wonder what the best way to send them to you is, since they're pretty big. I'll see if I can compress/zip them or, if not, stick them on a web site on which you can download them.
+--Dan
+On Dec 18, 2007, at 21:38 , dean michael ancajas wrote:
+Hello Daniel,
+I saw your post at the M5 simulator mailing list:http://www.mail-archive.com/m5-users@m5sim.org/msg01145.html. Would you be so kind to give me a copy of the ALPHA Linux binaries of SPEC2000? Also, did you use  Dan Kegel's crosstool to generate your crosscompiler or did you have a native ALPHA Linux system? If you used a crosscompiler what versions of glibc,gcc,binutils,cgcc,linux headers did you use and what machine config(i.e. x86 redhat enterprise 3) were you able to build it?
+Thanks.
+M5 newbie,
+Dean Michael B. Ancajas
+Graduate Student
+University of the Philippines,
+Diliman
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA

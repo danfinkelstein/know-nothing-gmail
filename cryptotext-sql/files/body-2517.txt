@@ -1,0 +1,11 @@
+Hi all,
+I was wondering if their was a splash rcs script when running M5 in full
+system out there. It seems that the configs/splash is for ALPHA_SE
+running true-64. If anyone knows a rcS script for full system when
+running flash, I would be appreciative.
+Thanks,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

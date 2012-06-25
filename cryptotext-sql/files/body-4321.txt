@@ -1,0 +1,54 @@
+Tracy,
+Why don't you give us your command line, important bits of your config files and the stats file to take a look at. Like the warning that is printed when you used the DRAM model says, it's largely untested, so something could be broken, but I don't think it's that broken.
+Ali- Show quoted text -
+On Jul 31, 2007, at 4:51 PM, rlai@mtu.edu wrote:
+Hi Ali,
+   I was using AtomicSimpleCPU to run simulation for 1 billion instructions.
+Now I change to use TimingSimpleCPU to run for 1 billion instructions. The
+difference of average DRAM access latency is even higher(more than 40%),
+but still 0% difference in sim_tick. Is that because 1 billion instruction
+is not enough to see any changes?
+   I don't find any memory access queue in full system. How this
+calculated DRAM latency is used?
+   In the code, this latency will be transfered to sendTiming(pkt,
+latency), and this function will call SimpleTimingPort::SendEvent(this,
+pkt, time);
+Will the latency be used in the mainEventQueue?
+Thanks,
+Tracy
+There are two possibilities.
+a) You were running for a set number of ticks, so you wouldn't see
+any change in sim_ticks because the number of ticks was controlling
+the length of the simulation.
+b) You were using the AtomicSimpleCPU instead of either the
+TimingSimpleCPU or the O3CPU, so the DRAM latency wasn't being
+accounted for.
+Ali
+On Jul 27, 2007, at 9:44 PM, rlai@mtu.edu wrote:
+Hi,
+   I implement different page allocation algorithms(virtual to
+physical
+address translation algorithm) based on current DRAM model in full
+system(m5_2.0b). After running simulations(benchmark is ValStream), I
+could see more than 20% difference in average DRAM access latency
+within all these algorithms, but almost 0% difference in sim_ticks.
+   Is that because the caculated dram latency is not used? Can anybody
+explain that to me?
+   Thanks.
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+Demand accesses are non-prefetch accesses, whether they're reads or
+writes.  If you don't have prefetching enabled, demand accesses should
+equal the sum of the reads and writes.
+- Show quoted text -
+On Tue, Apr 29, 2008 at 5:00 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> In the statistics, what is the difference betweem demand accesses and Read_Req accesses? What constitute the overall accesses?
+>
+>  Thanks, Shoaib.
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

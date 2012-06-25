@@ -1,0 +1,10 @@
+We've actually made a lot of bug fixes over the last couple of weeks
+that take care of several of these bugs.  We just have one or two more
+bugs to go and then we will be releasing an updated version.  Please
+hang on and retry your tests then...
+Thanks,
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

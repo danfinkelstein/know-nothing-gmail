@@ -1,0 +1,234 @@
+Hi Jiayuan,
+The mismatch of the patch versions is starting to get too large to
+manage, so I am going to have to keep banging on the older directory
+coherence model, as it is very close to working for full system mode and
+then work on the new patch. My solution is to make the two actions
+atomic by locking the call to LockDirs  and having it return false if
+another ReadEx action is occurring somewhere else on the processor.
+However, I am not able to determine how the ReadEx cmd is sent for the
+storeCond. I see that in mid/blk_state.cc: Shared_ReadEx first does an
+invalidate on all of the L1 sharers and when it has no lower level
+sharers, it sends an invalidate command to the shared L2. The L2
+received the invalidate and removes the L1 from the list of sharers. The
+L2 sends an InvalidateResp which causes the L1 to invalidate the blk.
+However, how is the following ReadEx being sent? I see that
+postCoherenceProcess() is being called, but I don't see where
+delayedProc.proc is set to anything useful. So as far as I can see
+triggerMemSide() returns and fromDownStream() calls
+postCoherenceProcesses is called without any useful state and we return
+to the top without sending the ReadEx. However, I see that the L2 got a
+ReadEx. I must be missing something ... where is the ReadEx packet being
+sent by the L1.
+Thanks in advance,
+-Rick
+- Show quoted text -
+jiayuan meng wrote:
+>
+> Hi Rick,
+>
+> Thanks for pointing this out! I believe I have found the problem. I
+> have an updated version that has fixed the bug and I can send it to
+> you if you'd like. If you'd rather prefer this old version, maybe you
+> can simply try your method ---- to make loadLink exclusive (by adding
+> NeedExclusive property to the LoadLinked MemCmd). I'll post a link to
+> the updated patch in one day or two.
+>
+> Here is how this bug is raised:
+>
+> Note that when a cpu calls StoreCond and its Dcache has the
+> load-linked block in shared state, the Dcache wants to upgrade their
+> D-cache block from shared to modified. In the context of MSI
+> coherence, it is treated as a replacement, and this is done in two
+> phases:
+>      a) Evict:   evict the current block (each cache sends
+> InvalidateReq to L2, waiting for InvalidateResp. To avoid naming
+> confusion, let's call this EvictReq/EvictResp, as opposed to the
+> InvalidateReq that's sent from L2 to L1 upon remote exclusive accesses)
+>      b) Upgrade: after EvictResp is received, each cache sends a
+> ReadExReq to L2, waiting for ReadExResp
+>
+> If another StoreCond is sent later, we expect it either fails upon
+> miss in D-cache, or hits but the upgrade fails, so that it is nacked
+> and resend again (which will eventually miss and fail).
+>
+> However, this two-phase approach does not meet our expectation because
+> the two-phases do not happen atomically. Another separate problem of
+> this two-phase approach is that it may double the miss latency. I've
+> addressed these issues in the updated version.
+>
+> Here is how the store-conditional cheated:
+>
+> 1. cpu0 and cpu1 both successfully did a load linked (shared_read)
+> 2. cpu0 and cpu1 issues store conditional at roughly the same time.
+> (tick 8070266133500). Both hit but need to be upgraded. They both
+> start phase (a) to evict the block.
+> 3. because cpu0(a) and cpu0(b) are not atomically combined, cpu0(a)
+> can then be followed by cpu1(a). now the L2 block changes from Shared
+> to Uncached because all the upper level D-caches have evicted their
+> copies.
+> 4. after that, both cpu(0) and cpu(1) sends a ReadEx to L2, the L2
+> first satisfies cpu0(b), making the storeCond from cpu0 successful, it
+> then invalidates the copy that just sent to cpu0 and then satisfies
+> cpu1(b). In the end, both store conditionals are successful because
+> they both load a new block from the L2 and the block records no locks.
+>
+> The current updated version avoids this problem by combining (a) and
+> (b) into one packet. So in the same scenario, cpu0(b) will directly
+> follow cpu0(a) by a Shared_ReadEx transaction at L2, which issues an
+> InvalidateReq to the copy at cpu1. cpu1's EvictReq+ReadExReq will
+> arrive before the response (InvalidateResp), and therefore it will
+> conflict with the on-going Shared_ReadEx transaction. As a result,
+> cpu1(a) will be nacked and retried again and over again, until the
+> storeConditional is issued after cpu1's block is invalidated, and the
+> store conditional will fail correctly.
+>
+> Regards,
+>
+> Jiayuan
+>
+>
+>
+> > From: saidi@umich.edu
+> > To: rstrong@cs.ucsd.edu; m5-users@m5sim.org
+> > Date: Wed, 25 Feb 2009 01:29:05 -0500
+> > Subject: Re: [m5-users] Directory coherence, implementing
+> uncacheable load-linked/store-conditional
+> >
+> >
+> >
+> >
+> > On Feb 24, 2009, at 7:41 PM, Rick Strong wrote:
+> >
+> >> I believe that currently, the directory coherence implementation is
+> >> suffering from an incomplete implementation of uncacheable
+> >> load-linked/store conditional. It appears below that a lock is being
+> >> grabbed for address A=0xffff-fc00-1f4a-af28 by two cpus
+> >> simultaneously
+> >> at time 8070266129000 in @_read_lock. CPU0 performs stl_c and returns
+> >> followed by CPU1 succeeding with its stl_c. On further research into
+> >> the ALPHA-tlb implementation TLB::checkCacheability(RequestPtr &req,
+> >> bool itb) sets the req to uncacheable if (req->getPaddr() &
+> >> PAddrUncachedBit43) or the 43 bit is set in the address. This is the
+> >> case for A=0xffff-fc00-1f4a-af28 unless I am going blind which is
+> >> possible. So a few things I wanted to confirm with some expert sin the
+> >> memory system:
+> >>
+> >> 1) Is this indeed an uncacheable address?
+> > It looks like an alpha super page address to me. In which case the
+> > part of the translate function before the checkCachability() call
+> > should mask off the high address bits so bit 43 will not be set.
+> >>
+> >>
+> >> 2) Should alpha support stl_c and ldl_c for uncacheable accesses?
+> > If would have to look at the Alpha 21264 reference manual to be sure,
+> > but I'm pretty sure that load locked/store conditional only works on
+> > cacheable addresses.
+> >
+> >>
+> >> 3) How should I efficiently implement stl_c and ldl_c for directory
+> >> coherence without having to maintain a global structure somewhere?
+> >> Ultimately, I want the directory coherence to work on a mesh in full
+> >> system, so I can't just sniff the bus. Any ideas?
+> >
+> >>
+> >>
+> >>
+> >> Best,
+> >> -Rick
+> >>
+> >> *The Trace:*
+> >> 8070266029500: server.detail_cpu0 T0 : @ext2_get_branch+156 :
+> >> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+> >> 8070266045000: server.detail_cpu1 T0 : @ext2_get_branch+152 :
+> >> ldq r27,-14856(r29) : MemRead : D=0xfffffc00005e86f8
+> >> A=0xfffffc0000787cf8
+> >> 8070266046500: server.detail_cpu1 T0 : @ext2_get_branch+156 :
+> >> jsr r26,(r27) : IntAlu : D=0xfffffc00003ee62c
+> >> 8070266129000: server.detail_cpu0 T0 : @_read_lock : ldl_l
+> >> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+> >> 8070266130500: server.detail_cpu1 T0 : @_read_lock : ldl_l
+> >> r1,0(r16) : MemRead : D=0x0000000000000000 A=0xfffffc001f4aaf28
+> >> 8070266130500: server.detail_cpu0 T0 : @_read_lock+4 : blbs
+> >> r1,0xfffffc00005e89c4 : IntAlu :
+> >> 8070266132000: server.detail_cpu0 T0 : @_read_lock+8 : subl
+> >> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+> >> 8070266132000: server.detail_cpu1 T0 : @_read_lock+4 : blbs
+> >> r1,0xfffffc00005e89c4 : IntAlu :
+> >> 8070266133500: server.detail_cpu1 T0 : @_read_lock+8 : subl
+> >> r1,2,r1 : IntAlu : D=0xfffffffffffffffe
+> >> 8070266166500: server.detail_cpu0 T0 : @_read_lock+12 : stl_c
+> >> r1,0(r16) : MemWrite : D=0x0000000000000001
+> >> A=0xfffffc001f4aaf28
+> >> 8070266168000: server.detail_cpu0 T0 : @_read_lock+16 : beq
+> >> r1,0xfffffc00005e89c4 : IntAlu :
+> >> 8070266169500: server.detail_cpu0 T0 : @_read_lock+20 :
+> >> mb : MemRead :
+> >> 8070266171000: server.detail_cpu0 T0 : @_read_lock+24 : ret
+> >> (r26) : IntAlu :
+> >> 8070266172500: server.detail_cpu0 T0 : @ext2_get_branch+160 :
+> >> ldah r29,58(r26) : IntAlu : D=0xfffffc000078e62c
+> >> 8070266174000: server.detail_cpu0 T0 : @ext2_get_branch+164 :
+> >> lda r29,-12076(r29) : IntAlu : D=0xfffffc000078b700
+> >> 8070266175500: server.detail_cpu0 T0 : @ext2_get_branch+168 :
+> >> bis r31,r11,r16 : IntAlu : D=0xfffffc001f7ffa08
+> >> 8070266177000: server.detail_cpu0 T0 : @ext2_get_branch+172 :
+> >> bis r31,r12,r17 : IntAlu : D=0xfffffc001f7ffa08
+> >> 8070266178500: server.detail_cpu0 T0 : @ext2_get_branch+176 :
+> >> bsr r26,verify_chain : IntAlu : D=0xfffffc00003ee640
+> >> 8070266180000: server.detail_cpu0 T0 : @verify_chain : br
+> >> 0xfffffc00003edbdc : IntAlu :
+> >> 8070266181500: server.detail_cpu0 T0 : @verify_chain+8 : cmpule
+> >> r16,r17,r1 : IntAlu : D=0x0000000000000001
+> >> 8070266183000: server.detail_cpu0 T0 : @verify_chain+12 : beq
+> >> r1,0xfffffc00003edc00 : IntAlu :
+> >> 8070266183500: server.detail_cpu1 T0 : @_read_lock+12 : stl_c
+> >> r1,0(r16) : MemWrite : D=0x0000000000000001
+> >> A=0xfffffc001f4aaf28
+> >> 8070266185000: server.detail_cpu1 T0 : @_read_lock+16 : beq
+> >> r1,0xfffffc00005e89c4 : IntAlu :
+> >> 8070266186000: server.detail_cpu0 T0 : @verify_chain+16 : ldq
+> >> r1,0(r16) : MemRead : D=0xfffffc001f4aaec8 A=0xfffffc001f7ffa08
+> >> 8070266186500: server.detail_cpu1 T0 : @_read_lock+20 :
+> >> mb : MemRead :
+> >> 8070266188000: server.detail_cpu1 T0 : @_read_lock+24 : ret
+> >> (r26) : IntAlu :
+> >> 8070266189000: server.detail_cpu0 T0 : @verify_chain+20 : ldl
+> >> r2,8(r16) : MemRead : D=0x000000000000200c A=0xfffffc001f7ffa10
+> >> 8070266189500: server.detail_cpu1 T0 : @ext2_get_branch+160 :
+> >> ldah r29,58(r26) : IntAlu : D=0xfffffc000078e62c
+> >> 8070266190500: server.detail_cpu0 T0 : @verify_chain+24 : zapnot
+> >> r2,15,r2 : IntAlu : D=0x000000000000200c
+> >> 8070266191000: server.detail_cpu1 T0 : @ext2_get_branch+164 :
+> >> lda r29,-12076(r29) : IntAlu : D=0xfffffc000078b700
+> >> 8070266192500: server.detail_cpu1 T0 : @ext2_get_branch+168 :
+> >> bis r31,r11,r16 : IntAlu : D=0xfffffc001f6c3a08
+> >> 8070266194000: server.detail_cpu1 T0 : @ext2_get_branch+172 :
+> >> bis r31,r12,r17 : IntAlu : D=0xfffffc001f6c3a08
+> >> 8070266195500: server.detail_cpu1 T0 : @ext2_get_branch+176 :
+> >> bsr r26,verify_chain : IntAlu : D=0xfffffc00003ee640
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> ------------------------------------------------------------------------
+> Windows Live™ Groups: Create an online spot for your favorite groups
+> to meet. Check it out.
+> <http://windowslive.com/online/groups?ocid=TXT_TAGLM_WL_groups_032009>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

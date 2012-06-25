@@ -1,0 +1,74 @@
+This does not attempt to address any particular issues with x86, but here is a simple revision of it. I've merely moved instcount to be a non-static member of the O3 and ozone CPU classes, declared near where snList was (which is also used by the dyninst stuff, which is why I placed it in the particular implementations rather than in cpu/base.hh). The values increment and decrement as before, but the 1500 limit is accredited per CPU, and the DPRINTF for dyninst also includes the name of the processor. It is possible that that is not sufficiently identifying for someone doing debugging, but I could not find anything more identifying which is generic to all CPUs.
+If this is the type of change you had in mind, it would be easy to then make the limit adjustable, though, since it is more of a debugging feature, the instcount declaration and code could be placed within DEBUG, as the seqnum list stuff is.
+        - Clint
+On Oct 29, 2008, at 4:12 PM, nathan binkert wrote:
+I'd say that someone working on that sort of extension would want to
+have that mechanism in place.  If the error is made per CPU and the
+value were configurable, then we could provide a pretty reliable
+mechanism.
+Of course, I could be wrong too.
+ Nate
+On Wed, Oct 29, 2008 at 12:57 PM, Korey Sewell <ksewell@umich.edu> wrote:
+Honestly,
+it might be time to just comment out or delete that assertion.
+As I recall, that was used when testing the O3CPU for correctness and
+to make sure we didnt run out of memory allocating instructions and
+never deleting them.
+But now it might be more of a hindrance as people simulate with more
+CPUs. Doing it perCPU would be nice, but then what happens in x86 code
+when you have more microOps (?) or if someone adds some type of new
+extension to the front end of the CPU?
+I say just go ahead and comment that line out or maybe put a DEBUG,
+DPRINTF warning there ...  ...
+But I could be wrong...
+On Wed, Oct 29, 2008 at 1:06 PM, nathan binkert <nate@binkert.org> wrote:
+I think that you're probably right that this number is too low.
+Rather than just increasing this number, it would be nice if we could
+move the instcount variable into the cpu (the dyn inst has a pointer
+to the CPU) so we can get a PerCPU count.  We could then set instcount
+based on the ROB size or something like that.
+Any chance you'd be willing to try that out?
+Nate
+On Wed, Oct 29, 2008 at 8:49 AM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+When using four stock O3CPUs, I hit the following assertion after
+running a long time:
+m5.fs.opt: build/ALPHA_FS/cpu/base_dyn_inst_impl.hh:178: void
+BaseDynInst<Impl>::initVars() [with Impl = O3CPUImpl]: Assertion
+`instcount <= 1500' failed.
+Given that instcount is a static shared by all processors, and the
+1500 is not scaled to account for the number of processors, is it
+possible the value is just too low? I have attempted to tally up how
+many instructions could microarchitecturally been in flight, but I am
+not familiar enough with the precise organization of the O3CPU to say
+for sure whether or not four cores would clear this limit, though it
+appears that eight or more cores would easily hit this limit.
+Is there an issue in the O3 CPU that I am possibly running into, or
+can I safely disable it?
+Thanks,
+      - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

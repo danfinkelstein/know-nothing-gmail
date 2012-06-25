@@ -1,0 +1,17 @@
+Hello,
+     I read the M5 repo 
+documentation and the hgbook on using hg and mq. I am confused between which 
+approach I should be using for making my own changes to m5-stable. One way is 
+to make my changes and use the hg commit. I can pull changes to the source 
+using hg fetch and it does a 3-way merge when required.
+ 
+The other way is to use the 'q' commands - qinit, 
+qnew, qrefresh, etc. Could someone elaborate whats the best way to go about 
+it?
+ 
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

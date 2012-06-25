@@ -1,0 +1,28 @@
+Hi,
+while reading the new source code for m5 2.0b2 I've found a possible
+problem. At least I think I did.
+in src/cpu/simple/timing.cc:
+function TransactCPU::write(T data, Addr addr, unsigned flags, uint64_t
+*res)
+if     Fault fault = thread->translateDataWriteReq(req) returns a
+fault then an else section is
+executed
+inside which is "delete req"
+ after which (outside of _if_else_) is called req->something
+(please take a look at the source) which could return access violation
+or something similar.
+So, you need:
+delete req;
+return fault;
+I've seen the same function calling pattern in a lot of files.
+-- 
+Saša Tomić
+BSC - Barcelona SuperComputing Center
+c\ Jordi Girona 29, Nexus I, 08034 Barcelona, España
+Tel.: +34671218062,  +34934054289
+http://www.bsc.es                                
+http://sasa-tomic.blogspot.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

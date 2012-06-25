@@ -1,0 +1,6 @@
+Hi,I am new to m5 and am trying to simulate CMPs with super-scalar cores in SE mode. Has there been any known issues related to super-scalar implementation ? I looked at the mail archive and didn't find any but just wanted to make sure that it works. I am using a 64-bit machine.
+Thanks in advance-- -Abhishek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

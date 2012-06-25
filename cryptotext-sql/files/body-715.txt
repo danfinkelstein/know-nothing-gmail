@@ -1,0 +1,15 @@
+Hi every one,I need a large disk image. I tried to compile a new image with linux-dist following the instructions on the m5 website.when I type: ptxdist go., it stops like this:...........
+--  ftp://ftp.handhelds.org/packages/ipkg-utils/ipkg-utils-1.7.tar.gz           => `/home/junligu/shared/ptxworkspace2/src/ipkg-utils-1.7.tar.gz'
+Resolving ftp.handhelds.org... 128.31.0.22Connecting to ftp.handhelds.org|128.31.0.22|:21... connected.Logging in as anonymous ...The process just does not move on. What's wrong?
+I am confused with the step 1 and step 3: cd into that directory, and type: ptxdist menuconfig.
+The default ptxconfig ought to be sufficient for everything, but you do
+need to set one value. Find the Image Creation Options menu and ensure
+that the "Path to kernel src" value points to your linux directory that
+you got from us.//i set to the download path of linux-dist type: ptxdist toolchain /path/to/your/toolchain/bin (e.g. /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin).  This ensures that in building all of the binaries you are using the appropriate toolchain.
+ type: ptxdist menuconfig.  Note that you will have to go to the Image Creation Options option and set the path to the kernel code that you will be using for your headers and iscsi benchmark module compilation.//I set "Path to kernel src" to the installation path
+ What should the path be separately? there are three paths, ont is the one of the download path, one is the installation path, and the other is the workspace path. Just confused with the setting of paths.... 
+-- ************************************************Junli Gu--谷俊丽Coordinate Science LabUniversity of Illinois at Urbana-Champaign************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

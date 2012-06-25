@@ -1,0 +1,14 @@
+Antti P Miettinen wrote:
+While waiting for minigzip to compress rfc-index.txt I was thinking
+whether anyone has considered accelerating the simulation with dynamic
+compilation (QEMU-style)? LLVM looks like a nice C++ based compiler
+framework so using it might be a good fit for M5 :-)
+That sounds cool... I've thought about dynamic compilation, but shied away from it due to portability issues (not to mention total lack of time).  LLVM might be a good solution to that.
+A simpler (though non-trivial) and likely effective optimization that I've been thinking about for a couple of years now is to cache decoded pages of StaticInst pointers.  Right now every time a CPU fetches an instruction, we fetch the binary representation from simulated memory, then look it up in a hash table to get a pointer to the appropriate StaticInst object.  I'd like to keep an additional page of StaticInst pointers for each page that contains instructions, and then instruction fetches can grab the pointers right off there without the hash table lookup (which is one of the most time-consuming functions if you're doing simple functional simulation).
+My current thought would be to associate these decoded instruction pages with TLB entries; then after we run the ifetch through the ITLB we could just take the PC's page offset and use that to grab the StaticInst pointer.  Leveraging the TLB lookup automatically takes care of handling the case where the PC moves to a different physical page (whether due to a jump or falling off the end).  Another issue is invalidating the cached page when the page is written to (probably not necessary in SE mode, but definitely needed in FS).
+Thought I'd throw this out there in case someone has the free time to work on it...
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

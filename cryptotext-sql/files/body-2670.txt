@@ -1,0 +1,8 @@
+Hi,
+  I am looking at instruction counts that are output in m5stats.txt for a couple simulations that I have run.  I am using ALPHA_FS with the detailed core, and I am confused about the values that are output.  In m5stats.txt, the value 'sim_insts' claims to the the number of instructions simulated.  On further inspection, each of the cores also has commit statistics that include 'commit.COM:count', 'commit.commitCommittedInsts', 'committedInsts' and 'committedInsts_total'.  I tried tracing through the code where these counters are updated, and some of them seem to be redundant.  The problem that I am having is that when I sum any of these commit statistics over the set of cores, none of them are equal to 'sim_insts'.  In fact, the difference is usually 5-10x.  I am hoping someone could shed some light on the discrepency, and let me know the purpose of all these seemingly redundant counters.
+  Thanks,
+  Joel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Geoff Blake noticed that the alpha/linux cross compiler we posted on the website was old enough to only support LinuxThreads. He has compiled a new version that supports NPTL and I put it on the download page. If you have no idea what I'm talking about then it probably doesn't effect you, however if anyone is running multi-threaded workloads in full-system and using our cross-compiler they should be aware.
+Thanks,
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

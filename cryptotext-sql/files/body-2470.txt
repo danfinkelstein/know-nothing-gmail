@@ -1,0 +1,40 @@
+There's a progress_interval parameter on the base CPU object that you can set which will cause the CPU to print it's progress at the specified interval.I thought there used to be a global progress event that you could get to print out with a --progress command line argument but I don't see that anymore... it must have gotten deleted at some point.  (Does anyone besides me remember this?  Anyone know what happened to it?)
+Steve- Show quoted text -On Wed, Oct 8, 2008 at 1:16 PM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com> wrote:
+I;m using the example that comes with the M5 simulator, the one that it's in that configs/example/se.py, If I'm not wrong that one uses the SimpleAtomicCPU, is there any way that the M5 simulator can show me a little of feedback of the simulation, number of cycles or how many of the simulation lefts. Thank you.
+On Wed, Oct 8, 2008 at 1:08 PM, nathan binkert <nate@binkert.org> wrote:
+That's easily possible.  Depending on which CPU model you use, you can
+expect something like 1000x slowdown for SimpleAtomicCPU to 50000x
+slowdown for O3CPU.
+  Nate
+On Wed, Oct 8, 2008 at 12:30 PM, Eduardo Olmedo Sanchez
+<eolmsan2@gmail.com> wrote:
+> Hi:
+>
+> This is the first time that I simulate my own benchmark, and it's taken a
+> long time, and I'd like to ask if it's normal, the execution of the program
+> in my computer takes over 2~5 secons, but the simulation has been 1h30m and
+> it's not finishied. I think that the simulator is correct installed, because
+> I've been able to simulate some simple program such as Hello World. I'm
+> simulating under ALPHA architecture and using SE mode. By the way can anyone
+> tell me how to tell the simulator that prints in the screen some info about
+> the simulation to see if everyithing goes fine.
+>
+> Thank so much.
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

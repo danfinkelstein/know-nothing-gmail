@@ -1,0 +1,6 @@
+Hi, everyone,I wonder if there are any documents and book chapters based on which the M5 cache module are developed. I found that the source code of the M5 cache is much more complex than that in the Simplescalar and it is not very easy for me to grasp the design principles. If I can refer to any papers that the cache module is based on, that would be of great help.
+Thanks,Leonard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

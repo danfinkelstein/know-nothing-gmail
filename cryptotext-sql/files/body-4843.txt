@@ -1,0 +1,192 @@
+Hi, Kevin
+Very thank your reply!
+My command line is : ./build/ALPHA_FS/m5.opt configs/example/mytest-fs.py -d
+And the mytest-fs.py is a copy from fs.py with a litter modification.
+It is like that as bellow:
+import optparse, os, sys
+import m5
+from m5.objects import *
+m5.AddToPath('../common')
+from FSConfig import *
+from SysPaths import *
+from Benchmarks import *
+parser = optparse.OptionParser()
+parser.add_option("-d", "--detailed", action="store_true")
+parser.add_option("-t", "--timing", action="store_true")
+parser.add_option("-m", "--maxtick", type="int")
+parser.add_option("--maxtime", type="float")
+parser.add_option("--dual", action="store_true",
+                  help="Simulate two systems attached with an ethernet link")
+parser.add_option("-b", "--benchmark", action="store", type="string",
+                  dest="benchmark",
+                  help="Specify the benchmark to run. Available benchmarks: %s"\
+                          % DefinedBenchmarks)
+parser.add_option("--etherdump", action="store", type="string", dest="etherdump",
+                  help="Specify the filename to dump a pcap capture of the ethernet"
+                  "traffic")
+parser.add_option("-p", "--cpunum", type="int")
+parser.add_option("-l", "--L1", action="store_true")
+parser.add_option("-L", "--L2", action="store_true")
+(options, args) = parser.parse_args()
+if args:
+    print "Error: script doesn't take any positional arguments"
+    sys.exit(1)
+n_cpus = 1
+if options.cpunum:
+    n_cpus = options.cpunum
+if options.detailed:
+    cpu_server = [ DetailedO3CPU(defer_registration=True) for i in xrange(n_cpus) ]
+    cpu_client = [ DetailedO3CPU() for i in xrange(n_cpus) ]
+    mem_mode = 'timing'
+elif options.timing:
+    cpu_server = [ TimingSimpleCPU(defer_registration=True) for i in xrange(n_cpus) ]
+    cpu_client = [ TimingSimpleCPU() for i in xrange(n_cpus) ]
+    mem_mode = 'timing'
+else:
+    cpu_server = [ AtomicSimpleCPU(defer_registration=True) for i in xrange(n_cpus) ]
+    cpu_client = [ AtomicSimpleCPU() for i in xrange(n_cpus) ]
+    mem_mode = 'atomic'
+BaseCPU.clock = '2GHz'
+if options.benchmark:
+    if options.benchmark not in Benchmarks:
+        print "Error benchmark %s has not been defined." % options.benchmark
+        print "Valid benchmarks are: %s" % DefinedBenchmarks
+        sys.exit(1)
+    bm = Benchmarks[options.benchmark]
+else:
+    if options.dual:
+        bm = [Machine(), Machine()]
+    else:
+        bm = [Machine()]
+class L1(BaseCache):
+    latency = 1
+    block_size = 64
+    mshrs = 8
+    tgts_per_mshr = 8
+class L2(BaseCache):
+    block_size = 64
+    latency = 100
+    mshrs = 92
+    tgts_per_mshr = 16
+    write_buffers = 8
+if len(bm) == 1:
+    # modify the makeLinuxAlphaSystem func take a cpus vector as a parameter[FSConfig.py]
+    root = Root(clock = '1THz',
+                system = makeLinuxAlphaSystem(cpu_server, mem_mode, bm[0]))
+    for cpu in cpu_server:
+        if options.L1:
+            cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),
+                                        L1(size = '32kB', assoc = 4))
+            cpu.mem = cpu.dcache
+            cpu.connectMemPorts(root.system.membus)
+        elif options.L2:
+            cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),
+                                        L1(size = '32kB', assoc = 4))
+            cpu.mem = cpu.dcache
+            # l2cache & bus
+            root.system.toL2Bus = Bus()
+            root.system.l2c = L2(size='4MB', assoc=8)
+            root.system.l2c.cpu_side = root.system.toL2Bus.port
+            # connect l2c to membus
+            root.system.l2c.mem_side = root.system.membus.port
+            # connect cpu level-1 caches to shared level-2 cache
+            cpu.connectMemPorts(root.system.toL2Bus)
+        else:
+           cpu.mem = root.system.physmem
+           cpu.connectMemPorts(root.system.membus)
+else:
+    print "Error I don't know how to create more than 2 systems."
+    sys.exit(1)
+m5.instantiate(root)
+if options.maxtick:
+    maxtick = options.maxtick
+elif options.maxtime:
+    simtime = int(options.maxtime * root.clock.value)
+    print "simulating for: ", simtime
+    maxtick = simtime
+else:
+    maxtick = -1
+exit_event=m5.simulate(maxtick)
+while exit_event.getCause() == "checkpoint":
+    m5.checkpoint(root, "cpt.%d")
+    exit_event = m5.simulate(maxtick - m5.curTick())
+print 'Exiting @ cycle', m5.curTick(), 'because', exit_event.getCause()
+I have compiled the m5.opt and m5.debug with command: scons build/ALPHA_FS/m5.opt(m5.debug) CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+I don't know whether the above information is enough, if any questions, please tell me.
+Best Regards to You!
+------------------
+xiaojun
+chenxiaojun@software.ict.ac.cn
+2006-11-29
+-------------------------------------------------------------
+Sender：Kevin Te-Ming Lim
+Sending Date：2006-11-29 04:30:35
+Receiver：
+Copy To：
+subject：Re: [m5-users] Problem about DetailO3CPU  on FS mode
+- Show quoted text -
+Hi Xiaojun, sorry for the slow reply. You're correct that the segfault
+is because activeThreads isn't being checked to be empty, and is getting
+a garbage value back when accessing the front of the list. The
+underlying problem is that the activeThreads object should not be made
+empty on the same cycle that the CPU is still running, which
+unfortunately happens in a few cases in our 2.0 beta 1 release. What
+command line are you running to get this error? I've fixed problems
+related to activeThreads being deallocated improperly in the code that
+will be released shortly, but I want to make sure your exact case has
+been fixed.
+Kevin
+xiaojun.chen wrote:
+> Hi,m5-users,
+>    When I use DetailedO3CPU on FS mode, there is always a segmentation fault. And gdb infomation as bellow:
+>
+> Program received signal SIGSEGV, Segmentation fault.
+> [Switching to Thread -1208240448 (LWP 900)]
+> 0x082b85bb in DefaultFetch<AlphaSimpleImpl>::getFetchingThread (this=0x9da9564,
+>     fetch_priority=@0x9da9578) at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1334
+> 1334            if (fetchStatus[tid] == Running ||
+> (gdb) p tid
+> $1 = 165293664
+> (gdb) p (*activeThreads).size()
+> $6 = 0
+> (gdb) bt
+> #0  0x082b85bb in DefaultFetch<AlphaSimpleImpl>::getFetchingThread (this=0x9da9564,
+>     fetch_priority=@0x9da9578) at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1334
+> #1  0x082b8614 in DefaultFetch<AlphaSimpleImpl>::fetch (this=0x9da9564, status_change=@0xbffe288b)
+>     at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1007
+> #2  0x082ba28d in DefaultFetch<AlphaSimpleImpl>::tick (this=0x9da9564)
+>     at build/ALPHA_FS/cpu/o3/fetch_impl.hh:834
+> #3  0x082c95c2 in FullO3CPU<AlphaSimpleImpl>::tick (this=0x9da9160)
+>     at build/ALPHA_FS/cpu/o3/cpu.cc:414
+>
+> build/ALPHA_FS/cpu/o3/fetch_impl.hh:
+> int tid = *((*activeThreads).begin());
+>     if (fetchStatus[tid] == Running ||
+>         fetchStatus[tid] == IcacheAccessComplete ||
+>           fetchStatus[tid] == Idle) {
+>          return tid;
+>       } else {
+>          return -1;
+>       }
+>
+> It seems that there didn't check whether the activeThreads is empty or not. Is that the exact reason for this error?
+> Thanks and BestRegards!
+>
+>
+> xiaojun.chen
+> chenxiaojun@software.ict.ac.cn
+> 2006-11-22
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

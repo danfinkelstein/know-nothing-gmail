@@ -1,0 +1,27 @@
+>>> Does this mean I am going to add a
+>>> new object into M5(write C++ code for perfect_branch_predictor, then
+>>> instantiate it using python)?
+I'm thinking you would have to do write a "perfect_branch_predictor"
+object to plug in.
+The only complication is you have to figure out how to resolve the
+branches of speculative instructions if you are using that for an
+out-of-order machine.
+If your workload is small enough, an idea may be figuring out how to
+pre-execute your workload and save the the branch history so as to use
+as input to your perfect predictor.
+>>>    How about a perfect L2 cache? Should I just increase the L2 cache
+>>> size to say 100MB to reduce the miss rate?
+I'm not sure exactly how this would work, but you might be able to
+implement just functional accesses to the L1 cache to simulate having
+a 0% miss rate. Doing that for the L2 cache might be a little more
+handiwork though I assume...
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

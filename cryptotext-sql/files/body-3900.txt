@@ -1,0 +1,62 @@
+Suppose in my simulation i have L1 cache and no L2.
+Now i want some request to access cache but some
+should be forced to go to network as if there is no
+L1.
+How to do this efficiently?
+In cpu.cc there is a boolean variable called do_access
+which is stated to control cache access. But in the
+code there is nothing mentioned what happens do_access
+is false:
+/*
+if (do_access) {
+            if (!dcachePort.sendTiming(dcache_pkt)) {
+                _status = DcacheRetry;
+            } else {
+                _status = DcacheWaitResponse;
+                // memory system takes ownership of packet
+                dcache_pkt = NULL;
+            }
+        }
+*/
+--- Steve Reinhardt <stever@gmail.com> escribió:
+- Show quoted text -
+> Did you look in m5stats.txt?  If you don't have
+> cache stats in there,
+> it's because you're running a configuration with no
+> caches.
+>
+> Steve
+>
+> On Nov 19, 2007 5:49 AM, abc def
+> <jose_6154@yahoo.es> wrote:
+> > Is there a quick way to generate statistics after
+> > running a program in m5, for example how many tlb
+> > misses, page faults, l1 miss, l2 miss etc for
+> simple
+> > or timing  cpu?
+> >
+> >
+> >
+> > ______________________________________________
+> > Pregunta, Responde, Descubre.
+> > Comparte tus consejos y opiniones con los usuarios
+> de Yahoo! Respuestas
+> > http://es.answers.yahoo.com/info/welcome
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+______________________________________________
+¿Chef por primera vez?
+Sé un mejor Cocinillas.
+- Show quoted text -http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

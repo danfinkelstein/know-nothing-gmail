@@ -1,0 +1,16 @@
+Is the some number a really really large number? 9223372036854775807? If so then I would think the o3 model is waiting for an event that never happens (probably a request to memory that isn't returned). If it's some other number or random numbers I would guess that there is something wrong with the run xxx instructions code and the o3 cpu.
+Ali- Show quoted text -
+On Jan 7, 2008, at 4:17 PM, Rick Strong wrote:
+Hi all,
+A number of the spec2000 benchmarks have a problem during the resumption of a checkpoint. The problem is that the checkpoint resumes fine in O3CPU model (the checkpoint was made in AtomicSimpleCPU model), but it only simulates a fraction of the interval that it was supposed to. M5 spits out the message "Exiting  @ cycle <some number> because simulate() limit reached." However, if I resume the benchmarks in the AtomicSimpleCPU model, then they work.
+It seems like the cpu O3 model is getting stalled and the simulation tick fastforwards to its limit. If I resume simulation in AtomicSimpleCPU then all is well.  Any ideas of what is going on? If you want an example, take a checkpoint of ammp at 59*100E6 instructions (or at curTick=2,981,099,451,500) and resume that checkpoint to run for 100E6 instructions. The simulation will end after 248,483 instructions have been simulated.
+This seems to be the last big issue in getting everything working for spec2000 checkpoints. Any help is appreciated ... ^_^.
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

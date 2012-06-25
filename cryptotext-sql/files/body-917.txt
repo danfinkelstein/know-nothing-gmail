@@ -1,0 +1,56 @@
+I believe that's a generated file so $self is likely a symptom, not
+the root problem. Could you show us a portion of that file around
+where the error happens?
+- Show quoted text -
+Quoting Sage <leonard951@gmail.com>:
+> remove the character '$'.
+>
+>
+>
+> On Thu, Sep 24, 2009 at 3:31 AM, Maximilien Breughe <
+> maximilien.breughe@elis.ugent.be> wrote:
+>
+>> Hello,
+>>
+>> I'm new to m5 and I  wanted to install it on my scientific linux
+>> distribution to use it for my PhD. Unfortunately I had a compile error,
+>> it sais: "'$self' was not declared in this scope". This error occures at
+>> lines 2899 and 2902 of build/SPARC_SE/python/swig/event_wrap.cc.
+>> Is there anyone who can help me out?
+>>
+>> Some version information about installed programs needed for m5:
+>> gcc: gcc-c++.x86_64 version 4.1.2-44.el5
+>>
+>> python: python.x86_64 version 2.4.3-24.el5_3.6
+>>
+>> SCons: scons version 1.2.0.d20090919
+>>
+>> swig: swig.x86_64 version 1.3.29-2.el5
+>>
+>> zlib:
+>> zlib.i386 version 1.2.3-3 and
+>> zlib.x86_64 version 1.2.3-3
+>>
+>> m4: m4.x86_64 version 1.4.5-3.el5.1
+>>
+>>
+>> Thanks,
+>>
+>> Max
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+>
+> --
+> Give our ability to our work, but our genius to our life!
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

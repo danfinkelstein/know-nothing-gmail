@@ -1,0 +1,40 @@
+I have did install gettext using macports. M5 used to build for me. But an update on gettext removed libintl.h and specifies that an interface should be used. What version of gettext are you using? Also, I noticed that if I built under a linux machine, and then moved to MacOSX, rm -rf build, and rebuilt, I could get things working.
+-R- Show quoted text -On 10/22/07, Ali Saidi <saidi@umich.edu> wrote:
+Hi Richard,You need to have gettext installed. I have always just used MacPorts (macports.org) to install it. 
+AliOn Oct 22, 2007, at 4:25 PM, Richard Strong wrote:
+Hi,M5 2.0 Beta 3 is not building on MacOS X.  It appears related to:"/usr/bin/ld: Undefined symbols:_libintl_bindtextdomain_libintl_gettext_libintl_textdomain"Is there are new interface for 
+libintl.h? Anyone else have this problem?-RichardRelevant build sectiosn:...gcc -c -DHAVE_CONFIG_H -I.. -I.-I/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/lib  -g -O2 /Users/rickstrong/Desktop/m5-
+2.0b3/ext/libelf/lib/verdef_64_tom.car rcv libelf.a begin.o cntl.o end.o errmsg.o errno.o fill.o flag.ogetarhdr.o getarsym.o getbase.o getdata.o getident.o getscn.o hash.okind.o ndxscn.o newdata.o newscn.o
+ next.o nextscn.o rand.o rawdata.orawfile.o strptr.o update.o version.o checksum.o 32.fsize.o 32.getehdr.o32.getphdr.o 32.getshdr.o 32.newehdr.o 32.newphdr.o 32.xlatetof.o cook.odata.o input.o assert.o
+ nlist.o opt.delscn.o x.remscn.o x.movscn.o64.xlatetof.o gelfehdr.o gelfphdr.o gelfshdr.o gelftrans.o swap64.overdef_32_tof.o verdef_32_tom.o verdef_64_tof.o verdef_64_tom.oa - begin.oa - cntl.o
+a - end.o
+a - errmsg.oa - errno.oa - fill.oa - flag.oa - getarhdr.oa - getarsym.oa - getbase.oa - getdata.oa - getident.oa - getscn.oa - hash.oa - kind.oa - ndxscn.oa - newdata.o
+a - newscn.oa - next.oa - nextscn.oa - rand.oa - rawdata.oa - rawfile.oa - strptr.oa - update.oa - version.oa - checksum.oa - 32.fsize.oa - 32.getehdr.oa - 32.getphdr.o
+a - 32.getshdr.oa - 32.newehdr.oa - 32.newphdr.oa - 32.xlatetof.oa - cook.oa - data.oa - input.oa - assert.oa - nlist.oa - opt.delscn.oa - x.remscn.oa - x.movscn.o
+a - 64.xlatetof.oa - gelfehdr.oa - gelfphdr.oa - gelfshdr.oa - gelftrans.oa - swap64.oa - verdef_32_tof.oa - verdef_32_tom.oa - verdef_64_tof.oa - verdef_64_tom.oranlib libelf.a
+gmake[1]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/lib'making all in pogmake[1]: Entering directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'
+gmake /Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msggmake[2]: Entering directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'gcc -DHAVE_CONFIG_H -I.. -I. -I../lib-I/Users/rickstrong/Desktop/m5-
+2.0b3/ext/libelf/po-I/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/lib  -g -O2  \           /Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msg.c   -o/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msg
+/usr/bin/ld: Undefined symbols:_libintl_bindtextdomain_libintl_gettext_libintl_textdomaincollect2: ld returned 1 exit statusgmake[2]: *** [/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msg]
+Error 1gmake[2]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'gmake[1]: *** [de.msg] Error 2gmake[1]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'
+gmake: *** [all-recursive] Error 1making install in libgmake[1]: Entering directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/lib'dirs="/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/lib
+/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/include/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/include/libelf"; for dirin $dirs; do \            /bin/sh/Users/rickstrong/Desktop/m5-
+2.0b3/ext/libelf/mkinstalldirs$dir; \        done/usr/bin/install -c -m 644 libelf.a/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/libcd /Users/rickstrong/Desktop/m5-2.0b3/build/libelf/lib && ranlib 
+libelf.afiles="libelf.h nlist.h gelf.h sys_elf.h elf_repl.h"; for file in $files;do \          if test -r $file; then \            /usr/bin/install -c -m 644 $file/Users/rickstrong/Desktop/m5-
+2.0b3/build/libelf/include/libelf;\          else \            /usr/bin/install -c -m 644/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/lib/$file/Users/rickstrong/Desktop/m5-
+2.0b3/build/libelf/include/libelf;\          fi; \        donefiles="libelf.h nlist.h gelf.h"; for file in $files; do \          if test -f
+/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/include/$file;then true; else \            echo "#include <libelf/$file>" >/Users/rickstrong/Desktop/m5-
+2.0b3/build/libelf/include/$file;\          fi; \        donegmake[1]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/lib'making install in po
+gmake[1]: Entering directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'gmake /Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msggmake[2]: Entering directory`/Users/rickstrong/Desktop/m5-
+2.0b3/build/libelf/build/po'gcc -DHAVE_CONFIG_H -I.. -I. -I../lib-I/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po-I/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/lib  -g -O2  \           /Users/rickstrong/Desktop/m5-
+2.0b3/ext/libelf/po/gmo2msg.c   -o/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msg/usr/bin/ld: Undefined symbols:_libintl_bindtextdomain_libintl_gettext_libintl_textdomaincollect2: ld returned 1 exit status
+gmake[2]: *** [/Users/rickstrong/Desktop/m5-2.0b3/ext/libelf/po/gmo2msg]Error 1gmake[2]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'gmake[1]: *** [de.msg] Error 2
+gmake[1]: Leaving directory`/Users/rickstrong/Desktop/m5-2.0b3/build/libelf/build/po'gmake: *** [install-recursive] Error 1scons: *** [build/libelf/lib/libelf.a] Error 512scons: building terminated because of errors.
+_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ _______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+ Hi,Do you think the following program in function void EventQueue::insert(Event *event) is a bug?   if (event->when() <= curr->when() &&  (event->when() < curr->when() || event->priority() <= curr->priority()))                break;I think it should be the following: if (event->when() < curr->when() ||  (event->when() = curr->when() && event->priority() <= curr->priority()))
+                break;
+  
+    
+    快来用音乐为奥运加油得奥运会、演唱会门票
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

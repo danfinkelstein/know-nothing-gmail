@@ -1,0 +1,23 @@
+   A function called flattenIntIndex is defined for each ISA which maps an index defined in an instruction to an index in a disambiguated, contiguous space that the processor can work with. In the case of O3, our out of order model, that index is then renamed to a physical index. The flattenIntIndex function takes in a ThreadContext pointer which gives it access to the state of a particular thread. In the case of SPARC, the value of CWP and GL, the current window pointer and global level respectively, are read from the ThreadContext and used to figure out what actual storage location the instruction is trying to refer to. One caveat of doing things this way in O3 is that instructions which modify to the cwp or gl (or whatever state you need) have to finish executing before the instructions ahead of them can have their indexes flattened. A more aggressive approach might speculatively updated the CWP or GL at rename, but you'd have to do some hacking for that to work.
+Gabe- Show quoted text -
+horsnelm@cs.man.ac.uk wrote:
+Hi,
+I'm porting an in house ISA to the M5 simulator. The architecture contains
+register windows. I'm wondering if anyone can explain in a little more
+detail what the current procedure is for maintaining register windows
+within the Sparc section of the code.
+I can see the CWP manipulation in the save/restore and return(presumably a
+rett?) operations. Having changed the CWP, by what process does a register
+read, say, now fetch the value from the correct physical register?
+Any help much appreciated, thanks.
+Kind Regards,
+Matt Horsnell
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,9 @@
+Ah, this is because this function is static. The problem is that DPRINTF wants something called name that it can call to get the name of whatever context it is in.  Because the class defines name, the name resolution tries that name instead of the global name, but since there's no object, you get the error.
+If you do this:
+StringWrap name("somename");
+at the beginning of the function, it should work.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

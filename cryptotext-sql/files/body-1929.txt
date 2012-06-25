@@ -1,0 +1,18 @@
+Hello, I am trying to stop my workload in FS but I am having problems
+I am using this instruction in the fs.py file:
+test_sys.cpu[i].max_insts_all_threads = 50000000
+Basically what it happens is that the simulation starts and finish
+immediately without running any instructions. In SE mode those
+instructions work fine, are those commands suppose to work in FS?.
+And another question is there any way to make that all the CPUs
+execute the same number of instructions?. The reason for that is that
+I am comparing different algorithms in the cache, and when I run for
+example algorithm A, the CPU 3 execute 4e6 instructions and when I run
+algorithm B the CPU 3 execute 4.5e6. So what I want is that both of
+them do the same number of instructions and in that way the tests are
+equal.
+Thanks a lot in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

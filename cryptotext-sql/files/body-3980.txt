@@ -1,0 +1,9 @@
+How does one reset all statistics?- Show quoted text -
+Nathan Binkert wrote:
+I was wondering if there is a way to clear access stats in a system. Let's say I want to switch between various cpu models that share an l2 cache, but I want to only have the l2 access for the last cpu. Any functionality to reset this python?
+You want to reset specific statistics?  There is currently only a way to reset all statistics.  If you wanted to reset specific stats, you'd have to more or less mimic the existing reset path, but make it only do the ones you want.  Some day, I'd like to move more of the stats code into python, but that's a ways off.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

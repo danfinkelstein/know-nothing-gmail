@@ -1,0 +1,8 @@
+Has anyone ported hotspot or wattch to M5 for any isa and willing to share or offer some advice?
+I believe that nobody has responded because the answer is unfortunately no.  I've heard of people doing stuff like this, but nobody has ever given any inkling of wanting to contribute it back to us.
+We generally like to be helpful, and I think many would find this useful, so if you start digging into one or the other and figure out what they need exactly from the simulator, we can work with you to figure out how to provide it.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

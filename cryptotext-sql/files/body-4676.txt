@@ -1,0 +1,61 @@
+Kevin,
+You're correct that the older
+instructions will wait while the younger instructions are squashing.  I
+just found it easier to code it that way.  However, I disagree that it may
+not be the correct behavior.  Depending on your pipeline, it might be
+beneficial to have branches resolve as early as possible, that way keeping the pipeline
+busy.  I would argue that's more important than having your older
+instructions retire a few cycles earlier, unless your ROB is very full and
+squashing takes many cycles.  It really depends on your pipeline though.You're right;  it just leads to some behavior I wasn't expecting :-).  Thanks for clarifying.
+As far as the dispatch stalls, yes, that's
+how it was coded.  Again it was easier to code that way.  Initially I
+thought that it might not be a big deal, because loads/stores are pretty common. 
+If the ldst queue was full, you would only be able to issue a few instructions before
+being forced to stall anyways.  However, I didn't anticipate the
+store buffer getting full frequently and causing stalls; that may be a bit high
+overhead.  Unfortunately I don't have any of the 21264 documents in
+front of me, so I can't answer whether or not that's what it does. 
+I'll look into it and get back to you about it.Again, not a big deal;  I just wanted to be sure this was the intent.Thanks,   -Vilas 
+I hope this answers your questions,
+ 
+Kevin
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:
+m5-users-bounces@m5sim.org] On Behalf Of Vilas Sridharan
+Sent: Thursday, March 08, 2007
+10:14 AM
+To: M5 users mailing list
+Subject: [m5-users] Two O3 CPU
+behaviors
+ 
+Hello again --
+In working with the O3 CPU model in m5v2.0b2, I've noticed two slightly odd
+behaviors that I wanted to confirm were intended.
+The first question relates to commit.  Specifically, if an instruction is
+in the ROB and ready to commit (an ALU op, say), and there is a younger instruction that needs to be
+squashed (a store that had a memory dependence violation, for example), the
+squash will prevent the older instruction from committing.  Thus, the
+older instruction sits at the head of the ROB for potentially many cycles while
+younger instructions are squashing. 
+Is this intended behavior?  This is the way it's coded (it handles
+squashing before trying to commit, regardless of the age of the inst), but it
+doesn't seem correct to me;  I would think that the older instruction
+should commit before the squash is handled for the younger inst. 
+The second question is regarding dispatch, and I just want to make sure that
+the CPU model is behaving as intended.  I've noticed that dispatch stalls
+on a full ldst queue regardless of the type of instruction that is trying to
+dispatch.  Is this how the 21264 behaved?  It seems that it could
+continue dispatching non-memory reference instructions, at the very
+least.  This stalling behavior can lead to an odd situation where the back
+end of the machine is completely empty (empty IQ, ROB, etc) except for the
+Store Buffer, which is backed up with committed stores (this is how I noticed
+it, anyway). 
+Thanks!
+   -Vilas
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

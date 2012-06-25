@@ -1,0 +1,24 @@
+Snipping important stuff:
+> I am trying to compile m5-2.0b3 on an UltraSPARC T1
+> running Solaris 10.
+> [robertpu@sisu ~]$ gcc -v
+> gcc version 3.4.6
+> [robertpu@sisu ~/m5-2.0b3]$ scons EXTRAS=src/encumbered
+> build/ALPHA_SE/m5.opt -j 5
+> /opt/SUNWspro/bin/CC -o build/ALPHA_SE/python/swig/pyevent.o -c -Qoption
+> ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O
+Looks like you are trying to use the Sun compiler rather than gcc to
+compile m5. I don't know if this is supported. You probably want
+something like CXX=g++ (or perhaps CC=gcc) just before you invoke scons
+to ensure gcc is used
+e.g.
+CXX=g++ scons EXTRAS=src/encumbered
+Hope this helps,
+James
+--
+James.Srinivasan@cl.cam.ac.uk
+http://www.cl.cam.ac.uk/~jrs53/
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

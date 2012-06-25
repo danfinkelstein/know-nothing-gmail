@@ -1,0 +1,11 @@
+I post a more detailed description about how to build cross-compiler
+and create the the benchmark processes in the FAQ.
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks
+You can assign the workload to each cpu in the system.cpu.workload parameter.
+for i in xrange(np):
+    system.cpu[i].workload = [process[i]]
+Meng-Ju
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

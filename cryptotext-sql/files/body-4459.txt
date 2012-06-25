@@ -1,0 +1,44 @@
+It depends on what you're trying to model. If you're trying to model an ethernet hub then the correct thing is to send the packet to all the ethernet interfaces that are connected to the hub. If you are trying to model a switch then you would need to create an MAC address cache. The first 6 bytes of the packet is the destination MAC address and the second 6 bytes is the source MAC address. In the case that the destination address is FF:FF:FF:FF:FF:FF that is a broadcast packet and should be sent to all devices, otherwise you should cache source MAC addreseses/port pairs so given some destination MAC address you could find the port to send it to.
+Ali
+On Jul 2, 2007, at 9:38 AM, Nikolas Galanis wrote:
+Ali,
+I have been looking into the EtherBus object and my approach would be to have the EtherBus keep a list of the connected EtherInt devices so, every time one of these devices wants to transmit to another device a Link can be instantiated between the two EtherInts and let it handle the transmission exactly the way EtherLink does. I have taken the Link class outside the EtherLink definition and I have created different classfiles "link.cc" and "link.hh" for it in order to use it in the EtherBus as well.
+However, in order to know between which 2 machines the Link should be created, I need to know the destination of the transmition. Is there a way to know that? From what I have seen the EtherPacket objects don't appear to have any destination information. Nor does the transmit() function of the ethernet adapter model.
+Nikolas- Show quoted text -
+Ali Saidi wrote:
+Hi Nikolaos,
+The EtherBus object was a work in progress to create an Ethernet Hub, however I don't believe it was ever finished. You are correct in saying that it can't be done with an Etherlink. The EtherBus object was created before we had the level of python integration we do now, so the only way you can probably connect them now is to derive an object from EtherInt that requires a EtherBus pointer as a parameter and then calls etherbus->reg(this) on it. At this point there isn't any way to connect them in python directly but there should be something like the way the ports are connected to a Bus. If you use the Ports code as an example it shouldn't be that difficult to implement similar functionality for the EtherInts (it's where the port idea initially came from anyway). Let us know what you end up doing and we'll try to help where we can.
+Ali
+On Jun 27, 2007, at 10:03 AM, Nikolas Galanis wrote:
+Hi all,
+I am trying to simulate a distributed system using m5 v2-b3 and ALPHA_FS. I have been looking the example in fs.py where you build a 2-machine system by connecting the etherint objects of the two systems using an etherLink.
+My goal is to connect the ethernet interfaces of more than two systems, which as far as I understand cannot be done with  etherLink. There is an EtherBus class present that seems to be the one to use to connect multiple EtherInt devices but I cannot find out how to do it. The EtherBus has a devlist attribute and a reg() function to add devices to the devlist but there doesn't seem to be any way of registering devices using python.
+I have tried the following in my configuration file:
+/
+   ethBus = EtherBus()
+   Parent.testsys1.tsunami.etherint[0].peer = ethB/us
+but the assignment is (obviously) not correct. I get the following error:
+/Traceback (most recent call last):
+ File "<string>", line 1, in <module>
+ File "build/ALPHA_FS/python/m5/main.py", line 326, in main
+   execfile(sys.argv[0], scope)
+ File "configs/myConf/myFS.py", line 120, in <module>
+   root = makeQuadRoot(m_test_sys[0], m_test_sys[1], m_test_sys[2], drive_sys, options.etherdump)
+ File "/media/x3/m5-2.0b3/configs/common/FSConfig.py", line 119, in makeQuadRoot
+   Parent.testsys1.tsunami.etherint[0].peer = ethBus
+ File "build/ALPHA_FS/python/m5/proxy.py", line 56, in __setattr__
+   "cannot set attribute '%s' on proxy object" % attr
+AttributeError: cannot set attribute 'peer' on proxy object/
+Shouldn't the EtherBus have some port attribute like the Bus() class has in order to connect the various EtherInt objects?
+Is there another way to make the interconnections for a distributed memory system?
+Thanks in advance,
+Nikolas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

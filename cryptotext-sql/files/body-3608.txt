@@ -1,0 +1,18 @@
+> Often there are two types of special IPRs or memory regions (or ASIs
+> in SPARC land): one that says "flush the cache line (if any) that
+> matches this address" and another that says "flush the contents of the
+> cache line at this physical index into the cache array".  So a generic
+> cache flush would be a loop over the N lines in the cache using the
+> second type of access, while if you're manually trying to keep a
+> particular location coherent you might use the first type of access.
+But how would you flush just the lines for a particular address space?
+ I'm guessing that no machines do that today, but I can imagine
+machines of the future not having full coherence across the entire
+chip, and wanting to do some sort of coarse software based coherence
+for process migration.  I could imagine a "flush cache line X if it
+matches asn Y" instruction.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,63 @@
+I found the problem within the alpha
+console code.  First, a few variables that should’ve been longs were ints,
+causing any memory size of >2GB to be reported wrong. The second problem was
+the hard coding the MDESC table size to the equivalent of 2GB only, so anything
+over 2GB would fail booting as well.
+I’ve attached the bug fixed console.c code
+to this message for anyone who would be interested in running M5 sims with more
+than 2GB of simulated RAM.
+ 
+Geoff
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of Ali Saidi
+Sent: Thursday, October 18, 2007
+12:17 PM
+To: M5
+ users mailing list
+Subject: Re: [m5-users] Question
+about swapdisk, and supported RAM size
+ 
+On Oct 18, 2007, at 11:59 AM, Geoffrey Blake wrote:
+- Show quoted text -
+I’m still
+running m5-2.0b2 with my TM extensions but have run into a problem.  I am
+running a benchmark that takes up a very large amount of virtual memory, and
+eventually needs to use the swap disk in FS mode.  My first question is,
+after looking at the code for a little bit, it looks like the COW disk is
+brought into main memory as it is written to, but does the disk image in memory
+just keep growing if needed inside M5?
+Yes, although the OS should swap out unused parts.
+It seems
+this would be the case because after running my benchmark for a few hours, the
+virtual memory footprint was 11GB and continued growing.  I’ve calculated
+my worst case memory footprint for the benchmark in question at needing ~3GB of
+memory, so running with 1024MB of RAM the swap disk will be heavily used. 
+ 
+Also, I’m
+trying to add more RAM than 1024MB to the simulation to avoid using the swap
+disk image, but anything over that makes Linux kernel panic.  I’ve checked
+the boot log and I’m getting bizarre memory ranges like the following:
+ 
+Memory
+cluster 0 [0 -
+392]                          
+                                
+Memory
+cluster 1 [392 - -392]  
+ 
+Why would
+Linux be receiving a negative memory range?  I’ll keep looking, I guess it
+could be the console code passing bad values up to the kernel, or something not
+using a 64bit integer.
+ 
+I think the problem is likely the Alpha Console that sets up the values
+before handing them off to the operating system. There are a lot of ints in
+there that should probably be longs.
+ 
+Ali
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

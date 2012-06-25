@@ -1,0 +1,218 @@
+The functions in pseudo_inst.cc are the back end implementation of the
+standard M5 pseudo instructions. In the ISA definition, opcodes are
+selected to encode the pseudo instructions themselves, and those call
+those functions. When they run, they collect parameters for the backend
+using the appropriate ABI for that particular ISA. They then call into
+the generic backend function with those arguments, and it does all the
+work. This has already been done in Alpha, SPARC, and x86, which is also
+in order of most tested and likely to work. If you want to add support
+to a different ISA (which doesn't sound like the case since you mention
+Alpha) then you would need to pick opcodes for that ISA and implement
+the psuedo instruction objects. These objects would call the same
+existing back end functions in pseudo_inst.cc, so you wouldn't need to
+add anything there. If you wanted to add a new pseudo instruction that
+did something different, you'd need a new backend implementation. This
+is the simulator side of things.
+In your simulated program, you'll need to actually use the opcodes that
+correspond with the pseudo instructions to trigger their action in M5.
+In the files in util/m5, there are assembly source files (m5op_alpha.S,
+m5op_x86.S) which have those opcodes as data and wrap them with labels
+so that they look like functions when everything gets built. When you
+call the function from your C program, you go to one of the labels,
+execute the single pseudo instruction there encoded as data, and then
+some sort of return instruction. Because they look like functions, the
+compiler will have put any arguments in the places (typically registers)
+that a function would have expected them to be. The pseudo instruction
+implementation can then scrape them out and pass them into the backend
+function. So that gcc knows what signature to expect for each function,
+there are prototypes defined in util/m5/m5ops.h. This is what you would
+use if you were compiling a binary and wanted to use the pseudo
+instructions.
+Then one level up from that there's an M5 utility program, also in
+util/m5, which is built as described in the previous paragraph. It's
+purpose is to run from the command line and internally trigger one of
+the psuedo instructions as specified by its command line arguments. This
+allows scripts, which otherwise couldn't trigger particular binary
+instructions, to access the pseudo instructions.
+Depending on what you want to do with pseudo instructions, you'll need
+to interact with the pseudo inst system in some (maybe all) of the above
+areas.
+If you need a totally new pseudo instruction, you'll need to pick an
+encoding for it and implement it's instruction object. You'd only need a
+separate backend if you intended for more than one thing to call it. If
+you want to make an existing pseudo instruction available in a new way,
+maybe in a different ISA, you'd need to still pick an encoding and
+implement an instruction, but then you'd scrape out the arguments using
+the ABI and call the existing backend function.
+If you're going to use your pseudo instruction in a binary, then you'll
+want to build m5op_alpha.S, for instance, as a source file into your
+program. You'd then include m5ops.h and call the functions in it to
+trigger the ops. If you're implementing a new instruction, you could
+either add it to those files alongside the others following the same
+pattern, or you could create your own, new setup that achieves the same
+effect. Those files are just a possible implementation.
+If you're going to use your pseudo instruction in a script, then you'll
+want to do all the above, and also make the m5 utility program
+understand how to trigger it.
+Note that all of this is different from adding a new instruction to the
+ISA. If you're not trying to direct the simulation and are instead
+trying to add a new instruction a real machine would use, the M5 side of
+things would be similar, but you wouldn't use it from the simulated
+program in the same way. In that case, you'd either want to stick it in
+your program directly with inline assembly in the right places, or teach
+gcc how to generate it from its intermediate representation as somebody
+else mentioned. I don't know how to do this personally, but it sounds
+like other people do and hopefully they can help you if that's what you
+need.
+Hopefully this gives you a fairly complete idea of what the pseudo
+instruction mechanism is, how to use it, and how to extend it. If not,
+please let us know.
+Gabe
+soumyaroop roy wrote:
+>
+>
+> On Tue, Apr 6, 2010 at 10:48 PM, Pritha Ghoshal <pritha9987@tamu.edu
+- Show quoted text -> <mailto:pritha9987@tamu.edu>> wrote:
+>
+>     Hi,
+>
+>     The functions defined in util/m5(quiesce, arm etc) also seem to be
+>     defined in pseudo_inst.cc files in the /src/sim folder. Do the new
+>     instructions have to be defined in both the places? Also if we
+>     define these instructions, we need to get our benchmark compiled
+>     for an assembly code which will include these new instructions.
+>
+>     Soumyaroop has suggested that we need to change the binutils
+>     folder in the crosscompiler, but we havent been able to find the
+>     specific alpha patches in any of the versions of binutils. Which
+>     version contains the alpha match that needs to be modified?
+>
+>
+> What do you mean by "specific alpha patches" and "alpha match"? Do you
+> mean "GNU assembler code specific to Alpha"? If I recall correctly,
+> there should be tc-alpha.h and tc-alpha.c files in the gas/config
+> directory in the binutils package. They have Alpha specific assembly
+> and disassembly code.
+>
+> To be able to emulate the functionality of a new instruction in M5,
+> you have to modify the ISA description file(s) in M5 by specifying its
+> decode rules and its semantics.
+>
+> But if this is about M5 specific specialized instructions (e.g. for
+> checkpointing or resetting stats, etc.), probably Steve, Nate or Gabe
+> will be able to answer this better.
+>
+> regards,
+> Soumyaroop
+>
+>
+>
+>     Thanks
+>
+>     Pritha
+>
+>
+>     On Tue, Apr 6, 2010 at 9:23 PM, Steve Reinhardt <stever@gmail.com
+>     <mailto:stever@gmail.com>> wrote:
+>
+>         If the instructions aren't absolutely performance critical, it's
+>         easier to put them in a separate .s file in functions and just
+>         call
+>         the functions.  See how the m5-specific instructions are done in
+>         util/m5.
+>
+>         Steve
+>
+>         On Sat, Apr 3, 2010 at 3:28 PM, soumyaroop roy
+>         <sroy@cse.usf.edu <mailto:sroy@cse.usf.edu>> wrote:
+>         > Hi Pritha,
+>         > If your program is in assembly, then you'd just have to make
+>         changes to the
+>         > Alpha assembler (in binutils). If your program is in C (or
+>         any other high
+>         > level language), then you'd also have to make changes to the
+>         alpha machine
+>         > description file (<gcc-root>/gcc/config/alpha/alpha.md
+>         <http://alpha.md>) to specify how to
+>         > emit your specialized instructions in assembly from GCC's RTL
+>         > representation. You'll find information about it in the gcc
+>         internals
+>         > documentation (http://gcc.gnu.org/onlinedocs/gccint/).
+>         > regards,
+>         > Soumyaroop
+>         >
+>         > On Sat, Apr 3, 2010 at 5:52 PM, Pritha Ghoshal
+>         <pritha9987@tamu.edu <mailto:pritha9987@tamu.edu>> wrote:
+>         >>
+>         >> Hi,
+>         >>
+>         >> We need to make some modifications to the Alpha ISA and
+>         insert a few more
+>         >> instructions. But while compiling a program through
+>         crosscompiler, we need
+>         >> to let the cross compiler know about the new instructions.
+>         I guess we need
+>         >> to modify the assembler code of gcc for that.
+>         >>
+>         >> Could someone help us about how to do this and is there any
+>         other way?
+>         >>
+>         >> --
+>         >> Pritha Ghoshal
+>         >>
+>         >>
+>         >> _______________________________________________
+>         >> m5-users mailing list
+>         >> m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>         >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>         >
+>         >
+>         >
+>         > --
+>         > Soumyaroop Roy
+>         > Ph.D. Candidate
+>         > Department of Computer Science and Engineering
+>         > University of South Florida, Tampa
+>         > http://www.csee.usf.edu/~sroy <http://www.csee.usf.edu/%7Esroy>
+>         >
+>         > _______________________________________________
+>         > m5-users mailing list
+>         > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>         > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>         >
+>         _______________________________________________
+>         m5-users mailing list
+>         m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>
+>     --
+>     Pritha Ghoshal
+>
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy <http://www.csee.usf.edu/%7Esroy>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

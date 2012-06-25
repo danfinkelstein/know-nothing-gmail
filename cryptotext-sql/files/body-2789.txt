@@ -1,0 +1,36 @@
+Steve,
+ 
+As best as I could, I tried to glean the aspects from the example you gave that are relevant to our setup and incorporated them.  The main change we did was to switch to LiveProcess workloads from cpu2000.py instead of EIO traces.  This seems to have solved our problem of only one cpu in a multicore system executing any instructions.
+ 
+With some modifications to cpu2000.py to accommodate the SPECCPU 2000 directory structure we have here, I think we've got it partially working.  From the 48 benchmarks listed in cpu2000.py, we select a random number of them to run on our multicore/multithreaded system.
+ 
+For certain benchmark combinations, the simulation successfully reaches max_insts_all_threads.  For others, we get an abort message.  For example:
+(I snipped some portions of the output for compactness)
+ 
+max_insts_all_threads = 10000000num of cpus = 4num threads per cpu = 2system.cpu[0].workload = [gzip_log('alpha','tru64','ref').makeLiveProcess(), lucas('alpha','tru64','ref').makeLiveProcess()]
+system.cpu[1].workload = [gcc_expr('alpha','tru64','ref').makeLiveProcess(), eon_cook('alpha','tru64','ref').makeLiveProcess()]system.cpu[2].workload = [vpr_place('alpha','tru64','ref').makeLiveProcess(), vortex2('alpha','tru64','ref').makeLiveProcess()]
+system.cpu[3].workload = [eon_rushmeier('alpha','tru64','ref').makeLiveProcess(), gzip_graphic('alpha','tru64','ref').makeLiveProcess()]Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000(output snipped)0: system.remote_gdb.listener: listening for remote gdb #7 on port 7007**** REAL SIMULATION ****warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.(output snipped)warn: Increasing stack size by one page.warn: ignoring syscall sigprocmask(1, 1073070158, ...)warn: ignoring syscall setrlimit(3, 4831387568, ...)
+warn: ignoring syscall sigaction(8, 4831387472, ...)warn: ignoring syscall sigaction(13, 4831387472, ...)warn: ignoring syscall sigprocmask(3, 0, ...)m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:313: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+Program aborted at cycle 90073000Abort
+Can you give us any info on what could be causing the assertion to fail? 
+ 
+Thank you,
+Robert Pulumbarit- Show quoted text -
+ 
+On Thu, Jun 26, 2008 at 8:09 AM, Steve Reinhardt <stever@gmail.com> wrote:
+On Thu, Jun 26, 2008 at 4:30 AM, Robert Pulumbarit<robertpulumbarit@gmail.com> wrote:>> Hello,>> In reading through the thread, unless I'm not following correctly, it seems
+> like the EIO trace files that we happen to be using may be a possible> culprit.  As a test to try to eliminate those EIO trace files as suspects,> just using the default config files and workloads that come with m5-stable, is
+> there a way to run a detailed (O3) multicore system in which all cores have> non-zero "# Number of instructions committed" (system.cpux.commit.COM:count)?See the quick/01.hello-2T-smt regression test.  Run it with this command line:
+build/ALPHA_SE/m5.debug tests/run.py quick/01.hello-2T-smt/alpha/linux/o3-timing
+>> I've tried it using a fresh unmodified installation of m5-stable, using this> command line:>> (run from the /configs/example directory)>> ../../../m5-stable/build/ALPHA_SE/m5.opt -d se se.py -n 4 --detailed --caches
+>> The output file se/m5stats.txt shows that only cpu2 commits instructions.  The> three other cpu's commit 0 instructions.>> What command line options should I use to create a 4 core system and assign
+> each core to run its own separate copy of the default "hello world"?  Can> anyone tell me what I am missing in the above command line to do this?You can't do this directly from the command line with se.py.  The
+script creates a single workload (stored in the 'process' variable inthe script) and then assigns that same workload instance to all theCPUs.  This is the right thing to do if you have a multithreadedprogram (e.g., SPLASH); when the application forks new threads, they
+will run on the other CPUs.  For a single-threaded program like "helloworld", it will never fork new threads, so only one CPU gets used.Steve
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

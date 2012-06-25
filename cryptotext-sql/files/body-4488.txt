@@ -1,0 +1,11 @@
+Matthew James Horsnell wrote:
+Thanks for the prompt response, I have scons 0.97.0 installed, the
+temporary fix worked but I am unable to locate a more recent package.
+That's bad news... we've been running with 0.96.*.  The bug was there in earlier versions of 0.96.* and then went away with later versions.  What it appears to mean is that they've reintroduced the bug with the 0.97 release.  Grrr.
+However, I am now running the regression tests, thanks for your help.
+Glad to help... let us know if you run into anything else.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi, all. I am using M5 ALPHA FS mode. The objects added in python script function correct, but is there any way I can refer it in C++ code. Right now, I implement a C++ object I/O device and add it in the FSConfig.py/makeLinuxAlphaSystem. 
+self.myIO = myIO(pio_addr = xxx, devicename = xxx);self.myIO.pio = self.iobus.port.It functions correctly and I can read or write the device from the CPU. If I want to refer to it by the name, NOT by read/write functio; for example, I want to invoke a function in the I/O object, what should I do? I know this requirement sounds wierd, but I really need this. Could anybody here give me a hint? Thank you very much !
+Weidan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

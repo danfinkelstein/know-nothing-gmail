@@ -1,0 +1,14 @@
+Hi,
+   I added some new files in m5/src/mem directory. In m5_2.0b1 version, I
+should add these files'name in the m5/src/SConscript in order to
+compile these files into m5. But this SConscript file is different from
+that in m5_2.0b1 version. What should I do?
+   I also added some new .py files in m5/src/python/m5/objects directory.
+In m5_2.0b1 version, I should add these files'name in the __init__.py.
+But in m5_2.0b3 version, there is no such file. What should I do?
+Thanks,
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

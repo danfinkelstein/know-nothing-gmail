@@ -1,0 +1,14 @@
+Your version of SWIG is too old; you need at least 1.3.28 (see http://www.m5sim.org/wiki/index.php/Compiling_M5#Required_Software).The reason your error is confusing is that these really old versions of SWIG print their version info on stderr rather than stdout, breaking the code in m5's SConstruct that does the version checking.  That's FITNR...
+Steve- Show quoted text -On 10/22/07, Aaron Williams <aswilli@gmail.com> wrote:- Show quoted text -
+Hello All,I have having an error while trying to compile the simulator.  It seems it is not able to properly run SWIG or something. I am not too sure.  Below is the error I am getting.  Please advise.aswilliams@localhost
+ m5-2.0b3]$ python ../scons-local-0.97.0d20070809/scons.py build/ALPHA_SE/m5.debug
+scons: Reading SConscript files ...SWIG Version 1.3.24Copyright (c) 1995-1998University of Utah and the Regents of the University of CaliforniaCopyright (c) 1998-2004University of ChicagoCompiled with i386-redhat-linux-g++ [i386-redhat-linux-gnu]
+Please see http://www.swig.org for reporting bugs and further informationIndexError: list index out of range:
+  File "/home/aswilliams/m5-2.0b3/SConstruct", line 261:
+    if swig_version[0] != 'SWIG' or swig_version[1] != 'Version':Thanks all,Aaron
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

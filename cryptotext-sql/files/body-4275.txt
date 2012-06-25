@@ -1,0 +1,44 @@
+   The problem is that some options should be passed to m5 and some to the configuration script itself. The ones that come before the name of the configuration script are interpreted by m5, and that's where you want --trace-flags. To see what options m5 itself supports, put --help on the command line before the script name. To see what options the script provides, put it after.
+Gabe- Show quoted text -
+rlai@mtu.edu wrote:
+Hi,
+   I have tried to use --trace-flags into command line(written in python
+file) to invoke new traceflags as follow:
+   cmd = m5 + ' -d ' + out_dir +\
+         ' --stats-file=' + sta_file +\
+         ' ' + current_dir + sim_dir + 'configs/' + cf +  '/fs.py' +\
+         ' -b ' + benchmark +\
+         ' --trace-flags=' + 'DRAM' +\
+         ' > ' + std_file + ' 2> ' + err_file
+ When I run the simulation,error message shows:
+   usage: fs.py [options]
+   fs.py: error: no such option: --trace-flags
+   Does anybody know what the problem is ?
+Thanks,
+Tracy
+  
+  I added a new traceflag into traceflags.py. How could I invoke this
+trace flag in the simulation execution.
+  In m5_2.0b1, I could invoke traceflags by using the following
+definition:
+  root.trace.flags = "UART"
+  What should I do in m5_2.0b3?
+      
+--trace-flags=  on the m5 command line.
+m5 --help
+will give you extensive help output.
+   Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

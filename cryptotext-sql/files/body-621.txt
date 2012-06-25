@@ -1,0 +1,33 @@
+Dear all,
+I want to run some multi-threaded benchmarks, which use sockets for
+communication, in m5 FS mode.
+I don't know how to get the network up. Could someone please inform me
+how to do it?
+Thank you very much, in advance!
+Best Regards,
+Arun
+PS:
+I set a host name, assign a static IP to the simulated system, and
+added an entry for loopback in /etc/hosts, but I haven't been
+successful.
+These are the things I did:
+1) hostname sim
+2) /sbin/ifconfig eth0 192.168.10.12 netmask 255.255.255.0 broadcast
+192.168.10.255
+3) Added the following lines to /etc/hosts:
+127.0.0.1       localhost.localdomain localhost
+192.168.10.12 sim sim
+But when I try to ping 127.0.0.1, I get the error:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ping: sendto: Network is unreachable
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+When I try to ping 192.168.10.12, I get this error:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+PING 192.168.10.12 (192.168.10.12): 56 data bytes
+--- 192.168.10.12 ping statistics ---
+1 packets transmitted, 0 packets received, 100% packet loss
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

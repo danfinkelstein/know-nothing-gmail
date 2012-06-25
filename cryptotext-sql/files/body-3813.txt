@@ -1,0 +1,32 @@
+Hey all,
+ 
+I'm adding my own benchmarks which spawns multiple threads each 
+printing out a string. 
+ 
+Things are fine at beginning but when I scale the number of 
+threads to 100, a panic takes place:
+ 
+"Memory value only partially satisfies the functional request. Now 
+what?"
+ 
+This panic takes place in Packet::checkFunctional(Addr addr, int size, 
+uint8_t* data) (mem/packet.cc). A backtrace with gdb reveals 
+that it is triggered by the writeFunc( ) system call (sim/syscall_emul.cc), 
+which is trying to use CopyIn to emulate printing to the 
+screen. The CopyIn sends a functional read request which in turn caused the 
+panic. 
+ 
+I appreciate your help.
+ 
+Thanks!
+ 
+Jiayuan
+ 
+p.s. patch is available, just let me know how to send it to you.
+ 
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

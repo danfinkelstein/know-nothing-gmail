@@ -1,0 +1,68 @@
+Are you using the version of ARM that's in the tree, or the version
+that Steve Hines had available on his website? The one in the tree
+should compile, but I doubt the other one will. The stable repository
+is getting fairly old too, so you might want to try the development
+one. If everything goes as planned there will be a major update of our
+ARM support in around a month or two if you're willing to wait.
+Gabe
+- Show quoted text -
+Quoting ajonwa ajonwa <ajonwa@gmx.com>:
+> Hello Everyone,
+>
+> I get the error shown below while compiling M5-arm. Any ideas on how to fix
+> it?
+>
+> $/Virement/m5/m5-stable$ scons build/ARM_SE/m5.debug scons: Reading
+> SConscript files ... .hg directory not found Checking for leading
+> underscore in global variables...no Checking for C header file Python.h...
+> yes Checking for C library pthread... yes Checking for C library dl... yes
+> Checking for C library util... yes Checking for C library m... yes Checking
+> for C library python2.5... yes Checking for accept(0,0,0) in C++ library
+> None... yes Checking for zlibVersion() in C++ library z... yes Checking for
+> C header file fenv.h... yes Reading
+> /home/Virement/m5/m5-stable/src/arch/alpha/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/arch/arm/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/arch/mips/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/arch/sparc/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/arch/x86/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/mem/protocol/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/mem/ruby/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/cpu/ozone/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/cpu/inorder/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/cpu/simple/SConsopts Reading
+> /home/Virement/m5/m5-stable/src/cpu/o3/SConsopts Building in
+> /home/Virement/m5/m5-stable/build/ARM_SE Using saved variables file
+> /home/Virement/m5/m5-stable/build/variables/ARM_SE Compiling in ARM_SE with
+> MySQL support. AttributeError: Class ArmTLB has no parameter
+> 'cxx_namespace':
+>  File "/home/Virement/m5/m5-stable/SConstruct", line 898:
+>  exports = 'env')
+>  File "/usr/lib/scons-1.2.0.d20100306/SCons/Script/SConscript.py", line
+> 616:
+>  return apply(method, args, kw)
+>  File "/usr/lib/scons-1.2.0.d20100306/SCons/Script/SConscript.py", line
+> 553:
+>  return apply(_SConscript, [self.fs,] + files, subst_kw)
+>  File "/usr/lib/scons-1.2.0.d20100306/SCons/Script/SConscript.py", line
+> 262:
+>  exec _file_ in call_stack[-1].globals
+>  File "/home/Virement/m5/m5-stable/build/ARM_SE/SConscript", line 336:
+>  exec('from m5.objects import %s' % modname)
+>  File "<string>", line 1:
+>  None
+>  File "/home/Virement/m5/m5-stable/build/ARM_SE/SConscript", line 320:
+>  exec file(source.snode.abspath, 'r') in mod.__dict__
+>  File "/home/Virement/m5/m5-stable/src/arch/arm/ArmTLB.py", line 35:
+>  class ArmTLB(SimObject):
+>  File "/home/Virement/m5/m5-stable/src/python/m5/SimObject.py", line 253:
+>  setattr(cls, key, val)
+>  File "/home/Virement/m5/m5-stable/src/python/m5/SimObject.py", line 339:
+>  "Class %s has no parameter \'%s\'" % (cls.__name__, attr)
+>
+> Thanks
+> Ajonwa
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

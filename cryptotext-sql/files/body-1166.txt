@@ -1,0 +1,11 @@
+Dear all,
+ 
+I am using m5 for simulation of multiple threads in multicore environment. I wonder if the SE mode can support thread binding just like the thread affinity API does?
+For i've checked the archives, which indicate that it can implemented in FS, then how about the SE mode? 
+ 
+thanks in advance, sincerely. 
+-- RegardsNing DengSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

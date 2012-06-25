@@ -1,0 +1,50 @@
+Ali is right. When you change CPU_MODELS, you change what cpu models are
+compiled into M5. Then you need to change what cpu model the
+configuration script to M5, se.py, tries to use. In the case of se.py,
+the -d option tells it to use the detailed cpu. Make sure you put the -d
+after se.py on the command line. If you want to see what other options
+the se.py script supports, you can pass it the --help option.
+Gabe
+- Show quoted text -
+Ali Saidi wrote:
+> Exactly what change did you make? All you should have to do is specify
+> -d on the command line for a detailed (o3) cpu.
+>
+> Ali
+>
+> On Mar 27, 2008, at 4:54 AM, nathaniel jones wrote:
+>> hi, a very newbie question here. could the SE.py script be used with
+>> 03CPU? I tried changing the CPU model option to "03CPU" when
+>> compiling/building the executable and it compiles fine, except than
+>> when i try using SE.py it returns
+>>
+>> Traceback (most recent call last):
+>>   File "<string>", line 1, in <module>
+>>   File "build/ALPHA_SE/python/m5/main.py", line 350, in main
+>>     execfile(sys.argv[0], scope)
+>>   File "configs/example/se.py", line 83, in <module>
+>>     (CPUClass, test_mem_mode, FutureClass) =
+>> Simulation.setCPUClass(options)
+>>   File "/home/nathjones/m5/configs/common/Simulation.py", line 19, in
+>> setCPUClass
+>>     class TmpClass(AtomicSimpleCPU): pass
+>> NameError: global name 'AtomicSimpleCPU' is not defined
+>>
+>> The same thing happens when I use TimingSimpleCPU
+>>
+>> It works when I use AtomicSimpleCPU or the default value though.
+>>
+>> Thanks!
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

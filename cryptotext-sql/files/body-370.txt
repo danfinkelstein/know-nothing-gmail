@@ -1,0 +1,14 @@
+> We are trying to implement a type of Hardware Transactional memory on M5
+> Simulator. We need to modify a lot of parts for that and would like to check
+> small modules before running the entire program on a benchmark. Is there any way
+> to do that?
+I'm not exactly sure what you're asking for.  Component testing?  If
+so, there aren't really test harnesses for each individual M5
+components as they all pretty much depend on each other.  For generic
+simulator functions like the event queue, statistics, etc., there are
+some tests in src/unittest
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

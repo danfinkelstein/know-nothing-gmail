@@ -1,0 +1,26 @@
+Thanks for the more specific explanation... that helped a lot.The decision about whether to update the link register or not is on line 213 of src/arch/alpha/isa/branch.isa, and is indeed hard-coded to check for RA equal to 31.  It looks like the ISA decoder as a whole only uses "31" and not a predefined constant for the zero register.  Note that this is outside of C++, so the ZeroReg constant doesn't mean anything here.
+Steve- Show quoted text -On 8/16/07, horsnelm@cs.man.ac.uk <horsnelm@cs.man.ac.uk
+> wrote:>"Steve Reinhardt" wrote>> I'm a little confused... shouldn't it behave differently when you change
+> the value of an important constant? :-)Sure I agree that it should behave differently, but shouldn't it carry outthe same operations just on different registers as defined by theconstants?
+The key difference in the two traces is at global time 3000:When ZeroReg is 31, and ReturnAddressReg is 0 we see:  3000: system.cpu0: Fetch: PC:0x101b74 NPC:0x101b78  3000: global: Set register 31 = 0x0
+  3000: system.cpu0: Decode: Decoded jsr instruction: 0x54170000  3000: global: Read register 23 = 0x101a50  3000: global: Set register 0 = 0x101b78Whereas when ZeroReg is 0, and ReturnAddressReg is 31 we see:
+  3000: system.cpu0: Fetch: PC:0x101b74 NPC:0x101b78  3000: global: Set register 0 = 0x0  3000: system.cpu0: Decode: Decoded jsr instruction: 0x54170000  3000: global: Read register 23 = 0x101a50
+The final set register call is missing, and this is my confusion. As faras I can tell I've tracked down the obvious references to ZeroReg whichwere coded as 31. For example where the destination is compared to 31 and
+the op is replaced with a nop.But yet still I see this difference, I was just wondering if you had anyideas as to where it could occur. The operation occuring is a jsr, whichis of the JUMP format (identical to alpha for now).
+I'll try the trace method you suggest.Thanks,Matt>> I'm not too surprised that there are some hard-coded 31s in the Alpha ISA> definition; those should be converted to say ZeroReg if that's what they
+> are> representing.>> I guess it's just not clear to me what "correct" behavior you're expecting> here.>> FYI, check out the "tracediff" tool in utils... it's invaluable for seeing
+> where two different executions diverge.  I use it all the time with> --trace-flags=3DAll or All,-Event.  See the comments in the script header> f=> or> instructions, and let me know if you have any questions about it.
+>> Steve>> On 8/15/07, horsnelm@cs.man.ac.uk <horsnelm@cs.man.ac.uk> wrote:>>>> I am progressing with my ISA implementation. As mentioned before I am
+>> porting the Alpha ISA to use our in house ISA.>>>> Interestingly, today when I tried to change the ZeroReg definition (reg>> 31>> in alpha) to reg 0, I get different output from a trace run of the first
+>> few instructions of my program (a binary compiled to our ISA, have>> manipulated the elf libraries to accept it in m5).>>>> Can anyone tell me why there is a reliance on ZeroReg (and
+>> ReturnAddressReg) being redefined? A quick search of the alpha code>> (which>> my port is based on) reveals that a lot of hard-coded constants are>> still>> left in the code (=3D=3D 31, !=3D 31 etc), I have tried changing these
+>> to=>  (=3D=3D>> ZeroReg, !=3D ZeroReg) in my port, but I still get incorrect output when>> defining ZeroReg as 0.>>>> I've not yet had a good luck inside the ISA specific parts of the CPU
+>> code, are there any hard-coded constants there?>>> -------------- next part --------------> An HTML attachment was scrubbed...> URL:> 
+http://m5sim.org/pipermail/m5-users/attachments/20070815/71272d50/atta=> chment.html>> ------------------------------>> _______________________________________________> m5-users mailing list
+> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>> End of m5-users Digest, Vol 13, Issue 14
+> ****************************************>_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

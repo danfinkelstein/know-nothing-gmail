@@ -1,0 +1,76 @@
+On Oct 21, 2008, at 2:06 PM, Rick Strong wrote:
+> Hi all,
+>
+> I am attempting to generate all the stats necessary in the
+> SimpleTimingCPU model for our new power model. The last thing I need
+> to
+> know is the number of register accesses. However, src/base/cpu.hh,
+> there
+> are many functions that access the registers. Which functions do I
+> have
+> to add an increment to the new register_access statistic? This for
+> integer I see:
+>
+> uint64_t readIntRegOperand(const StaticInst *si, int idx)
+> void setIntRegOperand(const StaticInst *si, int idx, uint64_t val)
+These are integer registers read and write respectively.
+>
+> For float there is:
+>
+> FloatReg readFloatRegOperand(const StaticInst *si, int idx, int width)
+> FloatReg readFloatRegOperand(const StaticInst *si, int idx)
+Some ISAs support multi-width registers like SPARCs support for N
+single precision, N/2 double precision, and N/4 quad precision
+floating point registers with the same register file. In this case the
+width determines how many single precision registers are read. I
+believe on most other ISAs it's ignored and you get a quad-word
+register on a read.
+> FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx,
+> int
+> width)
+> FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx)
+The bits versions return an int (i.e. a uint64_t rather than a double)
+that is used for reading/writing to memory normally and copying the
+register file.
+>
+> void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val,
+>                            int width)
+> void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val)
+> void setFloatRegOperandBits(const StaticInst *si, int idx,
+>                                FloatRegBits val, int width)
+> void setFloatRegOperandBits(const StaticInst *si, int idx,
+>                                FloatRegBits val
+Write versions of the above.
+>
+> But then to add a bit more confusion, there is:
+>
+> MiscReg readMiscRegNoEffect(int misc_reg)
+> MiscReg readMiscReg(int misc_reg)
+> void setMiscRegNoEffect(int misc_reg, const MiscReg &val)
+> void setMiscReg(int misc_reg, const MiscReg &val)
+> MiscReg readMiscRegOperandNoEffect(const StaticInst *si, int idx)
+> MiscReg readMiscRegOperand(const StaticInst *si, int idx)
+> void setMiscRegOperandNoEffect(const StaticInst *si, int idx, const
+> MiscReg &val)
+> void setMiscRegOperand(const StaticInst *si, int idx, const MiscReg
+> &val)\\
+Miscellenous registers are ISA registers that aren't int or floats.
+They normally control some aspect of the processor like translation,
+privilege level, register windowing, etc. Some of the registers have
+read or write side-effects (E.g. a counter register that is reset on a
+read). If the simulator just wants that information to create a
+checkpoint, you don't want to accidently reset the counter. Thus, the
+no effect variants provide a way to get at the value of the data
+without the effect of the read.
+>
+> So to which functions to I need to add the register_access statistic
+> increment in order to catch all register accesses? What are the
+> miscReg
+> variants for? What is the difference between Effect and NoEffect?
+Pretty much all of them. Although you probably want bin them based of
+floating point/ integer/misc.
+Ali
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

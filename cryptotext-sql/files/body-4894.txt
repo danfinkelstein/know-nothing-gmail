@@ -1,0 +1,5 @@
+Hi,I am using M5_1.1.I am trying to insert DPRINTF statement in /mem/cache/coherence/coherence_protocol.cc, which works in many other files.However, I always get the same error:m5/mem/cache/coherence/coherence_protocol.cc:208: error: cannot call member function `virtual const std::string SimObject::name() const' without objectI looked into other files and included the #include "base/trace.hh" // for DPRINTFBut the error is still there.Can anybody tell me how to fix that?Thanks,Chenjie 
+Check out the all-new Yahoo! Mail beta - Fire up a more powerful email and get things done faster._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,838 @@
+Attached are some files. No parameter of O3CPU is touched. Some cache parameters like mshrs are changed. I attach my script file, the result of tracediff with timing and detailed,call stack and final part of instruction traces from both timing and detailed model. Looks like detailed is executing instructions tice and at different ticks but if we ignore these two factores, the results of tracediff are very similar.
+Following is printed on screen by tracediff:
+ $ /home/data3/sakram3/m5_2/util/tracediff ./m5.debug --trace-flags="Exec,ExecTicks"  se3.py "--timing|--detailed"  --caches
+Executing /home/data3/sakram3/m5_2/util/rundiff './m5.debug -d tracediff-20485-1 --trace-flags=Exec,ExecTicks se3.py --timing --caches 2>&1 |' './m5.debug -d tracediff-20485-2 --trace-flags=Exec,ExecTicks se3.py --detailed --caches 2>&1 |' 2>&1 > tracediff-20485.out
+Lost sync! at /home/data3/sakram3/m5_2/util/rundiff line 257, <$fh2> line 215.
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 25 Apr 2008 23:27:51 -0500
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] Same Error with Detailed Model
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>I've never seen anything like that. We're going to need more
+>information to figure out what's going on. An command line,
+>instruction trace, same bit of the instruction trace for a timing cpu,
+>etc.
+>
+>Ali
+>
+>On Apr 25, 2008, at 11:11 PM, Shoaib Akram wrote:
+>
+>> I have run most spec benchmarks using timing mode. However, using
+>> detailed model I am getting the following error with almost every
+>> benchmark very early in the simulation. Is there any thing wrong
+>> with the parameters of my O3CPU. Following is one example for gap.
+>> System consist of four cores, private L1, pivate l2 and a shared L3
+>> with Physical memory (not DRAM).
+>>
+>> panic: Tried to access unmapped address 0xffffffffffffffe0.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+# Simple test script
+#
+# "m5 test.py"
+import m5
+from m5.objects import *
+import os, optparse, sys
+m5.AddToPath('../common')
+import Simulation
+from Caches import *
+from cpu2000 import *
+# Get paths we might need.  It's expected this file is in m5/configs/example.
+config_path = os.path.dirname(os.path.abspath(__file__))
+config_root = os.path.dirname(config_path)
+m5_root = os.path.dirname(config_root)
+parser = optparse.OptionParser()
+# Benchmark options
+parser.add_option("-c", "--cmd",
+                  default=os.path.join(m5_root, "tests/test-progs/hello/bin/alpha/linux/hello"),
+                  help="The binary to run in syscall emulation mode.")
+parser.add_option("-o", "--options", default="",
+                  help="The options to pass to the binary, use \" \" around the entire\
+                        string.")
+parser.add_option("-i", "--input", default="",
+                  help="A file of input to give to the binary.")
+parser.add_option("--bench", action="store", type="string", default=None,
+                  help="base names for --take-checkpoint and --checkpoint-restore")
+parser.add_option("-S", "--simpoint", action="store_true", default=False,
+                   help="""Use workload simpoints as an instruction offset for
+--checkpoint-restore or --take-checkpoint.""")
+execfile(os.path.join(config_root, "common", "Options.py"))
+(options, args) = parser.parse_args()
+if options.detailed:
+    #check for SMT workload
+    workloads = options.cmd.split(';')
+    if len(workloads) > 1:
+        process = []
+        smt_idx = 0
+        inputs = []
+        if options.input != "":
+            inputs = options.input.split(';')
+        for wrkld in workloads:
+            smt_process = LiveProcess()
+            smt_process.executable = wrkld
+            smt_process.cmd = wrkld + " " + options.options
+            if inputs and inputs[smt_idx]:
+                smt_process.input = inputs[smt_idx]
+            process += [smt_process, ]
+            smt_idx += 1
+if args:
+    print "Error: script doesn't take any positional arguments"
+    sys.exit(1)
+if options.bench:
+    try:
+        if m5.build_env['TARGET_ISA'] != 'alpha':
+            print >>sys.stderr, "Simpoints code only works for Alpha ISA at this time"
+            sys.exit(1)
+        exec("workload = %s('alpha', 'tru64', 'ref')" % options.bench)
+        process = workload.makeLiveProcess()
+    except:
+        print >>sys.stderr, "Unable to find workload for %s" % options.bench
+        sys.exit(1)
+(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+CPUClass.clock = '2GHz'
+#CPUClass.max_insts_all_threads=150000000
+options.num_cpus = 1
+np = options.num_cpus
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+                physmem = PhysicalMemory(range=AddrRange("512MB")),
+                membus = Bus(),
+                mem_mode = test_mem_mode
+                                         )
+system.physmem.latency="100ns"
+system.membus.clock = '1GHz'
+system.membus.header_cycles=1
+system.membus.width=64
+for i in xrange(np):
+    if options.caches:
+        system.cpu[i].addPrivateSplitL1Caches(L1Cache(size='32kB'),L1Cache(size='64kB'))
+        system.cpu[i].l2=L2Cache(size='1MB')
+        system.cpu[i].tol2bus=Bus()
+        system.cpu[i].l2.cpu_side = system.cpu[i].tol2bus.port
+        system.cpu[i].l2.mem_side = system.membus.port
+        system.cpu[i].connectMemPorts(system.cpu[i].tol2bus)
+system.l3=L3Cache(size='32MB')
+system.tol3bus=Bus()
+system.l3.cpu_side=system.membus.port
+system.l3.mem_side=system.tol3bus.port
+system.physmem.port=system.tol3bus.port
+root = Root(system = system)
+workload1 = vortex1('alpha','true64','ref')
+root.system.cpu[0].workload = workload1.makeLiveProcess()
+workload1.ref('alpha','true64')
+Simulation.run(options, root, system, FutureClass)
+-./m5.debug -d tracediff-31352-1 --trace-flags=Exec,ExecTicks se3.py --timing --caches 2>&1 |
++./m5.debug -d tracediff-31352-2 --trace-flags=Exec,ExecTicks se3.py --detailed --caches 2>&1 |
+-0: system.remote_gdb.listener: listening for remote gdb #0 on port 7001
++0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+ warn: Entering event queue @ 0.  Starting simulation...
+ M5 Simulator System
+@@ -10 +10 @@
+ M5 compiled Apr 25 2008 23:51:55
+ M5 started Sat Apr 26 01:29:12 2008
+ M5 executing on n257
+-command line: ./m5.debug -d tracediff-31352-1 --trace-flags=Exec,ExecTicks se3.py --timing --caches
++command line: ./m5.debug -d tracediff-31352-2 --trace-flags=Exec,ExecTicks se3.py --detailed --caches
+ Global frequency set at 1000000000000 ticks per second
+ **** REAL SIMULATION ****
+- 148000: system.cpu T0 : @__start : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91ff0
+-warn: Increasing stack size by one page.
+- 150000: system.cpu T0 : @__start+4 : stq        r31,8(r30)      : MemWrite :  D=0x0000000000000000 A=0x11ff91ff8
+- 299000: system.cpu T0 : @__start+8 : br         r1,0x120026a5c  : IntAlu :  D=0x0000000120026a5c
+- 301000: system.cpu T0 : @__start+12 : ldl        r16,16(r30)     : MemRead :  D=0x0000000000000002 A=0x11ff92000
+- 450000: system.cpu T0 : @__start+16 : lda        r17,24(r30)     : IntAlu :  D=0x000000011ff92008
+- 451000: system.cpu T0 : @__start+20 : ldah       r29,8191(r1)    : IntAlu :  D=0x0000000140016a5c
+- 452000: system.cpu T0 : @__start+24 : s8addq     r16,r17,r18     : IntAlu :  D=0x000000011ff92018
+- 453000: system.cpu T0 : @__start+28 : addq       r18,8,r18       : IntAlu :  D=0x000000011ff92020
+- 454000: system.cpu T0 : @__start+32 : lda        r29,6564(r29)   : IntAlu :  D=0x0000000140018400
+- 455000: system.cpu T0 : @__start+36 : bis        r18,r18,r19     : IntAlu :  D=0x000000011ff92020
+- 456000: system.cpu T0 : @__start+40 : ldq        r1,0(r19)       : MemRead :  D=0x0000000000000000 A=0x11ff92020
+- 458000: system.cpu T0 : @__start+44 : addq       r19,8,r19       : IntAlu :  D=0x000000011ff92028
+- 606000: system.cpu T0 : @__start+48 : bne        r1,0x120026a78  : IntAlu :
+- 607000: system.cpu T0 : @__start+52 : nop        (bis        r31,r31,r31) : No_OpClass :
+- 609000: system.cpu T0 : @__start+56 : ldq        r27,-32720(r29) : MemRead :  D=0x00000001200c7c60 A=0x140010430
+- 759000: system.cpu T0 : @__start+60 : stl        r16,-16456(r29) : MemWrite :  D=0x0000000000000002 A=0x1400143b8
+- 908000: system.cpu T0 : @__start+64 : nop        (bis        r31,r31,r31) : No_OpClass :
+- 909000: system.cpu T0 : @__start+68 : stq        r17,-16448(r29) : MemWrite :  D=0x000000011ff92008 A=0x1400143c0
+-1058000: system.cpu T0 : @__start+72 : nop        (bis        r31,r31,r31) : No_OpClass :
+-1059000: system.cpu T0 : @__start+76 : stq        r18,-16464(r29) : MemWrite :  D=0x000000011ff92020 A=0x1400143b0
+-1061000: system.cpu T0 : @__start+80 : nop        (bis        r31,r31,r31) : No_OpClass :
+-1062000: system.cpu T0 : @__start+84 : stq        r19,-16440(r29) : MemWrite :  D=0x000000011ff92028 A=0x1400143c8
+-1064000: system.cpu T0 : @__start+88 : beq        r27,0x120026ab8 : IntAlu :
+-1065000: system.cpu T0 : @__start+92 : jsr        r26,(r27)       : IntAlu :  D=0x0000000120026ab0
+-1213000: system.cpu T0 : @__istart : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fe0
+-1214000: system.cpu T0 : @__istart+4 : stq        r27,8(r30)      : MemWrite :  D=0x00000001200c7c60 A=0x11ff91fe8
+-1216000: system.cpu T0 : @__istart+8 : stq        r26,0(r30)      : MemWrite :  D=0x0000000120026ab0 A=0x11ff91fe0
+-1218000: system.cpu T0 : @__istart+12 : ldq        r27,8(r30)      : MemRead :  D=0x00000001200c7c60 A=0x11ff91fe8
+-1220000: system.cpu T0 : @__istart+16 : ldah       r27,-2(r27)     : IntAlu :  D=0x00000001200a7c60
+-1221000: system.cpu T0 : @__istart+20 : lda        r27,16848(r27)  : IntAlu :  D=0x00000001200abe30
+-1222000: system.cpu T0 : @__istart+24 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200c7c7c
+-1370000: system.cpu T0 : @__init_libc : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001be30
+-1371000: system.cpu T0 : @__init_libc+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-1372000: system.cpu T0 : @__init_libc+8 : lda        r29,-14896(r29) : IntAlu :  D=0x0000000140018400
+-1373000: system.cpu T0 : @__init_libc+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-1521000: system.cpu T0 : @__init_libc+16 : nop        (bis        r31,r31,r31) : No_OpClass :
+-1522000: system.cpu T0 : @__init_libc+20 : ldq        r27,-27152(r29) : MemRead :  D=0x00000001200aff20 A=0x1400119f0
+-1671000: system.cpu T0 : @__init_libc+24 : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fd0
+-1672000: system.cpu T0 : @__init_libc+28 : ldl        r2,-17120(r29)  : MemRead :  D=0x0000000000000000 A=0x140014120
+-1821000: system.cpu T0 : @__init_libc+32 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200c7c7c A=0x11ff91fd0
+-1823000: system.cpu T0 : @__init_libc+36 : bne        r2,0x1200abeb8  : IntAlu :
+-1824000: system.cpu T0 : @__init_libc+40 : nop        (bis        r31,r31,r31) : No_OpClass :
+-1825000: system.cpu T0 : @__init_libc+44 : bsr        r26,__tis_init  : IntAlu :  D=0x00000001200abe60
+-1973000: system.cpu T0 : @__tis_init : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001ff20
+-1974000: system.cpu T0 : @__tis_init+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-1975000: system.cpu T0 : @__tis_init+8 : lda        r29,-31520(r29) : IntAlu :  D=0x0000000140018400
+-1976000: system.cpu T0 : @__tis_init+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-1977000: system.cpu T0 : @__tis_init+16 : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fc0
+-1978000: system.cpu T0 : @__tis_init+20 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200abe60 A=0x11ff91fc0
+-1980000: system.cpu T0 : @__tis_init+24 : call_pal   rduniq          : IntAlu :  D=0x0000000000000000
+-1981000: system.cpu T0 : @__tis_init+28 : ldah       r16,-1(r29)     : IntAlu :  D=0x0000000140008400
+-2129000: system.cpu T0 : @__tis_init+32 : bne        r0,0x1200aff4c  : IntAlu :
+-2130000: system.cpu T0 : @__tis_init+36 : lda        r16,20152(r16)  : IntAlu :  D=0x000000014000d2b8
+-2131000: system.cpu T0 : @__tis_init+40 : call_pal   wruniq          : IntAlu :  D=0x000000014000d2b8
+-2132000: system.cpu T0 : @__tis_init+44 : ldq        r27,-26152(r29) : MemRead :  D=0x00000001200abff0 A=0x140011dd8
+-2281000: system.cpu T0 : @__tis_init+48 : nop        (bis        r31,r31,r31) : No_OpClass :
+-2282000: system.cpu T0 : @__tis_init+52 : bsr        r26,__find_base_address : IntAlu :  D=0x00000001200aff58
+-2430000: system.cpu T0 : @__find_base_address : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001bff0
+-2431000: system.cpu T0 : @__find_base_address+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-2432000: system.cpu T0 : @__find_base_address+8 : lda        r29,-15344(r29) : IntAlu :  D=0x0000000140018400
+-2433000: system.cpu T0 : @__find_base_address+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-2581000: system.cpu T0 : @__find_base_address+16 : ldq        r0,-27232(r29)  : MemRead :  D=0x0000000000000000 A=0x1400119a0
+-2730000: system.cpu T0 : @__find_base_address+20 : nop        (bis        r31,r31,r31) : No_OpClass :
+-2731000: system.cpu T0 : @__find_base_address+24 : lda        r30,-32(r30)    : IntAlu :  D=0x000000011ff91fa0
+-2732000: system.cpu T0 : @__find_base_address+28 : ldq        r1,-16848(r29)  : MemRead :  D=0x0000000000000000 A=0x140014230
+-2881000: system.cpu T0 : @__find_base_address+32 : lda        r0,0(r0)        : IntAlu :  D=0x0000000000000000
+-2882000: system.cpu T0 : @__find_base_address+36 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200aff58 A=0x11ff91fa0
+-3031000: system.cpu T0 : @__find_base_address+40 : stq        r9,8(r30)       : MemWrite :  D=0x0000000000000000 A=0x11ff91fa8
+-3033000: system.cpu T0 : @__find_base_address+44 : stq        r10,16(r30)     : MemWrite :  D=0x0000000000000000 A=0x11ff91fb0
+-3035000: system.cpu T0 : @__find_base_address+48 : stq        r11,24(r30)     : MemWrite :  D=0x0000000000000000 A=0x11ff91fb8
+-3037000: system.cpu T0 : @__find_base_address+52 : beq        r0,0x1200ac0b0  : IntAlu :
+-3185000: system.cpu T0 : @__find_base_address+192 : ldq        r2,-27256(r29)  : MemRead :  D=0x0000000120000000 A=0x140011988
+-3187000: system.cpu T0 : @__find_base_address+196 : nop        (bis        r31,r31,r31) : No_OpClass :
+-3188000: system.cpu T0 : @__find_base_address+200 : beq        r2,0x1200ac080  : IntAlu :
+-3189000: system.cpu T0 : @__find_base_address+204 : lda        r3,-8192(r31)   : IntAlu :  D=0xffffffffffffe000
+-3337000: system.cpu T0 : @__find_base_address+208 : and        r2,r3,r0        : IntAlu :  D=0x0000000120000000
+-3338000: system.cpu T0 : @__find_base_address+212 : br         0x1200ac088     : IntAlu :
+-3339000: system.cpu T0 : @__find_base_address+152 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200aff58 A=0x11ff91fa0
+-3341000: system.cpu T0 : @__find_base_address+156 : ldq        r9,8(r30)       : MemRead :  D=0x0000000000000000 A=0x11ff91fa8
+-3343000: system.cpu T0 : @__find_base_address+160 : ldq        r10,16(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91fb0
+-3345000: system.cpu T0 : @__find_base_address+164 : ldq        r11,24(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91fb8
+-3347000: system.cpu T0 : @__find_base_address+168 : lda        r30,32(r30)     : IntAlu :  D=0x000000011ff91fc0
+-3348000: system.cpu T0 : @__find_base_address+172 : ret        (r26)           : IntAlu :
+-3349000: system.cpu T0 : @__tis_init+56 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200abe60 A=0x11ff91fc0
+-3351000: system.cpu T0 : @__tis_init+60 : nop        (bis        r31,r31,r31) : No_OpClass :
+-3352000: system.cpu T0 : @__tis_init+64 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
+-3353000: system.cpu T0 : @__tis_init+68 : lda        r1,20152(r1)    : IntAlu :  D=0x000000014000d2b8
+-3355000: system.cpu T0 : @__tis_init+72 : stq        r0,56(r1)       : MemWrite :  D=0x0000000120000000 A=0x14000d2f0
+-3504000: system.cpu T0 : @__tis_init+76 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91fd0
+-3505000: system.cpu T0 : @__tis_init+80 : ret        (r26)           : IntAlu :
+-3506000: system.cpu T0 : @__init_libc+48 : nop        (bis        r31,r31,r31) : No_OpClass :
+-3507000: system.cpu T0 : @__init_libc+52 : ldq        r27,-27160(r29) : MemRead :  D=0x00000001200ab6c0 A=0x1400119e8
+-3509000: system.cpu T0 : @__init_libc+56 : nop        (bis        r31,r31,r31) : No_OpClass :
+-3510000: system.cpu T0 : @__init_libc+60 : bsr        r26,__libc_locks_init : IntAlu :  D=0x00000001200abe70
+-3658000: system.cpu T0 : @__libc_locks_init : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001b6c0
+-3659000: system.cpu T0 : @__libc_locks_init+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-3660000: system.cpu T0 : @__libc_locks_init+8 : lda        r29,-12992(r29) : IntAlu :  D=0x0000000140018400
+-3661000: system.cpu T0 : @__libc_locks_init+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-3662000: system.cpu T0 : @__libc_locks_init+16 : ldah       r4,-1(r29)      : IntAlu :  D=0x0000000140008400
+-3663000: system.cpu T0 : @__libc_locks_init+20 : ldq        r1,-27168(r29)  : MemRead :  D=0x00000001400067c0 A=0x1400119e0
+-3666000: system.cpu T0 : @__libc_locks_init+24 : stq        r1,-8216(r4)    : MemWrite :  D=0x00000001400067c0 A=0x1400063e8
+-3815000: system.cpu T0 : @__libc_locks_init+28 : lda        r3,56(r1)       : IntAlu :  D=0x00000001400067f8
+-3816000: system.cpu T0 : @__libc_locks_init+32 : stq        r3,-8160(r4)    : MemWrite :  D=0x00000001400067f8 A=0x140006420
+-3965000: system.cpu T0 : @__libc_locks_init+36 : lda        r1,112(r1)      : IntAlu :  D=0x0000000140006830
+-3966000: system.cpu T0 : @__libc_locks_init+40 : stq        r1,-8104(r4)    : MemWrite :  D=0x0000000140006830 A=0x140006458
+-4115000: system.cpu T0 : @__libc_locks_init+44 : ret        (r26)           : IntAlu :
+-4116000: system.cpu T0 : @__init_libc+64 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-4117000: system.cpu T0 : @__init_libc+68 : ldah       r0,-1(r29)      : IntAlu :  D=0x0000000140008400
+-4118000: system.cpu T0 : @__init_libc+72 : lda        r16,-16416(r29) : IntAlu :  D=0x00000001400143e0
+-4119000: system.cpu T0 : @__init_libc+76 : ldq        r17,-27192(r29) : MemRead :  D=0x00000001200ab560 A=0x1400119c8
+-4268000: system.cpu T0 : @__init_libc+80 : ldq        r27,20360(r0)   : MemRead :  D=0x00000001200b0490 A=0x14000d388
+-4417000: system.cpu T0 : @__init_libc+84 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200abe88
+-4565000: system.cpu T0 : @__tisVectorGetBounds+1248 : ldah       r29,8182(r27)   : IntAlu :  D=0x0000000140010490
+-4566000: system.cpu T0 : @__tisVectorGetBounds+1252 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-4567000: system.cpu T0 : @__tisVectorGetBounds+1256 : lda        r29,32624(r29)  : IntAlu :  D=0x0000000140018400
+-4568000: system.cpu T0 : @__tisVectorGetBounds+1260 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-4569000: system.cpu T0 : @__tisVectorGetBounds+1264 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
+-4570000: system.cpu T0 : @__tisVectorGetBounds+1268 : bis        r31,r31,r7      : IntAlu :  D=0x0000000000000000
+-4571000: system.cpu T0 : @__tisVectorGetBounds+1272 : bis        r31,1,r20       : IntAlu :  D=0x0000000000000001
+-4572000: system.cpu T0 : @__tisVectorGetBounds+1276 : lda        r1,-368(r1)     : IntAlu :  D=0x0000000140008290
+-4574000: system.cpu T0 : @__tisVectorGetBounds+1280 : ldq        r4,8(r1)        : MemRead :  D=0x0000000000000001 A=0x140008298
+-4723000: system.cpu T0 : @__tisVectorGetBounds+1284 : lda        r18,108(r1)     : IntAlu :  D=0x00000001400082fc
+-4724000: system.cpu T0 : @__tisVectorGetBounds+1288 : ldl        r3,8(r1)        : MemRead :  D=0x0000000000000001 A=0x140008298
+-4726000: system.cpu T0 : @__tisVectorGetBounds+1292 : ldq        r6,24(r1)       : MemRead :  D=0x0000000000000000 A=0x1400082a8
+-4875000: system.cpu T0 : @__tisVectorGetBounds+1296 : lda        r19,-3(r4)      : IntAlu :  D=0xfffffffffffffffe
+-4876000: system.cpu T0 : @__tisVectorGetBounds+1300 : lda        r4,1(r4)        : IntAlu :  D=0x0000000000000002
+-4877000: system.cpu T0 : @__tisVectorGetBounds+1304 : cmple      r3,255,r5       : IntAlu :  D=0x0000000000000001
+-4878000: system.cpu T0 : @__tisVectorGetBounds+1308 : stq        r4,8(r1)        : MemWrite :  D=0x0000000000000002 A=0x140008298
+-5027000: system.cpu T0 : @__tisVectorGetBounds+1312 : bne        r5,0x1200b05c0  : IntAlu :
+-5175000: system.cpu T0 : @__tisVectorGetBounds+1552 : s8addq     r3,r31,r25      : IntAlu :  D=0x0000000000000008
+-5176000: system.cpu T0 : @__tisVectorGetBounds+1556 : bis        r31,16,r23      : IntAlu :  D=0x0000000000000010
+-5177000: system.cpu T0 : @__tisVectorGetBounds+1560 : s4addq     r25,r25,r25     : IntAlu :  D=0x0000000000000028
+-5178000: system.cpu T0 : @__tisVectorGetBounds+1564 : bis        r31,r31,r0      : IntAlu :  D=0x0000000000000000
+-5179000: system.cpu T0 : @__tisVectorGetBounds+1568 : addq       r1,r25,r1       : IntAlu :  D=0x00000001400082b8
+-5180000: system.cpu T0 : @__tisVectorGetBounds+1572 : stq        r31,40(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082e0
+-5329000: system.cpu T0 : @__tisVectorGetBounds+1576 : stq        r17,48(r1)      : MemWrite :  D=0x00000001200ab560 A=0x1400082e8
+-5331000: system.cpu T0 : @__tisVectorGetBounds+1580 : stq        r31,56(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082f0
+-5333000: system.cpu T0 : @__tisVectorGetBounds+1584 : stl        r31,64(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082f8
+-5335000: system.cpu T0 : @__tisVectorGetBounds+1588 : stl        r23,68(r1)      : MemWrite :  D=0x0000000000000010 A=0x1400082fc
+-5337000: system.cpu T0 : @__tisVectorGetBounds+1592 : stq        r16,72(r1)      : MemWrite :  D=0x00000001400143e0 A=0x140008300
+-5486000: system.cpu T0 : @__tisVectorGetBounds+1596 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-5487000: system.cpu T0 : @__tisVectorGetBounds+1600 : stl        r3,0(r16)       : MemWrite :  D=0x0000000000000001 A=0x1400143e0
+-5489000: system.cpu T0 : @__tisVectorGetBounds+1604 : ret        (r26)           : IntAlu :
+-5490000: system.cpu T0 : @__init_libc+88 : ldah       r29,8183(r26)   : IntAlu :  D=0x000000014001be88
+-5491000: system.cpu T0 : @__init_libc+92 : bis        r31,r31,r17     : IntAlu :  D=0x0000000000000000
+-5492000: system.cpu T0 : @__init_libc+96 : lda        r29,-14984(r29) : IntAlu :  D=0x0000000140018400
+-5493000: system.cpu T0 : @__init_libc+100 : ldah       r0,-1(r29)      : IntAlu :  D=0x0000000140008400
+-5494000: system.cpu T0 : @__init_libc+104 : lda        r16,-16408(r29) : IntAlu :  D=0x00000001400143e8
+-5495000: system.cpu T0 : @__init_libc+108 : ldq        r27,20360(r0)   : MemRead :  D=0x00000001200b0490 A=0x14000d388
+-5497000: system.cpu T0 : @__init_libc+112 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200abea4
+-5498000: system.cpu T0 : @__tisVectorGetBounds+1248 : ldah       r29,8182(r27)   : IntAlu :  D=0x0000000140010490
+-5499000: system.cpu T0 : @__tisVectorGetBounds+1252 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-5500000: system.cpu T0 : @__tisVectorGetBounds+1256 : lda        r29,32624(r29)  : IntAlu :  D=0x0000000140018400
+-5501000: system.cpu T0 : @__tisVectorGetBounds+1260 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-5502000: system.cpu T0 : @__tisVectorGetBounds+1264 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
+-5503000: system.cpu T0 : @__tisVectorGetBounds+1268 : bis        r31,r31,r7      : IntAlu :  D=0x0000000000000000
+-5504000: system.cpu T0 : @__tisVectorGetBounds+1272 : bis        r31,1,r20       : IntAlu :  D=0x0000000000000001
+-5505000: system.cpu T0 : @__tisVectorGetBounds+1276 : lda        r1,-368(r1)     : IntAlu :  D=0x0000000140008290
+-5506000: system.cpu T0 : @__tisVectorGetBounds+1280 : ldq        r4,8(r1)        : MemRead :  D=0x0000000000000002 A=0x140008298
+-5508000: system.cpu T0 : @__tisVectorGetBounds+1284 : lda        r18,108(r1)     : IntAlu :  D=0x00000001400082fc
+-5509000: system.cpu T0 : @__tisVectorGetBounds+1288 : ldl        r3,8(r1)        : MemRead :  D=0x0000000000000002 A=0x140008298
+-5511000: system.cpu T0 : @__tisVectorGetBounds+1292 : ldq        r6,24(r1)       : MemRead :  D=0x0000000000000000 A=0x1400082a8
+-5513000: system.cpu T0 : @__tisVectorGetBounds+1296 : lda        r19,-3(r4)      : IntAlu :  D=0xffffffffffffffff
+-5514000: system.cpu T0 : @__tisVectorGetBounds+1300 : lda        r4,1(r4)        : IntAlu :  D=0x0000000000000003
+-5515000: system.cpu T0 : @__tisVectorGetBounds+1304 : cmple      r3,255,r5       : IntAlu :  D=0x0000000000000001
+-5516000: system.cpu T0 : @__tisVectorGetBounds+1308 : stq        r4,8(r1)        : MemWrite :  D=0x0000000000000003 A=0x140008298
+-5518000: system.cpu T0 : @__tisVectorGetBounds+1312 : bne        r5,0x1200b05c0  : IntAlu :
+-5519000: system.cpu T0 : @__tisVectorGetBounds+1552 : s8addq     r3,r31,r25      : IntAlu :  D=0x0000000000000010
+-5520000: system.cpu T0 : @__tisVectorGetBounds+1556 : bis        r31,16,r23      : IntAlu :  D=0x0000000000000010
+-5521000: system.cpu T0 : @__tisVectorGetBounds+1560 : s4addq     r25,r25,r25     : IntAlu :  D=0x0000000000000050
+-5522000: system.cpu T0 : @__tisVectorGetBounds+1564 : bis        r31,r31,r0      : IntAlu :  D=0x0000000000000000
+-5523000: system.cpu T0 : @__tisVectorGetBounds+1568 : addq       r1,r25,r1       : IntAlu :  D=0x00000001400082e0
+-5524000: system.cpu T0 : @__tisVectorGetBounds+1572 : stq        r31,40(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008308
+-5526000: system.cpu T0 : @__tisVectorGetBounds+1576 : stq        r17,48(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008310
+-5528000: system.cpu T0 : @__tisVectorGetBounds+1580 : stq        r31,56(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008318
+-5530000: system.cpu T0 : @__tisVectorGetBounds+1584 : stl        r31,64(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008320
+-5532000: system.cpu T0 : @__tisVectorGetBounds+1588 : stl        r23,68(r1)      : MemWrite :  D=0x0000000000000010 A=0x140008324
+-5534000: system.cpu T0 : @__tisVectorGetBounds+1592 : stq        r16,72(r1)      : MemWrite :  D=0x00000001400143e8 A=0x140008328
+-5536000: system.cpu T0 : @__tisVectorGetBounds+1596 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-5537000: system.cpu T0 : @__tisVectorGetBounds+1600 : stl        r3,0(r16)       : MemWrite :  D=0x0000000000000002 A=0x1400143e8
+-5539000: system.cpu T0 : @__tisVectorGetBounds+1604 : ret        (r26)           : IntAlu :
+-5540000: system.cpu T0 : @__init_libc+116 : ldah       r29,8183(r26)   : IntAlu :  D=0x000000014001bea4
+-5541000: system.cpu T0 : @__init_libc+120 : bis        r31,1,r1        : IntAlu :  D=0x0000000000000001
+-5542000: system.cpu T0 : @__init_libc+124 : lda        r29,-15012(r29) : IntAlu :  D=0x0000000140018400
+-5543000: system.cpu T0 : @__init_libc+128 : nop        (bis        r31,r31,r31) : No_OpClass :
+-5544000: system.cpu T0 : @__init_libc+132 : stl        r1,-17120(r29)  : MemWrite :  D=0x0000000000000001 A=0x140014120
+-5693000: system.cpu T0 : @__init_libc+136 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200c7c7c A=0x11ff91fd0
+-5695000: system.cpu T0 : @__init_libc+140 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91fe0
+-5843000: system.cpu T0 : @__init_libc+144 : ret        (r26)           : IntAlu :
+-5844000: system.cpu T0 : @__istart+28 : ldq        r26,0(r30)      : MemRead :  D=0x0000000120026ab0 A=0x11ff91fe0
+-5993000: system.cpu T0 : @__istart+32 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91ff0
+-5994000: system.cpu T0 : @__istart+36 : ret        (r26)           : IntAlu :
+-5995000: system.cpu T0 : @__start+96 : ldah       r29,8191(r26)   : IntAlu :  D=0x0000000140016ab0
+-5996000: system.cpu T0 : @__start+100 : lda        r29,6480(r29)   : IntAlu :  D=0x0000000140018400
+-5997000: system.cpu T0 : @__start+104 : nop        (bis        r31,r31,r31) : No_OpClass :
+-5998000: system.cpu T0 : @__start+108 : ldah       r27,-2(r29)     : IntAlu :  D=0x000000013fff8400
+-6146000: system.cpu T0 : @__start+112 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+-6147000: system.cpu T0 : @__start+116 : nop        (bis        r31,r31,r31) : No_OpClass :
+-6148000: system.cpu T0 : @__start+120 : nop        (bis        r31,r31,r31) : No_OpClass :
++ 159000: system.cpu T0 : @__start : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91ff0
++warn: Increasing stack size by one page.
++ 159000: system.cpu T0 : @__start+4 : stq        r31,8(r30)      : MemWrite :  D=0x0000000000000000 A=0x11ff91ff8
++ 172500: system.cpu T0 : @__start+4 : stq        r31,8(r30)      : MemWrite :  D=0x0000000000000000 A=0x11ff91ff8
++ 172500: system.cpu T0 : @__start+8 : br         r1,0x120026a5c  : IntAlu :  D=0x0000000120026a5c
++ 172500: system.cpu T0 : @__start+12 : ldl        r16,16(r30)     : MemRead :  D=0x00000000ffffffff A=0x11ff92000
++ 335500: system.cpu T0 : @__start+12 : ldl        r16,16(r30)     : MemRead :  D=0x0000000000000002 A=0x11ff92000
++ 335500: system.cpu T0 : @__start+16 : lda        r17,24(r30)     : IntAlu :  D=0x000000011ff92008
++ 335500: system.cpu T0 : @__start+20 : ldah       r29,8191(r1)    : IntAlu :  D=0x0000000140016a5c
++ 335500: system.cpu T0 : @__start+24 : s8addq     r16,r17,r18     : IntAlu :  D=0x000000011ff92018
++ 335500: system.cpu T0 : @__start+28 : addq       r18,8,r18       : IntAlu :  D=0x000000011ff92020
++ 335500: system.cpu T0 : @__start+32 : lda        r29,6564(r29)   : IntAlu :  D=0x0000000140018400
++ 335500: system.cpu T0 : @__start+36 : bis        r18,r18,r19     : IntAlu :  D=0x000000011ff92020
++ 335500: system.cpu T0 : @__start+40 : ldq        r1,0(r19)       : MemRead :  D=0x0000000000000000 A=0x11ff92020
++ 336000: system.cpu T0 : @__start+44 : addq       r19,8,r19       : IntAlu :  D=0x000000011ff92028
++ 337500: system.cpu T0 : @__start+48 : bne        r1,0x120026a78  : IntAlu :
++ 337500: system.cpu T0 : @__start+52 : nop        (bis        r31,r31,r31) : No_OpClass :
++ 337500: system.cpu T0 : @__start+56 : ldq        r27,-32720(r29) : MemRead :  D=0xffffffffffffffff A=0x140010430
++ 502500: system.cpu T0 : @__start+56 : ldq        r27,-32720(r29) : MemRead :  D=0x00000001200c7c60 A=0x140010430
++ 502500: system.cpu T0 : @__start+60 : stl        r16,-16456(r29) : MemWrite :  D=0x0000000000000002 A=0x1400143b8
++ 667000: system.cpu T0 : @__start+60 : stl        r16,-16456(r29) : MemWrite :  D=0x0000000000000002 A=0x1400143b8
++ 667000: system.cpu T0 : @__start+64 : nop        (bis        r31,r31,r31) : No_OpClass :
++ 667000: system.cpu T0 : @__start+68 : stq        r17,-16448(r29) : MemWrite :  D=0x000000011ff92008 A=0x1400143c0
++ 667000: system.cpu T0 : @__start+72 : nop        (bis        r31,r31,r31) : No_OpClass :
++ 667000: system.cpu T0 : @__start+76 : stq        r18,-16464(r29) : MemWrite :  D=0x000000011ff92020 A=0x1400143b0
++ 667000: system.cpu T0 : @__start+80 : nop        (bis        r31,r31,r31) : No_OpClass :
++ 667000: system.cpu T0 : @__start+84 : stq        r19,-16440(r29) : MemWrite :  D=0x000000011ff92028 A=0x1400143c8
++ 667000: system.cpu T0 : @__start+88 : beq        r27,0x120026ab8 : IntAlu :
++ 667500: system.cpu T0 : @__start+92 : jsr        r26,(r27)       : IntAlu :  D=0x0000000120026ab0
++ 979000: system.cpu T0 : @__istart : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fe0
++ 979000: system.cpu T0 : @__istart+4 : stq        r27,8(r30)      : MemWrite :  D=0x00000001200c7c60 A=0x11ff91fe8
++ 979000: system.cpu T0 : @__istart+8 : stq        r26,0(r30)      : MemWrite :  D=0x0000000120026ab0 A=0x11ff91fe0
++ 979000: system.cpu T0 : @__istart+12 : ldq        r27,8(r30)      : MemRead :  D=0x00000001200c7c60 A=0x11ff91fe8
++ 979000: system.cpu T0 : @__istart+16 : ldah       r27,-2(r27)     : IntAlu :  D=0x00000001200a7c60
++ 979000: system.cpu T0 : @__istart+20 : lda        r27,16848(r27)  : IntAlu :  D=0x00000001200abe30
++ 979000: system.cpu T0 : @__istart+24 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200c7c7c
++1144000: system.cpu T0 : @__init_libc : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001be30
++1144000: system.cpu T0 : @__init_libc+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++1144000: system.cpu T0 : @__init_libc+8 : lda        r29,-14896(r29) : IntAlu :  D=0x0000000140018400
++1144000: system.cpu T0 : @__init_libc+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++1293000: system.cpu T0 : @__init_libc+16 : nop        (bis        r31,r31,r31) : No_OpClass :
++1293000: system.cpu T0 : @__init_libc+20 : ldq        r27,-27152(r29) : MemRead :  D=0x00000001200aff20 A=0x1400119f0
++1293000: system.cpu T0 : @__init_libc+24 : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fd0
++1293000: system.cpu T0 : @__init_libc+28 : ldl        r2,-17120(r29)  : MemRead :  D=0x0000000000000000 A=0x140014120
++1293000: system.cpu T0 : @__init_libc+32 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200c7c7c A=0x11ff91fd0
++1293000: system.cpu T0 : @__init_libc+36 : bne        r2,0x1200abeb8  : IntAlu :
++1293000: system.cpu T0 : @__init_libc+40 : nop        (bis        r31,r31,r31) : No_OpClass :
++1293000: system.cpu T0 : @__init_libc+44 : bsr        r26,__tis_init  : IntAlu :  D=0x00000001200abe60
++1605000: system.cpu T0 : @__tis_init : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001ff20
++1605000: system.cpu T0 : @__tis_init+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++1605000: system.cpu T0 : @__tis_init+8 : lda        r29,-31520(r29) : IntAlu :  D=0x0000000140018400
++1605000: system.cpu T0 : @__tis_init+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++1605000: system.cpu T0 : @__tis_init+16 : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91fc0
++1605000: system.cpu T0 : @__tis_init+20 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200abe60 A=0x11ff91fc0
++1605000: system.cpu T0 : @__tis_init+24 : call_pal   rduniq          : IntAlu :  D=0x0000000000000000
++1605000: system.cpu T0 : @__tis_init+28 : ldah       r16,-1(r29)     : IntAlu :  D=0x0000000140008400
++1754000: system.cpu T0 : @__tis_init+32 : bne        r0,0x1200aff4c  : IntAlu :
++1754000: system.cpu T0 : @__tis_init+36 : lda        r16,20152(r16)  : IntAlu :  D=0x000000014000d2b8
++1754000: system.cpu T0 : @__tis_init+40 : call_pal   wruniq          : IntAlu :  D=0x000000014000d2b8
++1754000: system.cpu T0 : @__tis_init+44 : ldq        r27,-26152(r29) : MemRead :  D=0x00000001200abff0 A=0x140011dd8
++1754000: system.cpu T0 : @__tis_init+48 : nop        (bis        r31,r31,r31) : No_OpClass :
++1754000: system.cpu T0 : @__tis_init+52 : bsr        r26,__find_base_address : IntAlu :  D=0x00000001200aff58
++1907000: system.cpu T0 : @__find_base_address : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001bff0
++1907000: system.cpu T0 : @__find_base_address+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++1907000: system.cpu T0 : @__find_base_address+8 : lda        r29,-15344(r29) : IntAlu :  D=0x0000000140018400
++1907000: system.cpu T0 : @__find_base_address+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++2068000: system.cpu T0 : @__find_base_address+16 : ldq        r0,-27232(r29)  : MemRead :  D=0x0000000000000000 A=0x1400119a0
++2068000: system.cpu T0 : @__find_base_address+20 : nop        (bis        r31,r31,r31) : No_OpClass :
++2068000: system.cpu T0 : @__find_base_address+24 : lda        r30,-32(r30)    : IntAlu :  D=0x000000011ff91fa0
++2068000: system.cpu T0 : @__find_base_address+28 : ldq        r1,-16848(r29)  : MemRead :  D=0x0000000000000000 A=0x140014230
++2068000: system.cpu T0 : @__find_base_address+32 : lda        r0,0(r0)        : IntAlu :  D=0x0000000000000000
++2068000: system.cpu T0 : @__find_base_address+36 : stq        r26,0(r30)      : MemWrite :  D=0x00000001200aff58 A=0x11ff91fa0
++2068000: system.cpu T0 : @__find_base_address+40 : stq        r9,8(r30)       : MemWrite :  D=0x0000000000000000 A=0x11ff91fa8
++2068000: system.cpu T0 : @__find_base_address+44 : stq        r10,16(r30)     : MemWrite :  D=0x0000000000000000 A=0x11ff91fb0
++2068500: system.cpu T0 : @__find_base_address+48 : stq        r11,24(r30)     : MemWrite :  D=0x0000000000000000 A=0x11ff91fb8
++2068500: system.cpu T0 : @__find_base_address+52 : beq        r0,0x1200ac0b0  : IntAlu :
++2367500: system.cpu T0 : @__find_base_address+192 : ldq        r2,-27256(r29)  : MemRead :  D=0x0000000120000000 A=0x140011988
++2367500: system.cpu T0 : @__find_base_address+196 : nop        (bis        r31,r31,r31) : No_OpClass :
++2367500: system.cpu T0 : @__find_base_address+200 : beq        r2,0x1200ac080  : IntAlu :
++2367500: system.cpu T0 : @__find_base_address+204 : lda        r3,-8192(r31)   : IntAlu :  D=0xffffffffffffe000
++2517000: system.cpu T0 : @__find_base_address+208 : and        r2,r3,r0        : IntAlu :  D=0x0000000120000000
++2517000: system.cpu T0 : @__find_base_address+212 : br         0x1200ac088     : IntAlu :
++2519500: system.cpu T0 : @__find_base_address+152 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200aff58 A=0x11ff91fa0
++2519500: system.cpu T0 : @__find_base_address+156 : ldq        r9,8(r30)       : MemRead :  D=0x0000000000000000 A=0x11ff91fa8
++2519500: system.cpu T0 : @__find_base_address+160 : ldq        r10,16(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91fb0
++2519500: system.cpu T0 : @__find_base_address+164 : ldq        r11,24(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91fb8
++2519500: system.cpu T0 : @__find_base_address+168 : lda        r30,32(r30)     : IntAlu :  D=0x000000011ff91fc0
++2519500: system.cpu T0 : @__find_base_address+172 : ret        (r26)           : IntAlu :
++2525000: system.cpu T0 : @__tis_init+56 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200abe60 A=0x11ff91fc0
++2525000: system.cpu T0 : @__tis_init+60 : nop        (bis        r31,r31,r31) : No_OpClass :
++2525000: system.cpu T0 : @__tis_init+64 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
++2525000: system.cpu T0 : @__tis_init+68 : lda        r1,20152(r1)    : IntAlu :  D=0x000000014000d2b8
++2525000: system.cpu T0 : @__tis_init+72 : stq        r0,56(r1)       : MemWrite :  D=0x0000000120000000 A=0x14000d2f0
++2540500: system.cpu T0 : @__tis_init+72 : stq        r0,56(r1)       : MemWrite :  D=0x0000000120000000 A=0x14000d2f0
++2540500: system.cpu T0 : @__tis_init+76 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91fd0
++2540500: system.cpu T0 : @__tis_init+80 : ret        (r26)           : IntAlu :
++2542000: system.cpu T0 : @__init_libc+48 : nop        (bis        r31,r31,r31) : No_OpClass :
++2542000: system.cpu T0 : @__init_libc+52 : ldq        r27,-27160(r29) : MemRead :  D=0x00000001200ab6c0 A=0x1400119e8
++2542000: system.cpu T0 : @__init_libc+56 : nop        (bis        r31,r31,r31) : No_OpClass :
++2542000: system.cpu T0 : @__init_libc+60 : bsr        r26,__libc_locks_init : IntAlu :  D=0x00000001200abe70
++2678500: system.cpu T0 : @__libc_locks_init : ldah       r29,8183(r27)   : IntAlu :  D=0x000000014001b6c0
++2678500: system.cpu T0 : @__libc_locks_init+4 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++2678500: system.cpu T0 : @__libc_locks_init+8 : lda        r29,-12992(r29) : IntAlu :  D=0x0000000140018400
++2678500: system.cpu T0 : @__libc_locks_init+12 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++2678500: system.cpu T0 : @__libc_locks_init+16 : ldah       r4,-1(r29)      : IntAlu :  D=0x0000000140008400
++2678500: system.cpu T0 : @__libc_locks_init+20 : ldq        r1,-27168(r29)  : MemRead :  D=0x00000001400067c0 A=0x1400119e0
++2678500: system.cpu T0 : @__libc_locks_init+24 : stq        r1,-8216(r4)    : MemWrite :  D=0x00000001400067c0 A=0x1400063e8
++2703500: system.cpu T0 : @__libc_locks_init+24 : stq        r1,-8216(r4)    : MemWrite :  D=0x00000001400067c0 A=0x1400063e8
++2703500: system.cpu T0 : @__libc_locks_init+28 : lda        r3,56(r1)       : IntAlu :  D=0x00000001400067f8
++2703500: system.cpu T0 : @__libc_locks_init+32 : stq        r3,-8160(r4)    : MemWrite :  D=0x00000001400067f8 A=0x140006420
++2703500: system.cpu T0 : @__libc_locks_init+36 : lda        r1,112(r1)      : IntAlu :  D=0x0000000140006830
++2703500: system.cpu T0 : @__libc_locks_init+40 : stq        r1,-8104(r4)    : MemWrite :  D=0x0000000140006830 A=0x140006458
++2703500: system.cpu T0 : @__libc_locks_init+44 : ret        (r26)           : IntAlu :
++2705000: system.cpu T0 : @__init_libc+64 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++2705000: system.cpu T0 : @__init_libc+68 : ldah       r0,-1(r29)      : IntAlu :  D=0x0000000140008400
++2705000: system.cpu T0 : @__init_libc+72 : lda        r16,-16416(r29) : IntAlu :  D=0x00000001400143e0
++2705000: system.cpu T0 : @__init_libc+76 : ldq        r17,-27192(r29) : MemRead :  D=0x00000001200ab560 A=0x1400119c8
++2706500: system.cpu T0 : @__init_libc+80 : ldq        r27,20360(r0)   : MemRead :  D=0x00000001200b0490 A=0x14000d388
++2706500: system.cpu T0 : @__init_libc+84 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200abe88
++3016000: system.cpu T0 : @__tisVectorGetBounds+1248 : ldah       r29,8182(r27)   : IntAlu :  D=0x0000000140010490
++3016000: system.cpu T0 : @__tisVectorGetBounds+1252 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3016000: system.cpu T0 : @__tisVectorGetBounds+1256 : lda        r29,32624(r29)  : IntAlu :  D=0x0000000140018400
++3016000: system.cpu T0 : @__tisVectorGetBounds+1260 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3016000: system.cpu T0 : @__tisVectorGetBounds+1264 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
++3016000: system.cpu T0 : @__tisVectorGetBounds+1268 : bis        r31,r31,r7      : IntAlu :  D=0x0000000000000000
++3016000: system.cpu T0 : @__tisVectorGetBounds+1272 : bis        r31,1,r20       : IntAlu :  D=0x0000000000000001
++3016000: system.cpu T0 : @__tisVectorGetBounds+1276 : lda        r1,-368(r1)     : IntAlu :  D=0x0000000140008290
++3016500: system.cpu T0 : @__tisVectorGetBounds+1280 : ldq        r4,8(r1)        : MemRead :  D=0xffffffffffffffff A=0x140008298
++3030500: system.cpu T0 : @__tisVectorGetBounds+1280 : ldq        r4,8(r1)        : MemRead :  D=0x0000000000000001 A=0x140008298
++3030500: system.cpu T0 : @__tisVectorGetBounds+1284 : lda        r18,108(r1)     : IntAlu :  D=0x00000001400082fc
++3030500: system.cpu T0 : @__tisVectorGetBounds+1288 : ldl        r3,8(r1)        : MemRead :  D=0x0000000000000001 A=0x140008298
++3030500: system.cpu T0 : @__tisVectorGetBounds+1292 : ldq        r6,24(r1)       : MemRead :  D=0x0000000000000000 A=0x1400082a8
++3165500: system.cpu T0 : @__tisVectorGetBounds+1296 : lda        r19,-3(r4)      : IntAlu :  D=0xfffffffffffffffe
++3165500: system.cpu T0 : @__tisVectorGetBounds+1300 : lda        r4,1(r4)        : IntAlu :  D=0x0000000000000002
++3165500: system.cpu T0 : @__tisVectorGetBounds+1304 : cmple      r3,255,r5       : IntAlu :  D=0x0000000000000001
++3165500: system.cpu T0 : @__tisVectorGetBounds+1308 : stq        r4,8(r1)        : MemWrite :  D=0x0000000000000002 A=0x140008298
++3165500: system.cpu T0 : @__tisVectorGetBounds+1312 : bne        r5,0x1200b05c0  : IntAlu :
++3333000: system.cpu T0 : @__tisVectorGetBounds+1552 : s8addq     r3,r31,r25      : IntAlu :  D=0x0000000000000008
++3333000: system.cpu T0 : @__tisVectorGetBounds+1556 : bis        r31,16,r23      : IntAlu :  D=0x0000000000000010
++3333000: system.cpu T0 : @__tisVectorGetBounds+1560 : s4addq     r25,r25,r25     : IntAlu :  D=0x0000000000000028
++3333000: system.cpu T0 : @__tisVectorGetBounds+1564 : bis        r31,r31,r0      : IntAlu :  D=0x0000000000000000
++3333000: system.cpu T0 : @__tisVectorGetBounds+1568 : addq       r1,r25,r1       : IntAlu :  D=0x00000001400082b8
++3333000: system.cpu T0 : @__tisVectorGetBounds+1572 : stq        r31,40(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082e0
++3333000: system.cpu T0 : @__tisVectorGetBounds+1576 : stq        r17,48(r1)      : MemWrite :  D=0x00000001200ab560 A=0x1400082e8
++3333000: system.cpu T0 : @__tisVectorGetBounds+1580 : stq        r31,56(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082f0
++3333500: system.cpu T0 : @__tisVectorGetBounds+1584 : stl        r31,64(r1)      : MemWrite :  D=0x0000000000000000 A=0x1400082f8
++3333500: system.cpu T0 : @__tisVectorGetBounds+1588 : stl        r23,68(r1)      : MemWrite :  D=0x0000000000000010 A=0x1400082fc
++3333500: system.cpu T0 : @__tisVectorGetBounds+1592 : stq        r16,72(r1)      : MemWrite :  D=0x00000001400143e0 A=0x140008300
++3333500: system.cpu T0 : @__tisVectorGetBounds+1596 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3333500: system.cpu T0 : @__tisVectorGetBounds+1600 : stl        r3,0(r16)       : MemWrite :  D=0x0000000000000001 A=0x1400143e0
++3333500: system.cpu T0 : @__tisVectorGetBounds+1604 : ret        (r26)           : IntAlu :
++3335000: system.cpu T0 : @__init_libc+88 : ldah       r29,8183(r26)   : IntAlu :  D=0x000000014001be88
++3335000: system.cpu T0 : @__init_libc+92 : bis        r31,r31,r17     : IntAlu :  D=0x0000000000000000
++3335000: system.cpu T0 : @__init_libc+96 : lda        r29,-14984(r29) : IntAlu :  D=0x0000000140018400
++3335000: system.cpu T0 : @__init_libc+100 : ldah       r0,-1(r29)      : IntAlu :  D=0x0000000140008400
++3335000: system.cpu T0 : @__init_libc+104 : lda        r16,-16408(r29) : IntAlu :  D=0x00000001400143e8
++3335000: system.cpu T0 : @__init_libc+108 : ldq        r27,20360(r0)   : MemRead :  D=0x00000001200b0490 A=0x14000d388
++3335000: system.cpu T0 : @__init_libc+112 : jsr        r26,(r27)       : IntAlu :  D=0x00000001200abea4
++3343000: system.cpu T0 : @__tisVectorGetBounds+1248 : ldah       r29,8182(r27)   : IntAlu :  D=0x0000000140010490
++3343000: system.cpu T0 : @__tisVectorGetBounds+1252 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3343000: system.cpu T0 : @__tisVectorGetBounds+1256 : lda        r29,32624(r29)  : IntAlu :  D=0x0000000140018400
++3343000: system.cpu T0 : @__tisVectorGetBounds+1260 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3343000: system.cpu T0 : @__tisVectorGetBounds+1264 : ldah       r1,-1(r29)      : IntAlu :  D=0x0000000140008400
++3343000: system.cpu T0 : @__tisVectorGetBounds+1268 : bis        r31,r31,r7      : IntAlu :  D=0x0000000000000000
++3343000: system.cpu T0 : @__tisVectorGetBounds+1272 : bis        r31,1,r20       : IntAlu :  D=0x0000000000000001
++3343000: system.cpu T0 : @__tisVectorGetBounds+1276 : lda        r1,-368(r1)     : IntAlu :  D=0x0000000140008290
++3343500: system.cpu T0 : @__tisVectorGetBounds+1280 : ldq        r4,8(r1)        : MemRead :  D=0x0000000000000002 A=0x140008298
++3343500: system.cpu T0 : @__tisVectorGetBounds+1284 : lda        r18,108(r1)     : IntAlu :  D=0x00000001400082fc
++3343500: system.cpu T0 : @__tisVectorGetBounds+1288 : ldl        r3,8(r1)        : MemRead :  D=0x0000000000000002 A=0x140008298
++3343500: system.cpu T0 : @__tisVectorGetBounds+1292 : ldq        r6,24(r1)       : MemRead :  D=0x0000000000000000 A=0x1400082a8
++3345000: system.cpu T0 : @__tisVectorGetBounds+1296 : lda        r19,-3(r4)      : IntAlu :  D=0xffffffffffffffff
++3345000: system.cpu T0 : @__tisVectorGetBounds+1300 : lda        r4,1(r4)        : IntAlu :  D=0x0000000000000003
++3345000: system.cpu T0 : @__tisVectorGetBounds+1304 : cmple      r3,255,r5       : IntAlu :  D=0x0000000000000001
++3345000: system.cpu T0 : @__tisVectorGetBounds+1308 : stq        r4,8(r1)        : MemWrite :  D=0x0000000000000003 A=0x140008298
++3345000: system.cpu T0 : @__tisVectorGetBounds+1312 : bne        r5,0x1200b05c0  : IntAlu :
++3346500: system.cpu T0 : @__tisVectorGetBounds+1552 : s8addq     r3,r31,r25      : IntAlu :  D=0x0000000000000010
++3346500: system.cpu T0 : @__tisVectorGetBounds+1556 : bis        r31,16,r23      : IntAlu :  D=0x0000000000000010
++3346500: system.cpu T0 : @__tisVectorGetBounds+1560 : s4addq     r25,r25,r25     : IntAlu :  D=0x0000000000000050
++3346500: system.cpu T0 : @__tisVectorGetBounds+1564 : bis        r31,r31,r0      : IntAlu :  D=0x0000000000000000
++3346500: system.cpu T0 : @__tisVectorGetBounds+1568 : addq       r1,r25,r1       : IntAlu :  D=0x00000001400082e0
++3346500: system.cpu T0 : @__tisVectorGetBounds+1572 : stq        r31,40(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008308
++3346500: system.cpu T0 : @__tisVectorGetBounds+1576 : stq        r17,48(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008310
++3346500: system.cpu T0 : @__tisVectorGetBounds+1580 : stq        r31,56(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008318
++3347000: system.cpu T0 : @__tisVectorGetBounds+1584 : stl        r31,64(r1)      : MemWrite :  D=0x0000000000000000 A=0x140008320
++3347000: system.cpu T0 : @__tisVectorGetBounds+1588 : stl        r23,68(r1)      : MemWrite :  D=0x0000000000000010 A=0x140008324
++3347000: system.cpu T0 : @__tisVectorGetBounds+1592 : stq        r16,72(r1)      : MemWrite :  D=0x00000001400143e8 A=0x140008328
++3347000: system.cpu T0 : @__tisVectorGetBounds+1596 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
++3347000: system.cpu T0 : @__tisVectorGetBounds+1600 : stl        r3,0(r16)       : MemWrite :  D=0x0000000000000002 A=0x1400143e8
++3347000: system.cpu T0 : @__tisVectorGetBounds+1604 : ret        (r26)           : IntAlu :
++3352000: system.cpu T0 : @__init_libc+116 : ldah       r29,8183(r26)   : IntAlu :  D=0x000000014001bea4
++3352000: system.cpu T0 : @__init_libc+120 : bis        r31,1,r1        : IntAlu :  D=0x0000000000000001
++3352000: system.cpu T0 : @__init_libc+124 : lda        r29,-15012(r29) : IntAlu :  D=0x0000000140018400
++3352000: system.cpu T0 : @__init_libc+128 : nop        (bis        r31,r31,r31) : No_OpClass :
++3352000: system.cpu T0 : @__init_libc+132 : stl        r1,-17120(r29)  : MemWrite :  D=0x0000000000000001 A=0x140014120
++3352000: system.cpu T0 : @__init_libc+136 : ldq        r26,0(r30)      : MemRead :  D=0x00000001200c7c7c A=0x11ff91fd0
++3352000: system.cpu T0 : @__init_libc+140 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91fe0
++3353500: system.cpu T0 : @__init_libc+144 : ret        (r26)           : IntAlu :
++3358500: system.cpu T0 : @__istart+28 : ldq        r26,0(r30)      : MemRead :  D=0x0000000120026ab0 A=0x11ff91fe0
++3360000: system.cpu T0 : @__istart+32 : lda        r30,16(r30)     : IntAlu :  D=0x000000011ff91ff0
++3360000: system.cpu T0 : @__istart+36 : ret        (r26)           : IntAlu :
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+628 : ldq        r9,8(r30)       : MemRead :  D=0x000000000000000b A=0x11ff90fd8
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+632 : ldq        r10,16(r30)     : MemRead :  D=0x000000011ff917d0 A=0x11ff90fe0
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+636 : ldq        r11,24(r30)     : MemRead :  D=0x000000014018f018 A=0x11ff90fe8
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+640 : stl        r0,-17760(r29)  : MemWrite :  D=0x0000000000000001 A=0x140013ea0
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+644 : ldq        r12,32(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff90ff0
+1914459000: system.cpu T0 : @Mem_NewChunkChunk+648 : lda        r30,64(r30)     : IntAlu :  D=0x000000011ff91010
+1914459500: system.cpu T0 : @Mem_NewChunkChunk+652 : ret        (r26)           : IntAlu :
+1914461000: system.cpu T0 : @Chunk_NewChunk+136 : nop        (bis        r31,r31,r31) : No_OpClass :
+1914461000: system.cpu T0 : @Chunk_NewChunk+140 : ldq        r1,24(r30)      : MemRead :  D=0x00000001401e94a0 A=0x11ff91028
+1914461000: system.cpu T0 : @Chunk_NewChunk+144 : ldq        r4,40(r30)      : MemRead :  D=0x00000001401df284 A=0x11ff91038
+1914461000: system.cpu T0 : @Chunk_NewChunk+148 : beq        r0,0x12005ee7c  : IntAlu :
+1914461000: system.cpu T0 : @Chunk_NewChunk+152 : ldq        r3,-18088(r29)  : MemRead :  D=0x00000001400250a0 A=0x140013d58
+1914461000: system.cpu T0 : @Chunk_NewChunk+156 : lda        r1,32(r1)       : IntAlu :  D=0x00000001401e94c0
+1914461000: system.cpu T0 : @Chunk_NewChunk+160 : stq        r1,24(r30)      : MemWrite :  D=0x00000001401e94c0 A=0x11ff91028
+1914461000: system.cpu T0 : @Chunk_NewChunk+164 : ldl        r4,0(r4)        : MemRead :  D=0x00000000000000fc A=0x1401df284
+1914461500: system.cpu T0 : @Chunk_NewChunk+168 : ldq        r3,0(r3)        : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914461500: system.cpu T0 : @Chunk_NewChunk+172 : zapnot     r4,15,r4        : IntAlu :  D=0x00000000000000fc
+1914461500: system.cpu T0 : @Chunk_NewChunk+176 : s8addq     r4,r3,r3        : IntAlu :  D=0x0000000140028000
+1914461500: system.cpu T0 : @Chunk_NewChunk+180 : stq        r1,0(r3)        : MemWrite :  D=0x00000001401e94c0 A=0x140028000
+1914479500: system.cpu T0 : @Chunk_NewChunk+180 : stq        r1,0(r3)        : MemWrite :  D=0x00000001401e94c0 A=0x140028000
+1914479500: system.cpu T0 : @Chunk_NewChunk+184 : stl        r9,-24(r1)      : MemWrite :  D=0x000000000000000b A=0x1401e94a8
+1914479500: system.cpu T0 : @Chunk_NewChunk+188 : bis        r31,1,r0        : IntAlu :  D=0x0000000000000001
+1914481000: system.cpu T0 : @Chunk_NewChunk+192 : ldl        r18,0(r10)      : MemRead :  D=0x0000000000000000 A=0x11ff917d0
+1914481000: system.cpu T0 : @Chunk_NewChunk+196 : bne        r18,0x12005ee90 : IntAlu :
+1914481000: system.cpu T0 : @Chunk_NewChunk+200 : br         0x12005ee9c     : IntAlu :
+1914481500: system.cpu T0 : @Chunk_NewChunk+220 : nop        (bis        r31,r31,r31) : No_OpClass :
+1914481500: system.cpu T0 : @Chunk_NewChunk+224 : ldq        r26,0(r30)      : MemRead :  D=0x000000012005ecfc A=0x11ff91010
+1914481500: system.cpu T0 : @Chunk_NewChunk+228 : ldq        r10,16(r30)     : MemRead :  D=0x000000011ff917d0 A=0x11ff91020
+1914481500: system.cpu T0 : @Chunk_NewChunk+232 : stl        r0,-17760(r29)  : MemWrite :  D=0x0000000000000001 A=0x140013ea0
+1914481500: system.cpu T0 : @Chunk_NewChunk+236 : ldq        r9,8(r30)       : MemRead :  D=0x0000000000000004 A=0x11ff91018
+1914481500: system.cpu T0 : @Chunk_NewChunk+240 : lda        r30,48(r30)     : IntAlu :  D=0x000000011ff91040
+1914481500: system.cpu T0 : @Chunk_NewChunk+244 : ret        (r26)           : IntAlu :
+1914483000: system.cpu T0 : @Chunk_MakeChunk+108 : ldq        r16,104(r30)    : MemRead :  D=0x00000001401df284 A=0x11ff910a8
+1914484500: system.cpu T0 : @Chunk_MakeChunk+112 : beq        r0,0x12005ed2c  : IntAlu :
+1914484500: system.cpu T0 : @Chunk_MakeChunk+116 : stq        r31,0(r30)      : MemWrite :  D=0x0000000000000000 A=0x11ff91040
+1914484500: system.cpu T0 : @Chunk_MakeChunk+120 : stq        r31,8(r30)      : MemWrite :  D=0x0000000000000000 A=0x11ff91048
+1914484500: system.cpu T0 : @Chunk_MakeChunk+124 : bis        r31,r9,r19      : IntAlu :  D=0x0000000000000004
+1914484500: system.cpu T0 : @Chunk_MakeChunk+128 : stq        r10,16(r30)     : MemWrite :  D=0x000000011ff917d0 A=0x11ff91050
+1914484500: system.cpu T0 : @Chunk_MakeChunk+132 : ldl        r16,0(r16)      : MemRead :  D=0x00000000000000fc A=0x1401df284
+1914484500: system.cpu T0 : @Chunk_MakeChunk+136 : ldl        r17,48(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91070
+1914484500: system.cpu T0 : @Chunk_MakeChunk+140 : ldl        r18,52(r30)     : MemRead :  D=0x0000000000000000 A=0x11ff91074
+1914485000: system.cpu T0 : @Chunk_MakeChunk+144 : ldl        r20,56(r30)     : MemRead :  D=0x0000000000000001 A=0x11ff91078
+1914485000: system.cpu T0 : @Chunk_MakeChunk+148 : ldq        r21,64(r30)     : MemRead :  D=0x0000000000000002 A=0x11ff91080
+1914485000: system.cpu T0 : @Chunk_MakeChunk+152 : bsr        r26,0x12005eed0 : IntAlu :  D=0x000000012005ed2c
+1914486500: system.cpu T0 : @Chunk_InitChunk+16 : ldq        r2,16(r30)      : MemRead :  D=0x000000011ff917d0 A=0x11ff91050
+1914486500: system.cpu T0 : @Chunk_InitChunk+20 : zapnot     r16,15,r16      : IntAlu :  D=0x00000000000000fc
+1914486500: system.cpu T0 : @Chunk_InitChunk+24 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914486500: system.cpu T0 : @Chunk_InitChunk+28 : lda        r30,-16(r30)    : IntAlu :  D=0x000000011ff91030
+1914486500: system.cpu T0 : @Chunk_InitChunk+32 : cmpult     r31,r17,r0      : IntAlu :  D=0x0000000000000000
+1914486500: system.cpu T0 : @Chunk_InitChunk+36 : stq        r26,0(r30)      : MemWrite :  D=0x000000012005ed2c A=0x11ff91030
+1914486500: system.cpu T0 : @Chunk_InitChunk+40 : ldq        r4,-18088(r29)  : MemRead :  D=0x00000001400250a0 A=0x140013d58
+1914486500: system.cpu T0 : @Chunk_InitChunk+44 : beq        r17,0x12005ef30 : IntAlu :
+1914488000: system.cpu T0 : @Chunk_InitChunk+112 : ldq        r5,0(r4)        : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914488000: system.cpu T0 : @Chunk_InitChunk+116 : s8addq     r16,r5,r5       : IntAlu :  D=0x0000000140028000
+1914488000: system.cpu T0 : @Chunk_InitChunk+120 : ldq        r5,0(r5)        : MemRead :  D=0x00000001401e94c0 A=0x140028000
+1914488000: system.cpu T0 : @Chunk_InitChunk+124 : stl        r19,-28(r5)     : MemWrite :  D=0x0000000000000004 A=0x1401e94a4
+1914489500: system.cpu T0 : @Chunk_InitChunk+128 : ldq        r1,0(r4)        : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914489500: system.cpu T0 : @Chunk_InitChunk+132 : s8addq     r16,r1,r1       : IntAlu :  D=0x0000000140028000
+1914489500: system.cpu T0 : @Chunk_InitChunk+136 : ldq        r1,0(r1)        : MemRead :  D=0x00000001401e94c0 A=0x140028000
+1914489500: system.cpu T0 : @Chunk_InitChunk+140 : stl        r20,-8(r1)      : MemWrite :  D=0x0000000000000001 A=0x1401e94b8
+1914489500: system.cpu T0 : @Chunk_InitChunk+144 : ldq        r3,0(r4)        : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914489500: system.cpu T0 : @Chunk_InitChunk+148 : s8addq     r16,r3,r3       : IntAlu :  D=0x0000000140028000
+1914489500: system.cpu T0 : @Chunk_InitChunk+152 : ldq        r3,0(r3)        : MemRead :  D=0x00000001401e94c0 A=0x140028000
+1914489500: system.cpu T0 : @Chunk_InitChunk+156 : stl        r31,-12(r3)     : MemWrite :  D=0x0000000000000000 A=0x1401e94b4
+1914490000: system.cpu T0 : @Chunk_InitChunk+160 : ldq        r1,0(r4)        : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914490000: system.cpu T0 : @Chunk_InitChunk+164 : s8addq     r16,r1,r1       : IntAlu :  D=0x0000000140028000
+1914490000: system.cpu T0 : @Chunk_InitChunk+168 : ldq        r1,0(r1)        : MemRead :  D=0x00000001401e94c0 A=0x140028000
+1914490000: system.cpu T0 : @Chunk_InitChunk+172 : stl        r17,-20(r1)     : MemWrite :  D=0x0000000000000000 A=0x1401e94ac
+1914490000: system.cpu T0 : @Chunk_InitChunk+176 : ldq        r20,8(r4)       : MemRead :  D=0x00000001400892e0 A=0x1400250a8
+1914490000: system.cpu T0 : @Chunk_InitChunk+180 : s4addq     r16,r20,r20     : IntAlu :  D=0x00000001400896d0
+1914490000: system.cpu T0 : @Chunk_InitChunk+184 : stl        r21,0(r20)      : MemWrite :  D=0x0000000000000002 A=0x1400896d0
+1914490000: system.cpu T0 : @Chunk_InitChunk+188 : beq        r0,0x12005efa0  : IntAlu :
+1914491500: system.cpu T0 : @Chunk_InitChunk+224 : ldq        r20,16(r4)      : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914491500: system.cpu T0 : @Chunk_InitChunk+228 : s4addq     r16,r20,r20     : IntAlu :  D=0x00000001400ba450
+1914491500: system.cpu T0 : @Chunk_InitChunk+232 : ldl        r0,0(r20)       : MemRead :  D=0x0000000000000000 A=0x1400ba450
+1914491500: system.cpu T0 : @Chunk_InitChunk+236 : ornot      r0,32,r0        : IntAlu :  D=0xffffffffffffffdf
+1914491500: system.cpu T0 : @Chunk_InitChunk+240 : stl        r0,0(r20)       : MemWrite :  D=0x00000000ffffffdf A=0x1400ba450
+1914491500: system.cpu T0 : @Chunk_InitChunk+244 : lda        r20,512(r31)    : IntAlu :  D=0x0000000000000200
+1914491500: system.cpu T0 : @Chunk_InitChunk+248 : ldq        r3,16(r4)       : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914491500: system.cpu T0 : @Chunk_InitChunk+252 : s4addq     r16,r3,r3       : IntAlu :  D=0x00000001400ba450
+1914493000: system.cpu T0 : @Chunk_InitChunk+256 : ldl        r17,0(r3)       : MemRead :  D=0xffffffffffffffdf A=0x1400ba450
+1914493000: system.cpu T0 : @Chunk_InitChunk+260 : bis        r17,r20,r17     : IntAlu :  D=0xffffffffffffffdf
+1914493000: system.cpu T0 : @Chunk_InitChunk+264 : stl        r17,0(r3)       : MemWrite :  D=0x00000000ffffffdf A=0x1400ba450
+1914493000: system.cpu T0 : @Chunk_InitChunk+268 : lda        r3,-1025(r31)   : IntAlu :  D=0xfffffffffffffbff
+1914493000: system.cpu T0 : @Chunk_InitChunk+272 : ldq        r0,16(r4)       : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914493000: system.cpu T0 : @Chunk_InitChunk+276 : s4addq     r16,r0,r0       : IntAlu :  D=0x00000001400ba450
+1914493000: system.cpu T0 : @Chunk_InitChunk+280 : ldl        r20,0(r0)       : MemRead :  D=0xffffffffffffffdf A=0x1400ba450
+1914493000: system.cpu T0 : @Chunk_InitChunk+284 : bis        r20,r3,r3       : IntAlu :  D=0xffffffffffffffff
+1914493500: system.cpu T0 : @Chunk_InitChunk+288 : stl        r3,0(r0)        : MemWrite :  D=0x00000000ffffffff A=0x1400ba450
+1914493500: system.cpu T0 : @Chunk_InitChunk+292 : beq        r18,0x12005f000 : IntAlu :
+1914495000: system.cpu T0 : @Chunk_InitChunk+320 : ldq        r0,16(r4)       : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914495000: system.cpu T0 : @Chunk_InitChunk+324 : s4addq     r16,r0,r0       : IntAlu :  D=0x00000001400ba450
+1914495000: system.cpu T0 : @Chunk_InitChunk+328 : ldl        r21,0(r0)       : MemRead :  D=0xffffffffffffffff A=0x1400ba450
+1914495000: system.cpu T0 : @Chunk_InitChunk+332 : ornot      r21,16,r21      : IntAlu :  D=0xffffffffffffffff
+1914495000: system.cpu T0 : @Chunk_InitChunk+336 : stl        r21,0(r0)       : MemWrite :  D=0x00000000ffffffff A=0x1400ba450
+1914495000: system.cpu T0 : @Chunk_InitChunk+340 : lda        r20,256(r31)    : IntAlu :  D=0x0000000000000100
+1914495000: system.cpu T0 : @Chunk_InitChunk+344 : lda        r1,1007(r31)    : IntAlu :  D=0x00000000000003ef
+1914495000: system.cpu T0 : @Chunk_InitChunk+348 : ldq        r18,16(r4)      : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914495500: system.cpu T0 : @Chunk_InitChunk+352 : s4addq     r16,r18,r18     : IntAlu :  D=0x00000001400ba450
+1914495500: system.cpu T0 : @Chunk_InitChunk+356 : ldl        r17,0(r18)      : MemRead :  D=0xffffffffffffffff A=0x1400ba450
+1914495500: system.cpu T0 : @Chunk_InitChunk+360 : bis        r17,r20,r17     : IntAlu :  D=0xffffffffffffffff
+1914495500: system.cpu T0 : @Chunk_InitChunk+364 : stl        r17,0(r18)      : MemWrite :  D=0x00000000ffffffff A=0x1400ba450
+1914495500: system.cpu T0 : @Chunk_InitChunk+368 : ldah       r18,21845(r31)  : IntAlu :  D=0x0000000055550000
+1914495500: system.cpu T0 : @Chunk_InitChunk+372 : ldq        r0,16(r4)       : MemRead :  D=0x00000001400ba060 A=0x1400250b0
+1914495500: system.cpu T0 : @Chunk_InitChunk+376 : lda        r18,21845(r18)  : IntAlu :  D=0x0000000055555555
+1914495500: system.cpu T0 : @Chunk_InitChunk+380 : s4addq     r16,r0,r0       : IntAlu :  D=0x00000001400ba450
+1914497000: system.cpu T0 : @Chunk_InitChunk+384 : ldl        r21,0(r0)       : MemRead :  D=0xffffffffffffffff A=0x1400ba450
+1914497000: system.cpu T0 : @Chunk_InitChunk+388 : bis        r21,128,r21     : IntAlu :  D=0xffffffffffffffff
+1914497000: system.cpu T0 : @Chunk_InitChunk+392 : stl        r21,0(r0)       : MemWrite :  D=0x00000000ffffffff A=0x1400ba450
+1914497000: system.cpu T0 : @Chunk_InitChunk+396 : ldq        r20,0(r4)       : MemRead :  D=0x0000000140027820 A=0x1400250a0
+1914497000: system.cpu T0 : @Chunk_InitChunk+400 : s8addq     r16,r20,r20     : IntAlu :  D=0x0000000140028000
+1914497000: system.cpu T0 : @Chunk_InitChunk+404 : ldq        r20,0(r20)      : MemRead :  D=0x0000000000000000 A=0x140028000
+1913887000: system.cpu T0 : @_OtsZero+200 : stq        r31,-216(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009ce70
+1913889000: system.cpu T0 : @_OtsZero+204 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1913890000: system.cpu T0 : @_OtsZero+208 : stq        r31,-208(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009ce78
+1913892000: system.cpu T0 : @_OtsZero+212 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1913893000: system.cpu T0 : @_OtsZero+216 : addq       r16,64,r16      : IntAlu :  D=0x000000014009cf88
+1913894000: system.cpu T0 : @_OtsZero+220 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1913895000: system.cpu T0 : @_OtsZero+224 : stq        r31,-200(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009ce80
+1914044000: system.cpu T0 : @_OtsZero+228 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914045000: system.cpu T0 : @_OtsZero+232 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914046000: system.cpu T0 : @_OtsZero+236 : bgt        r17,0x1200aa5f0 : IntAlu :
+1914047000: system.cpu T0 : @_OtsZero+128 : wh64       (r16)           : MemWrite :  A=0x14009cf80
+1914048000: system.cpu T0 : @_OtsZero+132 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914049000: system.cpu T0 : @_OtsZero+136 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914050000: system.cpu T0 : @_OtsZero+140 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914051000: system.cpu T0 : @_OtsZero+144 : stq        r31,-256(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009ce88
+1914053000: system.cpu T0 : @_OtsZero+148 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914054000: system.cpu T0 : @_OtsZero+152 : bis        r31,r16,r28     : IntAlu :  D=0x000000014009cf88
+1914055000: system.cpu T0 : @_OtsZero+156 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914056000: system.cpu T0 : @_OtsZero+160 : stq        r31,-248(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009ce90
+1914058000: system.cpu T0 : @_OtsZero+164 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914059000: system.cpu T0 : @_OtsZero+168 : stq        r31,-240(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009ce98
+1914061000: system.cpu T0 : @_OtsZero+172 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914062000: system.cpu T0 : @_OtsZero+176 : stq        r31,-232(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cea0
+1914064000: system.cpu T0 : @_OtsZero+180 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914065000: system.cpu T0 : @_OtsZero+184 : subq       r17,64,r17      : IntAlu :  D=0x000000000001d018
+1914066000: system.cpu T0 : @_OtsZero+188 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914067000: system.cpu T0 : @_OtsZero+192 : stq        r31,-224(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cea8
+1914069000: system.cpu T0 : @_OtsZero+196 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914070000: system.cpu T0 : @_OtsZero+200 : stq        r31,-216(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009ceb0
+1914072000: system.cpu T0 : @_OtsZero+204 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914073000: system.cpu T0 : @_OtsZero+208 : stq        r31,-208(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009ceb8
+1914075000: system.cpu T0 : @_OtsZero+212 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914076000: system.cpu T0 : @_OtsZero+216 : addq       r16,64,r16      : IntAlu :  D=0x000000014009cfc8
+1914077000: system.cpu T0 : @_OtsZero+220 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914078000: system.cpu T0 : @_OtsZero+224 : stq        r31,-200(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cec0
+1914227000: system.cpu T0 : @_OtsZero+228 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914228000: system.cpu T0 : @_OtsZero+232 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914229000: system.cpu T0 : @_OtsZero+236 : bgt        r17,0x1200aa5f0 : IntAlu :
+1914230000: system.cpu T0 : @_OtsZero+128 : wh64       (r16)           : MemWrite :  A=0x14009cfc0
+1914231000: system.cpu T0 : @_OtsZero+132 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914232000: system.cpu T0 : @_OtsZero+136 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914233000: system.cpu T0 : @_OtsZero+140 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914234000: system.cpu T0 : @_OtsZero+144 : stq        r31,-256(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cec8
+1914236000: system.cpu T0 : @_OtsZero+148 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914237000: system.cpu T0 : @_OtsZero+152 : bis        r31,r16,r28     : IntAlu :  D=0x000000014009cfc8
+1914238000: system.cpu T0 : @_OtsZero+156 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914239000: system.cpu T0 : @_OtsZero+160 : stq        r31,-248(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009ced0
+1914241000: system.cpu T0 : @_OtsZero+164 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914242000: system.cpu T0 : @_OtsZero+168 : stq        r31,-240(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009ced8
+1914244000: system.cpu T0 : @_OtsZero+172 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914245000: system.cpu T0 : @_OtsZero+176 : stq        r31,-232(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cee0
+1914247000: system.cpu T0 : @_OtsZero+180 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914248000: system.cpu T0 : @_OtsZero+184 : subq       r17,64,r17      : IntAlu :  D=0x000000000001cfd8
+1914249000: system.cpu T0 : @_OtsZero+188 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914250000: system.cpu T0 : @_OtsZero+192 : stq        r31,-224(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cee8
+1914252000: system.cpu T0 : @_OtsZero+196 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914253000: system.cpu T0 : @_OtsZero+200 : stq        r31,-216(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cef0
+1914255000: system.cpu T0 : @_OtsZero+204 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914256000: system.cpu T0 : @_OtsZero+208 : stq        r31,-208(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cef8
+1914258000: system.cpu T0 : @_OtsZero+212 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914259000: system.cpu T0 : @_OtsZero+216 : addq       r16,64,r16      : IntAlu :  D=0x000000014009d008
+1914260000: system.cpu T0 : @_OtsZero+220 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914261000: system.cpu T0 : @_OtsZero+224 : stq        r31,-200(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf00
+1914410000: system.cpu T0 : @_OtsZero+228 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914411000: system.cpu T0 : @_OtsZero+232 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914412000: system.cpu T0 : @_OtsZero+236 : bgt        r17,0x1200aa5f0 : IntAlu :
+1914413000: system.cpu T0 : @_OtsZero+128 : wh64       (r16)           : MemWrite :  A=0x14009d000
+1914414000: system.cpu T0 : @_OtsZero+132 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914415000: system.cpu T0 : @_OtsZero+136 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914416000: system.cpu T0 : @_OtsZero+140 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914417000: system.cpu T0 : @_OtsZero+144 : stq        r31,-256(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf08
+1914419000: system.cpu T0 : @_OtsZero+148 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914420000: system.cpu T0 : @_OtsZero+152 : bis        r31,r16,r28     : IntAlu :  D=0x000000014009d008
+1914421000: system.cpu T0 : @_OtsZero+156 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914422000: system.cpu T0 : @_OtsZero+160 : stq        r31,-248(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf10
+1914424000: system.cpu T0 : @_OtsZero+164 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914425000: system.cpu T0 : @_OtsZero+168 : stq        r31,-240(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf18
+1914427000: system.cpu T0 : @_OtsZero+172 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914428000: system.cpu T0 : @_OtsZero+176 : stq        r31,-232(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf20
+1914430000: system.cpu T0 : @_OtsZero+180 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914431000: system.cpu T0 : @_OtsZero+184 : subq       r17,64,r17      : IntAlu :  D=0x000000000001cf98
+1914432000: system.cpu T0 : @_OtsZero+188 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914433000: system.cpu T0 : @_OtsZero+192 : stq        r31,-224(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf28
+1914435000: system.cpu T0 : @_OtsZero+196 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914436000: system.cpu T0 : @_OtsZero+200 : stq        r31,-216(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf30
+1914438000: system.cpu T0 : @_OtsZero+204 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914439000: system.cpu T0 : @_OtsZero+208 : stq        r31,-208(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf38
+1914441000: system.cpu T0 : @_OtsZero+212 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914442000: system.cpu T0 : @_OtsZero+216 : addq       r16,64,r16      : IntAlu :  D=0x000000014009d048
+1914443000: system.cpu T0 : @_OtsZero+220 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914444000: system.cpu T0 : @_OtsZero+224 : stq        r31,-200(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf40
+1914593000: system.cpu T0 : @_OtsZero+228 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914594000: system.cpu T0 : @_OtsZero+232 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914595000: system.cpu T0 : @_OtsZero+236 : bgt        r17,0x1200aa5f0 : IntAlu :
+1914596000: system.cpu T0 : @_OtsZero+128 : wh64       (r16)           : MemWrite :  A=0x14009d040
+1914597000: system.cpu T0 : @_OtsZero+132 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914598000: system.cpu T0 : @_OtsZero+136 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914599000: system.cpu T0 : @_OtsZero+140 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914600000: system.cpu T0 : @_OtsZero+144 : stq        r31,-256(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf48
+1914602000: system.cpu T0 : @_OtsZero+148 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914603000: system.cpu T0 : @_OtsZero+152 : bis        r31,r16,r28     : IntAlu :  D=0x000000014009d048
+1914604000: system.cpu T0 : @_OtsZero+156 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914605000: system.cpu T0 : @_OtsZero+160 : stq        r31,-248(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf50
+1914607000: system.cpu T0 : @_OtsZero+164 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914608000: system.cpu T0 : @_OtsZero+168 : stq        r31,-240(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf58
+1914610000: system.cpu T0 : @_OtsZero+172 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914611000: system.cpu T0 : @_OtsZero+176 : stq        r31,-232(r16)   : MemWrite :  D=0x0000000000000000 A=0x14009cf60
+1914613000: system.cpu T0 : @_OtsZero+180 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914614000: system.cpu T0 : @_OtsZero+184 : subq       r17,64,r17      : IntAlu :  D=0x000000000001cf58
+1914615000: system.cpu T0 : @_OtsZero+188 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914616000: system.cpu T0 : @_OtsZero+192 : stq        r31,-224(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf68
+1914618000: system.cpu T0 : @_OtsZero+196 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914619000: system.cpu T0 : @_OtsZero+200 : stq        r31,-216(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf70
+1914621000: system.cpu T0 : @_OtsZero+204 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914622000: system.cpu T0 : @_OtsZero+208 : stq        r31,-208(r28)   : MemWrite :  D=0x0000000000000000 A=0x14009cf78
+1914624000: system.cpu T0 : @_OtsZero+212 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+1914625000: system.cpu T0 : @_OtsZero+216 : addq       r16,64,r16      : IntAlu :  D=0x000000014009d088
+1914626000: system.cpu T0 : @_OtsZero+220 : nop        (ldq_u      r31,0(r30)) : No_OpClass :
+Program received signal SIGABRT, Aborted.
+[Switching to Thread 182896559072 (LWP 13780)]
+0x0000003de682e37d in raise () from /lib64/tls/libc.so.6
+(gdb) where
+#0  0x0000003de682e37d in raise () from /lib64/tls/libc.so.6
+#1  0x0000003de682faae in abort () from /lib64/tls/libc.so.6
+#2  0x00000000007b8c3b in __panic (func=0x8d237c "invoke", file=0x8d2358 "build/ALPHA_SE/arch/alpha/faults.cc", line=200,
+    fmt=0x8d2388 "Tried to access unmapped address %#x.\n", a01={<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x1fb0c70}, <No data fields>}, a02=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a03=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a04=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a05=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a06=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a07=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a08=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a09=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a10=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a11=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a12=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a13=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a14=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a15=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}, a16=
+        {<RefCountingPtr<VarArgs::Base<cp::Print> >> = {data = 0x0}, <No data fields>}) at build/ALPHA_SE/base/misc.cc:70
+#3  0x00000000004edfd0 in AlphaISA::NDtbMissFault::invoke (this=0x1aa61a0, tc=0xec0910) at build/ALPHA_SE/arch/alpha/faults.cc:200
+#4  0x00000000007788c3 in AlphaO3CPU<AlphaSimpleImpl>::trap (this=0xe7d420, fault={data = 0x1aa61a0}, tid=0) at build/ALPHA_SE/cpu/o3/alpha/cpu_impl.hh:267
+#5  0x00000000006758bf in DefaultCommit<AlphaSimpleImpl>::commitHead (this=0xe7fdd0, head_inst=@0x7fbfffc520, inst_num=0)
+    at build/ALPHA_SE/cpu/o3/commit_impl.hh:1064
+#6  0x0000000000670ef7 in DefaultCommit<AlphaSimpleImpl>::commitInsts (this=0xe7fdd0) at build/ALPHA_SE/cpu/o3/commit_impl.hh:889
+#7  0x000000000066cb29 in DefaultCommit<AlphaSimpleImpl>::commit (this=0xe7fdd0) at build/ALPHA_SE/cpu/o3/commit_impl.hh:787
+#8  0x0000000000669e9e in DefaultCommit<AlphaSimpleImpl>::tick (this=0xe7fdd0) at build/ALPHA_SE/cpu/o3/commit_impl.hh:591
+#9  0x0000000000684aca in FullO3CPU<AlphaSimpleImpl>::tick (this=0xe7d420) at build/ALPHA_SE/cpu/o3/cpu.cc:435
+#10 0x00000000006974ff in FullO3CPU<AlphaSimpleImpl>::TickEvent::process (this=0xe7d528) at build/ALPHA_SE/cpu/o3/cpu.cc:78
+#11 0x00000000005ce09d in EventQueue::serviceOne (this=0xbb5be0) at build/ALPHA_SE/sim/eventq.cc:118
+#12 0x000000000060a388 in simulate (num_cycles=9223372036854775807) at build/ALPHA_SE/sim/simulate.cc:72
+#13 0x000000000082e6d5 in _wrap_simulate__SWIG_0 (args=0x2a9903cf50) at build/ALPHA_SE/python/swig/event_wrap.cc:3367
+#14 0x000000000082e87b in _wrap_simulate (self=0x0, args=0x2a9903cf50) at build/ALPHA_SE/python/swig/event_wrap.cc:3417
+#15 0x0000002a955b35c0 in PyObject_Call (func=Variable "func" is not available.
+) at Objects/abstract.c:1795
+#16 0x0000002a95615938 in PyEval_EvalFrame (f=0xcc4880) at Python/ceval.c:3840
+#17 0x0000002a956191a1 in PyEval_EvalCodeEx (co=0x2a986dc5e0, globals=Variable "globals" is not available.
+) at Python/ceval.c:2736
+#18 0x0000002a95616fb1 in PyEval_EvalFrame (f=0xdd9890) at Python/ceval.c:3655
+#19 0x0000002a9561844d in PyEval_EvalFrame (f=0xbfe1c0) at Python/ceval.c:3645
+#20 0x0000002a956191a1 in PyEval_EvalCodeEx (co=0x2a95823e30, globals=Variable "globals" is not available.
+) at Python/ceval.c:2736
+#21 0x0000002a956193f2 in PyEval_EvalCode (co=Variable "co" is not available.
+) at Python/ceval.c:484
+#22 0x0000002a9563c8d1 in PyRun_FileEx (fp=0xdb63e0, filename=0x2a9582eb34 "se3.py", start=Variable "start" is not available.
+) at Python/pythonrun.c:1265
+#23 0x0000002a9560a6fe in builtin_execfile (self=Variable "self" is not available.
+) at Python/bltinmodule.c:631
+#24 0x0000002a95617085 in PyEval_EvalFrame (f=0xdb5cb0) at Python/ceval.c:3563
+#25 0x0000002a956191a1 in PyEval_EvalCodeEx (co=0x2a986e5180, globals=Variable "globals" is not available.
+) at Python/ceval.c:2736
+#26 0x0000002a95616fb1 in PyEval_EvalFrame (f=0xbefba0) at Python/ceval.c:3655
+#27 0x0000002a956191a1 in PyEval_EvalCodeEx (co=0x2a958188f0, globals=Variable "globals" is not available.
+) at Python/ceval.c:2736
+---Type <return> to continue, or q <return> to quit---
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

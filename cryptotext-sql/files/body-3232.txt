@@ -1,0 +1,19 @@
+Hi all,
+I am working on SPEC2006 benchmarks and I got five kinds of errors  on
+M5 2.0b5 SE mode.
+(1) fatal: syscall  ftruncate (#130) unimplemented. (Example: 410.bwaves )
+(2) fatal: syscall mremap (#341) unimplemented. (Example: 429.mcf )
+(3) fatal: syscall getcwd (#367) unimplemented. (Example: 453.povray)
+(4) fatal: fault (unalign) detected @ PC 0x12009cedc (Example: 400.perlbench)
+(5) terminate called after throwing an instance of 'std::bad_alloc'
+(Example: 470.lbm)
+For (1), I remembered that ftruncate() was implemented in M5 1.0.  I
+check the M5 2.0b5 code, and it is only implemented in tru64.
+For (5), I tried to increase the memory size, but it is not helpful.
+I am really appreciate  if you can give me some hints  to solve (1)~(5).
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

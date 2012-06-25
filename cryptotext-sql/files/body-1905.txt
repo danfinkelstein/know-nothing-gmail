@@ -1,0 +1,6 @@
+Hi all, I am reading the source code of M5, but I can not find where the effective address of a memory access instruction calculated. I thought that the address should be calculated in the IEW stage, so I searched in the iew_impl.hh, lsq_impl.hh and lsq_unit_impl.hh, I only found the executeLoad/executeStore functions, but those functions seem do something else. 
+Can anyone tell me where should I find? Where a memory access instuction is actually executed? Thand you!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,36 @@
+Besides, I use M5_1.1, and the kernel version is 
+2.6.11.8
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  Yu 
+  Zhang 
+  To: m5-users@m5sim.org 
+  Sent: Friday, February 09, 2007 10:33 
+  PM
+  Subject: [m5-users] A question about the 
+  TCP model on M5
+  
+  Hi,
+   
+  I'm running some simulation on TCP/IP workload. 
+  And something unexpected happened to me. As we know, TCP will play fast 
+  retransmit when the sender receive 3 or more duplicate ACKs asap. However, on 
+  my observation, sometimes, when the sender see the duplicate ACKs, it will not 
+  trigger a fast retransmit, instead, a timeout is set up, which means it will 
+  take much longer time to complete the retransmission. I'm quite confused on 
+  this. I tracked the packets, and I'm sure that the duplicate ACKs successfully 
+  arrived at the sender side. As much as I know, such behavior of TCP is 
+  not reasonable. How is TCP implemented on M5?
+   
+  Thanks,
+  Yu
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hello,
+I have checked out the instructions of using linux-dist to
+create disk images. However, it doesn't mention how to
+add my own benchmark instead of the default benchmarks
+(netperf).
+Let's say I have a simple helloworld.c file, and want to use
+linux-dist to compile and add it to the disk image. How can
+I do it?  Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

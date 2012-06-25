@@ -1,0 +1,26 @@
+I imagine the error exists in both benchmarks, however it only shows up in the spec2k binaries. Based on the assertion it appears as though the num_banks or num_cpus is incorrect. It could be that you're specifying the wrong number of cpus, or the banks calculation is spitting out a bank > num_banks. In either case, please provide a patch if you figure it out.
+Thanks,
+Ali- Show quoted text -
+On Apr 23, 2008, at 4:07 PM, Sujay Phadke wrote:
+- Show quoted text -
+Hello,
+    I get an error if I use a vector2d for stats in beta 5. This is the output:
+warn: Entering event queue @ 0.  Starting simulation...
+m5.opt: build/ALPHA_SE/base/statistics.hh:1312: Stats::VectorProxy<Stats::Vector2dBase<Stor> > Stats::Vector2dBase<Stor>::operator[](int) [with Stor = Stats::StatStor]: Assertion `index >= 0 && offset + index < size()' failed.
+It is declared in dram.cc as:
+bank_access_profile
+        .init(num_banks,num_cpus)
+        .name(name() + ".bankaccess")
+        .desc("DRAM bank access profile")
+        ;
+But I get this error only when I run the spec2k benchmarks, not if I am running splash2. I dont know why this is happening.
+If i remark out the line in which the vector2d array is declared, it works fine with spec2k too.
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

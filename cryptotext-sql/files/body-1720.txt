@@ -1,0 +1,19 @@
+> I am wondering if there has any way to disable some statistics
+> recorded in the m5stats.txt.  Basically, I don't want to go into every
+> file and mask out the related codes. Could I set up something when
+> registering the statistic counter, then m5 will not print this counter
+> into the m5stats.txt? I needs this because when I use the large scale
+> CMP configuration, the m5stats.txt is more than 100MBytes.
+There is no simple system for disabling statistics output.  The
+easiest thing to do is to probably just run a script to prune it down
+after the file is generated and then delete the file.
+If you want to hack the code, the "print" flag on the statistic could
+be cleared for all stats by commenting out the line in the name()
+function that sets that flag.  You could then manually call
+"mystat.flags(print)" for all of those stats that you actually want to
+see.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

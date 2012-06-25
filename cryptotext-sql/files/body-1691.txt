@@ -1,0 +1,39 @@
+Are you running with m5.opt or debug?  If you run m5.fast and something goes wrong, no errors will be printed since they've been compiled out.Lisa2009/3/19 Veydan Wu <veydanwu@gmail.com>
+- Show quoted text -Hi, Rick, Thanks for your reply. 
+ 
+The output of booting M5 seems normal, but the problem is it just quit there. the output I appended in my last letter is all the output, and M5 just quit and nothing continued. You said that there's a address out of place, which is it? Do you have any idea to fix that ? I guess that maybe the reason of the error.
+ 
+Thanks for your suggestion on the second question, then I should try to compile a 2.6.18 kernel  to boot linux. I guess that maybe the kernel provieded on the website is too old to boot gentoo. Furthermore, if the /dev/hda1 cannot be detected, how can I boot M5? Afterall, the /dev/hda1 is the only hard disk device on M5. 
+ 
+Best regards,
+ 
+Veydan
+Message: 2Date: Wed, 18 Mar 2009 11:11:11 -0700From: Rick Strong <rstrong@cs.ucsd.edu>
+Subject: Re: [m5-users] a problem of using my own compiled vmlinuxTo: M5 users mailing list <m5-users@m5sim.org>Message-ID: <49C1393F.1040703@cs.ucsd.edu>
+Content-Type: text/plain; charset=GB2312Hi Veydan,I am not an expert, but I think we are going to have to know what the outputof M5 was to help you with the compiler alpha-linux kernel (first boot
+that failed)
+as I don't see anything wrong unless an address is out of place. Myguess isthat something interestinghappened on the simulator.On the second output, I noticed that udev is complaining about an old
+version of
+the kernel. A quick man shows that is it is a "Linux configurabledynamic device namingsupport". This could be related to the inability to find the hard diskdevice with name /dev/hda1but this is just a guess. I have only tried to boot linux on m5 with
+vanilla-kernel 2.6.18. Isay you try that.Good luck,-RickVeydan Wu wrote:> Hi all, thank you for all the people replying my question, and I have> compiled a alpha linux kernel myself.
+>> I hope it can work correctly, but when during the boot time ,such error occurs:>> ==== m5 slave terminal: Terminal 0 ====> M5 console: m5AlphaAccess @ 0xFFFFFD0200000000> Got Configuration 623
+> memsize 8000000 pages 4000> First free page after ROM 0xFFFFFC0000018000> HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt> 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel> 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+> kstart = 0xFFFFFC0001010000, kend = 0xFFFFFC0001757E98, kentry => 0xFFFFFC0001010000, numCPUs = 0x1> CPU Clock at 2000 MHz IntrClockFrequency=1024> Booting with 1 processor(s)> KSP: 0x20043FE8 PTBR 0x20
+> Console Callback at 0x0, fixup at 0x0, crb offset: 0x510> Memory cluster 0 [0 - 2056]> Memory cluster 1 [2056 - 14328]> Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 4000> ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8
+> unix_boot_mem ends at FFFFFC0000076000> k_argc = 0> jumping to kernel at 0xFFFFFC0001010000, (PCBB 0xFFFFFC0000018180 pfn 2988)> CallbackFixup 0 18000, t7=FFFFFC00012F8000>>> and then the M5 just quit. what happen? Is there anything wrong with
+> my own vmlinux?  I used this because it is the kernel version that I> used to compile some device> driver that run on M5. and when using gentoo stage3 image, the check> of root file always fail,the error is shown below.I have post that to
+> the maillist before, I don't have any idea to deal with this, so I> guess that if I use a newer kernel, that error may not come up.>>  * Mounting proc at /proc ...                                             [ ok ]
+>  * Mounting sysfs at /sys ...                                             [ ok ]>  * Your kernel is too old to work with this version of udev.>  * Current udev only supports Linux kernel 2.6.15 and newer.
+>  * Mounting devpts at /dev/pts ...                                        [ ok ]>  * Checking root filesystem ...ext2fs_check_if_mount: No such file or> directory while determining whether /dev/hda1 is mounted.
+> fsck.ext3: No such file or directory while trying to open /dev/hda1> /dev/hda1:> The superblock could not be read or does not describe a correct ext2> filesystem.  If the device is valid and it really contains an ext2
+> filesystem (and not swap or ufs or something else), then the superblock> is corrupt, and you might try running e2fsck with an alternate superblock:>     e2fsck -b 8193 <device>>>
+>  * Filesystem couldn't be fixed :(>                                                                           [ !! ]>> But now I can't boot the M5 with my own vmlinux now, can somebody give
+> some hints on how to deal with this? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

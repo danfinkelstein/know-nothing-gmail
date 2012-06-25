@@ -1,0 +1,6 @@
+Hi,I am interested in tracing dumped address in between L2 cache-L3 cache and L3 cache-memory. Do M5 have any built-in methods to dump the address in file or we have to hack that in too?
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

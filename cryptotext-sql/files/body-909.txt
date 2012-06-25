@@ -1,0 +1,7 @@
+Hello All,I had a question about the results I am obtaining while running a benchmark program I wrote using pthreads.  The benchmark I am using to test is a simple operation where each thread created does a dot product of two vectors with 1 million elements in each.   I am seeing a result where the ticks from USER mode look proper the way I am exspecting them.  That is to say that one core has a higher load as it is where the main thread runs and then each of the other cores has some small amount of usage on them.  Then when I look at the total number of ticks spent on each core, they are all equal.  This happens because there is a large portion of the time spent in "KERNEL" mode on the cores with lower utilization.  I am not sure why the KERNEL mode is so high on these other cores.  Any insight.  
+Also another strange artifact that is occuring is that when I run a two core version, the total number of ticks on spent on each core is about half that of the time for the 4 core version.  This makes no sense to me as I would expect  the 4 core version to take half the time not twice the time...
+Any insights?Thanks in advance.   -- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

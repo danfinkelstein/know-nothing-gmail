@@ -1,0 +1,149 @@
+Hi Sujay,Sorry, I had a busy week.  I can execute applu, apsi, art110, equake, lucas, wupwise, bzip2_program, gzip_graphic, gzip_source, mcf, parser, perlbmk_makerand, twolf, and vortex2.  Again, I believe m5 v2b4 can execute the full set of spec2k benchmarks with the patches that have been sent to the mailing list.  These are using the ref input sets.
+I'm using the standard se.py file that comes with m5 -- I've got some local mods, but nothing that affects the execution of these benchmarks.In terms of where to get the alpha-compiled benchmarks, I got them a long time ago -- if you have a SPEC license, you should be able to compile your own.  There used to be a set of compiled ALPHA benchmarks posted on the web (from Chris Weaver), but I don't know if they are posted any more.
+   -VilasOn Feb 3, 2008 5:06 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+ 
+  ----- Original Message ----- 
+  Hi Vilas,
+      Can you tell me which 
+  benchmarks are you able to execute? And can you send me your config file for 
+  running them?
+  Where did you download the alpha compiled 
+  benchmarks from?
+   
+  Thanks,
+  Sujay
+   
+  
+    ----- Original Message ----- 
+    
+From: 
+    Vilas Sridharan 
+    To: Sujay Phadke 
+    Sent: Monday, January 28, 2008 1:15 
+    PM
+    Subject: Re: [m5-users] ALPHA SE Spec2k 
+    problems
+    Hi Sujay,I can do a subset of spec2k.  
+    I haven't tried Spec2k6.  Rick Strong has been working on getting 
+    Spec2k working -- see the mailing list archives, but I think he's figured 
+    out pretty much all the problems and posted diffs.  I haven't yet tried 
+    it.   -Vilas
+    On Jan 28, 2008 12:19 PM, Sujay Phadke <sphadke@eecs.umich.edu> 
+    wrote:
+    
+      
+      Hi Vilas,
+             Are you 
+      able to run spec 2000 or spec 2006 in M5?
+       
+      - Sujay
+       
+      
+        
+        
+        
+        ----- 
+        Original Message ----- 
+        
+From: 
+        Vilas 
+        Sridharan 
+        To: 
+        M5 users mailing list 
+        Cc: 
+        rstrong@cs.ucsd.edu 
+        Sent: 
+        Monday, January 07, 2008 5:14 PM
+        Subject: 
+        Re: [m5-users] ALPHA SE Spec2k problems
+        Hi Rick,It think it may be the input file 
+        names.  Many of the SPEC2k benchmarks get input files redirected to 
+        their STDIN.  For example, parser has the following command line 
+        (from http://kbarr.net/specint2000-commandlines):    
+        parser 2.1.dict -batch < ref.in > ref.out 2> ref.errI think this 
+        code in cpu2000.py provides the input files to STDIN for many of these 
+        benchmarks:        if not 
+        hasattr(self.__class__, 
+        'stdin'):            
+        self.stdin = joinpath(inputs_dir, '%s.in' % self.name)            
+        if not 
+        isfile(self.stdin):                
+        self.stdin = NoneIt looks to me like, unless otherwise 
+        specified, parser would get a STDIN of filename "parser.in".  Since this 
+        is (likely) not a file in your SPEC directory, parser probably doesn't 
+        get a proper input file.  I don't see anywhere else that the 
+        self.stdin parameter is set for parser in cpu2000.py either.If 
+        this is the problem, renaming (or copying and renaming) the ref.in file as "parser.in" would solve the 
+        problem, or else add the line: 
+                self.stdin = 'ref.in'...to the 
+        cpu2000.py where it sets up the "parser" benchmark.Specifically, 
+        I believe I've gotten parser to run by doing the former (creating a file 
+        parser.in).  I haven't 
+        tried facerec or the others you mention, but according to Ken's website, 
+        they all are similar (taking either ref.in or inp.in on their STDIN).   
+        -Vilas
+        On Jan 7, 2008 4:52 PM, Steve Reinhardt <stever@gmail.com> 
+        wrote:
+        If 
+          I had to make a wild guess, I think you may be having problems 
+          withinput or output files not being accessible, or maybe being 
+          corrupted.I'm not sure what compiler your binaries were 
+          compiled with, or if fortran error numbers are standardized, but 
+          error 24 is "End-of-fileduring read" for DEC Fortran:http://www.helsinki.fi/atk/unix/dec_manuals/df90au52/dfum033.htm 
+          The rest of that error message just says that it tried to 
+          look up thetext error message for that error number but couldn't 
+          find the filethat does that.SImilarly with lucas, if the 
+          program is calling exit() after 80K instructions it's because 
+          something very early went wrong, like itdidn't like the 
+          command-line arguments or couldn't find an input file. I'm 
+          very surprised you're not getting an error message somewhere (from 
+          the app if not from m5).That reminds me... could the 
+          command-line arg issues we were havingwith the splash scripts 
+          (where you need to manually split the commandline into args) be an 
+          issue here too? Steve
+          
+          
+          On Jan 7, 2008 1:40 PM, Ali Saidi <saidi@umich.edu> 
+          wrote:> Are there any unimplemented syscall warnings printed? 
+          >> Ali>>>>> On Jan 7, 
+          2008, at 3:16 PM, Rick Strong wrote:>> > Hi,> 
+          >> > I have been attempting to get all the Spec2000 
+          benchmarks running. > > For each case, I was using the 
+          cpu2000.py script found with the web> > release of M5 2.0b4. 
+          All simulations are run in ALPHA SE with the> > 
+          AtomicSimpleCPU. All benchmarks are run from the beginning. > 
+          >> > 1) facerec('alpha','linux','ref') fails with the 
+          error given below.> > I have seen this error mentioned by 
+          Nathan, but no solution appears http://osdir.com/ml/emulators.m5.users/2005-06/msg00005.html> 
+          > .> >> >   forrtl: info: Fortran error 
+          message number is 24.> >   forrtl: warning: Could not 
+          open message catalog: for_msg.cat. > >   forrtl: info: 
+          Check environment variable NLSPATH and protection of> > 
+             /usr/lib/nls/msg/en_US.ISO8859-1/for_msg.cat.> 
+          >    forrtl: severe (24): Message not found> 
+          >> > 2) gap('alpha','linux','ref') fails silently at 
+          121,648,276 > > instructions 71,547,478,968 ticks 
+          simulated.> >> > 3) lucas('alpha','linux','ref') 
+          exits too early, "Exiting @ cycle> > 47505108 because target 
+          called exit()" at 80,721 instructions.  No > > clear 
+          reason why.> >> > 4) parser('alpha','linux','ref') 
+          fail silently at 267,811,574> > instructions 157499543208 
+          tick simulated.> >> > -Richard > 
+          >> >> > 
+          _______________________________________________> > m5-users 
+          mailing list> > m5-users@m5sim.org> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> 
+          >>> 
+          _______________________________________________> m5-users 
+          mailing list> m5-users@m5sim.org > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users 
+          mailing list m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+        
+        
+        
+        _______________________________________________m5-users 
+        mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

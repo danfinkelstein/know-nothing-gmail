@@ -1,0 +1,30 @@
+In order to fully understand that interface you might want to check the CPU Model Documentation:
+http://www.m5sim.org/wiki/index.php/CPU_Models
+specifically for the O3CPU and specifically the fetch stage.
+ 
+> > For example, I would like to modify the fetch stage so that each> > processor is running successive instructions of the same program. So say> > proc0 is running instructions 0,2,4,6... and proc1 is running
+> > instructions 1,3,5,7... Do you have any advice on how to implement this?
+If this is the case, than in the most basic case all you need to do is increase the fetchPC by two instructions instead of by one when the PC is updated. 
+ 
+So Like Nate said, you are going to do some hacking around to get things working, but just to start you off, you might want to check the 
+lookAndUpdateNextPC() function in the fetch stage (src/cpu/o3/fetch_impl.hh).
+ 
+In the simple, non-branching case, you could just update the next PC based on the cpu ID of the processor (the following is JUST PSEUDOCODE):
+pc = nextPC + (4 * cpu_id)
+ 
+But how you would handle branch prediction across processors in the same instruction stream... well ... that's the interesting, complicated, and unknown part (for me at least)!
+ 
+Anyway, good luck with everything and I hope that helps ...- Show quoted text -
+ 
+ 
+On 11/17/06, Nathan Binkert <binkertn@umich.edu> wrote:
+> Yes this is exactly what I want to do. I want to make, say a 2-core CMP> behave as though it was a 2-way superscalar core. I have an idea of what
+> I need to do, but I'm not sure where to start. You also mentioned about> hacking the models. Could you elaborate more on that?You're going to have to just start hacking on the code in the o3 cpu model
+(or write your own model).  The code that is there now was not at allwritten to do what you want, so there's no way around you modifying what'sthere.  Nate_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- -- Korey LaMar SewellUniversity of Michigan Computer Science & Engineering Ph.D Student------``Experience is not what happens to you. It is what you do with what happens 
+to you.'' 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

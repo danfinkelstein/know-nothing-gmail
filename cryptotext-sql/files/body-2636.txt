@@ -1,0 +1,14 @@
+In this case, if I want to change the size of physical memory in m5 and then observe the effect on page in/page out, can I do it? Does the m5.stats include such informtion? Thanks.- Show quoted text -
+On Sun, Aug 10, 2008 at 12:51 AM, nathan binkert <nate@binkert.org> wrote:
+> I want to add some modifications to the page in/page out between main memory
+> and disk in m5. Can I do it and which codes in m5 give such description?
+M5 doesn't do this.  The kernel does this.  You'll have to hack on the kernel.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

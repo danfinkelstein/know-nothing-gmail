@@ -1,0 +1,48 @@
+Hi Everyone,
+I understand that the caches cannot be checkpointed within a
+reasonable amount of space, but what is the proper procedure for
+flushing the caches prior to taking a checkpoint? My m5 config is a
+single-core Alpha TimingSimpleCPU with a split L1 cache. If I drop a
+checkpoint, restart m5, and restore the checkpoint, the kernel panics:
+Bad page state at prep_new_page (in process 'm5', page fffffc0000978c80)
+flags:0x0000000000000064 mapping:fffffc00006f2841 mapcount:1 count:1
+Backtrace:
+fffffc0007be7bf0 0000000000000000 fffffc000036eb64 fffffc000071aec0
+        fffffc000036f3c0 fffffc000071e600 fffffc000071ae80
+0000000000000000
+        0000000000000000 0000000000000020 0000000000000000
+fffffc0007abf4c0
+        fffffc000036f3c0 fffffc000071e640 fffffc000071ae80
+0000000000000020
+        0000000000000000 00000000000000d2 fffffc00003742f0
+0000000000000000
+        0000000000000020 fffffc0000c0dcc0 fffffc0000c0dec8
+fffffc0000c0f000
+Trace:
+[<fffffc000036eb64>] buffered_rmqueue+0x164/0x3d0
+[<fffffc000036f3c0>] __alloc_pages+0x540/0x5e0
+[<fffffc000036f3c0>] __alloc_pages+0x540/0x5e0
+[<fffffc00003742f0>] cache_alloc_refill+0x400/0x760
+[<fffffc0000373c70>] kmem_cache_alloc+0x80/0x90
+[<fffffc000034c144>] __sigqueue_alloc+0x64/0xe0
+[<fffffc000034d070>] send_signal+0x120/0x1f0
+[<fffffc000034d208>] specific_send_sig_info+0xc8/0x130
+[<fffffc000034d334>] force_sig_info+0xc4/0x110
+[<fffffc000032f638>] do_page_fault+0x3b8/0x570
+[<fffffc000031151c>] entMM+0x9c/0xc0
+[<fffffc00003118c4>] entSys+0xa4/0xc0
+Trying to fix it up, but a reboot is needed
+------------------------------------------------------------------------------------------------------------------------
+Under the same setup but no caches, the checkpoint restores correctly.
+So, I'm assuming it's a few dirty cache blocks holding the OS's page
+table that are causing the problem.
+Is there an easier way to flush the caches prior to checkpointing than
+iterating through each block and writing it back if it's dirty?
+Looking through the code, I don't think draining forces a cache-wide
+writeback.
+Thanks,
+-David
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

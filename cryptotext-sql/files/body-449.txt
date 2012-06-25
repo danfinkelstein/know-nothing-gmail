@@ -1,0 +1,133 @@
+Hi, guys,I raised the same concern more than a month ago, but no one responded to me at that time. The following is my original message:
+toM5 users mailing list <m5-users@m5sim.org>
+dateFri, Jan 29, 2010 at 5:17 PM
+subjectRe: A Potential Problem in the M5 Cache Module
+mailed-bygmail.com
+hide details Jan 29 
+Hi, everyone,I
+have another question about the "invalidateBlk" function in
+"src/mem/cache/tags/lru.cc". It seems to me that after the block is
+invalidated, it is not moved to the tail of the LRU set, which may
+leave an invalid block located in front of a vlaid one in the LRU
+stack. So, do you think if it is necessary to adjust the location of a
+block after it is invalidated?
+Thanks,LeonardAs I described in the message, the problem is derived from the fact that in "src/mem/cache/cache_impl.hh" there are several instances of calling the function "invalidateBlk". However, in the implementation of the function, an invalidated block is not moved to the end of the LRU stack.
+Hope this can clarify something.Regards,Leonard- Show quoted text -On Tue, Mar 9, 2010 at 1:29 PM, Paul V. Gratz <pgratz@gratz1.com> wrote:
+Hmmm, I agree that seems very odd, we had assumed that it was possible
+to select the block pointed to by LRU ahead of cold invalid blocks.
+We'll do some more digging on our end and see what is going on.
+Thanks for the help!
+Paul
+On Tue, Mar 9, 2010 at 12:38 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> Hi Paul,
+>
+> That's very interesting... it's not clear to me how you get a non-LRU
+> invalid block with an LRU valid block in a single-processor
+> non-full-system run, since a block will be promoted to MRU when it is
+> made valid, there should be no coherence-based invalidations, and we
+> don't enforce inclusion.  Obviously I'm missing something though if
+> you are seeing that difference.
+>
+> In any case, prioritizing invalid blocks for replacement does make
+> sense in a multiprocessor, so we'd be glad to have your patch when
+> you're satisfied with it.
+>
+> Thanks,
+>
+> Steve
+>
+>
+> On Tue, Mar 9, 2010 at 8:26 AM, Paul V. Gratz <pgratz@gratz1.com> wrote:
+>> Hi Steve,
+>> Interestingly in the process of doing some unrealted research we found
+>> that LRU replacement w/o checking for invalidated block was making a
+>> fairly substantial difference in some single threaded benchmarks
+>> (Sheng is a student I co-advise).  We've been running SPEC 2006 on a
+>> single processor (system emulation mode) w/ a 8MB L2, and there are a
+>> handful of benchmarks where the miss rate is 10-15% higher than
+>> choosing invalidated blocks over LRU.  I assume that the total memory
+>> footprint relative the cache size must mean that the cache isn't
+>> getting fully warmed up but we haven't fully debugged it yet (not sure
+>> what this says about SPEC 2006...).
+>>
+>> Assuming our results aren't due to some other bugs this probably
+>> should be incorporated in the default cache replacement policy as most
+>> real systems would select invalid blocks before LRU (especially in the
+>> presence of coherence invalidations).  If you want we can feed back a
+>> patch for the cache replace policy code once we are satisfied there
+>> aren't any other bugs floating in our code.
+>> Paul
+>>
+>>
+>> On Mon, Mar 8, 2010 at 11:16 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>> I don't think you're missing anything... it doesn't appear that the
+>>> replacement algorithm does anything special for invalidated blocks.
+>>> Of course, once the cache is warmed up, blocks will be invalidated
+>>> only due to coherence action, so there would have to be a lot of data
+>>> sharing for these blocks to cause a significant impact.
+>>>
+>>> Steve
+>>>
+>>> On Mon, Mar 8, 2010 at 7:41 PM, sheng qiu <herbert1984106@gmail.com> wrote:
+>>>> hi all,
+>>>>
+>>>> i see the M5's cache replace policy of LRU, it seems that it will always
+>>>> choose from the tail of the LRU list and if it's valid block then refresh
+>>>> the relevant stats parameters? but i have a doubt that most modern systems
+>>>> will consider the invalid blocks when looking for blocks for allocating. if
+>>>> there're no invalid blocks then go to the LRU list and choose from the tail.
+>>>> Is M5 violating this mechanism? or I miss something?
+>>>>
+>>>> Thanks,
+>>>> Sheng
+>>>>
+>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>>
+>> --
+>> -----------------------------------------
+>> Paul V. Gratz
+>> Assistant Professor
+>> ECE Dept, Texas A&M University
+>> Office: 333D WERC
+>> Phone: 979-488-4551
+>> http://www.gratz1.com/pgratz
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+-----------------------------------------
+Paul V. Gratz
+Assistant Professor
+ECE Dept, Texas A&M University
+Office: 333D WERC
+Phone: 979-488-4551
+http://www.gratz1.com/pgratz
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

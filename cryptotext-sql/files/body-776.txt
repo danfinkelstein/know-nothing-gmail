@@ -1,0 +1,14 @@
+The PhysicalMemory object itself has no bandwidth constraints; to control the bandwidth, you have to adjust the width and frequency of the bus feeding the memory.Steve- Show quoted text -On Mon, Nov 2, 2009 at 1:41 PM, Felix Loh <felixloh@umich.edu> wrote:
+Hello,
+I was wondering, how and where do I specify the bandwidth of memory,
+using the m5 memory model?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

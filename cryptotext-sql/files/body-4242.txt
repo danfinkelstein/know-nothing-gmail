@@ -1,0 +1,3 @@
+Thanks for the 'file' file. The listing shows some output files -- was that from a run you did with M5? I'd been talking with Ali about SPEC CPU 2000 runs and he didn't know where the data was, but it looks like you might have it. I'd like to compare it with what I've got, just to make sure the curves when I graph my version and yours look relatively identical.
+I think those output files were what came with spec, but I'm not certain about that since I didn't acutally start with a SPEC cd, but rather a directory from someone else.  I don't really ever run spec, so I don't really have any output data for you.  There are several spec runs in the tests/long directory that you could compare against.
+  Nate

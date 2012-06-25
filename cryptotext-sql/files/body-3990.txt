@@ -1,0 +1,31 @@
+There is no contention modeling at all within the current cache model,
+either for subbanks or for the cache as a whole.  It's up to the thing
+connected to the cache (the CPU or bus) to model contention and limit
+the number of requests per cycle to match the number of logical ports.
+ Nothing has changed in this regard between b3 and b4.
+Not that we wouldn't be glad to have someone add that and contribute it back!
+Steve
+- Show quoted text -
+On 11/13/07, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>
+>
+> Hi all,
+>
+> I have a question regarding the modeling of a shared L2 in M5v2beta3. How
+> does M5 model contention, when several requests compete for the same R/W
+> port? Moreover, does M5 model banks in L2?
+>
+> What about M5v2beta4?
+>
+> Thanks!
+>
+> Jiayuan
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi all,Can I get Tru64 image that m5 can boot? Has anyone tried running splash2 or ALP  benchmarks using that image?Thank you very much!Regards,Arun-- 'There is no good or evil; there is only power, and those too weak to seek it.'
+-Voldemort'It is our choices, Harry, that show what we truly are, far more than our abilities.'
+-Prof. Albus Dumbledore
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

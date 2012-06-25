@@ -1,0 +1,28 @@
+Hi,
+ 
+We are working on a power consumption project and need detailed M5 stats. And we have some difficulty in understanding the exact meaning of some M5 stats. Could anybody tell us what does these stats mean? 
+ 
+1.      Stats of L1 cache: 
+What is the difference between demand_access and overall_access?
+ 
+2. Stats of shared L2 cache: 
+ 
+2.1 What do the following parameters mean? In other words, what operations do they represent? 
+2.2 What are relationships among all the stats? For example, what parameters can be added together to get system.l2.demand_accesses?  In our simulations system.l2.demand_accesses= system.l2.ReadExReq_accesses + system.l2.ReadReq_accesses, which makes no sense to us. 
+2.3 Why/in what condition does the shared L2 cache have no Write_accesses?
+ 
+system.l2.overall_accesses
+system.l2.demand_accesses
+system.l2.ReadExReq_accesses
+system.l2.ReadReq_accesses
+system.l2.UpgradeReq_accesses 
+system.l2.Writeback_accesses
+system.l2.writebacks
+system.l2.fast_writes
+ 
+Thanks a lot
+-Sheng and Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

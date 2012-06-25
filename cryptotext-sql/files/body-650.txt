@@ -1,0 +1,70 @@
+From a purely mechanical M5 perspective, you could do what you're
+asking by hacking the cache model to allow you to hang an extra cache
+(or caches) off the L1->L2 bus that snoops the traffic and tracks what
+the cache contents would be if it treated those snooped requests as
+actual requests (without actually sending the requests that miss
+anywhere, or responding to any of the requests since the "real" cache
+will be doing that).
+But I agree with Nate, you still have a problem in that you could make
+the shared cache "real" and just track the private cache contents, or
+you could make the private caches "real" and just track the shared
+cache contents, and neither one seems more right than the other, so
+it's not obvious how that's a big win over just running twice.  It's
+hard to say for sure without knowing more about what you're trying to
+accomplish.
+Steve
+- Show quoted text -
+On Thu, Dec 3, 2009 at 10:24 AM, nathan binkert <nate@binkert.org> wrote:
+> There's also the issue that if this is a multithreaded simulation, the
+> path that the program takes could be non deterministic and the cache
+> configuration can certainly influence the program flow.  (i.e. who
+> wins a lock?)
+>
+>  Nate
+>
+> On Thu, Dec 3, 2009 at 9:30 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+>> What is the reason it has to be a single run?  It would be much easier to
+>> just do two runs, one with private, one with shared.
+>> Lisa
+>>
+>> On Thu, Dec 3, 2009 at 7:34 AM, Kenzo Van Craeynest
+>> <kenzo.vancraeynest@elis.ugent.be> wrote:
+>>>
+>>> Hi
+>>>
+>>> In a multicore configuration, is there a way to duplicate the l2 cache
+>>> (which is shared) accesses so that each core uses the shared l2-cache
+>>> to drive the simulation, but also sends each access to a private
+>>> l2-cache? I'd like to have a configuration where I could compare the
+>>> performance of the shared and the private cache in a single run. This
+>>> seems like the easiest way to do so, but I might be mistaken ofcourse.
+>>>
+>>> I've already thought about (and tried) keeping duplicate (private)
+>>> copies inside of the actual l2-cache, but it seems quite difficult to
+>>> determine the owner of a cacherequest (the contextid of the request),
+>>> for instance in the case of writebacks...
+>>>
+>>> Regards,
+>>>
+>>> Kenzo
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Are you referring to a distributed shared memory system or a message-passing system?- Show quoted text -On Tue, Jan 27, 2009 at 8:18 PM, Aaron Williams <aswilli@gmail.com> wrote:
+- Show quoted text -Hello all,I am curious if there is a mode you can put m5 into where each core has its own block of distributed memory instead of one large set of shared memory for all X cores.  
+A simple example of the algorithm I am trying to implement would be where each core has 1/Nth set of the data and each finds the max value and then they send these max values to one "master" core and this core identifies the max of these set.  I would like to do this with each core only being able to see its set of data.
+Any models similar to this in m5?-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineering
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

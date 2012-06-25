@@ -1,0 +1,7 @@
+Hi,  I recently pulled down the current m5-stable repository to do some testing, and I patched it with my changes from our group's older repository (versions below). When I try to run some of our tests, I get a segmentation fault. I have traced it back to our modification the the bus in ./src/mem/bus.cc. We had modified calcPacketTiming so that we could simulate a zero-latency/no-contention bus in detailed simulation (recvTiming). I am not sure where to start debugging this problem. I have attached the gdb output.
+  Is there, perhaps, a better way to simulate a bus with no contention in detailed simulation?  Thanks,  JoelRevisions:  Old: changeset:   5589:733318abb7b1
+  Current: changeset:   6283:94c016415053--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

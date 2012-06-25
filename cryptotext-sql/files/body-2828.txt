@@ -1,0 +1,19 @@
+hi Steve.
+thanks for replying, i handled it...i need to add a spm(sram) and define some related operations which can managed by software( it differs from tranditional memory maybe)... so new files named spm.cc and spm.hh are added... i 've fill these into SConsript...(for it's my first time to do that) .
+i am grateful for your kindness...have a nice day...
+2008/6/26 Steve Reinhardt <stever@gmail.com>:- Show quoted text -
+You have to add your new .cc file to src/mem/SConscript to get it tobe compiled and linked into the binary.
+That said, you shouldn't have to create a new C++ class at all... ifyou just want to change the latency and the address range you can dothis by overriding the default parameters in python.Steve
+On Thu, Jun 26, 2008 at 12:45 AM, 邓宁 <dunning2006@gmail.com> wrote:> hi all,> i add my sram based on the dram.hh/.cc files and modified the latency
+> calculation and address space to my requirement.> i modified the function of dram.cc into follows:> Spm*> SpmParams::create()> {>     return new Spm(this);> }>> but some problem arised when i compile it...
+>>> build/ALPHA_FS/params/params_wrap.do: In function `_wrap_SpmParams_create':> /home/dengning/m5_arm/m5-2.0b5/build/ALPHA_FS/params/params_wrap.cc:33003:> undefined reference to `SpmParams::create()'
+> collect2: ld returned 1 exit status> scons: *** [build/ALPHA_FS/m5.debug.bin] Error 1> scons: building terminated because of errors.>> i wrote the function just as the same as it is in dram.cc and
+> PhysicalMemory.cc...>> thank you> --> Regards> Dengning>> School Of Computer Science and Technology> Beijng Institute of Technology, China, 100081> dunning2006@gmail.com
+> dnenging@bit.edu.cn> _______________________________________________> m5-users mailing list> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Show quoted text -RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

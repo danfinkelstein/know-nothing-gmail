@@ -1,0 +1,96 @@
+Hi Rick,
+My understanding is that this used to work fine but somewhere between
+2.0b3 and 2.0b5 it broke.
+One of the big changes that happened in that period is that SE mode
+went from using virtual addresses throughout the memory system (mapped
+to the MainMemory object which was like a physical memory but dealt
+with the sparse address space) to a virtual-to-physical mapping based
+on the PageTable object so that SE and FS can both share the same flat
+PhysicalMemory object, and so that you can model TLB miss effects in
+SE mode, eventually using the same TLB as FS mode.  My guess is that
+something in this change is incompatible with loading two EIO traces
+simultaneously.  I looked briefly at the code and didn't see anything
+obvious though.
+All of this is pretty much hearsay, but it's my understanding of the
+situation.  Anyone who knows anything to the contrary or has any
+clarifications please speak up.
+Steve
+- Show quoted text -
+On Fri, Jul 4, 2008 at 6:41 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> Hi all,
+>
+> I am attempting to get an SMT run with two EIO traces working as preople
+> seemed to be able to this in the past. I am running detailed o3 with two
+> eio traces found at http://homepages.cae.wisc.edu/~mikko/752/
+> <http://homepages.cae.wisc.edu/%7Emikko/752/> (ammp,fma3d in my
+> example). All combinations of traces fail at:
+>
+> Program received signal EXC_BAD_ACCESS, Could not access memory.
+> Reason: KERN_PROTECTION_FAILURE at address: 0x00000020
+> 0x001eb752 in DefaultDecode<AlphaSimpleImpl>::sortInsts (this=0x10b9748)
+> at decode_impl.hh:455
+> 455
+> insts[fromFetch->insts[i]->threadNumber].push(fromFetch->insts[i]);
+>
+>
+> I am using smt options:
+> simcpu.smtNumFetchingThreads=2
+> simcpu.smtFetchPolicy="roundrobin"
+>
+> Is there some special trick to getting EIO traces working with O3+smt.
+> Everything works find for single threaded benchmarks.
+>
+> Thanks in advance,
+> -Rick
+>
+>
+> The complete where trace in gdb:
+>
+> #0  0x001eb752 in DefaultDecode<AlphaSimpleImpl>::sortInsts
+> (this=0x10b9748) at decode_impl.hh:455
+> #1  0x001f1096 in DefaultDecode<AlphaSimpleImpl>::tick (this=0x10b9748)
+> at decode_impl.hh:571
+> #2  0x001cee2b in FullO3CPU<AlphaSimpleImpl>::tick (this=0x10b9000) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/cpu/o3/cpu.cc:429
+> #3  0x001d01e4 in FullO3CPU<AlphaSimpleImpl>::TickEvent::process
+> (this=0x10b90b0) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/cpu/o3/cpu.cc:78
+> #4  0x0038002d in EventQueue::serviceOne (this=0x648a58) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/sim/eventq.cc:118
+> #5  0x003afe94 in simulate (num_cycles=9223372036854775807) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/sim/simulate.cc:72
+> #6  0x003f6821 in _wrap_simulate__SWIG_0 (args=0xf1f670) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/python/swig/event_wrap.cc:3367
+> #7  0x003f69ef in _wrap_simulate (self=0x0, args=0xf1f670) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/python/swig/event_wrap.cc:3417
+> #8  0x00a85d3d in PyObject_Call ()
+> #9  0x00af3fb8 in PyEval_EvalFrameEx ()
+> #10 0x00af545b in PyEval_EvalCodeEx ()
+> #11 0x00af3a85 in PyEval_EvalFrameEx ()
+> #12 0x00af39e8 in PyEval_EvalFrameEx ()
+> #13 0x00af545b in PyEval_EvalCodeEx ()
+> #14 0x00af5548 in PyEval_EvalCode ()
+> #15 0x00b0c9ec in PyErr_Display ()
+> #16 0x00b0d016 in PyRun_FileExFlags ()
+> #17 0x00aeb05b in PyAST_FromNode ()
+> #18 0x00af3806 in PyEval_EvalFrameEx ()
+> #19 0x00af545b in PyEval_EvalCodeEx ()
+> #20 0x00af3a85 in PyEval_EvalFrameEx ()
+> #21 0x00af545b in PyEval_EvalCodeEx ()
+> #22 0x00af5548 in PyEval_EvalCode ()
+> #23 0x00b0c9ec in PyErr_Display ()
+> #24 0x00b0d24b in PyRun_StringFlags ()
+> #25 0x003877b3 in python_main () at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/sim/main.cc:98
+> #26 0x0038823b in main (argc=9, argv=0xbffff674) at
+> /Users/rickstrong/build/m5smt/build/ALPHA_SE/sim/main.cc:150
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

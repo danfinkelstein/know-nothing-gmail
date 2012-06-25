@@ -1,0 +1,11 @@
+my script file *.py can run in the M5_1.1 , but it cannot run in M5_2.0b5. In my file, I implement cache by using BaseCache. The error is happened in BaseCache.
+ 
+So, is there a big difference of BaseCache.py between these two different versions of M5?
+ 
+How can I make my script file can run in M5_2.0b5? What change I need to do?
+ 
+Thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,55 @@
+Hi,
+   I run simulations by using TimingSimpleCPU and SDRAM model for my
+different page placement algorithms. Benchmark is ValStream, and
+running 10 billion instructions for each simulation.
+   Different average  DRAM access latencies cause no difference in sim_ticks.
+   Can anybody explain that?
+Thanks,
+Tracy
+- Show quoted text -
+>>>>> Hi,
+>>>>>
+>>>>>    I implement different page allocation algorithms(virtual to
+>>>>> physical
+>>>>> address translation algorithm) based on current DRAM model in full
+>>>>> system(m5_2.0b). After running simulations(benchmark is
+>>>>> ValStream), I
+>>>>> could see more than 20% difference in average DRAM access latency
+>>>>> within all these algorithms, but almost 0% difference in sim_ticks.
+>>>>>    Is that because the caculated dram latency is not used? Can
+>>>>> anybody
+>>>>> explain that to me?
+>>>>>    Thanks.
+>>>>>
+>>>>> Tracy
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

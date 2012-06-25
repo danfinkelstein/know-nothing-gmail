@@ -1,0 +1,28 @@
+It seems fine to me, however I'm surprised that there is a functional
+request that ends up in the PhysicalMemory that doesn't need a
+response. The only thing I could imagine falling into this category is
+a Functional Writeback if you were attempting to flush the caches
+before a checkpoint or something similar.
+Ali
+- Show quoted text -
+On Apr 27, 2009, at 2:57 PM, nathan binkert wrote:
+>> Ah, the patch simply fixes the issue that if a PhysicalMemory object
+>> receives a functional request in timing mode, it alters the request
+>> which was causing things to crash. I don't remember the precise error
+>> and I'm not sure if it happens in the unstable version, it is simply
+>> an issue I encountered using the stable version a while back.
+>
+> Well, if you ever notice the problem in the dev repository, please try
+> to get the fix into the tree.  Perhaps a memory expert can give it a
+> quick glance to see if it belongs.  Steve?
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

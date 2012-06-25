@@ -1,0 +1,53 @@
+Are you sure you're not running out of memory as you go from 8 total
+benchmarks to 16?
+- Show quoted text -
+On Wed, Jul 29, 2009 at 1:14 AM, Devraj Chapagain<drchapagain@gmail.com> wrote:
+> Hi,
+> I am testing simulations using SPEC CPU 2006 benchmarks in newly updated M5
+> (using hg clone http://repo.m5sim.org/m5 newm5 ) in SE mode. I'm facing
+> problems on running simulations as it gives 0 values on almost all
+> parameters while running 2 core 8 threads. But i'm not getting such problems
+> on 2 core 2 threads and 2 core 4 threads. Please have a look for: The
+> simulation A works well but Simulation B has 0 values on stats.txt file
+> under output folder:
+> Simulation A:
+> num of cpus = 2
+> num threads per cpu = 2
+> system.cpu[0].workload = [Mybench.bzip2(), Mybench.libquantum()]
+> system.cpu[1].workload = [Mybench.gobmk(), Mybench.soplex()]
+> Global frequency set at 1000000000000 ticks per second
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0.  Starting simulation...
+> Exiting @ cycle 102500 because all threads reached the max instruction count
+>
+> Simulation B:
+> num of cpus = 2
+> num threads per cpu = 8
+> system.cpu[0].workload = [Mybench.gromacs(), Mybench.cactusADM(),
+> Mybench.bzip2(), Mybench.gobmk(), Mybench.leslie3d(), Mybench.hmmer(),
+> Mybench.soplex(), Mybench.sjeng()]
+> system.cpu[1].workload = [Mybench.libquantum(), Mybench.milc(),
+> Mybench.gcc(), Mybench.gcc(), Mybench.libquantum(), Mybench.milc(),
+> Mybench.gobmk(), Mybench.sjeng()]
+> Global frequency set at 1000000000000 ticks per second
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0.  Starting simulation...
+> Exiting @ cycle 9223372036854775807 because simulate() limit reached
+>
+> I have read the previous posts related to similar problems but i'm not
+> getting much benefits. Could any one please help me just providing how can I
+> fix this problem?
+>
+>
+> Thanks in advance,
+> drc
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

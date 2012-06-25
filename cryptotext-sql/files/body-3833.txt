@@ -1,0 +1,8 @@
+when i use m5.simulate.dump() it says "object module has no attribute stats"?- Show quoted text -
+----- Original Message ----From: Steve Reinhardt <stever@gmail.com>To: M5 users mailing list <m5-users@m5sim.org>Sent: Tuesday, November 27, 2007 1:28:14 AMSubject: Re: [m5-users] Simulation QuestionsOn Nov 26, 2007 6:37 PM, Steve Stephen <sstephen66@yahoo.com> wrote:>> Is there a way to simulate for a particular numbe rof instructions just like> --maxticks option?Yes, you can set the max_insts_any_thread or max_insts_all_threadsparams on a CPU object and the simulation will exit once any (or all)threads on that CPU have executed that many instructions.> Is there a get stats. on an interim basis while the> simulation is running, like stopping teh simulation in middle, noting down> results and
+ resuming it again?I don't see a command-line param for it, but you could roll your ownby setting up a loop in your simulation script where you callm5.simulate(interval) and then m5.stats.dump() and then repeat.  Youcan look in configs/common/Simulation.py to see something similar inthe code that dumps checkpoints at regular intervals.Steve>>  ________________________________> Get easy, one-click access to your favorites. Make Yahoo! your homepage.> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+      Never miss a thing.   Make Yahoo your homepage.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

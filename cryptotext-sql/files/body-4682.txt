@@ -1,0 +1,16 @@
+There is no -P option anymore since the script file m5 executes is python. Instead of doing -P we envisioned people adding the code and corresponding options to fs.py/se.py. However you could add a -P option and just eval() the string if you really wanted the functionality.
+Ali- Show quoted text -
+On Mar 9, 2007, at 11:31 AM, rlai@mtu.edu wrote:
+Hi,
+    M5_1.0 simulator has an option "-P" (which executes <python> directly
+in the configuration). But I cannot find it in 2.0 version.
+    Is there any substitute option?
+Rongrong Lai
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

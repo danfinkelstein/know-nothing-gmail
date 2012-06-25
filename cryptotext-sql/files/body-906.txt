@@ -1,0 +1,75 @@
+inst_queue.hh is for the out of order model.  For the inorder model,
+there is no instruction queue.  It simply fetches and executes an
+instruction every cycle.  Look in src/cpu/simple
+  Nate
+- Show quoted text -
+On Thu, Oct 1, 2009 at 1:19 PM, Felix Loh <felixloh@umich.edu> wrote:
+> Hey Korey,
+>
+> Thanks a lot! Actually I forgot to mention that I'm using a simple CPU
+> model, so I'm not too concerned about the "out-of-ordering" of
+> instructions. I'll look into that inst_queue.hh file.
+>
+> Felix
+>
+> Quoting Korey Sewell <ksewell@umich.edu>:
+>
+>> Hi,
+>> I'm not sure simply looking into the IQ will do the trick, since it's out of
+>> order there's no telling that just because an instruction is in the queue in
+>> a certain order, that it is executed in that order.
+>>
+>> What's complicating what you are asking is that an O3 processor executes
+>> more than 1 instruction a a time. Thus, a question for you to ask yourself
+>> is what happens if an ALU op is executed on the same cycle as a memory
+>> operation? Consequently, hard to quantify what a "stream" is  when
+>> superscalar machines operate on things concurrently.
+>>
+>> So if all you need is "many non-memory instructions are executed between any
+>> two memory operations" and dont compare about instruction latency, then Why
+>> not track this on a simpler CPU model like AtomicSimpleCPU, use a trace flag
+>> like Exec, and then gather your stats. There's documentation on m5sim.org to
+>> find help.
+>>
+>> If the O3 is what you need, you want to be able to track when instructions
+>> are executed as well as maybe IQ interaction. The IQ is straightforwardly
+>> located in a file called inst_queue.hh. It's primarily used in the Rename
+>> (rename_impl.hh) or IEW stage of the O3 code (iew_impl.hh).  Also memory
+>> operations are in the LSQ section of the code. Browse through there since
+>> you'll want to know where an instruction is executed and also where an
+>> memory operation is sent out....
+>>
+>> On Thu, Oct 1, 2009 at 3:29 PM, Felix Loh <felixloh@umich.edu> wrote:
+>>
+>>> Hi,
+>>>
+>>> How do I peek into the instruction queue? Basically, I want to get a
+>>> trace that shows the entire stream of instructions (i.e both memory
+>>> and "regular" instructions). That's because I need to know how many
+>>> non-memory instructions are executed between any two memory operations.
+>>>
+>>> Thanks,
+>>> Felix
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>>
+>> --
+>> - Korey
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,41 @@
+Thanks for reply. Yes, lot of chnages of memory system.
+- Show quoted text -
+---- Original message ----
+>Date: Sun, 19 Oct 2008 23:02:09 -0400
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] simulate() limit reached
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>So the obvious is that you're actually reached the tick that you
+>wanted to simulate to. Assuming the limit is the max 64bit int, then
+>the reason is that the cpu is stalled waiting for a response that
+>never showed up. Have you made changes to m5? If you're making changes
+>to the memory system you need to be very careful to not loose
+>requests. You might also want to use the memtester CPU to debug your
+>changes.
+>
+>Ali
+>
+>
+>
+>On Oct 19, 2008, at 9:48 PM, Shoaib Akram wrote:
+>
+>> I often have this error. The clost I have come to track it is when I
+>> remove the book-keeping of outstanding responses in bridge. I dont
+>> want packets to be nacked because of no space for responses. I am
+>> assuming infinite queues. What possible reasons make the simulate()
+>> limit reached, any idea?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

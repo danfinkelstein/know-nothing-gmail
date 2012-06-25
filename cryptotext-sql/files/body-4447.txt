@@ -1,0 +1,11 @@
+Are there any limitations on what objects can be used as SimObjectParams? For my case, I want to  pass an AlphaO3CPU pointer to another object I constructed through the python configurations. Originally I had:
+SimObjectParam<AlphaO3CPU<AlphaSimpleImpl> *> thecpu
+as my parameter definition, but this gave an error complaining that there was no
+ShowType(std::basic_ostream<char, std::char_traits<char> >&) const
+method defined for that object. Same goes for just trying to use the BaseO3CPU object. On the other hand, BaseCPU works fine.
+So what is it about BaseCpu that doesn't cause this error? From what I can tell, the ShowType method is defined in param.hh for all SimObjectParam, regardless of what the templated object is. Maybe I'm looking in the wrong place, or missing something.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

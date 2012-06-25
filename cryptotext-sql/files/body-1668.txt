@@ -1,0 +1,28 @@
+Hello,
+Finally I have them working, it was just a problem with the
+directories in the Mybench.py file. Thanks a lot for all the help.
+And thanks Meng-Ju for your kindly help and your guide to run SPEC.
+- Show quoted text -
+On Wed, Mar 25, 2009 at 5:57 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi Ryan,
+>
+> One quick solution is put the following line in the Mybench.py
+>
+> ==============
+> from m5.objects import *
+> import os, optparse, sys
+>
+> binary_dir = 'xxxx/alpha_binary/'
+> data_dir = 'xxxx/SPEC06/cpu2006/benchspec/CPU2006/'
+> ==============
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

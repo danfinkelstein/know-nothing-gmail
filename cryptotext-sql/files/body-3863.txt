@@ -1,0 +1,14 @@
+Hello,
+In real network environment, if a client want to send
+a pointer value to the server, it has to copy and send
+the data on that memory address(pointer) instead of the
+address itself.
+I am wondering how it works in M5 simulator. Does it work
+like the real network environment? Or the client and server
+"share the memory", so the client can just send the address
+(pointer) itself?
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

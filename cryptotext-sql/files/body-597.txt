@@ -1,0 +1,13 @@
+Hello,
+ 
+I am having problems with getting m5threads to work with OpenMP
+codes. All of my multithreaded codes build and compile with m5thread library
+correctly, but only OpenMP codes do not seem to run in multithreaded mode. Also,
+all tests included in the m5thread package pass except for the OpenMP one. I
+would appreciate any help.
+ 
+Lukasz
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

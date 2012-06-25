@@ -1,0 +1,9 @@
+http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_add_files_to_a_disk_image.3F- Show quoted text -
+On 10/1/07, rlai@mtu.edu <rlai@mtu.edu> wrote:
+Hi,   I am trying to running spec2000 in m5 full system(m5_2.0b3).   In m5 documentation, "Using linux-dist to Create Disk Images andKernels for M5" talks about how to generate disk image. How to put the
+spec2000 binaries into disk img?   Can anyone help me?   Thanks.Tracy_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

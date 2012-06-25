@@ -1,0 +1,72 @@
+Are you running in FS mode or SE? The LiveProcess SimObject is only
+defined in SE.
+Gabe
+- Show quoted text -
+Quoting Ryan Markley <overgeo@gmail.com>:
+> Hello Meng-Ju thanks for your answer,
+>
+> Yes I have it. This my cmp.py file
+>
+> #cmp.py
+> # Simple configuration script
+>
+> import m5
+>
+> if m5.build_env['FULL_SYSTEM']:
+>     m5.panic("This script requires syscall emulation mode (*_SE).")
+>
+> from m5.objects import *
+> import os, optparse, sys
+> m5.AddToPath('./configs')
+> m5.AddToPath('../common')
+> import Simulation
+> from Caches import *
+> from cpu2000 import *
+>
+> import Mybench
+>
+> # Get paths we might need.  It's expected this file is in m5/configs/example.
+> config_path = os.path.dirname(os.path.abspath(__file__))
+> print config_path
+> config_root = os.path.dirname(config_path)
+> print config_root
+> m5_root = os.path.dirname(config_root)
+> print m5_root
+>
+>
+> parser = optparse.OptionParser()
+>
+> #Below this is the same than the one we find in the wiki
+>
+> My Mybench.py file is the same than the one in the wiki and is located
+> in /configs/common . What I did was just create the file Mybench.py in
+> common and after I created the file cmp.py in /configs/example. I did
+> not change any configuration files or anything should I change
+> something else?.
+>
+> Thanks a lot again and sorry for the problems.
+>
+> 2009/3/23 Meng-Ju Wu <mengjuwu@gmail.com>:
+>> Hi Ryan,
+>>
+>> Do you have these two lines in the top of your python file?
+>>
+>> from m5.objects import *
+>> import os, optparse, sys
+>>
+>>
+>> Meng-Ju
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

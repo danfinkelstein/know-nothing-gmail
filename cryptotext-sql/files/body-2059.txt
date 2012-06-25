@@ -1,0 +1,45 @@
+Hello Ali, you were right, I tried the workload in a non modified
+installation and it was working right, finally I traced the error to
+these lines that I added in the function recvTiming of bus.cc. I will
+post the lines that were causing the problem, because maybe it is
+helpful for someone in the future
+int foo = pkt->getDest();
+if (foo == -1) foo = 8;
+My_counters[pkt->getSrc()][foo]++;
+I deleted them and now it is working fine. And another question, to
+debug the problem I was commenting and uncommenting the changes that I
+did, I would like to ask, if it is possible in this type of errors use
+gdb to see the lines that were causing the problem.
+Thanks.
+- Show quoted text -
+On Fri, Jan 2, 2009 at 3:36 PM, Ali Saidi <saidi@umich.edu> wrote:
+> Have you modified the simulator, particularly the memory system, in
+> any way? This error occurs when an object in the memory system
+> receives a packet it was not expecting. If you have modified the
+> simulator, the problem probably has to do with the modifications
+> you've made, if you haven't modified it then you should enable some
+> trace flags like Bus, Cache, etc to see what happens leading up to
+> this error. With that data you should be able to better understand
+> what is going wrong and begin to realize how to fix it.
+>
+> Ali
+>
+> On Jan 2, 2009, at 5:48 PM, Eduardo Olmedo Sanchez wrote:
+>
+>> ck, canneal, swaptions in a 4 core system,
+>> in Full System mode, with 4 threads and with the small workload.
+>>
+>> warn: allocating bonus target for snoop
+>> m5.opt: build/ALPHA_FS/mem/tport.cc:97: virtual bool
+>> SimpleTimingPort::recvTiming(Packet*): Assertion `pkt->isResponse()'
+>> failed.
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

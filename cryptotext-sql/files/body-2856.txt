@@ -1,0 +1,16 @@
+hi!
+when ever i try to run the singleDefault.py i get the following message
+how to solve this problem?
+Thank you.
+ 
+ 
+ ../../build/ALPHA_SE/m5.opt -d ./out singleDefault.pyM5 Simulator System
+Copyright (c) 2001-2008The Regents of The University of MichiganAll Rights Reserved
+M5 compiled Jun 23 2008 21:26:16M5 started Tue Jun 24 15:56:58 2008M5 executing on kani.cs.lamar.educommand line: ../../build/ALPHA_SE/m5.opt -d ./out singleDefault.py
+Traceback (most recent call last):  File "<string>", line 1, in ?  File "build/ALPHA_SE/python/m5/main.py", line 350, in main  File "singleDefault.py", line 6, in ?    from BaseCache import *
+  File "/space/ranq/download/m5-2.0b5/src/mem/cache/BaseCache.py", line 3, in ?    from MemObject import MemObject  File "/space/ranq/download/m5-2.0b5/src/mem/MemObject.py", line 3, in ?    class MemObject(SimObject):
+  File "build/ALPHA_SE/python/m5/SimObject.py", line 143, in __new__AssertionError
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

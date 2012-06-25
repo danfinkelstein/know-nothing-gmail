@@ -1,0 +1,16 @@
+Ali,I tried that.  I get a python error:  "AttributeError: 'module' object has no attribute 'stats'".  I'm not entirely sure why and haven't been able to figure it out.  I'm sure there's a fairly straightforward reason, but I haven't been able to figure out m5's python hierarchy enough to sort it out.
+I *did* find a workaround, but it's a bit of a hack. Since SIGUSR1 and SIGUSR2 are mapped to signal handlers that dump stats and dump & reset stats, respectively, I can have python send itself a signal which will cause the stats to be dumped on the next cycle:
+   os.kill(os.getpid(), signal.SIGUSR1)(I assume the signal handlers are there for FS mode.)  This does seem to work, but as I said, it's not the prettiest thing in the world.  To use this, I have to import os and signal at the top of the file.
+Thanks,   -Vilas- Show quoted text -On 10/31/07, Ali Saidi <saidi@umich.edu> wrote:
+Hi Vilas,You should be able to call m5.internal.stats.reset() from withinpython after you do the switch. This will reset *all* stats. If youjust want to reset some the easiest way is probably to wrap the
+resetStats() method is swig and then you could call something liketest_sys.cpu.dcache.resetStats() in python after the switchover happens.AliOn Oct 31, 2007, at 12:52 PM, Vilas Sridharan wrote:
+> Hello all -->> I looked at the list archives and webpage and couldn't figure this> out.  Is there any way to dump & reset the stats midway through> simulation *without* specifying a cycle number up front?
+>> I'd like to look at some cache statistics.  I'm using the> TimingSimpleCPU to warm the caches, but then the DetailedCPU to> simulate.  I'd like to reset the statistics before starting
+> simulation (so I only see the memory statistics for the simulation> phase) but I don't know up front how long that is - I am warming up> for a fixed number of instructions, not a fixed number of cycles.
+> Basically, I'd like to dump & reset (or even just reset) the> *memory* stats when I do the CPU switch, but I can't figure out how.>> Thanks,>>    -Vilas> _______________________________________________
+> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

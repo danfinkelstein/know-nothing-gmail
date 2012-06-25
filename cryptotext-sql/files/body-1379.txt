@@ -1,0 +1,22 @@
+Hi Joe,
+I think this is unrelated to your previous encounter, and is probably
+a symptom of enabling the prefetcher.  I fixed a bunch of bugs in the
+prefetch code recently but maybe this is one I missed.  Can you send
+me (off list) the binary you're running and a command line that
+reproduces the error?
+Thanks,
+Steve
+On Wed, Mar 4, 2009 at 10:42 AM,  <joegross@umd.edu> wrote:
+> Hello,
+>
+> I haven't seen this bug in a long time (that's why I reused the subject line), but I'm running the latest M5 dev version in FS mode and running either the mcf or bzip2 benchmarks and I again get this assertion error:
+>
+> m5.opt: build/ALPHA_FS/mem/cache/cache_impl.hh:558: Packet* Cache<TagStore>::getBusPacket(Packet*, typename TagStore::BlkType*, bool) [with TagStore = LRU]: Assertion `needsExclusive && !blk->isWritable()' failed.
+>
+> The only way I get this problem is when I enable the prefetcher (stream, ghb or tagged all do it), otherwise all benchmarks run fine. Some, like stream and lbm seem to run fine with the prefetcher on as well, so I wonder if this is due to some problem with the coherence protocol, updates to the prefetcher, some problem with memory doing out-of-order accesses or what. Would be nice to figure out what's causing this as the prefetcher really helps increase memory bandwidth.
+>
+> Joe
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

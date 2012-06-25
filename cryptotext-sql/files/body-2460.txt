@@ -1,0 +1,65 @@
+You can certainly remove the -Werror.  I'd like to know more if
+possible. What version of G++?  What version of swig?  Can you send me
+a copy of core_wrap.cc?
+Thanks,
+  Nate
+- Show quoted text -
+On Fri, Oct 10, 2008 at 12:09 AM, Dennis Yang <shinrairis@gmail.com> wrote:
+> Hi~
+>
+> I try to install the new M5-2.0b6 simulator on my workstation.
+>
+> However, there is an error during the compilation work.
+>
+> Here comes the error message:
+>
+>
+>
+> g++ -o build/ALPHA_FS/python/swig/core_wrap.o -c -pipe -fno-strict-aliasing
+> -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -Wno-uninitialized
+> -Wno-sign-compare -Wno-parentheses -Wno-deprecated -DTHE_ISA=ALPHA_ISA
+> -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf
+> -Ibuild/ALPHA_FS build/ALPHA_FS/python/swig/core_wrap.cc
+>
+> cc1plus: warnings being treated as errors
+>
+> build/ALPHA_FS/python/swig/core_wrap.cc: In function 'void
+> SWIG_Python_SetSwigThis(PyObject*, PyObject*)':
+>
+> build/ALPHA_FS/python/swig/core_wrap.cc:2172: warning: deprecated conversion
+> from string constant to 'char*'
+>
+> build/ALPHA_FS/arch/alpha/isa_traits.hh: At global scope:
+>
+> build/ALPHA_FS/arch/alpha/isa_traits.hh:159: warning:
+> 'AlphaISA::SyscallPseudoReturnReg' defined but not used
+>
+> scons: *** [build/ALPHA_FS/python/swig/core_wrap.o] Error 1
+>
+> scons: building terminated because of errors.
+>
+>
+>
+> Could I just remove the "-Werror" flag to finish this compilation?
+>
+> If I miss any possible step, please let me know. Thanks
+>
+>
+>
+> Thanks for your reading.
+>
+> Any help would be grateful.
+>
+>
+>
+> Dennis
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

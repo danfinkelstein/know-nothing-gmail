@@ -1,0 +1,20 @@
+Hi,Thank you for replying. I used the example in simple-timing.pyn and it works.  My goal is to model  a combination of CMP and SMT. I'm using the ALPHA_SE for this purpose. I tried to model a system with private L1 caches and a shared L2 cache. From my understanding, the addTwoLevelCacheHierarchy adds a private L1 and a private L2 cache to a CPU, right ?   I tried to modify the code to have the L2 shared by all L1 caches as in the example that follows:
+bus = Bus()l2c = L2(size='4MB', assoc=8)for cpu in cpus:    cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),                                L1(size = '32kB', assoc = 4))    cpu.toL2Bus
+ = bus    cpu.connectMemPorts(cpu.toL2Bus)    cpu.l2cache = l2c    cpu.l2cache.cpu_side = cpu.toL2Bus.port    cpu._mem_ports = ['l2cache.mem_side']This is wrong as shown by the output below:
+warning: overwriting port l2cache cpu_sidewarning: overwriting port l2cache cpu_sidewarning: overwriting port l2cache cpu_sidewarning: overwriting port cpu0.l2cache mem_sidewarning: overwriting port cpu0.l2cache
+ mem_sidewarning: overwriting port cpu0.l2cache mem_sidepanic: Already have a mem side for this cache @ cycle 0[getPort:build/ALPHA_SE/mem/cache/base_cache.cc, line 236]Program aborted at cycle 0Aborted
+Can you give me a simple example to do that with 2 cpus, for instance ? This will probably be a good starting point to understand the interface of the python objects.Thanks.- Show quoted text -
+On 9/19/06, Steve Reinhardt <stever@eecs.umich.edu> wrote:
+Hi Alain,Did you apply the 2.0beta1 patch "Patch 1" from the web site(http://www.m5sim.org/wiki/index.php/Download)?  I believe it fixes this
+problem.  If not, please repost to the list.An example of a config file with a two-level cache hierarchy is intests/configs/simple-timing.py.SteveAlain Kalixte wrote:> Hi,>
+> I'm a new user and I'm trying to set up a config file with a CPU and a> cache. I'm running into troubles having the cache connected to the CPU.> Here is the piece of code I added to the sample se.py configuration script.
+> Note that I'm using the M5 version 2.0.beta1.>> if options.timing:>    ic => BaseCache(size='32kB',assoc=1,latency=1,block_size=32,mshrc=4,tgts_per_mshr=8)>    dc => BaseCache(size='32kB',assoc=4,latency=1,block_size=32,mshrs=4,tgts_per_mshr=8)
+>>    cpu.addPrivateSplitL1Caches(ic,dc)>> This is what I have as output:> m5.debug: build/ALPHA_SE/mem/request.hh:229: int> Request::getThreadNum():  Assertion 'validCpuAndThreadNums' failed
+> Program aborted at cycle 733595> Aborted>>> A good example on how to hook up a cache to the system will be very helpful.>> Thanks.>>> ------------------------------------------------------------------------
+>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

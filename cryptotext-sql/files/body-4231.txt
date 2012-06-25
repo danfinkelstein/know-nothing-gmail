@@ -1,0 +1,8 @@
+Hi all,I'm new to M5 and also relatively new to linux.  I have a question about an installation problem and about using M5 on VMWare.1) I tried installing M5 with the instructions given.  I have scons-0.97
+, SWIG1.3.31, and Python 2.5.1 and all seemed to install fine.  Here is the output:$ scons build/ALPHA_SE/tests/debug/quickscons: Reading SConscript files ...Checking for C header file Python.h... yesAdding /usr/local/lib to LIBPATH for 
+python2.5Checking for C library python2.5... noError: can't find Python library python2.52) Has anyone installed M5 on a VM? My laptop can't install linux (hpdv6000s have problems w/ linux) and I was thinking to just do it through ubuntu run on VMware player.  Has anyone done something similar?  How is performance?  Are there compatibility issues?
+Any help on the two issues would be greatly appreciated.  Thanks.Julian B.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

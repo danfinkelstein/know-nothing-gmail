@@ -1,0 +1,46 @@
+linux-bigswap2.img is just a disk image that contains a swap volume.
+  Nate
+2009/3/16 Veydan Wu <veydanwu@gmail.com>:
+- Show quoted text -> Hi, Rick, the download page provide the pre-compiled kernel vmlinux, but
+> what I need is to compile some device drivers, so I need the compiled source
+> code.
+>
+> I also try to look at what the linux-bigswap2.img contains, but it's a data
+> file not the type like linux-latest.img that can be mounted. so I am not
+> sure whether there is something I need in linux-bigswap2.img.
+>
+> I only have x86 platform so all I can do is to cross compile the source code
+> of linux for alpha and it is full of errors and I am not sure whether it
+> will work. I guess somebody here must have compiled the source for alpha
+> becasue the vmlinux is already provided, if that can be provided then my
+> problem would be solved, I think that maybe necessary for others too.
+>
+>>
+>> Message: 2
+>> Date: Sun, 15 Mar 2009 14:07:09 -0700
+>> From: Rick Strong <rstrong@cs.ucsd.edu>
+>> Subject: Re: [m5-users] linux kernel for alpha
+>> To: M5 users mailing list <m5-users@m5sim.org>
+>> Message-ID: <49BD6DFD.3040900@cs.ucsd.edu>
+>> Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+>>
+>> The linux kernel for the alpha architecture can be found on the download
+>> page for M5 @ http://www.m5sim.org/wiki/index.php/Download
+>> Veydan Wu wrote:
+>> > Hi, does anybody have a linux kernel for alpha architecture. I want to
+>> > compile some device driver running on M5 FS mode, I only have kernel
+>> > for x86 now, it will take much time to compile using a cross compiler,
+>> > so if anyone have one, please send me a copy. Thanks very much !
+>> > ------------------------------------------------------------------------
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+- Show quoted text -http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

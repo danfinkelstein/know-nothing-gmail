@@ -1,0 +1,24 @@
+Nikos Anastopoulos wrote:
+Hi,
+I have some questions about m5 v2.0b1.
+1) For SE mode, is there a PARMACS m5-specific implementation I could use in order to write multithreaded (shared memory) programs? I know I can use pthreads in FS mode instead,  but I would like to exploit the SMT feature which is currently available only in SE.
+There is no PARMACS support in v2.0b1, since MP coherence isn't quite working.  v1.1 supports PARMACS for Tru64 via an m5-specific library. I've been working on PARMACS/pthreads SE-mode support for v2.0 but haven't finished it yet.  The good news is that once I get it done it will be (a) for Linux rather than Tru64 and (b) hopefully a little more realistic than the Tru64 model, which relies too much on special m5 syscalls for things like condition variables.
+In case that I can use the PARMACS model to write multithreaded apps, is there a way then to map specific threads onto specific logical processors (e.g. in a system with CMPs of SMTs, etc.)?
+Not out of the box, but it should be possible to add.
+2) How can I learn about all the available statistics that are correlated with a specific component (e.g. caches or branch predictors)? How can I get them printed? Are they printed on m5stats file by default, or should I add some extra lines on the simulation script?
+All meaningful (basically non-zero) stats are printed in the m5stats file.  It's my philosophy (that I've effectively imposed on everyone else :-) ) that you never want to have to redo a multi-hour simulation run just because you didn't collect some statistic that you didn't think was relevant at the time you ran it but later changed your mind.
+The easiest way to see all the stats for a particular object is to look in the appropriate .cc file in that object's regStats() method.  Looking in the m5stats file is even easier, but you might miss some stats that happened to be zero-valued for that run.
+3) Which is the proposed way to get accurate measurements and statistics for the execution of a specific app in FS mode (i.e., excluding all statistics regarding the boot process and so on)? Should I add on my .rcS file the "m5 dumpstats" command before and after the execution of the application, and then get a diff?
+There's a call to reset all the stats; I'm not sure if that happens automatically when you do dumpstats or if it's a separate operation.  Do that before your app and then call dumpstats afterward and you'll get the stats for your app directly.
+4) How can I start m5 with a checkpoint obtained from a previous execution? I am not sure I have read something about on the wiki pages...
+Right now checkpointing only works in FS mode.  I think there is documentation on the wiki on how to use it.- Show quoted text -
+Thanks in advance,
+Nick.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

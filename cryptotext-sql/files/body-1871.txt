@@ -1,0 +1,6 @@
+hi, i am getting the following errorcactusADM ---        error (fatal: fault (unalign) detected @ PC 0x12002aeac)gobmk     ---           error (fatal: fault (fp_disabled) detected @ PC 0x16e74c)
+Does anybody know how to resolve this problem.ThanksPavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Is there currently an issue with certain built-in libraries not being supported? Some examples of this include the string and iostream libraries. Use of the string object, or cout, results in the following error:
+ failed assertion `hash_it != memDepHash.end()'
+Does this mean that I need to simply avoid using these libraries? (for example just sticking to printf, and char *'s)
+One odd thing is that with string, the program seems to to have no trouble creating/using the object, but when it comes time to destruct it, that error pops up. The error does not appear at all in atomic cpu mode, and the program completes normally.
+IOSTREAM functions on the other hand cause that error in detailed mode, and cause a page fault in atomic cpu mode.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

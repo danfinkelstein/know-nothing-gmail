@@ -1,0 +1,10 @@
+Hello,
+I am working with the out of order CPU o3 cpu. And I would like to ask
+if it is possible to change size of the instruction window. In
+addition can anyone please give some details about how is the
+management of the instruction window?.
+Thanks a lot in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

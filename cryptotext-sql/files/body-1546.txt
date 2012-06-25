@@ -1,0 +1,6 @@
+I am debugging an application on a modified version of m5 and am running with --trace-flags=Exec.  I am wondering if the panic that I am getting is for the last instruction in the assembly output, or if it is for the instruction just after the assembly output.
+Thanks,Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

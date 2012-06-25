@@ -1,0 +1,85 @@
+Ah yes, I didn't think of SE vs FS.  You're right, SyscallVerbose only
+works in SE right now.
+Steve
+- Show quoted text -
+On Tue, Feb 23, 2010 at 7:09 PM, Gabriel Michael Black
+<gblack@eecs.umich.edu> wrote:
+> SyscallVerbose only works in SE mode unless I'm thuroughly confused
+> about something. It would be really cool and useful to make it work in
+> FS mode, but then you'd have to figure out when a syscall was
+> happening and scrape out the right arguments using the right
+> translations (which may or may not be in the TLB), figure out what
+> process you're dealing with, etc. I assume you're using FS because you
+> say you're spending 50% of your time in the kernel.
+>
+> There are less ambitious ways to get at some of that information. You
+> might want to look at the tracer classes like ExecTracer in
+> exetrace.hh and exetrace.hh. You could also put a DPRINTF into the
+> execute function of the call_pal instruction (line 852+ in
+> arch/alpha/isa/decoder.isa).
+>
+> Gabe
+>
+> Quoting ef <snorlaxgb@gmail.com>:
+>
+>> I tried that previously, Maybe I didnt run things long enough but it never
+>> displayed anything. Might be an error on my part
+>>
+>> On Tue, Feb 23, 2010 at 8:03 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>>> You can also try enabling the SyscallVerbose trace flag... that may or
+>>> may not be more convenient depending on what you're doing.
+>>>
+>>> Steve
+>>>
+>>> On Tue, Feb 23, 2010 at 5:08 PM, ef <snorlaxgb@gmail.com> wrote:
+>>> > systems call can be tracked using the stat.txt output
+>>> > search for things such as:
+>>> > system.cpu0.kern.syscall::73                        1      0.00%
+>>>  0.01%
+>>> > # number of syscalls executed
+>>> >
+>>> > these numbers can be traced searching from system call tables. using an
+>>> > alpha cross compiler  or the linux kernel source code (or google you can
+>>> > trace these calls.)
+>>> > system call macros usually have the prefix "__NR_"
+>>> >
+>>> >
+>>> > On Wed, Feb 10, 2010 at 6:07 PM, ef <snorlaxgb@gmail.com> wrote:
+>>> >>
+>>> >> Hello,
+>>> >> I am running a program where I noticed that 50% of M5 execution time is
+>>> >> spent in the kernel. Looking at the program, I cannot find reasons why
+>>> this
+>>> >> would be the case (4 threads, where there is very little communcation
+>>> >> between threads). Anyone have any idea on how to trace the instruction
+>>> >> callsys,and see what system calls are made?
+>>> >>
+>>> >> I see a huge amount of callsys, swpipl, rti instructions being executed!
+>>> >>
+>>> >>
+>>> >> Thanks,
+>>> >> EF
+>>> >
+>>> > _______________________________________________
+>>> > m5-users mailing list
+>>> > m5-users@m5sim.org
+>>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> >
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

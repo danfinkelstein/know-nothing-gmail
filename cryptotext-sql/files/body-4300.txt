@@ -1,0 +1,70 @@
+Hi Nate,
+On Monday 10 September 2007 22:22:20 Nathan Binkert wrote:
+> Unfortunately, this feature of M5 was pretty much only used by me.  I
+> haven't done a large study using it in a while, so it may have suffered a
+> bit of bit-rot, but I'm willing to help you fix it if it has.  I do hope
+> to clean up and fix things some day.
+I have been debugging a bit, here are the steps I needed to take:
+1. In mysql.cc, a flush() got executed during instantiation (line 470) before
+the db connection was done. I fixed it like this:
+--- ../m5-2.0b3-orig/src/base/stats/mysql.cc    2007-05-17 04:25:52.000000000
++0200
++++ src/base/stats/mysql.cc     2007-09-11 11:11:50.016816599 +0200
+@@ -353,7 +353,9 @@
+     query = new char[maxsize + 1];
+     size = 0;
+     first = true;
+-    flush();
++    if (_run->connected()){
++        flush();
++    }
+ }
+2. The argument order of internal.stats.initMySQL() in src/python/m5/stats.py
+was mixed up. My fix:
+--- ../m5-2.0b3-orig/src/python/m5/stats.py     2007-05-17 04:25:53.000000000
++0200
++++ src/python/m5/stats.py      2007-09-11 11:16:18.232101309 +0200
+@@ -14,5 +14,5 @@
+         import getpass
+         user = getpass.getuser()
+-    internal.stats.initMySQL(host, database, user, passwd, project, name,
++    internal.stats.initMySQL(host, user, passwd, database, project, name,
+                              sample)
+3. util/stats/stats.py complained about a missing jobfile. I fixed it by a
+symlink to ../batch/jobfile.pyc:
+m5-2.0b3/util/stats$ ln -s ../batch/jobfile.pyc .
+4. I initialized the database like this, which automatically creates a user
+and the necessary databases:
+util/stats/stats.py -J -h localhost -d m5 -u root -p database init
+Password: <enter your MySQL root password>
+This produced the following warning:
+/home/jonasd/work/m5/m5-2.0b3/util/stats/dbinit.py:57:
+Warning: 'TYPE=storage_engine' is deprecated; use 'ENGINE=storage_engine'
+instead self.cursor.execute(sql)
+I believe this is ok, but maybe it should be fixed (I didn't investigate that
+yet).
+Also, it took me quite some time to figure out the correct arguments for
+stats.py, it is poorly documented. (-> TODO)
+4.5 I added a user m5 which only has acces to the m5 database created in step
+4.
+5. For the simulation, I added the following to my configuration python script
+(just as you said):
+import m5.stats
+m5.stats.initMySQL(host='localhost', database='m5', user='m5', passwd='****')
+Ok, I can now tell m5 to dump the stats into a DB. I still have to figure out
+how to use stats.py to generate reports etc.
+--
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

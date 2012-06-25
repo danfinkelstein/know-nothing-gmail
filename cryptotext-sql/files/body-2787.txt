@@ -1,0 +1,34 @@
+Steve Reinhardt <stever <at> gmail.com> writes:
+>
+> If the two CPUs are running two different instances of the same
+> workload, then they ought to start fetching from the same (virtual)
+> PC.  If they don't, then there's some problem in the initialization
+> code.  It might have something to do with using EIO traces rather than
+> LiveProcess objects (which I'm guessing is what you're doing from the
+> names of your workloads).
+>
+> Steve
+>
+Hello,
+In reading through the thread, unless I'm not following correctly, it seems
+like the EIO trace files that we happen to be using may be a possible
+culprit.  As a test to try to eliminate those EIO trace files as suspects,
+just using the default config files and workloads that come with m5-stable, is
+there a way to run a detailed (O3) multicore system in which all cores have
+non-zero "# Number of instructions committed" (system.cpux.commit.COM:count)?
+I've tried it using a fresh unmodified installation of m5-stable, using this
+command line:
+(run from the /configs/example directory)
+../../../m5-stable/build/ALPHA_SE/m5.opt -d se se.py -n 4 --detailed --caches
+The output file se/m5stats.txt shows that only cpu2 commits instructions.  The
+three other cpu's commit 0 instructions.
+What command line options should I use to create a 4 core system and assign
+each core to run its own separate copy of the default "hello world"?  Can
+anyone tell me what I am missing in the above command line to do this?
+Robert Pulumbarit
+-------------------------------------------
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

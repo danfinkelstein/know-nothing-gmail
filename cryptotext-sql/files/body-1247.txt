@@ -1,0 +1,14 @@
+On Thu, Jun 25, 2009 at 9:49 PM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+Hi,I want to trace the address request between caches (L2-L3) and memory. Is there any parameters or function which i can use to dump it?Not built-in, no.  As you're already finding, I think, it's pretty easy to hack that in to bus.cc though.
+ One more thing, i'm trying to hack the bus.cc file (src/mem/bus.cc) and want to print some parameters into another file to trace. How would i can see that file and where I could find that in M5?
+There's nothing directly on the wiki about it, but if you look in our ASPLOS-13 tutorial at http://m5sim.org/wiki/index.php/Tutorials there's a section on adding parameters to objects (starting on slide 102).
+Note that if you use simout.create() to create your file (see src/base/output.hh) it will automatically end up in the directory you set with "-d" on the m5 command line. Steve
+Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

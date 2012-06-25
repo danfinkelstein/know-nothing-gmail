@@ -1,0 +1,48 @@
+If you do implement the instruction a quick google search turns up the
+following:
+http://mattst88.com/svn/listing.php?repname=alpha_mmintrin&path=%2Ftrunk%2F&rev=5&sc=0
+which seems to be a testsuite that would validate your implementation.
+Ali
+- Show quoted text -
+On Tue, 21 Jul 2009 15:39:34 -0700, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> I believe EV5 did not have such instructions, so if you use a
+crosscompiler
+> targeted to EV5 (which you can specify when you build with
+> http://freshmeat.net/projects/crosstool-ng/).
+>
+> Alternatively, I don't know if there is a compiler switch for turning off
+> the generation of MVI instructions (of which maxuw4 is a member), so you
+> could look into that if you don't want to build a new crosscompiler.
+>
+> Lisa
+>
+> On Tue, Jul 21, 2009 at 3:21 PM, ef <snorlaxgb@gmail.com> wrote:
+>
+>> Hello,
+>>
+>> I am compiling Ferret from PARSEC 2.0 and I got this panic in m5:
+>>
+>> panic: attempt to execute unimplemented instruction 'maxuw4' (inst
+>> 0x723007a4, opcode 0x1c)
+>> >  @ cycle 2367067420500
+>> > [execute:build/ALPHA_FS/arch/alpha/o3_cpu_exec.cc, line 70]
+>>
+>> Any clues on how fix this? One way is to implement the instructions,
+>> other
+>> way is probably to find some sort of compiling flag to not produce this
+>> instructions. Anyways any advice, experience or thoughts on this problem
+>> is
+>> appreciated.
+>>
+>> Thanks
+>> EF
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

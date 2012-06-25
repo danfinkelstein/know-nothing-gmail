@@ -1,0 +1,5 @@
+I am finally able to run 21 of the spec2000 benchmarks using m5. For the remaining 5 I have the problem that the application somehow kills itself. I have tried 3 different machines and m5 dies with the only message printed is Killed or srun: sending ctrl-c to job. Ocassionally m5 ends with code 137. It happens with lucas,swim, mcf and applu. Any idea?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

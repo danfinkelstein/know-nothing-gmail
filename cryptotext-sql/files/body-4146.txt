@@ -1,0 +1,8 @@
+Hi,
+Is it possible to access system run time statistics in the python run script. For instance, lets say I use the the script configs/example/se.py with option standard_switch. After the simulation exits, can I access the system statistics by doing something like, "print system.switch_cpus_l[0].ipc"? Doing "print system.switch_cpus_l[0].ipc" doesn't work, but I was wondering if there is a way to do something similar.
+If this is possible, then I could just get the stats after an event, and then just call Wattch at the end with the access frequencies and total number of cycles and the job is done.
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

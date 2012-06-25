@@ -1,0 +1,19 @@
+Hi
+I am running my application in fs 
+mode, but it gave out a segment fault message(Note: This is not 
+a fault of the simulator.).
+I have run it in my real 
+system(x86) successfully. I want to debug it on the simulated system, 
+but I just found some dubugging methods that debug the simulator itself or 
+debug the linux kernel simulted.
+ 
+Is there any method that can debug 
+the application on the simulated system?
+Thanks a lot!
+ 
+xiaojun.chen
+2006-10-11
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

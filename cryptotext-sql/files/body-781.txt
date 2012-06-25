@@ -1,0 +1,15 @@
+Mario Donato Marino <mdm9uw <at> virginia.edu> writes:
+>
+> Put the DRAMsim.tar in the ext directory and untar it there. Then have the
+> m5patch in m5 root directory. Run patch -p1 <m5.patch
+>
+>       Mario
+>
+Thanks, Mario.
+I have fixed the problem now.
+It is mainly caused by the trailing white spaces in my patch file.
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

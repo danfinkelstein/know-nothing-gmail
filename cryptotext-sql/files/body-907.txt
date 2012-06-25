@@ -1,0 +1,11 @@
+Hi,
+I'm wondering if it's possible to peek into the instruction queue
+(after the decode stage), so as to figure out if an instruction is a
+memory operation (or not).
+If so, what are the steps to do that?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

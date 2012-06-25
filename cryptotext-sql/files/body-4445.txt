@@ -1,0 +1,9 @@
+Hi there,
+   Sorry to bother others.I want to ask how many checkpoints that m5 can write.I tried to write 8 checkpoints but m5 exits when it is over 5 checkpoints. Is there a way to break this limit?
+  Thank you very much for your help.
+                                                                 Yue
+                                                                07-09-2007
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

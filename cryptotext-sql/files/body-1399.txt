@@ -1,0 +1,19 @@
+The kernel does not reside on the disk image so you don't have to make a new image.  You will have to compile your own vmlinux and point your sims to use that binary. 
+ 
+Lisa- Show quoted text -
+ 
+On Thu, May 28, 2009 at 3:05 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+Thanks Rick. I am using the precompiled system files. To patch the kernel etc I will have to make my own disk image? Is there a quick way I can patch the kernel using the existing system files I have fromt he download page?
+---- Original message ---->Date: Thu, 28 May 2009 14:41:38 -0700>From: Rick Strong <rstrong@cs.ucsd.edu>>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>>>Assuming that you are using alpha ISA, they have the steps mentioned in>the FAQ.  "BigTsunami support is included in the standard M5 Alpha
+>build, but booting with more than 4 CPUs requires modifications to the>PAL code and kernel as well. Take a look at the Download page for our>Linux patches and modified PAL code. Note that even with the BigTsunami
+>changes, simulatin". Here is the download page:>http://www.m5sim.org/wiki/index.php/Download>>So you need need to download the latest patched linux kernel and make
+>sure M5 boots with that kernel. You also need to download the latest>palcode and make sure M5 uses that palcode. With that said, I have not>seen a successfull boot of more than 16 cores for linux 2.6.18, but
+>others have.>>Best of luck,>-Rick>>Shoaib Akram wrote:>> I dont quite undestand the steps required to boot more than 4 cpus in FS mode. Can anyone with experience comment?
+>> _______________________________________________>> m5-users mailing list>> m5-users@m5sim.org>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>_______________________________________________>m5-users mailing list>m5-users@m5sim.org>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

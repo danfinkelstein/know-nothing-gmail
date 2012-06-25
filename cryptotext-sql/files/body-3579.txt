@@ -1,0 +1,74 @@
+Wow, thanks for the mid-night reply!
+Yeah, I just updated the formula session in the statistics documantation page.
+Thanks!
+Jiayuan
+- Show quoted text -
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: 2008年2月6日 3:03 PM
+Subject: Re: [m5-users] does the scalar() cast exist for Formula calculation?
+> Wow, I had to dig back in the history to figure out how this worked.
+> scalar() itself was removed in May 2004, so I guess we should update
+> the documentation.  I did create a stat type called Value for sucking
+> in C++ variables (though, it's use is discouraged.)
+>
+> You can see it used in src/sim/stat_control.cc
+>
+> It's much better to create a statistic type and use that.  (Especially
+> if you want to do your binning stuff.)  If there is just a variable
+> initialized though, you can use it how we do for the frequency and
+> such.
+>
+> Do you mind updating the documentation as you work on this stuff?
+>
+> Thanks,
+>
+>  Nate
+>
+> On Feb 5, 2008 10:48 PM, jiayuan meng <jerrygonair@hotmail.com> wrote:
+>>
+>>
+>>  Another question regarding a Formula that is based on a Counter's final
+>> value. For example:
+>>
+>>  Counter c;
+>>  Formula f;
+>>
+>>  regStats()
+>>  {
+>>      f = scalar(c)/constant(1000);
+>>  }
+>>
+>>  However, type scalar doesn't exist and Scalar doesn't work either. Can
+>> anyone give me some hints?
+>>
+>>  I am following the documentation on the statistics website, which says
+>>  "
+>>  If you want to use the value of bar or num at the moment the formula is
+>> calculated (i.e. the end), use the scalar() castIf you want to use the value
+>> of bar or num at the moment the formula is calculated (i.e. the end), use
+>> the scalar() cast
+>>  "
+>>
+>>  Thanks for helping!
+>>
+>>  Jiayuan
+>>
+>> ________________________________
+>> Need to know the score, the latest news, or you need your Hotmail(R)-get your
+>> "fix". Check it out.
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,33 @@
+There shouldn't be any special problems with x86 since the microops are/will/may
+be passed through the pipeline as regular instructions and be limitted to the
+roughly the same numbers as regular instructions. The only difference is that
+the macroop will sit in the decoder while the macroops are being retrieved and
+possibly until the microops are disposed of, but that shouldn't get you much
+closer to 1500. Those don't take up extra dyn insts anyway, though, so it might
+not be any different at all.
+Gabe
+- Show quoted text -
+Quoting Clint Smullen <cws3k@cs.virginia.edu>:
+> This does not attempt to address any particular issues with x86, but
+> here is a simple revision of it. I've merely moved instcount to be a
+> non-static member of the O3 and ozone CPU classes, declared near where
+> snList was (which is also used by the dyninst stuff, which is why I
+> placed it in the particular implementations rather than in cpu/
+> base.hh). The values increment and decrement as before, but the 1500
+> limit is accredited per CPU, and the DPRINTF for dyninst also includes
+> the name of the processor. It is possible that that is not
+> sufficiently identifying for someone doing debugging, but I could not
+> find anything more identifying which is generic to all CPUs.
+>
+> If this is the type of change you had in mind, it would be easy to
+> then make the limit adjustable, though, since it is more of a
+> debugging feature, the instcount declaration and code could be placed
+> within DEBUG, as the seqnum list stuff is.
+>
+>       - Clint
+>
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

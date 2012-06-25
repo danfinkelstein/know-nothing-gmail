@@ -1,0 +1,13 @@
+Hi guys:
+I want to have the following configuration in m5. Is it feasible?
+I hope there is 8 cpu, each cpu has its private L1 cache and L2 cache.
+L2 cache is not shared by all cpu. Then I split the main memory into 8
+banks. If cpu 1 wants to access main memory, it will access the bank 1
+firstly. cpu 2 will access bank 2 firstly. ...
+Can I realize the idea above?
+thanks
+claker
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

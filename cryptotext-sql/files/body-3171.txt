@@ -1,0 +1,19 @@
+I don't have experience with all those benchmarks, but mcf uses more
+memory than some of the others and has worse caching behavior. It's
+possible you don't have enough memory allocated for your simulations, or
+because it allocates more memory it just happens to go beyond what the
+host can support and the OS kills m5 or m5 exits. We would likely need
+more information to be able to tell you much more than that.
+Gabe
+- Show quoted text -
+Shoaib Akram wrote:
+> I am finally able to run 21 of the spec2000 benchmarks using m5. For the remaining 5 I have the problem that the application somehow kills itself. I have tried 3 different machines and m5 dies with the only message printed is Killed or srun: sending ctrl-c to job. Ocassionally m5 ends with code 137. It happens with lucas,swim, mcf and applu. Any idea?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

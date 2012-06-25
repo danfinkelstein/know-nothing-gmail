@@ -1,0 +1,19 @@
+Hello Steve thanks for your answer, yes I have to do something fancier for an assignment, can you tell me where is the source code for the policy?, I've been looking in the cache code and in the cpu code, but I can't still find it. And another one question is it possible to change the policy or do that is a complex task?. Thank you.- Show quoted text -
+On Fri, Oct 10, 2008 at 5:42 PM, Steve Reinhardt <stever@gmail.com> wrote:
+If you want multiple cores to access a single cache, you'll need to put a bus in between them, and the bus arbitration logic will determine the access pattern.  Basically it'll be round robin (if they all access at the same time), or FCFS if not.
+If you want to do something fancier then you could extend the cache to have multiple CPU-side ports and put the arbitration logic in the cache between those ports.Steve
+On Fri, Oct 10, 2008 at 9:42 AM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com> wrote:
+Hi:I have to change the policy that the simulator uses to access to the cache. And I got several questions for example if there are three cores that want to acces to the shared cache, what policy is used?, hit first, round robin..., where is the code of that policy?, and finally is it possible do this or it's a very complex task?.
+Thank you so much for answer to all my questions, you guys do an excellent job with this mail list, thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

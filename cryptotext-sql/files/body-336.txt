@@ -1,0 +1,63 @@
+Hi, The functions defined in util/m5(quiesce, arm etc) also seem to be defined in pseudo_inst.cc files in the /src/sim folder. Do the new instructions have to be defined in both the places? Also if we define these instructions, we need to get our benchmark compiled for an assembly code which will include these new instructions. 
+Soumyaroop has suggested that we need to change the binutils folder in the crosscompiler, but we havent been able to find the specific alpha patches in any of the versions of binutils. Which version contains the alpha match that needs to be modified? 
+ThanksPritha- Show quoted text -On Tue, Apr 6, 2010 at 9:23 PM, Steve Reinhardt <stever@gmail.com> wrote:
+If the instructions aren't absolutely performance critical, it's
+easier to put them in a separate .s file in functions and just call
+the functions.  See how the m5-specific instructions are done in
+util/m5.
+Steve
+On Sat, Apr 3, 2010 at 3:28 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+> Hi Pritha,
+> If your program is in assembly, then you'd just have to make changes to the
+> Alpha assembler (in binutils). If your program is in C (or any other high
+> level language), then you'd also have to make changes to the alpha machine
+> description file (<gcc-root>/gcc/config/alpha/alpha.md) to specify how to
+> emit your specialized instructions in assembly from GCC's RTL
+> representation. You'll find information about it in the gcc internals
+> documentation (http://gcc.gnu.org/onlinedocs/gccint/).
+> regards,
+> Soumyaroop
+>
+> On Sat, Apr 3, 2010 at 5:52 PM, Pritha Ghoshal <pritha9987@tamu.edu> wrote:
+>>
+>> Hi,
+>>
+>> We need to make some modifications to the Alpha ISA and insert a few more
+>> instructions. But while compiling a program through crosscompiler, we need
+>> to let the cross compiler know about the new instructions. I guess we need
+>> to modify the assembler code of gcc for that.
+>>
+>> Could someone help us about how to do this and is there any other way?
+>>
+>> --
+>> Pritha Ghoshal
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

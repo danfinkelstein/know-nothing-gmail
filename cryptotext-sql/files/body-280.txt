@@ -1,0 +1,15 @@
+> I was wondering if there was any more complete documentation on
+> resetstats and dumpstats than can be found at
+> http://www.m5sim.org/wiki/index.php/M5ops ?
+>
+> resetstats, in particular does not appear to reset the total instruction count.
+sim_insts, sim_second, sim_freq, host_inst_rate, host_mem_usage,
+host_seconds, and host_tick_rate are all special stats in that they
+reflect parameters about the simulator itself and the host, not the
+simulated program.  None get reset.  That could be changed by adding a
+bit of code.  See src/sim/stat_control.cc
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

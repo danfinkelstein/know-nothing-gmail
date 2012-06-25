@@ -1,0 +1,24 @@
+Hi All,
+I am trying to run two independent workloads -
+"HelloWorld" and "MatrixMultiplication" in two
+different cores. I am using m5 1.1 version. I have
+written a run.py file similar to the run.py file given
+in m5-tests/test3/ i.e.
+"BaseCPU.workload =
+[ Benchmarks.AnagramLongCP(),Benchmarks.GCCLongCP() ]"
+But the simulator is returning an error saying
+"Deadlock.. Simulation terminated at cycle 100000".
+My programs are single-threaded applications. Is this
+the reason for the error ?
+Can anyone tell me what I should do to make it run
+successfully.
+Regards-
+Rajdeep
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

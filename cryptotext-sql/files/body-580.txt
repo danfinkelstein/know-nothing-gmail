@@ -1,0 +1,53 @@
+    Thanks for you reply, Steve. Your answer clarify my understanding.     For my cache, it is not exactly a cache. I inherit it from the mem_object; it has only cpu_side and no mem_side. Is that OK?  I implement a port in it, inheriting from Port. I also implement the getPort(), getDeviceAddrRanges(), and try to send the status change in the constructor after the port is created. But when I try to move the sendStatusChange() to the init(), it always reports a segment fault. 
+    I thought that anything with a port can be connected to bus, not necessary to be a cache, so I try to do that. Is there any other rules for something that need to communicate with the bus? Thank you very much !
+2010/1/22 Steve Reinhardt <stever@gmail.com>- Show quoted text -
+I thought we had expanded that error message to say which object's
+port was unconnected... that would be helpful here.  It could be the
+mem_side port of your cache that's complaining, since I don't see that
+you're connecting it up anywhere.
+See the getPort() method in cache_impl.hh to see where the python port
+names get mapped to C++ Port objects for the cache.
+Steve
+2010/1/20 Veydan Wu <veydanwu@gmail.com>:
+> Hi all, I am using M5 ALPHA_FS. I implement a structure similar to cache and
+> tried to connect to the tol2bus which connects the original level2 cache.
+> Compile is success but fail at the beginning of running.
+>
+> fatal: default_port: Unconnected port!
+>  @ cycle 0
+> [blowUp:build/ALPHA_FS/mem/port.cc, line 47]
+>
+> It seems that I forgot to connect a port, looks like naive. But I really
+> feel confused about this problem. I connect it as the level2 cache does.
+>
+> //configs/example/fs.py
+> if options.l2cache:
+>     test_sys.l2 = L2Cache(size = '2MB')
+>     test_sys.tol2bus = Bus()
+>     test_sys.l2.cpu_side = test_sys.tol2bus.port
+>     test_sys.l2.mem_side = test_sys.membus.port
+>     test_sys.RC = RaceCache(size = '2MB')  //I add it here
+>     test_sys.RC.cpu_side = test_sys.tol2bus.port
+>
+> Are there any subtle rules about port connection? In cache, there is a
+> cpuSidePort, I wonder how it relates to the parameter cpu_side of cache? Can
+> someone give me some hints? Thank you very much！
+>
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- 吴为丹中科院计算所 微处理器中心0853北京海淀区科学院南路6号 100190
+(86-10)6260-0853   (86-10)8268-3196(86)138-112-10636veydanwu@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

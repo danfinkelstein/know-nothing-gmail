@@ -1,0 +1,6 @@
+hi, newbie here..  im trying to install m5 using cygwin.. but it seems that cygwin does not have the fenv.h header file.. i have looked around for fenv.h solutions to cygwin over the net but im not successful.. has this been solved?  im building m5.opt..  what should i do? thanks in advance! 
+      Be a better friend, newshound, and 
+know-it-all with Yahoo! Mobile.  Try it now._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

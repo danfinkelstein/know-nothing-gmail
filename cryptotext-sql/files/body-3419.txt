@@ -1,0 +1,74 @@
+Hi, all:
+I am trying to build a CMP system with two cores, each of which has a
+separate L1 and L2 cache to verify a memory scheduling algorithm in FS
+mode. The parameters I configure for the DDR2 SDRAM is:
+DRAMMemory(range=AddrRange("1024MB"),bus_width=64,cas_lat='15ns',act_lat='15ns',pre_lat='15ns',war_lat='0ns',dpl_lat='0ns',trc_lat='54ns',num_cpus=2,cpu_ratio=1).
+The cpu_ratio parameter is set as 1 for that in the DDR2 module the
+unit of time is tick, so I do not use the cpu_ratio actually. I use
+the 2.0.4 version of M5 and the experiment is executed in SE mode
+successfully. However, when I use the FS mode with all the same
+parameters, there is an error:
+In the tport.cc, the assert(when < curTick + Clock::Int::ms) in the
+function of schedSendTiming is failed. I wonder if anyone could tell
+me what are the possible reasons for that.
+Also, when I change the assertion as when < curTick + Clock::Int::s,
+there is no error. However, the following information appears in the
+m5term
+loading script...
+Unable to handle kernel paging request at virtual address 0000000000000098
+CPU 1 tmp(683): Oops 0
+pc = [<fffffc00003cbfb0>]  ra = [<fffffc00003cc5a4>]  ps = 0000    Not tainted
+pc is at do_mpage_readpage+0x60/0x520
+ra is at mpage_readpages+0x134/0x250
+v0 = 0000000000000000  t0 = 0000000000000000  t1 = 0000000000002000
+t2 = 0000000000000000  t3 = fffffc000070a708  t4 = fffffc0000809908
+t5 = 0000000000000000  t6 = 0000000000000000  t7 = fffffc003ea5c000
+s0 = fffffc00010d7fe0  s1 = fffffc00010d7fb8  s2 = 0000000000000001
+s3 = fffffc003ea5fae8  s4 = fffffc00010d7fb8  s5 = fffffc003fabd2c0
+s6 = 0000000000000004
+a0 = fffffc003fabd2c0  a1 = fffffc00010d7fb8  a2 = 0000000000000003
+a3 = fffffc003ea5fa78  a4 = fffffc0000417180  a5 = 0000000000000000
+t8 = 0000000000000000  t9 = 000000551cdb684f  t10= aa00000000000000
+t11= 0000000000000000  pv = fffffc000064c890  at = 0000000000000000
+gp = fffffc0000808200  sp = fffffc003ea5f858
+Trace:
+[<fffffc00003cc5a4>] mpage_readpages+0x134/0x250
+[<fffffc0000541c94>] ide_build_sglist+0x94/0xe0
+[<fffffc000034a4bc>] __mod_timer+0x5c/0x160
+[<fffffc00004ba7cc>] radix_tree_node_alloc+0x2c/0xb0
+[<fffffc00004babf4>] radix_tree_insert+0x274/0x2d0
+[<fffffc0000368008>] add_to_page_cache+0xa8/0x1a0
+[<fffffc0000417aac>] ext2_readpages+0x2c/0x40
+[<fffffc0000372fe0>] __do_page_cache_readahead+0x300/0x3b0
+[<fffffc0000367db0>] sync_page+0x0/0x90
+[<fffffc0000417180>] ext2_get_block+0x0/0x880
+[<fffffc000037307c>] __do_page_cache_readahead+0x39c/0x3b0
+[<fffffc00003732a4>] blockable_page_cache_readahead+0x74/0x120
+[<fffffc0000417a40>] ext2_readpage+0x0/0x40
+[<fffffc000036ab94>] read_cache_page+0x274/0x460
+[<fffffc0000398f14>] __find_get_block+0x124/0x310
+[<fffffc000039d020>] __getblk+0x40/0x3b0
+[<fffffc0000373560>] page_cache_readahead+0x130/0x270
+[<fffffc00003696b0>] do_generic_mapping_read+0x460/0x6e0
+[<fffffc000036c8e8>] __generic_file_aio_read+0x1b8/0x230
+[<fffffc0000368200>] wait_on_page_bit+0x10/0xd0
+[<fffffc0000369930>] file_read_actor+0x
+Is the DDR2 SDRAM module I build wrong? But when I use it in SE mode
+there is no error. Or is it because that the M5 does not support the
+FS mode completely?
+There is another problem when I use the default SDRAM module and the
+fs.py with only changing the cache model to split L1 and L2 caches. I
+just set cpu.max_insts_any_thread='100000000' and cpu.numThreads=1 for
+each cpu of the dual core system, however, the execution time is very
+long, which is about 8 or 9 hours. And I notice that neither of the
+cpu instruction number reaches 100000000. About 20 million is executed
+at most according to the statistics. Why the instruction number can
+not reach the 100 million and why the execution time is so long? Is
+that because the FS mode does not support split L1 and L2 caches?
+Please help me with those questions. Thank you very much.
+Best regards,
+Lei Shi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

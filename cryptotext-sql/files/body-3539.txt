@@ -1,0 +1,12 @@
+Hi all,
+Background:
+I would like to analyze the cold start effects of migrating a thread between two cpus by periodically jumping out of the simulate routine, writing all the caches (L1+L2) out to memory, and clearing the processor state (branch history tables, tlb entries, etc) and having the thread start in this cold state. By doing this cold start N times over a 100M instruction sample and looking at the average increase in execution time, this would give me the cold start effects of migration and I could just add a number of cycles for migrating ISA state (registers mostly) between two cores.
+Questions:
+1)What does m5.drain(testsys) do, as it is not obvious after diving in the code for a while and can it be used for clearing cache state?
+2)Does anyone have an existing methodology for getting thread migration delay (between cores) in m5?
+3)If no for 2, would anyone be interested in having support to find this delay?
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

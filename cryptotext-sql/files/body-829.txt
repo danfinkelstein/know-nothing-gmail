@@ -1,0 +1,28 @@
+Currently, I want to run some splash2 or spec2000 benchmarks for a
+limited number of instructions, say, 100 million.
+Thanks,
+Felix
+- Show quoted text -
+Quoting Shoaib Akram <sakram3@illinois.edu>:
+> what kind of workload you want to run?
+>
+> ---- Original message ----
+>> Date: Fri, 16 Oct 2009 17:33:41 -0400
+>> From: Felix Loh <felixloh@umich.edu>
+>> Subject: [m5-users] Running simulations for a fixed number of instructions
+>> To: "m5-users@m5sim.org" <m5-users@m5sim.org>
+>>
+>> Hello,
+>>
+>> From the posts I've read so far, I know it is difficult to simulate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

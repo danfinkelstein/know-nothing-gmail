@@ -1,0 +1,16 @@
+Hi Folks,
+While trying to build m5.prof Alpha_SE I came across the following error:
+build/ALPHA_SE/enums/Enum.cc:5: internal compiler error: in
+tree_low_cst, at tree.c:3313
+I am using gcc version 3.4.3
+A quick google search revealed that this might be a bug in g++
+Have you guys found a solution to this? Do higher version of gcc solve
+the problem?
+btw the same error occurred when I tried several different
+combinations of MIPS/ALPHA FS/SE
+Thanks
+Z
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

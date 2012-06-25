@@ -1,0 +1,54 @@
+That's right. You can write your own implementation and install it like
+the others (arch/x86/linux/syscalls.cc) if you'd like. This system call
+is tied to multithreading, so you might have to implement a lot of other
+things to get it to work correctly. If you know it's being called in a
+way where it's not important that it actually does anything, you can
+tell M5 to ignore it. There are examples of that in the same file.
+Gabe
+- Show quoted text -
+Sitos Lin wrote:
+> Hi Gabe:
+>   The followings are the messages when I try to execute a x86 binary
+> on M5 x86_se:
+>
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0.  Starting simulation...
+> fatal: syscall set_tid_address (#218) unimplemented.
+>  @ cycle 606500
+> [unimplementedFunc:build/X86_SE/sim/syscall_emul.cc, line 73]
+> Memory Usage: 2162020 KBytes
+>
+> It seems that the system call "set_tid_address" is not supported in the M5.
+>
+> regards,
+>   sitos
+>
+> 2009/1/23  <gblack@eecs.umich.edu>:
+>
+>>>   2) I tried to use the newest M5 and run the X86_SE or X86_FS mode
+>>> with the binaries compiled from conventional x86 gcc compiler. The
+>>> status is even worse....
+>>>
+>> Could you please let me know what didn't work? X86 support is a work in progress
+>> so there may be major limitations like an unimplemented feature that will keep
+>> it from working, but it might be a simple bug.
+>>
+>> Gabe
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

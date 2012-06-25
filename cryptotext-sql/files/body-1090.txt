@@ -1,0 +1,63 @@
+any better way of doing this?
+  ----- Original Message ----- 
+  From: 
+  ef 
+  To: M5 users mailing list 
+  - Show quoted text -Sent: Monday, August 03, 2009 3:15 
+  PM
+  Subject: Re: [m5-users] memory traces in 
+  FS mode
+  I think you need to run a blank .rcs file and see the stats.txt 
+  to see when linux boot ends. So your basically only running the linux bootup. 
+  Maybe someone will have a better idea...
+  On Mon, Aug 3, 2009 at 1:55 PM, Sujay Phadke <sphadke@eecs.umich.edu> 
+  wrote:
+  
+    
+    I am not sure how to get the tick when it 
+    starts. 
+    
+      
+      
+      
+      ----- 
+      Original Message ----- 
+      From: 
+      Lisa Hsu 
+      To: 
+      M5 users mailing list 
+      Sent: 
+      Monday, August 03, 2009 2:28 PM
+      Subject: 
+      Re: [m5-users] memory traces in FS mode
+      If you know what tick the benchmark starts at, just don't 
+      begin your traceflagging until that point (i.e. --trace-start=Tick) 
+      
+      Lisa
+      On Mon, Aug 3, 2009 at 9:22 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+      
+        
+        Hello,
+          I am trying to collect memory traces 
+        running specweb in FS mode. However, if I use the traceflags to collect 
+        traces (say MemoryAccess), it starts collecting all memory requests, 
+        including the OS booting up. I want to collect only when the benchmark 
+        start running. How do I do this.?
+         
+        Thanks,
+        Sujay_______________________________________________m5-users 
+        mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+      
+      
+      
+      _______________________________________________m5-users mailing 
+      listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users 
+    mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

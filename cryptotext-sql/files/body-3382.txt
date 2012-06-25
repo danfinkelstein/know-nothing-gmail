@@ -1,0 +1,36 @@
+Hello all,
+    I am trying to run the specint 
+benchmarks in SE mode in beta 5, using m5.fast. I am facing errors with some of 
+them as follows:
+ 
+I am running them on a machine with 2GB ram. I made 
+the correction to the cpu2000.py script as suggested by Vilas in previous 
+postings.
+ 
+1. mcf - 
+ 
+warn: Entering event queue @ 0.  Starting 
+simulation...warn: Increasing stack size by one page.fatal: Out of 
+memory, please increase size of physical memory. @ cycle 
+45551000[new_page:build/ALPHA_SE/sim/system.cc, line 235]
+ 
+2. parser - 
+AttributeError: OptionParser instance has no __call__ method. I think 
+it needs input thru STDIN but does not seem to work
+ 
+3. amongst the 
+specint benchmarks, perlbmk and bzip2 do not have a smred input set. So what 
+input_set options do we have to pass on?
+ 
+Also, how do we check if the benchmarks ran 
+correctly or no?
+ 
+Has anyone gotten all these to run 
+correctly?
+thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,46 @@
+Hi, Ali, Thanks for you help. I have created a blank image and copy Gentoo stage 3 in it. Everything seems OK, but when I used it to run M5 in FS mode, I got an error below:Warning: unable to open an initial console.
+Restarting system.The simulator just quit from there. The default console I used is downloaded from the website and runs fine if I use the default image download from the website. How can I solve this problem. Thanks !
+Message: 4
+Date: Sat, 21 Feb 2009 11:04:41 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] create blank image using mkblankimage.sh
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <5943AE3B-9C67-4313-8594-B14911843010@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+You probably do not have permision to create try.img in /. Try
+creating it in /tmp or create it as root.
+Ali
+On Feb 21, 2009, at 10:26 AM, Veydan Wu wrote:
+> Hi Ali, Thanks for you reply about using Gentoo stage 3 image on
+> creating my own linux image. When I use the mkblankimage.sh, it
+> fails to work.
+>
+> dd'ing the blank image (this make take a while)...
+> Unable to create the blank image try.img in ./
+>
+> I search into the script code and found that it uses this :
+>
+> dd if=/dev/zero of=$IMAGE_DIR/$IMAGE_NAME bs=512 count=$BLK_SIZE
+> $OUT_PUT
+>
+> while the /dev/zero maybe the reason of the failure. I don't know
+> whether others had encountered this, Is it necessary to inform other
+> users of M5 about that the script may fail to work. Thanks !
+>
+> Message: 2
+> Date: Fri, 20 Feb 2009 10:29:41 -0500
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] m5-users Digest, Vol 30, Issue 17
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <A0E09C76-60F2-4491-8FB8-CAAC1047A9B7@umich.edu>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+> If you create a disk image (using the blank image script available
+> from the download page) and untar the gentoo tarball onto it, that
+> should work.
+>
+> Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

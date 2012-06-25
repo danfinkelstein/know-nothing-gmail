@@ -1,0 +1,12 @@
+hi!!Now I am facing new kind of problem. It says likemax_insts_all_threads = 10000000num of cpus = 8num threads per cpu = 4system.cpu[0].workload = [Benchmarks.SPECGAPEIO(), Benchmarks.SPECSIXTRACKEIO(), Benchmarks.SPECMESAEIO(), Benchmarks.SPECFMA3DEIO()]
+system.cpu[1].workload = [Benchmarks.SPECMESAEIO(), Benchmarks.SPECVPREIO(), Benchmarks.SPECVPREIO(), Benchmarks.SPECPERLBMKEIO()]system.cpu[2].workload = [Benchmarks.SPECBZIP2EIO(), Benchmarks.SPECGALGELEIO(), Benchmarks.SPECPARSEREIO(), Benchmarks.SPECSWIMEIO()]
+system.cpu[3].workload = [Benchmarks.SPECBZIP2EIO(), Benchmarks.SPECMESAEIO(), Benchmarks.SPECLUCASEIO(), Benchmarks.SPECSWIMEIO()]system.cpu[4].workload = [Benchmarks.SPECGCCEIO(), Benchmarks.SPECTWOLFEIO(), Benchmarks.SPECLUCASEIO(), Benchmarks.SPECAPPLUEIO()]
+system.cpu[5].workload = [Benchmarks.SPECPERLBMKEIO(), Benchmarks.SPECFMA3DEIO(), Benchmarks.SPECWUPWISEEIO(), Benchmarks.SPECMCFEIO()]system.cpu[6].workload = [Benchmarks.SPECEQUAKEEIO(), Benchmarks.SPECSWIMEIO(), Benchmarks.SPECGCCEIO(), Benchmarks.SPECAPSIEIO()]
+system.cpu[7].workload = [Benchmarks.SPECMCFEIO(), Benchmarks.SPECAPPLUEIO(), Benchmarks.SPECGALGELEIO(), Benchmarks.SPECMESAEIO()]Global frequency set at 1000000000000 ticks per secondfatal: Out of memory, please increase size of physical memory.
+ @ cycle 0[new_page:build/ALPHA_SE/sim/system.cc, line 230]fatal: Out of memory, please increase size of physical memory.I increased the memory to upto 3GB (which is the maximum limit for 32 bit processor) but it still it is saying the same. If I tried to increase the beyond that i get the error like:
+mmap: Cannot allocate memoryfatal: Could not mmap!I also referred to the solution provided by Ali in mailing list [ http://www.mail-archive.com/m5sim-users@lists.sourceforge.net/msg01417.html ]. But still the problem is same. Isn't there any way to avoid this memory size problem. I am trying to run speccpu2000 benchmarks on 8 cores with 4 threads on each  thread.
+regards,prannavPS: Ali I tried lot with m5-0b5 version to run multicore system (with O3cpu). I do acknowledge all the helpful suggestions, but since i am running out of time for my project submission, i couldn't do that. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Hi all, 
+ 
+Scratchpad memory(SPM) is a small on-chip memory managed by software, which is widely adopted in embedded processors. 
+ 
+SPM is addressed in the uniform address space with memory but with lower access latency. How can I simulate SPM in M5 to support my research on multicore with SPM? 
+ 
+THANK YOU :) 
+-- RegardsNing DengSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

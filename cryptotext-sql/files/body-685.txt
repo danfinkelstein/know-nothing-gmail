@@ -1,0 +1,8 @@
+Hi, everyone,I got the following errors when I tried to execute the m5 simulator on a IA64 machine with SUSE linux. Do you have any idea of how to fix this problem?Thanks,Leonard> build/ALPHA_SE/m5.fast --help
+m5.fast(32677): unaligned access to 0x6000000000055236, ip=0x40000000007a6531m5.fast(32677): unaligned access to 0x6000000000041fb7, ip=0x40000000007a6551m5.fast(32677): unaligned access to 0x600000000004554d, ip=0x40000000007a6570
+m5.fast(32677): unaligned access to 0x6000000000046a55, ip=0x40000000007a65d0m5.fast(32677): unaligned access to 0x60000000000440ad, ip=0x40000000007a6940terminate called after throwing an instance of 'std::bad_alloc'
+  what():  St9bad_allocProgram aborted at cycle 0Aborted
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

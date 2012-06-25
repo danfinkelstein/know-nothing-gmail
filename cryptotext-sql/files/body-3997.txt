@@ -1,0 +1,21 @@
+No it means it's one tick of simulator time which is 1ps.
+Ali- Show quoted text -
+On Nov 12, 2007, at 5:40 PM, Rick Strong wrote:
+Hi,
+I noticed that the PhysicalMemory class sets memory latency to 1t which I assume is 1 tick from looking at the python. Does this imply that my memory latency is 1 tick of the system.membus clock @1GHZ?
+class PhysicalMemory(MemObject):
+  type = 'PhysicalMemory'
+  port = VectorPort("the access port")
+  range = Param.AddrRange(AddrRange('128MB'), "Device Address")
+  file = Param.String('', "memory mapped file")
+  latency = Param.Latency('1t', "latency of an access")
+  zero = Param.Bool(False, "zero initialize memory")
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

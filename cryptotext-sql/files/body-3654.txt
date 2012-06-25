@@ -1,0 +1,12 @@
+> And other command line options in the other benchmark applications listed in the Benchmark.py file. Is there a 'man' type file for these command line applications?
+There is no manual page for this command, but most of the others were
+gotten from somewhere else.
+The arguments to spec-m5 are:
+ spec-m5 <#clients> <#conections/client> <runtime in seconds> <server
+base IP> <number of IPs on server> <num urls> <checkpoint_period>
+<checkpoint_start>
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

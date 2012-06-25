@@ -1,0 +1,48 @@
+Nope, m5 is all straight-up C++ and Python with no host architecture dependences.  So you can boot Solaris on a simulated SPARC with m5 running on an x86 host just fine.  It's even in our regression tests; just give scons this argument:
+build/SPARC_FS/tests/fast/long/80.solaris-boot/sparc/solaris/t1000-simple-atomicThe only situation where there's any host dependence at all is endianness, and that's just a matter of testing.  So while both big- and little-endian targets work fine on little-endian hosts (since we do practically all our development on x86), there may be lurking bugs if you try and run a little-endian target on a big-endian host (like x86 on SPARC).  But those would be bugs and not design dependencies.
+Steve- Show quoted text -On Fri, Mar 28, 2008 at 3:58 PM, Jeff Diamond <jdiamond@cs.utexas.edu> wrote:
+Thanks Ali.  I think I understand now. You're referring to what's being
+modeled, not the type of processor you need to run the simulation.  But
+I'm assuming that parts of the full system simulation still require
+specific properties of the host, even though it's not native execution.
+So for example, I assume that even with a full system simulation model,
+I couldn't run M5 on an X86 and simulate Niagara.  Or could I?
+- Jeff
+P.S.  I know we've exchanged a lot of emails on this, and I really
+appreciate your patience.
+Ali Saidi wrote:
+>
+> On Mar 28, 2008, at 6:43 PM, Jeff Diamond wrote:
+>>
+>>
+>> Ali Saidi wrote:
+>>> I should clarify that full-system isn't supported for *SPARC* in our
+>>> out-of-order model (it does work for syscall emulation), and it
+>>> could work with full-system, but some of the ASI nastiness would
+>>> have to be handled. Our out-of-order model simulates Alpha
+>>> full-system just fine.
+>>
+>> So to clarify your earlier statement, does full system work for a
+>> "SPARC" in order model?  That is to say, it's using SPARC binaries?
+>> Maybe if you haven't had a need to do a full system test in OO mode,
+>> then it might not be so critical...
+> We can boot a one processor Solaris system on the SPARC architecture
+> as long as the processor is an in-order machine. To do so we model a
+> Sun T2000 machine (Niagara) . Clear?
+>
+>
+> Ali
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

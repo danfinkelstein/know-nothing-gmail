@@ -1,0 +1,16 @@
+It won't be exactly 1.5GHz, but you can have 1.499GHz or 1.501GHz (667
+and 666 ticks per clock, respectively).
+Ali
+- Show quoted text -
+On Oct 15, 2008, at 2:06 PM, Shoaib Akram wrote:
+> Is it possible for the bus to have 1.5GHz bus frequecy in m5. Given
+> global frequncy of ITHz, probably not?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,41 @@
+Hi,
+I have written a C++ code which reads the contents of
+a file. I have put the executable and the file in the
+linux dist. But when I am running M5, it provides an
+error -
+"cannot open file "
+I have put the file and the executable in the same
+directory in the linux dist.
+What should I do to make it work ?
+Regards-
+Rajdeep
+--- Rajdeep Bhowmik <rajdeepbhowmik81@yahoo.com>
+wrote:
+- Show quoted text -
+> Hi Chen,
+>
+> Thanks. It works.
+>
+> regards-
+> Rajdeep
+>
+>
+>
+> __________________________________________________
+> Do You Yahoo!?
+> Tired of spam?  Yahoo! Mail has the best spam
+> protection around
+> http://mail.yahoo.com
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

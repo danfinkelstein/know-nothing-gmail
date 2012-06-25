@@ -1,0 +1,13 @@
+- Show quoted text -> Given a physical address of a word i want to find out the complete
+> cache-line. Meaning i want to find out the lowest address and highest
+> address of the word which is mapped to that cache line.
+> Now one easiest apporach is to just find out the nearest multiples of
+> 64byte(cache line size) above and below that address.. Will that be
+> sufficient and correct all the time?
+Yes.  Cache lines are always aligned to 64 bytes.  You  can simply
+mask off the low 6 bits of the address to determine the lowest address
+of a line.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

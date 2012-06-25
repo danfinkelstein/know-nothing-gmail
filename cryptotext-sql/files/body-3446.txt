@@ -1,0 +1,34 @@
+That could be related to the cache changes I made to get writebacks to
+allocate in the cache.  Looking at the assert, I'd say there's a 50/50
+chance that the bug is simply that the assertion isn't valid anymore
+rather than anything actually being broken.
+Unfortunately I won't have time to look at it in detail for a few
+days.  Can you try just commenting out the assertion and seeing if
+those benchmarks complete successfully?
+Thanks,
+Steve
+- Show quoted text -
+On Tue, Mar 11, 2008 at 2:08 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+>
+>
+> Hi all,
+>          I am trying to run the splash2 in m5 beta 5. On 5 of the
+> benchmarks, I get the following error:
+>
+> m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:1282: Packet*
+> Cache<TagStore>::getTimingPacket() [with TagStore = LRU]: Assertion
+> `tags->findBlock(mshr->addr) == __null' failed.
+>
+> and M5 aborts. Can someone explain what this means?
+>
+> - Sujay
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

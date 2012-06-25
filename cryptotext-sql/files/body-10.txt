@@ -1,0 +1,11 @@
+Hi,I just started learning M5, but encountered some problems. I am using the latest stable repository (m5-stable). 1. I got M5 compiled on both 32-bit and 64-bit host machines. However, on 32-bit host, when running m5.fast, it always gives me the following error:
+fatal: Cannot open file m5out/stats.txt @ cycle 0The same error happened in m5.opt. I checked m5out directory, an empty stats.txt file has been created there. Besides, It doesn't matter if I change the --outdir or --stats-file options. Only m5.debug can proceed execution without the above error. However, on 64-bit host, all m5 binaries can run. I wonder if an 64-bit host is required (recommended?) for M5?
+2. On 64-bit host, when I run m5.debug (and also m5.opt) with the following command (unmodified se.py):command line: ./m5.debug ../../configs/example/se.py --cmd /home/duan/spec2000binaries/int_gap/gap00.peak.ev6 --options -l /home/duan/spec2000binaries/int_gap/ -q -m 192M --input /home/duan/spec2000binaries/int_gap/ref.in --detailed --num-cpus 1 --caches --l2cache --max-inst 1000000 --fast-forward 10000000
+The following assertion will fail when switching the cpu (after fast forwarding):switching cpusm5.debug: build/ALPHA_SE/cpu/o3/thread_context_impl.hh:57: void O3ThreadContext< <template-parameter-1-1> >::takeOverFrom(ThreadContext*) [with Impl = O3CPUImpl]: Assertion `getSystemPtr() == old_context->getSystemPtr()' failed.
+Program aborted at cycle 5001415000It doesn't matter if other SPEC benchmarks are used. This happens when running m5.debug and m5.opt. But for m5.fast and m5.prof, the above command can finish execution and output the results. I searched the M5 archive, and found the following related thread:
+http://www.mail-archive.com/m5-users@m5sim.org/msg02812.htmlUnfortunately, it didn't provide an answer to the problem... Can anyone help?
+Thanks,Lide
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

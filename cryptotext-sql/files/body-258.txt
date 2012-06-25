@@ -1,0 +1,7 @@
+Hi I am running a 4 core 1 thread simulation under ALPHA_SE mode where I am using "switch cpu" option. I am getting the following error:
+m5.opt: build/ALPHA_SE/cpu/o3/lsq_unit_impl.hh:243: void LSQUnit<Impl>::switchOut() [with Impl = AlphaSimpleImpl]: Assertion `storesToWB == 0' failed.Program aborted at cycle 9016000
+How to sort out this error. Thanks in advance,Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

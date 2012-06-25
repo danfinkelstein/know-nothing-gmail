@@ -1,0 +1,9 @@
+ Thank again. I make a mistake.
+The 445.gobmk and 483.xalancbmk can finish correctly without any problem.
+410.bwaves  and 473.astar are still under test.
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

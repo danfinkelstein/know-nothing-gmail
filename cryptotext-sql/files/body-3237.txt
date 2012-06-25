@@ -1,0 +1,23 @@
+On Apr 16, 2008, at 7:51 PM, Ali Saidi wrote:
+(2) The memory system configuration is
+     system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+              physmem = PhysicalMemory(range=AddrRange("2048MB")),
+              membus = Bus(), mem_mode = 'timing')
+   This is the largest number I can set.
+   There are 9 spec2006 benchmarks has the problem
+    " terminate called after throwing an instance of 'std::bad_alloc' "
+   I tried to use a smaller dataset in 410.bwaves. It  finished
+correctly without any problem.
+   What should I  do to avoid this problem or correct it without
+changing the dataset?
+So it did work with a smaller dataset? Two possibilities arise:
+1) There is a bug. Either with the way we allocate memory or some how we're emulating mmap wrong. It's not impossible, but I think it's pretty unlikely.
+2) The benchmark needs that much memory. I found the following:
+Memory SPEC CPU2006 requirements to memory have grown significantly: the typical memory size is 1 GB for 32-bit systems, exclusive of OS/overhead, but more may be required. Typically, 64-bit environments will require 2GB for some of the benchmarks in the suite. More memory will be needed if you run multi-copy SPECrates: generally 1GB for 32-bit, or 2GB for 64-bit, for each copy you plan to run.
+So it very well may require > 2GB of memory for that dataset.
+Also, the nominal run time listed for bwave with the normal input set is ~1.25 hours. Given the extreme slow-down of simulation, it would be nearly impossible to simulate the normal input set.- Show quoted text -
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

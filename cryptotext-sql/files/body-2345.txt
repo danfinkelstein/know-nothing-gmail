@@ -1,0 +1,34 @@
+There is no memtest directory under src/cpu/checker.  There is one in
+src/cpu/memtest.  Did you accidentally move that directory?
+  Nate
+- Show quoted text -
+On Wed, Nov 5, 2008 at 9:11 AM, Eduardo Olmedo Sanchez
+<eolmsan2@gmail.com> wrote:
+> Hello I have made some changes in the source code in the function
+> /src/mem/bus.cc, but when I compile with the command  scons
+> build/ALPHA_SE/m5.debug, I get the following output.
+>
+> build/ALPHA_SE/cpu/checker/memtest/memtest.cc:41:34: error:
+> cpu/memtest/memtest.hh: No such file or directory
+> build/ALPHA_SE/cpu/checker/memtest/memtest.cc:54: error: âMemTestâ has
+> not been declared
+> build/ALPHA_SE/cpu/checker/memtest/memtest.cc: In function âbool
+> recvTiming(Packet*)â:
+> build/ALPHA_SE/cpu/checker/memtest/memtest.cc:57: error: âmemtestâ was
+> not declared in this scope
+> ...
+> scons: *** [build/ALPHA_SE/cpu/checker/memtest/memtest.do] Error 1
+> scons: building terminated because of errors.
+>
+>
+> Any ideas about what is happening?. Thank you.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

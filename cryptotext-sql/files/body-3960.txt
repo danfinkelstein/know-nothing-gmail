@@ -1,0 +1,38 @@
+My advice would be to enable Exec tracing to start at cycle 100015472500 (slightly before the checkpoint) and with a maxtick option so that you get at least a 10000 instructions past the checkpoint. Then run from the checkpoint with the same traceflags on and see where the differences occur. Usually it's pretty obvious what went wrong. If you're still using b3 I know of at least one problem that I fixed for b4 that would cause issues.
+Let us know what you find...
+Ali- Show quoted text -
+On Nov 14, 2007, at 7:59 PM, Rick Strong wrote:
+Hi,
+When I take a checkpoint in AtomicSimpleCPU at curTick=100015476500 (approx. 200,000,000 insts into the binary) in mcf, and resume execution in any CPU model, I get an exit syscall (syscall trace included below) at cycle 100522711000 (approx 1014345 insts into execution). What is strange is that if I run AtomicSimpleCPU through this point, I have no problems. Any ideas on either the problem or how to debug?
+-Richard
+:syscall trace
+100519102000: system.cpu: syscall read called w/arguments 3,5368799240,8192,7
+100519102000: system.cpu: syscall read returns 18446744073709551615
+100521401500: system.cpu: syscall obreak called w/arguments 5374902272,0,0,1048576
+100521401500: global: Break Point changed to: 0X1405E8000
+100521401500: system.cpu: syscall obreak returns 5374902272
+100521680500: system.cpu: syscall close called w/arguments 0,4831387472,1,1048576
+100521680500: system.cpu: syscall close returns 0
+100521846000: system.cpu: syscall write called w/arguments 1,5368778616,119,1048576
+100521846000: system.cpu: syscall write returns 119
+100521893000: system.cpu: syscall close called w/arguments 1,4831387472,119,0
+100521893000: system.cpu: syscall close returns 0
+100522014000: system.cpu: syscall close called w/arguments 2,4831387472,0,1048576
+100522014000: system.cpu: syscall close returns 18446744073709551615
+100522187500: system.cpu: syscall close called w/arguments 3,4831387472,1,1048576
+100522187500: system.cpu: syscall close returns 0
+100522357000: system.cpu: syscall obreak called w/arguments 5368815616,0,0,1048576
+100522357000: global: Break Point changed to: 0X14001A000
+100522357000: system.cpu: syscall obreak returns 5368815616
+100522623500: system.cpu: syscall sigprocmask called w/arguments 1,18446744073709547831,0,0
+warn: ignoring syscall sigprocmask(1, 18446744073709547831, ...)
+100522623500: system.cpu: syscall sigprocmask returns 0
+100522711000: system.cpu: syscall exit called w/arguments 18446744073709551615,5368739848,2,0
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

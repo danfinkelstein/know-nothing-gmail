@@ -1,0 +1,5 @@
+Hi, all. I am running ALPHA FS mode. When using the atomic CPU model to communication with an I/O device, is it possible to measure the time from the point the packet is sent to the time the response is generated? Thank you very much! The makeAtomicResponse() seems not to deal with the time issue. How can I solve this problem? Thank you!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

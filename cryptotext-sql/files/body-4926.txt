@@ -1,0 +1,38 @@
+Hi,
+everyone, when I run my application, such as snort2.6, in FS mode, I got a error as follow:
+m5.opt: build/ALPHA_FS/mem/physical.cc:116: void PhysicalMemory::doFunctionalAccess(Packet*): Assertion `pkt->getAddr() + pkt->getSize() < params()->addrRange.size()' failed.
+Program aborted at cycle 1837448541539
+Aborted
+I have debugged the m5.bug and the backtrace is:
+#4  0x080c5831 in PhysicalMemory::doFunctionalAccess (this=0x92863f0, pkt=0x9983f10) at build/ALPHA_FS/mem/physical.cc:116
+#5  0x080c5a32 in PhysicalMemory::MemoryPort::recvAtomic (this=0x999b688, pkt=0x9983f10)
+    at build/ALPHA_FS/mem/physical.cc:212
+#6  0x080ab7d6 in Port::sendAtomic (this=0x999b400, pkt=0x9983f10) at build/ALPHA_FS/mem/port.hh:184
+#7  0x080aff08 in Bus::recvAtomic (this=0x92874b8, pkt=0x9983f10) at build/ALPHA_FS/mem/bus.cc:244
+#8  0x080b41ec in Bus::BusPort::recvAtomic (this=0x999b6c8, pkt=0x9983f10) at build/ALPHA_FS/mem/bus.hh:154
+#9  0x080ab7d6 in Port::sendAtomic (this=0x9981e2c, pkt=0x9983f10) at build/ALPHA_FS/mem/port.hh:184
+#10 0x0824bd43 in AtomicSimpleCPU::write<unsigned long long> (this=0x9981b88, data=0, addr=18446739676199911416, flags=0,
+    res=0xbfaf4358) at build/ALPHA_FS/cpu/simple/atomic.cc:346
+#11 0x08212d57 in AlphaISAInst::Stq::execute (this=0x9a925d8, xc=0x9981b88, traceData=0x0)
+    at build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.cc:2419
+#12 0x08249be8 in AtomicSimpleCPU::tick (this=0x9981b88) at build/ALPHA_FS/cpu/simple/atomic.cc:433
+#13 0x08249e87 in AtomicSimpleCPU::TickEvent::process (this=0x9981ddc) at build/ALPHA_FS/cpu/simple/atomic.cc:50
+#14 0x081770e0 in EventQueue::serviceOne (this=0x83cfbd8) at build/ALPHA_FS/sim/eventq.cc:114
+#15 0x0817a531 in simulate (num_cycles=4611686018427387904) at build/ALPHA_FS/sim/main.cc:333
+print some informaion as follow:
+(gdb) p ((Packet*)(0x9983f10))->getSize()
+$6 = 8
+(gdb) p ((Packet*)(0x9983f10))->getAddr()
+$7 = 536870904
+(gdb) p ((PhysicalMemory*)0x92863f0)->params()->addrRange.size()
+$8 = 536870912
+At first I thought that the error was resulted by the small memory configuration(512M), so I increased it to 1024M, but I got the same error showed as above.
+Any one can give me some suggestion?
+Thanks and BestRegards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2006-10-25
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

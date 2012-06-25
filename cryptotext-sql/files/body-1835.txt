@@ -1,0 +1,19 @@
+> Yes it is. You're suppose to change /dev/ROOT to, for instance,
+> /dev/hda1. The BOOT and SWAP lines you can probably just remove entirely.
+I also suggest that you don't use gentoo's init scripts, but rather
+implement your own init script.  This is so you can know exactly what
+applications are running and also minimize boot time.  I've appended
+the init script that I use with gentoo that works in a similar way to
+our original boot scripts.
+  Nate
+#!/bin/sh
+echo "mounting filesystems..."
+mount -n -o remount,rw /dev/root /
+mount -a
+echo "execute init script..."
+/m5/bin/m5 execfile init.sh
+/bin/bash
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

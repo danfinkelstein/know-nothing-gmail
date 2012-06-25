@@ -1,0 +1,5 @@
+Yes, I had tried -o before. But apparently I had an old or altered script which wasn't parsing appropriately and resulted in this problem. Now it is fixed. Thank you. Shervin 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

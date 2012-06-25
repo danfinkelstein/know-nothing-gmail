@@ -1,0 +1,210 @@
+Hello,
+I have another disk image, but the problem is that I do not if it has
+the right zlib version, can you tell me what versions work fine?,
+because I do not want to go through the process of create a new one if
+I already have the correct one. But anyway I have tried like this and
+it does not work.
+/sbin/m5 pin 0 /benchmarks/transpose 8
+is the command right or is a problem of zlib?.
+2009/1/9 Ali Saidi <saidi@umich.edu>:
+- Show quoted text -> The version of the disk image isn't up to date. You'll need to get or
+> create a new disk image and put a newly compiled version of the m5
+> program on it. The syntax is something like:
+> ./m5 pin 0 <program> <program args>
+>
+> Ali
+>
+> On Jan 9, 2009, at 11:55 AM, Bob Nagel wrote:
+>
+>> Hello ALi,
+>>
+>> Can you provide me an example with the syntax?, I have tried several
+>> configurations such as:
+>>
+>> /sbin/m5 pin cpu[0], /sbin/m5 pin 0, and none of the seem to work, I
+>> do not if the problem is for the disk image or just because my syntax
+>> is wrong. In the ouput file  I see the usage help text.
+>>
+>> Thanks.
+>>
+>>
+>> 2009/1/8 Ali Saidi <saidi@umich.edu>:
+>>> Yes there is you can use the sched_setaffinity syscall to bind a
+>>> specific program to a CPU core. The newest m5 in simulator binary
+>>> (what is in util/m5/ in the source tree) supports ./m5 pin <cpu to
+>>> pin
+>>> to> <program to pin to cpu> <program arguments>. However, the disk
+>>> image that we provide has an older version of libc that doesn't
+>>> support this syscall. You'll need to use a newer disk image such as
+>>> the one that comes with gentoo.
+>>>
+>>> Ali
+>>>
+>>> On Jan 8, 2009, at 1:16 PM, Bob Nagel wrote:
+>>>
+>>>> Hi Ali, thanks for your answer :
+>>>>
+>>>> I am studying how the different CPUs access to the memory, and I
+>>>> have
+>>>> run other experiment but I still have the problem that the number of
+>>>> instructions executed are very disproportioned.
+>>>>
+>>>> CPU 0: 500k
+>>>> CPU 1: 5k
+>>>> CPU 2: 3k
+>>>> CPU 3: 300k
+>>>>
+>>>> The workload is the same I only changed the number of threads. I
+>>>> would
+>>>> like to know if there is anyway to tell the linux scheduler to try
+>>>> to
+>>>> execute instructions in all the CPUs or if there is a way to
+>>>> attach a
+>>>> program to a CPU.
+>>>>
+>>>> Thank you.
+>>>>
+>>>> 2009/1/6 Ali Saidi <saidi@umich.edu>:
+>>>>>
+>>>>> On Jan 6, 2009, at 1:49 AM, Bob Nagel wrote:
+>>>>>
+>>>>>> Hello Ali thanks for your answer, what is the difference between
+>>>>>> "commit.COM:count # Number of instructions committed" and
+>>>>>> "num_insts #
+>>>>>> Number of instructions executed"?
+>>>>> I can't look right now, but I'm pretty sure that the same CPU
+>>>>> doesn't
+>>>>> have both statistics. In the out-of-order cpu the
+>>>>> commit.COM:count is
+>>>>> the number of commit instructions. In the simple cpu num_insts is
+>>>>> the
+>>>>> number of committed instructions (which is the same as the number
+>>>>> of
+>>>>> executed instructions since the simple cpu doesn't speculate).
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> And also if commit.COM:count  is the number of instructions
+>>>>>> executed
+>>>>>> for the CPU, They are ver disproportioned in my simulation, my
+>>>>>> results
+>>>>>> of commit.COM:count are:
+>>>>>>
+>>>>>> CPU0: 500k
+>>>>>> CPU1: 8k
+>>>>>> CPU2: 8k
+>>>>>> CPU3: 300k
+>>>>>>
+>>>>>> Is this a problem of the Simulator or it just depend of my
+>>>>>> workload?.
+>>>>> That depends on your workload. It appears as though only 2 CPUs are
+>>>>> actively working. The linux scheduler can do many weird things.
+>>>>>
+>>>>>>
+>>>>>> And also I have a question regarding the host_seconds ,  is this
+>>>>>> the
+>>>>>> time that the simulation have been running in the host?, in my
+>>>>>> stats
+>>>>>> it says that is 85 seconds, that is a number very low compare to
+>>>>>> the
+>>>>>> hours that the simulation have been running.
+>>>>> It is the amount of elapsed time the statistics have been
+>>>>> aggregating
+>>>>> for. It starts when the simulation begins or the statistics are
+>>>>> reset.
+>>>>> One stats text file can contain multiple separate sampling periods,
+>>>>> so
+>>>>> you may have more that one host_seconds in the file. If there is
+>>>>> only
+>>>>> one, are you sure you're looking at the correct file? If < 1M
+>>>>> instructions were executed (as I can see from the the CPU stats
+>>>>> above), this should not take much more than a minute.
+>>>>>
+>>>>> Ali
+>>>>>
+>>>>>
+>>>>>>
+>>>>>>
+>>>>>> 2009/1/5 Ali Saidi <saidi@umich.edu>:
+>>>>>>>
+>>>>>>> On Jan 5, 2009, at 4:20 PM, Bob Nagel wrote:
+>>>>>>>
+>>>>>>>> Hello I have a couple of questions regarding the instructions
+>>>>>>>> counter
+>>>>>>>> that are in the statistics
+>>>>>>>>
+>>>>>>>> My post is related with this one
+>>>>>>>> http://thread.gmane.org/gmane.comp.emulators.m5.users/3324/focus=3328
+>>>>>>>> ,
+>>>>>>>> I have read it but I still have some questions.
+>>>>>>>>
+>>>>>>>> - What is this value,  system.cpu0.num_insts    2    # Number of
+>>>>>>>> instructions executed? and why is so low?. For all my CPUs I
+>>>>>>>> have a
+>>>>>>>> similar low number.
+>>>>>>> Because you probably switched from one cpu type to another in
+>>>>>>> your
+>>>>>>> simulation. If you started with an atomic CPU and immediately
+>>>>>>> transitioned to a timing CPU, the atomic CPU probably only
+>>>>>>> executed 2
+>>>>>>> instructions
+>>>>>>>
+>>>>>>>>
+>>>>>>>> - What is the difference between system.cpu0.num_insts   and
+>>>>>>>> system.switch_cpus0.num_insts?
+>>>>>>> They are different CPUs (in this case before and after the switch
+>>>>>>> respectively)
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> - What is commit.COM:loads?, is the number of accesses to the
+>>>>>>>> memory?
+>>>>>>> The number of committed loads that were executed (this doesn't
+>>>>>>> include
+>>>>>>> issued and subsequently squashed loads because of miss
+>>>>>>> speculation).
+>>>>>>>
+>>>>>>> Ali
+>>>>>>>
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

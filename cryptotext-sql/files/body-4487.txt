@@ -1,0 +1,26 @@
+> We've seen this before... I think it's a bug with certain versions of
+> scons where they save out their options in a format they can't read back
+> in.  I believe the short-term fix is to go into
+> mnt/scratch/tools/m5/build/options/ALPHA_FS and edit
+>
+> CPU_MODELS = all
+>
+> to be
+>
+> CPU_MODELS = "all"
+>
+> The more permanent fix is to upgrade to a more recent version of scons.
+>
+> Please let us know what other problems you're having in detail so we can
+> address them...
+>
+Steve
+Thanks for the prompt response, I have scons 0.97.0 installed, the
+temporary fix worked but I am unable to locate a more recent package.
+However, I am now running the regression tests, thanks for your help.
+Regards,
+Matt
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

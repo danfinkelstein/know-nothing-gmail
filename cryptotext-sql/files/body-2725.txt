@@ -1,0 +1,42 @@
+Yes... a lot of this is handled pretty transparently by the
+SimpleTimingPort class, which lets you schedule packet sends and then
+forget about them, but the cache overrides some of those methods
+because it can't always forget about requests that haven't made it on
+to the bus yet due to coherence timing issues (see
+Cache<TagStore>::MemSidePort::sendPacket()).
+Steve
+- Show quoted text -
+On Thu, Jul 10, 2008 at 11:40 AM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> So, this basically means that the object (for instance cache) connected to the port (which has been put on retry list) stop sending further requests until the port is removed form retry list?
+>
+> ---- Original message ----
+>>Date: Wed, 9 Jul 2008 19:04:12 -0700
+>>From: "Steve Reinhardt" <stever@gmail.com>
+>>Subject: Re: [m5-users] RetryList
+>>To: "M5 users mailing list" <m5-users@m5sim.org>
+>>
+>>Off the top of my head, I'd say no, but there may be some corner case
+>>I'm not thinking of.
+>>
+>>Steve
+>>
+>>On Wed, Jul 9, 2008 at 3:17 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>>> is it possible to have multiple enteries of the same port on the retry list of a bus at any given time?
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,11 @@
+If the two CPUs are running two different instances of the same
+workload, then they ought to start fetching from the same (virtual)
+PC.  If they don't, then there's some problem in the initialization
+code.  It might have something to do with using EIO traces rather than
+LiveProcess objects (which I'm guessing is what you're doing from the
+names of your workloads).
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

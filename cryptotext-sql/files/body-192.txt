@@ -1,0 +1,17 @@
+Hi Steve,I am trying to bisect the elf_object.cc file but it seems the error is not at that file.I have figured from elf_object.cc file that from the statements at line # 160:
+ data = elf_rawdata(section, NULL); assert(data->d_buf);(1) M5 from the repository: the value of data is: 0x1281e020
+(2) M5-2.0b6: the value of data is: 0xa7d9e40When the data is "0xa7d9e40"  the M5 doesn't produce any errors but when the data is 0x1281e020 M5 produces the 'segmenation fault error'. I am not able to understand why the value of data differs in the two versions of M5 and I think thats the reason of the segmentation fault. 
+The backstrace is:[ashutoshj@leif cpu2006]$ gdb /home/ashutoshj/newm5/build/ALPHA_SE/m5.debugGNU gdb Fedora (6.8-37.el5)Copyright (C) 2008 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"and "show warranty" for details.This GDB was configured as "x86_64-redhat-linux-gnu"...
+(gdb) run cmp.pyStarting program: /home/ashutoshj/newm5/build/ALPHA_SE/m5.debug cmp.py[Thread debugging using libthread_db enabled][New Thread 0x2b7d4edce940 (LWP 8181)]M5 Simulator System
+Copyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Mar 24 2010 12:14:12M5 revision 79463f723460+ 6018+ default tip
+M5 started May 10 2010 21:13:33M5 executing on leif.cs.lamar.educommand line: /home/ashutoshj/newm5/build/ALPHA_SE/m5.debug cmp.pymax_insts_all_threads = 10000
+milc()soplex()gcc()hmmer()num of cpus = 4num threads per cpu = 1system.cpu[0].workload = Mybench.milc()system.cpu[1].workload = Mybench.soplex()
+system.cpu[2].workload = Mybench.gcc()system.cpu[3].workload = Mybench.hmmer()no. of cores: 4Global frequency set at 1000000000000 ticks per secondProgram received signal SIGSEGV, Segmentation fault.
+0x00000000006b3f5b in ElfObject::tryFile (fname=@0x7ffffbd12730, fd=7, len=5438489,    data=0x2b7e9372a000 "\177ELF\002\001\001") at build/ALPHA_SE/base/loader/elf_object.cc:161
+-- Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

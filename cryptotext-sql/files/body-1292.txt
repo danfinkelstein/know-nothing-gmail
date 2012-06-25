@@ -1,0 +1,11 @@
+There's no facility I know of for dumping a trace from a bus; you'd have to put that in yourself.  Shouldn't be hard though.Steve- Show quoted text -On Fri, Jun 12, 2009 at 10:51 AM, Devraj Chapagain <drchapagain@gmail.com> wrote:
+- Show quoted text -Hi,I am interested in tracing dumped address in between L2 cache-L3 cache and L3 cache-memory. Do M5 have any built-in methods to dump the address in file or we have to hack that in too?
+Thanks in advance,drc
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

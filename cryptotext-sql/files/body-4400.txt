@@ -1,0 +1,4 @@
+Jiayuan,What stats utility?Ali- Show quoted text -On Aug 7, 2007, at 11:53 AM, Jiayuan Meng wrote:- Show quoted text - Hi all,   I am trying to use M5's stat utility. But when i try to output the stats that I defined, i found a lot more stats than I expected. is there anyway to allow the output just show some particular stats?   Thanks!   Jiayuan_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,36 @@
+Richard,I've made checkpoints using m5 2.0b2 for (some of) the spec2k benchmarks and gotten them to work.  I've had trouble with some of the other ones (gcc, for instance) -- I'm not sure what's causing it and haven't yet had time to debug it (I think I usually also get a page table error, though a different one). 
+But I've definitely gotten the checkpoints to work in SE mode, at least in 2.0b2.  The code may have changed for 2.0b3, but one of the developers will have to answer that.   -Vilas
+On 10/23/07, Richard Strong <goodeatslol@gmail.com> wrote:- Show quoted text -
+Hi,
+I am trying to get checkpoints working with ALPHA_SE and have run into
+some problems. When I try to resume a checkpoint I get a fatal message
+in src/mem/page_table.cc:110 fatal("PageTable::allocate: address 0x%x already mapped", vaddr);. It
+appears that an address has already been mapped in the page table  Why
+would this happen? Has anyone at least tried making checkpoint for a
+spec2000 benchmark and resuming it for ALPHA_SE? Perhaps I am running code at the start of the binary after I restore the checkpoint?
+-Richard
+I make a checkpoint using:
+./build/ALPHA_SE/m5.debug  configs/example/se.py  --max_checkpoints=2 
+--take_checkpoints="10000,100"  --checkpoint_dir=./checkpoints
+I then try to resume a checkpoint with a AtomicSimpleCPU by the command:
+$m5-2.0b3*11:57:44=>./build/ALPHA_SE/m5.debug  configs/example/se.py  -r 1 --checkpoint_dir=./checkpoints
+M5 Simulator System
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 23 2007 11:57:34
+M5 started Tue Oct 23 12:15:07 2007
+M5 executing on rickshin-2.local
+command line: ./build/ALPHA_SE/m5.debug configs/example/se.py -r 1 --checkpoint_dir=./checkpoints
+Global frequency set at 1000000000000 ticks per second
+Restoring from checkpoint
+fatal: PageTable::allocate: address 0x11ff92000 already mapped
+ @ cycle 10000
+[allocate:build/ALPHA_SE/mem/page_table.cc, line 110]
+Memory Usage: 0 KBytes
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,25 @@
+It is still a good insight, we clearly need to check for the presence of a c and c++ compiler.
+Ali- Show quoted text -
+On Dec 5, 2007, at 6:56 AM, dean michael ancajas wrote:
+dean@stallman:~/m5/m5_2.0b4$ scons build/ALPHA_SE/tests/debug/quick
+scons: Reading SConscript files ...
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':
+ File "/home/dean/m5/m5_2.0b4/SConstruct", line 243:
+   env['GCC'] = subprocess.Popen(env['CXX'] + ' --version', shell=True,
+python version is 2.5.1
+GCC 4.1.3
+swig version
+1.3.31
+scons version
+0.97
+I think there's a problem with the env['CXX'] variable in the SConstruct file, however i do not know why the variable is of type 'NoneType'...
+Please help
+thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,19 @@
+Native execution isn't supported on any of our architectures including Alpha. I would imagine x86 will be the first architecture to get native execution support.
+Ali- Show quoted text -
+On Mar 28, 2008, at 6:06 PM, Jeff Diamond wrote:
+I know the M5 developer community is working on full-system simulation for MIPS and ARM (and even X86 down the road.)  Does it seem like anyone is working on "native execution" for any CPU model besides the Alpha?
+Thanks again,
+- Jeff
+Ali Saidi wrote:
+You can do single processor full-system simulation on SPARC and boot Solaris.  In theory multi-processors should work -- the code is written -- but it hasn't been tested/debugged. If you're interested in doing it we have some infrastructure to do cycle checking Legion (Sun's functional simulator) that we can share. There is currently no support for native execution on SPARCs.
+(2) Simulation speed.  I need a sense of both the software and hardware performance in instructions/second.  This is a critical piece of information and I have not found it anywhere in the docs or tutorial.  I would even accept anecdotal information about M5 speed.
+We get about 2M IPS on a simple CPU model. Full-system isn't supported on our out-of-order model, but it would be a good bit slower.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

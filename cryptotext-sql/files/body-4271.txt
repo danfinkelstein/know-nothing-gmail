@@ -1,0 +1,18 @@
+Hello,
+   I want to run CPU2000 benchmarks on m5_2.0b3. How could I generate
+*.rcS files by the CPU2000 input sets and binaries.
+   In FAQ it shows cpu2000.py can be used to create an m5 workload
+parameter based on benchmark name, isa, operating system, and input
+set. To make cpu2000.py work for me, I only have to change spec_dist to
+point to wherever I keep my cpu2000 binaries/input sets.
+   Does that mean I should change spec_dist to my appointed directory and
+put my input sets to
+      spec_dist/data/BENCHMARK/INPUTSET/FILES
+  and binaries to
+      spec_dist/binaries/ARCH/OPSYS/BENCHMARK
+Thanks,
+Rongrong
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

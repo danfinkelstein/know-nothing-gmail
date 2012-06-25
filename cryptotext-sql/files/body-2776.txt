@@ -1,0 +1,301 @@
+You need to look just a bit closer at this... The line(s) of interest are:
+" 0: system.cpu1.fetch: [tid:0]: Attempting to translate and read
+instruction, starting at PC 0x000000."
+Thus, if CPU1 is starting at address 0x0, that probably means it is
+starting with no workload, and eventually experienced a trap because
+there is no code at that address.
+It probably would be the best thing to have some kind of check
+somewhere to WARN a user that a CPU has no valid process to start from
+and then sleep the CPU rather than waste sim. cycles on that.
+Anyway,
+you have to figure out how to get the 2nd CPU to get a valid process.
+On a first cut, I would just hardcode the CPU processes bindings
+instead of using the loop like in your example. If you can get that to
+work, then you know something  is going on with how the loop is
+setting up your system.
+I'm guessing that something like this would work (check syntax though):
+"
+Process process1 = Benchmarks.SPECGCCEIO()
+Process process2 = Benchmarks.SPECGCCEIO()
+system.cpu[0].workload = process1
+system.cpu[1].workload = process2
+"
+I've done similar when i've needed something quick to work. I've
+noticed that you're using EIO so if you aren't able to hardcode it,
+then the EIO functionality could be the culprit as well.
+- Show quoted text -
+On Mon, Jun 23, 2008 at 12:15 AM, prannav shrestha <prannav@gmail.com> wrote:
+> HI Sewell!!
+> I run the simulation with O3CPU flags, and looking at the information
+> provided, i found that in my case, PC value for CPU remains same forever,
+> whereas CPU0 is executing the workload.  Also, the insructions fetched by
+> CPU1, which is always the same, is squashed everytime. Some part of the
+> debug output is as below:
+>
+> Global frequency set at 1000000000000 ticks per second
+>       0: global: BTB: Creating BTB object.
+>       0: system.cpu0.iew.lsq: LSQ sharing policy set to Partitioned: 32
+> entries per LQ | 32 entries per SQ      0: system.cpu0.commit: Commit Policy
+> set to Round Robin.      0: system.cpu0.rob: ROB sharing policy set to
+> Partitioned
+>       0: global: Creating AlphaO3CPU object.
+>
+> number of threads: 1
+>       0: global: Workload[0] process is 0      0: global: BTB: Creating BTB
+> object.
+>       0: system.cpu1.iew.lsq: LSQ sharing policy set to Partitioned: 32
+> entries per LQ | 32 entries per SQ      0: system.cpu1.commit: Commit Policy
+> set to Round Robin.      0: system.cpu1.rob: ROB sharing policy set to
+> Partitioned
+>       0: global: Creating AlphaO3CPU object.
+>
+> number of threads: 1
+>       0: global: Workload[0] process is 0      0: global: Calling activate
+> on Thread Context 0
+>       0: system.cpu0: [tid:0]: Calling activate thread.
+>       0: system.cpu0: [tid:0]: Adding to active threads list
+>       0: system.cpu0.fetch: Waking up from quiesce
+>       0: system.cpu0.commit: Generating TC squash event for [tid:0]
+>       0: global: Calling activate on Thread Context 0
+>       0: system.cpu1: [tid:0]: Calling activate thread.
+>       0: system.cpu1: [tid:0]: Adding to active threads list
+>       0: system.cpu1.fetch: Waking up from quiesce
+>       0: system.cpu1.commit: Generating TC squash event for [tid:0]
+>       0: system.cpu1:
+>
+> FullO3CPU: Ticking main, FullO3CPU.
+>       0: system.cpu1.fetch: Running stage.
+>       0: system.cpu1.fetch: Attempting to fetch from [tid:0]
+>       0: system.cpu1.fetch: [tid:0]: Attempting to translate and read
+> instruction, starting at PC 0x000000.
+>       0: system.cpu1.fetch: [tid:0]: Blocked, need to handle the trap.
+>       0: system.cpu1.fetch: [tid:0]: fault (itbmiss) detected @ PC
+> 0x000000      0: system.cpu1.decode: Processing [tid:0]
+>       0: system.cpu1.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>       0: system.cpu1.decode: [tid:0] Nothing to do, breaking out early.
+> ......................
+> ........
+> ....
+> FullO3CPU: Ticking main, FullO3CPU.
+>    6500: system.cpu0.fetch: Running stage.
+>    6500: system.cpu0.fetch: There are no more threads available to fetch
+> from.
+>    6500: system.cpu0.decode: Processing [tid:0]
+>    6500: system.cpu0.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>    6500: system.cpu0.decode: [tid:0] Nothing to do, breaking out early.
+>    6500: system.cpu0.commit: Getting instructions from Rename stage.
+>    6500: system.cpu0.commit: Trying to commit instructions in the ROB.
+>    6500: system.cpu0.commit: [tid:0]: Instruction [sn:2] PC 0x120140ce8 is
+> head of ROB and ready to commit
+>    6500: system.cpu0.commit: [tid:0]: ROB has 1 insts & 191 free entries.
+>    6500: system.cpu0: Scheduling next tick!
+>    6500: system.cpu1:
+>
+> FullO3CPU: Ticking main, FullO3CPU.
+>    6500: system.cpu1.fetch: Running stage.
+>    6500: system.cpu1.fetch: There are no more threads available to fetch
+> from.
+>    6500: system.cpu1.decode: Processing [tid:0]
+>    6500: system.cpu1.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>    6500: system.cpu1.decode: [tid:0] Nothing to do, breaking out early.
+>    6500: system.cpu1.commit: Getting instructions from Rename stage.
+>    6500: system.cpu1.commit: Trying to commit instructions in the ROB.
+>    6500: system.cpu1.commit: [tid:0]: Instruction [sn:2] PC 0x12000dde8 is
+> head of ROB and ready to commit
+>    6500: system.cpu1.commit: [tid:0]: ROB has 1 insts & 191 free entries.
+>    6500: system.cpu1: Scheduling next tick!
+>    7000: system.cpu1:
+>
+> .............
+> ..........
+> ..........
+>
+> FullO3CPU: Ticking main, FullO3CPU.
+>   13000: system.cpu1.fetch: Running stage.
+>   13000: system.cpu1.fetch: There are no more threads available to fetch
+> from.
+>   13000: system.cpu1.decode: Processing [tid:0]
+>   13000: system.cpu1.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>   13000: system.cpu1.decode: [tid:0] Nothing to do, breaking out early.
+>   13000: system.cpu1.commit: Getting instructions from Rename stage.
+>   13000: system.cpu1.commit: Trying to commit instructions in the ROB.
+>   13000: system.cpu1.commit: Trying to commit head instruction, [sn:3]
+> [tid:0]
+>   13000: system.cpu1.commit: Inst [sn:3] PC 0x12000dde8 has a fault
+>   13000: system.cpu1.commit: Generating trap event for [tid:0]
+>   13000: system.cpu1.commit: Unable to commit head instruction
+> PC:0x12000dde8 [tid:0] [sn:3].
+>   13000: system.cpu1.commit: [tid:0]: Instruction [sn:3] PC 0x12000dde8 is
+> head of ROB and ready to commit
+>   13000: system.cpu1.commit: [tid:0]: ROB has 1 insts & 191 free entries.
+>   13000: system.cpu1: Scheduling next tick!
+>   13000: system.cpu0:
+>
+> .....
+> ....
+> FullO3CPU: Ticking main, FullO3CPU.
+>   32500: system.cpu0.fetch: Running stage.
+>   32500: system.cpu0.fetch: Attempting to fetch from [tid:0]
+>   32500: system.cpu0.fetch: [tid:0]: Attempting to translate and read
+> instruction, starting at PC 0x120140cf0.
+>   32500: system.cpu0.fetch: Fetch: Doing instruction read.
+>   32500: system.cpu0.fetch: [tid:0]: Doing cache access.
+>   32500: system.cpu0.decode: Processing [tid:0]
+>   32500: system.cpu0.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>   32500: system.cpu0.decode: [tid:0]: Sending instruction to rename.
+>   32500: system.cpu0.decode: [tid:0]: Processing instruction [sn:3] with PC
+> 0x120140ce8
+>   32500: system.cpu0.decode: [tid:0]: Processing instruction [sn:4] with PC
+> 0x120140cec
+>   32500: system.cpu0.commit: Getting instructions from Rename stage.
+>   32500: system.cpu0.commit: Trying to commit instructions in the ROB.
+>   32500: system.cpu0.commit: [tid:0]: ROB has 0 insts & 192 free entries.
+>   32500: system.cpu0: Scheduling next tick!
+>   33000: system.cpu0:
+>
+> ..............
+> .........
+> FullO3CPU: Ticking main, FullO3CPU.
+>   39500: system.cpu0.fetch: Running stage.
+>   39500: system.cpu0.fetch: Attempting to fetch from [tid:0]
+>   39500: system.cpu0.fetch: [tid:0]: Attempting to translate and read
+> instruction, starting at PC 0x120140d00.
+>   39500: system.cpu0.fetch: Fetch: Doing instruction read.
+>   39500: system.cpu0.fetch: [tid:0]: Doing cache access.
+>   39500: system.cpu0.decode: Processing [tid:0]
+>   39500: system.cpu0.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>   39500: system.cpu0.decode: [tid:0]: Sending instruction to rename.
+>   39500: system.cpu0.decode: [tid:0]: Processing instruction [sn:5] with PC
+> 0x120140cf0
+>   39500: system.cpu0.decode: [tid:0]: Processing instruction [sn:6] with PC
+> 0x120140cf4
+>   39500: system.cpu0.decode: [tid:0]: Processing instruction [sn:7] with PC
+> 0x120140cf8
+>   39500: system.cpu0.decode: [tid:0]: Processing instruction [sn:8] with PC
+> 0x120140cfc
+>   39500: system.cpu0.commit: Getting instructions from Rename stage.
+>   39500: system.cpu0.commit: Trying to commit instructions in the ROB.
+>   39500: system.cpu0.commit: [tid:0]: ROB has 0 insts & 192 free entries.
+>   39500: system.cpu0: Scheduling next tick!
+>   40000: system.cpu0:
+> FullO3CPU: Ticking main, FullO3CPU.
+>   40000: system.cpu1.fetch: Running stage.
+>   40000: system.cpu1.fetch: There are no more threads available to fetch
+> from.
+>   40000: system.cpu1.decode: Processing [tid:0]
+>   40000: system.cpu1.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+>   40000: system.cpu1.decode: [tid:0] Nothing to do, breaking out early.
+>   40000: system.cpu1.commit: Squashing from trap, restarting at PC
+> 0x12000dde8
+>   40000: system.cpu1.commit: [tid:0]: Instruction [sn:5] PC 0x12000dde8 is
+> head of ROB and ready to commit
+>   40000: system.cpu1.commit: [tid:0]: ROB has 1 insts & 191 free entries.
+>   40000: system.cpu1: Scheduling next tick!
+>   40500: system.cpu1.fetch-iport: Received timing
+>   40500: system.cpu1:
+> ....................
+> .................
+> FullO3CPU: Ticking main, FullO3CPU.
+> 1243500: system.cpu0.fetch: Running stage.
+> 1243500: system.cpu0.fetch: There are no more threads available to fetch
+> from.
+> 1243500: system.cpu0.decode: Processing [tid:0]
+> 1243500: system.cpu0.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+> 1243500: system.cpu0.decode: [tid:0] Nothing to do, breaking out early.
+> 1243500: system.cpu0.commit: Getting instructions from Rename stage.
+> 1243500: system.cpu0.commit: Trying to commit instructions in the ROB.
+> 1243500: system.cpu0.commit: [tid:0]: Instruction [sn:369] PC 0x120106160 is
+> head of ROB and ready to commit
+> 1243500: system.cpu0.commit: [tid:0]: ROB has 1 insts & 191 free entries.
+> 1243500: system.cpu0: Scheduling next tick!
+> 1244000: system.cpu0:
+>
+> .........
+> ........
+> FullO3CPU: Ticking main, FullO3CPU.
+> 4001000: system.cpu1.fetch: [tid:0]: Done squashing, switching to running.
+> 4001000: system.cpu1.fetch: Running stage.
+> 4001000: system.cpu1.fetch: Attempting to fetch from [tid:0]
+> 4001000: system.cpu1.fetch: [tid:0]: Attempting to translate and read
+> instruction, starting at PC 0x12000dde8.
+> 4001000: system.cpu1.fetch: [tid:0]: Blocked, need to handle the trap.
+> 4001000: system.cpu1.fetch: [tid:0]: fault (itbmiss) detected @ PC
+> 0x12000dde84001000: system.cpu1.decode: Processing [tid:0]
+> 4001000: system.cpu1.decode: [tid:0]: Done squashing, switching to running.
+> 4001000: system.cpu1.decode: [tid:0]: Not blocked, so attempting to run
+> stage.
+> 4001000: system.cpu1.decode: [tid:0] Nothing to do, breaking out early.
+> 4001000: system.cpu1.commit: Getting instructions from Rename stage.
+> 4001000: system.cpu1.commit: Trying to commit instructions in the ROB.
+> 4001000: system.cpu1.commit: [tid:0]: ROB has 0 insts & 192 free entries.
+> 4001000: system.cpu1: Scheduling next tick!
+> 4001500: system.cpu1:
+> ......
+>
+> Exiting @ cycle 4002500 because all threads reached the max instruction
+> count
+>
+> I am running two different benchmarks in those two cores. I have included
+> the long list of the debug. The PC of CPU1 is always the same. Why the
+> instruction at CPU1 is always being squashed?
+>
+> regards,
+> prannav
+>
+>
+>
+> On Sun, Jun 22, 2008 at 10:49 PM, Korey Sewell <ksewell@umich.edu> wrote:
+>>
+>> Turn on the trace flags for O3CPU and see what it says.... Inside the
+>> "o3" folder there should be a *.py file that list the trace-flags.
+>>
+>> If you run the simulation with all the O3 trace-flags on you should be
+>> able to see what's happening. I suggest only running for maybe 100
+>> ticks so that you dont get overloaded with text.
+>>
+>> From the debug output, you should see each CPU get initialized, fetch,
+>> and all that. I'm guessing what happens is that CPU1 starts up, sees
+>> no process to latch onto, and then sleeps, but the debug output should
+>> verify that for you.
+>>
+>> Simply looking at the instruction commits (Exec) wont help you in this
+>> case since you're saying that there is no instructions commit. You'll
+>> at least need to turn on "Fetch Decode Exec" and all that so you can
+>> get a detailed view.
+>>
+>>
+>> --
+>> ----------
+>> Korey L Sewell
+>> Graduate Student - PhD Candidate
+>> Computer Science & Engineering
+>> University of Michigan
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Show quoted text -----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,126 @@
+You can also use the legion simulator in the opensparc tarball below to
+create an nvram that autoboots and use that. Unfortunately the license that
+the files are distributed under prohibit us from distributing images.
+Ali
+On Thu, 13 May 2010 18:55:31 -0400, Gedare Bloom <gedare@gwmail.gwu.edu>
+wrote:
+- Show quoted text -> The following archive has the binaries and disk image you need, in the
+> S10image directory.
+> http://www.opensparc.net/offers/OpenSPARCT1_Arch.1.5.tar.bz2
+>
+> also you might like my summary of experience with SPARC_FS:
+> http://gedare-csphd.blogspot.com/2010/05/week-in-m5.html
+>
+> -Gedare
+>
+> On Thu, May 13, 2010 at 6:35 PM, Gabriel Michael Black
+> <gblack@eecs.umich.edu> wrote:
+>> Hi Robert. It's not a problem, but lets steer this onto m5-users so
+other
+>> people can chime in and benefit from the answer. I don't actually know
+>> for
+>> sure where to get those files, although Ali probably does. Ali?
+>>
+>> Gabe
+>>
+>> Quoting Robert Chen <rchen@cs.ucla.edu>:
+>>
+>>> Hello Gabe:
+>>>
+>>> Sorry to bug you, but I am running in to the same problem as the
+>>> thread you answered below.  My version of the full system files,
+>>> m5_system_2.0b3, does not contain a certain binary.  I get the same
+>>> output as below, and it is apparent that I lack the reset_new.bin file
+>>> for SPARC_FS.  My question is, where can I find this file?
+>>>
+>>> I looked at the OpenSPARC website, but those are FPGA and low level
+>>> design files.  Is it somewhere in the Open Solaris project?
+>>>
+>>> Again, sorry to bother you, I am just a newbie at M5.  Thanks in
+>>> advance for any help you can provide.
+>>>
+>>> -Robert
+>>>
+>>>> You are right that you need to download those files. You might be
+able
+>>>> to get them through the "Full System Files" link at
+>>>> http://www.m5sim.org/wiki/index.php/Download, but I haven't actually
+>>>> looked in that tarball to check. We run that regression regularly, so
+>>>> once you have all the right files you should be able to run it
+>>>> yourself without any problems. Our SPARC support isn't as mature as
+>>>> our Alpha support, but it is there and does work in most cases.
+>>>>
+>>>> Gabe
+>>>>
+>>>> Quoting ASHMAWY Amr <3shmaoy <at> acm.org>:
+>>>>
+>>>> Hi all,
+>>>>
+>>>> I've having trouble running M5 after building it without any
+>>>> problems using
+>>>> $scons build/SPARC_FS/m5.debug
+>>>>
+>>>> then running the regression tests fails
+>>>> $scons build/SPARC_FS/tests/debug
+>>>> ...
+>>>> scons: ***
+>>>> [build/SPARC_FS/tests/debug/long/80.solaris-boot/sparc/solaris/
+>>>> t1000-simple-atomic/stdout]
+>>>> Error 1
+>>>> scons: building terminated because of errors.
+>>>>
+>>>> with the above error stream file
+>>>> Warning: rounding error > tolerance
+>>>>   0.002000 rounded to 0
+>>>> Warning: rounding error > tolerance
+>>>>   0.002000 rounded to 0
+>>>> warn: No kernel set for full system simulation. Assuming you
+>>>> know what you're doing...
+>>>> fatal: Could not load reset binary /home/amm/M5/system/
+>>>> binaries/reset_new.bin
+>>>> @ cycle 0
+>>>> [SparcSystem:build/SPARC_FS/arch/sparc/system.cc, line 80]
+>>>> Memory Usage: 92708 KBytes
+>>>>
+>>>> same happens when running
+>>>> $build/SPARC_FS/m5.debug -d /tmp/output configs/example/fs.py
+>>>> ...
+>>>> warn: No kernel set for full system simulation. Assuming you
+>>>> know what you're doing...
+>>>> fatal: Could not load reset binary /home/amm/M5/system/
+>>>> binaries/reset_new.bin
+>>>> @ cycle 0
+>>>> [SparcSystem:build/SPARC_FS/arch/sparc/system.cc, line 80]
+>>>> Memory Usage: 93032 KBytes
+>>>>
+>>>> I guess I'm missing the bin files, "reset_new.bin" and may be
+>>>> others. currently I only have (console, ts_osfpal, vmlinux)
+>>>>
+>>>> I couldn't find those files, where can I get them?
+>>>> or does the following bug means that SPARC is currently not
+supported?
+>>>> http://www.m5sim.org/flyspray/task/126
+>>>>
+>>>> TIA
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users <at> m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

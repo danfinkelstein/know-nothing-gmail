@@ -1,0 +1,11 @@
+Hi,
+A few questions regarding M5 and the best way to get configuration settings  and access information.
+Background: Porting Wattch to a new simulator just involves, passing architecture parameters (like number of processors, l2 cache size, number of dtlb entries, etc ...) calling init_power() routine ( allocate various structures which hold current power information),  calculate_core_power() (static estimate of power consumptions), adding calls which update structures within Wattch when a certain power related structure is accessed, calling update_power_stats() at the end of each cycle (which looks at all the power related accesses on the architecture in the current cycle) and finally displaying the end power results. One obvious location to put these routines is in src/sim/simulate.cc in function simulate, but there are problems and maybe I could get some suggestions on a better place to add these routines or how to use M5 more effectively.
+1) Is there any structure or class accessible which contains all the parameter information for the current architecture in C++ code within the simulate() function? I need things like the number of cores on the processor, l2 cache size, dtlb entries,  in order to initialize Wattch to the correct values. I understand that python is specifying these parameter values, and they are being translated to C++ objects, I am just wondering how can get a hold of these object values from within src/sim/simulate.cc::simulate() so I can pass them to Wattch.
+2) It will be necessary to update structures within Wattch  that keep track of things like alu_accesses[cpu_id].  Am I right in assuming that the Struct Param.cpu_id in BaseCpu has a unique id for each core in a system which I can use to keep track of the different core's statistics?
+Thanks,
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

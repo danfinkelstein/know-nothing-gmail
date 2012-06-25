@@ -1,0 +1,31 @@
+> Nate used to have some infrastructure to try this years ago. He'll have to
+> tell you the details, but I don't think it's been done since.  And I'm not
+> sure he was ultimately successful - I think it had to do with the severe
+> mismatch of speeds....M5 is way slower than an actual machine, obviously,
+> and I think that led to problems.  But I don't know if I remember clearly,
+> again this was like, over 6 years ago that I remember hearing about this.
+Yeah, I haven't tried it since then, but it shouldn't be all that
+difficult.  Basically, you need to resurrect the EtherTap device
+src/dev/ethertap.hh and make it work (It may still work in fact.)
+Basically, the tap device listens on a TCP port and you connect to it
+and can send and receive ethernet frames.  You need to do something to
+get those frames onto the real ethernet though.  util/tap was
+originally for that, but it was somewhat clunky.  There's a handy
+program out there called socat that should do what you need.
+As Lisa mentioned, there is a potential issue with timing, but
+contrary what you might thing, it's not that M5 is way too slow
+compared to real time, but rather it can in fact be way too fast.  M5
+optimizes out idle time and fast forwards whenever the CPU core is
+idle, so M5 can actually run much faster than real time and timers can
+expire faster than they should.  The solution to this (though it's not
+implemented) is to create a device that is scheduled something like
+every one simulated second (1e12 ticks) and checks the real system to
+make sure that at least one real second has passed on the host (use
+gettimeofday and usleep).
+It should all be relatively straight forward to do.  If you get it
+working, please let us know.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

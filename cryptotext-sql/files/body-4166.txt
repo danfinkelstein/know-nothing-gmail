@@ -1,0 +1,7 @@
+Hi,
+How can I modify cpu2000.py  or a script to fast-forward execution to a simpoint and execute for 100,000,000 cycles.
+-R
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

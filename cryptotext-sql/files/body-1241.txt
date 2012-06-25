@@ -1,0 +1,7 @@
+Hi,I have dumped the traces in between caches and memory. While dump_tracing, I found bus_id is not implemented and always give zero value. I have two questions:i. Is there any parameters or implementation techniques so that i could trace bus_id carrying the packet ?
+ii. I'm not able to get bus_name through which the packet is passed. Could any one please help me to figure out these two problems?Thanks in advance,
+devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,24 @@
+Hi,I want to dynamically change the latency of retrieving blocks in the cache on the fly. So for example if L1 wants to gets data from  the L2 cache I want to change the latency of finding a certain cache block i.e. making it  twice as fast (half the latency). I have a clear cut idea on how to do this, however I also have some questions and wanted to confirm my understanding of M5 code.
+ in mem/cache/cache_impl.hh we have the following function:
+// Access path: requests coming in from the CPU side
+ template<class TagStore> bool Cache<TagStore>::access(PacketPtr pkt, BlkType
+*&blk,int &lat, PacketList &writebacks) in this function latency is calculated here:
+blk = tags->findBlock(pkt->getAddr(), lat); 
+//lat=latency
+Th easiest implementation is to add:(1)* lat=lat/2;after findblock is executed in access(). My question is, is that correct?So findblock is  defined as:
+ LRUBlk* LRU::findBlock(Addr addr, int &lat) and is located
+in Src/mem/cache/blk.cc  && .hh 
+where latency is calculated as:lat
+= hitLatency;Which seems fine, however I can't figure out when/why the latency is changed here in findBlock():
+if (blk->whenReady > curTick &&
+blk->whenReady - curTick > hitLatency) {
+            lat =
+blk->whenReady - curTick;
+        }
+    I can't seem to understand the code and when exactly the if statement is executed. This if statement and redefinting latency could potentially make my "idea" of (1)* incorrect. So could someone please help me figure out what this code is saying?
+Also say that when L1 requests a specific block(one that is faster) from the  L2 cache, I will do this  under L2:latency=latency/2 ,from what I figure this is reducing the roundtrip time which is what I want, is this correct or is this reducing one way latency by half (ie L2 back to L1).
+Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

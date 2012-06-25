@@ -1,0 +1,14 @@
+> Nate, what I meant is I can host it on one webservers available to me
+> and provide its link through the M5 page.
+It's probably best if we host it on the M5 site if you don't mind just
+to avoid broken links in the future.
+> My estimate is that the tar-zipped file should between 250-300 MB.
+No problem.
+Can you try to get the wiki figured out?
+- Show quoted text -
+Thanks,
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

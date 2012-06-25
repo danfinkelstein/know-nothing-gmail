@@ -1,0 +1,11 @@
+Nate used to have some infrastructure to try this years ago. He'll have to tell you the details, but I don't think it's been done since.  And I'm not sure he was ultimately successful - I think it had to do with the severe mismatch of speeds....M5 is way slower than an actual machine, obviously, and I think that led to problems.  But I don't know if I remember clearly, again this was like, over 6 years ago that I remember hearing about this.  
+LisaOn Fri, Jun 12, 2009 at 6:19 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+Hi all, I want to run a linux on M5 Alpha-FS mode and get it connected to the internet. Could somebody give me some suggestions about this?. I think this problem is primarily about how to configure the network card and configure the linux network connection. Could this be possible on M5? Thanks very much! 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

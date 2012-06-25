@@ -1,0 +1,7 @@
+Hi,This question is probably really simple, and I have read documentation repeatedly, but the semantics are just confusing me.So,We have 3 types of processors: O3,Simple, and Atomic.We then have three types of memory systems Timing, Atomic, Functional.
+In the M5 command line  using the default python scripts (fs.py) when you type -d --caches -l2cache  you will get a O3 processor with a timing memory system.When you use -t  you will get a Simple cpu with a functional memory system.
+When you fast foward you get Atomic memory and processor.Is this correct? Or did I totally get it wrong?Thanks,
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

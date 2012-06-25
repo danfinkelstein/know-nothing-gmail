@@ -1,0 +1,16 @@
+That's just one of those "verifying that I think I know what's going on" assertions that I added with a recent bug fix.  Unfortunately I didn't fully know what was going on... I was asserting that the only reason you would defer targets is if a write came in while you had an outstanding read miss, but there's another case where you could get a read access after you've snooped an invalidation and buffered it because it applies to a prior outstanding miss.  I think it should be OK to just remove the assertion.
+Steve- Show quoted text -On Thu, May 15, 2008 at 8:06 AM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+When configuring M5 to have a more than one L3 cache, I am hitting the following assertion in cache_impl.hh (within handleResponse):
+        assert(mshr->needsExclusive() && !blk->isWritable());
+The assertion is occurring because there are no exclusive targets, and the assertion is encountered even while booting the Linux kernel. I was wondering what problem the check for exclusive access was designed to correct. I have read the comments, and looked at what it references, but cannot find a clear explanation for why that particular part of the assertion is there. Also, there is nothing that keeps a non-exclusive request from being placed into the deferred targets list in the first place.
+I am able to complete execution if i remove the first half of the assertion (I have not seen it deadlock).
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

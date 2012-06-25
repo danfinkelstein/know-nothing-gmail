@@ -1,0 +1,16 @@
+Hi all:
+ I am trying to run Spec OMP in the APLHA_SE mode. I used the
+pre-compiled cross-compile to compile the code of Spec OMP. When I
+compile the code without -fopenmp flag, the code is not parallelized,
+and the m5 simulator can execute them normally. However, When I
+compile the code with -fopenmp flag, the compilation has no error, but
+the m5 simulator would say "fatal: syscall set_tid_address (#411)
+unimplemented." I have also tested a test program such as hello world.
+It shows the same behavior. It seems that m5 can not execute the
+compiled openmp code. How can I solve this problem?
+Thanks in advance
+ sitos
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

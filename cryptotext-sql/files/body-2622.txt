@@ -1,0 +1,16 @@
+> The statistics package seems to only support scalars that use integers.
+> The only double values I have seen are the result of a Formula type
+> being used.  However, I would like to be add type double energy values
+> every cycle. Has any support for double been added to the scalar type?
+There hasn't been any support for this, and it would take a fair bit
+of work (but it isn't impossible) to fix this.  The decision to
+support integers only was deliberate since in a digital system, you're
+generally counting events that only have integer values.  You can
+multiply by a double, or something like that to generate a formula
+though.
+Can you explain a bit more about what you want to do with the double?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

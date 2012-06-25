@@ -1,0 +1,12 @@
+> Thanks for the quick response.  I checked out the version from the
+> repository and rebuilt, and both errors went away.
+> I am still working through some bugs to get a full run completed, but we'll
+> save them for another thread. :P
+When you get the parsec workloads running, can you please share the
+results with the group here?  I would love to integrate the work into
+the M5 distribution.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,97 @@
+Hi,
+   The version of required tools I use for m5_2.0b3 compilation:
+   GCC: 4.0.2
+   python: 2.4.1
+   scons: v0.96.93.D001
+   swig: 1.3.31
+Tracy
+- Show quoted text -
+> Ali,
+>
+>     I think I use the required versions of those tools, because m5_2.0b1
+> can be compiled correctly.
+>
+> Tracy
+>
+>
+>> Tracy,
+>>
+>> Are you sure that you have the required versions of the other tools
+>> (swig, python, scons, etc)? They are listed on www.m5sim.org.
+>> Ali
+>>
+>> On Sep 4, 2007, at 2:19 PM, rlai@mtu.edu wrote:
+>>
+>>> Steve,
+>>>
+>>>    gcc version I am using is 4.0.2
+>>>
+>>> Tracy
+>>>
+>>>
+>>>
+>>>> Tracy,
+>>>>
+>>>> What version of g++ are you using?
+>>>>
+>>>> Steve
+>>>>
+>>>> On 9/3/07, rlai@mtu.edu <rlai@mtu.edu> wrote:
+>>>>>
+>>>>> Hi,
+>>>>>
+>>>>>
+>>>>>     When I compile m5_2.0b3, I met this problem:
+>>>>>
+>>>>> g++ -o build/ALPHA_FS/kern/linux/events.o -c -pipe -fno-strict-
+>>>>> aliasing
+>>>>> -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA
+>>>>> -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.4
+>>>>> -Ibuild/libelf/include
+>>>>> -Ibuild/ALPHA_FS build/ALPHA_FS/kern/linux/events.cc
+>>>>> build/ALPHA_FS/kern/linux/events.cc: In member function virtual void
+>>>>> Linux::DebugPrintkEvent::process(ThreadContext*):
+>>>>> build/ALPHA_FS/kern/linux/events.cc:47: error: DebugPrintf is not a
+>>>>> member
+>>>>> of Trace
+>>>>> scons: *** [build/ALPHA_FS/kern/linux/events.o] Error 1
+>>>>> scons: building terminated because of errors.
+>>>>>
+>>>>> DebugPrintf is a traceflag defined in traceflag.cc
+>>>>>
+>>>>> Does anyone know what the problem is ?
+>>>>>
+>>>>>
+>>>>> Thanks,
+>>>>> Tracy
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

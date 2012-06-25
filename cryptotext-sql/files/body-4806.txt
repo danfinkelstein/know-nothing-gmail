@@ -1,0 +1,10 @@
+Hi Uday,
+uday mathur wrote: 
+My question is: When Linux decides to deschedule a thread and start executing another thread, exactly where in the M5 code all registers get saved?
+Shouldn't the operating system (i.e. the simulated linux) take care of saving the registers (e.g. by copying them to the main memory)?
+regards,
+Jonas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+In
+FAQ of m5 wiki site, it says:  "In SE mode, simply create a system with
+multiple CPUs and assign a different workload object to each CPU's
+workload parameter. If you're using the O3 model, you can also assign a
+vector of workload objects to one CPU, in which case the CPU will run
+all of the workloads concurrently in SMT mode"
+Is there any sample script of how to assign a workload object to
+different CPUs, thanks? Right now, I am trying to run different mibench
+benchmarks on a multicore system. 
+Thanks
+Zhe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,25 @@
+Hi,
+This is the first time I try to install and build M5 on my computer.
+I followed all the steps, and met the following error after I typed
+this command:  % scons build/ALPHA_SE/tests/debug/quick .
+g++ -o build/ALPHA_SE/sim/main.do -c -Wno-deprecated -pipe -fno-strict-
+aliasing -Wall -Wno-sign-compare -Wundef -arch x86_64 -ggdb3 -Werror -
+DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Ibuild/gzstream -Ibuild/
+libelf -Iext -I/System/Library/Frameworks/Python.framework/Versions/
+2.6/include/python2.6 -Ibuild/ALPHA_SE build/ALPHA_SE/sim/main.cc
+In file included from /System/Library/Frameworks/Python.framework/
+Versions/2.6/include/python2.6/Python.h:8,
+                  from build/ALPHA_SE/sim/main.cc:31:
+/System/Library/Frameworks/Python.framework/Versions/2.6/include/
+python2.6/pyconfig.h:1013:5: error: "__BIG_ENDIAN__" is not defined
+scons: *** [build/ALPHA_SE/sim/main.do] Error 1
+scons: building terminated because of errors.
+My system is Mac OS X version 10.6. Anybody has some idea about how to
+fix this error?
+Any idea would be appreciated!
+Thanks,
+Jie
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

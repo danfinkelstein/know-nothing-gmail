@@ -1,0 +1,5 @@
+Hello,I want to run some of my own tests in FS mode, and I have seen here http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5, that to create the disk image and to add files to it I need to have root privileges. Is there any way to avoid this?,  I am able to run the benchmarks that comes with the installation of FS, is there any way to add my binaries to that disk image. Thank you so much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,35 @@
+This would be better served on the mailing list m5-users@m5sim.org.
+ 
+The short answer is yes, M5 does do cache to cache transfers for
+a CMP. 
+ 
+By varying the latency, what do you mean? Varying the latency
+during simulation, or between simulations? 
+ 
+ 
+ 
+I am new to m5. Could you please tell me what m5 does in
+case of LOAD for shared cache line. Basically I need a CMP system with private
+L2 caches, and in case
+of LOAD, the request should be satisfied by peer L2 caches (of course if it is
+available) instead of going to memory. I want to vary the latency for cache to
+cache transfer.
+Does the current coherence in m5 work this way?? Or, how hard will it be to
+change?
+thanks
+-- 
+Md. Kamruzzaman (Shawon)
+Graduate Student
+Computer Science and Engineering Department
+University of California, San Diego (www.cse.ucsd.edu)
+Member, Elite Problemsetters' Panel, VOJ, Spain
+Homepage:  http://www.cse.ucsd.edu/users/mkamruzz
+No virus
+found in this incoming message.
+Checked by AVG - www.avg.com
+Version: 8.5.339 / Virus Database: 270.12.53/2154 - Release Date: 06/04/09
+05:53:00
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

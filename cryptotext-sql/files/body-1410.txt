@@ -1,0 +1,26 @@
+This assertion is also in the latest version. My simulations complete successfully when I remove the insertion. I think the assertion is placed by mistake and the problem is intuitive.
+Consider:
+The packet the cache receives is ReadRespWithInvalidate
+now goes the code:
+if(pkk->isInvalidate()){
+    assert(tgt->pkt->cmd=MemCmd::ReadResp)
+}
+The assertion should fail because the command is ReadRespWithInvalidate, not just ReadResp.
+Anyone lse has trouble with this?
+---- Original message ----
+>Date: Fri, 29 May 2009 22:58:47 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   There have been a lot of coherence bug fixes since
+>   beta5.  I'd recommend upgrading to the head of the
+>   m5 development tree and seeing if that works for
+>   you.
+>
+>   Steve
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

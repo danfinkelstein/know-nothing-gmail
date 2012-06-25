@@ -1,0 +1,18 @@
+Hey all,
+ 
+Quick question, how do assign the main thread to a 
+specified cpu(core) in a multi-core configuration?  I notice that for 
+each process, threadcontext[0] will be used as the main thread. However, it 
+seems to be undeterministic to specify which cpu gets this threadcontext[0]. I 
+am now using a heterogeneous configuration, with a control cpu and several slave 
+cpus, and I want the main thread assigned to the control cpu. However, no matter 
+how I changed the order in which the cpus are defined and used in the python 
+script, it's always a slave cpu that gets threadcontext[0]. 
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Crosstools do support gcc 4 now. I have a 4.1.1 cross compiler (that has been posted on the website assuming you have an x86/64 host to run it on) that I use on a daily basis to compile binaries for use in ALPHA_FS.
+Ali- Show quoted text -
+On Jun 3, 2008, at 4:56 AM, Dennis Yang wrote:
+- Show quoted text -
+Hi,
+I am trying to port some application written with pthread and OpenMP library on to M5 FS simulator.
+However, the documentation mentioned that the crosstool do not support gcc 4.
+Could I use other cross compiler which support gcc 4.2 to compiler these application into ALPHA executable to run in FS mode?
+Or if I can find a alpha machine (or virtual machine) to do the compilation work?
+Thanks a lot~
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

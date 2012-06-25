@@ -1,0 +1,6 @@
+Sorry, I got it.  Just add the prefetch description like this.
+system.l2 = L2Cache(size = '4MB',prefetch_policy='tagged',prefetch_miss='true')
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

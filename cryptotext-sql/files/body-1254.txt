@@ -1,0 +1,22 @@
+The default port normally contains a responder that responds when no
+port has a device within the requested address range. One case where
+something like this could occur is on a speculative path in the out-of-
+order CPU.
+Ali
+- Show quoted text -
+On Jun 25, 2009, at 2:47 PM, Shoaib Akram wrote:
+> What is the significance of default port? I have a bus with four
+> caches and one bridge connected to it. When I printed port ids (by
+> iterating over the interfaces data structure), the four mem_side
+> ports of caches have ids 0,1,2,3 wit 4 as default port. Now I am
+> receiving a pcket on that bus with src 4 dest 0. Is it safe to
+> assume the 4 as the bridge_port?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

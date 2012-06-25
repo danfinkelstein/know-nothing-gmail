@@ -1,0 +1,21 @@
+Hi,
+I am confused about the IO-Cache filter ranges. I see that we set it to:
+        system.iocache.cpu_side_filter_ranges = [ AddrRange(0x8000000000,
+                                                            Addr.max) ]
+        system.iocache.mem_side_filter_ranges = [ AddrRange(0, Addr.max) ]
+Assume that we have a mesh network  connected to the memside of L1
+caches  and cpu-side of L2 cache and a bus connected to L2 memside,
+physmem, and IOCache. How are uncacheable writes in the kernel supposed
+to figure out the network path to the IOCache if the
+iocache.cpu_side_filter_ranges removes all the IO mapped addresses? The
+recvRangeChange(...) in the membus will not get any new devices on the
+io/bus due to filtering. This in turn means that the mesh will not know
+about these addresses and will not forward the relevant requests. How
+does M5 deal with this scenario in general? Is there a default port that
+should be used? An example that uses only bus would be helpful.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

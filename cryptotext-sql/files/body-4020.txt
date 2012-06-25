@@ -1,0 +1,19 @@
+The SNOOP_COMMIT flag is gone in 2.0b4.
+The timing assumption for regular snoops is that the snoops happen
+during the regular bus latency.  Cache tag contention from snoops is
+not accounted for (or equivalently, you can assume dual-ported tags).
+I started a brief write-up on the new cache coherence protocol here:
+http://www.m5sim.org/wiki/index.php/Coherence_Protocol
+Steve
+On 11/9/07, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> Referring to the coherence setup in previous release, we are actually trying to measure the overhead in latency due to snoop-related traffic and coherence protocol. Looking at the code here is my understanding. So, please see if i am right.
+>
+> First, it seems like when the packet occupies the bus, it is the bus that initiates the snooping by the caches of all cores else the source of packet. Everytime the packet occupies the bus, if SNOOP_COMMIT bit is set, snooping by other caches is initiated, otherwise not. A packet is not exclusively sent to initiate snooping by other ports. Is it right?
+>
+> Further no extra cycles are added for snooping while the num_cycles are counted for which the packet will occupy the bus. Is it right?
+>
+>
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+i always thought that the regression pass/fail depends on just the output and not on the statistics. i checked and apparently my outputs are correct and the stats are causing my build to fail the regression test. thank you!- Show quoted text -
+On Tue, May 20, 2008 at 10:42 PM, Ali Saidi <saidi@umich.edu> wrote:
+I depends on what failed means. If the statistics (including those from the O3 cpu) change my more than 1% in most cases the regression test fails. You still might have the correct output and answer, however they're meant to inform you that something you did changed the performance of some object in M5. A normal case is if you change something you you think shouldn't affect the statistics in any way, but it ends up changing the value then you need to reconsider your change or verify that the change in the statistics is correct.
+Ali
+On May 19, 2008, at 11:50 PM, nathaniel jones wrote:
+In InstructionQueue<Impl>::scheduleReadyInsts(), there's the main loop
+    while (total_issued < totalWidth &&
+           iewStage->canIssue() &&
+           order_it != order_end_it)
+when i try to set the total_issued limit to totalWidth/2, or any number less than totalWidth, the 03CPU fails in the regression tests. Why is this happening? I was thinking the 03CPU would be slower due to this "bottleneck" but I didn't expect that it wouldn't work.
+is it because of iewStage->incrWb(issuing_inst->seqNum)? or i2e_info->size++? or something else?
+I thought that setting the total_issued limit to greater than totalWidth(10 instead of the default 8) would cause regression test failure since the queues would be filled or something. Instead, setting it as such actually had no "adverse" effects on the CPU, or at least it passed the regression test.
+again, thank you very much. help would be appreciated. =)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

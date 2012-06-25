@@ -1,0 +1,7 @@
+Hello:I got a couple of questions about the collaboration of different cores in the same program:If I write the code like this for a Hello World program:    MyOwnProcess = process()        
+    system.cpu[i].workload = MyOwnProcessThen I get one output per core, so does this code mean that each core has its own copy of the program?And If i write the code like this:      system.cpu[i].workload = process 
+Then I get only one Hello World, so I understand that all the cores are collaborating in the same copy of the program?.Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

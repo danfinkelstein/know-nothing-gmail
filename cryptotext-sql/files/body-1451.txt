@@ -1,0 +1,27 @@
+>> We don't really use
+>> templates for the ISA, but it would be nice if we did.  We mostly use
+>> #defines (THE_ISA) and it would be nice to move more to templates, but
+>> I think we'll have to keep using #defines and the solution is to then
+>> use build tricks to wrap stuff in namespaces so we can compile the
+>> same file multiple times and not have symbol conflicts.
+>
+> I'm curious why you think we'll have to keep with #defines... is it just too
+> much effort, or are there more fundamental issues?
+I don't think it will be prevalent the way it is right now.  I think
+we'll need a #define to set a namespace, something like this:
+namespace THE_ISA_NAMESPACE {
+// O3CPU is in the namespace so each version of the CPU model has
+different symbols...
+class O3CPU
+{
+....
+};
+} // end namespace
+Also, I suspect we'll have to do something funky to get the #includes
+right as well, though the existing arch mirroring is probably enough.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

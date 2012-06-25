@@ -1,0 +1,23 @@
+Hello,
+     I get the following warnings multiple 
+times when  I run splash2 in FS mode under beta 5.
+ 
+(running fft here, numcpus=4)
+ 
+serial8250: too much work for irq4
+ 
+warn: subt/su    f12,f23,f10: non-standard 
+trapping mode not supportedwarn: addt/su    f10,f13,f14: 
+non-standard trapping mode not supportedwarn: addt/su    
+f15,f14,f12: non-standard trapping mode not supportedwarn: 
+mult/su    f2,f10,f11: non-standard trapping mode not 
+supported
+Are these normal?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

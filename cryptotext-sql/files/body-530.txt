@@ -1,0 +1,6 @@
+Hi,I'm not familiar with scon... What is the easy way to generate m5.fast with static linking? 
+Thanks!Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

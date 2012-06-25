@@ -1,0 +1,18 @@
+You should look a bit higher in the output and I'm sure there will be a compile error of some sort there.
+Ali- Show quoted text -
+On May 27, 2008, at 11:23 PM, fractal218 wrote:
+- Show quoted text -
+ Hi,
+ I meet a error when i change the code and recompile the m5. The error is as follows:
+    scons: *** [build/ALPHA_SE/m5.debug.bin] Error 1
+    scons: building terminated because of errors.
+ What error is it?
+ Thank you!
+伊利525健康中国公益日_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

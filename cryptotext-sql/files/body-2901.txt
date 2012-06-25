@@ -1,0 +1,16 @@
+> Which command do I modify to mount it in read/write mode?
+You need to remove the copy on write disk image that's in there.
+Basically, the disk model connects to the COW image which is layered
+on top of the real image.  If you instead just directly connect the
+disk model to the real image, writes will hit the disk.
+Be warned though, if you terminate the simulation without having the
+kernel unmount the image, the image might need a filesystem check or
+at worst could get corrupted.
+It probably makes the most sense to create an empty image, mount that
+directly, and unmount it when you're done.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

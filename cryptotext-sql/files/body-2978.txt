@@ -1,0 +1,30 @@
+On Jun 2, 2008, at 10:47 PM, nathaniel jones wrote:
+i've been trying run the spec benchmarks in the default timing simple cpu. i tried running mgrid and what i get so far after 3 hours is
+It appears as though you're using an atomic cpu, not a timing one.
+command line: ./build/ALPHA_SE/m5.opt tests/run.py long/92.mgrid/alpha/tru-64/simple-atomic
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+warn: ignoring syscall sigprocmask(1, 1073070158, ...)
+warn: ignoring syscall sigprocmask(3, 0, ...)
+warn: ignoring syscall sigaction(11, 4831387520, ...)
+warn: ignoring syscall sigaction(5, 4831387520, ...)
+warn: ignoring syscall sigaction(8, 4831387520, ...)
+warn: ignoring syscall sigaction(6, 4831387520, ...)
+warn: ignoring syscall sigaction(15, 4831387520, ...)
+warn: ignoring syscall sigaction(3, 4831387520, ...)
+warn: ignoring syscall sigaction(2, 4831387520, ...)
+warn: setsysinfo: ignoring ieee_set_fp_control() arg 0x11ff91f98
+warn: ignoring syscall setrlimit(3, 4831387592, ...)
+warn: Increasing stack size by one page.
+does increasing the stack size really take that long? or is this indicative of an error?
+It doesn't take long at all, the stack size was increased and the execution of the program was immediately continued. Is completely expected that the stack with grow, the warning is simply there to let you know that another page of memory was consumed by the stack.
+also, should i be concerned about the syscalls that are ignored in this and the other benchmarks?
+Generally no, if we set them to be ignored (as opposed to causing a panic), we're pretty certain that they won't alter the behavior of most programs. The only time they would is if the program needed to take something like FP trap to be correct (while it's possible to write such a program, it's not clear why one would exist) or a program that needs to send signals to itself.
+The runtime of the spec benchmarks is dependent on the input set that you're using. If you're using the standard input for spec benchmarks starting from the beginning and running to completion you should expect running the benchmarks in M5 to takes days if not weeks.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

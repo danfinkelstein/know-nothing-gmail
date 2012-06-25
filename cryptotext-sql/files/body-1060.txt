@@ -1,0 +1,22 @@
+You should be able to create another PhysicalMemory device and attach it to
+the memory system somewhere. You can assign it an address range and for SE
+mode it would probably be pretty easy to access. To access it in FS mode
+you'll need to modify the kernel to make it available to a user space
+application which will probably be quite time consuming.
+Ali
+On Wed, 12 Aug 2009 14:40:03 +0800, 邓宁 <dunning2006@gmail.com> wrote:
+> Hi all,
+>
+> Scratchpad memory(SPM) is a small on-chip memory managed by software,
+which
+> is widely adopted in embedded processors.
+>
+> SPM is addressed in the uniform address space with memory but with
+> lower access latency. How can I simulate SPM in M5 to support my research
+> on multicore with SPM?
+>
+> THANK YOU :)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

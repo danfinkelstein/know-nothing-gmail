@@ -1,0 +1,18 @@
+By my understanding, the disk image for full system simulation is
+read-only by default. So any data written onto it will be lost after
+simulation (I am new here. Please correct if I am wrong. ) Is there
+any way that I can change this configuration and keep the changes on
+the disk image?
+This is meaningful if a benchmark writes some intermediate results on
+to disk, and I care only the computation after it generating these
+results. So I can make a checkpoint of whole system including the disk
+image, and simulate from the checkpoint. The other case is that, if a
+benchmark comes in a installation package, I'd like to run the
+installation in the simulated system and leave the installed benchmark
+on the disk image.
+Thanks!
+Xiaoning
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

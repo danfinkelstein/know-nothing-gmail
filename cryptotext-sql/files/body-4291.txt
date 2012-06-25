@@ -1,0 +1,7 @@
+One thing that's puzzling me is why all this is coming up now when we've run almost all of spec 2000 without any problems.
+Spec 2000 is probably compiled completely without threads, whereas 2006 probably is.  Does 2006 require threads?
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

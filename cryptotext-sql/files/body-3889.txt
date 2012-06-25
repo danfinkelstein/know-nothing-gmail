@@ -1,0 +1,7 @@
+Hi all,I was running code that used to work in v3 in v4, and M5 is yelling at me about "protocol = CoherenceProtocol(protocol=options.protocol)NameError: name 'CoherenceProtocol' is not defined"
+Now, I know that the coherence protocol was changed in v4, but, as a newbie, I would think this CoherenceProtocol is a simple parser function.  Was the function gotten rid of in v4?  Is there some other equivalent function that I can use now?
+Any help would be greatly appreciated.Thanks, Julian Buijulianbui@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

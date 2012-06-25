@@ -1,0 +1,88 @@
+How should I go about setting up a bootable linux setup on a raw disk image?  What is the best/easiest way to do it?
+Aqeel- Show quoted text -
+Geoffrey Blake wrote:
+Aqeel,
+I've found that just creating bare disk images by hand is easier and less
+error prone for me.
+http://www.osdev.org/osfaq2/index.php/Disk%20Images%20Under%20Linux
+This site will walk you through how to create a bare image.  You can then
+mount the image and copy your executable files to it.
+Add these lines to your .rcS file to mount the disk within the simulator:
+echo -n "mounting file set.."
+mkdir -p /z/
+mount /dev/hdb1 /z/
+echo "done."
+Go into configs/common/FSConfig.py and add to it a second disk, it should be
+self evident as to how to do so.  Just look at how the current disks are
+added.
+Hope this helps.
+Geoff
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Aqeel Mahesri
+Sent: Monday, July 23, 2007 8:34 PM
+To: M5 users mailing list
+Subject: [m5-users] problem creating disk images
+Hello,
+I am having trouble creating images for full system simulation. I follow the directions given at http://m5.eecs.umich.edu/wiki/index.php/Using_linux-dist_to_Create_Disk_Imag
+es_and_Kernels_for_M5
+I am creating the images on a system running Ubuntu, with gcc 4.1.2. After running "ptxdist go", I get the following compile error:
+------------------------------
+target: host-util-linux.compile
+-------------------------------
+PATH=/home/mahesri/acshome/alpha-images/testspace/local/bin:/home/mahesri/ac
+shome/alpha-images/testspace/local/usr/bin:$PATH make -C /home/mahesri/acshome/alpha-images/testspace/build-host/util-linux-2.12j/fdi
+sk fdisk
+make[1]: Entering directory `/home/mahesri/acshome/alpha-images/testspace/build-host/util-linux-2.12j/fd
+isk'
+gcc -c -pipe -O2 -m486 -fomit-frame-pointer -I../lib -Wall -Wmissing-prototypes -Wstrict-prototypes -DNCH=1 -D_FILE_OFFSET_BITS=64 -DSBINDIR=\"/sbin\" -DUSRSBINDIR=\"/usr/sbin\" -DLOGDIR=\"/var/log\" -DVARPATH=\"/var\" -DLOCALEDIR=\"/usr/share/locale\" -O2 fdisk.c -o fdisk.o
+In file included from fdisk.c:24:
+fdisk.h:79: warning: type qualifiers ignored on function return type
+fdisk.c: In function 'get_partition_table_geometry':
+fdisk.c:805: warning: pointer targets in initialization differ in signedness
+fdisk.c: In function 'get_boot':
+fdisk.c:943: warning: pointer targets in passing argument 1 of 'valid_part_table_flag' differ in signedness
+fdisk.c:953: warning: pointer targets in passing argument 1 of 'valid_part_table_flag' differ in signedness
+fdisk.c:997: warning: pointer targets in passing argument 1 of 'valid_part_table_flag' differ in signedness
+fdisk.c: At top level:
+fdisk.c:1251: warning: type qualifiers ignored on function return type
+gcc -c -pipe -O2 -m486 -fomit-frame-pointer -I../lib -Wall -Wmissing-prototypes -Wstrict-prototypes -DNCH=1 -D_FILE_OFFSET_BITS=64 -DSBINDIR=\"/sbin\" -DUSRSBINDIR=\"/usr/sbin\" -DLOGDIR=\"/var/log\" -DVARPATH=\"/var\" -DLOCALEDIR=\"/usr/share/locale\" -O2 llseek.c -o llseek.o
+llseek.c:34: error: expected declaration specifiers or '...' before '_llseek'
+llseek.c:34: error: expected declaration specifiers or '...' before 'fd'
+llseek.c:34: error: expected declaration specifiers or '...' before 'offset_high'
+llseek.c:35: error: expected declaration specifiers or '...' before 'offset_low'
+llseek.c:35: error: expected declaration specifiers or '...' before 'result'
+llseek.c:36: error: expected declaration specifiers or '...' before 'origin'
+llseek.c:50: warning: return type defaults to 'int'
+llseek.c: In function '_syscall5':
+llseek.c:52: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+llseek.c:68: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+llseek.c:34: error: parameter name omitted
+llseek.c:34: error: parameter name omitted
+llseek.c:34: error: parameter name omitted
+llseek.c:35: error: parameter name omitted
+llseek.c:35: error: parameter name omitted
+llseek.c:36: error: parameter name omitted
+llseek.c:93: error: expected '{' at end of input
+make[1]: *** [llseek.o] Error 1
+make[1]: Leaving directory `/home/mahesri/acshome/alpha-images/testspace/build-host/util-linux-2.12j/fd
+isk'
+make: *** [/home/mahesri/acshome/alpha-images/testspace/state/host-util-linux.compile]
+Error 2
+error: a command in the pipe returned 2, bailing out
+I would like to know if anyone could provide a fix.
+Thanks,
+Aqeel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

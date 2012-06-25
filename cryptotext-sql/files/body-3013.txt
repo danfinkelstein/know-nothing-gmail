@@ -1,0 +1,20 @@
+2008/5/24 fractal218 <fractal218@126.com>:
+> I found that the function of LRU::LRU() is called but the function of
+> LRU::~LRU() is not called. why?
+Where would you expect to see the destructor called?
+Presumably if we have examples like
+LRU *tags = new LRU(numSets, block_size, assoc, latency);
+in src/mem/cache/cache_builder.cc somewhere tags should be deallocated
+with delete. If not this may be a memory leak but I would guess not
+critical since it should be done on the way towards program
+termination. Unless you are doing a design where hardware is
+dynamically added and removed...
+--
+Philip Machanick (Visiting Academic, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
+http://opinion-nation.blogspot.com/
++61-7-3871-0963 (office 3365-1624) skype philipmach
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

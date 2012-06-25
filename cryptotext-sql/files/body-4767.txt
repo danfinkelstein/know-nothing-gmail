@@ -1,0 +1,14 @@
+There still in the same place, just the link disappeared.  I added it back in (in the Documentation section of the main page).
+Steve
+James Srinivasan wrote:
+Are the slides from the presentation covering M5 v1 available somewhere?
+I think the presentation was at MICRO. They used to be part of the v1
+documentation but while I can find the doxygen for v1 I can't find the
+pdf of the slides,
+Thanks,
+James
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

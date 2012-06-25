@@ -1,0 +1,72 @@
+Hi,
+I think I've narrowed the problem with your hints, Gabe.
+I executed M5 with traces of instructions and it triggered a warning of unimplemented instruction emms after calling the printf function.
+However, it seems that if the printf is not called, it does not carry the error. So, an approach to avoid using emms is not to print data to check if the result is correct, but by other methods.
+Anyway, I'll test this with a more serious application and check if we can survive at the moment without the emms instruction.
+Best regards,
+Cecilia- Show quoted text -
+Quoting Gabriel Michael Black <gblack@eecs.umich.edu>:
+There's a good chance this is a bug in M5's floating point support.
+x87 is almost unimplemented, but 64 bit compilers should, generally
+speaking, use sse since that's pretty much guaranteed to be available
+on anything that has 64 bit mode. SSE is pretty well supported, but
+there could be bugs. Does M5 print any warnings about unimplemented
+instructions? What compiler flags are you using? If you use fancy,
+really new SSE instructions they're less likely to be implemented.
+I'll try this myself at some point soon, although I'm going to be
+really busy for the next week or two.
+If you want to try fixing this yourself, you should check out
+http://www.m5sim.org/wiki/index.php/Debugging_M5 for general M5
+debugging tools and techniques. One tool not mentioned there, as far
+as I know, is called statetrace. There are many nuances to how to use
+it which I won't try to explain here, but if you want to try to use it
+let me know and I'll try to find some time to put some information on
+the wiki.
+Gabe
+Quoting cecilia@ac.upc.edu:
+Hello everybody,
+I'm executing some bioinformatics applications within the x86_SE  mode of M5. I've found some problems on the execution of  applications that use floating point arithmetic. I illustrate this  with an example:
+The program:
+#include<stdio.h>
+int main (void)
+{
+        double self_energy, self_energy2;
+        double intra, tmp;
+        intra = 9336.438188;
+        self_energy = 0.0;
+        self_energy2 = 6;
+        tmp = 64.0;
+        printf ("[ewald] se = %lf\n", self_energy);
+        printf ("[ewald] intra = %lf\n", intra);
+        self_energy = tmp * intra;
+        printf ("[ewald] se = %lf\n", self_energy);
+        printf ("[ewald] se2 = %lf\n", self_energy2);
+        return 0;
+}
+Compiled statically, as a x86-64 binary, and executed on the native  machine, the output of the program:
+[ewald] se = 0.000000
+[ewald] intra = 9336.438188
+[ewald] se = 597532.044032
+[ewald] se2 = 6.000000
+However, in M5, its output is:
+[ewald] se = 0.000000
+[ewald] intra = 0000.000008
+[ewald] se = 020802.000504
+[ewald] se2 = 6.000000
+I had tried that with float type instead of double and I got the same.
+So, there is some problem with floating point numbers bigger than a  certain figure (which I couldn't find out because sometimes it works  well with, for instance, 300.0 and sometimes not, it depends on the  program).
+I really appreciate any suggestion on the problem.
+Kind regards,
+Cecilia
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

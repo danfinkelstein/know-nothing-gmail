@@ -1,0 +1,26 @@
+Hi,
+I am trying to add some functionally to change the lookup process of the L2 cache.
+Almost all the changes are in lru.cc. I get the following error when I run any benchmark on my implementation.
+**** REAL SIMULATION ****
+info: Entering event queue @ 0. Starting simulation...
+Ocean simulation with W-cycle multigrid solver
+Processors : 4
+Grid size : 18 x 18
+Grid resolution (meters) : 20000.00
+Time between relaxations (seconds) : 28800
+Error tolerance : 1e-07
+panic: Tried to access unmapped address 0.
+@ cycle 33427000
+[invoke:build/SPARC_SE/arch/sparc/faults.cc, line 647]
+Memory Usage: 2245404 KBytes
+For more information see: http://www.m5sim.org/panic/5932f339
+Program aborted at cycle 33427000
+Aborted
+I already tried to increase the physical memory but it doesn't seem to be the problem.
+Can someone give some pointers.
+Thanks,
+Siddharth
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

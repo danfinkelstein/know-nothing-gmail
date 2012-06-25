@@ -1,0 +1,10 @@
+Hello all,I'm trying to abstract the simulated O3 cpu in m5 (2.0b5). I couldn't understand the following that seems to be happening in rename:For simplicity, let us consider the case where there is only one thread.
+In rename_impl.hh, at the end of cycle i, we have  instsInProgress (cycle i ) += [(renamedInsts (cycle i ) - fromIEW->iewInfo.dispatched(cycle i-1)]; /* fromIEW.dispatched is the sampled value at the beginning of cycle i, so it will have the value at the end of cycle i-1, whereas the number of instructions renamed at cycle i is not buffered */
+When computing the number of free ROB entries [function calcFreeROBEntries()], the formula   num_free = freeEntries.robEntries - instsInProgress + fromIEW->iewInfo.dispatched    [a]is used.So the first time calcFreeROBEntries is called in a cycle, all variables will have sampled values from last cycle.
+My doubt is, why is fromIEW->iewInfo.dispatched added to num_free, in formula [a]? We don't really free any ROB entry after dispatch, right? We only free an entry after commit (which anyway will be accounted for, when ROB is updated during commit). 
+And why do we subtract instsInProgress from num_free? [Is it because the instructions renamed at last cycle wouldn't be accounted for yet?]Could anyone please help me understand, and tell me where I'm wrong?
+Thank you very much!Best Regards,Arun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

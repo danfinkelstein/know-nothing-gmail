@@ -1,0 +1,13 @@
+> Is it possible to put m5ops into a binary that is being simulated in m5
+> full system? In this case, I want very accurate timing of a getpid, and
+> want to do resetstats, the system call, and then dump stats. So it would
+> be nice if I could put these calls into a binary without actually
+> inacting the system call utility to call the m5 binary.
+The answer to your question is, yes.  You can stick m5ops into
+binaries that you create.  It's not even that difficult.  That said,
+the Alpha rpcc (read processor cycle counter) instruction is
+implemented in M5 and probably already does what you want.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

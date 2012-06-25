@@ -1,0 +1,16 @@
+Did you figure this out?  If not please say so and maybe we can get
+someone to actually respond.
+  Nate
+- Show quoted text -
+On Fri, Apr 4, 2008 at 8:00 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> How are source ids assigned to different components in m5 beta 5? I have been using "if dest_id==0 meaning membus, do something". Need to do the trick for some of cpus in system.
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

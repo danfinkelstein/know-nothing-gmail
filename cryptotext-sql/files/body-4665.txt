@@ -1,0 +1,66 @@
+It looks like scons is still getting the old 1.3.21 version and not the 1.3.31 version you installed.  Perhaps you need to change your path.- Show quoted text -
+Steve
+sharookh@ele.uri.edu wrote:
+Hi Steve,
+I have re-checked the SWIG installation - which as shown below says its
+complete. New errors when I am trying to build the M5 Beta2:
+Installing /local/sharookh/m5-2.0b2/share/swig/1.3.31/std/std_wstring.i
+Installing /local/sharookh/m5-2.0b2/share/swig/1.3.31/std/std_carray.swg
+Installation complete
+sharookh@myra /local/sharookh/m5-2.0b2/swig-1.3.31 $ cd ..
+sharookh@myra /local/sharookh/m5-2.0b2 $ ./bin/scons build/ALPHA_FS/m5.debug
+scons: Reading SConscript files ...
+SWIG Version 1.3.21
+Copyright (c) 1995-1998
+University of Utah and the Regents of the University of California
+Copyright (c) 1998-2003
+University of Chicago
+Compiled with i686-pc-linux-gnu-g++ [i686-pc-linux-gnu]
+Please see http://www.swig.org for reporting bugs and further information
+IndexError: list index out of range:
+  File "/local/sharookh/m5-2.0b2/SConstruct", line 221:
+    if swig_version[0] != 'SWIG' or swig_version[1] != 'Version':
+Please help.
+Sharookh
+Quoting Steve Reinhardt <stever@eecs.umich.edu>:
+What version of swig do you have?  I believe stdint.i is part of the standard swig distribution, so perhaps you have an old version or the version you have is not installed properly.
+Steve
+sharookh@ele.uri.edu wrote:
+Hi,
+I have tried compiling M5 through 'scons build/ALPHA_FS/m5debug' or
+'python
+scons.py' but I keep getting this error irrespective of the type of
+simulator
+im building:
+scons: Reading SConscript files ...
+Checking for C header file fenv.h... (cached) yes
+Building in /local/sharookh/m5/build/ALPHA_SE
+Using saved options file /local/sharookh/m5/build/options/ALPHA_SE
+Compiling in ALPHA_SE with MySQL support.
+scons: done reading SConscript files.
+scons: Building targets ...
+swig -c++ -python -modern -Iext/dnet -I/usr/include/python2.4
+-Ibuild/libelf/include -I/usr/include/mysql -Ibuild/ALPHA_SE -outdir
+build/ALPHA_SE/python/m5 -o build/ALPHA_SE/python/swig/cc_main_wrap.cc
+build/ALPHA_SE/python/swig/cc_main.i
+build/ALPHA_SE/python/swig/cc_main.i:11: Unable to find 'stdint.i'
+scons: *** [build/ALPHA_SE/python/swig/cc_main_wrap.cc] Error 1
+scons: building terminated because of errors.
+Can someone tell me what I am doing wrong.
+Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

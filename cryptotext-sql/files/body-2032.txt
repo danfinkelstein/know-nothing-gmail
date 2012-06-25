@@ -1,0 +1,15 @@
+> I am wondering if there is another memory model that can be implemented in
+> m5 than the shared memory model.  I am wanting to implement a system where
+> you have to actively broadcast between threads.  Is this something that M5
+> has implemented?
+I'm trying to clean up my my inbox and I saw that nobody responded to
+this.  Sorry if this is way to late to help, but I thought I'd
+respond.
+The short answer is, sure you can implement different memory models.
+The longer answer is that it can potentially require significant
+effort.  You'd have to write your own network model and cache model.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

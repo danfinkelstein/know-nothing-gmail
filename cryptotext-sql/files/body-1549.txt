@@ -1,0 +1,5 @@
+If there is a replacement in L2, it is only written back to L3 if block in L2 was in dirty state? Or do all replacements from L2 caches go to L3?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

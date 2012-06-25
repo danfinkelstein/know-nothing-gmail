@@ -1,0 +1,22 @@
+Hi Korey,In response to what you suggested in your earlier reply:"As for SPARC, make sure that once you compile that you account for the
+# of registers needed (incl. register windows). An assertion will be
+triggered if that's not configured correctly. But the implementation of
+SMT otherwise should be ISA independent."I should take care of the above in the config.ini file, right? Would you happen to know if there is an example of such a test configuration in the current dev or stable branch? The stable version that I downloaded (I noticed that the stable branch has been updated 17 hours ago) does not have any test/example with such a configuration.
+regards,Soumyaroop.- Show quoted text -On Fri, Jun 19, 2009 at 12:46 AM, Korey Sewell <ksewell@umich.edu> wrote:- Show quoted text -
+One more quick clarification:
+You response to my first question seems to suggest that the current
+infrastructure supports SMT on SE mode for SPARC and/or ALPHA as long
+as I limit the number of s/w threads to the number of h/w threads? Is
+that correct?I believe that's true, yes, though it's not a configuration I've used personally.  If anyone else knows otherwise please speak up.
+This should be true. The regression tests have been limited to ALPHA and arent exhaustive as of yet. I plan to start updating the SMT regressions (for ALPHA) in mid-July (really swamped right now) so you can keep tabs on the m5-dev email list for progress. This is definitely an area that needs to be tightened a bit.
+As for SPARC, make sure that once you compile that you account for the # of registers needed (incl. register windows). An assertion will be triggered if that's not configured correctly. But the implementation of SMT otherwise should be ISA independent.
+As always, if you run into some problems with SMT or interpreting how it works email the appropriate m5-users and m5-dev lists. -- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users- Show quoted text --- Soumyaroop RoyPh.D. Candidate
+Department of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,23 @@
+Hello,
+I'm writing a wrapper class for my memory simulator. The class inherits
+the PhysicalMemory class and implements the functions from
+SimpleTimingPort. When recvTiming() is called, the request is taken and
+translated into a transaction for my memory simulator. However, unlike
+the example memory simulator, it's not possible to immediately return a
+result and a latency since the state of the memory system dictates how
+long this will take, as well as subsequent transactions added to the
+system. What I want to do is to send back the result when it is finished
+and allow multiple outstanding memory transactions. To do this, I need
+to have the recvTiming() function be able to send a packet to itself at
+some point in the future to see if any transactions are finished.
+However, there does not seem to be any way to send a packet to myself
+using sendTiming(). Whenever I set the destination to Packet::Broadcast,
+the packet is not routed back to me. Even when I resend an identical
+Packet, which was delivered to me once, I do not receive it back. Is
+there some way to make this work or, alternatively, some other way to
+wake the simulator at specific times? Thanks.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,62 @@
+I copied everything from "sys-root" directory in the cross compiler to the root of the disk image. I actually had to create another disk image because the one on the website did not have enough free space. "sched_setaffinity" function seems to be working now :)
+Thanks,Amir- Show quoted text -
+On Tue, Nov 24, 2009 at 12:17 AM, Ali Saidi <saidi@umich.edu> wrote:
+I would probably just copy every *.so from the cross-compilers lib dir
+over. We really need to create a new disk image that has all of this done
+already.
+Ali
+On Mon, 23 Nov 2009 16:13:04 -0500, Amir Hossein Hormati
+<hormati@eecs.umich.edu> wrote:
+> Yeah, I was actually about to do it right now :) but I was not sure which
+> files I need to copy from the cross compiler to the image. Do I need to
+> just
+> copy libc.so or more than that?
+>
+> Thanks
+> Amir
+>
+>
+> On Mon, Nov 23, 2009 at 3:47 PM, Ali Saidi <saidi@umich.edu> wrote:
+>
+>>
+>> Upgrade you disk image. Both the kernel and the libc need to support it.
+>> A
+>> fast way to make it work is copy over the libraries from the cross
+>> compiler
+>> to the disk image.
+>>
+>> Ali
+>>
+>> On Mon, 23 Nov 2009 14:14:18 -0500, Amir Hossein Hormati
+>> <hormati@eecs.umich.edu> wrote:
+>> > Hi
+>> > I am trying to use sched_setaffinity function in one of my benchmarks.
+>> The
+>> > first time i tried it i got "sched_setaffinity: Function not
+>> implemented".
+>> > Then I found this
+>> >
+>>
+http://www.mail-archive.com/m5sim-users@lists.sourceforge.net/msg01925.html
+>> > which
+>> > says I should upgrade my kernel. So, then I upgraded my kernel to
+>> > 2.6.27,
+>> > but still i get the same message when I run sched_setaffinity. Is
+there
+>> > anything else I should do? Should I config the kernel differently?
+>> >
+>> > Thanks
+>> > Amir
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

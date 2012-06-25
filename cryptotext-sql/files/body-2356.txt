@@ -1,0 +1,83 @@
+Hi Rick,
+Regarding the O3 CPU tracing misspeculated instructions, it only
+prints out valid, committed instructions.  The key function for
+determining what instructions get printed out is when dump() gets
+called on the traceData.  You'll notice that it only gets called in
+commit_impl.hh on instructions that have committed.  Right now there's
+actually no option for printing out misspeculated instructions, though
+in the future it can be added in.
+Regarding the unexpected output that you're getting, the problem is
+probably that the retireHead() function gets called on both squashed
+and committed instructions.  It may be a bit of a misnomer in that
+case, as it really removes the head instruction (it depends on your
+definition of retire).  It is definitely a misnomer that the
+instruction in there is set as committed, regardless of it being
+squashed or committed.
+I would suggest you look for the places where dump() gets called and
+put your call to setCommitted there instead.  If you still have issues
+with garbage output let me know.
+Kevin
+- Show quoted text -
+Quoting Rick Strong <rstrong@cs.ucsd.edu>:
+> I modified the InstRecord class to keep track of commit time of an
+> instruction.  I update commit time
+> when src/cpu/o3/rob_impl.hh:retireHead calls head_inst->setCommitted.
+> This goes to
+> src/cpu/base_dyn_inst.hh:setCommitted().  I added to this code:
+>
+> setCommitted(){
+>     status.set(Committed)
+> #if TRACING_ON
+>     if (traceData != NULL){
+>        traceData->setCommitted();
+>     }
+> #endif
+> }
+>
+> I also modify src/cpu/exetrace.cc to print out the committed time at the
+> beginning of each line. The weird thing is some of instructions have
+> times that are negative, zero, or other garbadge. Either the
+> ExeTracerRecord is called before commit on some instructions or some of
+> the instructions are misspeculated and  commit times  is not being set.
+>
+> Any ideas?
+>
+> Best,
+> -Rick
+>
+> Steve Reinhardt wrote:
+>> Are you getting misspeculated instructions even when you set the flag
+>> to turn them off?
+>>
+>> On Thu, Oct 30, 2008 at 4:54 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+>>
+>>> Hi,
+>>>
+>>> For an exec trace, it seems that both misspeculated and
+>>> non-misspeculated instructions are being printed out for the o3cpu as
+>>> the src/cpu/o3/thread_context.hh returns false no mater what. Is this
+>>> the case or am I missing a level of indirection?
+>>>
+>>> Best,
+>>> -Rick
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

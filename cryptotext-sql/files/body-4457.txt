@@ -1,0 +1,27 @@
+Hi all,
+I am trying to simulate a distributed system using m5 v2-b3 and ALPHA_FS. I have been looking the example in fs.py where you build a 2-machine system by connecting the etherint objects of the two systems using an etherLink.
+My goal is to connect the ethernet interfaces of more than two systems, which as far as I understand cannot be done with  etherLink. There is an EtherBus class present that seems to be the one to use to connect multiple EtherInt devices but I cannot find out how to do it. The EtherBus has a devlist attribute and a reg() function to add devices to the devlist but there doesn't seem to be any way of registering devices using python.
+I have tried the following in my configuration file:
+/
+   ethBus = EtherBus()
+   Parent.testsys1.tsunami.etherint[0].peer = ethB/us
+but the assignment is (obviously) not correct. I get the following error:
+/Traceback (most recent call last):
+ File "<string>", line 1, in <module>
+ File "build/ALPHA_FS/python/m5/main.py", line 326, in main
+   execfile(sys.argv[0], scope)
+ File "configs/myConf/myFS.py", line 120, in <module>
+   root = makeQuadRoot(m_test_sys[0], m_test_sys[1], m_test_sys[2], drive_sys, options.etherdump)
+ File "/media/x3/m5-2.0b3/configs/common/FSConfig.py", line 119, in makeQuadRoot
+   Parent.testsys1.tsunami.etherint[0].peer = ethBus
+ File "build/ALPHA_FS/python/m5/proxy.py", line 56, in __setattr__
+   "cannot set attribute '%s' on proxy object" % attr
+AttributeError: cannot set attribute 'peer' on proxy object/
+Shouldn't the EtherBus have some port attribute like the Bus() class has in order to connect the various EtherInt objects?
+Is there another way to make the interconnections for a distributed memory system?
+Thanks in advance,
+Nikolas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

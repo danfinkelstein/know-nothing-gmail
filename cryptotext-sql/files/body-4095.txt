@@ -1,0 +1,19 @@
+I tried that.  I get a python error:  "AttributeError: 'module' object has
+no attribute 'stats'".  I'm not entirely sure why and haven't been able to
+figure it out.  I'm sure there's a fairly straightforward reason, but I
+haven't been able to figure out m5's python hierarchy enough to sort it out.
+which version of m5 is this?  Can you call m5.stats.reset()?
+I *did* find a workaround, but it's a bit of a hack. Since SIGUSR1 and
+SIGUSR2 are mapped to signal handlers that dump stats and dump & reset
+stats, respectively, I can have python send itself a signal which will cause
+the stats to be dumped on the next cycle:
+  os.kill(os.getpid(), signal.SIGUSR1)
+(I assume the signal handlers are there for FS mode.)  This does seem to
+work, but as I said, it's not the prettiest thing in the world.  To use
+this, I have to import os and signal at the top of the file.
+The signal handlers really have nothing to do with FS mode.  The're there to allow a user to dump stats to see the progress of a simulation.  You can use this mechanism as you are without ill effect, but m5.stats.reset() is really what's intended to be used.
+  Nate
+_______________________________________________- Show quoted text -
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

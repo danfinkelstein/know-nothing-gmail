@@ -1,0 +1,20 @@
+> I haven't tried it yet,
+> but I believe that gentoo can do pretty much everything automatically
+> via cross compile, so if you had an x86 gentoo install, you should be
+> able to build whatever you want for alpha.  (Maybe when gabe gets some
+> free time, he can look into that. or when I do.)
+>
+    This is partially true. You can make portage (the Gentoo package
+manager) use whatever gcc you want, including a cross compiler. Some
+packages will get upset, though, if they can't run code they compiled.
+This is particularly the case with configure scripts which test to make
+sure your gcc can build functioning executables. There is a group within
+Gentoo that's pushing to fix these issues in order to, for example, make
+Gentoo more practical for embedded devices, but I don't think they've
+gotten to far. If someone out there knows that I'm wrong and can tell us
+how to make it work in all cases, we'd definitely like to know.
+Gabe
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

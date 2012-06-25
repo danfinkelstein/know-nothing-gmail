@@ -1,0 +1,7 @@
+Hello, I would like to ask if someone know or have heard about anyone
+that have been able to run the NAS benchmarks in the simulator.
+Thank you.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

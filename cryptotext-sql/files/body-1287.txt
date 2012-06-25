@@ -1,0 +1,8 @@
+Hello,I think this question has been discussed before, but I am having difficulty  searching through m5 emails older than a year old. I want to create multple L2 Caches in fs mode, so I think my modifications need to be made under fs.py. The one thing I don't want to do is create L2 Caches with respect to the number of CPUs. I want to create them independently.
+I tried doing something like this:if options.l2cache:    num_caches = np/2    for i in xrange(num_caches):    test_sys.l2[i] = L2Cache(size = '4MB')     I also  tried something like this:
+num_caches = np    test_sys.l2 = [L2Cache(l2_id=i) for i in xrange(np)]Which also does not work, any hints or pointers? Am I doing this completely wrong? If so can someone point me to the material in the M5 source code in order to understand the Cache Class (in terms of python).
+Thanks!EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

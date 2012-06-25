@@ -1,0 +1,63 @@
+They're byproducts of some old research into segregating network data
+from non-network data in the cache.  You can ignore them.  I don't
+think they even work anymore.
+Steve
+- Show quoted text -
+On Nov 27, 2007 8:09 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+> Sorry, I don't understand. Maybe I didn't phrase it right.
+>
+> I was talking about the classes SplitBlk and SplitLRU (src/mem/cache/tags), which are used for TagStore templates for caches. I'm not sure what they are trying to model.
+>
+> I don't see how these two classes distinguish between instructions and data. Moreover, in SplitBlk, what does
+> it mean by "NIC"? There is also a variable called "part". Comments says " which partition this block is in". However,
+> I can't figure out how the cache is partitioned.
+>
+> Thanks!
+>
+> Jiayuan
+>
+> ----- Original Message -----
+> From: "Shoaib Akram" <sakram3@uiuc.edu>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: 2007年11月29日 11:55 AM
+> Subject: Re: [m5-users] What is SplitCache
+>
+>
+> >A split cache just means a sparate cache for data and instructions.
+> >
+> > ---- Original message ----
+> >>Date: Wed, 28 Nov 2007 11:15:14 +0800
+> >>From: "Jiayuan Meng" <jerrygonair@hotmail.com>
+> >>Subject: [m5-users] What is SplitCache
+> >>To: "M5 users mailing list" <m5-users@m5sim.org>
+> >>
+> >>   Hey all,
+> >>
+> >>   I am planning to model a shared cache with banks.
+> >>   While looking at the code in M5v2b4
+> >>   (src/mem/cache/tags/), I have a question about the
+> >>   split cache and split blocks, what is special with
+> >>   "split"?
+> >>
+> >>   Thanks!
+> >>
+> >>   Jiayuan
+> >>________________
+> >>_______________________________________________
+> >>m5-users mailing list
+> >>m5-users@m5sim.org
+> >>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,30 @@
+Hi all,
+ 
+I integrated DRAMsim to M5 using the patch 
+from Clint. When I ran a 
+simple benchmark "stringsearch" from Mibench. It displayed the following 
+message:
+ 
+**** REAL SIMULATION ****warn: Entering event 
+queue @ 0.  Starting simulation...warn: Increasing stack size by one 
+page.FATAL: kernel too oldfatal: syscall socket (#97) 
+unimplemented. @ cycle 
+32647000[unimplementedFunc:build/ALPHA_SE/sim/syscall_emul.cc, line 
+73]
+So, does anyone know how to fix this 
+problem?
+ 
+There is no such mesage when I use 
+"DRAMMemory" or "PhysicalMemory" model. 
+Also, if I use another benchmark there 
+is no such message. So I don't know why.
+ 
+Thanks in advance!
+ 
+Fei
+ 
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

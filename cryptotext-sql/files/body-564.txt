@@ -1,0 +1,7 @@
+Hi everyone,  Mark Gebhart led a small group, including myself, to document the process of building PARSEC 2.1 to run under M5 ALPHA.  In the process, we put together a technical report for building PARSEC 2.1, a disk image and other infrastructure, which are all available on our site: http://www.cs.utexas.edu/~cart/parsec_m5/ .
+  Let us know if you have additions or questions.  Thank you,  Joel--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin
+  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

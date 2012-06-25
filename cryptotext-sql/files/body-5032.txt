@@ -1,0 +1,86 @@
+So, what's segfaulting, M5 or the OS?  I had assumed M5 was
+segfaulting since I didn't see a segfault message on the console. 
+There are two gdb's to use when debugging M5 - gdb for the program
+running on M5, and gdb for M5 itself.  Attaching gdb is for
+debugging the software that M5 is running.- Show quoted text -
+lisaOn 8/30/06, Stewart, Chris (Solutions Alliances) <Chris.Stewart@hp.com> wrote:
+The 
+program seg-faults too quickly to get gdb attached. Basically, the main output 
+indicates that gdb is listening and then immediately the Segmentation Fault 
+occurs.
+ 
+Also, I have as yet been unable to 
+get statistics (m5stats.txt) from the version 2 beta, so I am working on both 
+simultaneously.
+Chris 
+Stewart 
+From: m5-users-bounces@m5sim.org 
+[mailto:m5-users-bounces@m5sim.org] On Behalf Of Lisa HsuSent: 
+Wednesday, August 30, 2006 12:50 PMTo: M5 users mailing 
+listSubject: Re: [m5-users] Version 1.1 Full System Benchmark 
+Segmentation Faultwith Multiple CPUs
+hi chris,have you tried running with gdb and doing a 
+backtrace at the fault?  that would be more helpful for 
+diagnosis.also - if you have 2.0 installed - any reason why you're using 
+1.1?lisa
+On 8/30/06, Stewart, 
+Chris (Solutions Alliances) <Chris.Stewart@hp.com> wrote:
+  
+  
+  I've successfully run the surge-specweb benchmark 
+  with version 1.1 with the following command line: 
+  ./build/ALPHA_FS/m5.opt -d myout 
+  -ETEST=SURGE_SPECWEB -EFREQUENCY=4GHz configs/fullsys/run.py ./build/ALPHA_FS/m5.opt -d myout -ETEST=SURGE_SPECWEB 
+  configs/fullsys/run.py 
+  However, I'm getting a Segmentation Fault when I 
+  attempt the following: 
+  ./build/ALPHA_FS/m5.opt -d myout 
+  -ETEST=SURGE_SPECWEB -ENUMCPUS=2 configs/fullsys/run.py 
+  If it's helpful, here are the console 
+  outputs: Server: 
+  M5 console: m5AlphaAccess @ 0xFFFFFD0200000000 Got 
+  Configuration 127 memsize 20000000 pages 10000 First free page after ROM 
+  0xFFFFFC0000018000 HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 
+  0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 
+  l2reserv 0xFFFFFC0000046000 kstart = 0xFFFFFC0000310000, kend = 
+  0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x2 CPU Clock at 
+  2000 MHz IntrClockFrequency=1024 Booting with 2 processor(s)
+  KSP: 0x20043FE8 PTBR 0x20 KSP: 0x20043FE8 PTBR 0x20 Console Callback at 0x0, fixup at 0x0, crb offset: 0x790 
+  Memory cluster 0 [0 - 392] Memory cluster 1 [392 - 65144] Initalizing 
+  mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 10000 ConsoleDispatch at virt 
+  100008D8 phys 188D8 val FFFFFC00000100A8 Bootstraping CPU 1 with 
+  sp=0xFFFFFC0000076000
+  Client: M5 console: m5AlphaAccess @ 0xFFFFFD0200000000 Got 
+  Configuration 127 memsize 10000000 pages 8000 First free page after ROM 
+  0xFFFFFC0000018000 HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 
+  0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 
+  l2reserv 0xFFFFFC0000046000 kstart = 0xFFFFFC0000310000, kend = 
+  0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x1 CPU Clock at 
+  2000 MHz IntrClockFrequency=1024 Booting with 1 processor(s)
+  KSP: 0x20043FE8 PTBR 0x20 Console Callback at 0x0, fixup at 0x0, crb offset: 0x510 
+  Memory cluster 0 [0 - 392] Memory cluster 1 [392 - 32376] Initalizing 
+  mdt_bitmap addr 0xFFFFFC0000038000 mem_pages 8000 ConsoleDispatch at virt 
+  10000658 phys 18658 val FFFFFC00000100A8 unix_boot_mem ends at 
+  FFFFFC0000076000 k_argc = 0 jumping to kernel at 0xFFFFFC0000310000, (PCBB 
+  0xFFFFFC0000018180 pfn 1028) CallbackFixup 0 18000, 
+  t7=FFFFFC0000700000
+  I also had to hack dev/alpha_access.h to change the 
+  following: #define ALPHA_ACCESS_VERSION 
+  (1303) 
+  ...into... #define ALPHA_ACCESS_VERSION (1305) 
+  ...because I was getting console version mismatch 
+  errors before doing so. 
+  A final note: I've got the patched version 2.0 beta 
+  installed on the same system as version 1.1, but the system paths are 
+  different for each (and so also are the binaries, disk images, 
+etc.)
+  Chris Stewart 
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

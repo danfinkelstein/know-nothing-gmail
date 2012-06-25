@@ -1,0 +1,30 @@
+hi steve.i think there is effect because, every time i run simulation i check the config.ini file. In config.ini under workload there is simpoint value. when ever i run simulation i check config.ini to make sure what ever values i used in configuration file is used by m5 or not.
+This is what i found in config.ini file and there is simpoint value in it, so i am thinking it is using simpoint value.[system.cpu.workload]type=LiveProcesscmd=/home/pavanj/linux-alpha-input/gcc/gcc_base.alpha.static /home/pavanj/linux-alpha-input/gcc/expr2.i -o /home/pavanj/linux-alpha-input/gcc/expr2.s
+cwd=egid=100env=errout=cerreuid=100executable=/home/pavanj/linux-alpha-input/gcc/gcc_base.alpha.staticgid=100input=cinmax_stack_size=67108864
+output=expr2.outpid=100ppid=99simpoint=600000000   // so i am thinking m5 is using simpoint.
+system=systemuid=1000Could please let me know is there any other way to find, what ever the configuration i set is used by M5
+thanks,Pavan- Show quoted text -On Wed, May 13, 2009 at 8:53 AM, Steve Reinhardt <stever@gmail.com> wrote:
+Is there any evidence that whatever you're doing to select a different simpoint is having any effect?  For example, does the simulator output differ at all?  My guess is that the option you're using doesn't do what you think it does.
+On Tue, May 12, 2009 at 11:00 PM, Pavan Kumar <jorrigal@gmail.com> wrote:
+hi, I am running spec cpu 2006(alpha) benchmarks on M5-2.0b6 for different simpoints. Means, every time i increasing the simpoint by 100 Million.for example;for 1 simulation
+i put the simpoint =6*100E6i got the follwoing results.system.cpu.dcache.ReadReq_accesses 22409799
+system.cpu.dcache.ReadReq_misses 970709system.cpu.dcache.WriteReq_accesses 9879012system.cpu.dcache.WriteReq_misses 197596system.cpu.dcache.overall_accesses 32288811system.cpu.dcache.overall_misses 1168305
+system.cpu.icache.ReadReq_accesses 100090404system.cpu.icache.ReadReq_misses 1305749system.cpu.icache.overall_accesses 100090404system.cpu.icache.overall_misses 1305749system.l2.ReadReq_accesses 2276458
+system.l2.ReadReq_misses 115852system.l2.overall_accesses 2397139system.l2.overall_misses 236533for 2nd simulaltioni put the simpoint =7*100E6i got the same as above
+system.cpu.dcache.ReadReq_accesses 22409799system.cpu.dcache.ReadReq_misses 970709system.cpu.dcache.WriteReq_accesses 9879012
+system.cpu.dcache.WriteReq_misses 197596system.cpu.dcache.overall_accesses 32288811system.cpu.dcache.overall_misses 1168305system.cpu.icache.ReadReq_accesses 100090404system.cpu.icache.ReadReq_misses 1305749
+system.cpu.icache.overall_accesses 100090404system.cpu.icache.overall_misses 1305749system.l2.ReadReq_accesses 2276458system.l2.ReadReq_misses 115852system.l2.overall_accesses 2397139system.l2.overall_misses 236533
+I ran it for 8 more times by increasing simpoint value by 100 Million, still all the results are same.I couldn't understand what could be the reason for getting the same values for different simpoints.
+thanks,pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

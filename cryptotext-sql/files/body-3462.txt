@@ -1,0 +1,35 @@
+>  Thanks for your reply. I have tried using the '&' but found that it is
+>  not assign one application on one core. The execution is different
+>  when I use mgrid&bzip and bzip&mgrid. If I need to run different
+>  benchmark on different core, how to write the rcS file. Thank you very
+>  much for your help.
+This behavior really has nothing to do with M5 and is completely under
+the control of Linux.  Pinning a process is a simple matter of using
+the sched_setaffinity system call.
+Here's a simple program that will do the pinning:
+----------------------------
+#define _GNU_SOURCE
+#include <err.h>
+#include <sched.h>
+#include <stdlib.h>
+#include <stdio.h>
+int
+main(int argc, char *argv[])
+{
+        cpu_set_t       mask;
+        int             target;
+        if (argc < 3)
+                errx(1, "usage");
+        target = atoi(argv[1]);
+        CPU_ZERO(&mask);
+        CPU_SET(target, &mask);
+        if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) < 0)
+                err(1, "setaffinity");
+        if (execvp(argv[2], &argv[2]) < 0)
+                err(1, "execvp");
+        return 1; // exec must have failed somehow
+- Show quoted text -}
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+I am having an assertion failure in cache_impl.hh at this point (shon below):
+template<class TagStore>
+typename Cache<TagStore>::BlkType*
+Cache<TagStore>::handleFill(PacketPtr pkt, BlkType *blk,
+                            PacketList &writebacks)
+{
+ Addr addr = pkt->getAddr();
+#if TRACING_ON
+    CacheBlk::State old_state = blk ? blk->status : 0;
+#endif
+    if (blk == NULL) {
+        // better have read new data...
+        assert(pkt->hasData());----AT THIS POINT...
+I have made changes to code but any insight will of possible causes will be appreciated?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

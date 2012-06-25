@@ -1,0 +1,15 @@
+I'm sure it was just the one from the precompiled Tru64 SPLASH benchmarks, which are available here:http://www.m5sim.org/dist/m5_benchmarks/v1-splash-alpha.tgz- Show quoted text -
+On Sat, Apr 19, 2008 at 9:38 AM, nathan binkert <nate@binkert.org> wrote:
+> Previous version of m5 were distributed with radix benchmark binary that i was able to run on a multiprocessor (with multiple threads in SE mode.) Is the binary supported for latest beta?
+I think we removed it only because there was no test that actually
+used it.  I don't think there is any reason that it shouldn't work
+anymore.  Can anyone add anything here?
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

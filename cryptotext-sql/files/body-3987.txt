@@ -1,0 +1,24 @@
+I have checked the etherlink model and etherint model which
+has an etherint peer. Once the peer is set, two etherints
+on both ends of the etherlink are binded together. So a direct
+point-to-point link is set. As you said, I can just create a
+switch model with some interfaces and make each etherint bind
+with a switch interface instead of the etherints on other
+systems. However, this network topology is a kind of star
+network which is different from the fully-connected network
+because the etherint on one system is shared to connect with
+other systems, sometimes causing the transmission delay.
+True, this is a star network, but as long as you implement the switch properly and use link bandwidths that are appropriate, the performance of the star will be the same as the performance of a fully connected network.
+If you actually take into consideration the fact that the NICs end up sharing some sort of bus at some point before getting into the processor, all the star network is doing different is sharing a network link instead of sharing a PCI bus.
+I think each system should have N-1 etherints in order to
+implement a fully-connected network of N systems. How do
+you think of that?  I know there is a limit on PCI devices.
+As I said, I don't think it is necessary provided that you implement the switch right and provide the right bandwidth to the link.
+Do you think it possible to modify this limit? If yes, where
+should I start with? Is this about the pci bus address limit?
+If you really want to go this route, you're going to have to make changes in several places.  Potentially including the kernel.  Though as I said, you may be able to have a bunch of devices share PCI interrupts as long as you separate the PCI functions.  You'd just have to try.- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,440 @@
+#! /bin/sh
+# This is a shell archive.  Remove anything before this line, then unpack
+# it by saving it into a file and typing "sh file".  To overwrite existing
+# files, type "sh file -c".  You can also feed this as standard input via
+# unshar, or by typing "sh <file", e.g..  If this archive is complete, you
+# will see the following message at the end:
+#		"End of shell archive."
+# Contents:  lineb.c lineb.h lookup.c match.c match.h makefile
+# Wrapped by eppstein@wormwood.ics.uci.edu on Tue Feb 27 17:08:34 1996
+PATH=/bin:/usr/bin:/usr/ucb ; export PATH
+if test -f 'lineb.c' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'lineb.c'\"
+else
+echo shar: Extracting \"'lineb.c'\" \(1807 characters\)
+sed "s/^X//" >'lineb.c' <<'END_OF_FILE'
+X/*
+X** line_buffer -- class to display buffer for line editor
+X** David Eppstein / Columbia University / 13 Sep 1987
+X*/
+X
+X#include "lineb.h"
+X#include <string.h>
+X
+Xstatic const int bufsize_incr = 256;
+X
+X/*
+X** Initialize data structures; clean up when done
+X*/
+X
+Xline_buffer::line_buffer()
+X{
+X    buffer = 0;			// let replace() actually alloc buffer
+X    bufsize = 0;
+X    buflen = 0;
+X}
+X
+Xline_buffer::~line_buffer()
+X{
+X    delete buffer;
+X}
+X
+X/*
+X** Replace a substring of the buffer with some other substring.
+X** Return value is nonzero on error.  Length arguments are as
+X** for save_string; the default is to insert the string at the
+X** current position without overwriting any old text.
+X**
+X** The cursor is left at the end of the replaced text.
+X*/
+X
+Xint
+Xline_buffer::replace(int start, const char * s, int len = -1, int oldlen = 0)
+X{
+X    if (s == 0) len = 0;
+X    else if (len < 0) len = strlen(s);
+X    if (oldlen < 0) {
+X	if (buffer == 0) oldlen = 0;
+X	else oldlen = strlen(buffer + start);
+X    }
+X
+X    // make sure buffer is big enough for the change
+X    if (buflen + len + 1 - oldlen > bufsize) {
+X	char *newbuf = new char[buflen + len + 1 - oldlen + bufsize_incr];
+X	if (newbuf == 0) return 1; // out of memory
+X	if (buflen != 0) memcpy(newbuf, buffer, buflen);
+X	newbuf[buflen] = '\0';
+X	delete buffer;
+X	buffer = newbuf;
+X	bufsize = buflen + len + 1 - oldlen + bufsize_incr;
+X    }
+X
+X    if (oldlen < len) {		// replacement longer, raise rest of buffer
+X	for (int i = buflen; i >= start + oldlen; i--)
+X	    buffer[i + len - oldlen] = buffer[i];
+X    } else if (oldlen > len) {	// replacement shorter, drop rest of buffer
+X	for (int i = start + oldlen; i <= buflen; i++)
+X	    buffer[i + len - oldlen] = buffer[i];
+X    }
+X    if (len != 0) memcpy(buffer+start, s, len); // drop new text in
+X    buflen += len - oldlen;
+X    return 0;
+X}
+END_OF_FILE
+if test 1807 -ne `wc -c <'lineb.c'`; then
+    echo shar: \"'lineb.c'\" unpacked with wrong size!
+fi
+# end of 'lineb.c'
+fi
+if test -f 'lineb.h' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'lineb.h'\"
+else
+echo shar: Extracting \"'lineb.h'\" \(759 characters\)
+sed "s/^X//" >'lineb.h' <<'END_OF_FILE'
+X/*
+X** line_buffer -- class to provide buffer for line editor
+X** David Eppstein / Columbia University / 13 Sep 1987
+X*/
+X
+X#ifndef LINE_BUFFER_H
+X#define LINE_BUFFER_H
+X
+Xclass line_buffer {
+X    char * buffer;		// contents being edited
+X    int bufsize;		// dim of array not length of string
+X    int buflen;
+X
+X public:
+X    line_buffer();
+X    ~line_buffer();
+X
+X    void add_char(char c) {	// speed up file read
+X	if (buflen + 2 > bufsize) replace(buflen, &c, 1, 0);
+X	else {
+X	    buffer[buflen++] = c;
+X	    buffer[buflen] = '\0';
+X	}
+X    }
+X    virtual int replace(int, const char *, int = -1, int = 0);
+X    int set_buffer(const char *s, int n = -1) { return replace(0, s, n, -1); }
+X    const char * text() { return buffer; }
+X    int textlen() { return buflen; }
+X};
+X
+X#endif
+END_OF_FILE
+if test 759 -ne `wc -c <'lineb.h'`; then
+    echo shar: \"'lineb.h'\" unpacked with wrong size!
+fi
+# end of 'lineb.h'
+fi
+if test -f 'lookup.c' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'lookup.c'\"
+else
+echo shar: Extracting \"'lookup.c'\" \(4627 characters\)
+sed "s/^X//" >'lookup.c' <<'END_OF_FILE'
+X// lookup - find paragraph containing string in file
+X// David Eppstein / Columbia University / 11 Feb 1986
+X
+X// Edit history:
+X// wormwood:/i0/di/ua/eppstein/public_html/161/lookup/lookup.c, 27 Feb 1996
+X//   Make this code compile again (C++ has changed between 1988 and now)
+X//   and strip out some unnecessary junk to make better example for ICS 161
+X// gar:/u/tom/eppstein/src/match/lookup.c, 29-Jan-1988 12:33:16 by eppstein
+X//   Rewrite in C++, split out string match code
+X// garfield:/u/tom/eppstein/src/bin/lookup.c,  2-Oct-1987 13:39:34 by eppstein
+X//   Add -c case sensitivity, -r print rest of file after match.
+X// garfield:/usr1/eppstein/src/bin/lookup.c, 12-Dec-1986 16:26:43 by eppstein
+X//   Save start of paragraph in a buffer instead of using fseek().
+X//   Stop using getenv("LOOKUP") -- user must always give file.
+X// garfield:/usr1/eppstein/src/lookup.c, 14-May-1986 16:03:16 by eppstein
+X//   Treat form feed the same as linefeed (and xlate to lfd on output)
+X// garfield:/usr1/eppstein/src/lookup.c, 13-Feb-1986 by eppstein
+X//   Create this file (actually this was done on the DEC20).
+X
+X#include "match.h"
+X#include "lineb.h"
+X#include <stream.h>
+X
+X
+X// Return the lowercase version of a char; set csense = 0 to disable.
+X
+Xint csense = 'a' - 'A';		// assume case insensitive
+X
+Xinline char casify(char c)
+X{
+X    if (c >= 'A' && c <= 'Z') return c + csense;
+X    else return c;
+X}
+X
+X
+X// Read char into variable, returning nz if end of line or end of page.
+X
+Xinline int eolgetc(char & v, istream & i)
+X{
+X    i.get(v);
+X    return (!i.eof() && (v == '\n' || v == '\014'));
+X}
+X
+X// Add a char to the save buffer.
+X
+Xinline void reset(line_buffer & lb) { lb.set_buffer(0); }
+Xvoid add(line_buffer & lb, char c)  { lb.replace(lb.textlen(), &c, 1, 0); }
+X
+X// Complain about inappropriate args
+X
+Xextern "C" void exit(int);
+X
+Xconst char * progname = "lookup";
+X
+Xvoid usage()
+X{
+X    cerr << "usage: " << progname << "[-cr] word < file\n";
+X    exit (1);
+X}
+X
+X
+X// Do the search.
+X//
+X// The outer loop procedes a line at a time, and the inner one a
+X// character at a time.  When we find a match, we go back to the
+X// last paragraph break, print up to the next paragraph break,
+X// and continue the line-at-a-time loop from there.
+X
+Xint rest = 0;			// nonzero means print whole file after match
+Xint first_para = 1;		// zero when a para has already been output
+X
+Xvoid
+Xprocess(istream & in, string_match & target)
+X{
+X    line_buffer para;
+X    int was_eol = 1;
+X    target.reset();
+X
+X    while (!in.eof()) {		// looping over chars in file
+X	char inchar;
+X	if (eolgetc(inchar, in)) { // end of line?
+X	    target.reset();	// match does not extend over line
+X	    if (was_eol) reset(para); // two newlines, para break
+X	    else {
+X		was_eol = 1;	// one newline, remember the next
+X		add(para,'\n'); // but assume internal to para for now
+X	    }
+X	    continue;		// back to top of loop
+X	}
+X	if (in.eof()) return;	// maybe eolgetc() above hit eof?
+X	was_eol = 0;		// if we got here, have non-line-break char
+X
+X	if (!target.match(casify(inchar))) add(para, inchar);
+X	else {
+X
+X	    // Here when we found a complete match.
+X	    //
+X	    // We print the paragraph it occurs in, including the parts
+X	    // before it, and move on to the start of the next paragraph.
+X
+X	    if (first_para) first_para = 0;
+X	    else cout.put('\n');
+X
+X	    cout << para.text(); // first send text before match
+X	    cout.put(inchar); // then end of match itself
+X	    while (!in.eof()) { // then previously unread part
+X		if (eolgetc (inchar, in) && !rest) {
+X		    cout.put('\n');	// maybe start of para break, copy
+X		    if (eolgetc (inchar, in)) break; // and test again
+X		}
+X		cout.put(inchar);	// send char after nl or non-nl char
+X	    }
+X	    reset(para);	// now at paragraph break
+X	    was_eol = 1;	// flush any further newlines
+X	}			// end code for matched target
+X    }				// end loop over chars in line
+X}
+X
+X
+X// The main program.
+X
+Xmain (int argc, char ** argv)
+X{
+X    // If we have enough args, first arg might be flags.
+X    // Read and process them.  Currently defined flags:
+X    //  -c  turn on case sensitivity
+X    //  -r  print whole rest of file after a match
+X
+X    if (argc == 0) usage();
+X    progname = argv[0];
+X    while (argc > 2 && argv[1][0] == '-') {
+X	argc--;
+X	const char * cp = *++argv;
+X	while (*++cp != '\0') switch (*cp) {
+X	case 'c':
+X	    csense = 0;
+X	    break;
+X
+X	case 'r':
+X	    rest = 1;
+X	    break;
+X
+X	default:
+X	    usage();
+X	}
+X    }
+X    if (argc != 2) usage();
+X
+X    // Get target string, casify it, and make a string matcher.
+X
+X    for (char * cp = argv[1]; *cp != '\0'; cp++) *cp = casify(*cp);
+X    string_match target(argv[1]);
+X
+X    // Process standard input.
+X    process(cin, target);
+X}
+END_OF_FILE
+if test 4627 -ne `wc -c <'lookup.c'`; then
+    echo shar: \"'lookup.c'\" unpacked with wrong size!
+fi
+# end of 'lookup.c'
+fi
+if test -f 'match.c' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'match.c'\"
+else
+echo shar: Extracting \"'match.c'\" \(1873 characters\)
+sed "s/^X//" >'match.c' <<'END_OF_FILE'
+X/*
+X** match - linear time string match algorithm
+X** David Eppstein / Columbia University / 29 Jan 1988
+X*/
+X
+X#include "match.h"
+X#include <string.h>
+X
+X// Make copy of string in a safe place
+Xconst char * save_string(const char * s, int slen = -1)
+X{
+X    if (s == 0) return 0;
+X    if (slen < 0) slen = strlen(s);
+X    char * new_s = new char[slen + 1];
+X    if (new_s == 0) return 0;
+X    memcpy(new_s, s, slen);
+X    new_s[slen] = '\0';
+X    return new_s;
+X}
+X
+X// Make jump table for mismatches (the usual finite state automaton).
+X//
+X// The inner loop works by checking the prefixes the next character of
+X// the target can continue, longest first, chaining back by way of the
+X// previously filled retarget entries, until it either finds one that
+X// matches (the != clause) or runs out of prefixes (the > 0 clause).
+X
+Xstatic int * make_retarget(const char * target)
+X{
+X    if (target == 0) return 0;
+X    int * retarget = new int[strlen(target)+1];
+X    if (retarget == 0) return 0;
+X    retarget[0] = -1;		// set up for loop below; unused by match()
+X
+X    for (int i = 0; target[i] != '\0'; i++) {
+X	retarget[i + 1] = retarget[i] + 1;
+X	while (retarget[i + 1] > 0 &&
+X	       target[i] != target[retarget[i + 1] - 1])
+X	    retarget[i + 1] = retarget[retarget[i + 1] - 1] + 1;
+X    }
+X    return retarget;
+X}
+X
+X
+X// Construct matcher
+X
+Xstring_match::string_match(const char * t, int tlen = -1)
+X{
+X    target = save_string(t, tlen);
+X    retarget = make_retarget(target);
+X    index = 0;
+X}
+X
+X
+X// Do the search
+X
+Xint
+Xstring_match::match(char c)
+X{
+X    if (retarget == 0) return 0;
+X
+X    while (c != target[index]) {
+X	if (index == 0) return 0; // fell all the way back, have to give up
+X	index = retarget[index]; // more positions to fall back to, keep trying
+X    }
+X    if (target[++index] != '\0') return 0;	// partial match
+X    else {
+X	index = retarget[index]; // full match, but keep going
+X	return 1;
+X    }
+X}
+X
+END_OF_FILE
+if test 1873 -ne `wc -c <'match.c'`; then
+    echo shar: \"'match.c'\" unpacked with wrong size!
+fi
+# end of 'match.c'
+fi
+if test -f 'match.h' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'match.h'\"
+else
+echo shar: Extracting \"'match.h'\" \(764 characters\)
+sed "s/^X//" >'match.h' <<'END_OF_FILE'
+X// match - linear time string match algorithm
+X// David Eppstein / Columbia University / 29 Jan 1988
+X//
+X// Only performs exact matches, not comparisons.
+X// Caller is responsible for case sensitivity or lack thereof.
+X
+Xclass string_match {
+X    const char * target;	// string we are looking for
+X    int index;			// index into target; how much matched so far
+X    int * retarget;		// what to set match to when mismatch found
+X
+X public:
+X    string_match(const char *, int = -1);
+X	// set up to start matching target string given in first arg
+X	// second arg is length of string, default whole string up to null
+X
+X    ~string_match() { delete target; delete retarget; }
+X
+X    void reset() { index = 0; }
+X    int match(char c);		// adds c to match; returns nz if all matched
+X};
+END_OF_FILE
+if test 764 -ne `wc -c <'match.h'`; then
+    echo shar: \"'match.h'\" unpacked with wrong size!
+fi
+# end of 'match.h'
+fi
+if test -f 'makefile' -a "${1}" != "-c" ; then 
+  echo shar: Will not clobber existing file \"'makefile'\"
+else
+echo shar: Extracting \"'makefile'\" \(276 characters\)
+sed "s/^X//" >'makefile' <<'END_OF_FILE'
+XOBJECTS = lineb.o lookup.o match.o
+X
+X.c.o:
+X	g++ -c -O -finline-functions $*.c
+X
+Xlookup: $(OBJECTS)
+X	g++ $(OBJECTS)
+X	cp a.out lookup
+X	rm a.out
+Xmake:
+X	makemake +g++ -O -finline-functions lookup
+X
+Xlineb.o: lineb.c lineb.h
+Xlookup.o: lineb.h lookup.c match.h
+Xmatch.o: match.c match.h
+END_OF_FILE
+if test 276 -ne `wc -c <'makefile'`; then
+    echo shar: \"'makefile'\" unpacked with wrong size!
+fi
+# end of 'makefile'
+fi
+echo shar: End of shell archive.
+exit 0

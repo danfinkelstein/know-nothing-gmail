@@ -1,0 +1,15 @@
+Hello,
+       In the m5 beta 
+4, I cant find any directory called "object" within /src/python/m5. Has been 
+moved somewhere else? The se.py script still uses 
+import m5from m5.objects import *
+ 
+so I was wondering where the python object files 
+are.
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

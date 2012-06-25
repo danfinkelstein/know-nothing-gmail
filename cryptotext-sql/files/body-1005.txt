@@ -1,0 +1,12 @@
+Definitely need a more detailed description of the issue so that somebody may be able to recognize your problem or speculate on a solution...Check this link for steps on reporting problems:http://m5sim.org/wiki/index.php/Reporting_Problems
+- Show quoted text -On Mon, Aug 24, 2009 at 11:09 PM, ef <snorlaxgb@gmail.com> wrote:- Show quoted text -
+Hello,I am using the CrossCompiler provided on the M5 website, and during several PARSEC benchmarks I get a seg fault when the program tries to exit (its output correct results), this error is caused by the pthread library. Any ideas on how to fix it? Ive spent days trying to fix this.
+ThanksEF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

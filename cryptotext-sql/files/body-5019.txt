@@ -1,0 +1,33 @@
+You've probably messed up somewhere in your hacking of the kernel. I would guess you're trying to deference a null pointer to a struct. The remote gdb functionality in m5 may be helpful to you. It hasn't been particularly tested in v2.0b however.
+Ali- Show quoted text -
+On Sep 14, 2006, at 10:14 AM, Zhu Changyun wrote:
+Hi, all,
+I am hacking linux kernel for the task migration policy and using m5 as the simulatior. I can boot my kernel, But after a while, it showed me the following message:
+Unable to handle kernel paging request at virtual address 0000000000000030
+CPU 2 fpu(34): Oops 0
+pc = [<fffffc000061fc00>]  ra = [<fffffc000061f990>]  ps = 0007    Not tainted
+v0 = 0000000000000007  t0 = 0000000000000000  t1 = 0000000000000030
+t2 = 0000000000000000  t3 = 0000000000000000  t4 = fffffc0000a67008
+t5 = 0000000000000000  t6 = 0000000000000000  t7 = fffffc000e888000
+s0 = ffffffffffffffc8  s1 = fffffc0000a63298  s2 = fffffc000f2a8180
+s3 = 0000000000000001  s4 = fffffc0000a63238  s5 = 000ee66c9642099c
+s6 = fffffc000e88beb8
+a0 = 0000000000000007  a1 = 0000000000000040  a2 = fffffc000e88be88
+a3 = 0000000000000000  a4 = 0000000120002520  a5 = 000002000000dd10
+t8 = 000000000000001f  t9 = fffffc00007152f8  t10= 0000000000000001
+t11= fffffc00007db340  pv = 0000000000000000  at = 0000000000000000
+gp = fffffc00007d8c00  sp = fffffc000e88beb8
+Trace:
+[<fffffc000031329c>] work_pending+0x1c/0x70
+Code: 40a20405  a46513d0  2123ffc8  a029002c  402c7da1  f420001c <a0490068> ec40001a
+Is there anyone who can give me some suggestions based on the error message? Thanks a lot.
+Bests,
+Changyun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

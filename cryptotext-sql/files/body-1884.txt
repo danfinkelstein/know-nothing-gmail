@@ -1,0 +1,23 @@
+If you look at the Request object, there are accessor functions for the PC and context id.The Packet holds the MemCmd, which should help too.Lisa- Show quoted text -On Wed, Dec 10, 2008 at 12:43 AM, Joe Gross <joegross@umd.edu> wrote:
+Hello,
+Is it possible to somehow determine the program counter, thread ID
+and/or cpu ID from a Packet or Request object? It seems that Request was
+setup to be either contain this type of data or to contain only physical
+memory location data (stripping this data before it reaches the memory
+system). This information would be very useful for a memory controller
+to implement quality of service scheduling similar to what is in POWER5.
+It would also be nice to distinguish between page table lookups,
+instruction fetches and load/store ops. I see that I can reimplement the
+cache component to be able to pass along the data (or possibly assign a
+priority and send only the priority of the request), but I'm hoping that
+there's an easier way that doesn't need to change so much of M5. Any
+help is appreciated.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

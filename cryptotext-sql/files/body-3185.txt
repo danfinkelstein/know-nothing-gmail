@@ -1,0 +1,13 @@
+Hello,
+        How do I 
+obtain miss rate curves (for varying cache sizes) using M5? Do I have to rerun 
+the simulation and calculate for every point or can the cache size be 
+swept  automatically? Also how do I obtain a CPI histogram?
+ 
+Thanks
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

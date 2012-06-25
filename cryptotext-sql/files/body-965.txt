@@ -1,0 +1,28 @@
+I'm not sure about #2, but for #1 you could do either.If you have an existing disk image that works, you could just mount the image and add your binaries (along with any shared libraries it might need but are not already on the image) to it, or you could make your own, which is also fine.  To make your own we suggest a Gentoo stage 3 image.
+Lisa2009/9/3 Fei Hong <tithonus.hf@gmail.com>- Show quoted text -
+Hi all,
+ 
+I was using SE mode doing simulation and I want to 
+try FS mode. After reading those related documents I still have some 
+questions.
+ 
+(1). About getting the binaries to the disk image. If I 
+want to add some other benchmarks to disk image. Do I have to create a 
+new disk image including those added benchmarks, or I can add the 
+benchmarks' binaries directly to existing disk image?
+(2) About the precompiled splash benchmark in the 
+download page. After I uncompress the downloaded file I found there is only one 
+file, shouldn't it have multiple benchmarks' binaries? How can I use this only 
+one file?
+ 
+Thanks in advance!
+ 
+Fei
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

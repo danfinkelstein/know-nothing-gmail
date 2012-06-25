@@ -1,0 +1,10 @@
+i have a question about DefaultDecode<Impl>::decodeInstsi noticed that after the line         toRename->insts[toRenameIndex] = inst;are the lines        if (inst->readPredTaken() && !inst->isControl()) {
+            DPRINTF(Decode, "PredPC : %#x != NextPC: %#x\n",                    inst->readPredPC(), inst->readNextPC() + 4);            panic("Instruction predicted as a branch!");
+            ++decodeControlMispred;            // Might want to set some sort of boolean and just do            // a check at the end            squash(inst, inst->threadNumber);            break;
+        }        // Go ahead and compute any PC-relative branches.        if (inst->isDirectCtrl() && inst->isUncondCtrl()) {            ++decodeBranchResolved;            if (inst->branchTarget() != inst->readPredPC()) {
+                ++decodeBranchMispred;                // Might want to set some sort of boolean and just do                // a check at the end                squash(inst, inst->threadNumber);                Addr target = inst->branchTarget();
+                //The micro pc after an instruction level branch should be 0                inst->setPredTarg(target, target + sizeof(TheISA::MachInst), 0);                break;            }Does this mean that should we detect a decode control or branch misprediction that it'd no longer be reflected in the instructions at the instruction queue heading to the Rename stage? By the time the checks for the mispredictions are done, we have already committed the instruction to the "outgoing" queue. So even if it is squahed, it would still exist in the queue heading to the Rename stage? Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

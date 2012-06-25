@@ -1,0 +1,52 @@
+I downloaded the encumbered files and used the extras command as given on
+the page. It passes 1 test but gives an error in the second as follows:
+build/ALPHA_SE/m5.fast -d
+build/ALPHA_SE/tests/fast/quick/20.eio-short/alpha/eio/simple-atomic
+tests/run.py quick/20.eio-short/alpha/eio/simple-atomic >
+build/ALPHA_SE/tests/fast/quick/20.eio-short/alpha/eio/simple-atomic/stdout
+2>
+build/ALPHA_SE/tests/fast/quick/20.eio-short/alpha/eio/simple-atomic/stderr
+scons: ***
+[build/ALPHA_SE/tests/fast/quick/20.eio-short/alpha/eio/simple-atomic/stdout]
+Error 1
+scons: building terminated because of errors.
+Child returned 2
+When attemping to execute: scons IGNORE_STYLE=True
+EXTRAS=/n/rtcl20/home/sphadke/research/m5/encumbered -j2
+build/ALPHA_SE/tests/fast/quick build/ALPHA_FS/tests/fast/quick
+build/MIPS_SE/tests/fast/quick build/SPARC_SE/tests/fast/quick
+build/X86_SE/tests/fast/quick
+the stderr contains:
+cat
+build/ALPHA_SE/tests/fast/quick/20.eio-short/alpha/eio/simple-atomic/stderr
+gzip: tests/test-progs/anagram/bin/alpha/eio/anagram-vshort.eio.gz: No such
+file or directory
+fatal: could not read EIO file header
+ @ cycle 0
+[eio_open:build/ALPHA_SE/eio/eio.cc, line 190]
+Memory Usage: 187292 KBytes
+There is no directory called 'anagram' in tests/test-progs. Do I have to
+download additional files?
+Thanks,
+Sujay
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Wednesday, July 09, 2008 5:50 PM
+Subject: Re: [m5-users] quick test fails with repo version
+- Show quoted text ->> thanks. I know about the extras option. But if its used in the tests,
+>> shouldnt it be included in the scripts?
+> The tests stuff in general is broken if you don't have everything in
+> place.  In the past, we just didn't release that stuff, but now that
+> our repository is open, we have to fix it.  It's on the todo list.
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

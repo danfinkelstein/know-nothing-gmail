@@ -1,0 +1,12 @@
+We have an in-order model in the development repository, but it's still in the process of being ported for the ALPHA architecture and validated via the regresssion testing.If you already have a framework for the O3 that you like, then you could just use the O3 as a In-Order model by modifying the specs somewhat.
+For instance, if you change your instruction queue and reorder buffer size to 1 entry that essentially forces in-order execution, right? Similar things for the other buffers should allow you tim.org- Show quoted text -
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

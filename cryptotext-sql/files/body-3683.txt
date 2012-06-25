@@ -1,0 +1,11 @@
+when you compilethe binaries, do you use the -static (statically link) option?- Show quoted text -On Dec 19, 2007 10:29 AM, Panayiotis Petridis <p_tottis@hotmail.com
+> wrote:Hi all,I have written some simple benchmarks on my own and i would like to compile them so i could run them on m5 for MIPS SE. What tool should i use?
+I have tried the crosstool 0.43 and build a mips compiler, when i run the script i get this message:panic: attempt to execute unimplemented instruction 'mfc2' (inst 0x48001c3c, opcode 0x12, binary:01001000000000000001110000111100)
+ @ cycle 0[execute:build/MIPS_SE/arch/mips/atomic_simple_cpu_exec.cc, line 232]Program aborted at cycle 0AbortedAny help would be very helpfulThanksPanayiotis
+_________________________________________________________________Express yourself instantly with MSN Messenger! Download today it's FREE!
+http://messenger.msn.click-url.com/go/onm00200471ave/direct/01/_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

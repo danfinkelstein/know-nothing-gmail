@@ -1,0 +1,13 @@
+  I want to have an accumulator to keep track of a particular system property. I need to keep adding values to it of type float. Can I use create a scalar stat, and perform float additions to it?
+eg:
+my_stat += <some float value>;
+Is there a restriction that the stats can only be integers?
+Currently, yes.  The base statistic is of type Counter which is an int64_t.  You could maybe change the typedef to double in src/sim/host.hh. (I've never tried this)
+Or, is there a way that I can create a global variable of type float, add value to it, and output it at the end of the simulation. If golbal variables are not possible, is it possible to create static variables, which will only init to zero the first time and later on retain their values, which I can output at the end of the simulation.
+Check out Stats::Value and the stat simTicks.  I'm not sure if this will output a float in the end though.
+any help is greatly appreciated!
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

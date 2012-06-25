@@ -1,0 +1,5 @@
+Hi all,I am trying to simulate the two benchmark in single CPU. I didn't find a way to assign the multiple benchmarks in single CPU. Could you please tell me which CPU models I need to use in order to run multiple benchmarks in single CPU.Get in touch in an instant. Get Windows Live Messenger now.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

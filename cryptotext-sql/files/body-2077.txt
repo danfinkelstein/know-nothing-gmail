@@ -1,0 +1,88 @@
+Hello Clint thanks for the answer, and thanks for telling the problems
+with the built-in DRAM module. I was using it for some simulations,
+and I did not know that all of them were going wrong for the DRAM. My
+advisor gave me the timing parameters and I just want to configure the
+DRAM module with them.
+Major DRAM parameters:  (5-5-5) : active to read tRCD 15ns, read to
+data valid tCL 15ns, precharge to active tRP 15ns
+Other DRAM parameters:  tRAS=39ns, tRC=54ns, tWTR=9ns, tWL=12ns,
+tWPD=36ns, tRPD=9ns, tRRD=9ns
+Definitely I want to try your DRAM module, so if you can send it to
+me, it will be really appreciable.
+Thanks.
+- Show quoted text -
+On Wed, Jan 7, 2009 at 8:16 AM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+> On Jan 6, 2009, at 6:12 PM, Ryan Markley wrote:
+>
+>> Hello I have several questions about the latencies in the class
+>> DRAMMemory of the file PhysicalMemory.py, I have seen the definition
+>> of the following parameters:
+>>
+>>    act_lat = Param.Latency("5ns", "RAS to CAS delay")
+>>    cas_lat = Param.Latency("5ns", "CAS delay")
+>>    war_lat = Param.Latency("7.5ns", "write after read delay")
+>>    pre_lat = Param.Latency("18ns", "precharge delay")
+>>    dpl_lat = Param.Latency("7.5ns", "data in to precharge delay")
+>>    trc_lat = Param.Latency("57.5ns", "row cycle delay")
+>
+> The built-in DRAM system is completely borked, just so you know. The
+> latencies the code actually uses are ticks, but the interface still
+> gives it as cycles. Combined with a number of other issues.
+>>
+>>
+>> My problem is that I do not identify this parameters with the common
+>> timing parameters that I can get from memory manufacturers, such as,
+>> CL-tRCD-tRP-tRAS-.
+>
+> To get a number of the parameters, you need to compute them from the
+> manufacturer specified parameters using information in the appropriate
+> JEDEC standard. This is not to say that the parameters in the built-in
+> module are correct, but the standards have every possible parameter
+> named, described, and detailed.
+>>
+>> I know that act_lat is tRCD, and cas_lat is CL, but can anyone please
+>> tell me what parameters are the rest tRPand tRAS?.
+>>
+>> Also I have checked the file dram.cc and in there I can see the timing
+>> parameters that I want, is a good idea change the parameters in the
+>> #defines and recompile?.
+>>
+>> And another question to use the class DRAMMemory instead of
+>> PhysicalMemory, do I need to go to the file FSConfig.py and change the
+>> line
+>
+> Either that, or construct your own configuration.
+>
+>>
+>>    self.physmem = PhysicalMemory(range = AddrRange(mdesc.mem()),
+>> latency='180ns') to
+>>    self.physmem = DRAMMemory()
+>>
+>> And finally where can I specify the size of the memory using the class
+>> DRAMMemory in Full System mode?. I have not seen any range parameter.
+>
+> Since it derives from PhysicalMemory, they have all the same
+> parameters as it does. The range is set in exactly the same way.
+>
+>>
+>> Thanks in advance for the help.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> I have a mostly complete DRAMSim integration, but there are some
+> licensing issues that have yet to be worked out as far as distributing
+> it with M5. I can probably directly give you a copy of my patch, but I
+> do not have it collected at this time.
+>
+>        - Clint
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

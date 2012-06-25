@@ -1,0 +1,7 @@
+Hi,We were trying to use M5 to build a memory scheduler to change the order of the memory requests are responded. However, after we looked into the code, we figured that all the memory accesses are done by calling dram.cc. We were wondering whether there is any module that explicitly models the memory scheduler that determines the order and the delay that the requests are responded by memory. The scheduler should between the bus and the DRAM.
+Thanks. We appreciate your help a lot.Sincerely,Lide Zhang
+-- Lide ZhangDepartment of Electronic EngineeringNorthwestern University
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

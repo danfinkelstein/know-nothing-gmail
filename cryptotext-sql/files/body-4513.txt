@@ -1,0 +1,104 @@
+Hi Jiayuan,
+I think your best bet is to add new syscalls that you call yourself when you destroy a thread.  If you try and use pthreads you will eventually run into trouble since fully supporting pthreads is extremely difficult.
+Steve- Show quoted text -
+Jiayuan wrote:
+ Hi Steve!
+I'm planning to go with the first choice. Thanks for the instructions. The
+second choice is a clever one but I think the first fits my purpose more.
+So, I can actually add new pseudo instructions to notify a thread
+termination. But I think you know more secrets than I do :) and so: How to
+detect a thread is destroyed? Tracking system calls triggered by pthread?
+Are there any other implications in the simulation?
+Thanks again!
+Jiayuan
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Steve Reinhardt
+Sent: Friday, May 25, 2007 4:18 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] physical memory usage in SE mode
+Korey's description applies to the initial thread that gets set up for each
+process (application), but for the additional threads that are created for
+multithreaded processes, all M5 does is allocate empty memory and it's up to
+the user library to initialize it.
+This stack space is never freed.  The current implementation was written
+only to support SPLASH-type benchmarks which allocate N threads up front, at
+most one thread per processor, and then leave those threads running for the
+duration of the program.  M5 doesn't even track which thread is using which
+stack; it only uses a single per-process variable
+(process->next_thread_stack_base) to figure out the next open sport in the
+address space to place another stack if requested.
+If you want to do something more dynamic, you have two main choices, I
+think:
+1. Add code to M5 to track the per-thread stacks and add a function that
+gets called when a thread is destroyed, unmaps the virtual addresses, and
+puts both  the physical memory and the virtual address space back on free
+lists to be reused on another thread create call.
+2. Leave M5 as it is (allocating one thread per processor) and have your
+user-level code (running as part of the simulated program) reassign the
+M5 threads and stacks to various "user-level" threads as you create and
+destroy them.
+This choice is analogous to doing kernel-level vs. user-level threads in a
+real system... which one is better depends on what you're trying to model.
+Steve
+Korey Sewell wrote:
+HI Jiayuan,
+I dont see a place where stack_createFunc gets called specifically in
+M5 code so I'm assuming it must be called by whatever software your running on M5.
+However, since you're running multithreaded SE mode (on different CPUs right?), then a good point of reference is the "argsInit" function in the  src/sim/process.cc file.
+For Syscall Emulation, each process is given a "LiveProcess" object and that function initializes the arguments to that process and also sets up the initial stack for that process.
+You'll also notice that the architecture specific Process objects (e.g. AlphaTru64LiveProcess found in arch/alpha/tru64/process.hh) derive from the LiveProcess object too.
+Since other people might be interested in this question, I went ahead and posted the answer on the M5 FAQ page:
+http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions#Where_d
+oes_the_stack_and_program_arguments_get_setup_for_a_process_in_Syscall
+_Emulation_mode.3F
+On 5/25/07, Jiayuan <jerrygonair@hotmail.com> wrote:
+Thanks Steve!
+By the way, as you said,  in the multithreaded SE mode, each thread is allocated a stack space in the physical memory. Will this space be deallocated and reused when this thread terminates? I found in tru64.hh that stack_createFunc creates a 8M stack, but I haven't found where the stack is deallocated.
+Thanks!
+Jiayuan
+Jiayuan wrote:
+Hey all,
+When I am trying to test the scalability of M5, I ran the splash2 FFT benchmark with 16 cores.  M5 will prints out
+fatal: Out of memory, please increase size of physical memory.
+and then stop the simulation. I don't know how this could happen since obviously FFT is not that data intensive.
+My questions are:
+   1. Do you have any clue about what happened?
+   2. in SE mode, does M5 support page swapping?  If I have a 128M
+      physical memory and I am running 16 threads, each of them
+allocate
+      more than 8M memory space in the process's VIRTUAL address space,
+      how does M5 handle this situation in SE mode?
+You've pretty much answered your own question there... since there's no OS in SE mode, there's no paging, so if your program tries to allocate more space than the physical memory you've allocated it gives you the error message you see above.  Even if the FFT program itself doesn't allocate that much, the system does allocate a certain amount of memory per thread for stack space (I don't recall how much...
+it could be 8MB).
+  That's why you may run out as you increase the number of threads even without changing the program.
+Fortunately it should be easy to fix; as the message says, just increase the physical memory size parameter in the configuration file.
+Steve
+Thanks!
+Jiayuan
+---------------------------------------------------------------------
+---
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,23 @@
+Seems large than physical memory larger 1536MB suffers from:
+Writing checkpoint
+fatal: Write failed on physical memory checkpoint file
+'system.physmem.physmem'
+ @ cycle 500
+[serialize:build/ALPHA_SE/mem/physical.cc, line 479]
+Memory Usage: 5395972 KBytes
+I should think this machine is large enough to support it:
+[williamb@trout ~]$ free
+             total       used       free     shared    buffers
+cached
+Mem:      66013472   17933008   48080464          0     284200
+14918872
+-/+ buffers/cache:    2729936   63283536
+Swap:     78148152          0   78148152
+[williamb@trout ~]$
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,45 @@
+The problem is that some of the regressions in the stable directory
+require some outside files which you don't have.  When we our previous
+releases, we would remove those which we knew wouldn't work, but now
+that we're releasing our repository, we need to fix our regression
+framework to not error out in such cases.
+You ought to be able to run:
+scons build/ALPHA_SE/tests/debug/quick
+All of the quick regressions to my knowledge work.  (Though, the eio
+regression will fail if you don't compile in the encumbered bits.)
+  Nate
+- Show quoted text -
+On Sun, Jul 6, 2008 at 4:17 PM, Faisal Iqbal <faisaliqbal56@yahoo.com> wrote:
+> Hi all,
+> I am new to m5. I just installed m5 and trying to run the regression tests.
+> However I fail to run them successfully. I tried searching the archives but
+> couldn't find any relevant posts.  Here is what  i get in the stderr file
+> $ scons build/ALPHA_SE/tests/debug
+>
+> Traceback (most recent call last):
+>   File "<string>", line 1, in <module>
+>   File "build/ALPHA_SE/python/m5/main.py", line 313, in main
+>     execfile(sys.argv[0], scope)
+>   File "tests/run.py", line 65, in <module>
+>     execfile(os.path.join(tests_root, category, name, 'test.py'))
+>   File "tests/long/00.gzip/test.py", line 32, in <module>
+>     workload = gzip_log(isa, opsys, 'smred')
+>   File "/home/faisal/workspace/m5-stable/configs/common/cpu2000.py", line
+> 100, in __init__
+>     raise AttributeError, '%s not found' % executable
+> AttributeError: /dist/m5/cpu2000/binaries/alpha/tru64/gzip not found
+>
+> Thanks for the help.
+>
+> Faisal
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

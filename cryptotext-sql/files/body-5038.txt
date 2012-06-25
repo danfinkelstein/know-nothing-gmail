@@ -1,0 +1,23 @@
+Antti P Miettinen wrote:
+Ali Saidi <saidi@umich.edu> writes:
+We're happy to announce an official beta release of M5 2.0, including
+all the new features described at our ISCA 2006 tutorial:
+- A new execute-in-execute detailed out-of-order CPU model
+- A new memory system
+- More extensive python integration
+- Preliminary syscall emulation support for MIPS and SPARC
+Could you clarify the licensing status of the 2.0 release? The
+distribution still has the encumbered directory and eio seems to be
+compiled in from it. I'm still a bit uncomfortable about using M5 in
+commercial context even if I would not use the eio features.
+Conceptually, things have not changed... all the stuff outside of the 'encumbered' directory is under a BSD-style license (ours or something that appears to be compatible), and nothing in the 'encumbered' directory is strictly required to build the simulator.
+Practically, there are a couple of big changes.  In previous releases, even though you could build the simulator without the encumbered code, both the functional memory object used in syscall emulation and the only detailed timing CPU model were both in that tree, so you were pretty much stuck with non-timing full system mode if you avoided the encumbered tree.  None of the new code we've added is encumbered, so the new detailed out-of-order model and the new memory system are under our license, so now you can do almost anything w/o the encumbered code.  In fact the old encumbered CPU model doesn't work with the new memory system (though we have plans to do a port for legacy reasons) and the old encumbered functional memory object is now totally irrelevant, which is why the EIO code is the only piece that's still compiled in by default.  You should be able to just remove those lines from src/SConstruct and m5 will build as normal.  All you'll lose is EIO trace support (so you'll fail the one or two regression tests that rely on that).
+Would it help if we repackaged our releases so that the base package didn't include the encumbered code, and you could download it separately if you needed it?
+Below is a quick hack to add dup() to the syscall emu mode. For some
+reason minigzip from zlib wants that.
+Thanks... we'll get that in our tree so it'll be in the next release.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+I use the precompiled linux iamge form m5_system_2.0b3.tar. Just wondering what kind of operation system is on it...I wan to install MPICH on the image and run MPI programs with full system mode.Thank you!
+-- ************************************************Junli Gu--谷俊丽PHD Candidate of Tsinghua University************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

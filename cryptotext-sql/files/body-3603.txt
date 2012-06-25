@@ -1,0 +1,29 @@
+If you're not interested in keeping the timing realistic, you could
+just iterate over all the blocks and set the valid bit to 0, making
+sure to write the dirty ones back to memory with functional writes.
+The blocks themselves are in the tags classes, e.g., tags/lru.{cc,hh},
+so you'd probably want to put the function there (and call it from
+Cache<TagStore> in cache.hh/cache_impl.hh).
+If you want to be more realistic with timing, then it's trickier, as
+you'd have to issue timing writebacks, and be able to stall and
+reschedule when the writeback buffer gets full, etc... I'll just hope
+that's not what you want.
+There's no code to do this currently though, you'll have to write it yourself.
+Steve
+- Show quoted text -
+On Jan 16, 2008 12:54 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+> What would be the best way to go about scrubbing part or all of a
+> cache? Is there a method already implemented for this? If not, which
+> cache files and functions might I look into to support this?
+>
+> Thanks,
+> Nick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

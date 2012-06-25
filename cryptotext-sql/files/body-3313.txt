@@ -1,0 +1,12 @@
+> I am trying to simulate the two benchmark in single CPU. I didn't find a way
+> to assign the multiple benchmarks in single CPU. Could you please tell me
+> which CPU models I need to use in order to run multiple benchmarks in single
+> CPU.
+There is no way to run multiple benchmarks on the same CPU unless
+you're using the operating system since we don't implement any sort of
+timeslicing operation.  Are you referring to using SMT?
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

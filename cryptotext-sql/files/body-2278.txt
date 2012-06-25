@@ -1,0 +1,24 @@
+On Tue, Nov 18, 2008 at 08:35:50PM -0500, gblack@eecs.umich.edu wrote:
+> You are right that i386 programs won't work right now. There isn't anything
+> fundamental about that, but I have to focus my efforts somewhere and that just
+> hasn't been where yet. There are a few things that need to be set up
+> differently for 32 bit programs in how certain system resources are
+> initialized, but the main problem would be that 32 bit support is likely
+> incomplete and virtually untested. This will definitely work eventually, but my
+> attention is on getting the Linux kernel up in full system. If you'd like to try
+> to get it to work yourself, I'd be happy to answer any questions you have.
+Hi,
+Thanks for your reply; I understand the situation now.
+For the time being I will look into ways to use one of the other ISAs
+for my work. If this proves impossible I may well be contributing
+patches for i386 support.
+For the record, the main page of the wiki could be clearer on this
+point.
+Thanks,
+--
+- Show quoted text -Jack Whitham
+jack@cs.york.ac.uk
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

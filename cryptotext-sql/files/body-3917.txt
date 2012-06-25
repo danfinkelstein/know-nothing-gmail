@@ -1,0 +1,26 @@
+On Nov 18, 2007 5:50 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> I have a question regarding the recvtiming() function in bus.cc. Please refer to the following code snippet:
+>
+> if (dest == Packet::Broadcast) {
+>         port = findPort(pkt->getAddr(), pkt->getSrc());
+>         if (timingSnoop(pkt, port ? port : interfaces[pkt->getSrc()])) {
+>             bool success;
+>
+>             pkt->flags |= SNOOP_COMMIT;
+>             success = timingSnoop(pkt, port ? port : .....
+It looks like you're using an old version... you should upgrade to
+2.0b4.  The bus code is somewhat cleaned up.  In particular there's no
+SNOOP_COMMIT flag anymore.
+>
+> Does the destination field in packet is set to Broadcast each time a cache miss occurs?
+Yes.
+> If not, under what scenario is the destination of packet a Broadcast. Looks like timingsnoop() is being called on events other than a cache miss !
+Can you give some examples?
+> Also, any ideas how I can track the information that the current packet needs to occupy the bus because of an earlier cache miss.
+Can you be more specific?  Packets are already delayed if necessary
+due to earlier bus traffic; that's what tickNextIdle is all about.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

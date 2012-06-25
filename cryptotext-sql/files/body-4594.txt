@@ -1,0 +1,6 @@
+Ah, you're right, I was looking at the wrong area. The wrong page offset should have clued me. Calling the translate function appears to be working now, and the pc is being set correctly, thanks.- Show quoted text -
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

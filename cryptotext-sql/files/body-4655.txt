@@ -1,0 +1,10 @@
+I used EioProcess to read EIO traces under M51.1, it was great.Currently I am migrating my code to M52.0b2(plus 
+M5 2.0b2 encumbered files) , however I met error below:========================================================(gdb) runStarting program: /home/linj/nuca_work/prog/m5.debug test.py[Thread debugging using libthread_db enabled]
+[New Thread -1209018688 (LWP 7980)]M5 Simulator SystemCopyright (c) 2001-2006The Regents of The University of MichiganAll Rights ReservedM5 compiled Mar 14 2007 22:53:34M5 started Wed Mar 14 23:44:50 2007
+M5 executing on sky.ece.uic.educommand line: /home/linj/nuca_work/prog/m5.debug test.pyfatal: Out of memory, please increase size of physical memory. @ cycle 0[new_page:build/ALPHA_SE/sim/system.cc, line 223]
+Memory Usage: 193536 KBytesProgram exited with code 01.============================================================When eio file is large( > 400MB) I met the problem, If the eio file is small(<100MB), it is OK.
+The machine I use has 8GB memory and since I can run m51.1 with eio traces, I think it is not a machine problem.Can any of you help me out? I am not sure if I config something wrong.Thanks,Jiang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

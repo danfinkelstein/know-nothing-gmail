@@ -1,0 +1,18 @@
+Mailing list subscription confirmation notice for mailing list
+m5-announce
+We have received a request from 128.238.34.216 for subscription of
+your email address, "dfinke01@cis.poly.edu", to the
+m5-announce@m5sim.org mailing list.  To confirm that you want to be
+added to this mailing list, simply reply to this message, keeping the
+Subject: header intact.  Or visit this web page:
+    http://m5sim.org/cgi-bin/mailman/confirm/m5-announce/673544fdae6a3de39c103a7c25428215a9045242
+Or include the following line -- and only the following line -- in a
+message to m5-announce-request@m5sim.org:
+    confirm 673544fdae6a3de39c103a7c25428215a9045242
+Note that simply sending a `reply' to this message should work from
+most mail readers, since that usually leaves the Subject: line in the
+right form (additional "Re:" text in the Subject: is okay).
+If you do not wish to be subscribed to this list, please simply
+disregard this message.  If you think you are being maliciously
+subscribed to the list, or have any other questions, send them to
+m5-announce-owner@m5sim.org.

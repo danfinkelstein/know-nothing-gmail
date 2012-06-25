@@ -1,0 +1,114 @@
+I am progressing with my ISA implementation. As mentioned before I am
+porting the Alpha ISA to use our in house ISA.
+Interestingly, today when I tried to change the ZeroReg definition (reg 31
+in alpha) to reg 0, I get different output from a trace run of the first
+few instructions of my program (a binary compiled to our ISA, have
+manipulated the elf libraries to accept it in m5).
+Can anyone tell me why there is a reliance on ZeroReg (and
+ReturnAddressReg) being redefined? A quick search of the alpha code (which
+my port is based on) reveals that a lot of hard-coded constants are still
+left in the code (== 31, != 31 etc), I have tried changing these to (==
+ZeroReg, != ZeroReg) in my port, but I still get incorrect output when
+defining ZeroReg as 0.
+I've not yet had a good luck inside the ISA specific parts of the CPU
+code, are there any hard-coded constants there?
+Here is the trace output, up to the point where it breaks in both cases
+(note I have only implemented about 5 instructions so currently it isn't
+getting too far).
+Trace ZeroReg defined as 31::
+command line: build/JAMAICA_SE/m5.debug --trace-flags=Fetch,Decode,Regs
+configs/example/se.py --cmd=/home/stella/horsnelm/jamaica/UTILS/LCC/a.out
+Global frequency set at 1000000000000 ticks per second
+warn: Entering event queue @ 0.  Starting simulation...
+      0: system.cpu0: Fetch: PC:0x101b5c NPC:0x101b60      0: system.cpu0:
+Decode: Decoded lda instruction: 0xac01b9c
+    500: system.cpu0: Fetch: PC:0x101b60 NPC:0x101b64    500: system.cpu0:
+Decode: Decoded ldah instruction: 0xed60011
+   1000: system.cpu0: Fetch: PC:0x101b64 NPC:0x101b68   1000: system.cpu0:
+Decode: Decoded ldah instruction: 0xe60000a
+   1500: system.cpu0: Fetch: PC:0x101b68 NPC:0x101b6c   1500: system.cpu0:
+Decode: Decoded lda instruction: 0xa730000
+   2000: system.cpu0: Fetch: PC:0x101b6c NPC:0x101b70   2000: system.cpu0:
+Decode: Decoded lda instruction: 0xae01a50
+   2500: system.cpu0: Fetch: PC:0x101b70 NPC:0x101b74   2500: system.cpu0:
+Decode: Decoded ldah instruction: 0xef70010
+   3000: system.cpu0: Fetch: PC:0x101b74 NPC:0x101b78   3000: system.cpu0:
+Decode: Decoded jsr instruction: 0x54170000
+   3500: system.cpu0: Fetch: PC:0x101a50 NPC:0x101a54   3500: system.cpu0:
+Decode: Decoded lda instruction: 0x9000000
+   4000: system.cpu0: Fetch: PC:0x101a54 NPC:0x101a58   4000: system.cpu0:
+Decode: Decoded ldah instruction: 0xd20000a
+   4500: system.cpu0: Fetch: PC:0x101a58 NPC:0x101a5c   4500: system.cpu0:
+Decode: Decoded lda instruction: 0x929ec00
+   5000: system.cpu0: Fetch: PC:0x101a5c NPC:0x101a60   5000: system.cpu0:
+Decode: Decoded ldah instruction: 0xd40000a
+   5500: system.cpu0: Fetch: PC:0x101a60 NPC:0x101a64   5500: system.cpu0:
+Decode: Decoded lda instruction: 0x94af000
+   6000: system.cpu0: Fetch: PC:0x101a64 NPC:0x101a68   6000: system.cpu0:
+Decode: Decoded lda instruction: 0x9800000
+   6500: system.cpu0: Fetch: PC:0x101a68 NPC:0x101a6c   6500: system.cpu0:
+Decode: Decoded lda instruction: 0xa800fff
+   7000: system.cpu0: Fetch: PC:0x101a6c NPC:0x101a70   7000: system.cpu0:
+Decode: Decoded add instruction: 0x68b0014
+   7500: system.cpu0: Fetch: PC:0x101a70 NPC:0x101a74   7500: system.cpu0:
+Decode: Decoded stb instruction: 0x20140000
+   8000: system.cpu0: Fetch: PC:0x101a74 NPC:0x101a78   8000: system.cpu0:
+Decode: Decoded and instruction: 0x58c0170
+   8500: system.cpu0: Fetch: PC:0x101a78 NPC:0x101a7c   8500: system.cpu0:
+Decode: Decoded and instruction: 0x56b0171
+   9000: system.cpu0: Fetch: PC:0x101a7c NPC:0x101a80   9000: system.cpu0:
+Decode: Decoded lda instruction: 0xae01b14
+   9500: system.cpu0: Fetch: PC:0x101a80 NPC:0x101a84   9500: system.cpu0:
+Decode: Decoded ldah instruction: 0xef70010
+  10000: system.cpu0: Fetch: PC:0x101a84 NPC:0x101a88  10000: system.cpu0:
+Decode: Decoded jsr instruction: 0x54170000
+  10500: system.cpu0: Fetch: PC:0x20368c NPC:0x203690panic: Page table
+fault when accessing virtual address 0x20368c
+ @ cycle 10500
+[invoke:build/JAMAICA_SE/sim/faults.cc, line 65]
+Program aborted at cycle 10500
+Trace ZeroReg defined as 0 (also ReturnAddressReg redefined as as 31):
+command line: build/JAMAICA_SE/m5.debug --trace-flags=Fetch,Decode,Regs
+configs/example/se.py --cmd=/home/stella/horsnelm/jamaica/UTILS/LCC/a.out
+Global frequency set at 1000000000000 ticks per second
+warn: Entering event queue @ 0.  Starting simulation...
+      0: system.cpu0: Fetch: PC:0x101b5c NPC:0x101b60      0: system.cpu0:
+Decode: Decoded lda instruction: 0xac01b9c
+    500: system.cpu0: Fetch: PC:0x101b60 NPC:0x101b64    500: system.cpu0:
+Decode: Decoded ldah instruction: 0xed60011
+   1000: system.cpu0: Fetch: PC:0x101b64 NPC:0x101b68   1000: system.cpu0:
+Decode: Decoded ldah instruction: 0xe60000a
+   1500: system.cpu0: Fetch: PC:0x101b68 NPC:0x101b6c   1500: system.cpu0:
+Decode: Decoded lda instruction: 0xa730000
+   2000: system.cpu0: Fetch: PC:0x101b6c NPC:0x101b70   2000: system.cpu0:
+Decode: Decoded lda instruction: 0xae01a50
+   2500: system.cpu0: Fetch: PC:0x101b70 NPC:0x101b74   2500: system.cpu0:
+Decode: Decoded ldah instruction: 0xef70010
+   3000: system.cpu0: Fetch: PC:0x101b74 NPC:0x101b78   3000: system.cpu0:
+Decode: Decoded jsr instruction: 0x54170000
+   3500: system.cpu0: Fetch: PC:0x101a50 NPC:0x101a54   3500: system.cpu0:
+Decode: Decoded lda instruction: 0x9000000
+   4000: system.cpu0: Fetch: PC:0x101a54 NPC:0x101a58   4000: system.cpu0:
+Decode: Decoded ldah instruction: 0xd20000a
+   4500: system.cpu0: Fetch: PC:0x101a58 NPC:0x101a5c   4500: system.cpu0:
+Decode: Decoded lda instruction: 0x929ec00
+   5000: system.cpu0: Fetch: PC:0x101a5c NPC:0x101a60   5000: system.cpu0:
+Decode: Decoded ldah instruction: 0xd40000a
+   5500: system.cpu0: Fetch: PC:0x101a60 NPC:0x101a64   5500: system.cpu0:
+Decode: Decoded lda instruction: 0x94af000
+   6000: system.cpu0: Fetch: PC:0x101a64 NPC:0x101a68   6000: system.cpu0:
+Decode: Decoded lda instruction: 0x9800000
+   6500: system.cpu0: Fetch: PC:0x101a68 NPC:0x101a6c   6500: system.cpu0:
+Decode: Decoded lda instruction: 0xa800fff
+   7000: system.cpu0: Fetch: PC:0x101a6c NPC:0x101a70   7000: system.cpu0:
+Decode: Decoded add instruction: 0x68b0014
+   7500: system.cpu0: Fetch: PC:0x101a70 NPC:0x101a74   7500: system.cpu0:
+Decode: Decoded stb instruction: 0x20140000
+panic: Page table fault when accessing virtual address 0xfff
+ @ cycle 7500
+[invoke:build/JAMAICA_SE/sim/faults.cc, line 65]
+Program aborted at cycle 7500
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

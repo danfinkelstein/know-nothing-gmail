@@ -1,0 +1,462 @@
+Thanks everyone.  So you believe the crosstool will work correctly if I
+just use the 2.6.12 libc header files?  Am I understanding you
+correctly?
+So I've found a machine with a newer version of libc and I've been able
+to move ahead with the crosstool provided on the M5 download page.  I'm
+curious if you have found the need to remove the "-Werror" flag from the
+linux-2.6/alpha/kernel/Makefile?  I needed to in order to get through a
+significant portion of the Linux cross-compile?  Otherwise I encounter
+the following error.  Have you had a similar experience?
+cc1: warnings being treated as errors
+arch/alpha/kernel/sys_titan.c: In function 'titan_late_init':
+arch/alpha/kernel/sys_titan.c:281: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c:283: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c:285: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c:287: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c:289: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c: In function 'privateer_init_pci':
+arch/alpha/kernel/sys_titan.c:348: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+arch/alpha/kernel/sys_titan.c:350: warning: ignoring return value of
+'request_irq', declared with attribute warn_unused_result
+make[1]: *** [arch/alpha/kernel/sys_titan.o] Error 1
+make: *** [arch/alpha/kernel] Error 2
+After removing the "-Werror" flag, I encounter the following error.
+>From reading online, it appears that if I install the patch file
+patch-2.6.22-rc2-git6.bz2 I may be able to resolve this error.  However,
+before I do so, I just wanted to make sure that I'm on the right path.
+Thanks again everyone for the quick responses!
+Brad
+Current Error
+=============
+arch/alpha/kernel/built-in.o: In function `marvel_ioportmap':
+arch/alpha/kernel/core_marvel.c:805: undefined reference to
+`pci_vga_hose'
+arch/alpha/kernel/built-in.o: In function `marvel_ioremap':
+arch/alpha/kernel/core_marvel.c:699: undefined reference to
+`pci_vga_hose'
+arch/alpha/kernel/built-in.o: In function `titan_ioportmap':
+arch/alpha/kernel/core_titan.c:447: undefined reference to
+`pci_vga_hose'
+arch/alpha/kernel/built-in.o: In function `titan_ioremap':
+arch/alpha/kernel/core_titan.c:467: undefined reference to
+`pci_vga_hose'
+arch/alpha/kernel/built-in.o: In function
+`marvel_find_console_vga_hose':
+arch/alpha/kernel/core_marvel.c:403: undefined reference to
+`pci_vga_hose'
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-ld: `.exit.text' referenced in section `.rodata' of
+drivers/built-in.o: defined
+ in discarded section `.exit.text' of drivers/built-in.o
+make: *** [.tmp_vmlinux1] Error 1
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+- Show quoted text -Behalf Of nathan binkert
+Sent: Wednesday, May 28, 2008 11:36 AM
+To: M5 users mailing list
+Subject: Re: [m5-users] Config File for Linux 2.6.22
+You can change the kernel that it uses.  I actually don't normally use
+the demo-alpha script.  I created my own based on it.  I'll try to
+find my scripts and send them out.
+  Nate
+On Wed, May 28, 2008 at 11:18 AM, Ali Saidi <saidi@umich.edu> wrote:
+> I figured that but on the crosstools website they build everything
+with
+> 2.6.12.
+>
+> Ali
+>
+> On May 28, 2008, at 2:02 PM, Lisa Hsu wrote:
+>
+>> That just means that you want the toolchain to reflect the same
+headers as
+>> the kernel you want to build for M5.  So, if for M5 you want to use
+kernel
+>> 2.6.22, then you should build your toolchain with those headers so
+they
+>> won't be incompatible when you actually build the kernel, so no need
+to go
+>> back to 2.6.13 if you are running 2.6.22, you're in luck!
+>>
+>> Lisa
+>>
+>> On Wed, May 28, 2008 at 1:36 PM, Beckmann, Brad
+<Brad.Beckmann@amd.com>
+>> wrote:
+>> The wiki says the following:
+>>
+>> "Modify the gcc-3.4.3-glibc-2.3.5.dat so that the linux version it
+>> points to reflects the Linux headers you want to use in your
+toolchain.
+>> Currently in M5 we are using linux-2.6.13, so you should set it
+>> accordingly."
+>>
+>> When running the demo-alpha.sh script, it looks for the headers
+tarball
+>> in the $TARBALLS_DIR.
+>>
+>> Thanks for your help!
+>>
+>> Brad
+>>
+>>
+>> -----Original Message-----
+>> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org]
+On
+>> Behalf Of Ali Saidi
+>> Sent: Wednesday, May 28, 2008 10:31 AM
+>> To: M5 users mailing list
+>> Subject: Re: [m5-users] Config File for Linux 2.6.22
+>>
+>> Where do we say you need the 2.6.13 headers? It's been a couple of
+>> months since I used crosstools, but if I remember correctly it grabs
+>> all the files it needs to compile and you shouldn't have to get
+>> anything manually.
+>>
+>> Ali
+>>
+>>
+>> On May 28, 2008, at 1:25 PM, Beckmann, Brad wrote:
+>>
+>> > Hi Ali,
+>> >
+>> > I'm having a problem finding the the linux libc headers for 2.6.13.
+>> > There are a bunch of libc hearders up to 2.6.12 at this website:
+>> > (http://ep09.pld-linux.org/~mmazur/linux-libc-headers/), but I
+can't
+>> > find 2.6.13 or anything beyond that.  The wiki suggests using
+2.6.13.
+>> > Do you still recommend that version?  Is there any benefit for
+>> > upgrading
+>> > to the 2.6.22 headers?  Do I need to create my own hearders tarball
+or
+>> > is there a website containing all the libc hearder tarballs that I
+>> > can't
+>> > seem to find?
+>> >
+>> > Please excuse the list of question, but this is my first exposure
+to
+>> > much of the linux/libc environment.
+>> >
+>> > Thanks,
+>> >
+>> > Brad
+>> >
+>> >
+>> > -----Original Message-----
+>> > From: m5-users-bounces@m5sim.org
+[mailto:m5-users-bounces@m5sim.org]
+>> > On
+>> > Behalf Of Ali Saidi
+>> > Sent: Tuesday, May 27, 2008 7:20 PM
+>> > To: M5 users mailing list
+>> > Subject: Re: [m5-users] Config File for Linux 2.6.22
+>> >
+>> > Hi Brad,
+>> >
+>> > I'm glad you're finding it useful. If you run into something that
+>> > isn't addressed in the wiki please let us know or add it a bit. The
+>> > more people who contribute the more complete it will become.
+>> >
+>> > Thanks,
+>> > Ali
+>> >
+>> >
+>> >
+>> > On May 27, 2008, at 9:52 PM, Beckmann, Brad wrote:
+>> >
+>> >> Hi Ali,
+>> >>
+>> >> Thanks for the suggestion.  I tried that earlier today and I ran
+into
+>> >> the problem that the crosstool script wanted to write the /opt
+>> >> directory.  I mistakenly thought that meant crosstool script
+required
+>> >> root permission.  In actuality, it doesn't and the script runs
+just
+>> >> fine
+>> >> if you specify a different directory.
+>> >>
+>> >> Thanks for pushing me to think harder about it.  :)
+>> >>
+>> >> By the way, thanks for creating the wiki page...it is definitely
+>> >> helpful.
+>> >>
+>> >> Brad
+>> >>
+>> >>
+>> >> -----Original Message-----
+>> >> From: m5-users-bounces@m5sim.org
+[mailto:m5-users-bounces@m5sim.org]
+>> >> On
+>> >> Behalf Of Ali Saidi
+>> >> Sent: Tuesday, May 27, 2008 6:20 PM
+>> >> To: M5 users mailing list
+>> >> Subject: Re: [m5-users] Config File for Linux 2.6.22
+>> >>
+>> >> Hi Brad,
+>> >>
+>> >> The only thing you can do is recompile the cross compiler on your
+>> >> system or try the other 3.X version of the alpha compiler we have
+on
+>> >> the website. The crosstool script
+(http://www.kegel.com/crosstool/)
+>> >> helps with building a cross-compiler, but it normally takes a bit
+of
+>> >> poking and searching on the cross tools mailing list to make it
+>> >> build.
+>> >>
+>> >> Ali
+>> >>
+>> >>
+>> >>
+>> >>
+>> >> On May 27, 2008, at 6:59 PM, Beckmann, Brad wrote:
+>> >>
+>> >>> Hi Ali,
+>> >>>
+>> >>> Thanks for the response.  I've created a config file for 2.6.22
+>> >>> and I
+>> >>> now have a follow-up question about cross-compiling.  I've been
+>> >>> following the directions you published on the website
+>> >>>
+>> >>
+>> >
+>>
+(http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Ima
+>> >>> ges_and_Kernels_for_M5) and I'm blocked on a glibc error.  The
+>> >>> particular error is the following:
+>> >>>
+>> >>> svvint02[/proj/aatl_perfmod_arch/users/bbeckman/m5-ext/linux-2.6/
+>> >>> linux-2
+>> >>> .6]% make ARCH=alpha
+>> >>> CROSS_COMPILE=../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-
+>> >>> unknown-
+>> >>> lin
+>> >>> ux-gnu/bin/alpha-unknown-linux-gnu- vmlinux
+>> >>> ../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/
+>> >>> bin/
+>> >>> alp
+>> >>> ha-unknown-linux-gnu-gcc: /lib64/tls/libc.so.6: version
+`GLIBC_2.4'
+>> >>> not
+>> >>> found (required by
+>> >>> ../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/
+>> >>> bin/
+>> >>> alp
+>> >>> ha-unknown-linux-gnu-gcc)
+>> >>> CHK     include/linux/version.h
+>> >>> CHK     include/linux/utsrelease.h
+>> >>> CC      arch/alpha/kernel/asm-offsets.s
+>> >>> ../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/
+>> >>> bin/
+>> >>> alp
+>> >>> ha-unknown-linux-gnu-gcc: /lib64/tls/libc.so.6: version
+`GLIBC_2.4'
+>> >>> not
+>> >>> found (required by
+>> >>> ../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/
+>> >>> bin/
+>> >>> alp
+>> >>> ha-unknown-linux-gnu-gcc)
+>> >>> make[1]: *** [arch/alpha/kernel/asm-offsets.s] Error 1
+>> >>> make: *** [prepare0] Error 2
+>> >>>
+>> >>> So I noticed that the libc version in my environment is
+>> >>> libc-2.3.2.so
+>> >>> and I believe this is the source of my problem:
+>> >>>
+>> >>> svvint02[/tool/pandora/.package/glib-2.4.4]% ls -l /lib64/tls/
+>> >>> libc.so.6
+>> >>> lrwxrwxrwx    1 root     root           13 Mar 29 18:30
+>> >>> /lib64/tls/libc.so.6 -> libc-2.3.2.so
+>> >>>
+>> >>> Would you suspect this is the problem as well?  I don't have root
+>> >>> permissions on the machines I'm using so I can't directly install
+a
+>> >>> newer version of libc.  I just wanted to check if there was
+another
+>> >>> solution possible.
+>> >>>
+>> >>> Thanks,
+>> >>>
+>> >>> Brad
+>> >>>
+>> >>> -----Original Message-----
+>> >>> From: m5-users-bounces@m5sim.org
+[mailto:m5-users-bounces@m5sim.org]
+>> >>> On
+>> >>> Behalf Of Ali Saidi
+>> >>> Sent: Friday, May 23, 2008 7:45 PM
+>> >>> To: M5 users mailing list
+>> >>> Subject: Re: [m5-users] Config File for Linux 2.6.22
+>> >>>
+>> >>> Hi Brad,
+>> >>>
+>> >>> I created the other config files, but I don't have one for
+2.6.22.
+>> >>> If
+>> >>> you want one you should just start with the 2.6.18 config file
+and
+>> >>> if
+>> >>> you attempt to make the kernel you'll get prompted for any new
+>> >>> parameters that weren't in 2.6.18.
+>> >>>
+>> >>> Ali
+>> >>>
+>> >>>
+>> >>>
+>> >>> On May 23, 2008, at 9:59 PM, Beckmann, Brad wrote:
+>> >>>
+>> >>>> Hi,
+>> >>>>
+>> >>>> Could you please point me to the patch file for the .config.m5
+file
+>> >>>> needed for Linux 2.6.22?  I notice that the Linux Patches
+tarball
+>> >>>> contains defaultconfig files for 2.6.13, 2.6.16, and 2.6.18, but
+>> >>>> not
+>> >>>> 2.6.22.
+>> >>>>
+>> >>>> Thanks for your help!
+>> >>>>
+>> >>>> Brad
+>> >>>>
+>> >>>> _______________________________________________
+>> >>>> m5-users mailing list
+>> >>>> m5-users@m5sim.org
+>> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>
+>> >>> _______________________________________________
+>> >>> m5-users mailing list
+>> >>> m5-users@m5sim.org
+>> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>
+>> >>>
+>> >>> _______________________________________________
+>> >>> m5-users mailing list
+>> >>> m5-users@m5sim.org
+>> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>>
+>> >>
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>
+>> >>
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hello,
+From my understanding Ticks are independent of cpu clock cycle, I was
+wondering if their an easy way to normalize CurTicks to be expressed
+in terms of clock cycle. Are there functions or variables to do that?
+Like
+normalize(CurTick), or perhaps a parent-clock variable, where I can
+make my own functions.
+Thanks
+EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

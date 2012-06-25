@@ -1,0 +1,6 @@
+What is the proper way of using multiple programmes using m5. Currently, I use fast forward at command line and set max-inst, but the benchmarks run for much longer than that. If I use max_insts_all_threads, I have the same problem. For MP workloads looks like there is not much control for specifying particular no. of instructions which makes compariosn a bit tough. When I interrupt the simulation using sigintp, sometimes statistics are printed but otherwise the job exists rather than done.
+What is the correct way of running multiple programmes using m5?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

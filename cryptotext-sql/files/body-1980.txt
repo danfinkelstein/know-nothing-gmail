@@ -1,0 +1,58 @@
+Hello Veydan,
+I have the same problem compiling the Splash-2 for alpha. I hope some
+can help. Regarding your first mail in this message
+http://article.gmane.org/gmane.comp.emulators.m5.users/2793/match=splash+2+precompiled
+It says that the precompiled binaries does not work on alpha. It seems
+for your second mail that you could not compile for alpha, so do not
+expect that those binaries are going to work in FS.
+Any ideas reagarding the error of :
+../../../../../parmacs.upc.3/pthreads/libparmacs_pthreads.a: could not
+read symbols: Archive has no index; run ranlib to add one
+collect2: ld returned 1 exit status
+make: *** [OCEAN] Error 1
+Thank you.
+- Show quoted text -
+On Fri, Feb 6, 2009 at 3:20 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Thank you Isuru, I have tried to run splash2 under ALPHA-SE mode, the
+> precompiled splash program ran well. But I have encountered a problem when
+> compiling the splash
+>
+> alpha-unknown-linux-gnu-gcc: unrecognized option `-non_shared'
+> ../../../../../parmacs.upc.3/pthreads/libparmacs_pthreads.a: could not read
+> symbols: Archive has no index; run ranlib to add one
+> collect2: ld returned 1 exit status
+> make: *** [OCEAN] Error 1
+>
+> In the original makefile, the compiler is cc, I replaced it with
+> alpha-unknown-linux-gnu-gcc.
+> I deleted the -non_shared and ran ranlib but the problem remained. Is there
+> any problem with the parmacs.  I downloaded the splash and the crosstool
+> from the wiki. Thanks !
+>
+>> Dear Veydan
+>>
+>> If you need to do modifications to the splash code, then use a cross
+>> compiler
+>> from (http://www.kegel.com/crosstool/) to compile the modified splash
+>> program.
+>> Then use them in SE mode with -c option. I like this feature of SE mode
+>> because
+>> you dont need to create an image with your programs. Three simple steps.
+>> Write your c program.
+>> Compile using the cross compiler.
+>> Give the location of binaries as an command line argument to the SE mode.
+>>
+>> regards,
+>> Isuru
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

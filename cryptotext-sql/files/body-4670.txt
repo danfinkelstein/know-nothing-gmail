@@ -1,0 +1,28 @@
+Joe,
+There is currently a memory leak in the simulated memory system related to packets and requests that are created but never destroyed.  The problem usually manifests itself slowly and for short simulation runs doesn't usually cause a problem.  If the simulated memory system is designed in a way such that it has a large number of writebacks occuring (small L1 cache for example) the problem becomes larger more quickly and even short simulations run into memory limitations.  We are currently trying to locate the source of the memory leak.
+-Ron- Show quoted text -
+On Fri, 9 Mar 2007, Joe Gross wrote:
+Hello,
+I'm trying to run several benchmarks, including spec2000 and stream (http://www.cs.virginia.edu/stream/) on the 2.0b2 release, using g++ 3.4.3 as the cross-compiler and gcc3.4.3,4.0.2,4.1.1 as the compiler of m5 and all combinations have the same problem of the m5 binary progressively using more and more memory, until it fills all the memory on the system(up to 1.7gb now). I'm executing the se.py script using --caches and --detailed as well. Memcheck shows these problems as well as others when running tests/test-progs/hello/bin/alpha/linux/hello:
+==16789== 1047232 bytes in 32726 blocks are definitely lost in loss record 369 of 374
+==16789==    at 0x1B904C07: operator new(unsigned) (vg_replace_malloc.c:133)
+==16789==    by 0x8114C77: CoherenceProtocol::CoherenceProtocol(std::string const&, std::string const&, bool) (statistics.hh:398)
+==16789==    by 0x8115219: CoherenceProtocolBuilder::create() (param.hh:237)
+==16789==    by 0x8164822: SimObjectClass::createObject(IniFile&, std::string const&) (builder.cc:136)
+==16789==
+==16789==
+==16789== 2290960 bytes in 28637 blocks are definitely lost in loss record 372 of 374
+==16789==    at 0x1B904C07: operator new(unsigned) (vg_replace_malloc.c:133)
+==16789==    by 0x806E36F: Stats::Formula::Formula() (statistics.cc:65)
+==16789==    by 0x8187875: _GLOBAL__I_hostInstRate (stat_control.cc:52)
+==16789==    by 0x82CFEE4: (within m5.opt)
+I'm wondering if I need to configure something differently, if the cross-compiled binary (stream) could be doing this (although it makes no malloc calls), if this is some issue with the compiler or if this is a known problem. Any help is appreciated.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

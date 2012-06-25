@@ -1,0 +1,12 @@
+Hi all,
+I tried the Gcc 4.2.3 and I had no problem to compile M5 on the 64-bit
+Fedora. But Gcc 4.2.4 doesn't work.
+The followings are the sofewares versions that I am using now.  They
+work for 64-bit Fedora and 64-bit Ubuntu.
+Scons:  0.96.91  Python: 2.5.1  Swig: 1.3.33  Gcc:4.2.3
+- Show quoted text -
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

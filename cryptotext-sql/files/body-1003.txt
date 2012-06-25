@@ -1,0 +1,7 @@
+HiI am dealing with simulation of multi-core multi-threaded system for which I am using CPU 2000 benchmarks. I want to fast forward instructions, say 5M, but if I apply the fast forward statement in command line it produces the error: 
+panic: only one workload allowed @ cycle 0Is there any solution for using fast forward approach in this multi-core multi-threaded system.
+Thanks in advance Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

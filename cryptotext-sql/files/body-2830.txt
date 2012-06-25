@@ -1,0 +1,30 @@
+You should be able to use suspend() and activate() on the thread
+contexts to make this work.  You'll have to add at least some of the
+hooks to call those yourself though, e.g., by creating a new event
+type.  There's also a quiesce pseudo-instruction in alpha that will
+call suspend() if you can put that in your binary at the right place.
+Steve
+- Show quoted text -
+On Thu, Jun 26, 2008 at 12:35 AM, Dean Michael Ancajas
+<dbancajas@gmail.com> wrote:
+> Is there a way to insert a trigger(probably not max_insts since it will halt
+> the entire simulation) in SMT O3 cpu such that a single thread will be
+> paused/resumed after it has executed a certain number of instructions, while
+> other threads continue to execute? Possibly dump the statistics ...Then
+> resume the threads all together ..? I'm trying to find a work-around on
+> warming up the caches(before recording detailed simulation) without
+> resolving to(Sampling) using two Atomic CPUs and having to deal with the
+> page table entries and memory address collision stuff..
+>
+> thanks,
+> Dean Michael Ancajas
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

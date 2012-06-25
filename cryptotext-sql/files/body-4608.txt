@@ -1,0 +1,10 @@
+Ying,We have no parallelism in the M5 simulator - but would love to have it sometime.  If you would like to make M5 threaded, we'd be happy to help.Lisa- Show quoted text -On 4/2/07, 
+Ying Xiong <ying.michaelxiong@gmail.com> wrote:- Show quoted text -
+Hello, everyone:I have a question about running M5 on a cluster to speed-up benchmark's running. Except for the configuration of cluster, is there any configure option to be applied to M5 to make it to exploit the parallelism available on a cluster?  Just like M5's compilation can be speed-up on a dual-core machine using a "-j3" option of scons.
+Thanks in advance.Sincerely,Ying Xiong
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

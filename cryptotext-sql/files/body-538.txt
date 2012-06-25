@@ -1,0 +1,10 @@
+Is there an explenation for the extra stall cycles of long latency
+instructions like multiplications and loads?Hey Max, make sure you double check the latency for the functional units you are evaluating. I believe the default latency for the MDU is 1 while the default for the ALU is 0. Thus, it would make sense that you're multiply dependency would take 1 longer stall cycle since the multiply isnt completing until stage 4 not stage 3. 
+Similarly,  a load memory operation isnt something that will be completed with a 0 cycle latency. You'll need 1 cycle to make the request and on the following cycle you can retreive the data.  
+And how should the absence of forwarding ports be modeled in M5?
+Right now, forwarding is implemented in the ideal case where any and all forwarding paths are made available once instruction data is ready. It was easier to implement the general model this way, but if you wanted to start varying when instruction data from one stage is available to another then M5 has an object called "wires" to handle that (which may be the long term solution here actually)
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

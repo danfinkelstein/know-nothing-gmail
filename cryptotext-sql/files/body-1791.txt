@@ -1,0 +1,8 @@
+Hi all, Is the address space identical to the tsunami system address space, which is from the 0x800 0000 0000 is the space for PIO, the low 4G space is system memory ? I read the arch/alpha/isa_trait.h and got this:
+// User Virtualconst Addr USegBase = ULL(0x0);const Addr USegEnd = ULL(0x000003ffffffffff);// Kernel Direct Mappedconst Addr K0SegBase = ULL(0xfffffc0000000000);const Addr K0SegEnd = ULL(0xfffffdffffffffff);
+// Kernel Virtualconst Addr K1SegBase = ULL(0xfffffe0000000000);const Addr K1SegEnd = ULL(0xffffffffffffffff);Every time I write something into 0x801 0000 0000, which is a valid PIO address according to tsunami handbook, a segmentation fault occur. 
+This is a bit different from the one above, did I miss anything? Thank you !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

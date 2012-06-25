@@ -1,0 +1,81 @@
+HIThanks for the response Will. Me too assuming that the Simpoint value should be lesser then the max instruction count. But then the point is" what should I take the standard simpoint value" for a simulation with max_inst_all_thread to be 100 Million instructions.
+I have tried simulations with standard simpoint value that have large value, it doesn't give any change in the results, while when using the early simpoint values that has lower simpoint values, it produces the desired result. Why is this so??
+Thanks in advance.Ashutosh Jain - Show quoted text -On Sun, Oct 4, 2009 at 3:24 PM, Will Beazley <wgbeazley@my.lamar.edu> wrote:
+Since no one more knowledgeable is going to  answer I'll take a  stab at it:
+What is your max_insts = ?
+<for the three cases?>
+I had this problem and I found that if the Simpoint is greater than the
+max_insts, max_insts is reached before the Simpoint. Further, I should
+presume that max_insts should be the limit/end of what you are trying to
+sample so Simpoint is the start of your sample and max_insts is the or
+greater than the end of it.
+Ashutosh Jain wrote:
+> Hi
+>
+> I am trying to simulate two experiments dealing with multi-core
+> multi-threaded system. Say case is 2 core X 2 thread. So there are 4
+> benchmarks used. I am using following SPEC CPU 2000 benchmarks: swim,
+> lucas, equake, fma3d. I have also setup the early simpoint values for
+> each for them ( 5, 35, 194, 298 respectively) .
+>
+> Now I am running three simulations with max_insts_all_thread = 100M:
+>
+> case (0) when all benchmarks have simpoint values 0.
+>
+> case (1) When benchmarks are used in following order with their early
+> simpoint values
+>
+> system.cpu[0].workload = Benchmarks.SPECSWIM() (500,000,000),
+> Benchmarks.SPECFMA3D() (29,800,000,000)
+> system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000),
+> Benchmarks.SPECART() (3,500,000,000)
+>
+> case (2) When benchmarks are used in with their early simpoint values
+> while inter-changing the benchmarks for cpu [0].
+>
+> system.cpu[0].workload = Benchmarks.SPECFMA3D() (29,800,000,000),
+> Benchmarks.SPECSWIM() (500,000,000)
+> system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000),
+> Benchmarks.SPECART() (3,500,000,000)
+>
+> I have compared the simulations stats on m5stats file. The case (0)
+> and case (2) produces no differences in the statistics in the stats
+> file. But the case (1) produces the difference in the statistics. Why
+> this happens??
+>
+> Ashutosh Jain
+>
+> On Thu, Oct 1, 2009 at 9:49 AM, Shoaib Akram <sakram3@illinois.edu
+> <mailto:sakram3@illinois.edu>> wrote:
+>
+>     I guess if you go through the ASPLOS presentation, there are good
+>     examples.
+>
+>     ---- Original message ----
+>     >Date: Thu, 1 Oct 2009 10:43:14 -0400
+>     >From: soumyaroop roy <sroy@cse.usf.edu <mailto:sroy@cse.usf.edu>>
+>     >Subject: [m5-users] Workload Simpoint
+>     >To: M5 users mailing list <m5-users@m5sim.org
+>     <mailto:m5-users@m5sim.org>>
+>     >
+>     >   How does the simpoint attribute work? Is it like
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

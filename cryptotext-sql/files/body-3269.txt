@@ -1,0 +1,9 @@
+> Previous version of m5 were distributed with radix benchmark binary that i was able to run on a multiprocessor (with multiple threads in SE mode.) Is the binary supported for latest beta?
+I think we removed it only because there was no test that actually
+used it.  I don't think there is any reason that it shouldn't work
+anymore.  Can anyone add anything here?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

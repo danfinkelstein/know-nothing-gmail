@@ -1,0 +1,12 @@
+> Ah, yes, I figured this out.  I simply updated my version of gcc to
+> 4.4.0.  Not sure if that was the best solution, but it works for the
+> moment.
+>
+> The documentation states that M5 should work with gcc 3.4.6.  Is this
+> still true?
+I'm not sure.  I imagine that most of us are probably using 4.x these days.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,36 @@
+Doesn't seem to be very clear to me what to do.  I see a -j option for a
+jobfile?  What is that supposed to be?  Test.py no longer seems to be
+existent for an example.  I was hoping to see just a way to input my files
+to the script and have it pump out .dot files to be compiled.
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of nathan binkert
+Sent: Wednesday, March 26, 2008 11:52 AM
+To: M5 users mailing list
+Subject: Re: [m5-users] Generating Graphviz output from profile.cpuN.dat
+files
+> I was told that I could generate 'dot' plots from profile data created
+> during a simulation run.  Could someone give a quick primer on how to do
+> this?
+I haven't done it in a long time, but util/stats/profile.py is the
+thing to use.  Give it a shot and if it doesn't work or make sense,
+let me know.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+No virus found in this outgoing message.
+Checked by AVG.
+Version: 7.5.519 / Virus Database: 269.22.0/1342 - Release Date: 3/25/2008
+10:26 AM
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

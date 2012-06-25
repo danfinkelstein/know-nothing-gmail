@@ -1,0 +1,11 @@
+Hello,
+I want to run some SPEC benchmarks on M5 in SE mode. The thing is, I
+would like to "fast forward" the first 1 billion instructions (to warm
+up the caches), then simulate the next 1 billion instructions (i.e
+switch to a more detailed model).
+So how do I do this? Thanks!
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

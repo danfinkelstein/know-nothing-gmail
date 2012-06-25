@@ -1,0 +1,29 @@
+Hi all,
+I want to build a multicore system in FS mode without the Ethernet.
+The number of cores is two and I want to run different benchmarks on
+different core. How could I change the fs.py ? And what else should I
+do?
+I have read the previous content in mailing list and find in Feb,
+2007, someone wrote a part of script as follows:
+"system = makeLinuxAlphaSystem(mem_mode, bm[0])
+    system.cpu = [AtomicSimpleCPU(), AtomicSimpleCPU(),
+AtomicSimpleCPU(), AtomicSimpleCPU()]
+    system.cpu[0].connectMemPorts(system.membus)
+    system.cpu[0].mem = system.physmem
+    system.cpu[1].connectMemPorts(system.membus)
+    system.cpu[1].mem = system.physmem
+    system.cpu[2].connectMemPorts(system.membus)
+    system.cpu[2].mem = system.physmem
+    system.cpu[3].connectMemPorts(system.membus)
+    system.cpu[3].mem = system.physmem
+root = Root(clock = '1GHz', system = system)"
+I wonder if he is right. If he is right, how to run two different
+benchmarks. I think he just configure the same benchmark for all the
+cpus.
+Thank you very much!
+Best regards,
+Lei Shi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

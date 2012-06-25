@@ -1,0 +1,5 @@
+I want to measure the difference in performance with and without coherence protocol when multiple cores are running separate applications. I got similar statistics in both cases. I dosnot specify a protocl on private L2 caches, but the statistics are similar to when i specify one. Does snooping has been modelled to take up cycles or it doesnot effect that. what changes I possible need to make !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

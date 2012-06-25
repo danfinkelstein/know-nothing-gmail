@@ -1,0 +1,8 @@
+2) drivesys.cpu.not_idle_fraction=0.000894
+   Why are both not_idle_fractions so low? about 0.089%?
+This is so low because your benchmark isn't doing a whole lot.  There are a couple of possiblities.  1)  It really isn't doing much.  2) The window over which your sampling your statistics includes startup or teardown time.
+If it's 2, this could be because you don't reset stats before the window begins or because you don't terminate the simulation as soon as the window ends.  You'll notice that most of our scripts include an "m5 exit"  This terminates the simulation immediately.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

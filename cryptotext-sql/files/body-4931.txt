@@ -1,0 +1,29 @@
+Hi,
+I see that the BaseCache.py has parameters split and split_size to indicate
+whether the cache is split (is that correct interpretation?)
+however I did not find any declaration of L1 cache that sets split=true (Im
+assuming that L1 is a split cache for multi processors -- is that right?)
+Is it because there is no case of multicore processor in the given examples?
+Does it also mean that to split a BaseCache, I just set the split=true and
+set the bus interfaces accordingly and all coherence/other issues are taken
+care of?
+Thanks,
+Forum
+- Show quoted text -
+Quoting Forum Mangal Parmar <forumm@stanford.edu>:
+>
+> Hi,
+> is there a command like cpu.addPrivateSplitL1Caches in m5 1.0 that I can
+> use?
+>
+> I am trying to add a shared L3 and split the L2 just like the exisiting
+> L1.
+> so I was wondering if there is some python command that does that.
+>
+> Thanks you
+> Forum
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

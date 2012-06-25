@@ -1,0 +1,11 @@
+Hi,when i execute my M5 Simulator, something happen. I don't know why, can you help me?IMaybe this question is a stupid one because i am new guy to linux and M5 simulator.Thank you.e.g.
+hegen@hegen-desktop:/reseach/m5$ ./build/ALPHA_FS/m5.opt configs/example/fs.py
+M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Sep 22 2008 10:59:02M5 started Mon Sep 22 11:59:20 2008M5 executing on hegen-desktop
+command line: ./build/ALPHA_FS/m5.opt configs/example/fs.pyTraceback (most recent call last):  File "<string>", line 1, in <module>  File "build/ALPHA_FS/python/m5/main.py", line 350, in main
+    execfile(sys.argv[0], scope)  File "configs/example/fs.py", line 71, in <module>    test_sys = makeLinuxAlphaSystem(test_mem_mode, bm[0])  File "/reseach/m5/configs/common/FSConfig.py", line 33, in makeLinuxAlphaSystem
+    self.disk0.childImage(mdesc.disk())  File "/reseach/m5/configs/common/Benchmarks.py", line 25, in disk    return env.get('LINUX_IMAGE', disk('linux-latest.img'))  File "/reseach/m5/configs/common/SysPaths.py", line 9, in disk
+    system()  File "/reseach/m5/configs/common/SysPaths.py", line 31, in system    raise ImportError, "Can't find a path to system files."ImportError: Can't find a path to system files.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

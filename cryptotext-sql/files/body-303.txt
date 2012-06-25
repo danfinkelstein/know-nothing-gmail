@@ -1,0 +1,7 @@
+Hi, i've been trying to compile the Splash-2 benchmarks available in the downloads section but for some reason it's not working.I see that it uses the parmacs library, but it's not working. The linker complains about it. So I thought about comiling it again. But gcc complains about the assembly code.
+Well, i got the alpha cross-compiler from the ct-ng tool indicated in the m5 website. The version of the generated gcc is "alphaev67-unknown-linux-gnu-gcc (crosstool-NG-1.6.0) 4.4.3".Is there some magical step or tool to compile the benchmarks for Alpha in SE mode?
+Later I'll need to use SPARC processors and I imagine things won't be so dificult once I get things working on Alpha.Thanks in advance,--Eberle A. Rambo.UFSC
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

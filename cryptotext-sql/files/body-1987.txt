@@ -1,0 +1,7 @@
+Hi, I am a beginner of M5. I tried to use the run.py in configs/splash2 to run splash2 program on M5 in full system mode, but got an error below:command line: build/ALPHA_FS/m5.opt -d result/ configs/splash2/run.py -b Ocean_contig -n 4
+Traceback (most recent call last):  File "<string>", line 1, in <module>  File "src/python/m5/main.py", line 355, in main    execfile(sys.argv[0], scope)  File "configs/splash2/run.py", line 78, in <module>
+    class Cholesky(LiveProcess):NameError: name 'LiveProcess' is not definedDoes anyone encounter such a problem before? What is the LiveProcess? Thank you!If I want to write some program myself and get it run on M5 in full system mode, what should  I do? 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

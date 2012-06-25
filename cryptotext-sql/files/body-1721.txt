@@ -1,0 +1,6 @@
+Hi, all, I am confused of how to add new class to M5. When I added a new class called RaceCache in the src/mem/cache, and modified the SConscript and some other files, I got an compile error as followed:build/ALPHA_FS/libm5_opt.a(params_wrap.o): In function `_wrap_RaceCacheParams_create':
+/m5-stable-733318abb7b1/build/ALPHA_FS/params/params_wrap.cc:31843: undefined reference to `RaceCacheParams::create()'collect2: ld returned 1 exit statusscons: *** [build/ALPHA_FS/m5.opt] Error 1I am always confused with anything related to params, I think that may be a simple error because of my unfamiliarity of M5, can somebody give me some hints on how to deal with this ? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

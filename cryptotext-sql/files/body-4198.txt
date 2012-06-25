@@ -1,0 +1,160 @@
+I don't know exactly what the problem is, but I see that the M5 2.0beta2 release notes say "Uni-coherence fixes in full-system".  I'd suggest upgrading to the latest release (2.0beta3) and seeing if that solves you problem.  If not, let us know.
+Steve- Show quoted text -On 10/5/07, Jun Pang <mryld08@gmail.com> wrote:- Show quoted text -
+Hi all:
+ 
+I have a problem with the python script. I want to add an L1cache and an L2cache to the O3CPU using the python script fs_l2cache.py. The M5 edition is 
+2.0.1. My operation system is FC6.  The fs_l2cache.py is as follows(I just changed a little from the fs.py ):
+ 
+###############################################################################
+import optparse, os, sys
+import m5
+from m5.objects import *
+m5.AddToPath('../common')
+from FSConfig import *
+from SysPaths import *
+from Benchmarks import *
+from FullO3Config import *
+ 
+parser = optparse.OptionParser()
+ 
+parser.add_option("-d", "--detailed", action="store_true")
+parser.add_option("-t", "--timing", action="store_true")
+parser.add_option("-m", "--maxtick", type="int")
+parser.add_option("--maxtime", type="float")
+parser.add_option("--dual", action="store_true",
+                  help="Simulate two systems attached with an ethernet link")
+parser.add_option("-b", "--benchmark", action="store", type="string",
+                  dest="benchmark",
+                  help="Specify the benchmark to run. Available benchmarks: %s"\
+                          % DefinedBenchmarks)
+parser.add_option("--etherdump", action="store", type="string", dest="etherdump",
+                  help="Specify the filename to dump a pcap capture of the ethernet"
+                  "traffic")
+parser.add_option("--caches", action="store_true")
+                  
+(options, args) = parser.parse_args()
+ 
+if args:
+    print "Error: script doesn't take any positional arguments"
+    sys.exit(1)
+ 
+ 
+class L1Cache(BaseCache):
+    assoc =2
+    latency = 1
+    block_size = 64
+    mshrs = 12
+    tgts_per_mshr = 8
+#    protocol = CoherenceProtocol(protocol=options.protocol)
+ 
+ 
+class L2Cache(BaseCache):
+    assoc = 8
+    block_size = 64
+    latency = 10
+    mshrs = 92
+    tgts_per_mshr = 16
+#    write_buffers = 8
+ 
+if options.detailed:
+    cpu = DetailedO3CPU()
+    cpu2 = DetailedO3CPU()
+    mem_mode = 'timing'
+elif options.timing:
+    cpu = TimingSimpleCPU()
+    cpu2 = TimingSimpleCPU()
+    mem_mode = 'timing'
+else:
+    cpu = AtomicSimpleCPU()
+    cpu2 = AtomicSimpleCPU()
+    mem_mode = 'atomic'
+ 
+cpu.clock = '2GHz'
+cpu2.clock = '2GHz'
+ 
+if options.benchmark:
+    if options.benchmark not in Benchmarks:
+        print "Error benchmark %s has not been defined." % options.benchmark
+        print "Valid benchmarks are: %s" % DefinedBenchmarks
+        sys.exit(1)
+    
+    bm = Benchmarks[options.benchmark]
+else:
+    if options.dual:
+        bm = [Machine(), Machine()]
+    else:
+        bm = [Machine()]
+ 
+if len(bm) == 2:
+    s1 = makeLinuxAlphaSystem(mem_mode, bm[0])
+    s1.cpu = cpu
+    cpu.connectMemPorts(s1.membus)
+    cpu.mem = s1.physmem
+    s2 = makeLinuxAlphaSystem(mem_mode, bm[1])
+    s2.cpu = cpu2
+    cpu2.connectMemPorts(s2.membus)
+    cpu2.mem = s2.physmem
+    root = makeDualRoot(s1, s2, options.etherdump)
+elif len(bm) == 1:
+    root = Root(clock = '1THz',
+                system = makeLinuxAlphaSystem(mem_mode, bm[0]))
+    root.system.cpu = cpu
+    if options.caches:
+         root.system.cpu.addTwoLevelCacheHierarchy(L1Cache(size = '32kB'),L1Cache(size = '64kB'), L2Cache(size = '2MB'))
+         root.system.cpu.l2cache.mem_side = root.system.membus.port
+         root.system.cpu.mem = cpu.dcache
+    else:
+         cpu.connectMemPorts(root.system.membus)
+         root.system.cpu.mem = root.system.physmem
+else:
+    print "Error I don't know how to create more than 2 systems."
+    sys.exit(1)
+ 
+m5.instantiate(root)
+ 
+if options.maxtick:
+    maxtick = options.maxtick
+elif options.maxtime:
+    simtime = int(options.maxtime * root.clock.value)
+    print "simulating for: ", simtime
+    maxtick = simtime
+else:
+    maxtick = -1
+ 
+exit_event = m5.simulate(maxtick)
+ 
+while exit_event.getCause() == "checkpoint":
+    m5.checkpoint(root, "cpt.%d")
+    exit_event = m5.simulate(maxtick - m5.curTick())      
+ 
+print 'Exiting @ cycle', m5.curTick(), 'because', exit_event.getCause()
+ 
+####################################################################
+However,  I get the following error message:    
+ 
+ 
+M5 compiled Oct  5 2007 02:43:57
+M5 started Fri Oct  5 13:02:02 2007
+M5 executing on localhost.localdomain
+command line: build/ALPHA_FS/m5.opt configs/example/fs_cache_2.py -d --caches
+      0: system.tsunami.io.rtc: Real-time clock set to Sun Jan
+  1 00:00:00 2006
+Listening for console connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+warn: Entering event queue @ 0.  Starting simulation...
+warn: cycle 245000: Quiesce instruction encountered, halting fetch!
+warn: cycle 266000: Quiesce instruction encountered, halting fetch!
+warn: cycle 318500: fault (itbmiss) detected @ PC 0x000000
+m5.opt: build/ALPHA_FS/mem/cache/tags/cache_tags_impl.hh:178: typename CacheTags<Tags, Compression>::BlkType* CacheTags<Tags, Compression>::handleFill(typename Tags::BlkType*, Packet*&, unsigned int, PacketList&, Packet*) [with Tags = LRU, Compression = NullCompression]: Assertion `tmp_blk == blk' failed.
+Program aborted at cycle 404500
+Aborted
+ 
+Could somebody tell me what is wrong with my configure script? How can I change it? Thank you very much.
+ 
+Shi Lei
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

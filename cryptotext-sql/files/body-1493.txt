@@ -1,0 +1,33 @@
+My guess is that you created a vector stat and didn't give it a name
+and you didn't initialize it.
+  Nate
+- Show quoted text -
+On Wed, May 6, 2009 at 10:38 PM, Gaurav Dhiman <dimanuec@gmail.com> wrote:
+> Hi All,
+>
+> I am running into problem using stats in M5. I had previously added a
+> few scalar stats to the M5 code, which worked fine for me, as I got
+> the corresponding data in m5stats.txt. However, today I added some
+> more, but could not get it to work. The code compiles well, but I get
+> a runtime error with the following panic message:
+>
+> panic: stat check failed for
+>  @ cycle 0
+> [check:build/ALPHA_SE/base/statistics.cc, line 244]
+>
+> I suspect it is reading a "blank"/non existing stat variable, for
+> which the check is failing, but am not sure. Any ideas into what might
+> be happening?
+>
+> Thanks in advance,
+> -Gaurav
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

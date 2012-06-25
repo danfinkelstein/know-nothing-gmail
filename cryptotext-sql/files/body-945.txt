@@ -1,0 +1,11 @@
+Hello,
+I am trying to convert addresses associated with memory packets into
+hexadecimal form in order to save space.  I am trying to find a
+int2hex converter in M5, is there one? Under the directory tree: base,
+ I could only find a hex2int function.
+Thanks,
+EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

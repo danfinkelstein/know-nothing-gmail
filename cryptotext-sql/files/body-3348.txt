@@ -1,0 +1,20 @@
+Thanks for help......
+ 
+but I dont know how to file a bug. Please guide me reagrding that.
+ 
+Thanks once again in advance
+ 
+Ashutosh JainM.S. Computer Science
+ 
+- Show quoted text -On Wed, Apr 2, 2008 at 10:17 AM, nathan binkert <nate@binkert.org> wrote:
+It means that you created a statistic somewhere, but you did notinitialize it in a regStats() function.
+I know that the error message is really not that helpful.  File a bugreport if you'd like to see it fixed. Nate
+> When run ALPHA_SE/m5.debug, we got the following message.  Can anyone> explain what might cause the "panic: stat check failed for> " and how to fix the problem?  Thank you.
+>> panic: stat check failed for>   @ cycle 0> [check:m5/base/statistics.cc, line 280]> Program aborted at cycle 0> Abort>> Thanks in advance> --> Ashutosh Jain
+> M.S. Computer Science,>> _______________________________________________>  m5-users mailing list>  m5-users@m5sim.org>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

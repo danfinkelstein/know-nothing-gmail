@@ -1,0 +1,23 @@
+Yea, with speculative execution it's not impossible for the CPU to fetch from a bogus physical address in kernel mode due to a misspeculated path.  Physical memory should respond to this with a Bad Address response, which then gets ignored when the misspeculated path is squashed.
+Steve- Show quoted text -On Fri, May 29, 2009 at 4:51 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+Hi all,
+For the O3 cpu running several of the parsec benchmarks, let's focus on
+x264 with 16 cores. I see that it's fetch unit requests 0xffffffc0 which
+fails in the physmem because it is not within the valid address range
+for the functional memory. The address is the result of  "iew: Execute:
+Branch mispredict"  being detected and execute redirects fetch to PC:
+0xffffffc0. This strange behavior does not occur when I use
+SimpleTimingCPU. Is there any potential for the iew stage to redirect
+fetch to a bogus address, that is inst->readNextPC() in iew_impl.hh
+returns a bogus address that would propagate to the memory system and be
+caught later?
+Thanks in advance,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

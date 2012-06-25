@@ -1,0 +1,6 @@
+Hi,     I am using M5 to study cache coherence things. I am trying to use splash2 as benchmarks. But seems they are not easily compilable. I tried to link the kernels with pthread library. But that gives segamentation error when executed in the simulator. Does anyone have experience porting them on Linux?     Thanks,     Chenjie 
+		Do you Yahoo!? 
+Get on board. You're invited to try the new Yahoo! Mail._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,21 @@
+Thank you Clint, It works!-Raid- Show quoted text -On Wed, Apr 8, 2009 at 5:34 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+The patch I posted was for the unstable repository. It is not difficult to make the changes to fix it to work with stable, though. Any place you see Event() replace it with Event(&mainEventQueue). For the error on line 124, change:
+	d.schedule(this, curTick + d.ticks_per_dram_cycle)to:	schedule(curTick + d.ticks_per_dram_cycle)
+Similarly, on the .cc:252 error, change:	schedule(control, curTick + d.ticks_per_dram_cycle)to:
+	control.schedule(curTick + d.ticks_per_dram_cycle)On Apr 8, 2009, at 7:40 PM, Raid Ayoub wrote:
+Thanks a lot Clint. I applied your patch but I am getting some errors when I build the simulator. These are the errors that I am getting. Any idea of why I am getting these errors?Thanks,-Raidbuild/ALPHA_SE/mem/dramsim.hh: In constructor ‘DRAMsim::Control::Control(DRAMsim&)’:
+ build/ALPHA_SE/mem/dramsim.hh:114: error: no matching function for call to ‘Event::Event()’build/ALPHA_SE/mem/dramsim.hh: In member function ‘virtual void DRAMsim::Control::process()’:build/ALPHA_SE/mem/dramsim.hh:124: error: ‘class DRAMsim’ has no member named ‘schedule’
+ build/ALPHA_SE/mem/dramsim.cc: In member function ‘bool DRAMsim::doTiming(Packet*, int)’:build/ALPHA_SE/mem/dramsim.cc:252: error: ‘schedule’ was not declared in this scopeOn Tue, Apr 7, 2009 at 10:14 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+ The patch was posted to the m5-users mailing list in late January (see [PATCH] Beta patch for M5 2.0 DRAMsim implementation). I don't think it has support for loading the power information file yet, but it would not be difficult to add.
+ On Apr 7, 2009, at 10:59 PM, Raid Ayoub wrote:I would like to integrate M5 with DRAMsim to do DRAM power/timing simulations. It will be appreciable if you guys can tell me where to get the required patch for this. Also any information about the accuracy of DRAMsim compare to the built in m5 DRAM model?
+ thanks-Raid Ayoub _______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ _______________________________________________ m5-users mailing list m5-users@m5sim.org http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ _______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

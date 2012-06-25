@@ -1,0 +1,11 @@
+Hi,
+Until now i did my simulations for CMP and SMT processor models with m5.
+But for a knew topic that I would like to research I have to be able to
+measure things like power consumption and die area as well. Does anyone
+know if someone has made such "plugins" or subsets for m5 to measure
+this, or are there some good tools that I could use that can do the job?
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

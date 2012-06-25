@@ -1,0 +1,90 @@
+pkt->req->getCpuNum()/getThreadNum(). However, they will only work if
+the request came from a CPU and not from an I/O device. We seem to be
+lacking a cpuThreadValid() method, so you may want to add one to the
+request and test it before you grab your data.
+Ali
+- Show quoted text -
+On Nov 5, 2008, at 3:46 PM, Bob Nagel wrote:
+> I just need the src number to make stats about number of access per
+> core. I will check the information give it by Clint, to access to
+> the cpuid I have tried pkt->getCpuid bit it does not work, can you
+> tell me the exact method?. Thanks so much.
+>
+> Bob
+>
+> 2008/11/5 Ali Saidi <saidi@umich.edu>
+> Why do you need the src number of the cores? The Request object
+> contains a cpuid/threadid that you can use for identifying which
+> requests come from a CPU and what cpu that is.
+>
+> Ali
+>
+> On Nov 5, 2008, at 3:09 PM, Bob Nagel wrote:
+>
+> > Hi Steve thanks for your answer, how can I know the src number of
+> > the cores?, I have been trying to identify them by the access but I
+> > only see dfierent src number accesing to the bus without a clear
+> > pattern, do you know where is the source code in which is assigned
+> > the src number to the cores?. Thank you.
+> >
+> > 2008/11/5 Steve Reinhardt <stever@gmail.com>
+> > The bus IDs are essentially arbitrary... they're assigned by the bus
+> > as devices are connected to it, which happens in an uncontrolled
+> > fashion as the simulation objects are created.
+> >
+> > Note that the each object attached to the bus gets its own ID as
+> well,
+> > so for example if you have split I and D caches then each of those
+> > caches will have its own ID.
+> >
+> > Steve
+> >
+> > On Wed, Nov 5, 2008 at 10:43 AM, Bob Nagel <nasmloe@gmail.com>
+> wrote:
+> > > Hello,
+> > >
+> > > I am exploring the information that I get when I put the option
+> > > --trace-flags="bus", but I do not understand the criterium that it
+> > is used
+> > > to assign a src number to the packets. If I do a simulation with 1
+> > core, The
+> > > src number can have this values: 0,1,2, for 2 cores: 0,1,2,3,
+> for 4
+> > > cores:0,1,3,5,7.
+> > >
+> > > Can anyone explain me what is the criterium to assign a source
+> > number for
+> > > the cores, I am just interested in the packets that come from the
+> > cores.
+> > > Thank you.
+> > >
+> > >
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

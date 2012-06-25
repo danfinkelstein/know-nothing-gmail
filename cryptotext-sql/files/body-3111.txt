@@ -1,0 +1,9 @@
+The current cache module doesn't model bank conflicts.  Someone did submit a patch for bank modeling several months ago but I haven't gotten around to integrating it yet.  I'd be glad to send it to you directly if you'd like.
+Steve- Show quoted text -On Wed, May 7, 2008 at 1:57 AM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+Can we have multiple banks for the cache in m5?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing l

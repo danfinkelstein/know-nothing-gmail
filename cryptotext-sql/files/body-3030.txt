@@ -1,0 +1,22 @@
+It also depends on how independent your interleaved devices are.Is there a single port for sending requests, such that you can model it as a single bus with N interleaved memories on it?  Then the easiest thing might be to write a single custom bridge device that responds to the entire address range and forwards to the appropriate memory bank (perhaps with zero latency) based on the low order bits.  Adding a stride into AddrRange would also support this model, but I don't think there's an advantage to doing it that way, and it's more intrusive.
+On the other hand, if you want N fully independent memories (able to accept simultaneous requests), then you want N separate busses and you'll have to modify the upstream devices to handle it (e.g., give each cache N MemSidePorts and the intelligence to send requests out the right port).  You might be able do generalize this approach similarly by building a zero-latency demux bridge that takes requests from the existing upstream device port and farms them out appropriately, but flow control could be a problem... basically if any one of the N buses blocks you'll have to block them all, which may or may not be what you want.  Come to think of it, I won't guarantee you'll avoid flow control problems with the single-bus model either.  Basically flow control is just a pain :-).
+Steve- Show quoted text -On Wed, May 21, 2008 at 10:20 AM, Ali Saidi <saidi@umich.edu> wrote:
+In the past people have hacked such things in, but there isn't presently a way to do that. To introduce generic support for such a thing you would need to do something like extending the AddrRange class (and updating all associated member functions). I believe that would break the RangeMap class pretty badly (which most memory devices that need to sort out multiple ranges use to do so).
+If the interleaving was only being done at a certain level you could create a bus bridge type device that would take care of the ugliness for you. If you want general support it would take a bit more work.
+Ali
+On May 21, 2008, at 1:12 PM, Clint Smullen wrote:
+Is there presently a way to interleave the address ranges of a set of memory devices? If not, what is the opinion on extending the AddrRange class to incorporate a stride field? Would this break certain objects in subtle ways? Obviously, the stride would have to be at at least the granularity of the smallest memory request (in the absence of further changes).
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

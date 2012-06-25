@@ -1,0 +1,11 @@
+Hi,
+For an exec trace, it seems that both misspeculated and
+non-misspeculated instructions are being printed out for the o3cpu as
+the src/cpu/o3/thread_context.hh returns false no mater what. Is this
+the case or am I missing a level of indirection?
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

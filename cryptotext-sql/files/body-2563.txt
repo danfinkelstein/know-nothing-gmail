@@ -1,0 +1,16 @@
+hi everybody,    I've created an Event called SuspendThreadEvent(same properties with ActivateThreadEvent in src/o3/cpu.cc) which will call FullO3CPU<Impl>::suspendContext(int tid), to be able to initialize a SuspendThreadEvent instance, I created scheduleSuspendThreadEvent(tid,cpu), the problem is when I passed the correct parameter to scheduleSuspendThreadEvent but according to the generated traces(see below) the value used in the initialization is different.
+commandline: dean@stallman:~/m5/repos/smt$ ./m5.debug --trace-file=event2.out --trace-flags=Event tests/run.py quick/01.hello-2T-smt/alpha/tru64/o3-timing
+in cpu.cc if( params->max_insts_pause_each_thread == 0 ){ //number of instructiosn has been coded in initialization at cpu.hh 279          280         for(int tid=0;tid < numThreads; tid++){ 281            
+ 282            DPRINTF(Event,"Num of threads: %d\n",numThreads); //print number of threads 283            DPRINTF(Event,"1. scheduling suspend thread: %d\n",tid); //print out thread # to be suspended
+ 284            scheduleSuspendThreadEvent(tid,params->max_insts_pause_each_thread); 285            DPRINTF(Event,"2. scheduling suspend thread: %d\n",tid); //double check if value of tid has changed 286         }
+ 287     }in cpu.hh /** added by dean michael ancajas, Schedule thread to suspend **/189         void scheduleSuspendThreadEvent(int _tid,Tick when){190         // Schedule thread to suspend, regardless of its current state.
+191         DPRINTF(Event,"suspend thread:%d \n",_tid);192 193         suspendThreadEvent[_tid] = *(new SuspendThreadEvent(comInstEventQueue[_tid],100)); //for now this is hard-coded to suspend in 100 instructions each thread
+194         suspendThreadEvent[_tid].init(_tid,this);201         }Generated traces from event2.out:   2       0: system.cpu: Num of threads: 2   3       0: system.cpu: 1. scheduling suspend thread: 0
+   4       0: system.cpu: suspend thread:0   5       0: Event_15: FullO3CPU "Suspend Thread" event scheduled @ 100   6       0: Event_15: thread suspend: 0   7       0: system.cpu: 2. scheduling suspend thread: 0
+   8       0: system.cpu: Num of threads: 2   9       0: system.cpu: 1. scheduling suspend thread: 1  10       0: system.cpu: suspend thread:1  11       0: Event_16: FullO3CPU "Suspend Thread" event scheduled @ 100
+  12       0: Event_16: thread suspend: 9  13       0: system.cpu: 2. scheduling suspend thread: 1  14       0: Event_2: FullO3CPU tick event scheduled @ 0The first SuspendThreadEvent was initialized properly(line 3's thread # and line 6's thread # are equal, but the 2nd is not, line 9 says it must suspend thread #1 but in line 12 it passed thread #9. I'm confused as to where the value started to change. As we can also see in line 13, the value of tid in cpu.cc hasn't change after calling the scheduleSuspendThreadEvent. So I guess the culprit must be in the scheduleSuspendThreadEvent.. Any help/ideas would be greatly appreciated.
+thanks in advance,Dean Michael Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

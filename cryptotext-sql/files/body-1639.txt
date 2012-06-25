@@ -1,0 +1,20 @@
+Hello there,
+Are there any major impediments in building m5 in SPARC_SE or SPARC_FS
+configurations on SunOS 9 on a SPARC machine? When I build M5 in
+SPARC_SE config using GCC, the final executable (m5.debug) gives a bus
+error. However, when I try to build it using SUN C++, I get build
+errors, which according to some forums, are due to a potential bug in
+the Sun compiler. I can attach the build logs/errors if you want to
+take a look.
+regards,
+Soumyaroop.
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

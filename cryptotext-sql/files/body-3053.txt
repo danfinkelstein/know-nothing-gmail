@@ -1,0 +1,8 @@
+Hi all:
+I want to use m5 to be a full system simulator. Now what I have is a x86 machine, so can I install m5 on my x86 host machine to be a full system simulator?
+thanks
+Jibang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

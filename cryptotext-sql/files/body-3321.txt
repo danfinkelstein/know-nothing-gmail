@@ -1,0 +1,79 @@
+The 1st if statement block is saying that if you have a instruction
+predicted as taken and it's not a branch, then panic (end
+simulation!). Maybe that should be an assert there, because that
+should really never happen and is more a sanity-check.
+To your point about the "outgoing" queue, if you look at what the
+squash functions do, it will end up finding that instruction's DynInst
+pointer and setting a flag in the DynInst to say that the instruction
+is squashed.
+Then, in the next cycle, the rename stage will only taken non-squashed
+instructions from the queue.
+I think it was done like this to prevent unrealistic evaluations of
+instructions per stage. If your stagewidth is "2" instructions then
+this way will only allow you to evaluate 2 instructions whether they
+get squashed or not versus trying to process as many instructions as
+possible until you fill up the renameQueue.
+- Show quoted text -
+On Sat, Apr 5, 2008 at 5:41 AM, nathaniel jones <nathjones01@gmail.com> wrote:
+> i have a question about DefaultDecode<Impl>::decodeInsts
+>
+> i noticed that after the line
+>
+> toRename->insts[toRenameIndex] = inst;
+>
+> are the lines
+>
+>         if (inst->readPredTaken() && !inst->isControl()) {
+>              DPRINTF(Decode, "PredPC : %#x != NextPC: %#x\n",
+>                     inst->readPredPC(), inst->readNextPC() + 4);
+>
+>             panic("Instruction predicted as a branch!");
+>
+>             ++decodeControlMispred;
+>
+>             // Might want to set some sort of boolean and just do
+>             // a check at the end
+>             squash(inst, inst->threadNumber);
+>
+>             break;
+>          }
+>
+>         // Go ahead and compute any PC-relative branches.
+>         if (inst->isDirectCtrl() && inst->isUncondCtrl()) {
+>             ++decodeBranchResolved;
+>
+>             if (inst->branchTarget() != inst->readPredPC()) {
+>                  ++decodeBranchMispred;
+>
+>                 // Might want to set some sort of boolean and just do
+>                 // a check at the end
+>                 squash(inst, inst->threadNumber);
+>                 Addr target = inst->branchTarget();
+>                  //The micro pc after an instruction level branch should be
+> 0
+>                 inst->setPredTarg(target, target + sizeof(TheISA::MachInst),
+> 0);
+>                 break;
+>             }
+>
+> Does this mean that should we detect a decode control or branch
+> misprediction that it'd no longer be reflected in the instructions at the
+> instruction queue heading to the Rename stage? By the time the checks for
+> the mispredictions are done, we have already committed the instruction to
+> the "outgoing" queue. So even if it is squahed, it would still exist in the
+> queue heading to the Rename stage? Thanks!
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

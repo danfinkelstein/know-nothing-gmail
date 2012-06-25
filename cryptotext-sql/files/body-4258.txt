@@ -1,0 +1,18 @@
+Hi all,
+   I am trying to use cpu2000.py to generate workload form m5_2.0b3 full
+system. I use the test example to generate workload:
+        workload = gzip_source('alpha','linux','ref')
+        root.system.cpu.workload = workload.makeLiveProcess()
+   The simulation terminates due to error. The error message shows:
+   panic: Simulator object type 'LiveProcess' not found.
+   @ cycle 0
+   [createObject:build/ALPHA_FS/sim/builder.cc, line 121]
+   Program aborted at cycle 0
+   But LiveProcess is defined in /src/sim/process.cc
+   What is the problem?
+Thanks,
+Rongrong
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

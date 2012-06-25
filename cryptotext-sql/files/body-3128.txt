@@ -1,0 +1,42 @@
+The exit system call is handled, so you can hack into the exitFunc()
+function in src/sim/syscall_emul.cc if you want to do it in C++.  In
+python, the simulate function returns an ExitEvent object.  Right now,
+you can see that we generally call only getCause() on that object.
+There is also a getCode() function that you can call to get the exit
+code.  If the cause is "target called exit()" then the code is the
+exit code passed to exit.
+  Nate
+- Show quoted text -
+On Fri, May 9, 2008 at 4:47 AM, David Robert White <drw@cs.york.ac.uk> wrote:
+> Hi,
+>
+> Can anyone please tell me how to get the return code of a program in SE
+> mode?
+> When my program runs within the simulator, I would like to obtain the
+> resulting return code of the program that the simulator has run.
+>
+> Thanks
+>
+> David
+>
+> --
+> David R White
+>
+> Research Student
+> Department of Computer Science
+> University of York
+> York YO10 5DD
+> United Kingdom
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

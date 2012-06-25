@@ -1,0 +1,33 @@
+Dear m5 users and developers,
+I have a few questions about the M5's current capabilities:
+1. The FAQ section
+(http://m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_run_multiprogram_workloads_on_M5.3F)
+says:
+"Note that SE mode has no thread scheduling; if you need a scheduler,
+run in FS mode and use the fine scheduler built into the Linux
+kernel."
+This is not talking about the thread scheduler in the processor core
+that picks up instructions from various threads during the
+instructions fetch stage, is it?
+2. If my understanding above is correct and if I were to model SMT
+capabilities of a single core of the OpenSparc T1, I may build the
+simulator for Sparc in SE mode. Otherwise, I will have to build the
+same in FS mode. Is this correct?
+3. I also found out from the m5-users archive
+(http://www.mail-archive.com/m5-users@m5sim.org/msg02138.html) that
+the Sparc support in FS mode is not as mature as Alpha support in FS
+mode. Is it a better idea to model a generic SMT and/or CMP processor
+on the Alpha processor instead of the Sparc processor from the
+perspective of not running into simulator limitations?
+4. The M5 documentation
+(http://www.m5sim.org/wiki/index.php/Main_Page) mentions that the
+Alpha support in M5 is modeled on a DEC Tsunami system. Is that a CMP
+processor (corresponding to Opensparc T1 for Sparc)? I could not find
+a manual for it.
+5. Is it possible to simulate both SMT and CMP capabilities in M5?
+regards,
+Soumyaroop.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

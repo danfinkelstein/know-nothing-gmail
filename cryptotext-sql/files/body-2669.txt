@@ -1,0 +1,11 @@
+> I want to run different benchmarks in different cpu in m5 full system
+> simulation. Does anybody have the experience? Please give me a help.
+To do this, it's mostly writing scripts that run in the guest OS that
+bind processes to CPU cores.  This can be done with the
+sched_setaffinity system call.  I will try to add a utility for making
+this easier to the m5 distribution soon.
+  Nathan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,9 @@
+Hi folks --I saw a couple threads on cache stats in m5 2.0b4, but didn't see these specific questions answered, and haven't seen this documented anywhere.It seems like the meaning of various cache stats -- "accesses", "mshr_hits", "mshr_misses", and so on -- have changed from b2 to b4, and I'm trying to figure out whether this was intentional since they appear (to me) to be less intuitive in b4.
+In b4, requests first check the MSHR, and only check the full cache on an MSHR miss.  v2.0b2 worked in reverse -- requests first checked the cache, and only checked the MSHRs on a miss.  I assume this change was to avoid issues with pending coherence (S->E) upgrades (when the value exists in both the cache and the MSHR, but the MSHR might have the most up-to-date value).  Functionally, this seems to be fine.  From a stats point of view, however, it seems to have the following issues:
+(1)  The cache_accesses stat does not report the total number of cache requests (as per, I believe, v2.0b2), but rather the total number of MSHR misses.  The total number of requests seems to only exist as "mshr_hits + mshr_misses".  (There is no mshr_accesses stat).
+(2)  The mshr_misses stat does not provide any additional information -- it's always the same as cache_misses.At least to me, this is counter-intuitive -- I would expect "caches_accesses" to be the total number of requests (cache + MSHR), and for cache_misses = mshr_hits + mshr_misses.  I believe this is how b2 worked.  Am I missing something in the algorithm?  Is this one of the 'known issues' in the 2.0b4 release?
+Thanks,    -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

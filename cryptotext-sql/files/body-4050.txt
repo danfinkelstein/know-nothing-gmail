@@ -1,0 +1,39 @@
+I have no idea what's causing that, but could you give beta 4 a shot and let us know how things go with it?
+Thanks,
+  Nate- Show quoted text -
+Hi all,
+I am trying to run splash2 bmarks in FS mode (M5 v2 beta 3). I gave the
+paths to the linux image, disk image in the syspaths.py file. I modified
+the benchmarks.py file to add a splash2 benchmark as:
+'splash2_fft':      [SysConfig('splash2_fft_4.rcS', '512MB',
+'splash-2.img')]
+in the Benchmarks{} section.
+The rcS file is present in system/boot directory.
+When I try to run the simulation by giving the command:
+./build/ALPHA_FS/m5.opt configs/example/fs.py -b splash2_fft
+it runs for a while and then aborts giving the error:
+1815891248500: system.cpu0.break_event: break event panic triggered
+panic: M5 panic instruction called at pc=0xfffffc000031d7a0.
+@ cycle 1815990793500
+[execute:build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.cc, line
+11834]
+Program aborted at cycle 1815990793500
+Apart from the error mentioned below, when I open a terminal, it gives the
+error:
+....
+Freeing unused kernel memory: 224k freed
+Warning: unable to open an initial console.
+Kernel panic - not syncing: No init found.  Try passing init= option to
+kernel.
+-------------------
+I am using the splash-2.img from another person's repository, and he has ran it on an older version of M5. Is there
+some incompatibility between that and the new M5, wrt calling the init function?
+How do I get the splash2 bmarks running? Has anyone run these in FS mode
+with m5 v2beta3?
+Thanks,
+Sujay
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

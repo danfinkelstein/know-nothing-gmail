@@ -1,0 +1,30 @@
+the latest set of slides from ASPLOS tutorial has one slide dedicated to fast-forwarding to a sim-point.
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 20 Jun 2008 12:03:24 +0800
+>From: "nathaniel jones" <nathjones01@gmail.com>
+>Subject: [m5-users] spec2000 and simpoints
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>   how exactly do you use simpoints with spec2000? i've
+>   been able to run spec2000 benchmarks in full( by
+>   using ./build/ALPHA_SE/m5.opt tests/run.py
+>   long/00.gzip/alpha/tru-64/03-timing and the like),
+>   what i want to do now is use simpoints. i noticed
+>   that run.py doesn't have flags or switched for it
+>   unlike se.py. cpu2000.py, on the other hand, i
+>   noticed already has the specific simpoints encoded
+>   into it. do i have to modify se.py, or create my own
+>   script? or would certain additional flags to the
+>   current command i'm using suffice?
+>
+>   thanks a bunch!
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

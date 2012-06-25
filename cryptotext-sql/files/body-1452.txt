@@ -1,0 +1,46 @@
+Meng-Ju et al.,
+Following your suggestion I worked worth Meng and was able to, with the
+author's help, able to get it working.
+In the meantime I have developed doubts on your suggested direction.
+Problem restatement: in the early 1990s authors showed that by having
+some information on the location of a task's footprint in cache the
+scheduler could make better decisions reducing the cache reload
+transient.
+What I wonder if by using threads I am undermining the results.
+Speculatively, I could have four identical cores, three polluters and
+one core that (pollutes then loads; loads then reloads; etc). A problem
+is that this isn't a full context switch so I suspect that the
+footprint shall not be very discrete and thus harder to show.
+It seems feasible that this could be accomplished by running the system
+in FS, however, that could incur quite large penalties to run.
+I (and my advisers) have investigated a sundry of ways to make this
+work, such as: checkpointing and trying various restarts; and, the
+method you suggested.
+The checkpointing seems most able to show what we want but from my
+reading of the code it isn't going to work without some modification.
+The least pleasant alternative is to abuse the code and actually do
+context switches then have the simulator be the Omni-scheduler.
+Thoughts?
+In some respects I need an Omnipotent/ Omniscient scheduler.
+Meng-Ju Wu wrote:
+>Hi William,
+>
+>In Meng's patches, you can change the code to schedule/deschedule the
+>threads as you want. It can give you a very precise control on thread
+>scheduling. If you want to pollute the L2,  you can just spawn two
+>threads on two different cores and suspend one. Then you can
+>deschedule the first thread and active the second one.
+>
+>Meng-Ju
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

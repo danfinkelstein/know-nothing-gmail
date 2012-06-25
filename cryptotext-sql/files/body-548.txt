@@ -1,0 +1,8 @@
+Thank you for your reply, Nate. I think it would be better to just turn off the port 7000 that the debugger may listen on. I mean make the remote debugger not listen on this port, then it would be quiet. Is that right? Because sometimes I still need to run the GDB to do some debug. 
+2010/2/12, nathan binkert <nate@binkert.org>:
+Well, the remote debugger just sits there listening on port 7000 whichanyone could probe.  You can turn it off by calling
+m5.debug.setRemoteGDBPort(0) at the top of your script.  You couldalso call m5.disableAllListeners() to disable all ports including theterminal ports.  (Generally a good idea if you're not debugging.)Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

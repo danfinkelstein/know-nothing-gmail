@@ -1,0 +1,22 @@
+--trace-flags=Exec should do what you want.
+Steve
+- Show quoted text -
+On Tue, Jan 13, 2009 at 11:46 AM, Paul Lee <pl4u@virginia.edu> wrote:
+> I would like to get an assembly trace of the instructions being run
+> and I'm not sure where to begin.  Any help would be
+> appreciated.
+>
+>
+>
+> Thanks,
+>
+> Paul
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

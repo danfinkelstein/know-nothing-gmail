@@ -1,0 +1,7 @@
+i modified the inst queue and now the assertion `hash_it != memDepHash.end()' in findInHash is now failing. What could be causing this? Could it be because I'm removing an entry too early or too late in memDepHash? 
+Is it actually possible to remove an entry too late in memDepHash? I mean, if an instruction is already completed would there be any harm in not removing it from MemDepHash immediately?What exactly does it mean when the value returned by memDepHas.find is equivalent to memDepHash.end(as what is happening when the assertion is failing)? Does this mean that the value returned is the last entry? Is there an ordering in memDepHash? I always thought of it as a look-up table with the seqnum as index.
+Sorry if there's a lot of questions, the memDepHash hashmap is still fuzzy to me.Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

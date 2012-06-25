@@ -1,0 +1,12 @@
+On Mar 16, 2007, at 11:01 AM, Nicolas Zea wrote:
+I'm running an Alpha system emulation compilation, and calling sched_break_cycle in gdb gives an error about it not existing in the context. setTraceFlag and clearTraceFlag work just fine though. Has this function been removed/changed or might I be doing something wrong?
+It is now called schedBreakCycle().
+Additionally, are trace-flags sometimes disabled during runtime? I've made my own trace flag by adding it to traceflags.py, and then tried to use it in a DPRINTF call. Depending on where I make the call, the traceflag is sometimes on and sometimes off. For example, within BaseDynInst<impl>::read() it prints fine, but within PhysicalMemory::doFunctionalAccess() it won't print, and just skips the DPRINTF statement as if the trace flag were not set.
+No they aren't. I've never seen any behavior like that.
+I've tried setting the flag both through the --trace-flags="" argument when I run the program and using setTraceFlags from within gdb. Is there some sort of scope to where certain trace flags exist?
+There is no scoping of trace flags.
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

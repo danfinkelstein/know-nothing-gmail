@@ -1,0 +1,10 @@
+hi,     I recently started using M5 for my project to analyze the L2 cache-hit ratio for barnes-hut application on a quad-core(future goal, currently trying with dual-core).
+ I am presently using the following configuration:ALPHA_FS/m5.fast A dual-core timing CPU(--num_cpus=2 -t) with private L1(d & i) caches & a shared L2 cache( --caches --l2cache)
+compiler & linux-system stuff put up on m5sim.orgI got the system configuration up & running, and now the problem is I am not able to interpret the stats.txt file from M5. I specifically need to extract the L2 cache-hit ratio. So should i be looking at  
+L2 hit ratio = system.l2.ReadReq_hits::total / system.l2.ReadReq_accesses::totalor 
+L2 hit ratio = system.l2.overall_hits::total / system.l2.overall_accesses::total   ? It 'll be greatly helpful if someone can point me to the documentation page(if any) that describes the different parameters in the stats.txt file.
+Thanks,Phani. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

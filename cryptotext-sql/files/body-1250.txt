@@ -1,0 +1,14 @@
+>    I just want to know if the trace cpu in src/cpu/trace/ is working
+> or not. If it is working, how do I compile and use it? How does it
+> take a trace? What format of trace does it take? Thanks for any input
+> in advance.
+Looking at the SConscript, it seems that it hasn't been compiled in
+quite some time.  That said, a trace player should be pretty simple to
+get working again.  We used to support an M5 format as well as an
+intel and an IBM format.  If you do get these working again, we'd
+really appreciate it if you were to submit patches.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

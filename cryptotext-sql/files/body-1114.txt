@@ -1,0 +1,144 @@
+Hi all,
+When I try to run a an atomic multicore simulation (2 cores) with 2GB or
+more of Physical Memory, there is a segment fault near the beginning of
+linux boot. I have M5 output, gdb trace, and the system.terminal output
+below. The simulation works fine for < 1GB. Any idea of what the problem
+might be?
+Thanks,
+-Richard
+*Output:*
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 140492629079776 (LWP 27435)]
+Bus::recvAtomic (this=Variable "this" is not available.
+) at /home/rstrong/build/m5powerfs/build/ALPHA_FS/mem/port.hh:207
+207            { return peer->recvAtomic(pkt); }
+*Trace:*
+#0  Bus::recvAtomic (this=Variable "this" is not available.
+) at /home/rstrong/build/m5powerfs/build/ALPHA_FS/mem/port.hh:207
+#1  0x0000000000424bf3 in AtomicSimpleCPU::read<unsigned long>
+(this=0x1b1c700,
+    addr=18446739710018224128, data=@0x7fffa2f087c8, flags=0)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/mem/port.hh:207
+#2  0x0000000000429cc8 in AlphaISAInst::Ldq_u::execute (this=0x1c5edf0,
+xc=0x1b1c700,
+    traceData=0x0)
+    at
+/home/rstrong/build/m5powerfs/build/ALPHA_FS/arch/alpha/atomic_simple_cpu_exec.cc:478
+#3  0x000000000041ebaa in AtomicSimpleCPU::tick (this=0x1b1c700)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/cpu/simple/atomic.cc:678
+#4  0x000000000066ce7b in EventQueue::serviceOne (this=Variable "this"
+is not available.
+)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/sim/eventq.cc:202
+#5  0x00000000009fb222 in simulate (num_cycles=1000000000000000)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/sim/simulate.cc:73
+#6  0x0000000000a630e4 in _wrap_simulate (self=Variable "self" is not
+available.
+)
+    at
+/home/rstrong/build/m5powerfs/build/ALPHA_FS/python/swig/event_wrap.cc:4135
+#7  0x00007fc6fd43fe13 in PyObject_Call (func=0x1b22238, arg=0x0, kw=0x0)
+    at Objects/abstract.c:1860
+#8  0x00007fc6fd4bcaed in PyEval_EvalFrameEx (f=0x1b60310,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3844
+#9  0x00007fc6fd4c0048 in PyEval_EvalCodeEx (co=0x7fc6fa454648,
+globals=Variable "globals" is not available.
+) at Python/ceval.c:2831
+#10 0x00007fc6fd4be7da in PyEval_EvalFrameEx (f=0x1b5f6a0,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3660
+#11 0x00007fc6fd4bef85 in PyEval_EvalFrameEx (f=0x12cd990,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3650
+#12 0x00007fc6fd4c0048 in PyEval_EvalCodeEx (co=0x7fc6f975d300,
+globals=Variable "globals" is not available.
+) at Python/ceval.c:2831
+#13 0x00007fc6fd4be7da in PyEval_EvalFrameEx (f=0x12f96b0,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3660
+#14 0x00007fc6fd4bef85 in PyEval_EvalFrameEx (f=0x13457e0,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3650
+#15 0x00007fc6fd4bef85 in PyEval_EvalFrameEx (f=0x122c870,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3650
+#16 0x00007fc6fd4c0048 in PyEval_EvalCodeEx (co=0x7fc6f974adc8,
+globals=Variable "globals" is not available.
+) at Python/ceval.c:2831
+#17 0x00007fc6fd4c0162 in PyEval_EvalCode (co=0x1b22238, globals=0x0,
+locals=0x0)
+    at Python/ceval.c:494
+#18 0x00007fc6fd4bec16 in PyEval_EvalFrameEx (f=0x12280c0,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:4168
+#19 0x00007fc6fd4c0048 in PyEval_EvalCodeEx (co=0x7fc6fa4aa4e0,
+globals=Variable "globals" is not available.
+) at Python/ceval.c:2831
+#20 0x00007fc6fd4be7da in PyEval_EvalFrameEx (f=0xf52080,
+throwflag=Variable "throwflag" is not available.
+) at Python/ceval.c:3660
+#21 0x00007fc6fd4c0048 in PyEval_EvalCodeEx (co=0x7fc6fa347198,
+globals=Variable "globals" is not available.
+) at Python/ceval.c:2831
+#22 0x00007fc6fd4c0162 in PyEval_EvalCode (co=0x1b22238, globals=0x0,
+locals=0x0)
+    at Python/ceval.c:494
+#23 0x00007fc6fd4e0c7c in PyRun_StringFlags (str=0xb5db5c "m5.main()",
+start=Variable "start" is not available.
+)
+    at Python/pythonrun.c:1271
+#24 0x000000000077ec61 in m5Main (argc=Variable "argc" is not available.
+)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/sim/init.cc:194
+#25 0x0000000000409822 in main (argc=3, argv=0x7fffa2f0a938)
+    at /home/rstrong/build/m5powerfs/build/ALPHA_FS/sim/main.cc:57
+*
+System.terminal:*
+Memory cluster 1 [392 - -262536]
+Initalizing mdt_bitmap addr 0xFFFFFC0000038000 mem_pages FFFFFFFFFFFC0000
+ConsoleDispatch at virt 100008D8 phys 188D8 val FFFFFC00000100A8
+Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+unix_boot_mem ends at FFFFFC0000078000
+k_argc = 0
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1004)
+CallbackFixup 0 18000, t7=FFFFFC00006CC000
+Entering slaveloop for cpu 1 my_rpb=FFFFFC0000018400
+[4194001.852669] Linux version 2.6.18.8 (binkert@blue) (gcc version
+4.0.2) #9 SMP Wed Feb 27 11:50:35 PST 2008
+[4194001.852669] Booting GENERIC on Tsunami variation DP264 using
+machine vector DP264 from SRM
+[4194001.852669] Major Options: SMP LEGACY_START VERBOSE_MCHECK
+[4194001.852669] Command line: root=/dev/hda1 console=ttyS0,9600
+init=/m5/bin/init.sh
+[4194001.852669] memcluster 0, usage 1, start        0, end      392
+[4194001.852669] memcluster 1, usage 0, start      392, end
+18446744073709289472
+[4194001.852669] setup: forcing memory size to 33554432K (from -2097152K).
+[4194001.852669] freeing pages 1006:4194304
+[4194001.852669] reserving pages 1006:1070
+[4194001.852669] SMP: 2 CPUs probed -- cpu_present_map = 3
+[4194001.852669] Built 1 zonelists.  Total pages: 4194304
+[4194001.852669] Kernel command line: root=/dev/hda1 console=ttyS0,9600
+init=/m5/bin/init.sh
+[4194001.852669] PID hash table entries: 4096 (order: 12, 32768 bytes)
+[4194001.852669] Using epoch = 1900
+[4194001.854623] Console: colour dummy device 80x25
+[4194001.941537] Dentry cache hash table entries: 4194304 (order: 12,
+33554432 bytes)
+[4194002.155404] Inode-cache hash table entries: 2097152 (order: 11,
+16777216 bytes)
+[4194005.492316] Memory: 33265904k/33554432k available (2914k kernel
+code, 284688k reserved, 733k data, 208k init)
+[4194005.494269] Mount-cache hash table entries: 512
+[4194005.495246] SMP starting up secondaries.
+Slave CPU 1 console command START
+SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb
+FFFFFFFE00000000 my_rpb FFFFFC0000018400 my_rpb_phys 18400
+[4194005.497199] Brought up 2 CPUs
+[4194005.497199] SMP: Total of 2 processors activated (8000.15 BogoMIPS).
+[4194005.509894] migration_cost=976
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

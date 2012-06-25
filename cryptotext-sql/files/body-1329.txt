@@ -1,0 +1,35 @@
+Just to be clear.  You have to set the associativity to the number of
+blocks *and* the number of sets to 1.  (Looking at the cache builder
+code  it's the numSets == 1 that selects the FALRU cache).
+  Nate
+- Show quoted text -
+On Thu, Jun 4, 2009 at 10:02 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> You can set the associativity of the cache to = number of blocks in the
+> cache.
+> Lisa
+>
+> On Wed, Jun 3, 2009 at 4:46 PM, Siddharth Gupta <sidgupta@stanford.edu>
+> wrote:
+>>
+>> Hi,
+>>
+>> How can I set the L2 cache to be fully associative?
+>>
+>> Thanks,
+>> Siddharth
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

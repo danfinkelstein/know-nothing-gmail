@@ -1,0 +1,6 @@
+Is there an easy way of searching inside the M5 mailing list archives?I am geting a deadlock in the ALPHA_SE for v1.0 and I want to debug it and I need guidelines/help etc. and I want to use help from others who have been through this before instead of asking again.
+--Hameed.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi all,I have a question with my running result of facesim and streamcluster 
+application of PARSEC. I tested them on different cache configuration 
+with the same 8-core CPU config. 
+my cache configuration is:same on L1 cache: 2-way, 64 bytes block 
+size, 64kb IL1 cache and 64kb DL1 cachedifferent on L2 cache and
+ L2 cache is the last level cache. a). 4-way, 8M size of L2 cache  b).
+ 8-way, 8M size of L2 cache
+c). 16-way, 8M size of L2 cacheNormally, the higher way 
+set-associative L2 cache config will have less misses, but my experiment
+ results show the 4-way cache has fewest misses, 8-way second, and 
+16-way has the biggest misses. However these only happen to facesim and 
+streamcluster, other applications are reasonable. 
+So i want to know whether any one come across with the same problem or something wrong?  Thank 
+you in advance.Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

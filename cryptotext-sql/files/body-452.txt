@@ -1,0 +1,49 @@
+  
+  
+Hi All,
+I am going through the explanation on Simulation Scripts, however not able to find the /src/python/m5/objects directory in the source. 
+Please let me know if I am looking at the correct location. 
+Regards,
+--
+Jitendra Singh | ACOE | 593
+Maveric Systems Ltd. www.maveric-systems.com
+5th Floor, Fagun Mansion, 74, Ethiraj Salai, Egmore, Chennai, Tamil Nadu, India - 600105
+ 
+India Mobile: +919176884834, +919382114572
+India Tel: +9144–28207690 - Extn: 259
+ 
+Disclaimer:
+This message is intended only for the individual or entity to which it is addressed. It may contain privileged, confidential information which is exempt from disclosure under applicable laws. If you are not the intended recipient, please note that you are strictly prohibited from disseminating or distributing this information (other than to the intended recipient) or copying this information. If you have received this communication in error, please notify us immediately by return email at infosec@maveric-systems.com . 
+On Fri, 2010-03-05 at 17:42 +0530, maveric Jiten wrote:
+    Hi All,
+    
+    I am successfully able to run m5 in ALPHA_FS Mode and connected with it using m5term on 3456.
+    
+    However, I stopped the m5 simulation in the terminal by sending terminating signal to the runing process using <Ctrl>+C 
+    and I got a message 
+    
+    "hack:be nice to actually delete the event here"
+    
+    Please can anyone let me know if this is the correct way of stop the simulator and there is some other way I should do it.
+    
+    Regards,
+    
+    
+--
+Jitendra Singh | ACOE | 593
+Maveric Systems Ltd. www.maveric-systems.com
+5th Floor, Fagun Mansion, 74, Ethiraj Salai, Egmore, Chennai, Tamil Nadu, India - 600105
+ 
+India Mobile: +919092735502
+India Tel: +9144–28207690 - Extn: 259
+ 
+Disclaimer:
+This message is intended only for the individual or entity to which it is addressed. It may contain privileged, confidential information which is exempt from disclosure under applicable laws. If you are not the intended recipient, please note that you are strictly prohibited from disseminating or distributing this information (other than to the intended recipient) or copying this information. If you have received this communication in error, please notify us immediately by return email at infosec@maveric-systems.com . 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

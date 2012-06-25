@@ -1,0 +1,26 @@
+   You shouldn't use cpu2000.py to generate a workload under full system. For full system, you need to put your benchmarks on a disk image and write an init script that will run them for you once the simulated system has booted the operating system. You can look in cpu2000.py to see what command line options you need to pass to a particular benchmark.
+Gabe- Show quoted text -
+rlai@mtu.edu wrote:
+Hi all,
+   I am trying to use cpu2000.py to generate workload form m5_2.0b3 full
+system. I use the test example to generate workload:
+        workload = gzip_source('alpha','linux','ref')
+        root.system.cpu.workload = workload.makeLiveProcess()
+   The simulation terminates due to error. The error message shows:
+   panic: Simulator object type 'LiveProcess' not found.
+   @ cycle 0
+   [createObject:build/ALPHA_FS/sim/builder.cc, line 121]
+   Program aborted at cycle 0
+   But LiveProcess is defined in /src/sim/process.cc
+   What is the problem?
+Thanks,
+Rongrong
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

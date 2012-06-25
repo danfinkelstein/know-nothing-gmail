@@ -1,0 +1,30 @@
+> mounting swap...modprobe: FATAL: Could not load
+> /lib/modules/2.6.13/modules.dep: No such file or directory
+>
+> modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+> such file or directory
+Those errors can be ignored.  I can't remember exactly what they were,
+but apache is basically trying to see if the kernel supports something
+(like ipv6) and modprobe for the module fails.
+> But when I use NetPerf benchmark, there is no such error.
+>
+> I figured that NetPerf is probably statically linked in.
+This isn't the issue.
+> But I got the following error, not sure what it means here with
+> respect to the simulator.
+> I simply invoked sshd as /opt/sbin/sshd in the rcS script.
+>
+> "starting sshd.../tmp/script: line 43: /opt/sbin/sshd: Input/output error"
+Not sure what exactly the problem is, but my guess is that it's a
+filesystem problem or some problem with the sshd binary.  Where did
+you get the binary from?
+> Could you point me to the right direction of what is the good and
+> easier way to port ssh to m5?
+You want to use crosstools to build a crosscompiler toolchain and then
+use that to build sshd.  Alternatively, you can try to use a gentoo
+stage3 tarball to populate a disk image.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+What is the recommended way to debug a particular instance of an object in m5? In particular, I want to debug the L1 data bus, but there are so many buses in my system that normal breakpoints are a pain to use. Is there any way to debug a particular instance of an object easily? Or is the only option writing some custom code that parses the name() result, and breaking on that?
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

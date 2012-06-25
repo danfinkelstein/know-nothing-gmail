@@ -1,0 +1,44 @@
+- Show quoted text -
+On Jun 23, 2008, at 1:23 PM, Sujay Phadke wrote:
+> Hello,
+>         If I try to run O3 in SE mode directly, without using any
+> fastforwarding, it gives me the error:
+>
+>  build/ALPHA_SE/m5.opt configs/splash2/runsplash.py -d -n4 -b
+> OceanContig
+>
+> warn: Increasing stack size by one page.
+> warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+> warn: ignoring syscall sigprocmask(3, 0, ...)
+> warn: ignoring syscall sigaction(8, 4831387552, ...)
+> warn: ignoring syscall sigaction(11, 4831387552, ...)
+> warn: ignoring syscall sigaction(10, 4831387552, ...)
+> warn: ignoring syscall sigaction(4, 4831387552, ...)
+> warn: ignoring syscall sigaction(7, 4831387552, ...)
+> warn: ignoring syscall sigaction(6, 4831387552, ...)
+> warn: ignoring syscall sigaction(12, 4831387552, ...)
+> warn: ignoring syscall sigaction(5, 4831387552, ...)
+> warn: ignoring syscall sigaction(13, 4831387552, ...)
+> nxm_thread_create: no idle contexts available.
+> Program aborted at cycle 378945000
+> It works fine of numcpus (-n) = 1, or if I use atomic or timing
+> mode. The statement
+>
+> thread->setStatus(ThreadContext::Unallocated);
+>
+> appears in src/cpu/simple/base.cc and src/cpu/o3/
+> thread_context_impl.hh.
+>
+The statement and the context the statement is in are two different
+things. From a cursory look of the O3CPU, it appears as though the
+state of the thread context is never initialized when the thread
+context is created, and the places where it is set to unallocated are
+for switching CPUs. Initializing it to Unallocated should solve the
+problem.
+Are you planning on running a detailed CPU for the entirety of the
+benchmark?
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

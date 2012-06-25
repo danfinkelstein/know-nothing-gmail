@@ -1,0 +1,33 @@
+Thanks, Soumyaroop. That really helps.
+Some questions, what is the difference between p.executable and p.cmd in the script?
+How do I add options to pass to the binary?
+Thank you
+Zhe- Show quoted text -
+On 6/21/2010 12:47 PM, soumyaroop roy wrote:
+Hi Zhe,
+There is a testcase in the tests/quick directory - 00.hello.mp
+Here is the workload script:
+http://repo.m5sim.org/m5/file/c880d4812539/tests/quick/00.hello.mp/test.py
+-Soumyaroop
+On Mon, Jun 21, 2010 at 12:37 PM, Zhe Wang<zhwang@cise.ufl.edu>  wrote:
+   
+In FAQ of m5 wiki site, it says:  "In SE mode, simply create a system with
+multiple CPUs and assign a different workload object to each CPU's workload
+parameter. If you're using the O3 model, you can also assign a vector of
+workload objects to one CPU, in which case the CPU will run all of the
+workloads concurrently in SMT mode"
+Is there any sample script of how to assign a workload object to different
+CPUs, thanks? Right now, I am trying to run different mibench benchmarks on
+a multicore system.
+Thanks
+Zhe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     
+   
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

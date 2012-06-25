@@ -1,0 +1,27 @@
+If you mean the arguments to the simulated program, you can find those
+in config.ini.
+Steve
+- Show quoted text -
+On Wed, Sep 23, 2009 at 2:24 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+> It doesn't seem that there's any simulator option that may be used to
+> dump the command line arguments with which an executable is invoked as
+> a workload (in the SE mode). If I am right, wouldn't it be helpful to
+> have an option like that?
+>
+> -Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

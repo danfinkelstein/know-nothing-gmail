@@ -1,0 +1,9 @@
+Hi,
+We are trying to run M5 with multiprogramming workloads so that we can stress the last level cache. Is this possible in M5.
+Can we schedule one benchmark on one CPU and another on another CPU? Its not necessary for us to be able to do multithreading.
+Please let us know.
+Siddharth Gupta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

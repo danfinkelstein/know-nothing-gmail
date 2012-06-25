@@ -1,0 +1,78 @@
+I want to configure a uniform L1 cache and a noununiform L2 cache.L2
+cache will assign different latency to different part of address. I am
+trying to create a new function to calculate hitLatency in the c code,
+and hope this function code only affect L2 cache, rather than affect
+both caches.In this case, I want to add a flag in the function like
+"uniformFlag". Then I set the value of flag in python configuration
+file. For example, in my fs.py,  I set:
+test_sys.cpu.addPrivateSplitL1Caches(L1Cache(size = '32kB', uniformFlag
+= 1), L2Cache(size = '64kB', uniformFlag = 1))
+test_sys.l2=L2Cache(size = '2MB', uniformFlag = 0)
+In the c code, I use a new function CalhitLatency (PacketPtr pkt, int
+uniformFlag) to replace all "hitLatency" variables.
+int CalhitLatency (PachetPtr pkt, int uniformFlag)
+{   int lat;
+    if (uniformFlag) {  lat = hitLatency; }
+    else {
+        addr = pkt->getAddr();
+              /* here add code to assign lat depending on the address */
+   }
+    return lat;
+}
+Is it possible to get what I want in this case?
+BTW, When we edit the c code, we need to recompile m5 before running it.
+Is it right?
+Thanks
+Gary
+- Show quoted text -nathan binkert wrote:
+> You should look into the cache access code.  Actually, you should in
+> general look for any case where you see hitLatency in the cache code.
+> You'll want to change that to some sort of function.
+>
+>   Nate
+>
+> On Tue, Jul 15, 2008 at 9:26 AM, Gary Chai <ameseacla@gmail.com> wrote:
+>
+>> Thank you for your reply.
+>> It is like nonuniform cache. When the L2 cache receives a different address
+>> request, It assigns a different latency. Which codes describe such kind of
+>> process?
+>> Thanks
+>> Gary
+>>
+>> On Mon, Jul 14, 2008 at 3:28 PM, nathan binkert <nate@binkert.org> wrote:
+>>
+>>>> If I want to let the latency of accessing different parts in L2 cache is
+>>>> different, so the latency is not uniform. Is it possible in m5? how can
+>>>> I
+>>>> get it and where can I edit the code?
+>>>> Any suggestion is really appreciated.
+>>>>
+>>> I.e. you want to implement NUCA of some sort?  I don't anyone has
+>>> modeled this yet, so you'd have to hack on the cache model a bit.  I
+>>> honestly don't think this should be all that difficult to do depending
+>>> on how complicated your NUCA model is.
+>>>
+>>> Anyone like to correct me?
+>>>
+>>>  Nate
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

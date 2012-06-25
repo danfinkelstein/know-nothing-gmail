@@ -1,0 +1,12 @@
+Hi, Nate, thanks for your reply. It seems that my problem is a silly question. My device inherit the System* sys of Piodevice, and now I want to add a pointer to this device in the System class, so there is a loop here. 
+But I still want to access the device from the system class.   I add the device by modifying FSConfig.py. That is adding self.race_v = Race(pio_addr=0x80140000000,devicename = "Race")self.race_v.pio = self.iobus.port
+in the function makeLinuxAlphaSystem.It seems that I still cannot access the device such as reading a variable that is declared in the device. Is there anyway to achieve this? Thanks !
+Message: 2Date: Thu, 2 Apr 2009 23:52:27 -0700From: nathan binkert <nate@binkert.org>
+Subject: Re: [m5-users] add a device pointer in the systemTo: M5 users mailing list <m5-users@m5sim.org>Message-ID:       <217accd40904022352o6734f8dbic502f61e553710d@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1> RuntimeError: system.race_v: Cycle found in configuration heirarchy.>> What's wrong? Does someone have any ideas ? Thanks!I must admit that I think the error message is pretty clear.  You've
+created a dependence loop in your objects in the hierarchy which wedisallow.  We could probably relax that rule now, but there isn't acompelling enough reason to put the effort into making that change.
+Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,25 @@
+Hi,
+I am trying to run the Splash2 in Chip MultiProcessors using SE mode.
+I get the Splash2 binary in the following link.
+http://www.m5sim.org/dist/m5_benchmarks/v1-splash-alpha.tgz
+I can run SPLASH2 in Simple 4 CPU cores
+using default .py file (m5_1.1/m5/configs/splash2/run.py)
+But Simulation isn't finished  in Detailed 4 CPU cores.
+Could you tell me how to run Splash2 benchmarks ?
+following line is my comand line message and m5stat.txt
+##### comand line messege ######
+command line: ./m5.fast -ENP=4 -d output_splash_nofft/ ../../../m5-test/splash2/run_no.py -ESYSTEM=Detailed -EBENCHMARK=FFT -EROOTDIR=/home/fukumoto/m5_1.1/m5-test/splash2/splash2/codes/
+warn: Entering event queue.  Starting simulation...
+##### m5stat.txt ######
+cpu0.COM:IPC                                 0.007785                       # Committed instructions per cycle
+cpu0.FETCH:idle_rate                            99.71                       # percent of cycles fetch stage was idle
+toL2Bus.addr_idle_fraction                   0.010075                       # fraction of time addr bus was idle
+toL2Bus.data_idle_fraction                   0.010104                       # fraction of time data bus was idle
+toMemBus.addr_idle_fraction                  0.010267                       # fraction of time addr bus was idle
+toMemBus.data_idle_fraction                  0.009773                       # fraction of time data bus was idle
+Thanks and Best Regards,
+Naoto Fukumoto <fukumoto@c.csce.kyushu-u.ac.jp>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

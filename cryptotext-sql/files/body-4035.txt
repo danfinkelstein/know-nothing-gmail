@@ -1,0 +1,26 @@
+Hi,
+   I have added spec2000 binaries and input sets into image disk. But I
+cannot run these benchmarks correctly. These spec2000 binaries can be
+run in
+SE mode correctly.
+   This is the simulation output I get when I run ammp:
+   ......
+   mounting filesystems...
+   EXT2-fs warning: checktime reached, running e2fsck is recommended
+   loading script...
+   modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+such file or directory
+   modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+such file or directory
+   /tmp/script: line 11: ./ammp00.peak.ev6: cannot execute binary file
+   Here is the ammp.rcS file I wrote:
+   #!/bin/sh
+   cd /benchmarks/spec/ammp/
+   ./ammp00.peak.ev6 < ammp.in
+   /sbin/m5 exit
+   Does anyone know what is the problem?
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

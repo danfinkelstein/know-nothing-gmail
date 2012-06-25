@@ -1,0 +1,20 @@
+Thanks very much Ali you are a life saver!!
+Sfin
+----------------------------------------
+> From: saidi@umich.edu
+> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] Running SPLASH2 on SE mode
+> Date: Mon, 26 Nov 2007 17:11:00 -0600
+>
+> Here is an updated version of the splash2 configuration file and it
+> should solve your problem.
+>
+>
+> Ali
+>
+_________________________________________________________________
+Invite your mail contacts to join your friends list with Windows Live Spaces. It's easy!
+http://spaces.live.com/spacesapi.aspx?wx_action=create&wx_url=/friends.aspx&mkt=en-us_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

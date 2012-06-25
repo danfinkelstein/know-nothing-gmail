@@ -1,0 +1,21 @@
+Try linking FFT statically.  It looks like the library versions on the Alpha machine you compiled on are different from the m5 image.
+Steve- Show quoted text -
+Meeta Gupta wrote:
+Hi,
+I am trying to run SPLASH2 on the ALPHA_FS version. I created a linux image, and put the FFT benchmark in /benchmarks/splash2/fft/
+I recompiled SPLASH2 on an Alpha machine (downloaded splash2 v1-splash-alpha.tgz)
+and gave the following command on the console which comes up
+# ./FFT -p 4 -m18
+modprobe: FATAL: Could not load /lib/modules/2.6.11.8/modules.dep: No such file or directory
+modprobe: FATAL: Could not load /lib/modules/2.6.11.8/modules.dep: No such file or directory
+Am I missing something?
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

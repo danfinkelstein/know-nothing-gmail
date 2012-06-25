@@ -1,0 +1,17 @@
+i am trying to use multiple FUPools, specifically in the instruction queue. So i doubled all instances and modified inst_queue a bit. I also doubled all FUPool declarations, specifically in Params.I think I missed nothing in the C++ codes,  but  I don't know where to begin in modifying Python, I assumed that Python part would also have to be changed, since I'd be creating a new simobject. when i try to compile without modifying the python code
+g++ -o build/ALPHA_SE/cpu/o3/alpha/cpu_builder.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/alpha/cpu_builder.cc
+build/ALPHA_SE/cpu/o3/alpha/cpu_builder.cc: In member function 'DerivO3CPU* DerivO3CPUParams::create()':build/ALPHA_SE/cpu/o3/alpha/cpu_builder.cc:134: error: 'fuPool0' was not declared in this scopebuild/ALPHA_SE/cpu/o3/alpha/cpu_builder.cc:135: error: 'fuPool1' was not declared in this scope
+cc1plus: warnings being treated as errorsbuild/ALPHA_SE/sim/host.hh: At global scope:build/ALPHA_SE/sim/host.hh:61: warning: 'MaxTick' defined but not usedbuild/ALPHA_SE/arch/alpha/isa_traits.hh:164: warning: 'AlphaISA::SyscallPseudoReturnReg' defined but not used
+scons: *** [build/ALPHA_SE/cpu/o3/alpha/cpu_builder.o] Error 1scons: building terminated because of errors.i tried changing the the file 03CPU.pyfrom    fuPool = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
+to    fuPool0 = Param.FUPool0(DefaultFUPool(), "Functional Unit pool")    fuPool1 = Param.FUPool1(DefaultFUPool(), "Functional Unit pool")    i getKeyError: "'FUPool0'\nError setting param DerivO3CPU.fuPool0 to root\n":
+  File "/home/nathaniel/data/m5/SConstruct", line 790:    exports = 'env')  File "/usr/lib/scons/SCons/Script/SConscript.py", line 583:    return apply(method, args, kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 520:
+    return apply(_SConscript, [self.fs,] + files, subst_kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 245:    exec _file_ in call_stack[-1].globals  File "/home/nathaniel/data/m5/build/ALPHA_SE/SConscript", line 220:
+    generate = Generate(py_sources, sim_object_modfiles, optionDict)  File "/home/nathaniel/data/m5/src/python/generate.py", line 138:    exec('from m5.objects import %s' % simobj)  File "<string>", line 1:
+    None  File "/home/nathaniel/data/m5/src/python/generate.py", line 89:    exec file(srcfile, 'r') in mod.__dict__  File "/home/nathaniel/data/m5/src/cpu/o3/O3CPU.py", line 10:
+    class DerivO3CPU(BaseCPU):  File "/home/nathaniel/data/m5/src/python/m5/SimObject.py", line 242:    cls._new_param(key, val)  File "/home/nathaniel/data/m5/src/python/m5/SimObject.py", line 270:
+    cls._set_param(name, pdesc.default, pdesc)  File "/home/nathaniel/data/m5/src/python/m5/SimObject.py", line 275:    cls._values[name] = param.convert(value)  File "/home/nathaniel/data/m5/src/python/m5/params.py", line 148:
+    if isinstance(value, self.ptype):  File "/home/nathaniel/data/m5/src/python/m5/params.py", line 132:    ptype = SimObject.allClasses[self.ptype_str]any pointers, on how i could get my replication of FUPools reflected in the Python code? thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

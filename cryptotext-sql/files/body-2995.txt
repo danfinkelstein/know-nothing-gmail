@@ -1,0 +1,5 @@
+ Hi, I meet a error when i change the code and recompile the m5. The error is as follows:     scons: *** [build/ALPHA_SE/m5.debug.bin] Error 1    scons: building terminated because of errors. What error is it? Thank you!    
+伊利525健康中国公益日_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

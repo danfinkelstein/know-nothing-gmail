@@ -1,0 +1,8 @@
+Hi,
+ I have done some changes on O3CPU model of M5 to get different performance-related metrics such as cache misses, register file accesses, etc. at runtme.  I need to run an in-order CPU (similar to Alpha EV4) and get these performance metrics again. 
+ I was wondering if I can change the O3CPU model to model an in-order architecture. If this is possible, I will still be able to use my changed code to get performance metrics I need when running the in-order CPU. 
+   Has anyone done something similar before?  Thanks   Shervin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

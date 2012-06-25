@@ -1,0 +1,6 @@
+ Hi. I got a question. After i compiled the m5 successfully, i changed some of the code and recompile it. The command is the same with that used the first time. It is "scons build/ALPHA_SE/m5.debug". But it failed. The error is as following:            scons: *** Error converting option: CPU_MODELS            Invalid value(s) for option: <built-in function all>            File "/usr/local/m5-2.0b5/SConstruct", line 742, in <module> What's wrong? By the way, the version i used is 2.0 beta5. Thank you!   
+深切哀悼汶川大地震遇难同胞！ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

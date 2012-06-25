@@ -1,0 +1,17 @@
+Not really... there are some requests like writebacks and (in FS mode) device DMA accesses that don't really belong to a particular cpu or thread.  They should be in the minority though.  You check for those by looking at validCpuAndThreadNums and handle them differently.
+Steve- Show quoted text -On Wed, May 21, 2008 at 6:06 AM, fractal218 <fractal218@126.com> wrote:- Show quoted text -
+ Hi. The class Request has three constructors as follows:                        (1)Request()                        : validPaddr(false), validAsidVaddr(false),                          validExData(false), validCpuAndThreadNums(false), validPC(false)
+                        {}                    (2)Request(Addr _paddr, int _size, int _flags)                        : validCpuAndThreadNums(false)                        { setPhys(_paddr, _size, _flags); }
+                    (3)Request(int _asid, Addr _vaddr, int _size, int _flags, Addr _pc,                        int _cpuNum, int _threadNum)                    {                        setThreadContext(_cpuNum, _threadNum);
+                        setVirt(_asid, _vaddr, _size, _flags, _pc);                    }     Sometimes, the third constructor is called in which the cpuNum and threadNum are set. But the other two may be called at  other times where the cpuNum and threadNum are not set. 
+    Now, the trouble is that my program depend on the two member variables of cpuNum and threadNum. So, it cannot work correctly.     Is there any method to ensure that the third constructor will always be called?
+    Thank you!  
+深切哀悼汶川大地震遇难同胞！ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

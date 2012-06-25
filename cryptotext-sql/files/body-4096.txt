@@ -1,0 +1,27 @@
+Hi,
+I have recently tried check-pointing two threads (ammp, applu) running on two separate AtomicSimpleCPUs when the first thread reaches 100,000 instructions. An attempt to restore the checkpoint meets the error given below as "ERROR". Anyone see something like this before.
+-Richard
+ERROR:
+"""
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Oct 30 2007 10:02:18
+M5 started Tue Oct 30 15:16:22 2007
+M5 executing on 0-16-cb-b8-f-b2.dynamic.ucsd.edu
+command line: /Library/WebServer/Documents/research/m5/m5-2.0b3/build/ALPHA_SE/m5.debug -d ../results configs/example/myse.py -r 1 --bench=applu;ammp --checkpoint_dir=checkpoints -d --caches --l2cache -n 2
+SMT workload :['ammp', 'applu']
+['ammp', 'applu']
+Running benchmark: applu;ammp
+Accessing cpu_class
+Global frequency set at 1000000000000 ticks per second
+Program received signal EXC_BAD_ACCESS, Could not access memory.
+Reason: KERN_PROTECTION_FAILURE at address: 0x00000008
+0x00184ed3 in Port::sendStatusChange (this=0x0, status=Port::RangeChange) at port.hh:210
+210        void sendStatusChange(Status status) {peer->recvStatusChange(status); }
+(gdb)
+"""
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

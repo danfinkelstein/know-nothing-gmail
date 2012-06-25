@@ -1,0 +1,41 @@
+I could boot solaris in SPARC_FS, but m5 exited abruptly after that
+with the following message:
+Exiting @ cycle 9223372036854775807 because simulate() limit reached
+The command line I executed was:
+build/SPARC_FS/m5.opt -v -d /tmp/output/ configs/example/fs.py
+Host system: Ubuntu 32 bit
+I tried it twice, and it quit at the same cycle count both the times.
+To ascertain whether the error was caused because of something I did,
+I didn't enter anything on the solaris terminal the second time. i.e.
+The computer was idle for the entire duration except for the boot
+command on opb. Has anyone run into a similar error? Or any hints
+regarding debugging this?
+- Show quoted text -
+On Fri, Feb 12, 2010 at 10:26 PM, Ali Saidi <saidi@umich.edu> wrote:
+>
+> The original binaries should work just fine, the _new versions were ones
+> that we verified we could compile from source.
+>
+> Ali
+>
+>
+> On Fri, 12 Feb 2010 20:50:07 +0530, prasun gera <prasun.gera@gmail.com>
+> wrote:
+>> Figured it out. Copied the files to the binaries and disks directories
+>> and could run configs/example/fs.py after that. One small thing
+>> though. The names of the solaris binaries used in m5 have new as a
+>> suffix ( for eg. openboot_new.bin and q_new.bin). Does it mean that
+>> the original binaries from opensparc need to be modified in some way?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Hi, Everyone,
+I use M5 to configure a multiprocessor system and run some spec benchmarks on
+it. After running for 3000 minutes, the memory usage goes up to 85% and it's
+getting very slow. Does anyone know how to solve this problem? Thanks
+--
+Zhenyu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

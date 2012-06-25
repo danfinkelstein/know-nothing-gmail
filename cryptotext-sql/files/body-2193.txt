@@ -1,0 +1,132 @@
+The Exec traceflag is very useful. You'll see the symbol names for the
+function that is causing the read to be issued. However, you should
+only enable tracing right before the error (e.g. --trace-start=
+44873106500).
+Do you encounter the problem with the compiled kernel available on the
+website?
+Ali
+- Show quoted text -
+On Nov 24, 2008, at 7:35 PM, Ryan Markley wrote:
+> Hi Ali thanks again,
+>
+> I have been trying several programs and in all of them is the same,
+> do you think that maybe is a bug of the software for the GCC version
+> or other libraries?, I did not do any changes to the simulator. My
+> gcc version is 4.3.2 and my kernel is 2.6.13. I have enable the bus
+> trace flags and this is the output:
+>
+> 44873206500: system.iobus: recvTiming: src 0 dst -1 ReadReq 0x80c4dbc0
+> panic: Unable to find destination for addr (user set default
+> responder): 0x80c4dbc0
+>
+> I am a beginner in the simulator so can you tell me other trace
+> flags that I can use to give your more useful information, in
+> addition how can I do to show the information after a certain number
+> of cycles?.
+>
+> Thanks.
+>
+>
+>
+> On Mon, Nov 24, 2008 at 2:55 PM, Ali Saidi <saidi@umich.edu> wrote:
+> Ok, now you're going to need to do some debugging. You know what cycle
+> the panic occurs at, so you should enable some trace flags a few
+> thousand cycles before that and figure out what the CPU is doing. Is
+> it accessing a good address? Is there some bug with the address
+> calculation? Where is the address coming from?
+>
+> Have you made any changes to the simulator? What kernel are you
+> running?
+>
+> Ali
+>
+>
+> On Nov 24, 2008, at 5:34 PM, Ryan Markley wrote:
+>
+> > Hi Ali thanks for your answer,
+> >
+> > I am using the fs.py that comes with the simulator, when I do the
+> > simulation with the atomic model works fine, but when I put the --
+> > detailed options then I get the error that I said before, this is
+> > the command that I use
+> >
+> > ./build/ALPHA_FS/m5.opt  -d /temp/output configs/example/fs.py -b
+> > Hello --detailed  --caches
+> >
+> >
+> > This is my rcS file.
+> >
+> > ---- rcS file
+> > #!/bin/sh
+> > /benchmarks/Hello
+> > m5 exit
+> >
+> > This is the output of the file system.terminal
+> >
+> > ---- system.terminal file
+> > Brought up 1 CPUs
+> > SMP: Total of 1 processors activated (4002.20 BogoMIPS).
+> > NET: Registered protocol family 16
+> > EISA bus registered
+> >
+> > To run the simulation what I have done is change the benchmarks.py
+> > file and I have added my own benchmark:
+> >  'Hello':     [SysConfig('Hello.rcS')],
+> >
+> > In the file config.ini everything seems fine, any ideas about what
+> > is happening?. This error happens with every program that I try. If
+> > you need more information please tell me. Thanks so much.
+> >
+> >
+> >
+> > On Mon, Nov 24, 2008 at 2:01 PM, Ali Saidi <saidi@umich.edu> wrote:
+> > Hi Ryan,
+> >
+> > We're going to need a lot more information to help you. Please see http://www.m5sim.org/wiki/index.php/Reporting_Problems
+> > Ali
+> >
+> > On Nov 24, 2008, at 3:19 PM, Ryan Markley wrote:
+> >
+> > > Hello, I have been running several simulations but I can complete
+> > > all of them with the atomic cpu but when I put the option of --
+> > > detailed cpu then I get the following error:
+> > >
+> > > panic: Unable to find destination for addr (user set default
+> > > responder): 0x80c4dbc0
+> > >  @ cycle 44873206500
+> > > [findPort:build/ALPHA_FS/mem/bus.cc, line 334]
+> > > Memory Usage: 197528 KBytes
+> > > Program aborted at cycle 44873206500
+> > > Aborted
+> > >
+> > > With every program I get the same error and in the same cycle, I
+> > > thought that maybe is a bug so I update to the last development
+> > > version but I still get the same error.  Thank you.
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

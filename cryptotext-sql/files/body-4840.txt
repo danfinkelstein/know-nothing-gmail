@@ -1,0 +1,10 @@
+hi tracy,when you type that command, the simulator does boot up an os, you can see if you turn on the console interface right away, it is definitely booting.  but you're correct in that you didn't need to do anything special to do so.
+if you want to run more benchmarks, you'll need to modify or make your own rcS script to tell the simulator OS what to do - see m5/configs/boot for examples.lisa- Show quoted text -On 11/29/06, 
+rlai@mtu.edu <rlai@mtu.edu> wrote:
+Hi,    I met some problems in running multiple benchmarks in full-system.    To run one benchmark, I can use:./build/ALPHA_FS/m5.opt  ./configs/examples/fs.py –b NetperfMaertsIt seems like I don't need to boot up the OS, and just type the command in
+local host machine.    But how to run multiple benchmarks simultaneously? Should I connect tothe simulated console interface and run them ? how to run them?    Thanks!Tracy_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

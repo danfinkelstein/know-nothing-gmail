@@ -1,0 +1,23 @@
+Hello,
+         
+Referring to the run.py in the configs/splash2 directory.
+ 
+for cpu in cpus:    
+cpu.addPrivateSplitL1Caches(L1(size = options.l1size, assoc = 
+1),                                
+L1(size = options.l1size, assoc = 4))    cpu.mem = 
+cpu.dcache
+ 
+what does the last line do? If we are already 
+creating split private caches in the previous line, why is this line 
+required?
+ 
+It not there in the configs/example/se.py 
+file
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

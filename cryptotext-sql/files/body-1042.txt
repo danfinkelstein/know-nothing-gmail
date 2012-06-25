@@ -1,0 +1,6 @@
+Hello,I noticed running a parsec benchmark that the benchmark is trying to write output back to the disk image, it seems then that program immediately seg faulted. Are these two events correlated? If so, what solutions are there to prevent these seg faults?
+Thanks,EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

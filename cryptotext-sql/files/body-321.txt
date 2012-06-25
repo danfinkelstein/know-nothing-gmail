@@ -1,0 +1,20 @@
+Hi Rick, Steve and other guys,
+ 
+I'm a starter using the present M5-stable for my 
+assignment and want to run M5 with Bank-based shared L2 and Crossbar Model 
+between memory objects. I have tried to look through the mailing list 
+and found links of http://article.gmane.org/gmane.comp.emulators.m5.users/5110/match=bank and 
+http://article.gmane.org/gmane.comp.emulators.m5.users/2911/match=bank  may 
+be useful.
+ 
+I'm wondering whether Rick, Steve or someone could 
+share the patch with me or tell me how to get it. Thanks for your 
+help!
+ 
+2010-04-11 
+Siming 
+Chen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

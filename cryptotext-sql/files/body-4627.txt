@@ -1,0 +1,28 @@
+    There are plans to add that support in the near future for SPARC.
+SPARC only really needs microcode that runs a fixed series of
+instructions exactly once, so there won't be any support for
+intra-microcode branching at that point. There are plans to implement
+microcode support fully, but that will be a little further in the future.
+Gabe
+- Show quoted text -
+Stephen Hines wrote:
+> Is there any support for micro-ops in the O3CPU model? I am looking to add this
+> type of support to the simulator, but I do not want to just duplicate work if
+> someone has already implemented or planned to implement this (especially since
+> I have noticed that the Sparc machine model already makes use of micro-ops.
+>
+> Steve
+>
+> ------------------------------
+> Stephen Hines
+> hines@cs.fsu.edu
+> http://www.cs.fsu.edu/~hines
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

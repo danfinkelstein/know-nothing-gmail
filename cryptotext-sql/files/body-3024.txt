@@ -1,0 +1,23 @@
+i don't know if this would work but try it.
+in the build folder, look for the folder options. open ALPHA_SE or ALPHA_FS text file. place quotes in the value of CPU_MODELS. from
+all
+to
+"all"
+---
+unibersidadngpilipinas
+fractal218 wrote:
+The version of scons i used is v0.97.0d20070918.r2446.
+Yes, it will be recompiled successfully if the build directory is deleted. But it will take long time to do that every time you need to recompile it.
+Thank you!
+------------------------------------------------------------------------
+中国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线 <http://event.mail.163.com/chanel/click.htm?from=NO_26&domain=126>
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

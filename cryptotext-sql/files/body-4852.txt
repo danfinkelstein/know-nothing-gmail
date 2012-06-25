@@ -1,0 +1,121 @@
+hi,Ying Xiong
+        Yes, I have the same problem in my test, I have maken a series of tests based on different configurations and reported  the result to this maillist. The authors of M5 replied me with their plan of launching a new version to get rid of the bugs in next several weeks.
+BTW:Thanks for your reminding of my coding problem of my reply.
+======= 2006-11-22 19:42:01 Wrote in your letter=======
+- Show quoted text -
+>Hi all,
+>Thanks for xiaojun's advice.
+>I have hooked a 2-level cache on M5, however, I have a new error as below.
+>
+>m5.opt: build/ALPHA_FS/mem/cache/tags/cache_tags_impl.hh:178: typename
+>CacheTags<Tags, Compression>::BlkType* CacheTags<Tags,
+>Compression>::handleFill(typename Tags::BlkType*, Packet*&, unsigned int,
+>PacketList&, Packet*) [with Tags = LRU, Compression = NullCompression]:
+>Assertion `tmp_blk == blk' failed.
+>Program aborted at cycle 179000
+>Aborted
+>
+>Thanks in advance and looking forward to your guys' reply!
+>Lawrence Xiong
+>
+>BTW: Anyone whose computer can not display xiaojun's reply properly, please
+>download "codeview".
+>
+>Below is my script.
+>
+>
+>import optparse, os, sys
+>
+>import m5
+>from m5.objects import *
+>m5.AddToPath('../common')
+>from FSConfig import *
+>from SysPaths import *
+>
+>parser = optparse.OptionParser()
+>
+>
+>parser.add_option("-m", "--maxtick", type="int")
+>parser.add_option("--maxtime", type="float")
+>
+>(options, args) = parser.parse_args()
+>
+>if args:
+>    print "Error: script doesn't take any positional arguments"
+>    sys.exit(1)
+>
+>
+>
+># L1 Cache
+>class L1(BaseCache):
+>    latency = 1
+>    block_size = 64
+>    mshrs = 4
+>    tgts_per_mshr = 8
+>
+># L2 Cache
+>class L2(BaseCache):
+>    block_size = 64
+>    latency = 10
+>    mshrs = 92
+>    tgts_per_mshr = 16
+>    write_buffers = 8
+>
+># cpu
+>cpu = TimingSimpleCPU()
+>cpu.clock = '2GHz'
+>
+># creat system and root
+>mem_mode = 'timing'
+>root = Root(clock = '1THz',
+>            system = makeLinuxAlphaSystem(mem_mode, Machine()))
+>
+># l2cache & bus
+>root.system.toL2Bus = Bus()
+>root.system.l2c = L2(size='4MB', assoc=8)
+>root.system.l2c.cpu_side = root.system.toL2Bus.port
+>
+># connect l2c to membus
+>root.system.l2c.mem_side = root.system.membus.port
+>
+>cpu.addPrivateSplitL1Caches(L1(size = '32kB', assoc = 1),
+>                            L1(size = '32kB', assoc = 4))
+>cpu.mem = cpu.dcache
+>
+># connect cpu level-1 caches to shared level-2 cache
+>cpu.connectMemPorts (root.system.toL2Bus)
+>
+>root.system.cpu = cpu
+>
+>m5.instantiate(root)
+>
+>if options.maxtick:
+>    maxtick = options.maxtick
+>elif options.maxtime:
+>    simtime = int(options.maxtime * root.clock.value)
+>    print "simulating for: ", simtime
+>    maxtick = simtime
+>else:
+>    maxtick = -1
+>
+>exit_event = m5.simulate(maxtick)
+>
+>while exit_event.getCause() == "checkpoint":
+>    m5.checkpoint(root, "cpt.%d")
+>    exit_event = m5.simulate(maxtick - m5.curTick())
+>
+>print 'Exiting @ cycle', m5.curTick(), 'because', exit_event.getCause()
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+= = = = = = = = = = = = = = = = = = = =
+Thanks and Best Regards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+　　　　　　　　　　2006-11-23
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

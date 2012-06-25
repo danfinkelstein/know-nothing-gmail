@@ -1,0 +1,5 @@
+Nathan,Thanks for your advice on "limit", it turns out I was being capped on virtual memory, I need to move to a new server.ThanksEF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,282 @@
+Ok,
+I also just finally understood why the problem was occurring. In the
+new constructor the sector parameter is a bool with a default
+parameter. Any integer passed as a second parameter with be implicitly
+converted to a bool thus nextCycle() is converted to true and the
+constructor is called.
+Thanks again,
+Ali
+- Show quoted text -
+On Oct 27, 2008, at 4:50 PM, Clint Smullen wrote:
+> Interesting, I pulled a completely fresh copy of stable, and it has
+> both constructors. The one in my other copy of stable only has the one
+> that leaves off the Tick parameter, it must have gotten an extra patch
+> out of unstable at some point, though I don't recall ever switching my
+> stable version over. Either way, the patch uses the new constructor,
+> so should work with both the current stable and the new unstable.
+>
+>       - Clint
+>
+> On Oct 27, 2008, at 7:34 PM, Ali Saidi wrote:
+>
+>>
+>> Ok, we are still missing something. This is m5-stable, tip, src/sim/
+>> eventq.hh:
+>> http://repo.m5sim.org/m5-stable/file/tip/src/sim/eventq.hh#l318
+>> That code has a EventWrapper that has a schedule() in it.
+>>
+>> On the other hand m5-dev, tip, src/sim/eventq.hh doesn't:
+>> http://repo.m5sim.org/m5/file/tip/src/sim/eventq.hh#l422
+>>
+>> I can see this problem existing in the development repository, but I
+>> don't know how it would exist in the stable one. Is this problem only
+>> in the development repository? Did you maybe pull from the
+>> development
+>> repository into your stable directory?
+>>
+>> Thanks,
+>>
+>> Ali
+>>
+>>
+>>
+>> On Oct 27, 2008, at 4:15 PM, Clint Smullen wrote:
+>>
+>>> Hmm. I pulled and updated both my stable and unstable copies, and
+>>> they
+>>> both have the following:
+>>>
+>>>   EventWrapper(T *obj, bool del = false, Priority p = Default_Pri)
+>>>       : Event(p), object(obj)
+>>>   {
+>>>       if (del)
+>>>           setFlags(AutoDelete);
+>>>   }
+>>>
+>>> Ah, though, looking at yours, it is still the old one, because it
+>>> takes an EventQueue. All other uses of EventWrapper that I looked at
+>>> manually calls schedule on a non-dynamically allocated EventWrapper-
+>>> derived type. The issue is just part of the API change that didn't
+>>> get
+>>> propagated, it seems. I think manually calling schedule on the Event
+>>> is more intuitive and what most code does anyways, but it might be
+>>> good to check and make sure that all users of EventWrapper have been
+>>> fixed.
+>>>
+>>>     - Clint
+>>>
+>>> On Oct 27, 2008, at 6:57 PM, Ali Saidi wrote:
+>>>
+>>>> Hi Clint,
+>>>>
+>>>> Nice catch finding that bug. I looked at your patch and I'm OK with
+>>>> it, I just don't understand exactly why it wasn't working before.
+>>>> It
+>>>> seems like they're might be a memory leak there and it's not clear
+>>>> why
+>>>> that FetchEvent was dynamically allocated. However, it still seems
+>>>> like it should have worked. You said that the EventWrapper
+>>>> constructor
+>>>> didn't call schedule anymore? It seems like it does:
+>>>>
+>>>>  EventWrapper(T *obj, Tick t, bool del = false,
+>>>>               EventQueue *q = &mainEventQueue,
+>>>>               Priority p = Default_Pri)
+>>>>      : Event(q, p), object(obj)
+>>>>  {
+>>>>      if (del)
+>>>>          setFlags(AutoDelete);
+>>>>      schedule(t);
+>>>>  }
+>>>>
+>>>> Since Nate wrote the new eventq, I want him to take a look at what
+>>>> is
+>>>> going on before I commit your patch.
+>>>>
+>>>> Thanks again for catching the bug,
+>>>>
+>>>> Ali
+>>>>
+>>>>
+>>>>
+>>>> On Oct 27, 2008, at 3:24 PM, Clint Smullen wrote:
+>>>>
+>>>>> I am utilizing the latest stable version. All the results I have
+>>>>> shown
+>>>>> are for complete vanilla codebase running the fs.py example
+>>>>> script.
+>>>>>
+>>>>> I tried adding an extra drain into the Simulation.py script as
+>>>>> part
+>>>>> of
+>>>>> the memory mode switch, but that had no impact. Then I added
+>>>>> tracing
+>>>>> of interrupts, as you suggested, as well adding other messages.
+>>>>> Here
+>>>>> is the section of the trace that matches what I gave before:
+>>>>>
+>>>>> 349997653500: system.switch_cpus0: Processor is now idle
+>>>>> 2349997653500: system.switch_cpus1: Processor is now idle
+>>>>> 2349997653500: system.switch_cpus2: Processor is now idle
+>>>>> 2349997653500: system.switch_cpus3: Processor is now running
+>>>>> 2349997653500: system.switch_cpus2: Resume
+>>>>> 2349997653500: system.switch_cpus3: Resume
+>>>>> 2349997653500: system.switch_cpus3: Constructing a new FetchEvent
+>>>>> 2349997653500: system.switch_cpus0: Resume
+>>>>> 2349997653500: system.switch_cpus1: Resume
+>>>>> 2350585937500: system.cpu0.interrupts: Interrupt 22:0 posted
+>>>>> 2350585937500: system.switch_cpus0: Suspended Processor awoke
+>>>>> 2350585937500: system.switch_cpus0: ActivateContext 0 (1 cycles)
+>>>>> 2350585937500: system.cpu1.interrupts: Interrupt 22:0 posted
+>>>>> 2350585937500: system.switch_cpus1: Suspended Processor awoke
+>>>>> 2350585937500: system.switch_cpus1: ActivateContext 0 (1 cycles)
+>>>>> 2350585937500: system.cpu2.interrupts: Interrupt 22:0 posted
+>>>>> 2350585937500: system.switch_cpus2: Suspended Processor awoke
+>>>>> 2350585937500: system.switch_cpus2: ActivateContext 0 (1 cycles)
+>>>>> 2350585937500: system.cpu3.interrupts: Interrupt 22:0 posted
+>>>>> 2350585938000: system.switch_cpus2: Fetch
+>>>>> 2350585938000: system.switch_cpus1: Fetch
+>>>>> 2350585938000: system.switch_cpus0: Fetch
+>>>>> 2350585968000: system.switch_cpus2: Complete ICache Fetch
+>>>>> 2350585968000: system.switch_cpus2: Fetch
+>>>>> 2350585970000: system.switch_cpus1: Complete ICache Fetch
+>>>>> 2350585970000: system.switch_cpus1: Fetch
+>>>>> 2350585973000: system.switch_cpus0: Complete ICache Fetch
+>>>>>
+>>>>> One can see that cpu3.interrupts is posting the same interrupt as
+>>>>> all
+>>>>> the others, but it appears that switch_cpus3 never responds to it.
+>>>>> The
+>>>>> lack of the "Suspended Processor awoke" for switch_cpus3 indicates
+>>>>> that its thread is not suspended. The "Processor is now running"
+>>>>> message occurs in takeOverFrom when an active thread context is
+>>>>> found
+>>>>> but the previous state was not Running. Following this, the
+>>>>> "Constructing a new FetchEvent" occurs in resume when it is
+>>>>> detected
+>>>>> that the state is not idle. Despite creating the new FetchEvent,
+>>>>> note
+>>>>> that there is never a "...switch_cpus3: Fetch" message. The only
+>>>>> cause
+>>>>> of this that I can imagine is that the event is not explicitly
+>>>>> scheduled.
+>>>>>
+>>>>> Looking in EventWrapper inside eventq.hh, the old implementation
+>>>>> (using the old event queue system) automatically called schedule
+>>>>> in
+>>>>> the constructor while the new version does not. Inserting a
+>>>>> schedule
+>>>>> call right after the "... new FetchEvent(..)" line makes the
+>>>>> problem
+>>>>> go away. Looking in cpu/base.cc, the only other use of the
+>>>>> EventWrapper in the entire cpu subtree does have an explicit
+>>>>> schedule
+>>>>> call. Looking at other instances of EventWrapper shows that their
+>>>>> behavior has changed as well. I also noted that most other uses of
+>>>>> EventWrapper do not continually create and destroy the event.
+>>>>>
+>>>>> I have put both this features into a small patch that resolves
+>>>>> this
+>>>>> issue, that I have sent to the developers list. Let me know what
+>>>>> you
+>>>>> think of it. I am uncertain whether calling deschedule right
+>>>>> before
+>>>>> always calling schedule is necessary, but I left it in to be safe.
+>>>>>
+>>>>>   - Clint Smullen
+>>>>>
+>>>>> On Oct 27, 2008, at 2:41 PM, Ali Saidi wrote:
+>>>>>
+>>>>>> Hi Clint,
+>>>>>>
+>>>>>> I was hoping someone else would respond, but seeing as they
+>>>>>> haven't
+>>>>>> I'll give it a try. The Resume and Activate messages are
+>>>>>> completely
+>>>>>> different. Resume is the CPU getting a resume() (which is the
+>>>>>> opposite
+>>>>>> of a drain() call). Before any change can be made to the M5
+>>>>>> object
+>>>>>> hierarchy, the memory system must be drained of all requests.
+>>>>>> Drain()
+>>>>>> instructs all objects to not issue new requests to the memory
+>>>>>> system,
+>>>>>> and only process responses such that all current outstanding
+>>>>>> requests
+>>>>>> can be completed. Resume() is the opposite, and it allows objects
+>>>>>> to
+>>>>>> resume issuing requests.
+>>>>>>
+>>>>>> There is another pair of functions are suspend() and activate().
+>>>>>> Suspend() (which ends up calling suspendContext()) suspends one
+>>>>>> processor context in response to a quiesce pseudo-instruction
+>>>>>> that
+>>>>>> we
+>>>>>> insert into the kernel to skip idle time instead of busy waiting
+>>>>>> in a
+>>>>>> spin loop. Activate() is the reverse of this. An activate() can
+>>>>>> happen
+>>>>>> either because of the time passed to the  quiesceNs() pseudo
+>>>>>> instruction expiring, or because of an interrupt (such as the
+>>>>>> periodic
+>>>>>> timer interrupt) occurring.
+>>>>>>
+>>>>>> So, drain()/resume() and suspend()/activate() are different
+>>>>>> things.
+>>>>>> If
+>>>>>> the system is idle and you switch with a command line option (-
+>>>>>> F), I
+>>>>>> would expect that all the cpus would be idle, because they're
+>>>>>> sitting
+>>>>>> at the prompt and only waking up for timer interrupts every once
+>>>>>> in a
+>>>>>> while. On the other hand, if you execute m5 switchcpu at the
+>>>>>> prompt I
+>>>>>> would expect that one cpu would be active to execute the pseudo
+>>>>>> instruction that switches cpus. In that case you shouldn't see an
+>>>>>> Activate Context because it should already be active (unless
+>>>>>> there
+>>>>>> was
+>>>>>> an intervening Suspend Context.
+>>>>>>
+>>>>>> There still could be a problem, but it might not be exactly where
+>>>>>> you
+>>>>>> think it is. You're running the stable repository? I know there
+>>>>>> were
+>>>>>> some interrupt changes to the development repository, but I don't
+>>>>>> think those made it into stable yet. Some trace flags for the
+>>>>>> interrupt system might shed a bit of light on the problem.
+>>>>>>
+>>>>>> Ali
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

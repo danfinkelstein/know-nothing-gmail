@@ -1,0 +1,20 @@
+Hi all,
+I've discovered a bug in the in-order branch prediction system.
+I noticed that changing the size of the branch predictor didn't affect the number of taken/not taken branches at all!
+The reason for this is that all BTB accesses are misses.
+I figured out that the BTB actually never gets updated!
+I dug into the code and saw that there are 2 squash-functions BPredUnit::squash (in cpu/inorder/resources/bpred_unit.cc) with different arguments.
+One of them gets called by BranchPredictor::squash (in cpu/inorder/resources/branc_predictor.cc), but in my opinion it should be the 4-arguments one. This one will update the BTB as it should.
+To clarify this I made a diff and attached it to this e-mail.
+Please note that I added a condition around the BPredUnit::squash - function with 4 arguments. If I didn't do this an assertion would fail during the execution.
+Although my patch is working, there might be a better way to solve this problem. Again I looked more into it to figure out what's going on.
+I noticed that sometimes an instruction with the same sequence number calls the squash-function twice! This means that the squash function tries more than once to remove the associated predHist[tid] object. Since it's already removed the assertion fails..
+I've attached a small extract from the trace produced by the hello world program. This trace was generated without applying bpredPatch.
+If we analyze this we will see that instruction with sn 218 calls squash 2 times! Once in the ID stage and once in the EX stage.
+Actually a "return" instruction always causes a squash in the ID stage. Is this squash necessary? From inorder/resources/fetch_seq_unit.cc we can see that this also happens for other branch-instructions.
+Hopefully this was a little bit clear and helped you guys!
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

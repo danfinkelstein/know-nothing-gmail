@@ -1,0 +1,23 @@
+Hi Wang, Initially, i was also trying to do the same thing you mentioned(configuring a system with 4 cores having their own L1 caches but sharing a common L2 cache). This previous discussion i found on the list while i was searching through about "CMP shared cache configuration" helped a lot in fact it does the same, we can easily learn from reading the script. 
+http://www.mail-archive.com/m5sim-users@lists.sourceforge.net/msg00523.htmlI think this might help you.
+Thanks,Phani.- Show quoted text -On Wed, May 26, 2010 at 11:16 PM, Weixun Wang <wewang@cise.ufl.edu> wrote:
+Hi all,
+I'm new to M5. Is there any tutorial or document about how to write the script which is used to configure the system and run the simulation, except http://www.m5sim.org/wiki/index.php/Simulation_Scripts_Explained?
+For example, if I want to configure a multi-core system which 4 cores have their own L1 caches but share a common L2 cache, how to write the script?
+Thanks.
+-- 
+Best Regards,
+Wang, Weixun
+Department of Computer&  Information Science&  Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

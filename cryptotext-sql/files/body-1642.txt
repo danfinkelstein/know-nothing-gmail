@@ -1,0 +1,21 @@
+You would need to know what type of CPU model (assuming O3), what ISA, and what instruction is causing that problem.You could probably look in the ISA description format (i.e. arch/alpha/mem.isa) or the generated code (i.e. build/ALPHA_SE/arch/alpha/o3_cpu_exec.cc) to figure out what code is being generated for that instruction.
+Without knowing what "other" configurations work and what "other" ones don't work it's hard to analyze the problem.On a first-cut guess, I'm assuming that you are executing a privileged (misc.) instruction in O3 mode which doesn't support the split level access. 
+What I would do is compare your broken simulation execution trace with that of the AtomicSimpleCPU's execution trace. Wherever the instructions differ, is probably where your problem is.- Show quoted text -
+On Wed, Apr 1, 2009 at 3:07 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+        I am seeing this message in some of my simulations. Other workloads
+on the same configuration finish correctly, and the same workload on
+other configurations finishes fine. From my reading of the code, the
+error should only occur if an instruction object was corrupted, since
+otherwise they would always be correctly built for the specific ISA,
+yes?
+        Does anyone have any other ideas for how to determine the error?
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

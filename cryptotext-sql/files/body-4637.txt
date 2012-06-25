@@ -1,0 +1,15 @@
+Meeta Gupta wrote:
+Are there any simpoints for SPLASH2 benchmarks where I can get a representative phase of the benchmarks?
+Not that I know of.
+And how do I use the fast-forward mode of M5, and then switch to normal execution. Can someone give me pointers for both SystemEmulator mode and Full_System mode.
+See http://www.m5sim.org/wiki/index.php/Sampling.  (Could someone make sure that page is up to date?)- Show quoted text -
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

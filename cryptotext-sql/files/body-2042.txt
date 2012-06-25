@@ -1,0 +1,16 @@
+Hello I have a couple of questions regarding the instructions counter
+that are in the statistics
+My post is related with this one
+http://thread.gmane.org/gmane.comp.emulators.m5.users/3324/focus=3328,
+I have read it but I still have some questions.
+- What is this value,  system.cpu0.num_insts    2    # Number of
+instructions executed? and why is so low?. For all my CPUs I have a
+similar low number.
+- What is the difference between system.cpu0.num_insts   and
+system.switch_cpus0.num_insts?
+- What is commit.COM:loads?, is the number of accesses to the memory?
+And I think that's all for now. Thanks in advance
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

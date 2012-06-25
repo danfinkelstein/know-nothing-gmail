@@ -1,0 +1,10 @@
+hi!I am running eight-core system simulation for integer benchmarks. I have two cases mentioned below . In case(a) i have assigned different benchmarks for different cpu's and in case (b) I changed the order of assignments of benchmarks for different cpu's. I got the results for case(a) but in case(b) I got  some cpu's values to be 0 in m5stats.txt file. What might be the problem ?
+case (a) :max_insts_all_threads = 100000000num of cpus = 8num threads per cpu = 1system.cpu[0].workload = [Mybench.perlbench]system.cpu[1].workload = [Mybench.h264ref]system.cpu[2].workload = [Mybench.gobmk]
+system.cpu[3].workload = [Mybench.h264ref]system.cpu[4].workload = [Mybench.bzip2]system.cpu[5].workload = [Mybench.h264ref]system.cpu[6].workload = [Mybench.gobmk]system.cpu[7].workload = [Mybench.libquantum]
+***************************************************************************************************case (b):max_insts_all_threads = 100000000num of cpus = 8num threads per cpu = 1system.cpu[0].workload = [Mybench.perlbench]
+system.cpu[1].workload = [Mybench.bzip2]system.cpu[2].workload = [Mybench.h264ref]system.cpu[3].workload = [Mybench.h264ref]system.cpu[4].workload = [Mybench.gobmk]system.cpu[5].workload = [Mybench.libquantum]
+system.cpu[6].workload = [Mybench.gobmk]system.cpu[7].workload = [Mybench.h264ref]Thanks,HARI
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

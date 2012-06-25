@@ -1,0 +1,24 @@
+there are two step to achieve the goal:
+ 
+1.put your trace flag as you want , you can imitate what he has done in m5; 
+2.then you should add the flag you 've defined into the SConstruct file of the package to let compiler know your flag...
+ 
+then when you can get some information when you  tracing. 
+ 
+i havn't read the code for days, hope my poor description can help...or... you can still ask other guys in group...
+ 
+2008/8/4 Steve Reinhardt <stever@gmail.com>- Show quoted text -
+This has changed recently... the valid trace flags are defined by adding a line like:TraceFlag('Foo')to a SConscript file, typically the one in the same directory where you're using that flag.
+Steve
+On Sun, Aug 3, 2008 at 1:39 AM, 邓宁 <dunning2006@gmail.com> wrote:
+hi all
+i've  traced some information of memory access when running m5 by se.py...,i 've add something new into m5 and wanted to trace some information about accessing it, after doing that, i got the error "XXX is not the member of TRACE",  i guess there is a list to maintain all kinds of trace options like 'MemoryAccess, Cache, Bus...' , but i failed to get it... so how can i do that if i want to trace some information what i interested in, but not included in m5 currently...plz show me a light? thank u.
+--RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.com
+dnenging@bit.edu.cn_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

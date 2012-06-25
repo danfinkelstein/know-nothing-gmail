@@ -1,0 +1,16 @@
+There's no specific documentation for 1.0; 1.1 is not that different so that documentation still applies.  There's a link to the 1.1 docs on the 2.0 documentation page.
+If you're starting out on something new you're probably better off using 2.0 though.
+Steve- Show quoted text -
+Forum Mangal Parmar wrote:
+Hi,
+where can I find the documentation for M5 1.0?
+Thanks,
+Forum Parmar
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

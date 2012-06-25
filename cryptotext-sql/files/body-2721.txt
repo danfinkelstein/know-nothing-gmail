@@ -1,0 +1,13 @@
+I've committed a new event queue datastructure that should greatly
+improve simulator performance for those simulations that frequently
+schedule many events at the same tick/priority.  This was a pretty
+common thing for me to do when I was building a mesh network model.  I
+suspect that in the future as people simulate lots of simple CPU
+cores, that this will help as well.
+I ran all of the alpha regressions and nothing changed, so hopefully
+there are no bugs, but if there are, please let me know.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

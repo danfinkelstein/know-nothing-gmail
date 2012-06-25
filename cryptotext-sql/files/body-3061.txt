@@ -1,0 +1,57 @@
+Hi all,
+I am working on SPEC2006 benchmarks and I have some problems about the
+memory. For example, 445.gobmk can finish correctly under timing CPU
+model. But when I use the detailed CPU model to run the benchmark
+again, there has a panic. The following is the trace. I compare the
+trace between timing and detailed CPU model. The only difference is
+the last access (vaddr:0x10). Why does this problem happen in the
+detailed model? Does it come from the out-of-order issue?
+483.xalancbmk has the same problem. It tries to access 0xa0.
+vaddr: 0x11ff91ff0
+warn: Increasing stack size by one page.
+vaddr:0x11ff8ec50
+warn: Increasing stack size by one page.
+vaddr:0x11ff8cc50
+warn: Increasing stack size by one page.
+vaddr:0x11ff8ac50
+warn: Increasing stack size by one page.
+vaddr:0x11ff88c50
+warn: Increasing stack size by one page.
+vaddr:0x11ff86c50
+warn: Increasing stack size by one page.
+vaddr:0x11ff84c50
+warn: Increasing stack size by one page.
+vaddr:0x11ff82c50
+warn: Increasing stack size by one page.
+vaddr:0x11ff80c50
+warn: Increasing stack size by one page.
+vaddr:0x11ff7ec50
+warn: Increasing stack size by one page.
+vaddr:0x11ff7d188
+warn: Increasing stack size by one page.
+vaddr:0x10
+panic: Tried to access unmapped address 0x10.
+I have another problem about the memory usage. I run 410.bwaves  and
+473.astar in the full system mode. It can finish correctly. OK, It
+takes weeks to finish!!! But when I run the same binaries in the SE
+mode, I have the error:
+terminate called after throwing an instance of 'std::bad_alloc'
+I think this is because the m5 cannot acquire any memory from OS. I
+try to use Valgrind's massif utility to profile the heap and see which
+function uses the most memory. The result looks fine before the
+program has a segment fault. The memory usage does not jump to a huge
+volume suddenly. It is growing steadily. For example
+1.1G......1.2G.........1.5G......2.0G.....  So m5 can run several
+hours until there has no memory available.   If I create a smaller
+data set , then m5 can finish correctly.
+I am really appreciate if you can help me to solve these problems. For
+the first problem, why the timing and detailed model has different
+vaddr access. How to avoid it?  For the second problem, it seems that
+the alpha binary is fine because it is ok in full system model. The
+problem becomes why m5 try to acquire so many memory.
+Thank you very much.
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

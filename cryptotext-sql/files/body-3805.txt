@@ -1,0 +1,19 @@
+Which version of M5 are you using?  This is more or less what you need to do in beta4, but the older versions are much more involved.  Can you send a diff to the list?
+  Nate- Show quoted text -
+I am trying to pass the size of the block inside a physical memory object. I have added a new field on the PhysicalMemory.py: block_size = Param.Int(16, "...");
+From my configuration file I do: system.physmem.block_size = 64
+After compiling the simulation gives me a warning-error
+File "build/ALPHA_SE/python/m5/SimObject.py", line 611, in __setattr__
+  raise AttributeError, "Class %s has no parameter %s" \
+AttributeError: Class PhysicalMemory has no parameter block_size
+So I removed the new parameter from the configuration file and inserted an assert int the physical memory constructor { ... assert(p->block_size == 16);}. Still did not work. It seems that i have missed something and the parameter never pass to the physical memory.
+Thanks
+Panos
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

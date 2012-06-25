@@ -1,0 +1,20 @@
+I am not sure if I understand exactly what you want to validate against.  Do you want to validate a prefetcher using M5 or just the simulation of SPEC CPU 2000 benchmarks from our simulator to yours.  I am wondering because the prefetching study was done in M5 version 
+1.1 with heavy modifications.  I have not ported the prefetcher design over to version 2.0b3 of the simulator.  I may still have the stats results for some of the benchmarks (GHB prefetcher) around if you would like to look at those.
+If on the other hand you are just looking to validate the SPEC CPU 2000 benchmarks and don't care about the prefetcher, you should be able to run those simulations yourself.  The results will depend on wether you use SimPoints, or the fastforward technique for simulation and you should match that with your own simulation.
+If you clarify exactly what you are looking for I can see if I can help supply you with the needed data to validate your simulations.-RonOn 6/20/07, 
+Daniel Alex Finkelstein <dfinke01@cis.poly.edu> wrote:
+I'm looking to validate the SPEC CPU 2000 benchmarks with M5 2.0b3 against someone else's validated results, and it looks like there might be some in connection with the "Analysis of Hardware Prefetching Across Virtual Page Boundaries" paper. Though I'm not interested in the prefetching modification to the Alpha, it doesn't matter that it's been implemented as per the simulated system parameters in Table 1 (of the paper); I want to get some kind of reasonable apples-to-apples comparison of my own environment with one that's known to work.
+Essentially I'm looking for results from the Michigan team, but I'm happy to validate against another if someone has the results. I'd like to see two things, basically:
+The py file used for the simulation and the m5stats.txt output for each of the benchmarks (or other output files, if you changed the defaults).If you used an earlier version of the simulator, it might be interesting to see if the numbers change with a new validation run...
+Thanks,Dan 
+   
+       Daniel Alex Finkelstein       Ph.D. Candidate (CS)     
+       
+                      Work: +1-718-260-3378             Mobile: +1-718-246-7421
+                          Fax: +1-718-228-5328                        Email: 
+dfinke01@cis.poly.edu             IM: steuben13 (Skype)                                                  
+Polytechnic University             
+6 MetroTech Center             Brooklyn, NY 11201 USA                                          
+   _______________________________________________
+m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

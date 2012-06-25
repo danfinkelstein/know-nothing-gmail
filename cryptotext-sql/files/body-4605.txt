@@ -1,0 +1,7 @@
+In a previous message Steve Reinhardt mentioned that he was working on support for PARMACS/pthreads for linux in se-mode. I'd really like to take advantage of this for comparing against a complementary architecture I'm working on.
+Is this functionality in any kind of a useable form? Is it something I could help with?
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,76 @@
+Edith,
+At one point the memtester object was capable of running with just a bus and main memory, but recent changes require that the memtester have a cache connected to it.  You can do this using the same script you have by just adding a --caches at the end of your command line.
+-Ron- Show quoted text -
+On Tue, 10 Apr 2007, Steve Reinhardt wrote:
+Hi Edith,
+This appears to be a bug in the memory tester object.  It shouldn't affect anything other than the memory tester itself.  If you're not writing your own coherence protocol, then it shouldn't matter to you, as there's really no other reason to run the memory tester.
+Thanks for pointing it out, we'll try and get it fixed in the next release.
+Steve
+Edith Hand wrote:
+Hello M5 users,
+I cannot figure out whether my installation is bad or whether something else is going on.  I have built both MIPS and ALPHA SE and I have built several different executables (m5.debug, m5.prof, etc.) and all seem to have the same problem.  I have build M5 on my Mac OS X ( 10.4.9).  I also built on a Linux box (Debian 4.0 (Etch) on an AMD Athlon XP, 2.6.8.1 <http://2.6.8.1> kernel) to try and rule out whether it was a problem with my Mac setup, but I'm still getting the same results.  Following is the output I get:
+$ build/ALPHA_SE/m5.debug configs/example/memtest.py
+M5 Simulator System
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Apr  8 2007 21:29:22
+M5 started Mon Apr  9 23:29:11 2007
+M5 executing on edith-smagalas-computer.local
+command line: build/ALPHA_SE/m5.debug configs/example/memtest.py
+warning: overwriting port funcmem.functional value cpu1.functional with cpu2.functional
+warning: overwriting port funcmem.functional value cpu2.functional with cpu3.functional
+warning: overwriting port funcmem.functional value cpu3.functional with cpu4.functional
+warning: overwriting port funcmem.functional value cpu4.functional with cpu5.functional
+warning: overwriting port funcmem.functional value cpu5.functional with cpu6.functional
+warning: overwriting port funcmem.functional value cpu6.functional with cpu7.functional
+warn: Entering event queue @ 0.  Starting simulation...
+panic: MemTest doesn't expect recvAtomic callback!
+ @ cycle 0
+[recvAtomic:build/ALPHA_SE/cpu/memtest/memtest.cc, line 67]
+Program aborted at cycle 0
+Abort trap
+Using gdb, I was able to step through all the way up to before the panic call.  The stack trace is as follows:
+(gdb) bt
+#0  MemTest::CpuPort::recvAtomic (this=0x166b99c, pkt=0x166e150) at build/ALPHA_SE/cpu/memtest/memtest.cc:67
+#1  0x0024d2b9 in Port::sendAtomic (this=0x166c4a0, pkt=0x166e150) at port.hh:192
+#2  0x0002d998 in Bus::atomicSnoop (this=0x166b510, pkt=0x166e150, responder=0x166ce10) at build/ALPHA_SE/mem/bus.cc:348
+#3  0x0002dca3 in Bus::recvAtomic (this=0x166b510, pkt=0x166e150) at build/ALPHA_SE/mem/bus.cc:407
+#4  0x00252d41 in Bus::BusPort::recvAtomic (this=0x166c4e0, pkt=0x166e150) at bus.hh:168
+#5  0x0024d2b9 in Port::sendAtomic (this=0x166cf7c, pkt=0x166e150) at port.hh:192
+#6  0x001edaed in MemTest::sendPkt (this=0x166cf30, pkt=0x166e150) at build/ALPHA_SE/cpu/memtest/memtest.cc:104
+#7  0x001ee6d6 in MemTest::tick (this=0x166cf30) at build/ALPHA_SE/cpu/memtest/memtest.cc:447
+#8  0x002f1f7c in MemTest::TickEvent::process (this=0x166cf44) at memtest.hh:87
+#9  0x000f18f5 in EventQueue::serviceOne (this=0x40aa2c) at build/ALPHA_SE/sim/eventq.cc:114
+#10 0x000f3fd4 in simulate (num_cycles=10000000000000) at build/ALPHA_SE/sim/main.cc:340
+#11 0x000ee6ba in _wrap_simulate__SWIG_0 (args=0x10235b0) at build/ALPHA_SE/python/swig/main_wrap.cc:3742
+#12 0x000ee867 in _wrap_simulate (self=0x0, args=0x10235b0) at build/ALPHA_SE/python/swig/main_wrap.cc:3783
+#13 0x0127f966 in PyEval_EvalFrame (f=0x183fa10) at /Users/ronald/Python/r244/Python/ceval.c:3568
+#14 0x01280501 in PyEval_EvalCodeEx (co=0x15ced20, globals=0x17430c0, locals=0x17430c0, args=0x0, argcount=0, kws=0x0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at /Users/ronald/Python/r244/Python/ceval.c:2741
+#15 0x01280741 in PyEval_EvalCode (co=0x15ced20, globals=0x17430c0, locals=0x17430c0) at /Users/ronald/Python/r244/Python/ceval.c:484
+#16 0x012a7373 in PyRun_FileEx (fp=0xa000bda0, filename=0x101fda4 "memtest.py ", start=257, globals=0x17430c0, locals=0x17430c0, closeit=1) at /Users/ronald/Python/r244/Python/pythonrun.c:1285
+#17 0x01271eee in builtin_execfile (self=0x0, args=0x1022670) at /Users/ronald/Python/r244/Python/bltinmodule.c:631
+#18 0x0127f966 in PyEval_EvalFrame (f=0x160b1d0) at /Users/ronald/Python/r244/Python/ceval.c:3568
+#19 0x01280501 in PyEval_EvalCodeEx (co=0x102e8e0, globals=0x1020f60, locals=0x0, args=0x16093a0, argcount=0, kws=0x16093a0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at /Users/ronald/Python/r244/Python/ceval.c:2741
+#20 0x0127e33b in PyEval_EvalFrame (f=0x1609250) at /Users/ronald/Python/r244/Python/ceval.c:3661
+#21 0x01280501 in PyEval_EvalCodeEx (co=0x101c7e0, globals=0x7d6a50, locals=0x7d6a50, args=0x0, argcount=0, kws=0x0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at /Users/ronald/Python/r244/Python/ceval.c:2741
+#22 0x01280741 in PyEval_EvalCode (co=0x101c7e0, globals=0x7d6a50, locals=0x7d6a50) at /Users/ronald/Python/r244/Python/ceval.c:484
+#23 0x012a7a39 in PyRun_SimpleStringFlags (command=0x20db7c "m5.main.main()", flags=0x0) at /Users/ronald/Python/r244/Python/pythonrun.c:1285
+#24 0x012a7ac7 in PyRun_SimpleString (command=0x20db7c "m5.main.main()") at /Users/ronald/Python/r244/Python/pythonrun.c:885
+#25 0x000f4c35 in main (argc=2, argv=0xbffffa90) at build/ALPHA_SE/sim/main.cc:166
+Any ideas/help would be greatly appreciated.  I'm new to M5 and I really want to get it to work.  FYI, I didn't get any errors during the compilation and all of the regression tests passed.  Also, the se.py example ("Hello World") ran fine as well.
+Thanks in advance.
+-Edith
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

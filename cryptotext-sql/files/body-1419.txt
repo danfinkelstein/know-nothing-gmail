@@ -1,0 +1,85 @@
+If you're using a multithreaded workload, you have to make sure you have enough CPUs for all the threads that get created.  So if you're giving the process half as many CPUs you need to tell it to create half as many threads.
+On Tue, May 26, 2009 at 10:32 PM, Siddharth Gupta <sidgupta@stanford.edu> wrote:
+Hi,- Show quoted text -
+I had one more question-
+I also tried to run different processes on different cpus but it gives the following error -
+fatal: Called sys_clone, but no unallocated thread contexts found.
+I created process1 and process2 instead of the usual process and then defined each odd cpu workload as process1 and each even cpu workload as process2. If I just define all of them as process1 the error goes away.
+Any suggestions?
+Thanks,
+Siddharth Gupta
+----- Original Message -----
+From: "Siddharth Gupta" <sidgupta@stanford.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Cc: "prasanthi" <prasanthi.relangi@stanford.edu>
+Sent: Tuesday, May 26, 2009 8:38:41 PM GMT -08:00 US/Canada Pacific
+Subject: Re: [m5-users] m5 with Multiprogramming workloads
+Hi,
+Thanks for the update. I tried to run multiple threads concurrently using SMT mode with the structure present in the se.py file. I am now getting the following error.
+build/SPARC_SE/cpu/o3/cpu.cc:278: FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams*) [with Impl = O3CPUImpl]: Assertion `params->numPhysIntRegs >= numThreads * SparcISA::NumIntRegs' failed.
+Any help would be great.
+Thanks,
+Siddharth
+----- Original Message -----
+From: "Lisa Hsu" <hsul@eecs.umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Cc: "prasanthi" <prasanthi.relangi@stanford.edu>
+Sent: Tuesday, May 26, 2009 5:44:07 PM GMT -08:00 US/Canada Pacific
+Subject: Re: [m5-users] m5 with Multiprogramming workloads
+Heh.  Me neither, obviously.  Sorry about that.
+ 
+However, the mailing list archive is definitely helpful, there are a lot of posts on this, some with sample bits of config script code.
+ 
+Lisa
+On Tue, May 26, 2009 at 5:38 PM, Steve Reinhardt < stever@gmail.com > wrote:
+Sorry, I didn't realize the relevant FAQ entry was so singularly unhelpful.  Not sure what happened there.  I've just updated it:
+http://m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_run_multiprogram_workloads_on_M5.3F
+On Tue, May 26, 2009 at 5:28 PM, Siddharth Gupta < sidgupta@stanford.edu > wrote:
+Hi Steve,
+Thanks for your reply. Could you give us some pointers on how this can be done. Or point us to the right document. We haven't been able to find this.
+Siddharth
+----- Original Message -----
+From: "Steve Reinhardt" < stever@gmail.com >
+To: "M5 users mailing list" < m5-users@m5sim.org >
+Cc: "prasanthi" < prasanthi.relangi@stanford.edu >
+Sent: Tuesday, May 26, 2009 5:23:29 PM GMT -08:00 US/Canada Pacific
+Subject: Re: [m5-users] m5 with Multiprogramming workloads
+Yes.
+On Mon, May 25, 2009 at 4:52 PM, Siddharth Gupta < sidgupta@stanford.edu > wrote:
+Hi,
+We are trying to run M5 with multiprogramming workloads so that we can stress the last level cache. Is this possible in M5.
+Can we schedule one benchmark on one CPU and another on another CPU? Its not necessary for us to be able to do multithreading.
+Please let us know.
+Siddharth Gupta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

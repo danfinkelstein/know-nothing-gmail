@@ -1,0 +1,68 @@
+  
+I see. I'm not sure about that but you could read the technical report
+@ http://www.hpl.hp.com/research/mcpat/ .
+Max- Show quoted text -
+On 06/08/2010 04:33 PM, Weixun Wang wrote:
+  
+That is OK for off-line calculation based on simulation statistics. Is
+it possible to make it online like what Wattch does?
+  
+-Weixun
+  
+On 6/8/2010 10:28 AM, Maximilien Breughe wrote:
+  
+    
+Hi,
+    
+You could use McPAT for this and use the M5 statistics as input.
+The catch is that you'll have to write a parser to parse the m5
+statistics and configuration file.
+The parser should then write the input for mcpat in the proper XML
+format.
+    
+Good luck!
+    
+    
+Max
+    
+PS: I wrote such a parser, tailored for a simple in order core. It's
+not general at all, but it could inspire you a bit.
+On 06/08/2010 04:23 PM, Syed Shazli wrote:
+    Hi,
+I was wondering if it was possible to do any power estimation in M5.
+Something similar to the way it is done in simplescalar?
+      
+Best,
+Syed
+      
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+    
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+  
+  
+  -- 
+Best Regards,
+Wang, Weixun
+Department of Computer & Information Science & Engineering
+Gator College of Engineering
+University of Florida
+Gainesville, FL 32611
+http://www.cise.ufl.edu/~wewang
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

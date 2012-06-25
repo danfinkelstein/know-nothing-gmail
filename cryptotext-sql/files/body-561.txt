@@ -1,0 +1,9 @@
+Hi,Has anyone implemented atomic add function for Alpha that works in m5? I tried to write this using inline assembly in gcc:void atomic_add(volatile long* operand) 
+{           int temp;  asm volatile (     "1: ldq_l %0, %1       \n"    "   addl %0, 1, %0 \n"    "   stq_c %0, %1       \n"
+      : "=&r" (temp),        "=m" (*operand)      : "m" (*operand)      ); }  but it does not work and I don't much about alpha instruction set. I don't want to use operation system based mutex because that comes with a big overhead. Does any one have a better idea?
+Thanks,
+Amir
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

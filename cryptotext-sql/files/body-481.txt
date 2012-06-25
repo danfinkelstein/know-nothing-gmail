@@ -1,0 +1,9 @@
+Figured it out. Copied the files to the binaries and disks directories
+and could run configs/example/fs.py after that. One small thing
+though. The names of the solaris binaries used in m5 have new as a
+suffix ( for eg. openboot_new.bin and q_new.bin). Does it mean that
+the original binaries from opensparc need to be modified in some way?
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

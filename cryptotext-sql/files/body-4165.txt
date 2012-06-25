@@ -1,0 +1,11 @@
+There are two partially separate issues: what's the cpu model, and what mode (access type) of the memory system are you using.  See  http://m5sim.org/wiki/index.php/CPU_Models
+ and http://m5sim.org/wiki/index.php/Memory_System.  The different cache functions that get called depend on which memory-system mode you're using.
+They're only partially separate because generally a particular cpu model will only work with a particular memory-system mode.  O3 only uses timing memory.  The SimpleCPU model is a partial exception; there's a common base class, but in fact there are two different derived classes, AtomicSimpleCPU and TimingSimpleCPU, specialized for the two different memory modes.  See 
+http://m5sim.org/wiki/index.php/SimpleCPU.In the configs/common/* scripts, "-t" selects TimingSimpleCPU while "-d" selects the O3 model, but they both implicitly configure memory in timing mode (since that's what they require).
+Steve- Show quoted text -On 10/12/07, Paul West <west@cs.fsu.edu> wrote:
+Is there a difference in the timing information of using the timing model (IE passing m5 the '-t' flag) and the O3 model (passing the '-d')?More specifically, I noticed that Atomic uses different functions in the sending/recieving of packets.  (IE 'snoopProbe' instead of 'snoop') Is there such a difference in O3 versus timing?
+~Paul_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,4 @@
+Hi All,     I am new to this simulator. I am trying to install m5 2.0. I have already installed Python, Scons, Swig and zlib.      When I compiled m5 using scons, I used the command -      > scons build/ALPHA_FS/m5.debugand got one error - "cannot execute -python ... compilation terminated because of 1 error"Can anyone help me find the reason ? Thanks in advance. Regards-Chaitali    __________________________________________________Do You Yahoo!?Tired of spam?  Yahoo! Mail has the best spam protection around http://mail.yahoo.com _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

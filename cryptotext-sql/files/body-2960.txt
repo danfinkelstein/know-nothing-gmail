@@ -1,0 +1,115 @@
+Thanks Ali, that was it!
+As I suspected, my .config file attempts where way off from what they
+should have been.  The .config file you sent me appears to be working
+great so far.
+Also, thanks for letting me know that the debugger function is
+'debugger()' not 'Debugger()'.  Unfortunately, I'm still encountering
+problems when calling the kernel debugger from the user-level debugger
+on M5.  So the calls to 'debugger()' don't encounter a symbol not found
+error, but they don't break into the kernel debugger either.  Instead,
+nothing seems to happen.  Actually after examining the function
+debugger() in src/base/remote_gdb.cc, I'm not sure how the gdb is ever
+called.  It appears the current_debugger static int is set to -1 and
+there is no possibility to set the current_debugger variable to a
+different value.  Thus the debugger loop is not executed and the kernel
+gdb session is never called.  Is my understanding correct, or does some
+external object change the value of current_debugger?  Below is the
+specific code I'm referring to.
+Thanks again for all your help.  I really appreciate it.
+Brad
+void
+debugger()
+{
+    static int current_debugger = -1;
+    if (current_debugger >= 0 && current_debugger < debuggers.size()) {
+        BaseRemoteGDB *gdb = debuggers[current_debugger];
+        if (!gdb->isattached()) {
+            gdb->listener->accept();
+        }
+        if (gdb->isattached()) {
+            gdb->trap(SIGILL);
+        }
+    }
+}
+-----Original Message-----
+From: Ali Saidi [mailto:saidi@umich.edu]
+Sent: Monday, June 02, 2008 6:29 PM
+To: Beckmann, Brad
+Subject: Re: [m5-users] Config File for Linux 2.6.22
+On Jun 2, 2008, at 8:16 PM, Beckmann, Brad wrote:
+> Hi Ali,
+>
+> I've been having problems creating a build of Linux 2.6.22 that
+> matches with the supported Tsunami platform in M5.  I think the source
+> of problems is incorrectly configuring the VGA device and I want to go
+> back to the configuration question (see below) that I asked a few
+> weeks ago.
+> I noticed that the M5 patches make changes to the following files:
+> arch/alpha/Kconfig, arch/alpha/kernel/console.c, and
+> arch/alpha/kernel/proto.h.  In particular, these changes appear to
+> allow the DUMMY_CONSOLE to be built without the VGA_HOSE being
+> defined.  To avoid the define dependencies on VGA_HOSE, the changes
+> also switch some "#ifdef CONFIG_VGA_HOSE" lines to "#ifdef
+> CONFIG_VGA_HOSE1".  Is my understanding correct?
+Yea, some dependence was introduced in the 2.6.22 kernel that I really
+haven't looked at, but that required a VGA adapter to be added to
+configuration. Since we don't even support probing of the VGA device,
+that had to be removed.
+>
+> The problem with these changes is they appear incomplete without the
+> necessary changes to the config files.  Specifically, I assume one
+> needs to remove the dependency between VGA_HOSE and ALPHA_GENERIC in
+> Kconfig.
+> Therefore, CONFIG_DUMMY_CONSOLE, CONFIG_ALPHA_GENERIC, and
+> CONFIG_ALPHA_LEGACY_START_ADDRESS are defined, while
+> CONFIG_VGA_CONSOLE, CONFIG_VGA_HOSE, and CONFIG_VGA_HOSE1 are not
+> defined.  The result is the kernel builds with empty implementations
+> of the
+> find_console_vga_hose() and locate_and_init_vga() functions.  Is my
+> configuration assumption correct?
+Well, all you need to do is not enable any VGA adapters in your kernel
+configuration file and there isn't a problem.
+>
+>
+> So with the above configuration, I encounter a M5 assertion check that
+> appears to be caused by an incorrectly "faked" device.  In particular,
+> the following trace indicates the faulting address is 0x801fc0001ef
+> which maps in between the fake_ata0 and fake_ata1 devices.  I have a
+> sucpicion that this error is caused by the vga device not really being
+> removed, but I'm not sure.  What is your opinion?
+>
+> 1942464295500: testsys.membus: recvAtomic: packet src 3 dest -1 addr
+> 0x801fc0001ef cmd ReadReq
+> 1942464295500: testsys.membus: Unable to find destination for addr:
+> 0x801fc0001ef, will use default port
+> 1942464295500: testsys.membus.responder: Device
+> testsys.membus.responder
+> read to bad address va=0x801fc0001ef size=1
+The VGA device has a BadDevice where it is, I don't know why you're
+seeing that.
+>
+> Finally, I wanted to get a stack trace of the kernel when this error
+> occurs, but I'm having a problem calling the Linux kernel debugger
+> from
+> the user-level debugger on M5.  The website
+> (http://www.m5sim.org/wiki/index.php/Debugging_M5) indicates the
+> kernel
+> debugger can be called by a 'call Debugger()' command, but I think
+> that
+> is assuming the Debugger() function is defined?  Who defines the
+> Debugger function, because I receive a 'No symbol "Debugger" in
+> current
+> context.' Error when I try to call the Debugger function from the M5
+> debugger.
+The case on the webpage is wrong, it should be debugger(). The
+function is defined in remote_gdb.cc although you would need to
+schedule a break cycle (schedBreakCycle() from within the gdb instance
+that is debugging m5 would work), before you hit that error.
+I've attached a linux 2.6.22 config file I just created. It builds and
+successfully boots to the bash prompt.
+Ali
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

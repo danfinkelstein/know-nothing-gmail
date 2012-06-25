@@ -1,0 +1,42 @@
+Hi,
+ 
+I’m encountering a repeated warning message from M5
+and I was hoping you could provide some detail of how serious of a warning
+message this is.  In particular, I’m running the Netperf stream
+workload with Linux 2.6.22 and a drive system containing 5 processors.  Soon
+after starting the simulation, a continuous stream of “warn: clear IPI
+for CPU=0, but NO IPI” warning messages are printed to the screen.  As
+you probably know, this message comes from the clearIPI() function of
+tsunami_cchip.cc.  This warning message only occurs when the system is
+greater than 4 cpus.  By calling the remote kernel debugger from the
+user-level debugger on M5, I obtained the following kernel call stack. 
+However, I don’t think it is very useful.  It appears to be a simple
+delay (idle?) loop.
+ 
+Could you please provide me some more information of what
+this warning message means?
+ 
+Thanks!  I appreciate the help.
+ 
+Brad
+ 
+ 
+ 
+#0  0xfffffc00004edef4 in __delay (loops=Variable
+"loops" is not available.
+) at arch/alpha/lib/udelay.c:25
+#1  0xfffffc000031c13c in __cpu_up (cpu=Variable
+"cpu" is not available.
+) at arch/alpha/kernel/smp.c:397
+#2  0xfffffc00007b1838 in cpu_up (cpu=4) at
+kernel/cpu.c:232
+#3  0xfffffc00007a2eb4 in kernel_init (unused=Variable
+"unused" is not available.
+) at init/main.c:393
+#4  0xfffffc0000311508 in kernel_thread ()
+#5  0xfffffc0000311508 in kernel_thread ()
+Previous frame identical to this frame (corrupt stack?)
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

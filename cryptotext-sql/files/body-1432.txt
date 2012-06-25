@@ -1,0 +1,8 @@
+Hi everyone,I'm in the middle of putting together a more up-to-date disk image for ALPHA_FS, and the conventional wisdom on the mailing list is "use a gentoo stage 3 tarball".  However, we have no specific instructions for that; there are just a few useful but incomplete tidbits that can be gleaned from searching the mailing list archives.  It's my intention to document what I'm doing on the wiki to address this.  Meanwhile I'd like to collect some "best practices" from those who have done this before, both to help me along and to make the eventual wiki page more complete.
+In particular, right now I'm at the point where I can boot but get bogged down in all the extraneous inittab boot stuff; even cutting back to single-user mode doesn't help noticeably.  There are several options I could pursue including cutting down inittab, changing the default runlevel, and/or whacking links out of various /etc/runlevel/* directories, and I'm guessing the eventual answer involves all of the above, but rather than spending time playing around with this I'd rather collect what other people have done and then build on your experiences.
+Similarly, let me know anything else you've done in terms of getting a gentoo stage 3 image up and usable.Finally, one more question: is there any situation in which we recommend using linux-dist?  If not, then I'll add that information to the wiki as well.
+Thanks,Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

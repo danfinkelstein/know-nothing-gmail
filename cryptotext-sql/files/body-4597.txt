@@ -1,0 +1,13 @@
+Ronald George Dreslinski Jr:
+> Do you have the full configuration files?  When you instantiate your
+> simple CPU do you know if it is Timing or Atomic mode, this could account
+> for the different call graph?  I believe the prefetcher only works in
+> timing mode for v1.1.
+>
+Ahh, of course. That solved my problem, thank you!
+--
+Marius Grannaes
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

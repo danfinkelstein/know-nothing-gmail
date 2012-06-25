@@ -1,0 +1,29 @@
+Sujay has perhaps a better solution, but I'll answer here anyway./
+> I've looked through these, but have not generated SWIG interfaces
+> before, so I'm not perfectly clear how it all links together. It seems
+> that this creates an interface to call SimStartup() and that calls
+> startup() in every object in the startupq. Presumably one would use the
+> same technique to call shutdown() on all items in the startupq, add
+> virtual void shutdown(); to StartupCallback and implement this. Then any
+> class that inherits from this (PhysicalMemory included) would implement
+> shutdown() and all would be work.
+Right.
+> I see that initAll() calls init() for each object, so one could reverse
+> this instead and use destroyAll() and destroy() for each object. Not
+> sure which method you were thinking, but it shouldn't be too bad.
+We may want to add a destroyAll(), but I'd think that it would just
+call destructors on SimObjects.  This is something that should
+probably be handled by a __del__ function on the SimObjectParam class.
+ I'd say leave this method alone.
+> Also, I can't tell how the python scripts call these functions, at least
+> not explicitly, so I'm not sure where I could add the shutdown/destroy call.
+With the swig code, you'd end up with m5.internal.core.SimShutdown
+which we'd probably want to expose in m5.simulate.
+All that said, the exit callback should suffice for you if you want
+something simpler.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

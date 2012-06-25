@@ -1,0 +1,21 @@
+Hi all,
+I have some questions about quiesce:
+1) If using just quiesce (without cycles or ns ... etc), m5sim.org
+states that an interrupt is the means of waking up the core. Can any
+interrupt be used or must there be a specific one? Also, for an
+interrupt to schedule the tick() call after the quiesce call, which
+lines of code are actually called after the interrupt is received to
+reschedule the tick event?
+2) When src/cpu/o3/cpu:activateContext calls fetch.wakeFromQuiesce(),
+why is code line "fetchStatus[0] = Running" hard coded to zero instead
+of using a thread id which is available in activateContext()? I assume
+this means that we are only able to wake up thread 0?
+3) What is the ozone cpu code all about? I found this section confusing
+as it also has its own implementations of activateContext() and
+wakeFromQuiesce()
+Thanks in advance,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

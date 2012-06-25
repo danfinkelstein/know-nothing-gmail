@@ -1,0 +1,19 @@
+On Fri, Jun 5, 2009 at 8:15 AM, Adam Beece <acebeece@gmail.com> wrote:
+I'm a new user running m5;
+When I try to start m5 up I run into an error "access out of bounds"
+and am directed to file [read:build/ALPHA_FS/dev/disk_image.cc].
+Said source file exists, but is empty.  How do I go about
+replacing/restoring it?This should be a symbolic link to src/dev/disk_image.cc.  If it's not, then something went wrong with scons; I'd "rm -rf build" and recompile from scratch.  If src/dev/disk_image.cc doesn't exist, you must have accidentally deleted it.
+ 
+While I am at it, is where can I find the panic method, or
+documentation on how it works?See src/base/misc.hhSteve 
+Thanks,
+Adam
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

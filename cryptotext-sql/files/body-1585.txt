@@ -1,0 +1,34 @@
+Hi all,
+ 
+I just used the patch from Clint to integrate DRAMsim to M5 simulator. 
+When applying the patch there is an error message showing that "bus.cc" was 
+unsuccessfully applied tha patch. So I manualy add the following codes 
+from patch file to "bus.cc":
+ 
++    Tick headerFinishTime, 
+packetFinishTime;+    if (pkt->isExpressSnoop()) 
+{+       headerFinishTime = 
+0;+       packetFinishTime = 
+0;+       pkt->firstWordTime = 
+pkt->finishTime = curTick;+    } else 
+{+       headerFinishTime = 
+calcPacketTiming(pkt);+       packetFinishTime 
+= pkt->finishTime;+    }
+ 
+However, when I compile the simulator, there is an 
+error message showing that the function "calcPacketTiming" was not 
+defined. Then I looked in to the patch file and found that the "bus.cc" file was 
+added the above codes with no new ".hh" file 
+included.  So is there anything missed in the 
+patch?
+I think the function "prparePacket" already 
+caculate the finishTime. Why this calcPacketTiming is needed here? So may be we 
+can just not apply "bus.cc" part of the 
+patch file. After I comment those 
+patched codes in "bus.cc", the compilation is success.
+ 
+Fei
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

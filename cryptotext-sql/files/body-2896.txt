@@ -1,0 +1,13 @@
+Hi,
+I downloaded the Splash2 binary from the M5 web site, and I tried to
+run FFT with 256 CPUs. I had this message, "parmacs: too many
+processes!", and the program terminated. Also, the Radix only supports
+up to 64 CPUs. Is it possible to use more CPUs in Splash2 and SE mode?
+Or how could I change it? My purpose is to study the relationship
+between resource contention and scalability.
+Many Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

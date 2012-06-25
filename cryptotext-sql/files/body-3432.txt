@@ -1,0 +1,13 @@
+Currently, the default output directory of m5 is the current working
+directory.  Personally, I find that pretty annoying since I almost
+never want M5 to litter the current working directory with output.
+How do people feel about me making the default output directory
+"./m5.out".  This could of course be overridden with the -d option as
+usual.  I will also be creating a .m5rc in the near future where all
+of these options can be easily set, so if people hate the idea I can
+do it in my own .m5rc file.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

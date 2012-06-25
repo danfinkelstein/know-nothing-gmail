@@ -1,0 +1,18 @@
+You're right that does solve the problem! I just changed the value in build/options
+- Sujay- Show quoted text -
+On Thu, 17 May 2007, Nathan Binkert wrote:
+It looks like it's having problems reloading the saved options... I'm guessing this is just because it's the second time you've tried to build something, and not anything to do with opt vs debug etc.  What version of scons do you have?  ("scons -v")  I don't see this problem with v0.96.92.
+I saw this once, and had to change wherever it said:
+  CPU_MODELS = all
+to say:
+  CPU_MODELS = 'all'
+We don't actually write out the value all, so it does seem like a scons bug, but I can't promise that.
+ Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

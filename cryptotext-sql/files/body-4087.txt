@@ -1,0 +1,50 @@
+The config file we used is included in the linux diff on the m5 website:
+http://www.m5sim.org/dist/current/m5base-2.6.13.diff
+Ali- Show quoted text -
+On Nov 5, 2007, at 4:26 PM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hi,
+Thanks for your reply. But I am wondering what configuration
+is made in the sample vmlinux. Defconfig, allyesconfig or else? Since I need build a network of workstations,
+I'd like know if all required devices are implemented in
+the sample vmlinux.
+Xin
+---- Original message ----
+Date: Mon, 5 Nov 2007 09:41:43 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] compiling linux 2.6.13 kernel for M5
+To: M5 users mailing list <m5-users@m5sim.org>
+On Nov 5, 2007, at 3:47 AM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hi,
+I have compiled a cross compiler(gcc3.4.3-glibc2.3.5),but got
+stuck in compiling linux 2.6.13 kernel. I have download
+linux-2.6.13.tar.gz from kernel.org. Unpack it and in the
+linux-2.6.13 directory, type the following:
+make config ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-
+glibc-2.3.5/.../alpha-unknown-linux-gnu-
+After configuration, type the following to compile the kernel:
+make ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-
+glibc-2.3.5/.../alpha-unknown-linux-gnu-
+But I got the error below:
+local symbol 0: discarded in section '.exit.text'....
+I've never seen that error before.
+Could you tell me how you compiled(linux2.6.13?) and got the sample
+vmlinux?
+Pretty much exactly the way you described compiling it above.
+Another question: Is it necessary to compile linux kernel for
+anyone using the m5 simulator? I mean, can I just build my own
+disk image(contains my benchmark) and make it work with
+Yes, you can make your own disk image and just the vmlinux you got
+from the website.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

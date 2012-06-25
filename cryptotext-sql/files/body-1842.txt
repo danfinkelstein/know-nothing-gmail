@@ -1,0 +1,9 @@
+Thanks for your replay, Ali. I read the file in src/arch/alpha/tlb*.  The only function that related to uncache access seems the checkCacheability() that mark the uncache flag of a request. I used gdb to get to this function, but the req->getPaddr confused me. This function is simply to return the paddr field of a request, but I got this,
+(gdb) p req->getPaddr()$7 = 608138816306466688(gdb) p req->paddr$8 = 36200The two paddr above seems not mathc. What's the reason? Further, if I want add an small structure in o3 cpu and get it accessed in uncached mode, which part of the cpu is the best to add ? I want this structure to be accessed by application. Thanks !
+ 
+Cachability in Alpha is determined by physical address. The code tomark a request as uncachable is located in the tlb (src/arch/alpha/
+tlb.cc). You can find an unused range in is also uncachable an putyour RAM there. For a list of used ranges look at the Alpha Tsunami/Typhoon reference manual (google).Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,9 @@
+as far as we know, no such plugins exist.  i think someone at illinois was trying to add power models, but i haven't heard anything about it in a while.lisa- Show quoted text -On 11/23/06, 
+filip <filip.hellebaut@elis.ugent.be> wrote:
+Hi,Until now i did my simulations for CMP and SMT processor models with m5.But for a knew topic that I would like to research I have to be able tomeasure things like power consumption and die area as well. Does anyone
+know if someone has made such "plugins" or subsets for m5 to measurethis, or are there some good tools that I could use that can do the job?Thanks_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

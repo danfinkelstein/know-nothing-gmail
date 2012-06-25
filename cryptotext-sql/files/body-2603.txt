@@ -1,0 +1,8 @@
+hi guys,   I have a quick question on schedExitSimLoop 73 SimLoopExitEvent * 74 schedExitSimLoop(const std::string &message, Tick when, Tick repeat, 75                  EventQueue *q, int exit_code)
+the function takes in 'Tick when' as an argument but in src/cpu/base.cc when it calls this124     if (p->max_insts_any_thread != 0)125         for (int i = 0; i < number_of_threads; ++i)126             schedExitSimLoop("a thread reached the max instruction count",
+127                              p->max_insts_any_thread, 0,128                              comInstEventQueue[i]);it passes p->max_insts_any_thread which is of Counter type and I'm a little bit confused as to where the translation happens from Counter(which is an instruction count) to Tick(which is in picoseconds). My purpose for this is I'd like to create an Event that will be scheduled when a particular instruction count is reached. And also how do you access the particular thread_id of the thread that has reached the inst count? any help would be appreciated. thanks in advance.
+    -- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

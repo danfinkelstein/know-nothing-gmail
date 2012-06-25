@@ -1,0 +1,23 @@
+Hey all,
+ 
+I was meassuring l1 cache misses when I found the L1 Icache 
+has write accesses and most or all of them results in misses. This appears 
+strange to me because my test code doesn't have self-modifying 
+behavior.
+ 
+What I did was inserting the counters into Cache::handleAccess 
+in mem/cache_impl.hh. I test read/write using pkt->isWrite(). 
+and  if the returning blk is null, I will increase the read/write miss 
+counters. 
+ 
+Am I doing the right thing? My system config is a CMP 
+structure with private L1 Icaches and Dcaches,  and a shared L2. The 
+coherence protocol is moesi. 
+ 
+Thanks!
+ 
+Jiayuuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

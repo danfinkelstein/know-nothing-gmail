@@ -1,0 +1,434 @@
+Hi Joe,
+Did you just change the L2Cache or did you change all the caches?
+Your email's not clear on that.  It's the L1 icache that really needs
+to be changed.
+The fact that you're running into a resource limit is really just a
+unrealistic interaction between the O3 fetch unit and our generic
+cache that was really designed more as a dcache than an icache (since
+in general the requirements on the former are a superset of the
+latter).
+I think it is safe to say that this bug is in the O3 model and not in
+your DRAM simulator, so I wouldn't hold up on releasing your simulator
+just for this.  I agree that it would be bad if things start breaking
+with your DRAM model regardless of whose fault it is though.
+Steve
+- Show quoted text -
+On Wed, Sep 9, 2009 at 2:09 PM, Joe Gross<joegross@umd.edu> wrote:
+> Steve,
+>
+> I've upped the targets per mshr in the following way:
+> L2Cache(size='1MB', assoc=16, latency="7ns", prefetch_policy='ghb',
+> prefetch_degree=2, prefetcher_size=16, tgts_per_mshr=16)
+> However, I get the same result. I'll try again with more targets per
+> MSHR to see if there is enough room at that point. It's surprising to
+> see that there is any limit on resources as this is a relatively idle
+> time in the program's execution. It's actually near the very end of stream.
+>
+> If it would help you guys and save time, I'll make my DRAM simulator
+> available to you, esp. since I had been planning to release it once it
+> was relatively bug free anyway.
+>
+> Joe
+>
+>
+> Steve Reinhardt wrote:
+>> This looks like an O3 bug... there's an ITB (inst. TLB) miss at cycle
+>> 1893256594946 but then the CPU never starts fetching from the ITB miss
+>> hander as I believe it should.
+>>
+>> I'm wondering if there's some unusual timing situation that's being
+>> tickled here; it looks like there's a cache miss on a misspeculated
+>> path, then when the core gets back on the right path it can't fetch
+>> because the icache is still blocked on the wrong-path miss, and then
+>> right away when the miss is satisfied and the icache unblocks then you
+>> hit this ITB miss.  Perhaps Kevin or Korey will be able to tell from
+>> your trace what's going wrong in the O3 CPU, but I can't say any more
+>> without being able to reproduce it under the debugger.
+>>
+>> Looking a little more closely, the icache blocks not because it has
+>> run out of MSHRs, but simply because it's hit the limit of targets per
+>> MSHR.  I think the default value is block size/8, assuming that if
+>> you're striding through memory you should be using 64-bit accesses,
+>> but that doesn't work if you're doing 32-bit instruction fetches.
+>> (Arguably you shouldn't be consuming a separate MSHR target for each
+>> instruction anyway, but that's the price of abstraction.)  In fact you
+>> need to bump up the number of targets by one more since you block when
+>> all the targets are full.  So to get to the point, I would bet that if
+>> you increase the number of targets per MSHR in the icache to (block
+>> size/4)+1 then your problem will go away.  Obviously this is a
+>> workaround rather than a real bug fix, but since the bug is not in
+>> your code maybe that's good enough for your purposes.  Do you agree?
+>>
+>> Steve
+>>
+>> On Tue, Sep 8, 2009 at 4:19 PM, Joe Gross<joegross@umd.edu> wrote:
+>>
+>>> Steve,
+>>>
+>>> Used a different setup so the timing is different, but I triggered recording
+>>> to start at the equivalent position, just a different time as well as an
+>>> updated version of what I sent last time. I don't see anything obviously
+>>> wrong, but I'm not sure what to look for.
+>>> Might be able to get you my src if this turns out to be a complex problem.
+>>>
+>>> Joe
+>>>
+>>> Steve Reinhardt wrote:
+>>>
+>>>> Hi Joe,
+>>>>
+>>>> What do you get if you run with '--trace-start=1888877459900
+>>>> --trace-flags=All,-Event"?
+>>>>
+>>>> Steve
+>>>>
+>>>> On Fri, Sep 4, 2009 at 2:23 PM, Joe Gross<joegross@umd.edu> wrote:
+>>>>
+>>>>
+>>>>> Hello,
+>>>>>
+>>>>> Lately I've had the problem that my benchmark will simply stall (MSHRs
+>>>>> waiting for request?) very near to completion of the executable.
+>>>>> I am running the latest dev build, using FS mode and am running the
+>>>>> stream
+>>>>> benchmark in alpha linux. When I adjust the parameters of my DRAM
+>>>>> simulator,
+>>>>> esp. to a configuration that yields a lower latency for reads/writes that
+>>>>> occur far apart, the problem goes away and the benchmark finishes. The
+>>>>> simulator should use the same handling criteria for each type of request
+>>>>> as
+>>>>> physical.cc does, affecting only the timing of the requests.
+>>>>>
+>>>>> I have attached a trace file showing the last hundred items printed by
+>>>>> using
+>>>>> --trace-flags=Cache,LLSC,MemoryAccess
+>>>>> It shows that the last request sent was to 0x1f8e6a40, which my simulator
+>>>>> does timing for and returns, using physmem to do the actual read from the
+>>>>> memory array. After this point, the system stops executing instructions
+>>>>> and
+>>>>> making memory requests and I am unsure why this happens. There are no
+>>>>> outstanding requests in the memory system at this point. Any help
+>>>>> tracking
+>>>>> down why this is happening would be appreciated. I can send my custom
+>>>>> fs.py
+>>>>> or other code if it's useful.
+>>>>>
+>>>>> Joe
+>>>>>
+>>>>> 1888877383085: system.l2: Block for addr 1fa685c0 being updated in Cache
+>>>>> 1888877383085: system.l2: replacement: replacing 1f6505c0 with 1fa685c0:
+>>>>> clean
+>>>>> 1888877383085: system.l2: Block addr 1fa685c0 moving from state 0 to 7
+>>>>> 1888877387085: system.cpu.icache: Handling response to 1fa68600
+>>>>> 1888877387085: system.cpu.icache: Block for addr 1fa68600 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877387085: system.cpu.icache: replacement: replacing 8600 with
+>>>>> 1fa68600:
+>>>>> clean
+>>>>> 1888877387085: system.cpu.icache: Block addr 1fa68600 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877390000: system.cpu.icache: Handling response to 1fa685c0
+>>>>> 1888877390000: system.cpu.icache: Block for addr 1fa685c0 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877390000: system.cpu.icache: replacement: replacing 1fb705c0 with
+>>>>> 1fa685c0: clean
+>>>>> 1888877390000: system.cpu.icache: Block addr 1fa685c0 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877394000: system.l2: Handling response to 15880c0
+>>>>> 1888877394000: system.l2: Block for addr 15880c0 being updated in Cache
+>>>>> 1888877394000: system.l2: replacement: replacing 1f6700c0 with 15880c0:
+>>>>> clean
+>>>>> 1888877394000: system.l2: Block addr 15880c0 moving from state 0 to 7
+>>>>> 1888877399020: system.cpu.dcache: Handling response to 15880c0
+>>>>> 1888877399020: system.cpu.dcache: Block for addr 15880c0 being updated in
+>>>>> Cache
+>>>>> 1888877399020: system.cpu.dcache: replacement: replacing 12f80c0 with
+>>>>> 15880c0: writeback
+>>>>> 1888877399020: system.cpu.dcache: Block addr 15880c0 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877402000: system.l2: Writeback 12f80c0 miss
+>>>>> 1888877402000: system.l2: replacement: replacing 1f6780c0 with 12f80c0:
+>>>>> clean
+>>>>> 1888877404000: system.l2: Handling response to 1f8e69c0
+>>>>> 1888877404000: system.l2: Block for addr 1f8e69c0 being updated in Cache
+>>>>> 1888877404000: system.l2: Block addr 1f8e69c0 moving from state 0 to 7
+>>>>> 1888877409030: system.cpu.icache: Handling response to 1f8e69c0
+>>>>> 1888877409030: system.cpu.icache: Block for addr 1f8e69c0 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877409030: system.cpu.icache: replacement: replacing 34e9c0 with
+>>>>> 1f8e69c0: clean
+>>>>> 1888877409030: system.cpu.icache: Block addr 1f8e69c0 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877412897: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 miss
+>>>>> 1888877413397: system.l2: ReadReq (ifetch) 1f8e6a00 miss
+>>>>> 1888877413565: system.cpu.dcache: ReadReq 1f9cf830 hit
+>>>>> 1888877413732: system.cpu.dcache: ReadReq 15fb8f0 miss
+>>>>> 1888877414233: system.cpu.dcache: WriteReq 1f9cf6d0 miss
+>>>>> 1888877414233: system.cpu.dcache: WriteReq 1f9cf6d8 miss
+>>>>> 1888877414400: system.cpu.dcache: WriteReq 1f9cf6e0 miss
+>>>>> 1888877414400: system.cpu.dcache: WriteReq 1f9cf6e8 miss
+>>>>> 1888877414901: system.cpu.dcache: WriteReq 1f9cf6f0 miss
+>>>>> 1888877414901: system.cpu.dcache-cpu_side_port: Cache Blocking
+>>>>> 1888877414901: system.cpu.dcache: Blocking for cause 2, mask=4
+>>>>> 1888877415000: system.l2: ReadReq 15fb8c0 miss
+>>>>> 1888877416000: system.l2: ReadExReq 1f9cf6c0 miss
+>>>>> 1888877431000: system.physmem: IFetch of size 64 on address 0x1f8e6a00
+>>>>> 1888877444000: system.physmem: Read of size 64 on address 0x15fb8c0
+>>>>> 1888877452000: system.l2: Handling response to 1f8e6a00
+>>>>> 1888877452000: system.l2: Block for addr 1f8e6a00 being updated in Cache
+>>>>> 1888877452000: system.l2: Block addr 1f8e6a00 moving from state 0 to 7
+>>>>> 1888877454000: system.physmem: Read of size 64 on address 0x1f9cf6c0
+>>>>> 1888877456770: system.cpu.icache: Handling response to 1f8e6a00
+>>>>> 1888877456770: system.cpu.icache: Block for addr 1f8e6a00 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877456770: system.cpu.icache: replacement: replacing 34ea00 with
+>>>>> 1f8e6a00: clean
+>>>>> 1888877456770: system.cpu.icache: Block addr 1f8e6a00 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877459991: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877460491: system.l2: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877460492: system.cpu.dcache-cpu_side_port: Scheduling a retry while
+>>>>> blocked
+>>>>> 1888877461160: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>>>> 1888877461995: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877463164: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>>>> 1888877463999: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877465090: system.l2: Handling response to 15fb8c0
+>>>>> 1888877465090: system.l2: Block for addr 15fb8c0 being updated in Cache
+>>>>> 1888877465090: system.l2: replacement: replacing 1f6938c0 with 15fb8c0:
+>>>>> clean
+>>>>> 1888877465090: system.l2: Block addr 15fb8c0 moving from state 0 to 7
+>>>>> 1888877465168: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>>>> 1888877466003: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877467172: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>>>> 1888877468007: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>>>> 1888877468007: system.cpu.icache-cpu_side_port: Cache Blocking
+>>>>> 1888877468007: system.cpu.icache: Blocking for cause 2, mask=4
+>>>>> 1888877469176: system.cpu.icache-cpu_side_port: Scheduling a retry while
+>>>>> blocked
+>>>>> 1888877469860: system.cpu.dcache: Handling response to 15fb8c0
+>>>>> 1888877469860: system.cpu.dcache: Block for addr 15fb8c0 being updated in
+>>>>> Cache
+>>>>> 1888877469860: system.cpu.dcache: replacement: replacing 10738c0 with
+>>>>> 15fb8c0: writeback
+>>>>> 1888877469860: system.cpu.dcache: Block addr 15fb8c0 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> 1888877472000: system.l2: Writeback 10738c0 miss
+>>>>> 1888877472000: system.l2: replacement: replacing 1f69b8c0 with 10738c0:
+>>>>> clean
+>>>>> 1888877475000: system.l2: Handling response to 1f9cf6c0
+>>>>> 1888877475000: system.l2: Block for addr 1f9cf6c0 being updated in Cache
+>>>>> 1888877475000: system.l2: replacement: replacing 32f6c0 with 1f9cf6c0:
+>>>>> clean
+>>>>> 1888877475000: system.l2: Block addr 1f9cf6c0 moving from state 0 to 7
+>>>>> 1888877478000: system.physmem: IFetch of size 64 on address 0x1f8e6a40
+>>>>> 1888877479870: system.cpu.dcache: Handling response to 1f9cf6c0
+>>>>> 1888877479870: system.cpu.dcache: Unblocking for cause 2, mask=0
+>>>>> 1888877479870: system.cpu.dcache-cpu_side_port: Cache Unblocking
+>>>>> 1888877479870: system.cpu.dcache-cpu_side_port: Cache Sending Retry
+>>>>> 1888877479870: system.cpu.dcache: Block for addr 1f9cf6c0 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877479870: system.cpu.dcache: replacement: replacing c7f6c0 with
+>>>>> 1f9cf6c0: writeback
+>>>>> 1888877479870: system.cpu.dcache: Block addr 1f9cf6c0 moving from state 0
+>>>>> to
+>>>>> 7
+>>>>> 1888877482000: system.l2: Writeback c7f6c0 miss
+>>>>> 1888877482000: system.l2: replacement: replacing 3776c0 with c7f6c0:
+>>>>> clean
+>>>>> 1888877499000: system.l2: Handling response to 1f8e6a40
+>>>>> 1888877499000: system.l2: Block for addr 1f8e6a40 being updated in Cache
+>>>>> 1888877499000: system.l2: Block addr 1f8e6a40 moving from state 0 to 7
+>>>>> 1888877504125: system.cpu.icache: Handling response to 1f8e6a40
+>>>>> 1888877504125: system.cpu.icache: Unblocking for cause 2, mask=0
+>>>>> 1888877504125: system.cpu.icache-cpu_side_port: Cache Unblocking
+>>>>> 1888877504125: system.cpu.icache-cpu_side_port: Cache Sending Retry
+>>>>> 1888877504125: system.cpu.icache: Block for addr 1f8e6a40 being updated
+>>>>> in
+>>>>> Cache
+>>>>> 1888877504125: system.cpu.icache: replacement: replacing 396a40 with
+>>>>> 1f8e6a40: clean
+>>>>> 1888877504125: system.cpu.icache: Block addr 1f8e6a40 moving from state 0
+>>>>> to
+>>>>> 5
+>>>>> Exiting @ cycle 133065002265000 because user interrupt received
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>>
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>> 1893256459000: system.physmem: IFetch of size 64 on address 0x1f8e69c0
+>>> 1893256465940: system.cpu.icache: Handling response to 1fa68600
+>>> 1893256465940: system.cpu.icache: Block for addr 1fa68600 being updated in
+>>> Cache
+>>> 1893256465940: system.cpu.icache: replacement: replacing 8600 with 1fa68600:
+>>> clean
+>>> 1893256465940: system.cpu.icache: Block addr 1fa68600 moving from state 0 to
+>>> 5
+>>> 1893256468000: system.cpu.icache: Handling response to 1fa685c0
+>>> 1893256468000: system.cpu.icache: Block for addr 1fa685c0 being updated in
+>>> Cache
+>>> 1893256468000: system.cpu.icache: replacement: replacing 3185c0 with
+>>> 1fa685c0: clean
+>>> 1893256468000: system.cpu.icache: Block addr 1fa685c0 moving from state 0 to
+>>> 5
+>>> 1893256470000: system.l2: Handling response to 15880c0
+>>> 1893256470000: system.l2: Block for addr 15880c0 being updated in Cache
+>>> 1893256470000: system.l2: replacement: replacing 1f6080c0 with 15880c0:
+>>> clean
+>>> 1893256470000: system.l2: Block addr 15880c0 moving from state 0 to 7
+>>> 1893256477875: system.cpu.dcache: Handling response to 15880c0
+>>> 1893256477875: system.cpu.dcache: Block for addr 15880c0 being updated in
+>>> Cache
+>>> 1893256477875: system.cpu.dcache: replacement: replacing 12f80c0 with
+>>> 15880c0: writeback
+>>> 1893256477875: system.cpu.dcache: Block addr 15880c0 moving from state 0 to
+>>> 5
+>>> 1893256480000: system.l2: Writeback 12f80c0 miss
+>>> 1893256480000: system.l2: replacement: replacing 1f6180c0 with 12f80c0:
+>>> clean
+>>> 1893256480000: system.l2: Handling response to 1f8e69c0
+>>> 1893256480000: system.l2: Block for addr 1f8e69c0 being updated in Cache
+>>> 1893256480000: system.l2: replacement: replacing 1f6269c0 with 1f8e69c0:
+>>> clean
+>>> 1893256480000: system.l2: Block addr 1f8e69c0 moving from state 0 to 7
+>>> 1893256487885: system.cpu.icache: Handling response to 1f8e69c0
+>>> 1893256487885: system.cpu.icache: Block for addr 1f8e69c0 being updated in
+>>> Cache
+>>> 1893256487885: system.cpu.icache: replacement: replacing 34e9c0 with
+>>> 1f8e69c0: clean
+>>> 1893256487885: system.cpu.icache: Block addr 1f8e69c0 moving from state 0 to
+>>> 5
+>>> 1893256490905: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 miss
+>>> 1893256491405: system.l2: ReadReq (ifetch) 1f8e6a00 miss
+>>> 1893256492074: system.cpu.dcache: ReadReq 1f9cf830 hit
+>>> 1893256492074: system.cpu.dcache: ReadReq 15fb8f0 miss
+>>> 1893256492241: system.cpu.dcache: WriteReq 1f9cf6d0 miss
+>>> 1893256492241: system.cpu.dcache: WriteReq 1f9cf6d8 miss
+>>> 1893256492408: system.cpu.dcache: WriteReq 1f9cf6e0 miss
+>>> 1893256492575: system.cpu.dcache: WriteReq 1f9cf6e8 miss
+>>> 1893256493000: system.l2: ReadReq 15fb8c0 miss
+>>> 1893256493410: system.cpu.dcache: WriteReq 1f9cf6f0 miss
+>>> 1893256493410: system.cpu.dcache-cpu_side_port: Cache Blocking
+>>> 1893256493410: system.cpu.dcache: Blocking for cause 2, mask=4
+>>> 1893256494000: system.l2: ReadExReq 1f9cf6c0 miss
+>>> 1893256512000: system.physmem: IFetch of size 64 on address 0x1f8e6a00
+>>> 1893256525000: system.physmem: Read of size 64 on address 0x15fb8c0
+>>> 1893256533000: system.l2: Handling response to 1f8e6a00
+>>> 1893256533000: system.l2: Block for addr 1f8e6a00 being updated in Cache
+>>> 1893256533000: system.l2: replacement: replacing 1f626a00 with 1f8e6a00:
+>>> clean
+>>> 1893256533000: system.l2: Block addr 1f8e6a00 moving from state 0 to 7
+>>> 1893256535000: system.physmem: Read of size 64 on address 0x1f9cf6c0
+>>> 1893256541015: system.cpu.icache: Handling response to 1f8e6a00
+>>> 1893256541015: system.cpu.icache: Block for addr 1f8e6a00 being updated in
+>>> Cache
+>>> 1893256541015: system.cpu.icache: replacement: replacing 396a00 with
+>>> 1f8e6a00: clean
+>>> 1893256541015: system.cpu.icache: Block addr 1f8e6a00 moving from state 0 to
+>>> 5
+>>> 1893256544846: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256545346: system.l2: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256545347: system.cpu.dcache-cpu_side_port: Scheduling a retry while
+>>> blocked
+>>> 1893256546000: system.l2: Handling response to 15fb8c0
+>>> 1893256546000: system.l2: Block for addr 15fb8c0 being updated in Cache
+>>> 1893256546000: system.l2: replacement: replacing 1f5eb8c0 with 15fb8c0:
+>>> clean
+>>> 1893256546000: system.l2: Block addr 15fb8c0 moving from state 0 to 7
+>>> 1893256546015: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>> 1893256546850: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256548019: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>> 1893256548854: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256550023: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>> 1893256550858: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256552027: system.cpu.icache: ReadReq (ifetch) 1f8e6a00 hit
+>>> 1893256552862: system.cpu.icache: ReadReq (ifetch) 1f8e6a40 miss
+>>> 1893256552862: system.cpu.icache-cpu_side_port: Cache Blocking
+>>> 1893256552862: system.cpu.icache: Blocking for cause 2, mask=4
+>>> 1893256554031: system.cpu.icache-cpu_side_port: Scheduling a retry while
+>>> blocked
+>>> 1893256554105: system.cpu.dcache: Handling response to 15fb8c0
+>>> 1893256554105: system.cpu.dcache: Block for addr 15fb8c0 being updated in
+>>> Cache
+>>> 1893256554105: system.cpu.dcache: replacement: replacing 10738c0 with
+>>> 15fb8c0: writeback
+>>> 1893256554105: system.cpu.dcache: Block addr 15fb8c0 moving from state 0 to
+>>> 5
+>>> 1893256556000: system.l2: Handling response to 1f9cf6c0
+>>> 1893256556000: system.l2: Block for addr 1f9cf6c0 being updated in Cache
+>>> 1893256556000: system.l2: replacement: replacing 1f63f6c0 with 1f9cf6c0:
+>>> clean
+>>> 1893256556000: system.l2: Block addr 1f9cf6c0 moving from state 0 to 7
+>>> 1893256557000: system.l2: Writeback 10738c0 miss
+>>> 1893256557000: system.l2: replacement: replacing 1f6338c0 with 10738c0:
+>>> clean
+>>> 1893256564115: system.cpu.dcache: Handling response to 1f9cf6c0
+>>> 1893256564115: system.cpu.dcache: Unblocking for cause 2, mask=0
+>>> 1893256564115: system.cpu.dcache-cpu_side_port: Cache Unblocking
+>>> 1893256564115: system.cpu.dcache-cpu_side_port: Cache Sending Retry
+>>> 1893256564115: system.cpu.dcache: Block for addr 1f9cf6c0 being updated in
+>>> Cache
+>>> 1893256564115: system.cpu.dcache: replacement: replacing c7f6c0 with
+>>> 1f9cf6c0: writeback
+>>> 1893256564115: system.cpu.dcache: Block addr 1f9cf6c0 moving from state 0 to
+>>> 7
+>>> 1893256566000: system.physmem: IFetch of size 64 on address 0x1f8e6a40
+>>> 1893256567000: system.l2: Writeback c7f6c0 miss
+>>> 1893256567000: system.l2: replacement: replacing 1f64f6c0 with c7f6c0: clean
+>>> 1893256587000: system.l2: Handling response to 1f8e6a40
+>>> 1893256587000: system.l2: Block for addr 1f8e6a40 being updated in Cache
+>>> 1893256587000: system.l2: replacement: replacing 1f626a40 with 1f8e6a40:
+>>> clean
+>>> 1893256587000: system.l2: Block addr 1f8e6a40 moving from state 0 to 7
+>>> 1893256594915: system.cpu.icache: Handling response to 1f8e6a40
+>>> 1893256594915: system.cpu.icache: Unblocking for cause 2, mask=0
+>>> 1893256594915: system.cpu.icache-cpu_side_port: Cache Unblocking
+>>> 1893256594915: system.cpu.icache-cpu_side_port: Cache Sending Retry
+>>> 1893256594915: system.cpu.icache: Block for addr 1f8e6a40 being updated in
+>>> Cache
+>>> 1893256594915: system.cpu.icache: replacement: replacing 396a40 with
+>>> 1f8e6a40: clean
+>>> 1893256594915: system.cpu.icache: Block addr 1f8e6a40 moving from state 0 to
+>>> 5
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Hi all,   
+   I want to implement a cache replacement arithmetic. If I want to use this replacement arithmetic only in L2 cache, how can I differentiate L1 and L2 cache? For example, if I change the findReplacement() functionin Lru.cc, it will also be used in L1 cache. How can I avoid this situation, and use this new function only in L2 cache?   
+   Is there something used to identify L1 and L2 cache, such as some member variable in cache class? How canI get some change only in L2 cache?
+  
+   Thanks a lot!      Lei
+ 
+ 
+ 
+已 经 超 过 100 万 台 电 脑 安 装 了 网 易 有 道 免 费 英 汉 词 典 ， 点 击 此 处 可 以 快 速 下 载 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

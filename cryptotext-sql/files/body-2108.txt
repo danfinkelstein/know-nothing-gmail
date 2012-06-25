@@ -1,0 +1,85 @@
+Hello Ali,
+What do you mean with devices?, if you are talking about if I do any
+changes something in the code of the simulator, I have not done any
+changes. The value of event->getCount() is 4.
+Thanks.
+2008/12/11 Ali Saidi <saidi@umich.edu>:
+- Show quoted text -> It looks like a serialization bug to me. What devices are you using?
+> Just the defaults? Can you print out event->getCount() to see what the
+> value is? i imagine that some object is double executing a drain
+> event, but the count would say for sure.
+>
+> Ali
+>
+>
+>
+> On Dec 11, 2008, at 9:30 PM, Bob Nagel wrote:
+>
+>> Hello I am getting this error when I am running a simulation in FS
+>> this is what I am doing:
+>>
+>> I start the simulation in atomic model to load linux and I take a
+>> checkpoint to keep simulating in detail model when the script starts
+>> running:
+>>
+>> This is the command to take the checkpoint
+>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b
+>> MyBench --checkpoint-dir=./checkpoint/
+>>
+>> This is my rcS file:
+>>
+>> #!/bin/sh
+>> /sbin/m5 checkpoint
+>> /sbin/m5 switchcpu
+>> /sbin/m5 dumpstats
+>> /sbin/m5 resetstats
+>> cd /parsec/install/bin
+>> ./freqmine /parsec/install/inputs/freqmine/kosarak_250k.dat 220
+>> echo "DONE :D"
+>> /sbin/m5 exit
+>>
+>> And when I restore from the checkpoint with this command I get this
+>> error:
+>>
+>> ./build/ALPHA_FS/m5.opt -d  ./tmp/output  configs/example/fs.py -b
+>> MyBench  --caches --l2cache -s -w 200000000000 -r 1
+>> --checkpoint-dir=./checkpoint/
+>>
+>> switching cpus
+>> Switch at instruction count:0
+>> info: Entering event queue @ 1815525533500.  Starting simulation...
+>> Switching CPUS @ cycle = 1815525533500
+>> Simulation ends instruction count:0
+>> info: Entering event queue @ 1815525533500.  Starting simulation...
+>> m5.opt: build/ALPHA_FS/python/swig/pyevent.cc:84: void
+>> cleanupCountedDrain(Event*): Assertion `event->getCount() == 0'
+>> failed.
+>> Program aborted at cycle 1815525533500
+>> Aborted
+>>
+>> In my script I am running the simulation with 4 cpus, but the thing is
+>> that when I put only 1 cpu the simulation runs without any problem, is
+>> this a bug of the simulator?. I am using the latest stable version
+>> from three weeks ago. And another thing when I restore from the
+>> checkpoint I get many warns like this one:
+>>
+>> warn: Not unserializing
+>> 'system.switch_cpus_10.fuPool.FUList2.opList2': no section found in
+>> checkpoint.
+>>
+>> Thanks.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

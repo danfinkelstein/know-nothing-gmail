@@ -1,0 +1,23 @@
+Are there any unimplemented syscall warnings printed?
+Ali- Show quoted text -
+On Jan 7, 2008, at 3:16 PM, Rick Strong wrote:
+Hi,
+I have been attempting to get all the Spec2000 benchmarks running.  For each case, I was using the cpu2000.py script found with the web release of M5 2.0b4. All simulations are run in ALPHA SE with the AtomicSimpleCPU. All benchmarks are run from the beginning.
+1) facerec('alpha','linux','ref') fails with the error given below. I have seen this error mentioned by Nathan, but no solution appears http://osdir.com/ml/emulators.m5.users/2005-06/msg00005.html.
+  forrtl: info: Fortran error message number is 24.
+  forrtl: warning: Could not open message catalog: for_msg.cat.
+  forrtl: info: Check environment variable NLSPATH and protection of
+   /usr/lib/nls/msg/en_US.ISO8859-1/for_msg.cat.
+   forrtl: severe (24): Message not found
+2) gap('alpha','linux','ref') fails silently at 121,648,276 instructions 71,547,478,968 ticks simulated.
+3) lucas('alpha','linux','ref') exits too early, "Exiting @ cycle 47505108 because target called exit()" at 80,721 instructions.  No clear reason why.
+4) parser('alpha','linux','ref') fail silently at 267,811,574 instructions 157499543208 tick simulated.
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

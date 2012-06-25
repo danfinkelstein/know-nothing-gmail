@@ -1,0 +1,50 @@
+it shouldn't be so, but it appears to be so....i just looked at that tarball and i'm not sure why it's that image that's in there, it shouldn't be.  sorry about that.lisa- Show quoted text -On 11/30/06, 
+Ranjith Subramanian <ranji@cc.gatech.edu> wrote:
+Hi Lisa,   I have a doubt. If I download the Full System Files and testiginfrastructure pointed to by the following links on the download page,will I still have an incorrect disk image?    * M5 2.0b1 <
+http://www.m5sim.org/dist/current/m5_2.0b1.tar.bz2> --      Includes testing infrastructure, and Alpha PAL/Console code    * M5 2.0b1 Full System Files
+      <http://www.m5sim.org/dist/current/m5_system_2.0b1.tar.bz2> --      Pre-compiled Linux kernels, PALcode/Console code, and a filesystem
+    *RanjithLisa Hsu wrote:> where did you get your disk image from?  is it the old image from m5> 1.1, or did you make it off of linux-dist?  if it's the old one,> that's why there's a mismatch....you should make your image with
+> linux-dist.>> lisa>> On 11/30/06, *Ranjith Subramanian* <ranji@cc.gatech.edu> <mailto:ranji@cc.gatech.edu
+>> wrote:>>     Yes, I didn't realize that there were two machines being simulated. I>     tried running the benchmark again connecting to both consoles and this>     the output I got on the other console.
+>>     **** output fromt the other console>>     mounting filesystems...>     EXT2-fs warning: checktime reached, running e2fsck is recommended>     loading script...>     setting up network...
+>     eth0: link now 1000F mbps, full duplex and up.>     running netserver...>     /tmp/script: line 22: /benchmarks/netperf-bin/netserver: No such>     file or>     directory>     signal client to begin...done.
+>     starting bash...>>     ****>>>     I checked up and found that there is no directory called>     /benchmarks/netperf-bin on the disk but when I grep for netperf-bin in
+>     the boot directory containing the .rCS files I get a lot of references>     to it.>>     -bash-3.00$ grep netperf-bin *>     nat-netperf-maerts-client.rcS:BINARY=/benchmarks/netperf-bin/netperf
+>     nat-netperf-server.rcS:/benchmarks/netperf-bin/netserver>     nat-netperf-stream-client.rcS:BINARY=/benchmarks/netperf-bin/netperf>     netperf-rr.rcS:BINARY=/benchmarks/netperf-bin/netperf>     
+netperf-server.rcS:/benchmarks/netperf-bin/netserver>     netperf-stream-client.rcS:BINARY=/benchmarks/netperf-bin/netperf>     netperf-stream-nt-client.rcS:BINARY=/benchmarks/netperf-bin/netperf>
+>     I changed all occurences of netperf-bin to netperf and the benchmark>     runs to completion without a problem. Has anyone else faced this>     problem>     before?>     Ranjith>
+>>     Steve Reinhardt wrote:>>     > Do you get two console.*.sim_console output files?  If so, what does>     > the other one say?>     >>     > Ranjith Subramanian wrote:
+>     >>     >> Yes, it is 2.0 beta1.>     >>>     >> My command line is>     >> ./m5.opt ../configs/examples/fs.py -b NetperfMaerts>     >>>     >> My disk image is in  /tmp/ranji/dist/m5/system. I modified
+>     >> SysPaths.py to point to this directory.>     >>>     >> Ranjith>     >>>     >> Lisa Hsu wrote:>     >>>     >>> i've never seen that error before...
+>     >>>>     >>> can you provide some extra details - is this the>     2.0beta1?  where is>     >>> your disk image from?  what is your command line?>     >>>
+>     >>> lisa>     >>>>     >>> On 11/29/06, *Ranjith Subramanian* < ranji@cc.gatech.edu>     <mailto:
+ranji@cc.gatech.edu>>     >>> <mailto:ranji@cc.gatech.edu <mailto:ranji@cc.gatech.edu>>> wrote:>     >>>
+>     >>>     I've installed m52.0 and am trying to run the NetperfMaerts>     >>>     benchmark in>     >>>     FS mode.>     >>>     I simulation starts and hangs with the following output.
+>     I'm not>     >>> sure>     >>>     what is going wong here.>     >>>>     >>>     mounting filesystems...>     >>>     EXT2-fs warning: checktime reached, running e2fsck is
+>     recommended>     >>>     loading script...>     >>>     setting up network...>     >>>     eth0: link now 1000F mbps, full duplex and up.>     >>>     waiting for server...server ready
+>     >>>     starting test...>     >>>     netperf warmup>     >>>     /benchmarks/netperf/netperf -H 10.0.0.1 <http://10.0.0.1
+>>     < http://10.0.0.1> -t>     >>>     TCP_MAERTS -l -100k>     >>>     establish_control: control socket connect failed: Connection
+>     >>> refused>     >>>     Are you sure there is a netserver running on 10.0.0.1>     <http://10.0.0.1>>     >>>     <
+http://10.0.0.1> at port 12865?>     >>>     netperf benchmark... starting 1...>     >>>     /benchmarks/netperf/netperf -H 10.0.0.1
+ <http://10.0.0.1>>     <http://10.0.0.1> -t>     >>>     TCP_MAERTS -k16384,0>     >>>     -K16384,0 -- -m 65536 -M 65536 -s 262144 -S 262144
+>     >>>     configuring checkpointing at 1400000000...>     >>>     done configuring checkpointing...>     >>>     establish_control: control socket connect failed: Connection
+>     >>> refused>     >>>     Are you sure there is a netserver running on 10.0.0.1>     <http://10.0.0.1>>     >>>     <
+http://10.0.0.1> at port 12865?>     >>>>     >>>>     >>>     Ranjith>     >>>>     >>>>     >>>     _______________________________________________
+>     >>>     m5-users mailing list>     >>>     m5-users@m5sim.org <mailto:m5-users@m5sim.org> <mailto:
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>>>     >>>     
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>     >>>>     >>>>     >>>>     ------------------------------------------------------------------------>
+>     >>>>     >>>>     >>> _______________________________________________>     >>> m5-users mailing list>     >>> 
+m5-users@m5sim.org <mailto:m5-users@m5sim.org>>     >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>     >>>>     >>>     >> _______________________________________________>     >> m5-users mailing list>     >> m5-users@m5sim.org
+ <mailto:m5-users@m5sim.org>>     >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>     >
+>     > _______________________________________________>     > m5-users mailing list>     > m5-users@m5sim.org <mailto:
+m5-users@m5sim.org>>     > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>>     _______________________________________________
+>     m5-users mailing list>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>>     
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>     <http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>>>>------------------------------------------------------------------------
+>>_______________________________________________>m5-users mailing list>m5-users@m5sim.org>
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

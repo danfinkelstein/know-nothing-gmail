@@ -1,0 +1,14 @@
+doing this will result in millions of large files full of stat text - what is it that you want this for?lisa- Show quoted text -On Sat, May 3, 2008 at 11:39 PM, jerry lrui <jerry.lrui@gmail.com> wrote:
+- Show quoted text -Hi,
+ 
+I want to dump m5stats after per cycle. I've looked up the code. Maybe I can add some codes in function simulate(Tick num_cycles) located simulate.cc. Fox example, add a StatEvent like "Stats::StatEvent(true,false);" in this function? But I'm not sure how to do it correctly. I'm using m5sim 2.0b5 in SE model.  What is the correct way to get this information? Thanks!
+ 
+Jerry
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

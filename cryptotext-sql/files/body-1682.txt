@@ -1,0 +1,69 @@
+There is no callpal halt in RADIX binary. I did not change m5 but I am recompiling from scratch to test on clean copy. Also, as pointed in previous email not sure if my benchmark is actually being run.
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 20 Mar 2009 12:23:08 -0500
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] halt
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>Something is calling callpal halt which isn't normally done in FS
+>mode. It only occurs if some kind of fatal error is happening. I don't
+>have time to dig into this right now, but perhaps someone else can.
+>What does the console say? Do you happen to have a callpal halt in the
+>radix binary? If you look at the linux source code, there are very few
+>places where call_pal halt is called, and they all mean something
+>horrible has happened. Have you modified the simulator?
+>
+>Ali
+>
+>
+>
+>
+>
+>
+>
+>On Mar 19, 2009, at 1:35 PM, Steve Stephen wrote:
+>
+>> ALPHA ISA detailed mode....
+>>
+>> ---- Original message ----
+>> >Date: Thu, 19 Mar 2009 14:09:11 -0400
+>> >From: Gabriel Michael Black <gblack@eecs.umich.edu>
+>> >Subject: Re: [m5-users] halt
+>> >To: M5 users mailing list <m5-users@m5sim.org>, Steve Stephen <sstephen66@yahoo.com
+>> >
+>> >Cc: m5-users@m5sim.org
+>> >
+>> >Which ISA are you using?
+>> >
+>> >Quoting Steve Stephen <sstephen66@yahoo.com>:
+>> >
+>> >> when running radix benchmark (splash) using 4 cpus in FS mode using
+>> >> provided fs.py
+>> >>
+>> >> 56993956000: system.cpu3..break_event: break event panic triggered
+>> >> panic: Halt not implemented!
+>> >>
+>> >>
+>> >>
+>> >
+>> >
+>> >
+>> >_______________________________________________
+>> >m5-users mailing list
+>> >m5-users@m5sim.org
+>> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

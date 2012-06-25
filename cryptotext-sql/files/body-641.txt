@@ -1,0 +1,1086 @@
+I have played extensively with this. Right now I have a mode that will
+exit when the system reaches some total count of instruction (i.e. the
+sum of instructions of all cores is equal to some number). Below is a
+patch that I use. Essentially, I create a static variable count that has
+its only instruction count event queue and all the cores update the same
+copy of this variable. This is not going to work for a parallelized
+version of M5, but it does work in this scenario. At the very least, my
+diff will let you know what files to look at. I have two diffs below.
+The first is the most relevant changes that you need to make (leaving
+out the portion where you check the systemComInstEventQueue). The second
+is the entire diff that I have to support adding statistics for the
+McPat in case I forgot something. The McPat patch has a bunch of new
+stats that I have added for McPat power modeling along with the
+accounting system you desire.
+Best,
+-Rick
+*Diff 1:*
+--- a/src/cpu/base.cc
++++ b/src/cpu/base.cc
+@@ -96,6 +96,10 @@
+     return "CPU Progress";
+ }
++
++Counter BaseCPU::total_system_num_insts=0;
++EventQueue BaseCPU::systemComInstEventQueue("system instruction-based
+event queue");
++
+ #if FULL_SYSTEM
+ BaseCPU::BaseCPU(Params *p)
+     : MemObject(p), clock(p->clock), instCnt(0), _cpuId(p->cpu_id),
+@@ -142,17 +146,28 @@
+     }
+     if (p->max_insts_all_threads != 0) {
+-        const char *cause = "all threads reached the max instruction
+count";
++        static const char *cause = "all threads reached the max
+instruction count";
+         // allocate & initialize shared downcounter: each event will
+         // decrement this when triggered; simulation will terminate
+         // when counter reaches 0
+-        int *counter = new int;
+-        *counter = numThreads;
+-        for (ThreadID tid = 0; tid < numThreads; ++tid) {
+-            Event *event = new CountedExitEvent(cause, *counter);
+-            comInstEventQueue[tid]->schedule(event,
+p->max_insts_any_thread);
+-        }
++         static int * counter=NULL;
++         if (counter==NULL){
++             counter = new int;
++             *counter =0;
++         }
++         *counter += numThreads;
++
++         for (int i = 0; i < numThreads; ++i) {
++              Event *event = new CountedExitEvent(cause, *counter);
++              comInstEventQueue[i]->schedule(event,
+p->max_insts_all_threads);
++          }
++    }
++
++    if (p->max_total_system_insts) {
++      const char *cause = "a thread triggered the max system
+instruction count";
++      Event *event = new SimLoopExitEvent(cause, 0);
++      systemComInstEventQueue.schedule(event, p->max_total_system_insts);
+     }
+     // allocate per-thread load-based event queues
+diff --git a/src/cpu/base.hh b/src/cpu/base.hh
+--- a/src/cpu/base.hh
++++ b/src/cpu/base.hh
+@@ -91,6 +91,8 @@
+     // takeover (which should be done from within the BaseCPU anyway,
+     // therefore no setCpuId() method is provided
+     int _cpuId;
++
++    static Counter total_system_num_insts;
+   public:
+     /** Reads this CPU's ID. */
+@@ -246,6 +248,13 @@
+      *a particular thread.
+      */
+     EventQueue **comLoadEventQueue;
++
++    /**
++     * Vector of per-thread instruction-based event queues.  Used for
++     * scheduling events based on number of instructions committed by
++     * a particular thread.
++     */
++    static EventQueue systemComInstEventQueue;
+     System *system;
+*Diff 2:
+diff --git a/src/cpu/BaseCPU.py b/src/cpu/BaseCPU.py
+--- a/src/cpu/BaseCPU.py
++++ b/src/cpu/BaseCPU.py
+@@ -127,6 +127,8 @@
+         "terminate when all threads have reached this load count")
+     max_loads_any_thread = Param.Counter(0,
+         "terminate when any thread reaches this load count")
++    max_total_system_insts = Param.Counter(0,
++        "terminate when the entire system has all together executed
+this instruction count")
+     progress_interval = Param.Tick(0,
+         "interval to print out the progress message")
+@@ -161,6 +163,20 @@
+         self._mem_ports = ['icache.mem_side', 'dcache.mem_side']
+         if build_env['TARGET_ISA'] == 'x86' and build_env['FULL_SYSTEM']:
+             self._mem_ports += ["itb.walker_port", "dtb.walker_port"]
++
++    def addPrivateSplitL1CachesWithMemDebuggers(self, ic, dc, mt_i, mt_d):
++        assert(len(self._mem_ports) < 6)
++        self.icache = ic
++        self.dcache = dc
++        self.memtester_i = mt_i
++        self.memtester_d = mt_d
++        self.icache_port = mt_i.cpu_side
++        self.dcache_port = mt_d.cpu_side
++        mt_i.mem_side = ic.cpu_side
++        mt_d.mem_side = dc.cpu_side
++        self._mem_ports = ['icache.mem_side','dcache.mem_side']
++        if build_env['TARGET_ISA'] == 'x86' and build_env['FULL_SYSTEM']:
++            self._mem_ports += ["itb.walker_port", "dtb.walker_port"]
+     def addTwoLevelCacheHierarchy(self, ic, dc, l2c):
+         self.addPrivateSplitL1Caches(ic, dc)
+diff --git a/src/cpu/base.cc b/src/cpu/base.cc
+--- a/src/cpu/base.cc
++++ b/src/cpu/base.cc
+@@ -96,6 +96,10 @@
+     return "CPU Progress";
+ }
++
++Counter BaseCPU::total_system_num_insts=0;
++EventQueue BaseCPU::systemComInstEventQueue("system instruction-based
+event queue");
++
+ #if FULL_SYSTEM
+ BaseCPU::BaseCPU(Params *p)
+     : MemObject(p), clock(p->clock), instCnt(0), _cpuId(p->cpu_id),
+@@ -142,17 +146,28 @@
+     }
+     if (p->max_insts_all_threads != 0) {
+-        const char *cause = "all threads reached the max instruction
+count";
++        static const char *cause = "all threads reached the max
+instruction count";
+         // allocate & initialize shared downcounter: each event will
+         // decrement this when triggered; simulation will terminate
+         // when counter reaches 0
+-        int *counter = new int;
+-        *counter = numThreads;
+-        for (ThreadID tid = 0; tid < numThreads; ++tid) {
+-            Event *event = new CountedExitEvent(cause, *counter);
+-            comInstEventQueue[tid]->schedule(event,
+p->max_insts_any_thread);
+-        }
++         static int * counter=NULL;
++         if (counter==NULL){
++             counter = new int;
++             *counter =0;
++         }
++         *counter += numThreads;
++
++         for (int i = 0; i < numThreads; ++i) {
++              Event *event = new CountedExitEvent(cause, *counter);
++              comInstEventQueue[i]->schedule(event,
+p->max_insts_all_threads);
++          }
++    }
++
++    if (p->max_total_system_insts) {
++      const char *cause = "a thread triggered the max system
+instruction count";
++      Event *event = new SimLoopExitEvent(cause, 0);
++      systemComInstEventQueue.schedule(event, p->max_total_system_insts);
+     }
+     // allocate per-thread load-based event queues
+diff --git a/src/cpu/base.hh b/src/cpu/base.hh
+--- a/src/cpu/base.hh
++++ b/src/cpu/base.hh
+@@ -91,6 +91,8 @@
+     // takeover (which should be done from within the BaseCPU anyway,
+     // therefore no setCpuId() method is provided
+     int _cpuId;
++
++    static Counter total_system_num_insts;
+   public:
+     /** Reads this CPU's ID. */
+@@ -246,6 +248,13 @@
+      *a particular thread.
+      */
+     EventQueue **comLoadEventQueue;
++
++    /**
++     * Vector of per-thread instruction-based event queues.  Used for
++     * scheduling events based on number of instructions committed by
++     * a particular thread.
++     */
++    static EventQueue systemComInstEventQueue;
+     System *system;
+diff --git a/src/cpu/o3/commit.hh b/src/cpu/o3/commit.hh
+--- a/src/cpu/o3/commit.hh
++++ b/src/cpu/o3/commit.hh
+@@ -481,6 +481,12 @@
+     Stats::Vector statComMembars;
+     /** Total number of committed branches. */
+     Stats::Vector statComBranches;
++    /** Total number of floating point instructions */
++    Stats::Vector statComFloating;
++    /** Total number of integer instructions */
++    Stats::Vector statComInteger;
++    /** Total number of function calls */
++    Stats::Vector statComFunctionCalls;
+     /** Number of cycles where the commit bandwidth limit is reached. */
+     Stats::Scalar commitEligibleSamples;
+diff --git a/src/cpu/o3/commit_impl.hh b/src/cpu/o3/commit_impl.hh
+--- a/src/cpu/o3/commit_impl.hh
++++ b/src/cpu/o3/commit_impl.hh
+@@ -219,6 +219,27 @@
+         .desc("Number of branches committed")
+         .flags(total)
+         ;
++
++    statComFloating
++        .init(cpu->numThreads)
++        .name(name() + ".COM:fp_insts")
++        .desc("Number of committed floating point instructions.")
++        .flags(total)
++        ;
++
++    statComInteger
++        .init(cpu->numThreads)
++        .name(name()+".COM:int_insts")
++        .desc("Number of committed integer instructions.")
++        .flags(total)
++        ;
++
++    statComFunctionCalls
++        .init(cpu->numThreads)
++        .name(name()+".COM:function_calls")
++        .desc("Number of function calls committed.")
++        .flags(total)
++        ;
+     commitEligible
+         .init(cpu->numThreads)
+@@ -1275,6 +1296,20 @@
+     if (inst->isMemBarrier()) {
+         statComMembars[tid]++;
+     }
++
++    // Integer Instruction
++    if (inst->isInteger())
++        statComInteger[tid]++;
++
++    // Floating Point Instruction
++    if (inst->isFloating())
++        statComFloating[tid]++;
++
++    // Function Calls
++    if (inst->isCall())
++        statComFunctionCalls[tid]++;
++
++
+ }
+ ////////////////////////////////////////
+diff --git a/src/cpu/o3/cpu.cc b/src/cpu/o3/cpu.cc
+--- a/src/cpu/o3/cpu.cc
++++ b/src/cpu/o3/cpu.cc
+@@ -485,6 +485,36 @@
+     this->rename.regStats();
+     this->iew.regStats();
+     this->commit.regStats();
++
++    int_regfile_reads
++        .name(name() + ".int_regfile_reads")
++        .desc("number of integer regfile reads")
++        .prereq(int_regfile_reads);
++
++    int_regfile_writes
++        .name(name() + ".int_regfile_writes")
++        .desc("number of integer regfile writes")
++        .prereq(int_regfile_writes);
++
++    fp_regfile_reads
++        .name(name() + ".fp_regfile_reads")
++        .desc("number of floating regfile reads")
++        .prereq(fp_regfile_reads);
++
++    fp_regfile_writes
++        .name(name() + ".fp_regfile_writes")
++        .desc("number of floating regfile writes")
++        .prereq(fp_regfile_writes);
++
++    misc_regfile_reads
++        .name(name() + ".misc_regfile_reads")
++        .desc("number of misc regfile reads")
++        .prereq(misc_regfile_reads);
++
++    misc_regfile_writes
++        .name(name() + ".misc_regfile_writes")
++        .desc("number of misc regfile writes")
++        .prereq(misc_regfile_writes);
+ }
+ template <class Impl>
+@@ -1081,6 +1111,7 @@
+     if (!tickEvent.scheduled())
+         schedule(tickEvent, nextCycle());
+     _status = Running;
++    total_system_num_insts=0;
+ }
+ template <class Impl>
+@@ -1184,6 +1215,7 @@
+ TheISA::MiscReg
+ FullO3CPU<Impl>::readMiscRegNoEffect(int misc_reg, ThreadID tid)
+ {
++    misc_regfile_reads++;
+     return this->regFile.readMiscRegNoEffect(misc_reg, tid);
+ }
+@@ -1191,6 +1223,7 @@
+ TheISA::MiscReg
+ FullO3CPU<Impl>::readMiscReg(int misc_reg, ThreadID tid)
+ {
++    misc_regfile_reads++;//It is possible this also writes the regfile
+     return this->regFile.readMiscReg(misc_reg, tid);
+ }
+@@ -1199,6 +1232,7 @@
+ FullO3CPU<Impl>::setMiscRegNoEffect(int misc_reg,
+         const TheISA::MiscReg &val, ThreadID tid)
+ {
++    misc_regfile_writes++;
+     this->regFile.setMiscRegNoEffect(misc_reg, val, tid);
+ }
+@@ -1207,6 +1241,7 @@
+ FullO3CPU<Impl>::setMiscReg(int misc_reg,
+         const TheISA::MiscReg &val, ThreadID tid)
+ {
++    misc_regfile_writes++;
+     this->regFile.setMiscReg(misc_reg, val, tid);
+ }
+@@ -1214,6 +1249,7 @@
+ uint64_t
+ FullO3CPU<Impl>::readIntReg(int reg_idx)
+ {
++    int_regfile_reads++;
+     return regFile.readIntReg(reg_idx);
+ }
+@@ -1221,6 +1257,7 @@
+ FloatReg
+ FullO3CPU<Impl>::readFloatReg(int reg_idx, int width)
+ {
++    fp_regfile_reads++;
+     return regFile.readFloatReg(reg_idx, width);
+ }
+@@ -1228,6 +1265,7 @@
+ FloatReg
+ FullO3CPU<Impl>::readFloatReg(int reg_idx)
+ {
++    fp_regfile_reads++;
+     return regFile.readFloatReg(reg_idx);
+ }
+@@ -1235,6 +1273,7 @@
+ FloatRegBits
+ FullO3CPU<Impl>::readFloatRegBits(int reg_idx, int width)
+ {
++    fp_regfile_reads++;
+     return regFile.readFloatRegBits(reg_idx, width);
+ }
+@@ -1242,6 +1281,7 @@
+ FloatRegBits
+ FullO3CPU<Impl>::readFloatRegBits(int reg_idx)
+ {
++    fp_regfile_reads++;
+     return regFile.readFloatRegBits(reg_idx);
+ }
+@@ -1249,6 +1289,7 @@
+ void
+ FullO3CPU<Impl>::setIntReg(int reg_idx, uint64_t val)
+ {
++    int_regfile_writes++;
+     regFile.setIntReg(reg_idx, val);
+ }
+@@ -1256,6 +1297,7 @@
+ void
+ FullO3CPU<Impl>::setFloatReg(int reg_idx, FloatReg val, int width)
+ {
++    fp_regfile_writes++;
+     regFile.setFloatReg(reg_idx, val, width);
+ }
+@@ -1263,6 +1305,7 @@
+ void
+ FullO3CPU<Impl>::setFloatReg(int reg_idx, FloatReg val)
+ {
++    fp_regfile_writes++;
+     regFile.setFloatReg(reg_idx, val);
+ }
+@@ -1270,6 +1313,7 @@
+ void
+ FullO3CPU<Impl>::setFloatRegBits(int reg_idx, FloatRegBits val, int width)
+ {
++    fp_regfile_writes++;
+     regFile.setFloatRegBits(reg_idx, val, width);
+ }
+@@ -1277,6 +1321,7 @@
+ void
+ FullO3CPU<Impl>::setFloatRegBits(int reg_idx, FloatRegBits val)
+ {
++    fp_regfile_writes++;
+     regFile.setFloatRegBits(reg_idx, val);
+ }
+@@ -1284,6 +1329,7 @@
+ uint64_t
+ FullO3CPU<Impl>::readArchIntReg(int reg_idx, ThreadID tid)
+ {
++    int_regfile_reads++;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(reg_idx);
+     return regFile.readIntReg(phys_reg);
+@@ -1293,6 +1339,7 @@
+ float
+ FullO3CPU<Impl>::readArchFloatRegSingle(int reg_idx, ThreadID tid)
+ {
++    fp_regfile_reads++;
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1303,6 +1350,7 @@
+ double
+ FullO3CPU<Impl>::readArchFloatRegDouble(int reg_idx, ThreadID tid)
+ {
++    fp_regfile_reads++; // Should I increment by two?
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1313,6 +1361,7 @@
+ uint64_t
+ FullO3CPU<Impl>::readArchFloatRegInt(int reg_idx, ThreadID tid)
+ {
++    fp_regfile_reads++;
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1323,6 +1372,7 @@
+ void
+ FullO3CPU<Impl>::setArchIntReg(int reg_idx, uint64_t val, ThreadID tid)
+ {
++    int_regfile_writes++;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(reg_idx);
+     regFile.setIntReg(phys_reg, val);
+@@ -1332,6 +1382,7 @@
+ void
+ FullO3CPU<Impl>::setArchFloatRegSingle(int reg_idx, float val, ThreadID
+tid)
+ {
++    fp_regfile_writes++;
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1342,6 +1393,7 @@
+ void
+ FullO3CPU<Impl>::setArchFloatRegDouble(int reg_idx, double val,
+ThreadID tid)
+ {
++    fp_regfile_writes++; // Should I increment this stat twice?
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1352,6 +1404,7 @@
+ void
+ FullO3CPU<Impl>::setArchFloatRegInt(int reg_idx, uint64_t val, ThreadID
+tid)
+ {
++    fp_regfile_writes++;
+     int idx = reg_idx + TheISA::NumIntRegs;
+     PhysRegIndex phys_reg = commitRenameMap[tid].lookup(idx);
+@@ -1454,9 +1507,10 @@
+     thread[tid]->numInsts++;
+     committedInsts[tid]++;
+     totalCommittedInsts++;
+-
++    total_system_num_insts++;
+     // Check for instruction-count-based events.
+     comInstEventQueue[tid]->serviceEvents(thread[tid]->numInst);
++    systemComInstEventQueue.serviceEvents(total_system_num_insts);
+ }
+ template <class Impl>
+diff --git a/src/cpu/o3/cpu.hh b/src/cpu/o3/cpu.hh
+--- a/src/cpu/o3/cpu.hh
++++ b/src/cpu/o3/cpu.hh
+@@ -765,6 +765,16 @@
+     Stats::Formula ipc;
+     /** Stat for the total IPC. */
+     Stats::Formula totalIpc;
++
++    //number of integer register file accesses
++    Stats::Scalar int_regfile_reads;
++    Stats::Scalar int_regfile_writes;
++    //number of float register file accesses
++    Stats::Scalar fp_regfile_reads;
++    Stats::Scalar fp_regfile_writes;
++    //number of misc
++    Stats::Scalar misc_regfile_reads;
++    Stats::Scalar misc_regfile_writes;
+ };
+ #endif // __CPU_O3_CPU_HH__
+diff --git a/src/cpu/o3/iew_impl.hh b/src/cpu/o3/iew_impl.hh
+--- a/src/cpu/o3/iew_impl.hh
++++ b/src/cpu/o3/iew_impl.hh
+@@ -683,6 +683,7 @@
+     // If there are no ready instructions waiting to be scheduled by
+the IQ,
+     // and there's no stores waiting to write back, and dispatch is not
+     // unblocking, then there is no internal activity for the IEW stage.
++    instQueue.int_inst_queue_reads++;
+     if (_status == Active && !instQueue.hasReadyInsts() &&
+         !ldstQueue.willWB() && !any_unblocking) {
+         DPRINTF(IEW, "IEW switching to idle\n");
+diff --git a/src/cpu/o3/inst_queue.hh b/src/cpu/o3/inst_queue.hh
+--- a/src/cpu/o3/inst_queue.hh
++++ b/src/cpu/o3/inst_queue.hh
+@@ -497,6 +497,16 @@
+     Stats::Vector fuBusy;
+     /** Number of times the FU was busy per instruction issued. */
+     Stats::Formula fuBusyRate;
++   public:
++    Stats::Scalar int_inst_queue_reads;
++    Stats::Scalar int_inst_queue_writes;
++    Stats::Scalar int_inst_queue_wakeup_accesses;
++    Stats::Scalar fp_inst_queue_reads;
++    Stats::Scalar fp_inst_queue_writes;
++    Stats::Scalar fp_inst_queue_wakeup_accesses;
++
++    Stats::Scalar int_alu_accesses;
++    Stats::Scalar fp_alu_accesses;
+ };
+ #endif //__CPU_O3_INST_QUEUE_HH__
+diff --git a/src/cpu/o3/inst_queue_impl.hh b/src/cpu/o3/inst_queue_impl.hh
+--- a/src/cpu/o3/inst_queue_impl.hh
++++ b/src/cpu/o3/inst_queue_impl.hh
+@@ -320,6 +320,47 @@
+         // Tell mem dependence unit to reg stats as well.
+         memDepUnit[tid].regStats();
+     }
++
++    int_inst_queue_reads
++        .name(name() + ".int_inst_queue_reads")
++        .desc("Number of integer instruction queue reads")
++        .flags(total);
++
++    int_inst_queue_writes
++        .name(name() + ".int_inst_queue_writes")
++        .desc("Number of integer instruction queue writes")
++        .flags(total);
++
++    int_inst_queue_wakeup_accesses
++        .name(name() + ".int_inst_queue_wakeup_accesses")
++        .desc("Number of integer instruction queue wakeup accesses")
++        .flags(total);
++
++    fp_inst_queue_reads
++        .name(name() + ".fp_inst_queue_reads")
++        .desc("Number of floating instruction queue reads")
++        .flags(total);
++
++    fp_inst_queue_writes
++        .name(name() + ".fp_inst_queue_writes")
++        .desc("Number of floating instruction queue writes")
++        .flags(total);
++
++    fp_inst_queue_wakeup_accesses
++        .name(name() + ".fp_inst_queue_wakeup_accesses")
++        .desc("Number of floating instruction queue wakeup accesses")
++        .flags(total);
++
++    int_alu_accesses
++        .name(name() + ".int_alu_accesses")
++        .desc("Number of integer alu accesses")
++        .flags(total);
++
++    fp_alu_accesses
++        .name(name() + ".fp_alu_accesses")
++        .desc("Number of floating point alu accesses")
++        .flags(total);
++
+ }
+ template <class Impl>
+@@ -501,6 +542,7 @@
+ void
+ InstructionQueue<Impl>::insert(DynInstPtr &new_inst)
+ {
++    new_inst->isFloating() ? fp_inst_queue_writes++ :
+int_inst_queue_writes++;
+     // Make sure the instruction is valid
+     assert(new_inst);
+@@ -542,6 +584,7 @@
+ {
+     // @todo: Clean up this code; can do it by setting inst as unable
+     // to issue, then calling normal insert on the inst.
++    new_inst->isFloating() ? fp_inst_queue_writes++ :
+int_inst_queue_writes++;
+     assert(new_inst);
+@@ -592,6 +635,13 @@
+     assert(!instsToExecute.empty());
+     DynInstPtr inst = instsToExecute.front();
+     instsToExecute.pop_front();
++    if (inst->isFloating()){
++        fp_inst_queue_writes++;
++        fp_inst_queue_reads++;
++    } else {
++        int_inst_queue_writes++;
++        int_inst_queue_reads++;
++    }
+     return inst;
+ }
+@@ -705,6 +755,8 @@
+         assert(!readyInsts[op_class].empty());
+         DynInstPtr issuing_inst = readyInsts[op_class].top();
++
++        issuing_inst->isFloating() ? fp_inst_queue_reads++ :
+int_inst_queue_reads++;
+         assert(issuing_inst->seqNum == (*order_it).oldestInst);
+@@ -731,7 +783,7 @@
+         if (op_class != No_OpClass) {
+             idx = fuPool->getUnit(op_class);
+-
++            issuing_inst->isFloating() ? fp_alu_accesses++ :
+int_alu_accesses++;
+             if (idx > -1) {
+                 op_latency = fuPool->getOpLatency(op_class);
+             }
+@@ -866,7 +918,10 @@
+ InstructionQueue<Impl>::wakeDependents(DynInstPtr &completed_inst)
+ {
+     int dependents = 0;
+-
++
++    // The instruction queue here takes care of both floating and int
+operations
++    completed_inst->isFloating() ? fp_inst_queue_wakeup_accesses++ :
+int_inst_queue_wakeup_accesses++;
++
+     DPRINTF(IQ, "Waking dependents of completed instruction.\n");
+     assert(!completed_inst->isSquashed());
+@@ -995,6 +1050,7 @@
+ InstructionQueue<Impl>::violation(DynInstPtr &store,
+                                   DynInstPtr &faulting_load)
+ {
++    int_inst_queue_writes++;
+     memDepUnit[store->threadNumber].violation(store, faulting_load);
+ }
+@@ -1035,6 +1091,7 @@
+            (*squash_it)->seqNum > squashedSeqNum[tid]) {
+         DynInstPtr squashed_inst = (*squash_it);
++        squashed_inst->isFloating() ? fp_inst_queue_writes++ :
+int_inst_queue_writes++;
+         // Only handle the instruction if it actually is in the IQ and
+         // hasn't already been squashed in the IQ.
+diff --git a/src/cpu/o3/rename.hh b/src/cpu/o3/rename.hh
+--- a/src/cpu/o3/rename.hh
++++ b/src/cpu/o3/rename.hh
+@@ -469,6 +469,8 @@
+     Stats::Scalar renameRenamedOperands;
+     /** Stat for total number of source register rename lookups. */
+     Stats::Scalar renameRenameLookups;
++    Stats::Scalar int_rename_lookups;
++    Stats::Scalar fp_rename_lookups;
+     /** Stat for total number of committed renaming mappings. */
+     Stats::Scalar renameCommittedMaps;
+     /** Stat for total number of mappings that were undone due to a
+squash. */
+diff --git a/src/cpu/o3/rename_impl.hh b/src/cpu/o3/rename_impl.hh
+--- a/src/cpu/o3/rename_impl.hh
++++ b/src/cpu/o3/rename_impl.hh
+@@ -166,6 +166,14 @@
+         .desc("count of insts added to the skid buffer")
+         .flags(Stats::total)
+         ;
++    int_rename_lookups
++        .name(name() + ".RENAME:int_rename_lookups")
++        .desc("Number of integer rename lookups")
++        .prereq(int_rename_lookups);
++    fp_rename_lookups
++        .name(name() + ".RENAME:fp_rename_lookups")
++        .desc("Number of floating rename lookups")
++        .prereq(fp_rename_lookups);
+ }
+ template <class Impl>
+@@ -992,6 +1000,7 @@
+         }
+         ++renameRenameLookups;
++        inst->isFloating() ? fp_rename_lookups++ : int_rename_lookups++;
+     }
+ }
+diff --git a/src/cpu/o3/rob.hh b/src/cpu/o3/rob.hh
+--- a/src/cpu/o3/rob.hh
++++ b/src/cpu/o3/rob.hh
+@@ -250,6 +250,9 @@
+      *  double checking that variable.
+      */
+     int countInsts(ThreadID tid);
++
++    /** Registers statistics. */
++    void regStats();
+   private:
+     /** Pointer to the CPU. */
+@@ -310,6 +313,11 @@
+     /** Number of active threads. */
+     ThreadID numThreads;
++
++    // The number of rob_reads
++    Stats::Scalar rob_reads;
++    // The number of rob_writes
++    Stats::Scalar rob_writes;
+ };
+ #endif //__CPU_O3_ROB_HH__
+diff --git a/src/cpu/o3/rob_impl.hh b/src/cpu/o3/rob_impl.hh
+--- a/src/cpu/o3/rob_impl.hh
++++ b/src/cpu/o3/rob_impl.hh
+@@ -205,6 +205,8 @@
+     //assert(numInstsInROB == countInsts());
+     assert(inst);
++    rob_writes++;
++
+     DPRINTF(ROB, "Adding inst PC %#x to the ROB.\n", inst->readPC());
+     assert(numInstsInROB != numEntries);
+@@ -258,6 +260,8 @@
+ void
+ ROB<Impl>::retireHead(ThreadID tid)
+ {
++    rob_writes++;
++
+     //assert(numInstsInROB == countInsts());
+     assert(numInstsInROB > 0);
+@@ -304,6 +308,7 @@
+ bool
+ ROB<Impl>::isHeadReady(ThreadID tid)
+ {
++    rob_reads++;
+     if (threadEntries[tid] != 0) {
+         return instList[tid].front()->readyToCommit();
+     }
+@@ -350,6 +355,7 @@
+ void
+ ROB<Impl>::doSquash(ThreadID tid)
+ {
++    rob_writes++;
+     DPRINTF(ROB, "[tid:%u]: Squashing instructions until [sn:%i].\n",
+             tid, squashedSeqNum[tid]);
+@@ -695,3 +701,17 @@
+     return (*tail_thread)->seqNum;
+ }
+ */
++
++template <class Impl>
++void
++ROB<Impl>::regStats()
++{
++    using namespace Stats;
++    rob_reads
++        .name(name() + ".rob_reads")
++        .desc("The number of ROB reads");
++
++    rob_writes
++        .name(name() + ".rob_writes")
++        .desc("The number of ROB writes");
++}
+diff --git a/src/cpu/simple/atomic.cc b/src/cpu/simple/atomic.cc
+--- a/src/cpu/simple/atomic.cc
++++ b/src/cpu/simple/atomic.cc
+@@ -217,6 +217,7 @@
+         if (!tickEvent.scheduled())
+             schedule(tickEvent, nextCycle());
+     }
++    total_system_num_insts=0;
+ }
+ void
+diff --git a/src/cpu/simple/base.cc b/src/cpu/simple/base.cc
+--- a/src/cpu/simple/base.cc
++++ b/src/cpu/simple/base.cc
+@@ -132,6 +132,46 @@
+         .desc("Number of instructions executed")
+         ;
++    numIntAluAccesses
++        .name(name() + ".num_ialu_accesses")
++        .desc("Number of integer alu accesses")
++        ;
++
++    numFloatAluAccesses
++        .name(name() + ".num_falu_accesses")
++        .desc("Number of float alu accesses")
++        ;
++
++    numCallsReturns
++        .name(name() + ".num_window_rename_access")
++        .desc("number of times a function call or return occured")
++        ;
++
++    numCondCtrlInsts
++        .name(name() + ".num_conditional_control_insts")
++        .desc("number of instructions that are conditional controls")
++        ;
++
++    numResultBusAccesses
++        .name(name() + ".num_result_bus_accesses")
++        .desc("number of times the result bus is touched")
++        ;
++
++    numMiscRegAccesses
++        .name(name() + ".num_misc_register_accesses")
++        .desc("number of times the misc registers were accessed")
++        ;
++
++    numIntRegAccesses
++        .name(name() + ".num_int_register_accesses")
++        .desc("number of times the integer registers were accessed")
++        ;
++
++    numFloatRegAccesses
++        .name(name() + ".num_float_register_accesses")
++        .desc("number of times the floating reigsters were accessed")
++        ;
++
+     numMemRefs
+         .name(name() + ".num_refs")
+         .desc("Number of memory references")
+@@ -368,7 +408,8 @@
+     // check for instruction-count-based events
+     comInstEventQueue[0]->serviceEvents(numInst);
+-
++    systemComInstEventQueue.serviceEvents(total_system_num_insts);
++
+     // decode the instruction
+     inst = gtoh(inst);
+@@ -461,7 +502,34 @@
+     if (CPA::available()) {
+         CPA::cpa()->swAutoBegin(tc, thread->readNextPC());
+     }
+-
++
++    /* POWER MODEL STATISTIC ADDITION */
++    //integer alu accesses
++    if (curStaticInst->isInteger()){
++        numIntAluAccesses++;
++    }
++
++    //float alu accesses
++    if (curStaticInst->isFloating()){
++        numFloatAluAccesses++;
++    }
++
++    //number of function calls/returns to get window accesses
++    if (curStaticInst->isCall() || curStaticInst->isReturn()){
++        numCallsReturns++;
++    }
++
++    //the number of branch predictions that will be made
++    if (curStaticInst->isCondCtrl()){
++        numCondCtrlInsts++;
++    }
++
++    //result bus acceses
++    if (curStaticInst->isLoad() || curStaticInst->isInteger() ||
+curStaticInst->isFloating()){
++        numResultBusAccesses++;
++    }
++    /* END POWER MODEL STATISTICS */
++
+     traceFunctions(thread->readPC());
+     if (traceData) {
+diff --git a/src/cpu/simple/base.hh b/src/cpu/simple/base.hh
+--- a/src/cpu/simple/base.hh
++++ b/src/cpu/simple/base.hh
+@@ -183,7 +183,7 @@
+     {
+         numInst++;
+         numInsts++;
+-
++        total_system_num_insts++;
+         thread->funcExeInst++;
+     }
+@@ -195,6 +195,30 @@
+     // Mask to align PCs to MachInst sized boundaries
+     static const Addr PCMask = ~((Addr)sizeof(TheISA::MachInst) - 1);
++    //number of integer alu accesses
++    Stats::Scalar numIntAluAccesses;
++
++    //number of float alu accesses
++    Stats::Scalar numFloatAluAccesses;
++
++    //number of function calls/returns
++    Stats::Scalar numCallsReturns;
++
++    //conditional control instructions;
++    Stats::Scalar numCondCtrlInsts;
++
++    //result bus accesses
++    Stats::Scalar numResultBusAccesses;
++
++    //number of integer register file accesses
++    Stats::Scalar numIntRegAccesses;
++
++    //number of float register file accesses
++    Stats::Scalar numFloatRegAccesses;
++
++    //number of misc register file accesses
++    Stats::Scalar numMiscRegAccesses;
++
+     // number of simulated memory references
+     Stats::Scalar numMemRefs;
+@@ -259,17 +283,20 @@
+     uint64_t readIntRegOperand(const StaticInst *si, int idx)
+     {
++        numIntRegAccesses++;
+         return thread->readIntReg(si->srcRegIdx(idx));
+     }
+     FloatReg readFloatRegOperand(const StaticInst *si, int idx, int width)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::FP_Base_DepTag;
+         return thread->readFloatReg(reg_idx, width);
+     }
+     FloatReg readFloatRegOperand(const StaticInst *si, int idx)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::FP_Base_DepTag;
+         return thread->readFloatReg(reg_idx);
+     }
+@@ -277,30 +304,35 @@
+     FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx,
+                                          int width)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::FP_Base_DepTag;
+         return thread->readFloatRegBits(reg_idx, width);
+     }
+     FloatRegBits readFloatRegOperandBits(const StaticInst *si, int idx)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::FP_Base_DepTag;
+         return thread->readFloatRegBits(reg_idx);
+     }
+     void setIntRegOperand(const StaticInst *si, int idx, uint64_t val)
+     {
++        numIntRegAccesses++;
+         thread->setIntReg(si->destRegIdx(idx), val);
+     }
+     void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val,
+                             int width)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::FP_Base_DepTag;
+         thread->setFloatReg(reg_idx, val, width);
+     }
+     void setFloatRegOperand(const StaticInst *si, int idx, FloatReg val)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::FP_Base_DepTag;
+         thread->setFloatReg(reg_idx, val);
+     }
+@@ -308,6 +340,7 @@
+     void setFloatRegOperandBits(const StaticInst *si, int idx,
+                                 FloatRegBits val, int width)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::FP_Base_DepTag;
+         thread->setFloatRegBits(reg_idx, val, width);
+     }
+@@ -315,6 +348,7 @@
+     void setFloatRegOperandBits(const StaticInst *si, int idx,
+                                 FloatRegBits val)
+     {
++        numFloatRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::FP_Base_DepTag;
+         thread->setFloatRegBits(reg_idx, val);
+     }
+@@ -333,38 +367,45 @@
+     MiscReg readMiscRegNoEffect(int misc_reg)
+     {
++        numMiscRegAccesses++;
+         return thread->readMiscRegNoEffect(misc_reg);
+     }
+     MiscReg readMiscReg(int misc_reg)
+     {
++        numMiscRegAccesses++;
+         return thread->readMiscReg(misc_reg);
+     }
+     void setMiscRegNoEffect(int misc_reg, const MiscReg &val)
+     {
++        numMiscRegAccesses++;
+         return thread->setMiscRegNoEffect(misc_reg, val);
+     }
+     void setMiscReg(int misc_reg, const MiscReg &val)
+     {
++        numMiscRegAccesses++;
+         return thread->setMiscReg(misc_reg, val);
+     }
+     MiscReg readMiscRegOperandNoEffect(const StaticInst *si, int idx)
+     {
++        numMiscRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::Ctrl_Base_DepTag;
+         return thread->readMiscRegNoEffect(reg_idx);
+     }
+     MiscReg readMiscRegOperand(const StaticInst *si, int idx)
+     {
++        numMiscRegAccesses++;
+         int reg_idx = si->srcRegIdx(idx) - TheISA::Ctrl_Base_DepTag;
+         return thread->readMiscReg(reg_idx);
+     }
+     void setMiscRegOperandNoEffect(const StaticInst *si, int idx, const
+MiscReg &val)
+     {
++        numMiscRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::Ctrl_Base_DepTag;
+         return thread->setMiscRegNoEffect(reg_idx, val);
+     }
+@@ -372,6 +413,7 @@
+     void setMiscRegOperand(
+             const StaticInst *si, int idx, const MiscReg &val)
+     {
++        numMiscRegAccesses++;
+         int reg_idx = si->destRegIdx(idx) - TheISA::Ctrl_Base_DepTag;
+         return thread->setMiscReg(reg_idx, val);
+     }
+diff --git a/src/cpu/simple/timing.cc b/src/cpu/simple/timing.cc
+--- a/src/cpu/simple/timing.cc
++++ b/src/cpu/simple/timing.cc
+@@ -130,6 +130,7 @@
+     drainEvent = NULL;
+     previousTick = 0;
+     changeState(SimObject::Running);
++    total_system_num_insts=0;
+ }
+diff --git a/src/mem/physical.hh b/src/mem/physical.hh
+--- a/src/mem/physical.hh
++++ b/src/mem/physical.hh
+@@ -38,6 +38,7 @@
+ #include <string>
+ #include "base/range.hh"
++#include "base/statistics.hh"
+ #include "mem/mem_object.hh"
+ #include "mem/packet.hh"
+ #include "mem/tport.hh"
+@@ -183,7 +184,6 @@
+   public:
+     virtual void serialize(std::ostream &os);
+     virtual void unserialize(Checkpoint *cp, const std::string &section);
+-
+ };
+ #endif //__PHYSICAL_MEMORY_HH__
+*
+- Show quoted text -Sujay Phadke wrote:
+> Hello,
+>   I am running a multi-programmed simulation in SE mode (16 cores, 16
+> threads, 1 thread/core).
+>
+> I want to simulate each core for a fixed (or atleast) number of
+> instructions (say 100million). With this scenario, some cores will
+> execute greater number of instructions if the thread executes faster. So
+> we may execute 100Mil, 150Mil, 200Mil, and so on.
+>
+> I was reading some of the earlier discussions on this issue (2008) and
+> there doesn't seem to be a way to do this. The max_inst_all_threads
+> works across all threads, but only for 1 cpu. Even if we assign it for
+> every cpu using:
+>
+> switch_cpu_1[i].max_inst_all_threads = max_insts
+>
+> the entire simulation exits when any 1 cpu reaches that count.
+>
+> does anyone know how to do this? I was looking at simulate.cc and
+> sim_events.cc where the CountedExitEvent object is used. If I understand
+> correctly, it decrements the counter when any thread for a given cpu
+> terminates, and it signals an M5 exit event when an cpu finishes the
+> max_insts count for all its own threads.
+>
+> Can you suggest how we can modify this to keep track of threads across
+> different cores? Also, is it a realistic model to not let the other
+> cores continue after reaching max_inst_all_threads, but to stall them
+> till the other cores catch up?
+>
+> Thanks,
+> Sujay
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

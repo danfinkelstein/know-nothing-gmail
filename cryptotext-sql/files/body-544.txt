@@ -1,0 +1,7 @@
+Hi, all, I am using M5 ALPHA fs mode to run splash2. I compiled the splash2 programs (CHOLESKY) myself and copied to the ramdisk to boot the linux. Typically a splash2 program take several minutes to several dozens of minutes to finish. But for this one, CHOLESKY, it never ends. Several hours later, the M5 kept output the following: 
+warn: could not read byte from debuggerI run M5 under fast mode and did not use gdb. Why does the M5 output such a sentence? I found that it is in base/remote_gdb.cc, but I can not figure out why the M5 goes into here. It is really wired. By the way, when I run CHOLESKY in 4 threads mode, it is OK. But when the thread number becomes 16 or 32, it never ends. Could anyone give me some hints about this problem? Thank you very much!
+Best regards, 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

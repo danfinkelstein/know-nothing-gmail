@@ -1,0 +1,18 @@
+Preparation:
+
+New sqlite3 database requires additional field: c*Bloom for Bloom filter of the message
+
+For each c*Body in MessagesFT_content
+	create Bloom filter
+	encrypt each word from Body
+		populate Bloom filter
+	push Bloom filter to c*Bloom in MessagesFT_content
+	encrypt c*Body and replace c*Body in MessagesFT_content
+done
+
+To Search on Words:
+
+For each word in sentence
+	encrypt word
+		populate Bloom filter
+bitwise AND the Bloom filter with each filter selected from MessagesFT_content

@@ -1,0 +1,36 @@
+Hello,
+After the efforts for compiling M5, which had errors due to bugs in a
+version of swig, I wanted to test my build. I used the commands from the
+website but (almost) all regression tests failed. I don't understand
+what's going wrong. A small part of the output after typing
+build/SPARC_SE/tests/debug
+is this :
+*****
+build/SPARC_SE/tests/debug/quick/00.hello/sparc/linux/simple-timing
+passed.
+Running test in
+build/SPARC_SE/tests/debug/quick/02.insttest/sparc/linux/o3-timing.
+build/SPARC_SE/m5.debug -d
+build/SPARC_SE/tests/debug/quick/02.insttest/sparc/linux/o3-timing -re
+tests/run.py
+build/SPARC_SE/tests/debug/quick/02.insttest/sparc/linux/o3-timing
+M5 exited with non-zero status 1
+***** build/SPARC_SE/tests/debug/quick/02.insttest/sparc/linux/o3-timing
+FAILED!
+Only 00.hello worked.
+I'm using Scientific linux SL release 5.3 and the tools on my computer
+are (only the version of swig changed):
+gcc: gcc-c++.x86_64 version 4.1.2-44.el5
+python: python.x86_64 version 2.4.3-24.el5_3.6
+SCons: scons version 1.2.0.d20090919
+swig: swig.x86_64 version 1.3.40
+zlib:
+zlib.i386 version 1.2.3-3 and
+zlib.x86_64 version 1.2.3-3
+m4: m4.x86_64 version 1.4.5-3.el5.1
+Anyone who can help me out?
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,84 @@
+Thanks for your reply.
+1)I really need to know the link bandwidth, so I can calculate
+  how much time to transmit certain amount of data.
+  If it's a gigabit link, why are those rxBandwidths and
+  totBandwidths just tens of bits per second? I looked through
+  the source code etherlink.cc, does the link bandwidth equal
+  sim_freq/ticksPerByte?
+2)Is the execution time on testsys equal to
+   (drivesys.cpu.numCycles/2GHZ)? In M5 simulator,
+  does 2G mean 2*2^30 or 2*10^9?
+Xin
+---- Original message ----
+>Date: Wed, 28 Nov 2007 06:50:53 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] statistics on M5 2.0b3
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>On Nov 27, 2007 11:52 PM,  <wangx@umd.edu> wrote:
+>> Hello,
+>>
+>> I have run a client-server program, use the sample fs.py
+>> (2GHZ atomic cpu with 512MB memory)and have the following
+>> questions about the simulation statistics.
+>>
+>> 1) eth0: 1000F mbps
+>>    what does the 'F' stand for? full duplex? Can I think it
+>>    means the bandwidth between client and server is 1000mbps?
+>>    However, in m5stats.txt,
+>>    drivesys.tsunami.ethernet.rxBandwidth=19(bits/s)
+>>    drivesys.tsunami.ethernet.totBandwidth=34(bits/s)
+>>    testsys.tsunami.ethernet.rxBandwidth=15(bits/s)
+>>    testsys.tsunami.ethernet.totBandwidth=34(bits/s)
+>>    Does anybody explain the above numbers?
+>
+>It's a gigabit link, you're just not using it much.
+>
+>>
+>> 2) drivesys.cpu.not_idle_fraction=0.000894
+>>    drivesys.cpu.numCycles=544382753
+>>    drivesys.cpu.num_insts=544372834
+>>
+>>    host_inst_rate=861547(inst/s)
+>>    host_seconds=1266.56
+>>    host_tick_rate=240466519018(ticks/s)
+>>    sim_freq=1000000000000(ticks/s)
+>>    sim_insts=1091201381
+>>    sim_seconds=304.565430
+>>    sim_ticks=304565430390500
+>>
+>>    testsys.cpu0.not_idle_fraction=0.000898
+>>    testsys.cpu0.numCycles=546839739
+>>    testsys.cpu0.num_insts=546828547
+>>    Why are both not_idle_fractions so low? about 0.089%?
+>>    What is the difference between host_tick_rate and sim_freq?
+>>    What is the difference between host_seconds and sim_second?
+>>    How to compute the time(seconds) used to execute
+>>    instructions on each system? I have tried host_inst_rate
+>>    to be divided by testsys.cpu0.num_insts. However, the
+>>    result is more than double sim_seconds.
+>
+>All of the "host_*" stats refer to the machine the simulator is
+>running on; e.g., host_seconds is the wall-clock run time of the
+>simulator.  Those stats have nothing to do with the simulation itself.
+>
+>sim_seconds is the number of seconds simulated, as the comments in
+>m5stats.txt indicate.
+>
+>Steve
+>
+>>
+>> Xin
+>> _______________________________________________
+- Show quoted text ->> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

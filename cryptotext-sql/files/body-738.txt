@@ -1,0 +1,45 @@
+Hello,
+    Has anyone gotten to run simpoint execution with multiple workloads
+in SE mode. I have looked at the asplos tutorial and some threads which
+discussed this problem before. Single workloads simpoints are running
+fine but with  say 2 workloads, it segfaults: (i am running the spec2k6
+workloads in SE mode, assigning a different workload to each processor)
+gcc.simpoint = 1e6
+astar.simpoint = 2e6
+M5 compiled Nov  7 2009 17:32:43
+M5 revision 15e5581286b6 6285 default tip
+M5 started Nov  8 2009 20:14:23
+M5 executing on lowpower
+command line: ./build/ALPHA_SE/m5.fast configs/spec2k6/runmix.py -d -n 2
+--caches --simpoint -s -w 100000 --max-inst=100
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb on port 7000
+0: system.remote_gdb.listener: listening for remote gdb on port 7001
+Switch at instruction count:1000000
+info: Entering event queue @ 0.  Starting simulation...
+info: Increasing stack size by one page.
+info: Increasing stack size by one page.
+warn: ignoring syscall rt_sigaction(8, 4831386176, ...)
+hack: be nice to actually delete the event here
+Switched CPUS @ cycle = 659180000
+switching cpus
+Switch at instruction count:0
+info: Entering event queue @ 659180000.  Starting simulation...
+Segmentation fault
+If I use m5.opt, i get the following error:
+For more information see: http://www.m5sim.org/warn/f7ecd6d6
+hack: be nice to actually delete the event here
+Switched CPUS @ cycle = 659180000
+switching cpus
+m5.opt: build/ALPHA_SE/cpu/o3/mem_dep_unit_impl.hh:116: void
+MemDepUnit<MemDepPred, Impl>::switchOut() [with MemDepPred = StoreSet,
+Impl = O3CPUImpl]: Assertion `instList[0].empty()' failed.
+Program aborted at cycle 659180000
+Aborted
+Could anyone help with this?
+Thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,119 @@
+Same problem even when doAtomicAccess() is performed before delaying the return of the packet (thus ensuring that this is performed in order). I checked to see if the packets were being returned in order with any configuration of my memory simulator and they frequently aren't (some ranks/banks see much more traffic). So it seems that it's a problem not of doing the doAtomicAccess() but rather of sending the packets back in a different order and it's somehow different than b3 when this rearrangement worked fine.
+Joe- Show quoted text -
+Joe Gross wrote:
+Yes, I have created a whole new object to sit on top of the PhysicalMemory object, but it reimplements some of the things that PhysicalMemory does, like creating the MemoryPort and adds a class based on Event. I use SimpleTimingPort for recvTiming and schedSendTiming.
+I use doAtomicAccess to provide the memcpy and other stuff that it does, but I haven't had to worry about what was going on behind the scenes before. I don't look at the type of memory access except to determine if it's a read or write. I don't think I ever do see a swapReq, just read, readEx, write and maybe writeEx. However, I eventually get  build/ALPHA_SE/mem/cache/cache_impl.hh:532: Packet* Cache<TagStore>::getBusPacket(Packet*, typename TagStore::BlkType*, bool) [with TagStore = LRU]: Assertion `needsExclusive && !blk->isWritable()' failed. Note that this happens after several million transactions already work.
+I thought that doFunctionalAccess may have a bug b/c it doesn't use isRead or isWrite, but if doAtomicAccess works, then I'll use it instead. I had to switch away from doFunctionalAccess because it wasn't handling the readEx packets, which I never received before b4 that I know of. I'll try calling doAtomicAccess() as the request is being put into my system and see if the behavior changes, since my memory simulator could possibly create requests coming back in a different order, especially when I use RIFF ordering.
+Also, I'm not sure if it's an issue, but since there's now a vector of ports rather than just one, I keep track of the last one that was created and use it and it seems to work until the assertion is hit. I assume this will work unless there is some way I should determine on a per-packet basis which port to send back through.
+Currently it's running with doAtomicAccess() being called before I hold onto it to calculate latency and I should know soon if that works differently and will let you know.
+Joe
+Steve Reinhardt wrote:
+Did you write a whole new object that sits in front of the
+PhysicalMemory object, or are you just deriving from PhysicalMemory
+and overriding recvTiming()?  Are you still using SimpleTimingPort?
+In your first message, when you talked about using doAtomicAccess() to
+handle "exclusive reads/writes", were you referring to the SwapReq
+support?  I'm still a little confused... if your object is just
+modeling DRAM and you have caches with the CPUs, then you should never
+see a SwapReq.
+OK, now maybe I see it... are you referring to the fact that
+doFunctionalAccess() explicitly looks for ReadReq and WriteReq, while
+doAtomicAccess() calls pkt->isRead() and pkt->isWrite()?  That's
+arguably a bug... or at least messy.  Looking closer, I'm not quite
+sure why things got refactored the way they did there.  I don't think
+we really need two different functions; doAtomicAccess() and
+doFunctionalAccess() should basically be doing the same thing.
+That said, I'm still stumped about why doAtomicAccess() is not working
+for you.  The assertion you're seeing occurs when the cache has a
+buffered access in an MSHR, and then the bus gets granted to the cache
+and the cache is figuring out which request to send.  The block is
+valid in the cache, and the assertion is saying that the only reason
+we would want to issue a request for a block for which we already have
+a valid copy is that the copy is read-only and we need a writable one
+(at which point we would send an upgrade).  In your case, either the
+block is already writable, or the outstanding request doesn't need the
+block to be writable, or both... in any case, there's no reason to be
+issuing a request, but that's what the cache finds itself doing.
+Your email indicates that you do the timing simulation, then call
+doAtomicAccess() at the end of the latency... can you try calling
+doAtomicAccess() when you first receive the request, then holding on
+to the response packet for the computed latency?  I can't say for sure
+that it would cause a problem, but the fact that in the former case
+you're potentially calling doAtomicAccess() in a different order than
+the requests are appearing on the bus could be an issue.
+Or there could be a bug in the coherence protocol that can't tolerate
+responses coming back out of order... that shouldn't be the case, but
+since our DRAM model is fixed latency, it's a situation we haven't
+tested.
+Steve
+On 11/9/07, Joe Gross <joegross@umd.edu> wrote:
+ 
+Oh, and by 'whole memory system' I mean DRAM.
+Joe Gross wrote:
+   
+I'm simulating an entire memory system, so I assume that requests
+coming into the system are from the CPU/cache. I use what's in
+PhysicalMemory to do the actual reading/writing and I do the timing.
+My object has a MemoryPort object, like PhysicalMemory and I override
+recvTiming() there. I also make use of a TickEvent: public Event
+object to do event-based simulation, but I don't think it matters for
+this problem.
+Joe
+Steve Reinhardt wrote:
+     
+Hi Joe,
+I'm a little confused... are you simulating the whole memory system or
+just DRAM?  Which object are you overriding recvTiming() on?
+Steve
+On 11/9/07, Joe Gross <joegross@umd.edu> wrote:
+       
+Hello,
+I'm attempting to update my dram simulator to support b4 and am having
+some troubles. Previously, I would override recvTiming() and do a full
+memory simulation for that packet. Once it was done, I would then call
+doFunctionalAccess() and return it to the sender, thus emulating the
+atomic access but with a simulated delay.
+However, it seems that doFunctionalAccess() only works for shared
+reads/writes, so I've had to switch away from that and call
+doAtomicAccess() instead, which should handle exclusive reads/writes
+for
+me. This seems to work until it has gone through several million
+instructions when I get an assertion error: needsExclusive &&
+!blk->isWritable() from cache_impl.hh, line 532. Presumably this is an
+invalid state where a block is writable but exclusive. I'm not sure how
+this differs from the PhysicalMemory implementation. Any suggestions on
+how to resolve this issue are appreciated.
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+          
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+        
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+      
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

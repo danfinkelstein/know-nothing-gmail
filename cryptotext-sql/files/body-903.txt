@@ -1,0 +1,14 @@
+cpu/o3/inst_queue.hh
+---- Original message ----
+>Date: Thu, 01 Oct 2009 15:29:33 -0400
+>From: Felix Loh <felixloh@umich.edu>
+>Subject: [m5-users] Peeking into the Instruction Queue
+>To: "m5-users@m5sim.org" <m5-users@m5sim.org>
+>
+>Hi,
+>
+>How do I peek into the instruction queue? Basically, I want to get a
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

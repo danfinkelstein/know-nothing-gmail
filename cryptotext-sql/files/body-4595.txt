@@ -1,0 +1,48 @@
+Hello,
+I am working on hardware prefetching and cache coherence. Using a the
+FullCPU model (with detailedconfig.py) the hardware prefetcher works fine,
+and issues several prefetches. However, I would like to use the simple CPU
+model so mye simulations would run faster, however, copying the cache
+configuration seems to not work, as no prefetches are issued.
+I have used Simpleconfig as a template, and use only a single level of
+cache, like this:
+class L1Cache(BaseCache):
+    size = '64kB'
+    assoc = 2
+    block_size = 64
+    latency = Parent.clock.period
+    mshrs = 4
+    tgts_per_mshr = 8
+    protocol = CoherenceProtocol(protocol='msi')
+    prefetch_miss = True
+    prefetch_degree = 8
+    prefetch_latency = 1
+    prefetch_policy = 'tagged'
+In the working FullCpu model, I have used this:
+class BaseL1Cache(BaseCache):
+    in_bus = NULL
+    size = '64kB'
+    assoc = 2
+    block_size = 64
+    tgts_per_mshr = 16
+    protocol = CoherenceProtocol(protocol=env['PROTOCOL'])
+class DL1(BaseL1Cache):
+    latency = 3 * Parent.clock.period
+    mshrs = 32
+    prefetch_miss = True
+    prefetch_degree = 8
+    prefetch_latency = 1
+    prefetch_policy = 'tagged'
+Which is similar to the example config provided with m5 v.1.1
+I have tried to trace the problem by looking at which functions are called.
+It seems like the constructor for the prefetcher is called, but the
+function generating the prefetch is never called, after looking at the
+functions calling the prefetcher, it seems that the call graph is different
+when using SimpleCpu. Can anyone shed some light on this? Or am I doing
+something completely wrong?
+--
+Marius Grannæs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

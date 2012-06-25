@@ -1,0 +1,5 @@
+I seem to find the initiateAcc that I want, the src/ directory doesn't contain this but the build/ALPHA_FS directory does, the initiateAcc is generated during the build.What confuse me now is how this code generated? Can somebody give me some hints? It seems that would help me understand the M5 better. Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

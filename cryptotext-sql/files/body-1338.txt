@@ -1,0 +1,21 @@
+You're right, I was confused... "-i" is the short form of "--input" but "-o" is the short form of "--options" and not "--output".There's still definitely something weird going on though, since alpha is a little-endian architecture.  We run vortex on ALPHA_SE in our internal regressions with "lendian.raw" and it works fine.
+Steve- Show quoted text -On Fri, Jun 5, 2009 at 5:12 PM, Alexander Neckar <a-neckar@northwestern.edu> wrote:
+Hi, I've been working with the original poster. We eventually got vortex to run with the big-endian input data set. So we would have been calling:build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c vortex00.peak.ev6 -o "bendian2.raw"
+As we understand it, the -o option is for input options to your application. I don't think we were ever 100% sure about this, but what seemed to work for us is that if a benchmark used a stream operator to take an input file, we used -i (input), and for anything else we used -o "(input)".
+On Fri, Jun 5, 2009 at 6:51 PM, Steve Reinhardt <stever@gmail.com> wrote:
+Did you solve this yet?  If not, do these benchmarks work without "-d --caches --l2cache"?
+On Mon, Jun 1, 2009 at 7:41 AM, Anitha Mohan <anithamohan2009@u.northwestern.edu> wrote:
+>> build/ALPHA_SE/m5.fast -d output configs/example/se.py -n 1 -d --caches --l2cache -c vortex00.peak.ev6 -o "lendian2.raw" -i lendian2.raw
+The fact that you're using the same file for both the input and the output seems suspicious to me...Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

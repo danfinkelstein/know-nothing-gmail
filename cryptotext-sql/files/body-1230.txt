@@ -1,0 +1,127 @@
+Folks,
+here is a more detailed report on what makes my think simpoint is
+functioning at least part of the time:
+I ran it three times, the final time with the simpoint being zero still
+no change. Below the import of the configuration file I have the diffs
+of the config.ini and m5stats.txt I presume there should be some change
+in m5stats.
+MyBench1000M.py has a bench mark
+#164.gzip
+gzip = LiveProcess()
+gzip.executable = spec_2000_path  + "/gzip/gzip00.peak.ev6"
+data= spec_2000_path + "/gzip/input.graphic"
+gzip.cmd = [gzip.executable] + [data] + ['60']
+gzip.output = 'input.graphic.out'
+#gzip.simpoint= 100*100E6
+#gzip.simpoint= 663*100E6
+gzip.simpoint= 0
+[williamb@trout w_cpu2000]$ diff 1000_gzip/config.ini
+1000_gzip.663/config.ini
+133c133
+< simpoint=0
+---
+> simpoint=66300000000
+[williamb@trout w_cpu2000]$
+[williamb@trout w_cpu2000]$ diff 1000_gzip/m5stats.txt
+1000_gzip.663/m5stats.txt
+3,6c3,6
+< host_inst_rate                                1045038
+      # Simulator instruction rate (inst/s)
+< host_mem_usage                                4333128
+      # Number of bytes of host memory used
+< host_seconds                                    95.69
+      # Real time elapsed on the host
+< host_tick_rate                             2304494659
+      # Simulator tick rate (ticks/s)
+---
+> host_inst_rate                                1027809
+     # Simulator instruction rate (inst/s)
+> host_mem_usage                                4333124
+     # Number of bytes of host memory used
+> host_seconds                                    97.29
+     # Real time elapsed on the host
+> host_tick_rate                             2266501385
+     # Simulator tick rate (ticks/s)
+[williamb@trout w_cpu2000]$ env | grep 2000
+Thoughts?
+William George Beazley Jr wrote:
+>Was this is ever resolved? I am having a similar problem.
+>
+>Further, I am trying to look  for the code that runs simpoint; where is
+>it implemented?
+>
+>I find this:
+>[williamb@kani src]$ grep simpoint */*
+>sim/Process.py:    simpoint = Param.UInt64(0, 'simulation point at
+>which to start simulation')
+>
+>I don't find it used again by name, however, how the c++ talks to
+>Python is magic to me, so I suspect that it may get to it another way
+>than by name.
+>
+>Thanks,
+>Will
+>
+>
+>
+>
+>Pavan Kumar wrote:
+>
+>
+>>i am using cmp.py and Mybench.py file from this website,
+>>http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks
+>>
+>>In Mybench.py, for every benchmark i added simpoint
+>>for gcc
+>>gcc.simpoint= 5*100E6
+>>
+>>
+>>command line i am using is:
+>>/home/pavanj/m5-2.0b6/build/ALPHA_SE/m5.opt -d
+>>/home/pavanj/m5-2.0b6/configs/cpu2006-linux-alpha-input/gcc
+>>/home/pavanj/m5-2.0b6/configs/cpu2006-linux-alpha-input/cmp.py  -t
+>--caches
+>>--l2cache --benchmark gcc
+>>
+>>On Thu, May 14, 2009 at 9:45 AM, Korey Sewell <ksewell@umich.edu> wrote:
+>>
+>>> So to Lisa's point, what are the command lines that you are using? and
+>>> what config file (se.py?)??
+>>>
+>>> --
+>>> ===========
+>>> Korey L Sewell
+>>> PhD Candidate
+>>> Computer Science & Engineering
+>>> University of Michigan
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>
+>
+>------------------------------------------------------------------------
+>
+>
+>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>-----------------------------------
+>Will Beazley|Sys. Software Analyst
+>409.880.7847|wgbeazley@my.lamar.edu
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

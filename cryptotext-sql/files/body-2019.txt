@@ -1,0 +1,36 @@
+That error comes from the simulator itself. It means that you are
+asking M5 to allocate a region of virtual memory larger than your OS
+supports. The primary cause of this is running on a 32-bit OS, any 64-
+bit OS should have a (practically) unlimited amount of virtual memory.
+You can try modifying the configuration to use less memory for that
+workload, but if the memory capacity has been overloaded for that
+workload, it most likely means that it is unable to run with any
+smaller size of memory.
+Others may have comments specific to that workload.
+        - Clint
+- Show quoted text -
+On Jan 15, 2009, at 5:42 PM, Pavan Kumar wrote:
+> hi,
+>
+> i tried to run libquantum benchmark on M5, but it didn't worked.
+> so i looked in libquantum.sh.e18164 , it showed this message.
+>
+> mmap: Cannot allocate memory
+> fatal: Could not mmap!
+>  @ cycle 0
+> [PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 71]
+> Memory Usage: 92560 KBytes
+>
+>
+> could you please help me to find out the problem
+>
+> Thanks,
+> Pavan
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

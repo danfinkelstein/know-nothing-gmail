@@ -1,0 +1,46 @@
+Off the top of my head, I think you're right in theory but it's
+unlikely in practice.  The whenReady time is used to account for
+critical-word-first behavior... basically if any accesses occur in the
+window between when the first word arrives (and is forwarded to the
+CPU) and when the full block is received and written into the cache,
+then we have to make sure the response is effectively delayed until
+after the latter event.  Since the block will be marked MRU as it is
+brought in, it seems extremely unlikely that it will be evicted during
+that same window, particularly if you have a reasonably associative
+cache.
+As I said, this is just my gut reaction though, so I could be missing
+something.  Feel free to put a check in the code and run some tests to
+see if it heppens in practice... this would be a good spot for a
+'warn()' annotation.
+Steve
+- Show quoted text -
+On Sat, Jan 16, 2010 at 8:54 AM, Sage <leonard951@gmail.com> wrote:
+> Hi, guys,
+>
+> I have a quick question about the cache victim's ready time issues. I read
+> the source file "cache_impl.hh" and found that in the function
+> "allocateBlock", the implementation directly evict the victim block ( or put
+> it into the "writebacks" list if it is dirty) without considering the
+> victim's "whenReady" field. Thus, I am wondering if the case that a victim's
+> "whenReady" is greater than "curTick"+"hitLatency" exists. If the case does
+> potentially exist, I suspect that directly evicting the block off the cache
+> without adding extra latency will incur inaccuracy in computation. I don't
+> know if my understanding is correct, and I would greatly appreciate your
+> help!
+>
+> Thanks,
+> Leonard
+>
+>
+> --
+> Give our ability to our work, but our genius to our life!
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

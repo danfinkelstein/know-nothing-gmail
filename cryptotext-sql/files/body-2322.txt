@@ -1,0 +1,14 @@
+Hi all,
+I have been working to get Jiayuan Meng's directory coherence model
+working for full system m5-dev. I had a question about an IO-Cache. If
+you have an I/O cache connected between the memory bridge and iobus, do
+have have to keep the IO-cache coherent as a level 3 cache (I have
+connections cpu->l1-cache->l2-bus,
+l2->cache->membus->membridge->IO-cache->iobus) ? I guess I am wondering
+if the IO-cache has to be apart of coherent memory.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

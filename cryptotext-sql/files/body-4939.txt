@@ -1,0 +1,189 @@
+Hi,
+Thank you very much for your reply. I have been able
+to run two programs in two different cores with the
+help of your suggestion.
+My objective is to run different threads of a
+multi-threaded program in different cores. For this to
+be done, do I have to use the full-system mode or the
+system emulation mode ? And how can this be achieved
+in either in M5 1.1 or M5 2.0 ?
+- Show quoted text -
+Regards-
+Rajdeep
+--- Steve Reinhardt <stever@eecs.umich.edu> wrote:
+>
+>
+> Rajdeep Bhowmik wrote:
+> > Hi Steve,
+> >
+> > Thanks very much for your reply.
+>
+> You're welcome.  Please reply to the mailing list
+> and not directly to
+> me. That way if others have similar problems they
+> can learn from the
+> mailing list archives.
+>
+> >
+> > Both of my programs are running successfully. Now
+> I have compiled both
+> > the programs with the '-static' option and they
+> are running okay when i
+> > am not using the printf() in the code. But when I
+> am using printf(), it
+> > is giving me an error " System call 427 out of
+> range". I checked tthe
+> > code and found that the function pointer for
+> printf() is not
+> > implemented. So do I have to implement printf()
+> and similarly other
+> > functions like fork(), pthread_create() etc on my
+> own if I use them in
+> > my code?
+>
+> System call 427 is fstat64.  This is implemented in
+> m5 2.0 (but not in 1.1).
+>
+> printf() is implemented in libc, which should be
+> statically linked in to
+> your binary.  I don't know what you mean by "the
+> function pointer for
+> printf() is not implemented".
+>
+> pthread_create()/fork() is a different issue; if you
+> want to run general
+> pthreads programs then you'll need to run them under
+> full system mode,
+> as there isn't (and probably never will be) a thread
+> scheduler built
+> into m5.  (There's a perfectly good one in the Linux
+> kernel, and since
+> we can run that, there's not a lot of motivation to
+> do another one.)  If
+> you just want to run simple SPLASH-like programs,
+> that's not
+> unthinkable, but right now the only way to do that
+> in SE mode is if you
+> can compile them under Tru64.  Linux SE-mode PARMACS
+> support is on my
+> to-do list but unfortunately behind a few other
+> things.
+>
+> >
+> > Can you tell me the way to run two different
+> programs in two different
+> > cores?
+>
+> Set the workload parameter of each cpu to the
+> workload you want to run,
+> e.g.:
+>
+> cpu[0].workload = Benchmarks.AnagramLongCP()
+> cpu[1].workload = Benchmarks.GCCLongCP()
+>
+> Steve
+>
+> >
+> > regards-
+> > Rajdeep
+> >
+> >
+> > */Steve Reinhardt <stever@eecs.umich.edu>/* wrote:
+> >
+> >     Getting the deadlock message at cycle 0
+> basically means that the CPU
+> >     never really started executing instructions.
+> One common cause for this
+> >     is that your programs are not statically
+> linked; see
+> >
+>
+http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions#I_compiled_an_executable_to_run_in_syscall_emulation_mode_but_it_doesn.27t_work.
+> >
+> >     You should verify that both programs run
+> successfully by themselves
+> >     before trying to run them both together.
+> >
+> >     BTW, specifying two programs in a list like
+> you have there is
+> >     specifying
+> >     two programs for a two-way multithreaded CPU,
+> not for two different
+> >     cores.
+> >
+> >     Steve
+> >
+> >     Rajdeep Bhowmik wrote:
+> >      > Hi All,
+> >      >
+> >      > I am trying to run two independent
+> workloads -
+> >      > "HelloWorld" and "MatrixMultiplication" in
+> two
+> >      > different cores. I am using m5 1.1 version.
+> I have
+> >      > written a run.py file similar to the run.py
+> file given
+> >      > in m5-tests/test3/ i.e.
+> >      > "BaseCPU.workload =
+> >      > [
+> Benchmarks.AnagramLongCP(),Benchmarks.GCCLongCP() ]"
+> >      >
+> >      > But the simulator is returning an error
+> saying
+> >      > "Deadlock.. Simulation terminated at cycle
+> 100000".
+> >      >
+> >      > My programs are single-threaded
+> applications. Is this
+> >      > the reason for the error ?
+> >      >
+> >      > Can anyone tell me what I should do to make
+> it run
+> >      > successfully.
+> >      >
+> >      > Regards-
+> >      > Rajdeep
+> >      >
+> >      >
+> >      >
+> >      >
+> >      >
+> __________________________________________________
+> >      > Do You Yahoo!?
+> >      > Tired of spam? Yahoo! Mail has the best
+> spam protection around
+> >      > http://mail.yahoo.com
+> >      >
+> _______________________________________________
+> >      > m5-users mailing list
+> >      > m5-users@m5sim.org
+> >      >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> >     m5-users mailing list
+> >     m5-users@m5sim.org
+> >
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> >
+> >
+>
+------------------------------------------------------------------------
+> > Yahoo! Messenger with Voice. Make PC-to-Phone
+> Calls
+> >
+>
+<http://us.rd.yahoo.com/mail_us/taglines/postman1/*http://us.rd.yahoo.com/evt=39663/*http://voice.yahoo.com>
+>
+> > to the US (and 30+ countries) for 2｢/min or less.
+>
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,62 @@
+It would seem that the primary culprit was trying to import C++ params
+into a c-file. Changing wattch to comply with C++ and changing the file
+names from .c to .cc seemed to fix all the problems. Thanks
+Steve Reinhardt wrote:
+> I don't know the details, but a key thing to realize is that
+> originally SimObject developers had to write their own C++ Params
+> structs (such as what you see in cpu/o3/params.hh), while more
+> recently we've finished our long-held goal of autogenerating the C++
+> structs from the Param.Foo() attributes in the Python object classes
+> (which is what you find in build/*/params).
+>
+> I'm guessing the O3 model is stuck in the old world, or perhaps is in
+> some intermediate limbo state, due to the complexity of converting all
+> the template-handling cruft into the new model, and you're getting the
+> structs from the two worlds confused.  Probably Kevin or Nate would
+> have to provide more details on just what the current status is, if
+> that's not enough of a clue to get you going.
+>
+> If you continue to have problems, providing specific compiler error
+> messages would also be helpful.
+>
+> Steve
+>
+> On Wed, Jul 30, 2008 at 11:35 PM, Rick Strong <rstrong@cs.ucsd.edu
+> <mailto:rstrong@cs.ucsd.edu>> wrote:
+>
+>     Hi,
+>
+>     I am adding support to dynamically set structure parameters sizes in
+>     wattch and want to pass the struct DerivO3CPUParams to the wattch
+>     initialization section. The easiest way to do this for every cpu  to
+>     initialize its wattch structure during initialization of the cpu
+>     class.
+>
+>     I decided to put the initialization call in
+>     src/cpu/cpu.cc::FullO3CPU(...) constructor  and pass params
+>     (Impl::Params) to the wattch initialization function. I then included
+>     params/DerivO3CPU.hh in the wattch file, but the compiler does not
+>     like
+>     this. I also tried to do a dynamic_cast<DerivO3CPUParams>(params)
+>     where
+>     params is Impl::Params of src/cpu/cpu.hh::FullO3CPU class. I have
+>     resigned that I have no idea how the params system is working ... lol.
+>
+>     So my question is, what file do I have to include in wattch so I can
+>     access the Impl::params parameter of FullO3CPU after I pass it to the
+>     function. Also, do I need to do a dynamic_cast? If you could point
+>     me to
+>     an example, that would be equally helpful.
+>
+>     -Rick
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+- Show quoted text ->     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

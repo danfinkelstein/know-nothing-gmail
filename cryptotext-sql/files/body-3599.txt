@@ -1,0 +1,44 @@
+Running different applications on different cores in SE mode
+I  In   Currently FS mode is limited to the Alpha ISA.
+On Jan 23, 2008 9:16 AM, Tony Frank <dtustudy@yahoo.com> wrote:
+>
+> Does your "m5" support cycle-accurate simulation for 64 or 128 cores ?
+If you're using syscall emulation (SE) mode, you can use as many cores
+as you want.  However, since M5 itself is currently single threaded,
+your simulations will run slower as you add more cores.  Also, our
+only interconnect right now is a bus, so that will become a bottleneck
+if you don't replace it with something more scalable (or just crank it
+up to an unrealistic frequency to keep it from being a bottleneck).
+In full system (FS) mode, you're practically limited to 64 cores
+because of OS/BIOS limitations (and you have to apply some patches
+just to get to that level).
+> Does "m5 " support  parallelized SPEC CPU2000 benchmark program so that
+> one program can generate different threads to run in different cores
+> in "m5" simulator ?
+>
+> Or, I can only run different benchmark program on different cores ?
+In SE mode, you can run different programs on different cores easily.
+Running multithreaded programs is possible but trickier, and has only
+been done for Alpha Tru64 SPLASH benchmarks; see
+http://m5sim.org/wiki/index.php/Splash_benchmarks.  You could extend
+this technique to run other multithreaded binaries if you wanted
+though.
+In FS mode, you can run any set of applications that would run on a
+real Linux system.
+>
+> Does "m5" support  PowerPC or Intel x86 ?
+We don't support PowerPC at all.  We have x86 mode in development, but
+it's not released yet.  FS mode supports Alpha and SPARC (though I
+think the SPARC support is somewhat limited).
+>
+> Would you please help me with it ?
+>
+> Or could you please recommmand other simulators for paralle multi-core
+> architecture ?
+M5 doesn't do everything out of the box, but I don't know of another
+simulator that does... each has its own set of limitations, generally.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

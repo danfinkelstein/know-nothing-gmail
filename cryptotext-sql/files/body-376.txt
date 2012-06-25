@@ -1,0 +1,9 @@
+hi, every body,
+I encounter an unmapped address problem when running SPEC benchmark 2006 on m5, and the simulation is terminated by the unmapped address.
+does any body who had encounter this before? and find a solution to it?
+thank you very much
+York
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

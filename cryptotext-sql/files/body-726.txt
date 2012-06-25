@@ -1,0 +1,23 @@
+Out of memory?Song2009/11/11 Fei Hong <tithonus.hf@gmail.com>- Show quoted text -
+Hi all,
+ 
+I am using TimingSimpleCPU running some MiBench 
+benchmarks in SE model. It it fine when I run most benchmarks 
+with up to 32 cores. However, when I use the tiff2rgba benchmark with more 
+than 4 cores, it exits very quickly after the "warn: Increasing stack size by 
+one page." message (for 6 cores it exits at cycle 8755250).  
+ 
+Any idea what the problem is, or some possible 
+parts I can look into to trace the problem?
+ 
+Thanks in advance!
+ 
+Fei 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

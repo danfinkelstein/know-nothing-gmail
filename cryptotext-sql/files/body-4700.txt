@@ -1,0 +1,79 @@
+Greetings Ali,
+When I mount the disk image, /sbin/init exists.
+If you build an image on your system following the instructions from here:
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+... if immediately after cloning (step #2) you add Shell & Console Tools->BusyBox->Coreutils->env ONLY, then finish the instructions, can you mount your disk on your setup?  I'm wondering if it's a BusyBox issue...
+I've put a copy of my ptxconfig here:
+http://cs.ubc.ca/~penoff/ptxconfig.plus_env_only
+..but obviously you'll have to change your PTXCONF_IMAGE_HD_KERNEL_SRC line.
+Looking forward to getting to the bottom of this,
+brad- Show quoted text -
+On Thu, 1 Mar 2007, Ali Saidi wrote:
+Have you mounted the disk image and verified that /sbin/init exists? Is hda actually your disk image and not some other disk image that doesn't have an init on it?
+Ali
+On Mar 1, 2007, at 1:51 PM, Brad Penoff wrote:
+Greetings all,
+Thanks for your help.
+Ali mentioned initially building on real hardware but unfortunately I don't have access to an alpha... :-(
+As far as Lisa's questions are concerned, they are inline below.
+Looking forward to getting to the bottom of this!
+On Thu, 1 Mar 2007, Lisa Hsu wrote:
+if it's something that came directly from busybox, it should play nice, but
+not always.
+The most astonishing thing is literally the ONLY change in the ptxconfig is adding env...
+it would be helpful to see some stats and data.
+When you ask for stats, do you also mean the m5stats.txt file?  I've put it here temporarily just in case:
+http://cs.ubc.ca/~penoff/m5stats.txt
+1) what kernel headers are you compiling against in linux-dist?
+When I made my crosstool, my dat file looked like this:
+BINUTILS_DIR=binutils-2.15
+GCC_DIR=gcc-3.4.3
+GLIBC_DIR=glibc-2.3.5
+LINUX_DIR=linux-2.6.13
+LINUX_SANITIZED_HEADER_DIR=linux-libc-headers-2.6.12.0
+GLIBCTHREADS_FILENAME=glibc-linuxthreads-2.3.5
+I set "Path to linux kernel src for headers" to the m5base-2.6.13 directory and set my toolchain to the crosstool installed with the above dat file.
+2) what kernel have you compiled?
+The panic happens both with the distributed vmlinux (inside linux- dist.tgz) and also with a kernel I build (where I added SCTP to be compiled into m5base-2.6.13.tar.bz2).
+3) most importantly, what are your error messages?
+The final lines from the console are:
+...
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing unused kernel memory: 480k freed
+Kernel panic: No init found.  Try passing init= option to kernel.
+Thanks for you help.  Please let me know if you need anything else,
+brad
+lisa
+On 2/28/07, Brad Penoff <penoff@cs.ubc.ca> wrote:
+Greetings,
+I've been having a series of problems that I was hoping to get some help
+on.  Long story short, when I build disk images and add ONLY Shell &
+Console Tools->BusyBox->Coreutils->env after cloning, the resulting image
+causes the kernel to panic, and I don't understand why...  I have been
+able to build and boot disks using the same method successfully.
+The reason I wish to add env is because when I ran my series of
+applications, it complained that it didn't exist. So, there is this issue
+of "why did the kernel panic?" but more generally, I seek advice for how
+to add in my own applications the proper way.  I'm guessing you have
+experience with this seeing as how you have so many advanced benchmarks
+available within the default system.  Is there a list/person where I
+write to ask about your experiences of getting complex applications to run
+inside m5?  Is this the right list to ask such questions?
+Thanks!
+brad
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

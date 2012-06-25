@@ -1,0 +1,11 @@
+> Does M5 support similar mechanism to allow me to access my own structure
+> from user code? I thought a cacheable address is not suitable for accessing
+> my own structure, so I want an uncached address. Thank you !
+In general, things that work in Linux should work in M5 FS mode.  We
+actually run the linux kernel, so you get what it gives you.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

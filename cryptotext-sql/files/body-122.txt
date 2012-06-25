@@ -1,0 +1,50 @@
+If you look at src/arch/alpha/linux/system.cc there in a class called PrintThreadInfo. This pretty much does what you want assuming you're using our kernel or a kernel built from our patch queue. M5 sets an event on the kernel alpha_switch_to function and when that is executed it uses the kernel stack to figure out what the running process/tid is. You'll need to remove the false from the if statement that creates the event around line 139 for this to work.
+Ali
+- Show quoted text -
+On May 22, 2010, at 5:14 PM, ef wrote:
+> Any additional advice on being able to this is appreciated. Basically I want to have M5 be able to distinguish between threads not CPU. Since in PARSEC benchmarks, threads tend to move around between CPUs.
+>
+> On Sat, May 22, 2010 at 9:57 AM, Steve Reinhardt <stever@gmail.com> wrote:
+> There's nothing built-in for this that I know of.  The issue is that
+> you're trying to detect an OS event... you could hook some action that
+> the OS takes only when scheduling a new thread, like perhaps updating
+> the page table base pointer or writing to the uniq register (via the
+> wruniq instruction).  Someone like Nate or Ali who's done more
+> hands-on low-level Alpha Linux work could provide better details I'm
+> sure.
+>
+> Steve
+>
+> On Tue, May 18, 2010 at 9:15 PM, ef <snorlaxgb@gmail.com> wrote:
+> > Hello,
+> >
+> > I was wondering if there is a way for m5 (not glibc or the kernel) to signal
+> > when a new thread is on a cpu. I have some benchmarks that create new
+> > threads in the middle of execution, and I would like to see output on them
+> > being pinned to processors (I have more threads than processors, FS MODE). I
+> > looked through and tested trace flags and I couldnt find anything. Is there
+> > such flag?
+> >
+> > If not anyone know where I should implement a DPRINTF in m5 to do this?
+> >
+> > Thanks,
+> > EF
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

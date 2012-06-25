@@ -1,0 +1,45 @@
+diff -ur old-m5 new-m5- Show quoted text -
+I'll gladly do this. How do I diff against the entire b4 tree?
+- Sujay
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Wednesday, November 14, 2007 1:40 AM
+Subject: Re: [m5-users] new vector stats in beta 4
+Are you *absolutely* sure that this is the only stats change that you have made?  The error message would normally print out the name of the stat that has the error.  I must say that the stats code has existed largely unchanged for a couple of years, is used heavily, and doesn't have any known bugs of this sort.
+Can you diff your tree against a real b4 tree and send me a link to the diff?
+  Nate
+Yes I checked that again. The value evaluates to 1k. And as I mentioned before, its working fine in beta 3.
+- Sujay
+----- Original Message ----- From: "Nathan Binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Tuesday, November 13, 2007 8:47 PM
+Subject: Re: [m5-users] new vector stats in beta 4
+      mem_row_access
+      .init((int)((num_rows*num_banks)/32))
+     .name(name() + ".mem_row_access")
+      .desc("row access statistics")
+      ;
+Are you sure that the value that is passed into .init is reasonable?  If it is too large, the allocation will fail and things will break.
+I suggest that you add some print statements or go into the debugger in
+VectorBase::doInit
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

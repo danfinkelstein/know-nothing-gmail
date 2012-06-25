@@ -1,0 +1,90 @@
+You should figure out what the hunk failed and fix it, but the problem is in the config file. M5 doesn't supporrt frame buffers so you need to turn off the frame buffer in your kernel config file.
+Ali- Show quoted text -
+On Feb 5, 2008, at 12:05 PM, abc def wrote:
+Hi,
+I applied the patch using patch command on
+linux-2.6.18 source tree and patch seems to be working
+fine, though for patch_to_2.6.18.8.diff it gave one
+failure for one hunk.
+Then i compiled the kernel using cross compiler.
+But when i try to boot with new vmlinux i got this
+panic and m5 aborted.
+panic: Device FrameBuffer not imlpmented
+@ cycle 21786981600
+[read:build/ALPHA_FS/dev/baddev.cc, line 58]
+Program aborted at cycle 21786981600
+At that time in console:
+Entering slaveloop for cpu 3 my_rpb=FFFFFC0000018900
+Entering slaveloop for cpu 2 my_rpb=FFFFFC0000018680
+Now is it happening because i didnt apply patch using
+MQ and something got missing?. If that is the case
+then i will try to figure out about mercurial
+repository details.
+Any help will be highly appreciated.
+--- Ali Saidi <saidi@umich.edu> escribió:
+I just added them to the download page
+(linux_patches.tar.bz2).
+Ali
+On Jan 30, 2008, at 1:29 PM, nathan binkert wrote:
+I'm certain that this isn't an M5 problem since
+I've been using that
+call a lot.  2.6.13 is probably a bit outdated.
+I've been using
+2.6.18 lately and it works there.  The port to
+more recent versions is
+pretty easy.  Ali, aren't the patches available
+somewhere?  If not, we
+can put them all up on the website.
+On Jan 30, 2008 9:21 AM, abc def
+<jose_6154@yahoo.es> wrote:
+Hi,
+I am running a multithreaded application with
+regular
+linux pthreads.
+I want to bind a single thread to a single
+simulated
+processor. For this purpose i am using
+sched_setaffinity system call in side the common
+function executed by all threads.
+But while executing the program the
+sched_setaffinity
+is failing and i get "Function Not implemented"
+message.
+I am using m5 beta 4 and default version for
+kernel
+(2.6.13).
+If the kernel version is not proper for this
+feature
+then is there any other recent version available
+which
+has support for processor affinity system call
+for
+alpha?
+Any help will be highly appreciated.
+______________________________________________
+¿Con Mascota por primera vez? Sé un mejor Amigo.
+Entra en Yahoo!
+Respuestas
+http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+______________________________________________
+¿Con Mascota por primera vez? Sé un mejor Amigo. Entra en Yahoo! Respuestas http://es.answers.yahoo.com/info/welcome
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

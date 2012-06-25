@@ -1,0 +1,21 @@
+I think what you're asking for is statistics on DMA accesses from the
+disk.  Look at the disk.dma_* statistics.
+  Nathan
+- Show quoted text -
+On Fri, Jul 18, 2008 at 11:11 AM, Gary Chai <ameseacla@gmail.com> wrote:
+> Hi all:
+> Does the m5stats.txt include any information about "main memory access
+> harddisk", i.e the bytes that main memory reads from harddisk.
+> Thanks
+> Gary
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

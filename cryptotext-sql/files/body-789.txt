@@ -1,0 +1,32 @@
+Nate, what I meant is I can host it on one webservers available to me
+and provide its link through the M5 page.
+My estimate is that the tar-zipped file should between 250-300 MB.
+-Soumyaroop
+- Show quoted text -
+On Wed, Oct 28, 2009 at 8:25 PM, nathan binkert <nate@binkert.org> wrote:
+>> Nate, Steve, if you so desire, I could make the X86_32 alpha cross
+>> compiler toolkit available through the M5 page.
+>
+> Soumyaroop,
+>
+> The M5 page is a wiki.  You should be able to put it up yourself.  Can
+> you try?  If the file is too large, I can at least stick it somewhere
+> and then you can link to it off the wiki.
+>
+> Thanks,
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

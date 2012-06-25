@@ -1,0 +1,13 @@
+Dear all:
+  Thanks for all responses to help me to run SpecOMP on M5. Does
+somebody have another linux dump file instead of the one provided in
+M5 site? The linux dump in M5 site have no utility. Does somebody can
+provide a linux dump file with gcc/gdb? Maybe I can build the
+benchmark in the simulator or using gdb to know why I always get
+segmentation fault when I run the binaries.
+regards,
+  sitos
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

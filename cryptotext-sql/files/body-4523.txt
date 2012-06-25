@@ -1,0 +1,79 @@
+My goal is to model a stream processor, with concurrent kernels running on
+different cores. The thread scheduling and load balancing is implemented at
+the hardware level. Our goal is to run some streaming applications on the
+simulator. We have to add in more components like stream buffers and invent
+some new instructions to manipulate streams. So I guess the goal is not that
+modest :)
+But thanks all the same for this information. Good to know that I'm on the
+edge of M5 :) I'm willing to hear any suggestions. Thanks!
+Jiayuan
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Steve Reinhardt
+Sent: Monday, May 21, 2007 9:52 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] linux thread fork emulation?
+The SPLASH binaries were compiled natively on an Alpha Tru64 machine.  I
+don't believe we've ever been successful in building a cross-compiler
+that generates Tru64 binaries.
+I would also be happy if there were other ways to emulate threads in SE
+mode for Linux binaries :-).  Doing general pthreads support is very
+complex though, and not worth the effort (in my opinion) given that you
+can run them today in FS mode.
+If your goals are more modest, such as running SPLASH benchmarks, then
+the simplest path is to modify the implementations of the key PARMACS
+macros to use either existing Linux syscalls such as fork() or made-up
+syscalls you define yourself, then implement those syscalls in m5.  Then
+you can enforce some constraints like that the number of threads never
+exceeds the number of CPUs, so you don't have to worry about scheduling.
+  This is basically what the existing Tru64 SPLASH support does, only
+just for Tru64.
+This has been discussed before on the mailing list, so you might want to
+search for "pthreads" or "splash" in the mailing list archive and see
+what turns up.  It's starting to sound like a good candidate for a wiki
+page even.
+Steve
+Jiayuan wrote:
+> Hey all,
+>
+>
+>
+> I'm trying to follow the splash2 example to create threads in SE mode.
+> However, I found that the crosstool only cross compiles code on linux,
+> while the precompiled splash2 uses tru64. While the system call for
+> creating thread is emulated for tru64, the system call is not emulated
+> for linux (in the source code, the system call associated with "fork" is
+> "unimplemented").  So, I wonder how the splash2 precompiled binary is
+> built. Are they built in a real environment? Or what crosscompiler is
+> available to compile code for tru64, so that I can use the implemented
+> emulation?
+>
+>
+>
+> I would also be happy if there are other ways to emulate threads in SE
+> mode with linux binary.
+>
+>
+>
+> Thanks!
+>
+>
+>
+> Jiayuan
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

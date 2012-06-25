@@ -1,0 +1,125 @@
+Hi Jonas, regarding problem 2 on your list, I forgot to update the O3 CPU's
+code to grab the cache line size from the cache itself.  It was being
+hardcoded to 64 bytes.  This diff below shows how to fix it.  Simple testing
+with 32 byte cache lines works, but let me know if you run into any other
+problems.
+Kevin
+--- old_m5/src/cpu/o3/fetch_impl.hh   2006-11-29 13:50:13.000000000 -0500
++++ fixed_m5/src/cpu/o3/fetch_impl.hh       2006-12-11 02:42:44.000000000
+-0500
+@@ -151,36 +151,6 @@
+               " RoundRobin,LSQcount,IQcount}\n");
+     }
+-    // Size of cache block.
+-    cacheBlkSize = 64;
+-
+-    // Create mask to get rid of offset bits.
+-    cacheBlkMask = (cacheBlkSize - 1);
+-
+-    for (int tid=0; tid < numThreads; tid++) {
+-
+-        fetchStatus[tid] = Running;
+-
+-        priorityList.push_back(tid);
+-
+-        memReq[tid] = NULL;
+-
+-        // Create space to store a cache line.
+-        cacheData[tid] = new uint8_t[cacheBlkSize];
+-        cacheDataPC[tid] = 0;
+-        cacheDataValid[tid] = false;
+-
+-       delaySlotInfo[tid].branchSeqNum = -1;
+-        delaySlotInfo[tid].numInsts = 0;
+-       delaySlotInfo[tid].targetAddr = 0;
+-       delaySlotInfo[tid].targetReady = false;
+-
+-        stalls[tid].decode = false;
+-        stalls[tid].rename = false;
+-        stalls[tid].iew = false;
+-        stalls[tid].commit = false;
+-    }
+-
+     // Get the size of an instruction.
+     instSize = sizeof(TheISA::MachInst);
+ }
+@@ -353,6 +323,36 @@
+        nextNPC[tid] = cpu->readNextNPC(tid);
+ #endif
+     }
++
++    // Size of cache block.
++    cacheBlkSize = icachePort->peerBlockSize();
++
++    // Create mask to get rid of offset bits.
++    cacheBlkMask = (cacheBlkSize - 1);
++
++    for (int tid=0; tid < numThreads; tid++) {
++
++        fetchStatus[tid] = Running;
++
++        priorityList.push_back(tid);
++
++        memReq[tid] = NULL;
++
++        // Create space to store a cache line.
++        cacheData[tid] = new uint8_t[cacheBlkSize];
++        cacheDataPC[tid] = 0;
++        cacheDataValid[tid] = false;
++
++       delaySlotInfo[tid].branchSeqNum = -1;
++        delaySlotInfo[tid].numInsts = 0;
++       delaySlotInfo[tid].targetAddr = 0;
++       delaySlotInfo[tid].targetReady = false;
++
++        stalls[tid].decode = false;
++        stalls[tid].rename = false;
++        stalls[tid].iew = false;
++        stalls[tid].commit = false;
++    }
+ }
+ template<class Impl>
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Jonas Diemer
+Sent: Thursday, December 07, 2006 12:31 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] L1 Cache issues - fixed in 2.0b2
+Hi,
+let me continue my monologue: :-)
+With the latest 2.0b2 that was just published, my cache issues are
+fixed, cache write backs seem to work fine. Thanks a lot!
+Here are some other things that I came across:
+1. When enabling the caches, m5 takes quite a lot of time to start the
+simulation. I have not done any profiling yet, though.
+2. Setting cache block sizes to 32 or smaller does not work using the
+detailed CPU model:
+command line: ./build/ALPHA_SE/m5.debug ./configs/jonas/se4.py -d --caches
+Mem mode:timing
+warn: Entering event queue @ 0.  Starting simulation...
+m5.debug: build/ALPHA_SE/mem/cache/tags/cache_tags_impl.hh:314: typename
+CacheTags<Tags, Compression>::BlkType* CacheTags<Tags,
+Compression>::handleFill(typename Tags::BlkType*, MSHR*, unsigned int,
+PacketList&, Packet*) [with Tags = LRU, Compression = NullCompression]:
+Assertion `target->getOffset(blkSize) + target->getSize() <= blkSize'
+failed.
+Program aborted at cycle 8
+Aborted
+3. With the new Beta2, m5 seems to use Root.clock as the reference tick
+for all statistics. I stumbled over it because my CPI was suddenly
+really huge (>500). This really shocked me until I realized that
+Root.clock defaults to 1THz, so a CPI of 500 makes perfect sense for a
+2GHz machine (once you know about it :-) ). Thus, the CPI in the stats
+is no longer measured in processor cycles but in "root-cycles". Is this
+a bug or a feature?
+Regards,
+Jonas.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

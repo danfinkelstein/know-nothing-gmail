@@ -1,0 +1,6 @@
+Hi, I am a beginner of M5, I want to run splash2 on M5, and I have built a MIPS-SE version. I have read some document about running splash2 on M5, but I do not quite understand what it means. When it says "you can't compile new binaries without a native Alpha Tru64 system", does it means I can only run splash2 on Alpha, not on MIPS? Can I compile splash2 that target for MIPS and run it on M5 MIPS-SE?  
+Thanks very much !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

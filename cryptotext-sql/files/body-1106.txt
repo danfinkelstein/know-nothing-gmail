@@ -1,0 +1,26 @@
+Hi Rick,
+Please use "hg email" to send diffs in the future.  Normal mailers
+always screw them up by wrapping lines, etc.
+> +        int unsigned chunkWriteSize = min((uint64_t)chunkSize,
+> params()->range.size()-curSize);
+This isn't exactly wrong, but you can just say "unsigned".  Also,
+please put spaces around the minus sign.
+> +        int written_size = gzwrite(compressedMem, pmemAddr + curSize,
+> chunkWriteSize);
+> +        if (written_size <= 0) {
+> +            fatal("Write failed on physical memory checkpoint file
+> '%s'\n",filename);
+> +        }
+Your error check should probably comapre to chunkWriteSize since
+you're not handling the case if not enough data is written.
+> +        curSize += written_size;
+> +    } while (curSize < params()->range.size());
+>
+>    if (gzclose(compressedMem))
+>        fatal("Close failed on physical memory checkpoint file '%s'\n",
+Thanks!
+   Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

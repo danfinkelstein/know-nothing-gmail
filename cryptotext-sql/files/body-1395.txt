@@ -1,0 +1,39 @@
+There's another case that's interesting, which is the cache... it uses SimpleTimingPort but does not call recvAtomic to handle recvTiming.  The original purpose of SimpleTimingPort was to provide an easy way for devices that only support recvAtomic to also support recvTiming.  It turned out that even though the cache uses a more complex timing model for recvTiming(), there was still a bunch of code to schedule future responses that was duplicated between the cache and SimpleTimingPort, so at some point that code was refactored to let the cache use SimpleTimingPort even though it uses it in a slightly different fashion from other objects.
+Steve- Show quoted text -On Sun, May 31, 2009 at 8:55 PM, Ali Saidi <saidi@umich.edu> wrote:
+Not everywhere, but most places. The bus uses the port interface
+directly without the SimpleTimingPort, however it doesn't derive from
+port.  I'm not sure what a more detailed interface that derived from
+Port would look like. If you assume that the device that uses the
+SimpleTimingPort handles requests serially this model is fine, the
+only issue is when there is contention within a device. If you read
+the page on the wiki about the memory interface the port class
+provides primitives for a more detailed implementation.
+Ali
+On May 31, 2009, at 7:07 PM, somayeh@cs.wisc.edu wrote:
+> Hi,
+>
+> Is SimpleTimingPort used everywhere when sendTiming is required? is
+> there
+> any other derived class from port class which implements timing? It
+> seems
+> that this class uses recvAtomic to get an timing estimate and uses
+> this
+> estimate to schedule a response. So, how we can have more accurate
+> timing
+> model? Is there any available implementation now in M5?
+>
+> Thanks
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

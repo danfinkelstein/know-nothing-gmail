@@ -1,0 +1,22 @@
+Yeah, you're using too new of stuff for beta6.  If you want to use the
+latest stuff, you'll need to get the development version of M5.
+  Nate
+2009/11/20 junli gu <gujunli@gmail.com>:
+- Show quoted text -> I am using 2.0_beta6. With the m5_system2.0b3
+>
+> --
+> ************************************************
+> Junli Gu--谷俊丽
+> Coordinate Science Lab
+> University of Illinois at Urbana-Champaign
+> ************************************************
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,81 @@
+I encounter similar problems on fullsystem-asisa after the fixes. The
+problem on my end seems
+to be related to either the scheduling of a periodic-timer, or if I
+remove that, the switch of cpus
+after a checkpoint restore.
+Best,
+-Rick
+- Show quoted text -
+Clint Smullen wrote:
+> I do not see any assertion errors, and I am encountering this problem
+> even with a vanilla codebase pulled from the stable repository and
+> using the 2.0b3 files straight off the website, but it is perhaps
+> related to the "switch cpus problem" message.
+>
+> When switching from the atomic to timing processors, the simulator
+> instantly becomes stuck. It appears to occur with any number of CPUs
+> (I've tried one, two, and four), and the stats file (after killing it)
+> shows the same symptomatic behavior: one or more of the switch cpus
+> have executed no instructions and no cycles have elapsed, but all
+> other processors have continued to make progress. However, it is not
+> consistent which processors get stuck, though it is only one or two
+> for a four CPU setup.
+>
+> I created traces using the SimpleCPU flag, and what I see is that the
+> all the CPUs show that they are started with "Resume", but the CPUs
+> which get stuck never have an ActivateContext message. An example
+> section from a trace file is shown below where only switch_cpus3 is
+> stuck. No other messages pertaining to switch_cpus3 ever appear in the
+> trace, and the stats file shows no instructions or cycles for that
+> processor.
+>
+> 4084372420500: system.switch_cpus2: Resume
+> 4084372420500: system.switch_cpus3: Resume
+> 4084372420500: system.switch_cpus0: Resume
+> 4084372420500: system.switch_cpus1: Resume
+> 4084960937500: system.switch_cpus0: ActivateContext 0 (1 cycles)
+> 4084960937500: system.switch_cpus1: ActivateContext 0 (1 cycles)
+> 4084960937500: system.switch_cpus2: ActivateContext 0 (1 cycles)
+> 4084960938000: system.switch_cpus2: Fetch
+> 4084960938000: system.switch_cpus1: Fetch
+> 4084960938000: system.switch_cpus0: Fetch
+> 4084960939000: system.switch_cpus0: Complete ICache Fetch
+> 4084960939000: system.switch_cpus0: Fetch
+> 4084960939000: system.switch_cpus1: Complete ICache Fetch
+> 4084960939000: system.switch_cpus1: Fetch
+> 4084960939000: system.switch_cpus2: Complete ICache Fetch
+> 4084960939000: system.switch_cpus2: Fetch
+> 4084960940000: system.switch_cpus2: Complete ICache Fetch
+>
+>
+> I've not worked much with the CPU side of the M5 codebase, so I've not
+> attempted to find what is wrong. All I know is that it did not occur
+> with the original 2.0b6 version of the stable codebase, nor with the
+> 2.0b5-era versions. The only significant change I know of that dropped
+> into the stable repository since then is the new event queue handling.
+> Suggestions for things to look at would be appreciated.
+>
+> Here is an example of how I am running the example FS script (I've
+> also tried m5.fast and m5.debug, they both give the same, non-
+> deterministic results):
+>
+>       ~/m5-vanilla/build/ALPHA_FS/m5.opt fs.py -n 4 -F 10000000000 --caches
+> -t
+>
+> I use "m5 switchcpu" on the terminal after startup is finished to
+> switch the CPUs over, though it also occurs automatically if one
+> lowers the fast-forward instruction count to a much smaller value. If
+> I specify to switch to O3 cpus, I do not have any problems.
+>
+> Thanks,
+>       - Clint Smullen
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

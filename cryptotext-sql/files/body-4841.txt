@@ -1,0 +1,38 @@
+Hi,m5-users，
+   When I use DetailedO3CPU on FS mode, there is always a segmentation fault. And gdb infomation as bellow:
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread -1208240448 (LWP 900)]
+0x082b85bb in DefaultFetch<AlphaSimpleImpl>::getFetchingThread (this=0x9da9564,
+    fetch_priority=@0x9da9578) at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1334
+1334            if (fetchStatus[tid] == Running ||
+(gdb) p tid
+$1 = 165293664
+(gdb) p (*activeThreads).size()
+$6 = 0
+(gdb) bt
+#0  0x082b85bb in DefaultFetch<AlphaSimpleImpl>::getFetchingThread (this=0x9da9564,
+    fetch_priority=@0x9da9578) at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1334
+#1  0x082b8614 in DefaultFetch<AlphaSimpleImpl>::fetch (this=0x9da9564, status_change=@0xbffe288b)
+    at build/ALPHA_FS/cpu/o3/fetch_impl.hh:1007
+#2  0x082ba28d in DefaultFetch<AlphaSimpleImpl>::tick (this=0x9da9564)
+    at build/ALPHA_FS/cpu/o3/fetch_impl.hh:834
+#3  0x082c95c2 in FullO3CPU<AlphaSimpleImpl>::tick (this=0x9da9160)
+    at build/ALPHA_FS/cpu/o3/cpu.cc:414
+build/ALPHA_FS/cpu/o3/fetch_impl.hh:
+int tid = *((*activeThreads).begin());
+    if (fetchStatus[tid] == Running ||
+        fetchStatus[tid] == IcacheAccessComplete ||
+            fetchStatus[tid] == Idle) {
+           return tid;
+        } else {
+           return -1;
+        }
+It seems that there didn't check whether the activeThreads is empty or not. Is that the exact reason for this error?
+Thanks and BestRegards!
+xiaojun.chen
+chenxiaojun@software.ict.ac.cn
+2006-11-22
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

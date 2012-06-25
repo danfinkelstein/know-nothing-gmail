@@ -1,0 +1,51 @@
+Thanks Steve !
+1.
+In the first case, I am actually running four copies of radix each on one of the four processors. Basically I want to run different applications each on four processors. Apart from segemntation fault, another problem is as soon as one of the processes finishes, the simulation comes to a hault. Is it how the simulator is supposed to be?
+2.
+If I make a single LiveProcess() with radix for instance, and assign it as workload to all four processors, does the four processors actually run different thread of the same process. Because, in the final statistics I only see the results for one of the four processors which sounds as if only one of them was running thr process.
+- Show quoted text -
+---- Original message ----
+>Date: Tue, 20 Nov 2007 09:19:48 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Specifying Workload
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>On Nov 19, 2007 1:25 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>> 1.
+>>
+>> I have a system with four processors. I make four LiveProcess objects and assign the radix benchmark to each of them. After a while, I get the error, segmentation fault, core dumped. Any insight?
+>
+>Impossible to guess on the segfault with so little information.
+>
+>Just a note that if you're creating four LiveProcess objects, you're
+>really running four copies of radix, not running radix on four
+>processors.  This may or may not be what you want.
+>
+>> 2.
+>>
+>> I want to assign one process to one of the processors in above system and want others to be idle. But then it says, parameter workload not specified. Any way around?
+>
+>If you don't specify a workload for a processor, it will never do
+>anything, so there's no point in having it in the system.
+>
+>If you're trying to reserve it to run an additional thread from a
+>parallel benchmark (like radix), then what you want to do is create a
+>single LiveProcess object and use that as the workload for *all* the
+>cpus that you want to run that instance of the program.
+>
+>See the attached config files... I thought we distributed these with
+>the release, but it looks like we don't.  We should probably start
+>doing that.
+>
+>Steve
+>________________
+>splash-configs.tar.gz (4k bytes)
+>________________
+- Show quoted text ->_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

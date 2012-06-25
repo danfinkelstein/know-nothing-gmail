@@ -1,0 +1,61 @@
+Hi,
+I'm trying to add some functionality for a very simple message passing system and am controlling where the messages go by using packet::setDest(). To do this though, I need to know which core is connected through which port of a bus. I had assumed this was in the order they were referenced in the configuration script, but it appears not.
+This is the relevant part of the script I'm using:
+------------------------------------------------
+for i, sys in zip(range(len(systems)), systems):
+    p            = LiveProcess()
+    p.executable = benchmarks[i*2]
+    p.cmd        = benchmarks[i*2] + " " + benchmarks[(i*2)+1]
+    sys.cpu.workload = p
+    sys.cpu.cpu_id = i
+    sys.cpu.max_insts_all_threads = 10000000
+    sys.xbus = Bus()
+    sys.physmem.servo_id = sys.cpu.cpu_id.value
+    sys.physmem.servo_nc = nb_cores
+    sys.physmem.xport = sys.xbus.port
+nb_brdg = 0
+for i in xrange(nb_cores) :
+    nb_brdg += i
+print "Making " + str(nb_brdg) + " bridges\n"
+xbridges =  [ Bridge() for i in xrange(nb_brdg) ]
+ind = 0
+for sys in systems:
+    cid = sys.cpu.cpu_id.value
+    for i in xrange(nb_cores-cid-1) :
+        # make connection between cores
+        other = i+cid+1
+        print "linking " + str(sys.cpu.cpu_id.value) + " to " + str(other) + "\n"
+        xbridges[ind].side_a = sys.xbus.port
+        xbridges[ind].side_b = systems[other].xbus.port
+        xbridges[ind].delay = str(math.fabs (other-cid)) + 'ns'
+        ind += 1
+--------------------------------------------------
+For nb_cores of 4, the ports are written to as follows:
+core | xbus port for that core | the external core connected through that port
+-------------------------------------------------
+0      | 0                                      | phys
+0      | 1                                      | 1
+0      | 2                                      | 2
+0      | 3                                      | 3
+-------------------------------------------------
+1      | 0                                      | phys
+1      | 1                                      | 0
+1      | 2                                      | 2
+1      | 3                                      | 3
+-------------------------------------------------
+2      | 0                                      | 3
+2      | 1                                      | 0
+2      | 2                                      | 1
+2      | 3                                      | phys
+-------------------------------------------------
+3      | 0                                      | 2
+3      | 1                                      | 1
+3      | 2                                      | 0
+3      | 3                                      | phys
+The first two cores seem to have the port ordering I want (ie increasing), but the other two don't. Is there any way to control this behavior? Or should I set up my script differently? I'd like to have the physical memory on port 0 of xbus, and the ports to the other cores (through the bridges) be on successive ports (in increasing order).
+Any help would be appreciated.
+Nicolas Zea
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

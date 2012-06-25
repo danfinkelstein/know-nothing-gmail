@@ -1,0 +1,46 @@
+Hi Meng-Ju,
+Thanks for creating that page. It's great and will probably help a lot
+of people. Looking at the development repository we've implemented
+ftruncate(), getrlimit(), and getcwd(), but we don't yet have code for
+mremap(). I thought about including your code, however I don't
+understand what it's doing.
+It seems like the simplest implementation is to do what you've done,
+just allocate a new chunk of memory and say the start address has
+moved. This leaks memory because the previous memory will never be
+reclaimed, but it might be ok. I don't quite see the code you have on
+the wiki doing this though. You allocated a new region that is new-old
+large and place it at the end of the mmap and then set the start
+address to the original address. This will work if mremap() is
+remapping the previous mmap(), but otherwise it won't work. Minimally,
+there probably needs to be a check that verifies that is what's
+happening (I think start + old_size == p->mmap_end will do it) and if
+not re-allocate the entire region. There probably should also be a
+panic() in there if mremap is called more than a handful of times, as
+it would start to create a memory footprint that didn't match reality.
+If you have a few minutes could you address that problem and clean the
+code up a little bit. I would like to commit it to the repository so
+that people won't have to patch m5 to get the spec cpu 2006 benchmarks
+to work.
+Thanks,
+Ali
+- Show quoted text -
+On Sep 29, 2008, at 3:57 PM, Meng-Ju Wu wrote:
+> Hi all,
+>
+> I add a page in M5 wiki FAQ to show how to run the SPEC2006 on M5 SE
+> mode. I am focusing on parallel programs now, so I don't have much
+> time to work on the SPEC2006. I re-simulated the whole SPEC2006 last
+> weekend to test the testing data set and get the timing results. This
+> wiki page shows what we have done so far at UMD. I hope our
+> experiences can help everyone who wants to simulate SPEC2006 on M5.
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

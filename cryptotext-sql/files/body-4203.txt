@@ -1,0 +1,55 @@
+Hi,
+   Thanks for your reply.
+   Here are the steps I do:
+   1. download linux_dist and install it.
+   2. use mkblackimage.sh script to create a blank image file.
+   3. mount the image file to the /mnt/point in my local machine and copy
+spec2000 binaries and input sets into /mnt/point.
+   4. umount /mnt/point
+   5. copy the new created .img file into m5 "disks" directory and set the
+disk path in Syspath.py
+   6  run m5 simulation and connect to the simulated console
+   But I don't find the new binaries I added into the .img file in the
+console.
+Tracy
+- Show quoted text -
+> here is some info on how to use linux-dist.
+>
+> http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+>
+> how did you create your .img file, and what did you do exactly to put your
+> binaries on the image file?  did you try using linux-dist or did you mount
+> the image and just copy them in?  the FAQ offers both possibilities.  the
+> more specifics the easier it is to help.
+>
+> lisa
+>
+> On 10/3/07, rlai@mtu.edu <rlai@mtu.edu> wrote:
+>>
+>> Hi All,
+>>
+>>    In the answer to "How do I add files to a disk image?" on the FAQ
+>> website, I found "what you should do to add new binaries to M5 is
+>> modify linux-dist and place it in that build structure."
+>>    Can anybody explain these for me in detail? I put my created .img
+>> file
+>> into the "disks" directory which includes linux-latest.img &
+>> linux-bigswap2.img. I set the disk path in Syspath.py. But when I
+>> connect to the simulated console, I cannot find the new binaries. Did I
+>> put the .img file in the wrong place?
+>>
+>> Tracy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

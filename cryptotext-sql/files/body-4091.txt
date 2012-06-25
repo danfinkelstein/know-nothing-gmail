@@ -1,0 +1,7 @@
+Hello all --I looked at the list archives and webpage and couldn't figure this out.  Is there any way to dump & reset the stats midway through simulation *without* specifying a cycle number up front?
+I'd like to look at some cache statistics.  I'm using the TimingSimpleCPU to warm the caches, but then the DetailedCPU to simulate.  I'd like to reset the statistics before starting simulation (so I only see the memory statistics for the simulation phase) but I don't know up front how long that is - I am warming up for a fixed number of instructions, not a fixed number of cycles.  Basically, I'd like to dump & reset (or even just reset) the *memory* stats when I do the CPU switch, but I can't figure out how.
+Thanks,   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

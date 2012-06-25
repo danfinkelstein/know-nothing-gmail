@@ -1,0 +1,65 @@
+Gabe, Ali:
+Gabe, your suggestion of rerunning SCONS worked well....the compilation
+completed after rerunning SCONS twice. Will this have to be done for every
+architecture/mode I try to compile if I dont create the symlinks manually?
+Thanks for your prompt help guys.
+- Show quoted text -
+Quoting Gabriel Michael Black <gblack@eecs.umich.edu>:
+>     If you don't want to try to create the symlinks manually, you can
+> alternatively rerun scons a few extra times. Each time you run it, it
+> will get one file farther until it gets through all of them and
+> continues. You shouldn't have a problem after that unless the symlinks
+> are deleted somehow. Like Ali said, please let us know if that doesn't
+> fix your problem.
+>
+> Gabe
+>
+> Ali Saidi wrote:
+> > Sometimes we've seen a problem where scons doesn't properly create
+> > symlinks from build/ALPHA_FS/python/*.i -> src/python/swig/*.i Could
+> > you try to create these and let us know if that fixes your problem.
+> > Ali
+> >
+> > On Mar 27, 2007, at 10:06 AM, sharookh@ele.uri.edu wrote:
+> >
+> >> Hi,
+> >>
+> >> After updating the SWIG version on the server I keep getting this
+> >> error when I
+> >> try to compile:
+> >>
+> >> scons: *** [Errno 2] No such file or directory:
+> >> 'build/ALPHA_FS/python/swig/debug.i'
+> >> scons: building terminated because of errors.
+> >>
+> >> The correct versions of SCONS and SWIG are installed. What is causing
+> >> this
+> >> error?
+> >>
+> >>
+> >>
+> >>
+> >>
+> >>
+> >>
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

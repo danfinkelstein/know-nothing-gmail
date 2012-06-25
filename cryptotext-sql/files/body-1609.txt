@@ -1,0 +1,10 @@
+I want to record the trace the access to disk. During every access, I
+hope M5 to display the data which is accessed. For example, if an read
+access to disk, I want to know the data that would be read. For an write
+access, the data before and after writing are wanted. Does M5 support
+such operations? If not, can I make some modifications based on M5?
+Thanks in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

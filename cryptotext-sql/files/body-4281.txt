@@ -1,0 +1,7 @@
+You're getting a segfault in the target app, basically... not clear what's going wrong, but it could be a syscall that's not working properly.The easiest way to see what's going on is to turn on tracing.  The Exec flag (might still be called InstExec in your version) traces instruction execution, and the Syscall and SyscallVerbose flags trace syscall emulation.  The complete list of traceflags is in src/base/traceflags.py.  I'd suggest adding this to your command line after 
+m5.debug but before your .py file:--trace-flags=Exec,Syscall,SyscallVerbose --trace-start=5278460000and then redirect the output to a file, then look through it and see if you can figure out where the null pointer is coming from.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

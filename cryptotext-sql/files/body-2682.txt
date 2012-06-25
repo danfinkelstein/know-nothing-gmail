@@ -1,0 +1,9 @@
+Hi all:
+Does the m5stats.txt include any information about "main memory access
+harddisk", i.e the bytes that main memory reads from harddisk.
+Thanks
+Gary
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

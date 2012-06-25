@@ -1,0 +1,31 @@
+Thanks for your reply. The number of systems on the network
+is less than 20. Could you provide a sample for the switch
+model and the configuration for the network issue(e.g. fs.py)?
+Xin
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 9 Nov 2007 19:25:34 -0500 (EST)
+>From: Nathan Binkert <nate@binkert.org>
+>Subject: Re: [m5-users] simulating multicomputer system with M5
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>> As Steve said, M5 provides point-to-point link, but switch
+>> model is needed to hook up more than two systems. So my
+>> question is: Can I have several systems(> 2) work together
+>> with each two having a distinct point-to-point link for data
+>> transfer? It is somehow like a fully-connected network. In this
+>> way, is switch model still needed? Thanks.
+>
+>You can do this up to a point.  There is a limit for how many NICs you can
+>attach due to the way interrupts work in the simulated system.  How big of
+>a network do you want to build?
+>
+>Also, a switch model wouldn't be that hard to do.
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

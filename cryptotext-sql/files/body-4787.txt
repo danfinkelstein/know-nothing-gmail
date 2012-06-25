@@ -1,0 +1,19 @@
+Well, I have also ran a profiler and it seems like sorting the
+statistics takes up most of the time spent before simulation starts. The
+function Stats::StatData::less(), which compares two StatDatas, is the
+main time consumer. Especially the tokenize() function on each
+StatsData.name takes time.
+I should probably save the tokenized version of the name and not recompute it every time.
+It looks like less() does unneccessary work: it splits up the
+hierarchical name at the "." (using tokenize()) and then compares the
+token lists component-wise.
+IMHO, a simple string compare of both StatsData.name should yeild the
+same result w/o taking the strings apart. Thus, one could simplify
+Stats::StatData::less():
+It's not quite the same result.  If I don't take them apart, then a.b would come before ab.  The idea was that names further down in the hierarchy should come later in the sorted order than things higher up.
+I guess if it's a big performance issue, we can change things, but I'd first like to see if just saving the tokenized form of the name helps.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

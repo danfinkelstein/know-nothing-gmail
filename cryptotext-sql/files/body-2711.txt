@@ -1,0 +1,10 @@
+> thanks. I know about the extras option. But if its used in the tests,
+> shouldnt it be included in the scripts?
+The tests stuff in general is broken if you don't have everything in
+place.  In the past, we just didn't release that stuff, but now that
+our repository is open, we have to fix it.  It's on the todo list.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+Hey all,
+ 
+While looking at the cache-CPU implementation in
+TimingSimpleCPU, it seems the current cache access is a blocking access, isn’t
+it? Is non-blocking cache access ever implemented in any CPUs? If not, do you
+have any suggestions on how to implement it on M5 and its complexity?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

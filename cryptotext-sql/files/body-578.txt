@@ -1,0 +1,8 @@
+Hi all, I am using M5 ALPHA_FS. I implement a structure similar to cache and tried to connect to the tol2bus which connects the original level2 cache. Compile is success but fail at the beginning of running. fatal: default_port: Unconnected port!
+ @ cycle 0[blowUp:build/ALPHA_FS/mem/port.cc, line 47]It seems that I forgot to connect a port, looks like naive. But I really feel confused about this problem. I connect it as the level2 cache does.
+//configs/example/fs.pyif options.l2cache:    test_sys.l2 = L2Cache(size = '2MB')    test_sys.tol2bus = Bus()    test_sys.l2.cpu_side = test_sys.tol2bus.port    test_sys.l2.mem_side = test_sys.membus.port
+    test_sys.RC = RaceCache(size = '2MB')  //I add it here    test_sys.RC.cpu_side = test_sys.tol2bus.portAre there any subtle rules about port connection? In cache, there is a cpuSidePort, I wonder how it relates to the parameter cpu_side of cache? Can someone give me some hints? Thank you very much！
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

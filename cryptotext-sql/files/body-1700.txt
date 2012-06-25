@@ -1,0 +1,25 @@
+Hello there,
+I have not started using M5 yet. I am currently evaluating if M5 will
+useful in what I am trying to investigate. I am curious to know what
+it means when the documentation of M5 says that, for Alpha ISA, it
+supports full system capability to boot unmodified Linux 2.4/2.6
+(http://www.m5sim.org/wiki/index.php/Main_Page). What is the
+significance of the term "unmodified" if there are instructions to
+build linux boot image and kernel for the simulator
+(http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5)?
+Is it possible to make changes to, say, the process scheduler code in
+the kernel of one of the supported linux kernel versions, build it for
+M5, and then run M5 for a multicore processor (ALPHA, perhaps) in
+full-system simulation mode with the modified kernel?
+regards,
+Soumyaroop.
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

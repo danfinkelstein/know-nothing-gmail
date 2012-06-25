@@ -1,0 +1,57 @@
+Hi Nathan:
+    Just a bad version of python. Changed to another version and it
+works fine. Thanks.
+Regards
+James Wang
+- Show quoted text -
+On Fri, Aug 21, 2009 at 9:40 AM, nathan binkert<nate@binkert.org> wrote:
+> I need more of the message.  We need to figure out why it's getting
+> libpython2.4.a instead of libpython2.4.so
+>
+> What sort of machine is this?  (Please be as detailed as possible.)
+>
+>  Nate
+>
+> On Fri, Aug 21, 2009 at 9:30 AM, Cong Wang<jameswang99@yahoo.com> wrote:
+>> Hi All:
+>>        I am trying to compile M5 as a shared library. And I
+>> experience the following error:
+>> scons -j 4 build/X86_SE/libm5_debug.so CPU_MODELS=TimingSimpleCPU
+>> ...............
+>> ...............
+>> /tool/pandora64/bin/ld:
+>> /tool/pandora64/.package/python-2.4/lib/python2.4/config/libpython2.4.a(abstract.o):
+>> relocation R_X86_64_32 can not be used when making a shared object;
+>> recompile with -fPIC
+>> /tool/pandora64/.package/python-2.4/lib/python2.4/config/libpython2.4.a:
+>> could not read symbols: Bad value
+>> collect2: ld returned 1 exit status
+>> scons: *** [build/X86_SE/libm5_debug.so] Error 1
+>> scons: building terminated because of errors.
+>> mv: cannot stat `build/X86_SE/libm5_debug.so': No such file or directory
+>>
+>>       This error occurs even when I added -fPIC support in SConstruct
+>> using main.Append(CCFLAGS='-fPIC') in SConsctruct.
+>> I am using gcc version 4.2.0 and python 2.4.
+>>
+>>        Thanks for any comments in advance.
+>>
+>>
+>>
+>> --
+>> Regards
+>> James Wang
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+--
+- Show quoted text -Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

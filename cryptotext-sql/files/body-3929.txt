@@ -1,0 +1,16 @@
+We don't model cache banks... the cache model has a fixed hit latency.
+Steve
+- Show quoted text -
+On Nov 15, 2007 4:36 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> How do you determine the cache bank size in M5? Is it hard-coded?
+>
+> -Richard
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

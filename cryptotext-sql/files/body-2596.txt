@@ -1,0 +1,29 @@
+> That is a bug, there should be a function something like this in the
+> BPredUnit:
+> template <class Impl>
+> std::string
+> BPredUnit<Impl>::name() const
+> {
+>     return cpu->name() + ".BPredUnit";
+> }
+>
+> Although the branch predictor doesn't have a cpu pointer so that would
+> have to be added as well. I don't know why it doesn't. Kevin?
+>
+> Also, perhaps we could just output the config.ini as an xml file
+> rather than doing the conversion. It's probably about as readable and
+> much easier to parse since many tools exist to do that. Anyone want to
+> comment about this? Nate? Along a similar line it probably wouldn't be
+> too difficult to add an xml backend to the statistics package.
+Both of these things would be rather easy.  The .ini thing would be
+easier since this is already python.  The stats thing would be a
+little bit more work though since it's in C++, though it would be
+pretty easy to route the stats through python and I've had it on my
+todo list for quite a long time.  I could probably do it in a day or
+so and I've been meaning to fix it for quite some time..  Let me look
+at it after we get this stable release out.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,41 @@
+Hard to say... basically you're getting a response back for a block
+you don't have, which means the response itself better have some data
+to load into the cache.  This is the common situation for a read miss.
+ The other path this could take would correspond to an upgrade, where
+you have the data so you don't need to get any in the response.
+I can't say for sure what's causing it, but if you had a write to a
+read-only block, sent an upgrade, then subsequently invalidated the
+block before the response arrived, this is what you'd see happen when
+the upgrade response did arrive.  Normally this shouldn't happen
+because you check the MSHRs before doing an invalidation and don't
+allow the invalidation to proceed if you already have an outstanding
+request.
+Steve
+- Show quoted text -
+On Sun, Aug 2, 2009 at 5:21 PM, Shoaib Akram<sakram3@illinois.edu> wrote:
+> I am having an assertion failure in cache_impl.hh at this point (shon below):
+>
+> template<class TagStore>
+> typename Cache<TagStore>::BlkType*
+> Cache<TagStore>::handleFill(PacketPtr pkt, BlkType *blk,
+>                            PacketList &writebacks)
+> {
+>  Addr addr = pkt->getAddr();
+> #if TRACING_ON
+>    CacheBlk::State old_state = blk ? blk->status : 0;
+> #endif
+>
+>    if (blk == NULL) {
+>        // better have read new data...
+>        assert(pkt->hasData());----AT THIS POINT...
+>
+> I have made changes to code but any insight will of possible causes will be appreciated?
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+Hi all, I wonder after I adding a new device, say dev, that connected on the iobus, how can I add a new parameter to the cpu class to point to the device. I think this will allow me to access it from the cpu directly.  I am not sure how the initial parameter transmitting for a class in M5, so this really confuse me. Can anyone here help me out? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hello,I am getting an error on compiling the M5 simulator where it is unable to properly recognize python 2.4 that is installed.  I am compiling on a FreeBSD platform, version 6.4 I believe.  I have confirmed that /usr/lib/libpython2.4.so exists and yet for some reason, on compile I still get the following error.  Please help....
+-bash2-2.05b$ scons build/ALPHA_FS/m5.debugscons: Reading SConscript files ...Checking for C header file Python.h... yesAdding /usr/local/lib to LIBPATH for python2.4Checking for C library python2.4..
+. noError: can't find Python library python2.4Aaron
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,439 @@
+Which cpu are you using? Simple atomic?
+I verified that all the integer spec2000 benchmarks work correctly
+(most of them were run using smred input sets) with simple atomic, o3,
+and in-order. Here are some numbers from  some runs that I did in Feb,
+2010 (format - benchmark name : dynamic instruction count) for
+simple-atomic.
+applu      10807886
+sixtrack   11730403
+mgrid      15410653
+vpr (vpr_place)       17615460
+lucas      19239685
+swim       23563883
+galgel     33656971
+gap        44751803
+ammp       45811363
+facerec    63152814
+apsi       71271052
+vortex     88340673
+twolf      91902974
+eon (eon_cook)       94039676
+crafty     94420287
+gcc        96772979
+mcf       188605120
+perlbmk (perlbmk_makerand)  200610007
+parser    267811614
+gzip (gzip_log)     601856964
+equake   1021602432
+mesa     1608475031
+art      1660422322
+bzip2 (bzip2_source)   1819780127
+wupwise   seg fault
+fma3d     seg fault
+The machines (standard x86_64 desktops/servers) that I ran my
+simulations on, simple-atomic would yield a simulation speeds of 1.6 -
+2.3 M instructions/second. O3 was about 0.03X and inorder was 0.01X.
+So, that should give you a rough estimate of the runtimes that you
+should be expecting at you end. But if you do not use the reduced
+input sets, then it may take forever.
+I never ran any of my simulations by specifying options from the
+command line. I created mibench.py and mediabench.py like cpu2000.py
+to set up simulations for these benchmarks. There's a bug in the
+cpu2000.py currently (at least, there was one till Nov/Dec 2009) that
+break the output redirection. So, I just had to fix that.
+Also, if the licensing of mediabench and mibench allow distributing
+binaries, I'd be happy to contribute them (alpha binaries currently)
+along with the benchmark configuration scripts.
+regards,
+Soumyaroop
+- Show quoted text -
+On Thu, Jun 3, 2010 at 4:15 PM, Weixun Wang <wewang@cise.ufl.edu> wrote:
+> I'm usinig m5.fast now. Everything is OK except the following:
+>
+> 1) Benchmarks from CPU 2000 are still executing very slow in M5 (m5.fast). I
+> tried gcc and mcf. Both of them have taken quite a long time but are still
+> running. I'm sure they are being executed based on the output. Is it normal?
+>
+> 2) MiBench benchmarks work well. However, I found output redirection does
+> not work. For example, running toast:
+>
+> ./m5.fast ../../configs/Test_Weixun/se.py --cmd
+> ../../../benchmarks/mibench/gsm/toast --options "-fps -c
+> ../../../benchmarks/mibench/gsm/small.au >
+> ../../../benchmarks/mibench/gsm/output_small.encode.gsm"
+>
+> The redirection part of --options ">
+> ../../../benchmarks/mibench/gsm/output_small.encode.gsm" does not have any
+> effect and the output is to the screen no matter what. How to specify
+> redirection in this scenario?
+>
+> 3) gzip from CPU 2000 gives the following error after executing for a
+> certain amount of time:
+>
+> panic: Tried to access unmapped address 0x12014a000.
+>  @ cycle 141067250000
+> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+> Memory Usage: 576044 KBytes
+> For more information see: http://www.m5sim.org/panic/5932f339
+> Program aborted at cycle 141067250000
+> Abort
+>
+> I havn't found other benchmarks which give errors during simulation.
+>
+>
+>
+> -Weixun
+>
+> On 6/3/2010 12:04 PM, soumyaroop roy wrote:
+>>
+>> Are you dumping any traces? What stops you from using m5.fast?
+>>
+>> -Soumyaroop
+>>
+>> On Thu, Jun 3, 2010 at 11:37 AM, Weixun Wang<wewang@cise.ufl.edu>  wrote:
+>>
+>>>
+>>> I used the pre-compiled gcc 3.4.3 available on M5 webpage.
+>>>
+>>> BTW, will m5.opt be much more faster?
+>>>
+>>> Thanks.
+>>>
+>>> -Weixun
+>>>
+>>> On 6/3/2010 11:17 AM, soumyaroop roy wrote:
+>>>
+>>>>
+>>>> You may try dijkstra with the small input set. It is very short.
+>>>>
+>>>> Which version of GCC are you using?
+>>>>
+>>>> -Soumyaroop
+>>>>
+>>>> On Thu, Jun 3, 2010 at 11:01 AM, Weixun Wang<wewang@cise.ufl.edu>
+>>>>  wrote:
+>>>>
+>>>>
+>>>>>
+>>>>> Hi List,
+>>>>>
+>>>>> Now I compiled MiBench as well as CPU 2000 (both have to be one
+>>>>> benchmark
+>>>>> by
+>>>>> one benchmark) for M5, using options simply "-static -o XXX -lm"
+>>>>> removing
+>>>>> "-O3", and found the compiled binaries executing in M5 properly. Lucky
+>>>>> me...
+>>>>>
+>>>>> However, I also found those benchmarks running, especially CPU 2000
+>>>>> like
+>>>>> gzip, extremely slow for m5.debug. I truncated the input file for gzip
+>>>>> to
+>>>>> only 34K but the simulation still takes forever...
+>>>>>
+>>>>> -Weixun
+>>>>>
+>>>>> On 6/3/2010 10:16 AM, soumyaroop roy wrote:
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> The makefiles I used for MiBench and MediaBench are nothing special.
+>>>>>> They should work just fine. As Max mentioned earlier, you just have to
+>>>>>> make sure that you create statically linked binaries.
+>>>>>>
+>>>>>> One thing I noticed is that you're using an older GCC (3.4.3). Did you
+>>>>>> try GCC 4.3.2?
+>>>>>>
+>>>>>> -Soumyaroop
+>>>>>>
+>>>>>> On Thu, Jun 3, 2010 at 10:00 AM, Weixun Wang<wewang@cise.ufl.edu>
+>>>>>>  wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>>
+>>>>>>> Hey Max,
+>>>>>>>
+>>>>>>> As you said, I did put -static. However, I'm not sure whether "-im"
+>>>>>>> is
+>>>>>>> appropriate in this scenario.
+>>>>>>>
+>>>>>>> If anyone has successfully compiled MiBench or CPU 2000, could you
+>>>>>>> share
+>>>>>>> your Makefile with me?
+>>>>>>>
+>>>>>>> Thanks.
+>>>>>>>
+>>>>>>> Weixun
+>>>>>>>
+>>>>>>> On 6/3/2010 3:16 AM, Maximilien Breughe wrote:
+>>>>>>>
+>>>>>>> Hey,
+>>>>>>>
+>>>>>>> 1) Did you compile the benchmarks statically? Because if you want to
+>>>>>>> run
+>>>>>>> them on M5 everything you run is the compiled binary. So dynamic
+>>>>>>> libraries
+>>>>>>> cannot be load.
+>>>>>>>
+>>>>>>> 2) For SPEC CPU2000 the situation is indeed more complicated. I
+>>>>>>> compiled
+>>>>>>> some benchmarks of SPEC CPU2006 and had to do the following things in
+>>>>>>> the
+>>>>>>> config-file (make sure you pick a config-file with properties very
+>>>>>>> similar
+>>>>>>> to your machine):
+>>>>>>> -Select the propper compiler:
+>>>>>>> CC           = gcc
+>>>>>>>     into
+>>>>>>> CC            = /DIRECTORY OF
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> CROSSTOOL/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+>>>>>>> -Modify the compile-flags (add the "static" flag) in the
+>>>>>>> "optimization"
+>>>>>>> section:
+>>>>>>> ## Base is low opt
+>>>>>>> default=base=default=default:
+>>>>>>> COPTIMIZE     = -O2 -static
+>>>>>>> CXXOPTIMIZE  = -O2 -static
+>>>>>>> FOPTIMIZE    = -O2 -static
+>>>>>>>
+>>>>>>> However I recommend you to build SPEC CPU 2000 first for your native
+>>>>>>> machine. This could be already difficult. If it works, then try it
+>>>>>>> for
+>>>>>>> ALPHA_SE
+>>>>>>>
+>>>>>>>
+>>>>>>> Greets,
+>>>>>>>
+>>>>>>> Max
+>>>>>>>
+>>>>>>> On 06/02/2010 10:25 PM, Weixun Wang wrote:
+>>>>>>>
+>>>>>>> Hi all,
+>>>>>>>
+>>>>>>> I want to cross-compile some benchmarks so that I can run them in M5.
+>>>>>>> I'm
+>>>>>>> using a ALPHA_SE mode M5 on a x86_64 Ubuntu machine. Potentially I
+>>>>>>> target
+>>>>>>> to
+>>>>>>> use MiBench or SPEC CPU 2000.  I downloaded the pre-compiled
+>>>>>>> cross-compiler
+>>>>>>> for Alpha from m5sim.org.
+>>>>>>>
+>>>>>>> 1) For MiBench, it has a simple src code/data structure with a simple
+>>>>>>> Makefile. For example, qsort, I modifed the Makefile of it as
+>>>>>>> follows:
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> -------------------------------------------------------------------------------------------------
+>>>>>>> FILE1 = qsort_small.c
+>>>>>>> FILE2 = qsort_large.c
+>>>>>>>
+>>>>>>> all: qsort_small qsort_large
+>>>>>>>
+>>>>>>> qsort_small: qsort_small.c Makefile
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> /export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+>>>>>>> -static qsort_small.c -O3 -o qsort_small -lm
+>>>>>>> qsort_large: qsort_large.c Makefile
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> /export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu-gcc
+>>>>>>> -static qsort_large.c -O3 -o qsort_large -lm
+>>>>>>>
+>>>>>>> clean:
+>>>>>>>     rm -rf qsort_small qsort_large output*
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> -------------------------------------------------------------------------------------------------
+>>>>>>>
+>>>>>>> I used the option "-lm" since the original "-lc" lead to errors like
+>>>>>>> "undefined references to 'exp'". If "-L
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> /export/research57/weixun/tools/M5/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/lib"
+>>>>>>> is used, the error still remains.
+>>>>>>>
+>>>>>>> The compilation is successful. However, if I run it using
+>>>>>>> configs/example/se.py, I got the errors:
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> -------------------------------------------------------------------------------------------------
+>>>>>>> .........................................................
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> info: Increasing stack size by one page.
+>>>>>>> panic: Tried to access unmapped address 0xa8.
+>>>>>>>  @ cycle 4947000
+>>>>>>> [invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+>>>>>>> Memory Usage: 577796 KBytes
+>>>>>>> For more information see: http://www.m5sim.org/panic/5932f339
+>>>>>>> Program aborted at cycle 4947000
+>>>>>>> Abort
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> -------------------------------------------------------------------------------------------------
+>>>>>>>
+>>>>>>> Other benchmarks in MiBench shows similar errors or just simplely
+>>>>>>> hang
+>>>>>>> on
+>>>>>>> "info: Increasing stack size by one page.".
+>>>>>>>
+>>>>>>> I guess the compile options are not correct or the right library is
+>>>>>>> not
+>>>>>>> linked. Please help...........................
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> 2) For SPEC CPU 2000, it is more complicated. I copied the entire CD
+>>>>>>> to
+>>>>>>> a
+>>>>>>> local directory. The problem is I do not have the su privilege on the
+>>>>>>> machine I worked on. So the install.sh does not work correctly. Is
+>>>>>>> there
+>>>>>>> a
+>>>>>>> simpler way for cross-compile SPEC CPU 2000 benchmarks (or at least
+>>>>>>> some
+>>>>>>> of
+>>>>>>> them) for M5?
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> Thanks!!!
+>>>>>>>
+>>>>>>> --
+>>>>>>> Best Regards,
+>>>>>>>
+>>>>>>> Wang, Weixun
+>>>>>>>
+>>>>>>> Department of Computer&      Information Science&      Engineering
+>>>>>>> Gator College of Engineering
+>>>>>>> University of Florida
+>>>>>>> Gainesville, FL 32611
+>>>>>>> http://www.cise.ufl.edu/~wewang
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>> --
+>>>>>>> Best Regards,
+>>>>>>>
+>>>>>>> Wang, Weixun
+>>>>>>>
+>>>>>>> Department of Computer&      Information Science&      Engineering
+>>>>>>> Gator College of Engineering
+>>>>>>> University of Florida
+>>>>>>> Gainesville, FL 32611
+>>>>>>> http://www.cise.ufl.edu/~wewang
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>
+>>>>> --
+>>>>> Best Regards,
+>>>>>
+>>>>> Wang, Weixun
+>>>>>
+>>>>> Department of Computer&      Information Science&      Engineering
+>>>>> Gator College of Engineering
+>>>>> University of Florida
+>>>>> Gainesville, FL 32611
+>>>>> http://www.cise.ufl.edu/~wewang
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>>
+>>>>>
+>>>>
+>>>>
+>>>>
+>>>
+>>> --
+>>> Best Regards,
+>>>
+>>> Wang, Weixun
+>>>
+>>> Department of Computer&    Information Science&    Engineering
+>>> Gator College of Engineering
+>>> University of Florida
+>>> Gainesville, FL 32611
+>>> http://www.cise.ufl.edu/~wewang
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>>
+>>
+>
+>
+> --
+> Best Regards,
+>
+> Wang, Weixun
+>
+> Department of Computer&  Information Science&  Engineering
+> Gator College of Engineering
+> University of Florida
+> Gainesville, FL 32611
+> http://www.cise.ufl.edu/~wewang
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

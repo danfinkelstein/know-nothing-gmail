@@ -1,0 +1,17 @@
+I found a quick hack to solve this problem in the SE mode. The
+following is my method, and I hope it makes sense.
+In the cache/cache_impl.hh/Cache::access, I add the extra codes to
+control the req->paddr.
+     tmp_addr=req->paddr;
+     req->paddr  = req->paddr | (Addr)req->xc->cpu_id<< sizeof(Addr) * 8-16;
+Before every return, I copy the original paddr to req->paddr.
+    req->paddr=tmp_addr;
+This method separates the references from different processes and
+only affects the timing model. The modification works under simple cpu
+and detailed cpu. At first, I try to control the asid, but it seems
+not work under simple cpu.
+Please tell me if there has anything that I didn't consider.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

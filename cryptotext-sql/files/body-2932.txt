@@ -1,0 +1,13 @@
+Some of the rcs files contain the loadsymbol 
+command. Are the .symbol files like a table 
+between the source code on the debugger host side and the addresses on the 
+target? What exactly does it do? I can see symbol files only 
+for some of the spec2K benchmarks, not for others. Is it required only if 
+running m5.debug?    
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

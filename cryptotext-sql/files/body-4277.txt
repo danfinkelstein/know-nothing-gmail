@@ -1,0 +1,7 @@
+M5 Users,  Greetings.  I am a new to both M5 and the list so please forgive me if I say anything stupid.  I am currently trying to get the SPEC CPU2006 benchmarks to run on M5.  I searched the list archive and found absolutely no mention of anyone trying to do this, so if this is futile/not supported, please feel free to ignore the rest of this email.    Under Ubuntu 7.04 (64-bit), I managed to build crosstool's ( http://www.kegel.com/crosstool/ ) Alpha gcc/g++/gfortran compilers and subsequently build Alpha binaries for all the SPEC06 benchmarks.  Unfortunately, the only benchmark I could get to run correctly was bzip2.  All the rest either produced a page table fault/core dump or gave me an error due to an unimplemented syscall (stat64).    Is there a trick to getting these benchmarks to work correctly?  Is this even possible at this point?  Any help would be greatly appreciated.  Thanks
+ in advance.Elliott 
+      Yahoo! oneSearch: Finally,  mobile search 
+that gives answers, not web links. 
+_______________________________________________
+m5-users mailing list
+m5-users@m

@@ -1,0 +1,18 @@
+Thanks for the reply. It is the glibc. I solved by compiling like this:
+alphaev67-unknown-linux-gnu/bin/alphaev67-unknown-linux-gnu-gcc  hello.c /mnt/lib/libpthread.so /mnt/lib/libc.so /mnt/lib/ld-linux.so
+I mount the disk img at /mnt.
+ 
+Now I want to solve another problem. I am using FS mode to simulate a multi thread program. I want to stop at a point A during the execution, and collect the statistic data like number of cycles, number of instructions, cache misses. Then I continue to point B, and stop, and collect data again. In a word, I want to collect data separately for different parts of program.
+To be more specific, the program has several threads, each thread executes the same code, so every has a point A and B. I need to get the statistic data for each thread in each part.
+I can get the instruction count from the start of program to a point by instrumentation, and simulate that many instructions. But how can I separate the data. And the instruction count I get is about the application, without OS; does m5 count application's instructions or both app and OS?  And does dynamic linked library has any effect on the instruction count?
+What about in SE mode? Can I do the same thing?- Show quoted text -
+ 
+On Tue, 26 Jan 2010 11:25:12 -0600, Philip Jagielski <philipjagielski@gmail.com> wrote:
+Hi, I am working on the same problem.  I haven't completely solved it yet but something to think about:  you are compiling on 2.6 but what kernel are you booting in M5?  It may be that you're statically linking with the wrong versions of glibc or something which causes a segfault.
+-Philip Jagielski
+On Tue, Jan 26, 2010 at 9:29 AM,  <taozhao@umich.edu> wrote:
+ I use m5-stable-94c016415053,  cross compiler is alphaev67-unknown-linux-gnu,  gcc version 4.3.2 (crosstool-NG-1.3.3)  System file is m5_system_2.0b3.  The problem is when I run ALPHA_FS, I can only run the pre installed benchmark on the disk image.  I try to compile a simple hello world program and mount the image, copy it in. When I run it, I get a segmentation fault.   My host machine is openSUSE 11, with kernel 2.6.25.16, gcc version 4.3.2  Is there anything in cross compling? Now I just type: alphaev67-unknown-linux-gnu/bin/alphaev67-unknown-linux-gnu-gcc -static hello.c  _______________________________________________ m5-users mailing list m5-users@m5sim.org http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

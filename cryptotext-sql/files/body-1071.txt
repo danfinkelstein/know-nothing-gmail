@@ -1,0 +1,7 @@
+HiI want to use the simpoint values of the benchmarks. I do add the command line parameters "-simpoint --take-checkpoint=100000000". Also I have tried to run the simulations with taking 0 simpoint value and  benchmark simpoint value. 
+The result in the stats file doesn't get effected, its same every time. So it seems that simpoint is not working. But when I set the simpoint value, it reflected changes in config.ini file with the same assigned simpoint value( whether it is 0 or some value). So it is not clear whether it is working or not.
+Thanks in advance Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+Hi all,I've never used M5 before.  I'm trying to learn how to get everything set up.  I have two main things I need to figure out:1) I need to see some example scripts for a multi-core 
+CPU (or chip-level multiprocessor, CMP) just to see how things are done and also to get myself started.  Is there a webpage or some kind of resource for more complex scripts than the ones described on the M5 documentation site or the example scripts in the config dir?
+2) How to run the simulator on a specific program:  I've looked at the documentation pages (and maybe I didn't look closely enough) but I can't find out where to specify the program to be simulated.  If there's a really step-by-step, thorough tutorial available online that anyone knows of, I'd really like to know about it.
+If someone could point me in the right direction I'd really appreciate it.  Thanks,Julian
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

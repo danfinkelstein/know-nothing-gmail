@@ -1,0 +1,10 @@
+Hello,The previous discussion can be found here:http://www.mail-archive.com/m5-users@m5sim.org/msg00630.htmlBased on the advice given in the above link, I have made the following changes:
+under FSconfig.py:class RawIdeDisk(IdeDisk):    image = RawDiskImage(child=RawDiskImage(read_only=False))                           def childImage(self, ci):        self.image.child.image_file = ci
+def makeLinuxAlphaSystem(mem_mode, mdesc = None):    .......    self.disk0 = RawIdeDisk(driveID='master')    self.disk2 = RawIdeDisk(driveID='master')    self.disk0.childImage(mdesc.disk())
+    self.disk2.childImage(disk('linux-bigswap2.img'))    ......    self.simple_disk = SimpleDisk(disk=RawDiskImage(image_file = mdesc.disk(),                                               read_only = True))
+________________________________________________However I get the following error:panic: file not open! @ cycle 0[size:build/ALPHA_FS/dev/disk_image.cc, line 92]Program aborted at cycle 0Abort
+I honestly dont know whats going on.... any ideas?ThanksEF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

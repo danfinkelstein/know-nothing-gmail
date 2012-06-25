@@ -1,0 +1,22 @@
+Hi all,
+ 
+I also find some more complex commands. For 
+example:
+ 
+in MiBench/security/blowfinsh, the command is 
+"bf e input_small.asc output_small.enc 1234567890abcdeffedcba0987654321", how to 
+specify those numbers?
+ 
+in MiBench/consumer/mad, the command is "madplay 
+--time=4 --output=wave:output_small.wav -v small.mp3"
+ 
+Can you tell me how to specify those unusual 
+arguments?
+ 
+Thank you very much!
+ 
+Fei
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

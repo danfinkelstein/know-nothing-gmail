@@ -1,0 +1,72 @@
+ At least one of those is for remote GDB debugging, and you should be
+able to go in and comment out the lines where that's set up and the
+corresponding objects are declared. There isn't anything that I'm aware
+of that depends on the remote GDB capability being available if you're
+not actually going to use it. Other than that there could be some number
+of sockets opened for serial consoles, but I don't think there's one per
+thread. Also, if you're using SE mode, you might have a descriptor open
+for each executable m5 loaded. I'm not sure whether or not those are
+ever closed.
+Gabe
+Jiayuan Meng wrote:
+> I need to simulate many core systems where I may have 64+ cores running, and each core has multiple thread contexts. It appears M5 now creates a couple of sockets for each thread context at the beginning of the simulation. I'm not sure what roles the sockets play, but I guest application doesn't use sockets. Is there a way to turn them off?
+>
+> Thanks!
+>
+> Jiayuan
+>
+> ----- Original Message -----
+> From: "Gabe Black" <gblack@eecs.umich.edu>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+- Show quoted text -> Sent: 2007?12?4? 9:43 AM
+> Subject: Re: [m5-users] panic: Can't create socket
+>
+>
+>
+>>    Likely what is happening is the m5 process is running out of file
+>> descriptors. If you expect your simulation to need to open a lot of
+>> them, you could try to push up that limit. I don't remember exactly how
+>> that's done off hand, but I'm pretty sure you need administrative
+>> privileges to do that normally. It could also be that your simulation is
+>> going berserk and opening a ton of files when it shouldn't, although
+>> that's not likely since it looks like it hasn't done anything yet.
+>>
+>> Gabe
+>>
+>> Jiayuan Meng wrote:
+>>
+>>> Hey all,
+>>>
+>>> While testing my program, I sometimes get the following panic. What can I do about it? By the way, is there anyway to turn off the sockets?
+>>> Thanks !
+>>>
+>>> Global frequency set at 1000000000000 ticks per second
+>>> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7261
+>>> 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7262
+>>> 0: system.remote_gdb.listener: listening for remote gdb #2 on port 7263
+>>> panic: Can't create socket:Too many open files !
+>>>
+>>> Jiayuan
+>>> ------------------------------------------------------------------------
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> >
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

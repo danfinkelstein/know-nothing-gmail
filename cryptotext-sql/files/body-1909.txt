@@ -1,0 +1,6 @@
+I am running eight-core system simulation for integer benchmarks.I got a warning and also some  message likewarn: Increasing stack size by one page.m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+how to solve this problem?Thanks-- RegardsH A R I
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

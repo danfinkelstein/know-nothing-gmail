@@ -1,0 +1,10 @@
+Hi all,
+I would like to do power consumption simulation using the m5 simulator.
+Is there a module available to do so?
+Something equivalent to simwattch?
+thanks in advance
+Davy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

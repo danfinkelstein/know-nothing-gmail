@@ -1,0 +1,30 @@
+Hi Ali,Thanks. I tried to add the flag, but by doing an "ldd", it still seems m5.fast is dynamically linked. Any clue?Thanks,Jiayuan- Show quoted text -
+On Wed, Feb 10, 2010 at 10:12 PM, Ali Saidi <saidi@umich.edu> wrote:
+Adding the following to the SConstruct after the main environment is
+setup should probably do it.
+main.Append(LINKFLAGS='-static)
+Another way that would probably work is to add LINKFLAGS to use_vars
+and then set the LINKFLAGS environment variable to -static before you
+build.
+Ali
+On Feb 10, 2010, at 8:56 PM, Jiayuan Meng wrote:
+> Hi,
+>
+> I'm not familiar with scon... What is the easy way to generate
+> m5.fast with static linking?
+>
+> Thanks!
+>
+> Jiayuan
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

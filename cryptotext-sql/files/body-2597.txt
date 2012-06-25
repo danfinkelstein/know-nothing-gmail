@@ -1,0 +1,7 @@
+Hi all:Does anyone succeed in SMT full system simulation with m5? I hope to run multithread benchmark in one cpu. Now I have two questions.(1)Does Splash support SMT? Is Splash a suitable benchmark in my case?
+(2)How to make the configure file in full system mode to accomplish SMT simulation? I notice that many people simulate SMT in SE mode. But few people try it in FS mode.If anyone happens to have the similar idea,  please give me a share.
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

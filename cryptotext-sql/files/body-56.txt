@@ -1,0 +1,10 @@
+Hello,
+I'm trying again to get the hardware L2 prefetcher to work in an attempt to model the Nehalem architecture more accurately in FS mode. I enabled the prefetcher in CacheConfig.py as follows:
+-system.l2 = L2Cache(size='2MB')
++system.l2 = L2Cache(size='8MB', assoc=16, latency='49ns', prefetch_policy='ghb', prefetch_degree=2, prefetcher_size=64)
+Now when I run various SPEC CPU2006 benchmarks, I tend to get segfaults in the benchmarks and in the kernel as well. Switching back to the regular L2Cache gives correct behavior. I am using PhysicalMemory and all other defaults. I have compiled kernel v2.6.27 and am using the cross compiler provided on the website. GemsFDTD/test tends to give a segfault, mcf/test tends to deadlock after some time. Anyone have some idea why this is happening or how to fix it?
+Joe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

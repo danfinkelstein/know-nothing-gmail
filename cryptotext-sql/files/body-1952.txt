@@ -1,0 +1,106 @@
+Sitos,
+Have you tried making your own cross compiler tool-chain? Try these two
+projects:
+http://freshmeat.net/projects/crosstool-ng/
+http://kegel.com/crosstool/
+It might be the one on the M5 site does not have exactly everything you
+need. Also try compiling the OpenMP apps with the -static flag if they
+haven't been already.
+To allow M5 to simulate more than 2GB of main memory, the machine you run on
+M5 needs to have more than 2GB of main memory otherwise it'll fail.
+As a side note the x86 support in M5 is far, far from complete.  Stick with
+the Alpha or SPARC support which are known to be stable.
+Geoff
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Sitos Lin
+Sent: Thursday, January 22, 2009 11:33 AM
+To: M5 users mailing list
+Subject: [m5-users] Run SpecOMP on M5
+Dear Isuru:
+  Thank you for the useful link. I have build the patch and the
+correspondent cross-compiler. However, I encounter several problems.
+The goal of my work is to run SpecOMP on M5. For now, I tried several
+approaches, and all of them do not work.
+  1) I tried to use the newest M5 and the pre-compiled cross-compiler
+from the M5's website. The cross-compiler can compile the SpecOMP
+without error. But the compiled binaries can not run on neither
+ALPHA_SE nor ALPHA_FS mode. In the ALPHA_SE mode, some threaded
+related system calls are not emulated and the threaded application can
+not be executed correctly. In the ALPHA_FS mode, full system
+simulation allow the binaries run with the system call. However, I
+always get Killed or Segmentation fault when I try to execute the
+programs. I guess that is because the memory is not enough for the
+SpecOMP benchmarks. The memory requirement of the SpecOMP is 2GB
+memory for the medium benchmarking. However, I can not configure the
+memory size to 2GB in ALPHA_FS mode. Therefore, I didn't run threaded
+SpecOMP correctly for now. On the other hand, the non-threaded version
+(compiled without -fopenmp flag) seems can be executed in ALPHA_SE
+mode normally. Therefore, I think the compilation has no problem.
+However, I have no idea about how to execute them.
+  2) I tried to use the newest M5 and run the X86_SE or X86_FS mode
+with the binaries compiled from conventional x86 gcc compiler. The
+status is even worse....
+  3) I tried to use the link you provide. However, there are several
+problems:
+    (a) The modified cross-compiler in the M5 patch for multi-threaded
+application seems only has C compiler without Fortran compiler.
+However, most of the benchmarks in SpecOMP is written in Fortran.
+    (b) When I want to use it to run the benchmark written in C in
+SpecOMP, the cross-compiler does not support OpenMP. The gcc compilers
+support OpenMP since gcc-4.2, and the cross-compiler is based on
+gcc-4.1. The cross-compiler can not link the APIs of OpenMP correctly.
+I have tried to search the source code of OpenMP library. Because I
+think that I can compile the library of OpenMP by the cross-compiler
+and link it to the SpecOMP applications. However, I didn't find any
+one.
+    (c) I tried to compile the application with the pre-compiled
+cross-compiler from M5 website instead of that provided from the M5
+multi-thread patch. Then, I execute the binaries in the multi-thread
+M5 patch. However, the error message shows up to say that the M5
+simulator can not support TLS mode (maybe thread level speculation),
+and ask me to compile the binary with non-TLS toolchain. However, I
+have no idea about how to build a non-TLS toolchain of gcc-4.2 which
+supports OpenMP. (a non-TLS cross-compiler for gcc-4.1 is available,
+e.g. the one from the multi-thread M5 patch)
+  I don't know how can I achieve my goal. Can you give me some advise?
+best regards,
+  sitos
+2009/1/21 Isuru Herath <isuru81@yahoo.com>:
+> Dear Sitos,
+>
+> Check the following link.
+>
+> http://www.cs.virginia.edu/~jm6dg/fractal/smp.htm
+> and this forum post.
+> http://comments.gmane.org/gmane.comp.emulators.m5.users/3953
+>
+> It might be helpful. to be honest, still I havent tried this. Hopefully
+within
+> coming two weeks will do.
+>
+> regards,
+> Isuru
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+No virus found in this incoming message.
+Checked by AVG - http://www.avg.com
+Version: 8.0.176 / Virus Database: 270.10.12/1909 - Release Date: 1/22/2009
+7:08 AM
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

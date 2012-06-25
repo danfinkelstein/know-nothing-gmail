@@ -1,0 +1,19 @@
+hi. I want
+to compile the benchmarks of spec cpu 2006 and run those binaries on M5
+simulator. I am using sparc64 cross compiler to get the binaries of
+spec cpu 2006.  I followed the instruction from  following page
+ http://www.m5sim.org/wiki/index.php/Download  When i use runspec to build benchmarks, it is showing following error messagesi found the following error messages in make.err
+sparc64-unknown-linux-gnu-gcc: language target=native not recognizedsparc64-unknown-linux-gnu-gcc: spec.c: linker input file unused because linking not done
+sparc64-unknown-linux-gnu-gcc: language target=native not recognizedsparc64-unknown-linux-gnu-gcc: blocksort.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: language target=native not recognized
+sparc64-unknown-linux-gnu-gcc: bzip2.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: language target=native not recognizedsparc64-unknown-linux-gnu-gcc: language target=native not recognized
+sparc64-unknown-linux-gnu-gcc: bzlib.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: compress.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: language target=native not recognized
+sparc64-unknown-linux-gnu-gcc: crctable.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: language target=native not recognizedsparc64-unknown-linux-gnu-gcc: decompress.c: linker input file unused because linking not done
+sparc64-unknown-linux-gnu-gcc: language target=native not recognizedsparc64-unknown-linux-gnu-gcc: huffman.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: language target=native not recognized
+sparc64-unknown-linux-gnu-gcc: randtable.c: linker input file unused because linking not donesparc64-unknown-linux-gnu-gcc: spec.o: No such file or directorysparc64-unknown-linux-gnu-gcc: blocksort.o: No such file or directory
+sparc64-unknown-linux-gnu-gcc: bzip2.o: No such file or directorysparc64-unknown-linux-gnu-gcc: bzlib.o: No such file or directorysparc64-unknown-linux-gnu-gcc: compress.o: No such file or directorysparc64-unknown-linux-gnu-gcc: crctable.o: No such file or directory
+sparc64-unknown-linux-gnu-gcc: decompress.o: No such file or directorysparc64-unknown-linux-gnu-gcc: huffman.o: No such file or directorysparc64-unknown-linux-gnu-gcc: randtable.o: No such file or directorysparc64-unknown-linux-gnu-gcc: warning: `-x target=native' after last input file has no effect
+sparc64-unknown-linux-gnu-gcc: no input filesspecmake: *** [bzip2] Error 1Could you please help me and let me know what to do to get ride of those error messages.Pavan Kumar Jorrigala
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

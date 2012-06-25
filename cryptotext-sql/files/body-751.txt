@@ -1,0 +1,14 @@
+> Thanks very much for the quick reply.
+>
+> I'll switch to 64-bit.
+>
+> I'm surprised this hasn't been a problem for Windows users, as I expect
+> the majority are still running 32-bit XP due to lack of 64-bit device
+> driver support.
+I don't think anyone ever runs M5 on windows and I'd guess that it
+most likely doesn't work anymore anyway.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

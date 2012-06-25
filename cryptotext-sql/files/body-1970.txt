@@ -1,0 +1,34 @@
+M5 in SE mode doesn't support several of the system calls required for
+implementing multithreading.  To solve the problem, you need to
+implement the system calls required by OpenMP.  Also, depending on how
+you want things to work, you might have to write a thread scheduler
+for SE mode to load balance the CPUs.  If you do any of this, please
+share your patches.
+Another alternative is to run M5 in Full System mode.  If you do this,
+you'll be running the linux kernel and get all of the system calls it
+supplies.
+  Nate
+- Show quoted text -
+On Mon, Jan 19, 2009 at 10:15 AM, Sitos Lin <sitos.lin@gmail.com> wrote:
+> Hi all:
+>  I am trying to run Spec OMP in the APLHA_SE mode. I used the
+> pre-compiled cross-compile to compile the code of Spec OMP. When I
+> compile the code without -fopenmp flag, the code is not parallelized,
+> and the m5 simulator can execute them normally. However, When I
+> compile the code with -fopenmp flag, the compilation has no error, but
+> the m5 simulator would say "fatal: syscall set_tid_address (#411)
+> unimplemented." I have also tested a test program such as hello world.
+> It shows the same behavior. It seems that m5 can not execute the
+> compiled openmp code. How can I solve this problem?
+> Thanks in advance
+>  sitos
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

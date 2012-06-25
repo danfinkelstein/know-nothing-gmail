@@ -1,0 +1,25 @@
+On Tue, Jun 24, 2008 at 11:05 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> So I think the bug report that pertains to this a bit is:
+> http://www.m5sim.org/flyspray/task/304
+That bug report relates to removing threads, where the problem I'm
+talking about is with creating new threads.  So they both fall under
+"dynamic thread management" but other than that are unrelated.  I
+filed a new bug report as http://www.m5sim.org/flyspray/task/317.
+>
+> A new bug might need to be filed for this one because that bug alludes
+> to a related might not same problem.
+>
+> I will say this whole should a thread start in "Unallocated" or
+> "Suspended" seems like a re-run. I'm not even really sure what is what
+> anymore. What's the error when you switch it to "Suspended"? Is there
+> a patch for that so I can look at it?
+I attached a patch to the bug report.
+> I think running SMT for SPLASH in O3 hasnt been tested to my knowledge.
+>
+> Only threads that all start from the beginning worked in SE mode I believe.
+Yup, I think you're right on both of those :-).
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

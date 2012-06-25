@@ -1,0 +1,38 @@
+As with all updates, the changes were made with respect to the head of
+the development tree at the time.  It's up to you whether you want to
+try and backport the patches to the 2.0b6 snapshot you're using or
+just update your whole tree to a newer revision that includes those
+changes.
+If you're unfamiliar with how patches and mercurial work you may want
+to read up on those topics; they're really generic
+software-development issues and not specific to M5.
+Steve
+- Show quoted text -
+On Thu, Mar 26, 2009 at 7:58 AM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+>
+> Hi Steve ,
+>
+> I am working on prefetching techniques and trying to get the miss rate for
+> ghb, stride and tagged. I am making the required changes as per mentioned in
+> the repository "Fixes to get prefetching working again" and "Update stats
+> for new prefetching fixes"  to make the prediction work. But in-between I
+> have trouble(s) regarding the files mentioned in the reposiory and the files
+> present in M5_2.0b6 such as the file "/src/mem/request.hh". The changes for
+> the file provided in the repository is different from the file present in
+> the M5_2.0b6. Its so confusing with whether I have to make changes to
+> existing files in M5_2.0b6 or to replace the whole file. There are many such
+> files and is really creating trouble to make the changes in M5_2.0b6. So can
+> you please share with me your updated M5_2.0b6 so that I can have it as
+> reference and can concentrate on prediction techniques rather than how to
+> make M5 run.....
+>
+> Please reply as my research work got suck on this point. Hoping kind
+> cooperation.
+>
+> Thanks in advance
+> Ashutosh Jain
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

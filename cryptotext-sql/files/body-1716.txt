@@ -1,0 +1,104 @@
+The kernel you're using is probably not in the image. It's whatever
+you're passing to m5 with the --kernel option when you start it up. If
+you want to replace the init process in the image, I think it's called
+/sbin/init. Assuming you've got things set up properly I think you can
+use a command line option to select what init script to use, but I'm not
+entirely sure what's required for that to work.
+- Show quoted text -
+Gabe
+Veydan Wu wrote:
+> Hi, Gabe, Thanks for you reply.  I still don't quite understand how to
+> solve this.  I download the stage3 from the net and is supposed to be
+> newest version. How can I upgrade the kernel because I use the stage3
+> on M5 not on real systems, I didn't even install gentoo, all I did is
+> create an image and run M5 and I still not be able to boot the system
+> normally so how to upgrade the kernel remain confusing to me.
+>
+> Nate sent an example to the list, I feel that very helpful, I have
+> tried that too but not successful on gentoo, which I have questioned
+> in my last letter.  The /etc/inittab seems not allowed to replace, and
+> the /etc/runlevel/boot or /etc/runlevel/default which is designated in
+> inittab take too long to boot. Where should I place the init script ?
+> Thanks very much !
+>
+>
+>     Most likely what's going on is that the image is put together
+>     expecting
+>     udev to populate /dev for you. Since the kernel you're using is
+>     apparently too old, there's no /dev/hda1 to mount. Upgrading your
+>     kernel
+>     or creating a device node manually may fix the problem. Also, this
+>     output looks like it's from the default init script. Recommended
+>     practice is to use your own init script that skips things you
+>     don't need
+>     for a simulation and gets right to your, for instance, SPEC
+>     benchmarks.
+>     Nate sent an example init script to the list a little while ago
+>     you can
+>     refer to.
+>
+>     Gabe
+>
+>     Veydan Wu wrote:
+>     > Hi, all, has anybody sucessully using a Gentoo stage3 as an image to
+>     > boot M5? I have tried many times, Every time I use it, the following
+>     > error comes up:
+>     > /
+>     >  * Your kernel is too old to work with this version of udev.
+>     >  * Current udev only supports Linux kernel 2.6.15 and newer.
+>     >  * Mounting devpts at /dev/pts ...
+>     >    [
+>     > ok ]
+>     >  * Checking root filesystem ...ext2fs_check_if_mount: No such
+>     file or
+>     > directory while determining whether /dev/hda1 is mounted.
+>     > fsck.ext3: No such file or directory while trying to open /dev/hda1
+>     > /dev/hda1:
+>     > The superblock could not be read or does not describe a correct ext2
+>     > filesystem.  If the device is valid and it really contains an ext2
+>     > filesystem (and not swap or ufs or something else), then the
+>     superblock
+>     > is corrupt, and you might try running e2fsck with an alternate
+>     superblock:
+>     >    e2fsck -b 8193 <device>
+>     >
+>     >
+>     >  * Filesystem couldn't be fixed :(
+>     >                                                                          [
+>     > !! ]
+>     > Give root password for maintenance
+>     > (or type Control-D to continue):/
+>     >
+>     > I have modified the /etc/fstab, and set the following line:
+>     >
+>     >     //dev/hda1  /  ext3  noatime  0 1/
+>     >
+>     > from the initial process of M5term, I can judge that the hard
+>     disk m5
+>     > simulates is IDE disk, that is hda and hdb, and the
+>     > partition table of hdb is unrecognized, so only hda1 works. The
+>     Gentoo
+>     > website suggest using /dev/sda3, but it certainly
+>     > doesn't work in M5, because I have tried both sda1 and sda3 as root.
+>     >
+>     >   The boot option of Linux is also root=/dev/hda1,  so what may
+>     be the
+>     > reason causing this ? Thanks !
+>     >
+>     >   Further, could somebody give an example of replacing gentoo's
+>     > default initial script. The /etc/inittab seems not allowed
+>     > to replace, and the /etc/runlevel/boot or /etc/runlevel/default
+>     which
+>     > is designated in inittab take too long to boot.
+>     > Where should I place mine ?  Thanks!
+>
+- Show quoted text -> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

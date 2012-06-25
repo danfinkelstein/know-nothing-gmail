@@ -1,0 +1,142 @@
+Yeah I'm trying to simulate a CMP system with up to 64 cores and 256 thread
+contexts in total. And I may create a batch of 8 m5 instances on the same
+machine. So there may be 2048 thread contexts simulated. My system worked
+fine with M5v2beta3. for beta 4, I'm not sure if I can open so many files
+but I'll try.
+Thanks anyway! And let me know when you remember if there is a magic switch
+:)
+Jiayuan
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Ali Saidi
+Sent: Tuesday, December 11, 2007 10:07 PM
+To: M5 users mailing list
+- Show quoted text -Subject: Re: [m5-users] panic: Can't create socket
+Are you simulating many systems or many processors? M5 needs a certain
+number of open files (just like any other process). You might want to
+try to increase the number of open files allowed by using ulimit (or
+something similar depending on what OS you're using).
+Ali
+On Dec 11, 2007, at 9:26 PM, jiayuan meng wrote:
+> I'm sorry, this doesn't seem to work, I still have the original
+> problems that hinders me from doing large scale experiments...
+>
+> Do you have more clues?
+>
+> Thanks!
+>
+> Jiayuan
+>
+> >
+> > ----- Original Message -----
+> > From: "Ali Saidi" <saidi@umich.edu>
+> > To: "M5 users mailing list" <m5-users@m5sim.org>
+> > Sent: 2007年12月4日 11:13 AM
+> > Subject: Re: [m5-users] panic: Can't create socket
+> >
+> >
+> > If you change the line:
+> > int rgdb_enable = true;
+> > to false in src/sim/system.cc that should solve you problem. I was
+> > almost certain that there was a parameter to set that, but I can't
+> > find it at the moment.
+> >
+> > Ali
+> >
+> >
+> >
+> >
+> > On Dec 2, 2007, at 8:57 PM, Jiayuan Meng wrote:
+> >
+> > > I need to simulate many core systems where I may have 64+ cores
+> > > running, and each core has multiple thread contexts. It appears M5
+> > > now creates a couple of sockets for each thread context at the
+> > > beginning of the simulation. I'm not sure what roles the sockets
+> > > play, but I guest application doesn't use sockets. Is there a
+> way to
+> > > turn them off?
+> > >
+> > > Thanks!
+> > >
+> > > Jiayuan
+> > >
+> > > ----- Original Message -----
+> > > From: "Gabe Black" <gblack@eecs.umich.edu>
+> > > To: "M5 users mailing list" <m5-users@m5sim.org>
+> > > Sent: 2007年12月4日 9:43 AM
+> > > Subject: Re: [m5-users] panic: Can't create socket
+> > >
+> > >
+> > >> Likely what is happening is the m5 process is running out of file
+> > >> descriptors. If you expect your simulation to need to open a
+> lot of
+> > >> them, you could try to push up that limit. I don't remember
+> exactly
+> > >> how
+> > >> that's done off hand, but I'm pretty sure you need administrative
+> > >> privileges to do that normally. It could also be that your
+> > >> simulation is
+> > >> going berserk and opening a ton of files when it shouldn't,
+> although
+> > >> that's not likely since it looks like it hasn't done anything
+> yet.
+> > >>
+> > >> Gabe
+> > >>
+> > >> Jiayuan Meng wrote:
+> > >>> Hey all,
+> > >>>
+> > >>> While testing my program, I sometimes get the following panic.
+> > >>> What can I do about it? By the way, is there anyway to turn off
+> > >>> the sockets?
+> > >>> Thanks !
+> > >>>
+> > >>> Global frequency set at 1000000000000 ticks per second
+> > >>> 0: system.remote_gdb.listener: listening for remote gdb #0 on
+> port
+> > >>> 7261
+> > >>> 0: system.remote_gdb.listener: listening for remote gdb #1 on
+> port
+> > >>> 7262
+> > >>> 0: system.remote_gdb.listener: listening for remote gdb #2 on
+> port
+> > >>> 7263
+> > >>> panic: Can't create socket:Too many open files !
+> > >>>
+> > >>> Jiayuan
+> > >>>
+> ------------------------------------------------------------------------
+> > >>>
+> > >>> _______________________________________________
+> > >>> m5-users mailing list
+> > >>> m5-users@m5sim.org
+> > >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >>
+> > >> _______________________________________________
+> > >> m5-users mailing list
+> > >> m5-users@m5sim.org
+> > >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> i’m is proud to present Cause Effect, a series about real
+> people making a difference. Learn more
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Hi all:
+    I just want to know if the trace cpu in src/cpu/trace/ is working
+or not. If it is working, how do I compile and use it? How does it
+take a trace? What format of trace does it take? Thanks for any input
+in advance.
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

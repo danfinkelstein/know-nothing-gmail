@@ -1,0 +1,28 @@
+Hi Alain,
+Did you apply the 2.0beta1 patch "Patch 1" from the web site (http://www.m5sim.org/wiki/index.php/Download)?  I believe it fixes this problem.  If not, please repost to the list.
+An example of a config file with a two-level cache hierarchy is in tests/configs/simple-timing.py.
+Steve
+Alain Kalixte wrote:
+- Show quoted text -
+Hi,
+I'm a new user and I'm trying to set up a config file with a CPU and a cache. I'm running into troubles having the cache connected to the CPU. Here is the piece of code I added to the sample se.py configuration script.
+Note that I'm using the M5 version 2.0.beta1.
+if options.timing:
+   ic = BaseCache(size='32kB',assoc=1,latency=1,block_size=32,mshrc=4,tgts_per_mshr=8)
+   dc = BaseCache(size='32kB',assoc=4,latency=1,block_size=32,mshrs=4,tgts_per_mshr=8) 
+   cpu.addPrivateSplitL1Caches(ic,dc)
+This is what I have as output:
+m5.debug: build/ALPHA_SE/mem/request.hh:229: int Request::getThreadNum():  Assertion 'validCpuAndThreadNums' failed
+Program aborted at cycle 733595
+Aborted
+A good example on how to hook up a cache to the system will be very helpful.
+Thanks.
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

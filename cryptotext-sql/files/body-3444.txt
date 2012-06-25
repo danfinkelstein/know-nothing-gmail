@@ -1,0 +1,26 @@
+Nate's answer is basically correct.  To answer your first question, races on things like writes are generally resolved by which access gets to the nearest common bus first (or gets the grant first if they request simultaneously).  To come at your second question from a different angle, the consistency model you get is going to be a function of both your CPU model and your memory hierarchy configuration.  The SimpleAtomic CPU model clearly gives you SC.  The SimpleTiming model can still give you SC if you only have a single level of coherent bus (I believe... haven't thought this through completely).  Once you go to the O3 model and/or multiple levels of cache (really multiple coherent buses) then you don't really get any guarantees unless you use write or memory barriers (the Alpha model).
+As Nate mentions, we'll have to fix this eventually once we get SPARC and x86 up and want to use them to model multiprocessors in these more general cases.Steve- Show quoted text -On Fri, Mar 14, 2008 at 9:08 AM, nathan binkert <nate@binkert.org> wrote:
+> For a multiple core system in m5 with shared bus , consider two writes issued by two different cores at the same time. What is the criteria as to which one will be granted access first? What memory consistency model m5 implements? And which are the associated files to understand it?
+Since nobody has answered this question yet, I will give it a shot.
+Basically, we currently implement weak consistency and require that
+fences or barriers be inserted in code to guarantee order.  This is
+mostly because we started with Alpha as a model.  That said, Sparc and
+x86 have stronger guarantees, but I don't believe that we currently
+implement them.  As for which files, that's really hard to say since
+it doesn't really exist.  If you were to implement sequential
+consistency, you'd probably have to do it in the lsq and the
+storebuffer and the memory dependence unit stuff, but I'm not sure
+that that would be it.  The fence instructions accomplish their goal
+by serializing the pipeline. You can search for the sMemBarrier and
+isWriteBarrier instruction flags.
+If this doesn't give you enough information, let us know and maybe
+steve or kevin can answer better.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

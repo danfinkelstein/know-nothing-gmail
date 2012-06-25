@@ -1,0 +1,18 @@
+> - You shouldn't be receiving responses from two different caches to a
+> ReadExRequest no matter what is going on with MemInhibit.  Only the
+> owner cache should be responding, and there shouldn't be more than one
+> owner at a given point in time.
+Why is that? The ReadExRequest can be sent from the L1 to the L1-L2 bus
+after a write miss. At
+The mean time, this requested cache block might be shared in other L1
+caches, as well as the L2. Because other L1s are snooping the bus, each
+cache(L1/L2) containing a copy should send a ReadExResponse back while
+invalidating its own copy theoretically, (although M5 uses the global
+pointer to the packet to ensure there is only one response).
+Thanks!
+Jiayuan
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

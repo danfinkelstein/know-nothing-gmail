@@ -1,0 +1,71 @@
+To answer the question, no there is no TLB in SE for beta 3, but yes
+there is translation and the dram is addressed with physical addresses.
+As Ali said, the binary happens to be loaded in such a way that the
+mappings are simple which may or may not be helpful depending on what
+you're trying to do.
+Gabe
+- Show quoted text -
+Ali Saidi wrote:
+> I wouldn't say that it is analogous to the page table. Physical frames
+> are allocated on demand in order up to the amount of physical memory
+> available in the system. So there is some mixing of stack and heap
+> pages, but the binary is loaded in such a way that there is a contiguous
+> block of physical memory for it.
+>
+> Ali
+>
+>
+> On Sep 30, 2007, at 5:02 PM, Sujay Sunil Phadke wrote:
+>
+>> Thanks for the reply Gabe. Is this true for M5 v2.0b3? (no TLB)
+>>
+>> - Sujay
+>>
+>>
+>> On Sun, 30 Sep 2007, Gabriel Michael Black wrote:
+>>
+>>>     In our repository the TLB is used in both FS and SE mode, and
+>>> again we
+>>> hope to make that publicly available soon. In the version you have the
+>>> TLB is not used in SE mode. Instead, a structure analogous to the page
+>>> table is used to look up virtual to physical mappings and provides a
+>>> similar effect.
+>>>
+>>> Gabe
+>>>
+>>> Sujay Sunil Phadke wrote:
+>>>> Hi all,
+>>>>     I am running the splash2 benchmarks in SE mode in M5. I want to
+>>>> capture the DRAM access patterns. I wanted to know if the
+>>>> physic_address
+>>>> used in the dram.cc is actually the physical address, (as would be
+>>>> translated by the TLB in the FS mode), or is it some trivial conversion
+>>>> from the virtual address? Is the TLB used at all in the SE mode?
+>>>>
+>>>> Thanks,
+>>>> - Sujay
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

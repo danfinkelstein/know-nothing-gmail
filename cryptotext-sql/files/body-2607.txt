@@ -1,0 +1,11 @@
+HI all,
+I am wondering if anyone has tried to model a niagara processor in M5
+and would be willing to share their expertise on how to do so? This is
+going to be used to validate a re-implementation of Wattch that I will
+make available to all M5 users.
+Thanks in advance,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

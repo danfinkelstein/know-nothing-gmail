@@ -1,0 +1,83 @@
+Hello,
+     I ran some splash2 
+benchmarks in M5 beta 5 in both FS and SE mode to see the differences in the 
+two. For example, barnes gives the following:
+ 
+SE mode:
+--------------
+                
+Hack code: Plummer model
+ 
+     
+nbody     dtime       
+eps       tol     
+dtout     tstop    
+fcells     NPROC     
+16384   0.02500    0.0500      
+1.00     0.250     
+0.075      
+2.00         4
+ 
+COMPUTESTART  
+=            
+1COMPUTEEND    
+=           
+57COMPUTETIME   
+=           
+56TRACKTIME     
+=           
+27PARTITIONTIME 
+=            
+0     0.00TREEBUILDTIME 
+=            
+1     0.04FORCECALCTIME 
+=           
+26     0.96RESTTIME      
+=            
+0     0.00warn: ignoring syscall sigprocmask(1, 
+18446744073709547831, ...)
+ 
+FS mode:
+--------------
+                
+Hack code: Plummer model
+ 
+     
+nbody     dtime       
+eps       tol     
+dtout     tstop    
+fcells     NPROC     
+16384   0.02500    0.0500      
+1.00     0.250     
+0.075      
+2.00         4
+ 
+COMPUTESTART  =   
+4294666516    COMPUTEEND    =   
+4294691052COMPUTETIME   
+=        
+24536TRACKTIME     
+=        12258PARTITIONTIME 
+=            
+3     0.00TREEBUILDTIME 
+=        10047     
+0.82FORCECALCTIME =         
+2114     0.17RESTTIME      
+=           
+94     0.01----------------
+ 
+All config params were the same in both. I had 
+given a resetstats in the rcS file for FS. I expected that the various 
+times would not vary by such a large amount.  Is this difference 
+expected or am I doing something wrong?
+ 
+The benchmarks do run correctly, I verified them by 
+using the "-t" switch.
+ 
+Sujay
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

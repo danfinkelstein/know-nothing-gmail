@@ -1,0 +1,37 @@
+Here is an updated version of the splash2 configuration file and it should solve your problem.
+Ali
+On Nov 26, 2007, at 4:58 PM, Panayiotis Petridis wrote:
+Hi all,
+I am new on m5 and i have a project with m5 on CMP, so to get know the tool i am trying to run the SPLASH2 benchmarks on SE mode as it is described to http://m5.eecs.umich.edu/wiki/index.php/Splash_benchmarks . I have downloaded and unziped the the files but also created the configuration file of the simulation (as it is describe to the referenced mail) but when i run the simulation i get this error:
+command line: build/ALPHA_SE/m5.debug run.py -n2 --rootdir=./home/sfin/m5/splash2/codes --benchmark=FMM
+Traceback (most recent call last):
+ File "", line 1, in
+ File "build/ALPHA_SE/python/m5/main.py", line 350, in main
+   execfile(sys.argv[0], scope)
+ File "run.py", line 132, in
+   class L1(BaseCache):
+ File "build/ALPHA_SE/python/m5/SimObject.py", line 254, in __init__
+   setattr(cls, key, val)
+ File "build/ALPHA_SE/python/m5/SimObject.py", line 326, in __setattr__
+   cls._set_param(attr, value, param)
+ File "build/ALPHA_SE/python/m5/SimObject.py", line 275, in _set_param
+   cls._values[name] = param.convert(value)
+ File "build/ALPHA_SE/python/m5/params.py", line 152, in convert
+   return self.ptype(value)
+ File "build/ALPHA_SE/python/m5/params.py", line 771, in __init__
+   elif value.endswith('t'):
+AttributeError: 'int' object has no attribute 'endswith'
+Error setting param L1.latency to 1
+Can anyone help me about solving this problem?
+Thanks in advance
+Sfin
+_________________________________________________________________
+Connect to the next generation of MSN Messenger
+http://imagine-msn.com/messenger/launch80/default.aspx?locale=en-us&source=wlmailtagline_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,165 @@
+Hi Ali,
+  command line:
+    /home/tracy/m5_2.0b/m5/build/ALPHA_FS/m5.opt
+    -d /home/tracy/m5_2.0b/simulation/result/
+    --stats-file=/home/tracy/m5_2.0b/simulation/result/ValStream_seq.sta
+    /home/tracy/m5_2.0b/simulation/configs/seq/fs.py
+    -b ValStream
+  config file:
+    cpu = TimingSimpleCPU()
+    mem_mode = 'timing'
+    cpu.clock = '2GHz'
+    root = Root(clock = '1THz',
+                system = makeLinuxAlphaSystem(mem_mode, bm[0]))
+    root.system.cpu = cpu
+    root.system.physmem = DetailedSdram(range = AddrRange(bm[0].mem()))
+    root.system.physmem.port = root.system.membus.port
+    cpu.connectMemPorts(root.system.membus)
+    cpu.mem = root.system.physmem
+    cpu.max_insts_all_threads = 1000000000
+    DetailedSdram: I define my page placement policy in this python class.
+  Here are stat files for different CPU model and page placement policies
+(running 1 billion instructions):
+(TimingSimpleCPU model, DRAM model in full system)
+sim_ticks                               2345003956674
+system.physmem.average_dram_latency         17.893534
+system.physmem.row_conflict_rate             0.381053
+ system.physmem.row_empty_rate                0.029279
+  system.physmem.row_hit_rate                  0.589668
+system.physmem.total_access                1255245361
+system.physmem.total_row_conflict           478314873
+ system.physmem.total_row_empty               36752550
+  system.physmem.total_row_hit                740177934
+(TimingSimpleCPU model, DRAM model with least_used_bank policy)
+sim_ticks                               2345002809841
+system.physmem.average_dram_latency         10.066127
+system.physmem.row_conflict_rate             0.000148
+system.physmem.row_empty_rate                0.000100
+system.physmem.row_hit_rate                  0.999747
+system.physmem.total_access                1255245862
+system.physmem.total_row_conflict              186367
+system.physmem.total_row_empty                 125238
+system.physmem.total_row_hit               1254928724
+(AtomicSimpleCPU, DRAM model in full system)
+sim_ticks                               2216005337300
+system.physmem.average_dram_latency         20.982500
+system.physmem.row_conflict_rate             0.379750
+ system.physmem.row_empty_rate                0.032733
+  system.physmem.row_hit_rate                  0.587517
+system.physmem.total_access                1256533655
+system.physmem.total_row_conflict           477168551
+ system.physmem.total_row_empty               41130200
+  system.physmem.total_row_hit                738234896
+(AtomicSimpleCPU, DRAM model with least_used_bank policy)
+sim_ticks                               2216005337027
+system.physmem.average_dram_latency         16.343905
+system.physmem.row_conflict_rate             0.044255
+system.physmem.row_empty_rate                0.368228
+system.physmem.row_hit_rate                  0.587517
+system.physmem.total_access                1256533655
+system.physmem.total_row_conflict            55607405
+system.physmem.total_row_empty              462690794
+system.physmem.total_row_hit                738235394
+    My question is :
+    1) why I only change the CPU model, the difference of row hit rate is
+so high? By using TimingSimpleCPU model, the row hit rate is more than
+99%.
+    2) In TimingSimpleCPU model,why DRAM model with my page placement
+policy has more than 40% decrease of average DRAM access latency
+compared to the DRAM model without these policy, but no difference in
+the sim_ticks.
+    It seems like even in the TimingSimpleCPU model, the average DRAM
+latency is still not being accounted for.
+Thanks,
+Tracy
+- Show quoted text -
+> Tracy,
+>
+> Why don't you give us your command line, important bits of your
+> config files and the stats file to take a look at. Like the warning
+> that is printed when you used the DRAM model says, it's largely
+> untested, so something could be broken, but I don't think it's that
+> broken.
+>
+> Ali
+>
+> On Jul 31, 2007, at 4:51 PM, rlai@mtu.edu wrote:
+>
+>> Hi Ali,
+>>
+>>    I was using AtomicSimpleCPU to run simulation for 1 billion
+>> instructions.
+>> Now I change to use TimingSimpleCPU to run for 1 billion
+>> instructions. The
+>> difference of average DRAM access latency is even higher(more than
+>> 40%),
+>> but still 0% difference in sim_tick. Is that because 1 billion
+>> instruction
+>> is not enough to see any changes?
+>>    I don't find any memory access queue in full system. How this
+>> calculated DRAM latency is used?
+>>    In the code, this latency will be transfered to sendTiming(pkt,
+>> latency), and this function will call SimpleTimingPort::SendEvent
+>> (this,
+>> pkt, time);
+>> Will the latency be used in the mainEventQueue?
+>>
+>> Thanks,
+>> Tracy
+>>
+>>
+>>
+>>> There are two possibilities.
+>>> a) You were running for a set number of ticks, so you wouldn't see
+>>> any change in sim_ticks because the number of ticks was controlling
+>>> the length of the simulation.
+>>> b) You were using the AtomicSimpleCPU instead of either the
+>>> TimingSimpleCPU or the O3CPU, so the DRAM latency wasn't being
+>>> accounted for.
+>>>
+>>> Ali
+>>>
+>>> On Jul 27, 2007, at 9:44 PM, rlai@mtu.edu wrote:
+>>>
+>>>> Hi,
+>>>>
+>>>>    I implement different page allocation algorithms(virtual to
+>>>> physical
+>>>> address translation algorithm) based on current DRAM model in full
+>>>> system(m5_2.0b). After running simulations(benchmark is
+>>>> ValStream), I
+>>>> could see more than 20% difference in average DRAM access latency
+>>>> within all these algorithms, but almost 0% difference in sim_ticks.
+>>>>    Is that because the caculated dram latency is not used? Can
+>>>> anybody
+>>>> explain that to me?
+>>>>    Thanks.
+>>>>
+>>>> Tracy
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

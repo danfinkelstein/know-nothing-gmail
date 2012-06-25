@@ -1,0 +1,13 @@
+hi Lisa,       I am trying to run SPEC CPU 2006 benchmarks on m5-2.0b6(SPARC_SE mode) on Linux operating system. For perlbench (spec cpu 2006 benchmark) , i am getting the following error message in SPARC_SE.
+error (fatal: syscall gettimeofday (#116) unimplemented.)and it is working fine in ALPHA_SE  for the same benchmark.
+       i also got another syscall error "getcwd" for povray (spec cpu 2006 benchmark) in SPARC_SE mode. I made changes according to the given site ( http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks ) for getcwd , and tried but it didn't work. 
+       Could any one help me in solving this problem. ThanksPavan.      On Thu, Feb 12, 2009 at 10:29 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+Pavan,I don't think anyone has run spec2006 on SPARC before, so you are in uncharted waters.  It would be great if you could get it up and feed back what you've learned to us and the wiki.  If you want help in doing this, you'll have to be more specific (provide error messages, command lines, etc.).
+Lisa_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+Hello,
+I'm new at M5 and I'm interested in the simulation of an in-order core.
+Since I want to check the behavior of dependent instructions I would
+like to simulate a superscalar in-order core.
+I figured out that there are 4 "stages" each instruction needs to pass.
+Each stage calls the resources of the in-order core.
+I tried to modify the "stageWidth"-parameter in the hope that more
+buffer slots would be available at each stage but unfortunately nothing
+changed. The generated execution-trace is exactly the same.
+Thank you very much!
+Greets
+Maximilien
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

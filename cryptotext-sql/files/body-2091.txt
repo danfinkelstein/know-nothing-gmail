@@ -1,0 +1,173 @@
+Hi Everyone,
+I'm setting M5 up for a research project, and I'm having issues with
+sampling. I would like to be able to switch back and forth between
+TimingSimpleCPU and AtomicSimpleCPU on command. My simulation script
+is included at the end. I can switch from timing to atomic with no
+problem, but after switching back to timing, nothing happens (tracing
+the bus confirms that there is no activity). If I switch back to
+atomic (using the script), bus activity resumes and simulation
+continues. I am running on Ubuntu (2.6.27-9 kernel, gcc 4.3.2) using
+the ALPHA_FS target.
+Please advise!
+Thanks!
+-David
+Here is sample output:
+$ build/ALPHA_FS/m5.opt dmp.py
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Dec 27 2008 05:42:19
+M5 revision 5780:50c9d48de3caa629a27408bf5f3423656ae15da1
+M5 commit date Wed Dec 17 09:51:18 2008 -0800
+M5 started Dec 29 2008 20:46:14
+M5 executing on calvin.eecs.umich.edu
+command line: build/ALPHA_FS/m5.opt dmp.py
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at: /n/poolfs/z/dist/m5/system/binaries/vmlinux
+Listening for system connection on port 3456
+       0: switch_cpus.system.tsunami.io.rtc: Real-time clock set to
+Thu Jan  1 00:00:00 2009
+0: switch_cpus.system.remote_gdb.listener: listening for remote gdb #0
+on port 7000
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+651374031000: switch_cpus.system.terminal: attach terminal 0
+warn: be nice to actually delete the event here
+Simulator exited @ 4116076212000. Cause: checkpoint
+info: Entering event queue @ 4116076212000.  Starting simulation...
+info: Entering event queue @ 4116076242000.  Starting simulation...
+Changing memory mode to atomic
+switching cpus
+info: Entering event queue @ 4116076244000.  Starting simulation...
+Simulator exited @ 4116426040000. Cause: checkpoint
+Changing memory mode to timing
+switching cpus
+info: Entering event queue @ 4116426040000.  Starting simulation...
+[never continues past this point]
+---------------------------------------------------------------------------------------------------------
+Sample terminal output:
+[... Linux booting]
+VFS: Mounted root (ext2 filesystem) readonly.
+Freeing unused kernel memory: 224k freed
+init started:  BusyBox v1.1.0 (2007.03.04-01:07+0000) multi-call binary
+mounting filesystems...
+EXT2-fs warning: checktime reached, running e2fsck is recommended
+loading script...
+[never continues past this point]
+---------------------------------------------------------------------------------------------------------
+Command-line script:
+m5 checkpoint
+m5 checkpoint
+[never continues past this point]
+ls
+bash
+---------------------------------------------------------------------------------------------------------
+Python script:
+import optparse, os, sys
+import m5
+if not m5.build_env['FULL_SYSTEM']:
+     m5.panic("This script requires full-system mode (*_FS).")
+from os import getcwd
+from m5.objects import *
+m5.AddToPath('configs/common')
+from FSConfig import *
+from SysPaths import *
+from Benchmarks import *
+import Simulation
+from Caches import *
+from os.path import isdir, exists
+from os import listdir
+import re
+def switchList(num_cpus, system, current_cpus, switchType):
+     if current_cpus == None:
+         deferReg = False
+         sys = Parent.any
+     else:
+         deferReg = True
+         sys = system
+     if switchType == 'atomic':
+         switchType = AtomicSimpleCPU
+     elif switchType == 'timing':
+         switchType = TimingSimpleCPU
+     elif switchType == 'o3':
+         switchType = DerivO3CPU
+     else:
+         raise TypeError, "Invalid CPU type."
+     switch_cpus =
+[switchType(cpu_id=i,defer_registration=deferReg,system=sys) \
+                    for i in xrange(num_cpus)]
+     return switch_cpus
+# Get paths we might need.  It's expected this file is in m5/configs/
+example.
+config_path = os.path.dirname(os.path.abspath(__file__))
+config_root = config_path+"/configs";
+parser = optparse.OptionParser()
+execfile(os.path.join(config_root, "common", "Options.py"))
+(options, args) = parser.parse_args()
+if args:
+     print "Error: script doesn't take any positional arguments"
+     sys.exit(1)
+# checkpoint directory
+cptdir = getcwd()
+# Run options
+num_cpus = 1
+cpt_num = 1
+TimingSimpleCPU.clock = '2GHz'
+bm = [SysConfig()]
+sys = makeLinuxAlphaSystem('timing', bm[0])
+sys.kernel = binary("vmlinux")
+sys.readfile = "dmp.sh"
+detailed_cpus = checkpoint_cpus = []
+detailed_cpus = switchList(num_cpus, sys, None, 'timing')
+checkpoint_cpus = switchList(num_cpus, sys, detailed_cpus, 'atomic')
+switch_cpu_list = [(detailed_cpus[i], checkpoint_cpus[i]) \
+                    for i in xrange(num_cpus)]
+sys.cpu = detailed_cpus
+for i in xrange(num_cpus):
+     sys.cpu[i].connectMemPorts(sys.membus)
+     checkpoint_cpus[i].clock = sys.cpu[0].clock
+root = Root(system=sys)
+root.switch_cpus = checkpoint_cpus
+m5.instantiate(root)
+print "**** REAL SIMULATION ****"
+while True:
+     exit_event = m5.simulate()
+     print "Simulator exited @ %d. Cause: %s" % (m5.curTick(),
+exit_event.getCause())
+     if exit_event.getCause() == "user interrupt received" or \
+        exit_event.getCause() == "m5_exit instruction encountered":
+         break
+     elif exit_event.getCause() == "checkpoint":
+         if sys.getMemoryMode() == m5.objects.params.atomic:
+             for i in xrange(num_cpus):
+                 m5.doDrain(checkpoint_cpus[i])
+             m5.changeToTiming(sys)
+             m5.switchCpus(switch_cpu_list)
+             m5.resume(sys)
+             checkpoint_cpus = switchList(num_cpus, sys,
+detailed_cpus, 'atomic')
+             root.switch_cpus = checkpoint_cpus
+             for i in xrange(num_cpus):
+                 root.switch_cpus[i].getCCObject() # initialize SWIG
+object
+             switch_cpu_list = [(detailed_cpus[i], checkpoint_cpus[i]) \
+                                for i in xrange(num_cpus)]
+         else:
+             for i in xrange(num_cpus):
+                 m5.doDrain(detailed_cpus[i])
+             m5.changeToAtomic(sys)
+             m5.switchCpus(switch_cpu_list)
+             m5.resume(sys)
+             detailed_cpus = switchList(num_cpus, sys,
+checkpoint_cpus, 'timing')
+             root.switch_cpus = detailed_cpus
+             for i in xrange(num_cpus):
+                 root.switch_cpus[i].getCCObject() # initialize SWIG
+object
+             switch_cpu_list = [(checkpoint_cpus[i], detailed_cpus[i]) \
+                                for i in xrange(num_cpus)]
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

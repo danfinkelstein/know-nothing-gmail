@@ -1,0 +1,51 @@
+I can't speak to the Ruby side of things, but for the native M5 memory system, if my mental model of what you are wanting to do is correct, I don't see any major problems.  You can't connect the existing cache model to more than one bus on each side though, so a lot depends on how you solve that problem (and you can't solve it by inserting bridges, since coherence does not work across a bridge).
+Steve- Show quoted text -On Sat, Oct 31, 2009 at 4:01 PM, Ali Saidi <saidi@umich.edu> wrote:
+If the memory was interleaved I think it would be a pain, however if
+the memory was sequential (e.g. 0x0-0xFFFFFFF, 0x10000000-0x2FFFFFFF)
+it will probably just work. However, I haven't tried it so I make no
+guarantees.
+Ali
+On Oct 31, 2009, at 5:40 PM, Sujay Phadke wrote:
+>
+> anyone on this?
+>
+> --------------------------------------------------
+> From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+> Sent: Thursday, October 29, 2009 5:59 PM
+> To: <m5-users@m5sim.org>
+> Subject: [m5-users] adding another bus and memory module
+>
+>> Hello,
+>>  I want to simulate a system which has 2 different main memory
+>> modules
+>> and 2 buses which connect it to the L2, with different address
+>> ranges.
+>> (something like a dancehall). Is it straightforward to do this or
+>> would
+>> it affect the coherency protocols, or something else in the system?
+>>
+>> Secondly, would the changes I make be any different if I use the ruby
+>> models instead of the inbuilt dram models?
+>>
+>> thanks,
+>> Sujay
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+> Which gcc version would work with 2.0b5, if I install that gcc is it going
+> to work?
+I'm guessing 4.2 would work.  I'd say that if you want to be sure,
+find out what the latest version of gcc was when we created 2.0b5 and
+use that.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

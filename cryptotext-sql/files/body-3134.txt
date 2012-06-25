@@ -1,0 +1,10 @@
+Does anyone have an idea why I am getting this error? I am trying to run the FFT splash benchmark on 2 CPU with 2-way SMT. I am attaching my config file with this email. Any suggestions are welcome...I am really desperate now.
+Thanks,SahithiError:M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled May  6 2008 10:06:06M5 started Tue May  6 14:01:45 2008
+M5 executing on sunshyin.localcommand line: /Users/Sunshyin/m5/build/ALPHA_SE/m5.debug ../smt.pyGlobal frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+0: system.remote_gdb.listener: listening for remote gdb #1 on port 70010: system.remote_gdb.listener: listening for remote gdb #2 on port 70020: system.remote_gdb.listener: listening for remote gdb #3 on port 7003
+warn: Entering event queue @ 0.  Starting simulation...Assertion failed: (insts[i].empty()), function sortInsts, file build/ALPHA_SE/cpu/o3/decode_impl.hh, line 452.Program aborted at cycle 1500Abort trap
+Thanks,Sahithi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+---------- Forwarded message ----------From: sheng qiu <herbert1984106@gmail.com>
+Date: 2010/3/24Subject: problem with compiling ALPHA_FS on M5To: m5-dev@m5sim.orghi all,i have a problem when compiling ALPHA_FS on m5. the error is :
+In file included from build/ALPHA_FS/dev/i8254xGBe.hh:46,                 from build/ALPHA_FS/dev/i8254xGBe.cc:47:build/ALPHA_FS/dev/i8254xGBe_defs.hh: In member function `unsigned int iGbReg::Regs::RCTL::descSize()':
+build/ALPHA_FS/dev/i8254xGBe_defs.hh:492: warning: converting of negative value `-0x00000000000000001' to `unsigned int'scons: *** [build/ALPHA_FS/dev/i8254xGBe.do] Error 1scons: building terminated because of errors.
+anyone know how to solve it?Thanks,Sheng
+-- Sheng QiuTexas A & M UniversityRoom 302 Wisenbaker    email: herbert1984106@gmail.comCollege Station, TX 77843-3259
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

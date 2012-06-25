@@ -1,0 +1,129 @@
+I was thinking the same thing actually, but I wanted to get correct
+behavior first.
+Gabe
+- Show quoted text -
+Ali Saidi wrote:
+> My only comment is should we pull the code that is doing the fix out
+> of the CPU models and into something closer to the arch directory?
+> Like a function that manipulates the argument and return values which
+> does nothing currently accept for sparc where it should clobber the
+> top 32 bits in 32 bit mode.
+>
+> Ali
+>
+> On Dec 17, 2008, at 2:10 AM, Gabe Black wrote:
+>
+>
+>> I just committed a fix which should take care of both of these
+>> problems.
+>> I think I ran into this once before when working with o3 as
+>> evidenced by
+>> the fix there, but I was trying to get things working for a deadline
+>> and
+>> apparently neglected to fix the other CPUs too. Please let me know if
+>> you still have this problem with the fix.
+>>
+>> Gabe
+>>
+>> Ali Saidi wrote:
+>>
+>>> I noticed that happening in the syscall stubs as well. Could you open
+>>> up a bug report on the website so thath we'll make sure and get this
+>>> handled at some point?
+>>>
+>>> Thanks,
+>>>
+>>> Ali
+>>>
+>>> On Dec 16, 2008, at 6:09 PM, Jack Whitham wrote:
+>>>
+>>>
+>>>
+>>>> On Tue, Dec 16, 2008 at 04:51:55PM -0500, gblack@eecs.umich.edu
+>>>> wrote:
+>>>>
+>>>>
+>>>>> Thank you for pointing this out. I can't look at this in detail at
+>>>>> the moment,
+>>>>> but what probably should be changed is the part of getSyscallArg
+>>>>> that the ISA
+>>>>> provides. It should probably truncate the register values as
+>>>>> they're retrieved
+>>>>> for the system call emulation function if it's from a 32 bit
+>>>>> application. I'll
+>>>>> try to look at this more closely soon to give you a more definitive
+>>>>> answer and
+>>>>> hopefully a patch.
+>>>>>
+>>>>>
+>>>> Thanks very much for your response. This fix sounds like the right
+>>>> thing.
+>>>> I'm in no hurry for an official fix, because I have written a
+>>>> temporary
+>>>> hack to fix it, but it will break 64 bit SPARC applications so
+>>>> it's no
+>>>> use to you.
+>>>>
+>>>> However, when you do have time to look at this problem, I think I
+>>>> may
+>>>> have found a related issue. Values *returned* by system calls should
+>>>> *also*
+>>>> be truncated for 32 bit applications, when M5 has been compiled for
+>>>> x86_64.
+>>>>
+>>>> Here, for example, are two instructions that are run immediately
+>>>> after
+>>>> the lseek system call completes. This is a diff of two traces from
+>>>> the
+>>>> same program, one produced on a 64 bit machine (<) and the other
+>>>> produced on a 32 bit machine (>). The system call has left some data
+>>>> in
+>>>> the top 32 bits (in %o0).
+>>>>
+>>>> 60842,60843c60842,60843
+>>>> < 30466500: system.cpu T0 : @__libc_lseek+40 :  mov   %o0, %i0
+>>>> : IntAlu :  D=0x00c4c5bc00bcc5c4
+>>>> < 30467000: system.cpu T0 : @__libc_lseek+48 :  add   %i0, 0xff, %g1
+>>>> : IntAlu :  D=0x00c4c5bc00bcc6c3
+>>>> ---
+>>>>
+>>>>
+>>>>> 30466500: system.cpu T0 : @__libc_lseek+40 :  mov   %o0, %i0
+>>>>> : IntAlu :  D=0x0000000000bcc5c4
+>>>>> 30467000: system.cpu T0 : @__libc_lseek+48 :  add   %i0, 0xff, %g1
+>>>>> : IntAlu :  D=0x0000000000bcc6c3
+>>>>>
+>>>>>
+>>>> --
+>>>> Jack Whitham
+>>>> jack@cs.york.ac.uk
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

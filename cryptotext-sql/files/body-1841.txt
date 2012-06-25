@@ -1,0 +1,47 @@
+Cachability in Alpha is determined by physical address. The code to
+mark a request as uncachable is located in the tlb (src/arch/alpha/
+tlb.cc). You can find an unused range in is also uncachable an put
+your RAM there. For a list of used ranges look at the Alpha Tsunami/
+Typhoon reference manual (google).
+Ali
+- Show quoted text -
+On Feb 21, 2009, at 10:19 AM, Veydan Wu wrote:
+> Hi Ali, Thanks for you reply. I want to add a small ram in the o3
+> alpha cpu model, I hope this ram could be accessed by uncached mode.
+> Could you please give me some hint on how to implement this? How can
+> I find the code related to the uncached access and which part of M5
+> should I modify to allocate an address range to this ram to allow
+> the application to access? Thanks very much !
+>
+> Message: 1
+> Date: Fri, 20 Feb 2009 10:26:15 -0500
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] uncached access of M5 ?
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <07EA2D35-40DA-4416-958E-594EA30AE86F@umich.edu>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+> Uncached accesses are supported, otherwise many i/o device accesses
+> would fail to work.
+>
+> Ali
+>
+> On Feb 20, 2009, at 4:42 AM, Veydan Wu wrote:
+>
+> > Hi all, Does M5 support uncached access ? Or every address finally
+> > locate in somewhere of cache? If M5 does not support uncached
+> > access, how does some configuration work perform? Thanks !
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+On 10/25/07, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+Hi,I have a nasty solution for integrating Wattch at the moment whereI am updating extern counters and calling watch update routines eachcycle.I would like to move wattch to level of the m5 object, so one can get
+the power of all the devices separately and get the result in the generalstats printout. The tricky part is that I need to be able to update apower statseach cycle depending on whether the device is on or off (because they
+will eitherhave turned on or turned off values). What would be the best way of addinga stat, that is  updated at the end of every cycle?Speaking from experience, it would be a lot more efficient if you could find a way to just create an event when something turns on or off, and record the time of the last transition, then at those events multiply the number of cycles it was on/off by the appropriate value and sum it in.  If you have a big MP system and most of the cores are idle you don't want to have to process a set of events every cycle for every idle core...
+As far as integration with the stats package, that's something Nate would probably have to comment on.  I don't have much experience with that.  Another question is whether you want to use the stats package for these values or bypass it to talk directly to wattch... Nate would probably be for the former, but the latter might be easier if all you want in the output are the wattch results.  Not being that familiar with wattch or the internals of the stats package, it's hard for me to have a strong opinion.
+ I will also want to add voltage, frequency scaling. I believe that I cando this
+by updating the voltage/frequency numbers in python/swig after breaking outof simulation, and then jump back in after recomputing all the wattch powerparameters. Is there any reason why I might meet problems updating
+global wattchparameters from swig? I have only done this on a small scale program,and it worked.If the wattch code is the only thing that's getting affected, I don't see a problem.  If you're actually recalculating CPU frequencies (
+e.g. changing the number of ticks per CPU cycle) then in theory that should work too, but I'd be less surprised if you ran into a bug there, as I don't think anyone's done that before.  (Speak up if I'm wrong.)  Since it is the kind of thing that should work, let us know if you do run into problems, and we should be able to fix them.
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

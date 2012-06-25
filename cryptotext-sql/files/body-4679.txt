@@ -1,0 +1,1824 @@
+Hi,
+I ran regression tests for the full system mode using the following command:
+scons build/ALPHA_FS/tests/opt/quick
+I noticed that all test cases fail (I have attached the terminal output )
+However, I booted up the linux sucessfully. Is there any problem with my installation?
+I am using the latest version on the website (m5-2.0b2). My system is a 64-bit machine running redhat enterprise (2.6.9-42.EL).
+I am using following software versions:
+Python 2.4.
+gcc 3.4.64
+SWIG Version 1.3.28
+scons 0.96.95
+Thanks,
+Mojtaba
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Adding /usr/local/lib to LIBPATH for python2.4
+Checking for C library python2.4... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Building in /z/mehrara/m5-2.0b2/build/ALPHA_FS
+Using saved options file /z/mehrara/m5-2.0b2/build/options/ALPHA_FS
+Compiling in ALPHA_FS with MySQL support.
+scons: done reading SConscript files.
+scons: Building targets ...
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic FAILED!
+build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stdout 2> build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stderr
+Comparing outputs in build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual.
+diff -ubr tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual -I "^command line:" -I "^M5 compiled " -I "^M5 started " -I "^M5 executing on " -I "^Simulation complete at" -I "^Listening for" -I "listening for remote gdb" --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/outdiff
+===== Output differences =====
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/config.ini build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/config.ini
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/config.ini     2006-12-06 16:09:54.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/config.ini      2007-03-08 11:10:13.000000000 -0500
+@@ -7,9 +7,6 @@
+ output_file=cout
+ progress_interval=0
+-[debug]
+-break_cycles=
+-
+ [exetrace]
+ intel_format=false
+ legion_lockstep=false
+@@ -52,11 +49,11 @@
+ children=bridge cpu0 cpu1 disk0 disk2 intrctrl iobus membus physmem sim_console simple_disk tsunami
+ boot_cpu_frequency=1
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-console=/dist/m5/system/binaries/console
++console=./system/binaries/console
+ init_param=0
+-kernel=/dist/m5/system/binaries/vmlinux
++kernel=./system/binaries/vmlinux
+ mem_mode=atomic
+-pal=/dist/m5/system/binaries/ts_osfpal
++pal=./system/binaries/ts_osfpal
+ physmem=system.physmem
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -89,6 +86,7 @@
+ max_insts_any_thread=0
+ max_loads_all_threads=0
+ max_loads_any_thread=0
++phase=0
+ profile=0
+ progress_interval=0
+ simulate_stalls=false
+@@ -122,6 +120,7 @@
+ max_insts_any_thread=0
+ max_loads_all_threads=0
+ max_loads_any_thread=0
++phase=0
+ profile=0
+ progress_interval=0
+ simulate_stalls=false
+@@ -154,7 +153,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk2]
+@@ -173,7 +172,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.intrctrl]
+@@ -238,7 +237,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.tsunami]
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/config.out build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/config.out
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/config.out     2006-12-06 16:09:56.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/config.out      2007-03-08 11:10:13.000000000 -0500
+@@ -16,9 +16,9 @@
+ boot_cpu_frequency=1
+ physmem=system.physmem
+ mem_mode=atomic
+-kernel=/dist/m5/system/binaries/vmlinux
+-console=/dist/m5/system/binaries/console
+-pal=/dist/m5/system/binaries/ts_osfpal
++kernel=./system/binaries/vmlinux
++console=./system/binaries/console
++pal=./system/binaries/ts_osfpal
+ boot_osflags=root=/dev/hda1 console=ttyS0
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -57,6 +57,7 @@
+ do_checkpoint_insts=true
+ do_statistics_insts=true
+ clock=1
++phase=0
+ defer_registration=false
+ width=1
+ function_trace=false
+@@ -91,7 +92,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk0.image]
+@@ -109,7 +110,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.disk2.image]
+@@ -149,6 +150,7 @@
+ do_checkpoint_insts=true
+ do_statistics_insts=true
+ clock=1
++phase=0
+ defer_registration=false
+ width=1
+ function_trace=false
+@@ -157,7 +159,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.simple_disk]
+@@ -595,9 +597,6 @@
+ legion_lockstep=false
+ trace_system=client
+-[debug]
+-break_cycles=
+-
+ [statsreset]
+ reset_cycle=0
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/console.system.sim_console build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/console.system.sim_console
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/console.system.sim_console     2006-12-06 16:09:50.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/console.system.sim_console      2007-03-08 11:11:15.000000000 -0500
+@@ -3,7 +3,7 @@
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+-
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC0000855898, kentry = 0xFFFFFC0000310000, numCPUs = 0x2
++
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x2
+CPU Clock at 2000 MHz IntrClockFrequency=1024
+Booting with 2 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+@@ -16,27 +16,29 @@
+Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+unix_boot_mem ends at FFFFFC0000078000
+k_argc = 0
+-
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1067)
+-
+CallbackFixup 0 18000, t7=FFFFFC000070C000
++
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028)
++
+CallbackFixup 0 18000, t7=FFFFFC0000700000
+Entering slaveloop for cpu 1 my_rpb=FFFFFC0000018400
+-
+Linux version 2.6.13 (hsul@zed.eecs.umich.edu) (gcc version 3.4.3) #1 SMP Sun Oct 8 19:52:07 EDT 2006
++
+Linux version 2.6.8.1 (binkertn@ziff.eecs.umich.edu) (gcc version 3.4.3) #36 SMP Mon May 2 19:50:53 EDT 2005
+Booting GENERIC on Tsunami variation DP264 using machine vector DP264 from SRM
+Major Options: SMP LEGACY_START VERBOSE_MCHECK
+Command line: root=/dev/hda1 console=ttyS0
+memcluster 0, usage 1, start        0, end      392
+memcluster 1, usage 0, start      392, end    16384
+-
+freeing pages 1069:16384
+-
+reserving pages 1069:1070
++
+freeing pages 1030:16384
++
+reserving pages 1030:1031
+SMP: 2 CPUs probed -- cpu_present_mask = 3
+Built 1 zonelists
+Kernel command line: root=/dev/hda1 console=ttyS0
+-
+PID hash table entries: 1024 (order: 10, 32768 bytes)
++
+PID hash table entries: 1024 (order 10: 16384 bytes)
+Using epoch = 1900
+Console: colour dummy device 80x25
+Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+-
+Memory: 118784k/131072k available (3314k kernel code, 8952k reserved, 983k data, 224k init)
+-
+Mount-cache hash table entries: 512
++
+Memory: 119072k/131072k available (3058k kernel code, 8680k reserved, 695k data, 480k init)
++
+Mount-cache hash table entries: 512 (order: 0, 8192 bytes)
++
+per-CPU timeslice cutoff: 374.49 usecs.
++
+task migration cache decay timeout: 0 msecs.
+SMP starting up secondaries.
+Slave CPU 1 console command START
+ SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb FFFFFC0000018400 my_rpb_phys 18400
+@@ -51,21 +53,16 @@
+Initializing Cryptographic API
+rtc: Standard PC (1900) epoch (1900) detected
+Real Time Clock Driver v1.12
+-
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
++
+Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing disabled
+ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+-
+io scheduler noop registered
+-
+io scheduler anticipatory registered
+-
+io scheduler deadline registered
+-
+io scheduler cfq registered
+loop: loaded (max 8 devices)
++
+Using anticipatory io scheduler
+nbd: registered device at major 43
++
+sinic.c: M5 Simple Integrated NIC driver
+ns83820.c: National Semiconductor DP83820 10/100/1000 driver.
+eth0: ns83820.c: 0x22c: 00000000, subsystem: 0000:0000
+eth0: enabling optical transceiver
+-
+eth0: using 64 bit addressing.
+-
+eth0: ns83820 v0.22: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=h,sg
+-
+tun: Universal TUN/TAP device driver, 1.6
+-
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
++
+eth0: ns83820 v0.20: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=sg
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+PIIX4: IDE controller at PCI slot 0000:00:00.0
+@@ -77,24 +74,25 @@
+hdb: M5 IDE Disk, ATA DISK drive
+ide0 at 0x8410-0x8417,0x8422 on irq 31
+hda: max request size: 128KiB
+-
+hda: 511056 sectors (261 MB), CHS=507/16/63, UDMA(33)
+-
+hda: cache flushes not supported
++
+hda: 163296 sectors (83 MB), CHS=162/16/63, UDMA(33)
+ hda: hda1
+hdb: max request size: 128KiB
+hdb: 4177920 sectors (2139 MB), CHS=4144/16/63, UDMA(33)
+-
+hdb: cache flushes not supported
+ hdb: unknown partition table
++
+scsi0 : scsi_m5, version 1.73 [20040518], dev_size_mb=8, opts=0x0
++
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
++
+  Type:   Direct-Access                      ANSI SCSI revision: 03
++
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
++
+SCSI device sda: drive cache: write back
++
+ sda: unknown partition table
++
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2
+-
+IP route cache hash table entries: 4096 (order: 2, 32768 bytes)
+-
+TCP established hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP bind hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP: Hash tables configured (established 16384 bind 16384)
+-
+TCP reno registered
+-
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 296 bytes per conntrack
++
+IP: routing cache hash table of 1024 buckets, 16Kbytes
++
+TCP: Hash tables configured (established 8192 bind 8192)
++
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 440 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+arp_tables: (C) 2002 David S. Miller
+-
+TCP bic registered
+Initializing IPsec netlink socket
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+@@ -103,7 +101,11 @@
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (ext2 filesystem) readonly.
+-
+Freeing unused kernel memory: 224k freed
+-
+init started:  BusyBox v1.1.0 (2006.08.17-02:54+0000) multi-call binary
++
+Freeing unused kernel memory: 480k freed
++
+init started:  BusyBox v1.00-rc2 (2004.11.18-16:22+0000) multi-call binary
++
++PTXdist-0.7.0 (2004-11-18T11:23:40-0500)
++
+ mounting filesystems...
+-loading script...
++EXT2-fs warning: checktime reached, running e2fsck is recommended
++
+loading script...
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/stderr build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stderr
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/stderr 2006-12-06 16:09:58.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stderr  2007-03-08 11:10:14.000000000 -0500
+@@ -1,8 +1,8 @@
+ Warning: rounding error > tolerance
+     0.002000 rounded to 0
+       0: system.tsunami.io.rtc: Real-time clock set to Sun Jan  1 00:00:00 2006
+-Listening for console connection on port 3457
+-0: system.remote_gdb.listener: listening for remote gdb #0 on port 7001
+-0: system.remote_gdb.listener: listening for remote gdb #1 on port 7002
++Listening for console connection on port 3456
++0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
++0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+ warn: Entering event queue @ 0.  Starting simulation...
+-warn: 195723: Trying to launch CPU number 1!
++warn: 195722: Trying to launch CPU number 1!
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/stdout build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stdout
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-atomic-dual/stdout 2006-12-06 16:09:54.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual/stdout  2007-03-08 11:11:18.000000000 -0500
+@@ -5,8 +5,8 @@
+ All Rights Reserved
+-M5 compiled Nov  5 2006 19:41:29
+-M5 started Sun Nov  5 20:03:49 2006
+-M5 executing on zizzer.eecs.umich.edu
++M5 compiled Mar  8 2007 09:45:31
++M5 started Thu Mar  8 11:10:13 2007
++M5 executing on chi.eecs.umich.edu
+ command line: build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual
+-Exiting @ tick 3718155709 because m5_exit instruction encountered
++Exiting @ tick 3556060806 because m5_exit instruction encountered
+===== Statistics differences =====
+Maximum error magnitude: +75304.783954%
+                                  Reference  New Value   Abs Diff   Pct Chg
+Key statistics:
+  host_inst_rate                    1285205     975720    -309485   -24.08%
+  host_mem_usage                     200148     282592      82444   +41.19%
+  sim_insts                        64909600   63264995   -1644605    -2.53%
+  sim_ticks                      3718155709 3556060806 -162094903    -4.36%
+Largest 20 relative errors (> 0%):
+  sim_insts                        64909600   63264995   -1644605    -2.53%
+  sim_seconds                      1.859078   1.778030  -0.081048    -4.36%
+  sim_ticks                      3718155709 3556060806 -162094903    -4.36%
+  system.cpu0.dtb.accesses           544556    1831687    1287131  +236.36%
+  system.cpu0.dtb.acv                   335        360         25    +7.46%
+  system.cpu0.dtb.hits             14841931   12876977   -1964954   -13.24%
+  system.cpu0.dtb.misses               7356      11050       3694   +50.22%
+  system.cpu0.dtb.read_accesses      377530     495437     117907   +31.23%
+  system.cpu0.dtb.read_acv              210        219          9    +4.29%
+  system.cpu0.dtb.read_hits         8970576    7121425   -1849151   -20.61%
+  system.cpu0.dtb.read_misses          6581       9036       2455   +37.30%
+  system.cpu0.dtb.write_accesses     167026    1336250    1169224  +700.03%
+  system.cpu0.dtb.write_acv             125        141         16   +12.80%
+  system.cpu0.dtb.write_hits        5871355    5755552    -115803    -1.97%
+  system.cpu0.dtb.write_misses          775       2014       1239  +159.87%
+  system.cpu0.idle_fraction        0.984943   0.984569  -0.000374    -0.04%
+  system.cpu0.itb.accesses          3586919    4454662     867743   +24.19%
+  system.cpu0.itb.acv                   184        216         32   +17.39%
+  system.cpu0.itb.hits              3583450    4450094     866644   +24.18%
+  system.cpu0.itb.misses               3469       4568       1099   +31.68%
+[... additional errors omitted ...]
+Missing 2 reference statistics:
+  system.cpu1.kern.syscall_15                           1      0.77%     21.54%
+  system.cpu1.kern.syscall_33                           5      3.85%     38.46%
+Found 17 new statistics:
+  system.cpu0.kern.syscall_15                           1      0.32%     23.40%
+  system.cpu0.kern.syscall_58                           1      0.32%     64.10%
+  system.cpu0.kern.syscall_67                           22      7.05%     73.40%
+  system.cpu0.kern.syscall_68                           1      0.32%     73.72%
+  system.cpu0.kern.syscall_91                           15      4.81%     92.31%
+  system.cpu1.kern.callpal_rdusp                        1      0.00%     88.68%
+  system.cpu1.kern.syscall_144                          1      0.61%    100.00%
+  system.cpu1.kern.syscall_19                           4      2.45%     30.67%
+  system.cpu1.kern.syscall_2                            1      0.61%      0.61%
+  system.cpu1.kern.syscall_20                           2      1.23%     31.90%
+  system.cpu1.kern.syscall_4                            1      0.61%      9.20%
+  system.cpu1.kern.syscall_48                           2      1.23%     56.44%
+  system.cpu1.kern.syscall_67                           9      5.52%     65.03%
+  system.cpu1.kern.syscall_73                           2      1.23%     82.82%
+  system.cpu1.kern.syscall_87                           1      0.61%     87.73%
+  system.cpu1.kern.syscall_90                           1      0.61%     88.34%
+  system.cpu1.kern.syscall_91                           13      7.98%     96.32%
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual FAILED!
+build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-timing > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/stdout 2> build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/stderr
+Comparing outputs in build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing.
+diff -ubr tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing -I "^command line:" -I "^M5 compiled " -I "^M5 started " -I "^M5 executing on " -I "^Simulation complete at" -I "^Listening for" -I "listening for remote gdb" --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/outdiff
+===== Output differences =====
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/config.ini build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/config.ini
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/config.ini  2006-12-06 16:09:54.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/config.ini   2007-03-08 11:11:19.000000000 -0500
+@@ -7,9 +7,6 @@
+ output_file=cout
+ progress_interval=0
+-[debug]
+-break_cycles=
+-
+ [exetrace]
+ intel_format=false
+ legion_lockstep=false
+@@ -52,11 +49,11 @@
+ children=bridge cpu disk0 disk2 intrctrl iobus membus physmem sim_console simple_disk tsunami
+ boot_cpu_frequency=1
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-console=/dist/m5/system/binaries/console
++console=./system/binaries/console
+ init_param=0
+-kernel=/dist/m5/system/binaries/vmlinux
++kernel=./system/binaries/vmlinux
+ mem_mode=timing
+-pal=/dist/m5/system/binaries/ts_osfpal
++pal=./system/binaries/ts_osfpal
+ physmem=system.physmem
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -89,6 +86,7 @@
+ max_insts_any_thread=0
+ max_loads_all_threads=0
+ max_loads_any_thread=0
++phase=0
+ profile=0
+ progress_interval=0
+ system=system
+@@ -119,7 +117,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk2]
+@@ -138,7 +136,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.intrctrl]
+@@ -203,7 +201,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.tsunami]
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/config.out build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/config.out
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/config.out  2006-12-06 16:09:55.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/config.out   2007-03-08 11:11:19.000000000 -0500
+@@ -16,9 +16,9 @@
+ boot_cpu_frequency=1
+ physmem=system.physmem
+ mem_mode=timing
+-kernel=/dist/m5/system/binaries/vmlinux
+-console=/dist/m5/system/binaries/console
+-pal=/dist/m5/system/binaries/ts_osfpal
++kernel=./system/binaries/vmlinux
++console=./system/binaries/console
++pal=./system/binaries/ts_osfpal
+ boot_osflags=root=/dev/hda1 console=ttyS0
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -57,6 +57,7 @@
+ do_checkpoint_insts=true
+ do_statistics_insts=true
+ clock=1
++phase=0
+ defer_registration=false
+ // width not specified
+ function_trace=false
+@@ -91,7 +92,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk0.image]
+@@ -109,7 +110,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.disk2.image]
+@@ -127,7 +128,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.simple_disk]
+@@ -565,9 +566,6 @@
+ legion_lockstep=false
+ trace_system=client
+-[debug]
+-break_cycles=
+-
+ [statsreset]
+ reset_cycle=0
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/console.system.sim_console build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/console.system.sim_console
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/console.system.sim_console  2006-12-06 16:09:55.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/console.system.sim_console   2007-03-08 11:13:05.000000000 -0500
+@@ -3,7 +3,7 @@
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+-
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC0000855898, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
++
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
+CPU Clock at 2000 MHz IntrClockFrequency=1024
+Booting with 1 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+@@ -14,26 +14,28 @@
+ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8
+unix_boot_mem ends at FFFFFC0000076000
+k_argc = 0
+-
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1067)
+-
+CallbackFixup 0 18000, t7=FFFFFC000070C000
+-
+Linux version 2.6.13 (hsul@zed.eecs.umich.edu) (gcc version 3.4.3) #1 SMP Sun Oct 8 19:52:07 EDT 2006
++
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028)
++
+CallbackFixup 0 18000, t7=FFFFFC0000700000
++
+Linux version 2.6.8.1 (binkertn@ziff.eecs.umich.edu) (gcc version 3.4.3) #36 SMP Mon May 2 19:50:53 EDT 2005
+Booting GENERIC on Tsunami variation DP264 using machine vector DP264 from SRM
+Major Options: SMP LEGACY_START VERBOSE_MCHECK
+Command line: root=/dev/hda1 console=ttyS0
+memcluster 0, usage 1, start        0, end      392
+memcluster 1, usage 0, start      392, end    16384
+-
+freeing pages 1069:16384
+-
+reserving pages 1069:1070
++
+freeing pages 1030:16384
++
+reserving pages 1030:1031
+SMP: 1 CPUs probed -- cpu_present_mask = 1
+Built 1 zonelists
+Kernel command line: root=/dev/hda1 console=ttyS0
+-
+PID hash table entries: 1024 (order: 10, 32768 bytes)
++
+PID hash table entries: 1024 (order 10: 16384 bytes)
+Using epoch = 1900
+Console: colour dummy device 80x25
+Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+-
+Memory: 118784k/131072k available (3314k kernel code, 8952k reserved, 983k data, 224k init)
+-
+Mount-cache hash table entries: 512
++
+Memory: 119072k/131072k available (3058k kernel code, 8680k reserved, 695k data, 480k init)
++
+Mount-cache hash table entries: 512 (order: 0, 8192 bytes)
++
+per-CPU timeslice cutoff: 374.49 usecs.
++
+task migration cache decay timeout: 0 msecs.
+SMP mode deactivated.
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (4002.20 BogoMIPS).
+@@ -46,21 +48,16 @@
+Initializing Cryptographic API
+rtc: Standard PC (1900) epoch (1900) detected
+Real Time Clock Driver v1.12
+-
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
++
+Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing disabled
+ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+-
+io scheduler noop registered
+-
+io scheduler anticipatory registered
+-
+io scheduler deadline registered
+-
+io scheduler cfq registered
+loop: loaded (max 8 devices)
++
+Using anticipatory io scheduler
+nbd: registered device at major 43
++
+sinic.c: M5 Simple Integrated NIC driver
+ns83820.c: National Semiconductor DP83820 10/100/1000 driver.
+eth0: ns83820.c: 0x22c: 00000000, subsystem: 0000:0000
+eth0: enabling optical transceiver
+-
+eth0: using 64 bit addressing.
+-
+eth0: ns83820 v0.22: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=h,sg
+-
+tun: Universal TUN/TAP device driver, 1.6
+-
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
++
+eth0: ns83820 v0.20: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=sg
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+PIIX4: IDE controller at PCI slot 0000:00:00.0
+@@ -72,24 +69,25 @@
+hdb: M5 IDE Disk, ATA DISK drive
+ide0 at 0x8410-0x8417,0x8422 on irq 31
+hda: max request size: 128KiB
+-
+hda: 511056 sectors (261 MB), CHS=507/16/63, UDMA(33)
+-
+hda: cache flushes not supported
++
+hda: 163296 sectors (83 MB), CHS=162/16/63, UDMA(33)
+ hda: hda1
+hdb: max request size: 128KiB
+hdb: 4177920 sectors (2139 MB), CHS=4144/16/63, UDMA(33)
+-
+hdb: cache flushes not supported
+ hdb: unknown partition table
++
+scsi0 : scsi_m5, version 1.73 [20040518], dev_size_mb=8, opts=0x0
++
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
++
+  Type:   Direct-Access                      ANSI SCSI revision: 03
++
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
++
+SCSI device sda: drive cache: write back
++
+ sda: unknown partition table
++
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2
+-
+IP route cache hash table entries: 4096 (order: 2, 32768 bytes)
+-
+TCP established hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP bind hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP: Hash tables configured (established 16384 bind 16384)
+-
+TCP reno registered
+-
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 296 bytes per conntrack
++
+IP: routing cache hash table of 1024 buckets, 16Kbytes
++
+TCP: Hash tables configured (established 8192 bind 8192)
++
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 440 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+arp_tables: (C) 2002 David S. Miller
+-
+TCP bic registered
+Initializing IPsec netlink socket
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+@@ -98,7 +96,11 @@
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (ext2 filesystem) readonly.
+-
+Freeing unused kernel memory: 224k freed
+-
+init started:  BusyBox v1.1.0 (2006.08.17-02:54+0000) multi-call binary
++
+Freeing unused kernel memory: 480k freed
++
+init started:  BusyBox v1.00-rc2 (2004.11.18-16:22+0000) multi-call binary
++
++PTXdist-0.7.0 (2004-11-18T11:23:40-0500)
++
+ mounting filesystems...
+-loading script...
++EXT2-fs warning: checktime reached, running e2fsck is recommended
++
+loading script...
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/stdout build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/stdout
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing/stdout      2006-12-06 16:09:56.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing/stdout       2007-03-08 11:13:11.000000000 -0500
+@@ -5,8 +5,8 @@
+ All Rights Reserved
+-M5 compiled Nov  5 2006 19:41:29
+-M5 started Sun Nov  5 20:04:39 2006
+-M5 executing on zizzer.eecs.umich.edu
++M5 compiled Mar  8 2007 09:45:31
++M5 started Thu Mar  8 11:11:19 2007
++M5 executing on chi.eecs.umich.edu
+ command line: build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-timing
+-Exiting @ tick 3874844018 because m5_exit instruction encountered
++Exiting @ tick 3684845198 because m5_exit instruction encountered
+===== Statistics differences =====
+Maximum error magnitude: +477.756804%
+                                  Reference  New Value   Abs Diff   Pct Chg
+Key statistics:
+  host_inst_rate                     328353     480602     152249   +46.37%
+  host_mem_usage                     199236     280156      80920   +40.62%
+  sim_insts                        61868161   54194053   -7674108   -12.40%
+  sim_ticks                      3874844018 3684845198 -189998820    -4.90%
+Largest 20 relative errors (> 0%):
+  sim_insts                        61868161   54194053   -7674108   -12.40%
+  sim_seconds                      1.937422   1.842423  -0.094999    -4.90%
+  sim_ticks                      3874844018 3684845198 -189998820    -4.90%
+  system.cpu.dtb.accesses           1304554    2354955    1050401   +80.52%
+  system.cpu.dtb.acv                    367        413         46   +12.53%
+  system.cpu.dtb.hits              16566194   13919439   -2646755   -15.98%
+  system.cpu.dtb.misses               11447      16187       4740   +41.41%
+  system.cpu.dtb.read_accesses       900486     832415     -68071    -7.56%
+  system.cpu.dtb.read_acv               210        242         32   +15.24%
+  system.cpu.dtb.read_hits         10048141    7713505   -2334636   -23.23%
+  system.cpu.dtb.read_misses          10303      13695       3392   +32.92%
+  system.cpu.dtb.write_accesses      404068    1522540    1118472  +276.80%
+  system.cpu.dtb.write_acv              157        171         14    +8.92%
+  system.cpu.dtb.write_hits         6518053    6205934    -312119    -4.79%
+  system.cpu.dtb.write_misses          1144       2492       1348  +117.83%
+  system.cpu.idle_fraction         0.918945   0.925972   0.007027    +0.76%
+  system.cpu.itb.accesses           5663974    6363361     699387   +12.35%
+  system.cpu.itb.acv                    184        239         55   +29.89%
+  system.cpu.itb.hits               5658971    6356637     697666   +12.33%
+  system.cpu.itb.misses                5003       6724       1721   +34.40%
+[... additional errors omitted ...]
+Found 3 new statistics:
+  system.cpu.kern.syscall_67                            31      6.53%     70.53%
+  system.cpu.kern.syscall_68                            1      0.21%     70.74%
+  system.cpu.kern.syscall_91                            28      5.89%     93.68%
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing FAILED!
+build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stdout 2> build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stderr
+Comparing outputs in build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual.
+diff -ubr tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual -I "^command line:" -I "^M5 compiled " -I "^M5 started " -I "^M5 executing on " -I "^Simulation complete at" -I "^Listening for" -I "listening for remote gdb" --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/outdiff
+===== Output differences =====
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/config.ini build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/config.ini
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/config.ini     2006-12-06 16:09:54.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/config.ini      2007-03-08 11:13:12.000000000 -0500
+@@ -7,9 +7,6 @@
+ output_file=cout
+ progress_interval=0
+-[debug]
+-break_cycles=
+-
+ [exetrace]
+ intel_format=false
+ legion_lockstep=false
+@@ -52,11 +49,11 @@
+ children=bridge cpu0 cpu1 disk0 disk2 intrctrl iobus membus physmem sim_console simple_disk tsunami
+ boot_cpu_frequency=1
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-console=/dist/m5/system/binaries/console
++console=./system/binaries/console
+ init_param=0
+-kernel=/dist/m5/system/binaries/vmlinux
++kernel=./system/binaries/vmlinux
+ mem_mode=timing
+-pal=/dist/m5/system/binaries/ts_osfpal
++pal=./system/binaries/ts_osfpal
+ physmem=system.physmem
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -89,6 +86,7 @@
+ max_insts_any_thread=0
+ max_loads_all_threads=0
+ max_loads_any_thread=0
++phase=0
+ profile=0
+ progress_interval=0
+ system=system
+@@ -120,6 +118,7 @@
+ max_insts_any_thread=0
+ max_loads_all_threads=0
+ max_loads_any_thread=0
++phase=0
+ profile=0
+ progress_interval=0
+ system=system
+@@ -150,7 +149,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk2]
+@@ -169,7 +168,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.intrctrl]
+@@ -234,7 +233,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.tsunami]
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/config.out build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/config.out
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/config.out     2006-12-06 16:09:50.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/config.out      2007-03-08 11:13:12.000000000 -0500
+@@ -16,9 +16,9 @@
+ boot_cpu_frequency=1
+ physmem=system.physmem
+ mem_mode=timing
+-kernel=/dist/m5/system/binaries/vmlinux
+-console=/dist/m5/system/binaries/console
+-pal=/dist/m5/system/binaries/ts_osfpal
++kernel=./system/binaries/vmlinux
++console=./system/binaries/console
++pal=./system/binaries/ts_osfpal
+ boot_osflags=root=/dev/hda1 console=ttyS0
+ readfile=tests/halt.sh
+ symbolfile=
+@@ -57,6 +57,7 @@
+ do_checkpoint_insts=true
+ do_statistics_insts=true
+ clock=1
++phase=0
+ defer_registration=false
+ // width not specified
+ function_trace=false
+@@ -91,7 +92,7 @@
+ [system.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.disk0.image]
+@@ -109,7 +110,7 @@
+ [system.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [system.disk2.image]
+@@ -149,6 +150,7 @@
+ do_checkpoint_insts=true
+ do_statistics_insts=true
+ clock=1
++phase=0
+ defer_registration=false
+ // width not specified
+ function_trace=false
+@@ -157,7 +159,7 @@
+ [system.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [system.simple_disk]
+@@ -595,9 +597,6 @@
+ legion_lockstep=false
+ trace_system=client
+-[debug]
+-break_cycles=
+-
+ [statsreset]
+ reset_cycle=0
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/console.system.sim_console build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/console.system.sim_console
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/console.system.sim_console     2006-12-06 16:09:55.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/console.system.sim_console      2007-03-08 11:15:39.000000000 -0500
+@@ -3,7 +3,7 @@
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+-
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC0000855898, kentry = 0xFFFFFC0000310000, numCPUs = 0x2
++
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x2
+CPU Clock at 2000 MHz IntrClockFrequency=1024
+Booting with 2 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+@@ -16,27 +16,29 @@
+Bootstraping CPU 1 with sp=0xFFFFFC0000076000
+unix_boot_mem ends at FFFFFC0000078000
+k_argc = 0
+-
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1067)
++
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028)
+Entering slaveloop for cpu 1 my_rpb=FFFFFC0000018400
+-
+CallbackFixup 0 18000, t7=FFFFFC000070C000
+-
+Linux version 2.6.13 (hsul@zed.eecs.umich.edu) (gcc version 3.4.3) #1 SMP Sun Oct 8 19:52:07 EDT 2006
++
+CallbackFixup 0 18000, t7=FFFFFC0000700000
++
+Linux version 2.6.8.1 (binkertn@ziff.eecs.umich.edu) (gcc version 3.4.3) #36 SMP Mon May 2 19:50:53 EDT 2005
+Booting GENERIC on Tsunami variation DP264 using machine vector DP264 from SRM
+Major Options: SMP LEGACY_START VERBOSE_MCHECK
+Command line: root=/dev/hda1 console=ttyS0
+memcluster 0, usage 1, start        0, end      392
+memcluster 1, usage 0, start      392, end    16384
+-
+freeing pages 1069:16384
+-
+reserving pages 1069:1070
++
+freeing pages 1030:16384
++
+reserving pages 1030:1031
+SMP: 2 CPUs probed -- cpu_present_mask = 3
+Built 1 zonelists
+Kernel command line: root=/dev/hda1 console=ttyS0
+-
+PID hash table entries: 1024 (order: 10, 32768 bytes)
++
+PID hash table entries: 1024 (order 10: 16384 bytes)
+Using epoch = 1900
+Console: colour dummy device 80x25
+Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+-
+Memory: 118784k/131072k available (3314k kernel code, 8952k reserved, 983k data, 224k init)
+-
+Mount-cache hash table entries: 512
++
+Memory: 119072k/131072k available (3058k kernel code, 8680k reserved, 695k data, 480k init)
++
+Mount-cache hash table entries: 512 (order: 0, 8192 bytes)
++
+per-CPU timeslice cutoff: 374.49 usecs.
++
+task migration cache decay timeout: 0 msecs.
+SMP starting up secondaries.
+Slave CPU 1 console command START
+ SlaveCmd: restart FFFFFC0000310020 FFFFFC0000310020 vptb FFFFFFFE00000000 my_rpb FFFFFC0000018400 my_rpb_phys 18400
+@@ -51,21 +53,16 @@
+Initializing Cryptographic API
+rtc: Standard PC (1900) epoch (1900) detected
+Real Time Clock Driver v1.12
+-
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
++
+Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing disabled
+ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+-
+io scheduler noop registered
+-
+io scheduler anticipatory registered
+-
+io scheduler deadline registered
+-
+io scheduler cfq registered
+loop: loaded (max 8 devices)
++
+Using anticipatory io scheduler
+nbd: registered device at major 43
++
+sinic.c: M5 Simple Integrated NIC driver
+ns83820.c: National Semiconductor DP83820 10/100/1000 driver.
+eth0: ns83820.c: 0x22c: 00000000, subsystem: 0000:0000
+eth0: enabling optical transceiver
+-
+eth0: using 64 bit addressing.
+-
+eth0: ns83820 v0.22: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=h,sg
+-
+tun: Universal TUN/TAP device driver, 1.6
+-
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
++
+eth0: ns83820 v0.20: DP83820 v1.3: 00:90:00:00:00:01 io=0x09000000 irq=30 f=sg
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+PIIX4: IDE controller at PCI slot 0000:00:00.0
+@@ -77,24 +74,25 @@
+hdb: M5 IDE Disk, ATA DISK drive
+ide0 at 0x8410-0x8417,0x8422 on irq 31
+hda: max request size: 128KiB
+-
+hda: 511056 sectors (261 MB), CHS=507/16/63, UDMA(33)
+-
+hda: cache flushes not supported
++
+hda: 163296 sectors (83 MB), CHS=162/16/63, UDMA(33)
+ hda: hda1
+hdb: max request size: 128KiB
+hdb: 4177920 sectors (2139 MB), CHS=4144/16/63, UDMA(33)
+-
+hdb: cache flushes not supported
+ hdb: unknown partition table
++
+scsi0 : scsi_m5, version 1.73 [20040518], dev_size_mb=8, opts=0x0
++
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
++
+  Type:   Direct-Access                      ANSI SCSI revision: 03
++
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
++
+SCSI device sda: drive cache: write back
++
+ sda: unknown partition table
++
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2
+-
+IP route cache hash table entries: 4096 (order: 2, 32768 bytes)
+-
+TCP established hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP bind hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP: Hash tables configured (established 16384 bind 16384)
+-
+TCP reno registered
+-
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 296 bytes per conntrack
++
+IP: routing cache hash table of 1024 buckets, 16Kbytes
++
+TCP: Hash tables configured (established 8192 bind 8192)
++
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 440 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+arp_tables: (C) 2002 David S. Miller
+-
+TCP bic registered
+Initializing IPsec netlink socket
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+@@ -103,7 +101,11 @@
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (ext2 filesystem) readonly.
+-
+Freeing unused kernel memory: 224k freed
+-
+init started:  BusyBox v1.1.0 (2006.08.17-02:54+0000) multi-call binary
++
+Freeing unused kernel memory: 480k freed
++
+init started:  BusyBox v1.00-rc2 (2004.11.18-16:22+0000) multi-call binary
++
++PTXdist-0.7.0 (2004-11-18T11:23:40-0500)
++
+ mounting filesystems...
+-loading script...
++EXT2-fs warning: checktime reached, running e2fsck is recommended
++
+loading script...
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/stderr build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stderr
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/stderr 2006-12-06 16:09:57.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stderr  2007-03-08 11:13:12.000000000 -0500
+@@ -1,8 +1,8 @@
+ Warning: rounding error > tolerance
+     0.002000 rounded to 0
+       0: system.tsunami.io.rtc: Real-time clock set to Sun Jan  1 00:00:00 2006
+-Listening for console connection on port 3457
+-0: system.remote_gdb.listener: listening for remote gdb #0 on port 7001
+-0: system.remote_gdb.listener: listening for remote gdb #1 on port 7002
++Listening for console connection on port 3456
++0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
++0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+ warn: Entering event queue @ 0.  Starting simulation...
+-warn: 1082476: Trying to launch CPU number 1!
++warn: 1082472: Trying to launch CPU number 1!
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/stdout build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stdout
+--- tests/quick/10.linux-boot/ref/alpha/linux/tsunami-simple-timing-dual/stdout 2006-12-06 16:09:55.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual/stdout  2007-03-08 11:15:48.000000000 -0500
+@@ -5,8 +5,8 @@
+ All Rights Reserved
+-M5 compiled Nov  5 2006 19:41:29
+-M5 started Sun Nov  5 20:04:42 2006
+-M5 executing on zizzer.eecs.umich.edu
++M5 compiled Mar  8 2007 09:45:31
++M5 started Thu Mar  8 11:13:12 2007
++M5 executing on chi.eecs.umich.edu
+ command line: build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual
+-Exiting @ tick 3970017178 because m5_exit instruction encountered
++Exiting @ tick 3753809338 because m5_exit instruction encountered
+===== Statistics differences =====
+Maximum error magnitude: +9999.000000%
+                                  Reference  New Value   Abs Diff   Pct Chg
+Key statistics:
+  host_inst_rate                     321604     367214      45610   +14.18%
+  host_mem_usage                     199700     281676      81976   +41.05%
+  sim_insts                        66945470   57251247   -9694223   -14.48%
+  sim_ticks                      3970017178 3753809338 -216207840    -5.45%
+Largest 20 relative errors (> 0%):
+  sim_insts                        66945470   57251247   -9694223   -14.48%
+  sim_seconds                      1.985009   1.876905  -0.108104    -5.45%
+  sim_ticks                      3970017178 3753809338 -216207840    -5.45%
+  system.cpu0.dtb.accesses          1003481    1832398     828917   +82.60%
+  system.cpu0.dtb.acv                   289        361         72   +24.91%
+  system.cpu0.dtb.hits             13332675   10463011   -2869664   -21.52%
+  system.cpu0.dtb.misses               8437      11247       2810   +33.31%
+  system.cpu0.dtb.read_accesses      695694     496159    -199535   -28.68%
+  system.cpu0.dtb.read_acv              174        219         45   +25.86%
+  system.cpu0.dtb.read_hits         8285791    5846580   -2439211   -29.44%
+  system.cpu0.dtb.read_misses          7640       9224       1584   +20.73%
+  system.cpu0.dtb.write_accesses     307787    1336239    1028452  +334.14%
+  system.cpu0.dtb.write_acv             115        142         27   +23.48%
+  system.cpu0.dtb.write_hits        5046884    4616431    -430453    -8.53%
+  system.cpu0.dtb.write_misses          797       2023       1226  +153.83%
+  system.cpu0.idle_fraction        0.928150   0.941329   0.013179    +1.42%
+  system.cpu0.itb.accesses          4220935    4180179     -40756    -0.97%
+  system.cpu0.itb.acv                   143        216         73   +51.05%
+  system.cpu0.itb.hits              4217111    4175511     -41600    -0.99%
+  system.cpu0.itb.misses               3824       4668        844   +22.07%
+[... additional errors omitted ...]
+Missing 1 reference statistics:
+  system.cpu1.kern.syscall_33                           3      2.94%     43.14%
+Found 8 new statistics:
+  system.cpu0.kern.syscall_67                           21      6.71%     73.16%
+  system.cpu0.kern.syscall_68                           1      0.32%     73.48%
+  system.cpu0.kern.syscall_91                           15      4.79%     92.33%
+  system.cpu1.kern.syscall_58                           1      0.62%     58.64%
+  system.cpu1.kern.syscall_67                           10      6.17%     65.43%
+  system.cpu1.kern.syscall_73                           1      0.62%     82.72%
+  system.cpu1.kern.syscall_87                           1      0.62%     87.65%
+  system.cpu1.kern.syscall_91                           13      8.02%     96.30%
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual FAILED!
+build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic tests/run.py quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic > build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/stdout 2> build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/stderr
+Comparing outputs in build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic.
+diff -ubr tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic -I "^command line:" -I "^M5 compiled " -I "^M5 started " -I "^M5 executing on " -I "^Simulation complete at" -I "^Listening for" -I "listening for remote gdb" --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff > build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/outdiff
+===== Output differences =====
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/config.ini build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/config.ini
+--- tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/config.ini       2006-12-06 16:09:50.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/config.ini        2007-03-08 11:15:48.000000000 -0500
+@@ -12,13 +12,13 @@
+ children=bridge cpu disk0 disk2 intrctrl iobus membus physmem sim_console simple_disk tsunami
+ boot_cpu_frequency=1
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-console=/dist/m5/system/binaries/console
++console=./system/binaries/console
+ init_param=0
+-kernel=/dist/m5/system/binaries/vmlinux
++kernel=./system/binaries/vmlinux
+ mem_mode=atomic
+-pal=/dist/m5/system/binaries/ts_osfpal
++pal=./system/binaries/ts_osfpal
+ physmem=drivesys.physmem
+-readfile=/z/hsul/work/m5/newmem/configs/boot/netperf-server.rcS
++readfile=/z/mehrara/m5-2.0b2/configs/boot/netperf-server.rcS
+ symbolfile=
+ system_rev=1024
+ system_type=34
+@@ -82,7 +82,7 @@
+ [drivesys.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [drivesys.disk2]
+@@ -101,7 +101,7 @@
+ [drivesys.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [drivesys.intrctrl]
+@@ -166,7 +166,7 @@
+ [drivesys.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [drivesys.tsunami]
+@@ -631,13 +631,13 @@
+ children=bridge cpu disk0 disk2 intrctrl iobus membus physmem sim_console simple_disk tsunami
+ boot_cpu_frequency=1
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-console=/dist/m5/system/binaries/console
++console=./system/binaries/console
+ init_param=0
+-kernel=/dist/m5/system/binaries/vmlinux
++kernel=./system/binaries/vmlinux
+ mem_mode=atomic
+-pal=/dist/m5/system/binaries/ts_osfpal
++pal=./system/binaries/ts_osfpal
+ physmem=testsys.physmem
+-readfile=/z/hsul/work/m5/newmem/configs/boot/netperf-stream-client.rcS
++readfile=/z/mehrara/m5-2.0b2/configs/boot/netperf-stream-client.rcS
+ symbolfile=
+ system_rev=1024
+ system_type=34
+@@ -701,7 +701,7 @@
+ [testsys.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [testsys.disk2]
+@@ -720,7 +720,7 @@
+ [testsys.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [testsys.intrctrl]
+@@ -785,7 +785,7 @@
+ [testsys.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [testsys.tsunami]
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/config.out build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/config.out
+--- tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/config.out       2006-12-06 16:09:58.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/config.out        2007-03-08 11:15:48.000000000 -0500
+@@ -16,11 +16,11 @@
+ boot_cpu_frequency=1
+ physmem=testsys.physmem
+ mem_mode=atomic
+-kernel=/dist/m5/system/binaries/vmlinux
+-console=/dist/m5/system/binaries/console
+-pal=/dist/m5/system/binaries/ts_osfpal
++kernel=./system/binaries/vmlinux
++console=./system/binaries/console
++pal=./system/binaries/ts_osfpal
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-readfile=/z/hsul/work/m5/newmem/configs/boot/netperf-stream-client.rcS
++readfile=/z/mehrara/m5-2.0b2/configs/boot/netperf-stream-client.rcS
+ symbolfile=
+ init_param=0
+ system_type=34
+@@ -146,11 +146,11 @@
+ boot_cpu_frequency=1
+ physmem=drivesys.physmem
+ mem_mode=atomic
+-kernel=/dist/m5/system/binaries/vmlinux
+-console=/dist/m5/system/binaries/console
+-pal=/dist/m5/system/binaries/ts_osfpal
++kernel=./system/binaries/vmlinux
++console=./system/binaries/console
++pal=./system/binaries/ts_osfpal
+ boot_osflags=root=/dev/hda1 console=ttyS0
+-readfile=/z/hsul/work/m5/newmem/configs/boot/netperf-server.rcS
++readfile=/z/mehrara/m5-2.0b2/configs/boot/netperf-server.rcS
+ symbolfile=
+ init_param=0
+ system_type=34
+@@ -305,7 +305,7 @@
+ [testsys.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [testsys.disk0.image]
+@@ -323,7 +323,7 @@
+ [testsys.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [testsys.disk2.image]
+@@ -341,7 +341,7 @@
+ [testsys.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [testsys.simple_disk]
+@@ -691,7 +691,7 @@
+ [drivesys.disk0.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [drivesys.disk0.image]
+@@ -709,7 +709,7 @@
+ [drivesys.disk2.image.child]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-bigswap2.img
++image_file=./system/disks/linux-bigswap2.img
+ read_only=true
+ [drivesys.disk2.image]
+@@ -727,7 +727,7 @@
+ [drivesys.simple_disk.disk]
+ type=RawDiskImage
+-image_file=/dist/m5/system/disks/linux-latest.img
++image_file=./system/disks/linux-latest.img
+ read_only=true
+ [drivesys.simple_disk]
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/console.drivesys.sim_console build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/console.drivesys.sim_console
+--- tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/console.drivesys.sim_console     2006-12-06 16:09:50.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/console.drivesys.sim_console      2007-03-08 12:22:02.000000000 -0500
+@@ -3,7 +3,7 @@
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+-
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC0000855898, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
++
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
+CPU Clock at 1000000 MHz IntrClockFrequency=1024
+Booting with 1 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+@@ -14,26 +14,28 @@
+ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8
+unix_boot_mem ends at FFFFFC0000076000
+k_argc = 0
+-
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1067)
+-
+CallbackFixup 0 18000, t7=FFFFFC000070C000
+-
+Linux version 2.6.13 (hsul@zed.eecs.umich.edu) (gcc version 3.4.3) #1 SMP Sun Oct 8 19:52:07 EDT 2006
++
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028)
++
+CallbackFixup 0 18000, t7=FFFFFC0000700000
++
+Linux version 2.6.8.1 (binkertn@ziff.eecs.umich.edu) (gcc version 3.4.3) #36 SMP Mon May 2 19:50:53 EDT 2005
+Booting GENERIC on Tsunami variation DP264 using machine vector DP264 from SRM
+Major Options: SMP LEGACY_START VERBOSE_MCHECK
+Command line: root=/dev/hda1 console=ttyS0
+memcluster 0, usage 1, start        0, end      392
+memcluster 1, usage 0, start      392, end    16384
+-
+freeing pages 1069:16384
+-
+reserving pages 1069:1070
++
+freeing pages 1030:16384
++
+reserving pages 1030:1031
+SMP: 1 CPUs probed -- cpu_present_mask = 1
+Built 1 zonelists
+Kernel command line: root=/dev/hda1 console=ttyS0
+-
+PID hash table entries: 1024 (order: 10, 32768 bytes)
++
+PID hash table entries: 1024 (order 10: 16384 bytes)
+Using epoch = 1900
+Console: colour dummy device 80x25
+Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+-
+Memory: 118784k/131072k available (3314k kernel code, 8952k reserved, 983k data, 224k init)
+-
+Mount-cache hash table entries: 512
++
+Memory: 119072k/131072k available (3058k kernel code, 8680k reserved, 695k data, 480k init)
++
+Mount-cache hash table entries: 512 (order: 0, 8192 bytes)
++
+per-CPU timeslice cutoff: 374.89 usecs.
++
+task migration cache decay timeout: 0 msecs.
+SMP mode deactivated.
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (1998756.81 BogoMIPS).
+@@ -46,21 +48,16 @@
+Initializing Cryptographic API
+rtc: Standard PC (1900) epoch (1900) detected
+Real Time Clock Driver v1.12
+-
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
++
+Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing disabled
+ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+-
+io scheduler noop registered
+-
+io scheduler anticipatory registered
+-
+io scheduler deadline registered
+-
+io scheduler cfq registered
+loop: loaded (max 8 devices)
++
+Using anticipatory io scheduler
+nbd: registered device at major 43
++
+sinic.c: M5 Simple Integrated NIC driver
+ns83820.c: National Semiconductor DP83820 10/100/1000 driver.
+eth0: ns83820.c: 0x22c: 00000000, subsystem: 0000:0000
+eth0: enabling optical transceiver
+-
+eth0: using 64 bit addressing.
+-
+eth0: ns83820 v0.22: DP83820 v1.3: 00:90:00:00:00:02 io=0x09000000 irq=30 f=h,sg
+-
+tun: Universal TUN/TAP device driver, 1.6
+-
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
++
+eth0: ns83820 v0.20: DP83820 v1.3: 00:90:00:00:00:02 io=0x09000000 irq=30 f=sg
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+PIIX4: IDE controller at PCI slot 0000:00:00.0
+@@ -72,24 +69,25 @@
+hdb: M5 IDE Disk, ATA DISK drive
+ide0 at 0x8410-0x8417,0x8422 on irq 31
+hda: max request size: 128KiB
+-
+hda: 511056 sectors (261 MB), CHS=507/16/63, UDMA(33)
+-
+hda: cache flushes not supported
++
+hda: 163296 sectors (83 MB), CHS=162/16/63, UDMA(33)
+ hda: hda1
+hdb: max request size: 128KiB
+hdb: 4177920 sectors (2139 MB), CHS=4144/16/63, UDMA(33)
+-
+hdb: cache flushes not supported
+ hdb: unknown partition table
++
+scsi0 : scsi_m5, version 1.73 [20040518], dev_size_mb=8, opts=0x0
++
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
++
+  Type:   Direct-Access                      ANSI SCSI revision: 03
++
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
++
+SCSI device sda: drive cache: write back
++
+ sda: unknown partition table
++
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2
+-
+IP route cache hash table entries: 4096 (order: 2, 32768 bytes)
+-
+TCP established hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP bind hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP: Hash tables configured (established 16384 bind 16384)
+-
+TCP reno registered
+-
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 296 bytes per conntrack
++
+IP: routing cache hash table of 1024 buckets, 16Kbytes
++
+TCP: Hash tables configured (established 8192 bind 8192)
++
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 440 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+arp_tables: (C) 2002 David S. Miller
+-
+TCP bic registered
+Initializing IPsec netlink socket
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+@@ -98,14 +96,18 @@
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (ext2 filesystem) readonly.
+-
+Freeing unused kernel memory: 224k freed
+-
+init started:  BusyBox v1.1.0 (2006.08.17-02:54+0000) multi-call binary
++
+Freeing unused kernel memory: 480k freed
++
+init started:  BusyBox v1.00-rc2 (2004.11.18-16:22+0000) multi-call binary
++
++PTXdist-0.7.0 (2004-11-18T11:23:40-0500)
++
+ mounting filesystems...
+-loading script...
++EXT2-fs warning: checktime reached, running e2fsck is recommended
++
+loading script...
+ setting up network...
+ eth0: link now 1000F mbps, full duplex and up.
+running netserver...
+-Starting netserver at port 12865
++/tmp/script: line 22: /benchmarks/netperf-bin/netserver: No such file or directory
+ signal client to begin...done.
+ starting bash...
+ #
+\ No newline at end of file
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/console.testsys.sim_console build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/console.testsys.sim_console
+--- tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/console.testsys.sim_console      2006-12-06 16:09:55.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/console.testsys.sim_console       2007-03-08 12:22:10.000000000 -0500
+@@ -3,7 +3,7 @@
+memsize 8000000 pages 4000
+First free page after ROM 0xFFFFFC0000018000
+HWRPB 0xFFFFFC0000018000 l1pt 0xFFFFFC0000040000 l2pt 0xFFFFFC0000042000 l3pt_rpb 0xFFFFFC0000044000 l3pt_kernel 0xFFFFFC0000048000 l2reserv 0xFFFFFC0000046000
+-
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC0000855898, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
++
+kstart = 0xFFFFFC0000310000, kend = 0xFFFFFC00008064E8, kentry = 0xFFFFFC0000310000, numCPUs = 0x1
+CPU Clock at 1000000 MHz IntrClockFrequency=1024
+Booting with 1 processor(s)
+KSP: 0x20043FE8 PTBR 0x20
+@@ -14,26 +14,28 @@
+ConsoleDispatch at virt 10000658 phys 18658 val FFFFFC00000100A8
+unix_boot_mem ends at FFFFFC0000076000
+k_argc = 0
+-
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1067)
+-
+CallbackFixup 0 18000, t7=FFFFFC000070C000
+-
+Linux version 2.6.13 (hsul@zed.eecs.umich.edu) (gcc version 3.4.3) #1 SMP Sun Oct 8 19:52:07 EDT 2006
++
+jumping to kernel at 0xFFFFFC0000310000, (PCBB 0xFFFFFC0000018180 pfn 1028)
++
+CallbackFixup 0 18000, t7=FFFFFC0000700000
++
+Linux version 2.6.8.1 (binkertn@ziff.eecs.umich.edu) (gcc version 3.4.3) #36 SMP Mon May 2 19:50:53 EDT 2005
+Booting GENERIC on Tsunami variation DP264 using machine vector DP264 from SRM
+Major Options: SMP LEGACY_START VERBOSE_MCHECK
+Command line: root=/dev/hda1 console=ttyS0
+memcluster 0, usage 1, start        0, end      392
+memcluster 1, usage 0, start      392, end    16384
+-
+freeing pages 1069:16384
+-
+reserving pages 1069:1070
++
+freeing pages 1030:16384
++
+reserving pages 1030:1031
+SMP: 1 CPUs probed -- cpu_present_mask = 1
+Built 1 zonelists
+Kernel command line: root=/dev/hda1 console=ttyS0
+-
+PID hash table entries: 1024 (order: 10, 32768 bytes)
++
+PID hash table entries: 1024 (order 10: 16384 bytes)
+Using epoch = 1900
+Console: colour dummy device 80x25
+Dentry cache hash table entries: 32768 (order: 5, 262144 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 131072 bytes)
+-
+Memory: 118784k/131072k available (3314k kernel code, 8952k reserved, 983k data, 224k init)
+-
+Mount-cache hash table entries: 512
++
+Memory: 119072k/131072k available (3058k kernel code, 8680k reserved, 695k data, 480k init)
++
+Mount-cache hash table entries: 512 (order: 0, 8192 bytes)
++
+per-CPU timeslice cutoff: 374.89 usecs.
++
+task migration cache decay timeout: 0 msecs.
+SMP mode deactivated.
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (1998756.81 BogoMIPS).
+@@ -46,21 +48,16 @@
+Initializing Cryptographic API
+rtc: Standard PC (1900) epoch (1900) detected
+Real Time Clock Driver v1.12
+-
+Serial: 8250/16550 driver $Revision: 1.90 $ 1 ports, IRQ sharing disabled
++
+Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing disabled
+ttyS0 at I/O 0x3f8 (irq = 4) is a 8250
+-
+io scheduler noop registered
+-
+io scheduler anticipatory registered
+-
+io scheduler deadline registered
+-
+io scheduler cfq registered
+loop: loaded (max 8 devices)
++
+Using anticipatory io scheduler
+nbd: registered device at major 43
++
+sinic.c: M5 Simple Integrated NIC driver
+ns83820.c: National Semiconductor DP83820 10/100/1000 driver.
+eth0: ns83820.c: 0x22c: 00000000, subsystem: 0000:0000
+eth0: enabling optical transceiver
+-
+eth0: using 64 bit addressing.
+-
+eth0: ns83820 v0.22: DP83820 v1.3: 00:90:00:00:00:02 io=0x09000000 irq=30 f=h,sg
+-
+tun: Universal TUN/TAP device driver, 1.6
+-
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
++
+eth0: ns83820 v0.20: DP83820 v1.3: 00:90:00:00:00:02 io=0x09000000 irq=30 f=sg
+Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
+PIIX4: IDE controller at PCI slot 0000:00:00.0
+@@ -72,24 +69,25 @@
+hdb: M5 IDE Disk, ATA DISK drive
+ide0 at 0x8410-0x8417,0x8422 on irq 31
+hda: max request size: 128KiB
+-
+hda: 511056 sectors (261 MB), CHS=507/16/63, UDMA(33)
+-
+hda: cache flushes not supported
++
+hda: 163296 sectors (83 MB), CHS=162/16/63, UDMA(33)
+ hda: hda1
+hdb: max request size: 128KiB
+hdb: 4177920 sectors (2139 MB), CHS=4144/16/63, UDMA(33)
+-
+hdb: cache flushes not supported
+ hdb: unknown partition table
++
+scsi0 : scsi_m5, version 1.73 [20040518], dev_size_mb=8, opts=0x0
++
+  Vendor: Linux     Model: scsi_m5       Li  Rev: 0004
++
+  Type:   Direct-Access                      ANSI SCSI revision: 03
++
+SCSI device sda: 16384 512-byte hdwr sectors (8 MB)
++
+SCSI device sda: drive cache: write back
++
+ sda: unknown partition table
++
+Attached scsi disk sda at scsi0, channel 0, id 0, lun 0
+mice: PS/2 mouse device common for all mice
+NET: Registered protocol family 2
+-
+IP route cache hash table entries: 4096 (order: 2, 32768 bytes)
+-
+TCP established hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP bind hash table entries: 16384 (order: 5, 262144 bytes)
+-
+TCP: Hash tables configured (established 16384 bind 16384)
+-
+TCP reno registered
+-
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 296 bytes per conntrack
++
+IP: routing cache hash table of 1024 buckets, 16Kbytes
++
+TCP: Hash tables configured (established 8192 bind 8192)
++
+ip_conntrack version 2.1 (512 buckets, 4096 max) - 440 bytes per conntrack
+ip_tables: (C) 2000-2002 Netfilter core team
+arp_tables: (C) 2002 David S. Miller
+-
+TCP bic registered
+Initializing IPsec netlink socket
+NET: Registered protocol family 1
+NET: Registered protocol family 17
+@@ -98,23 +96,17 @@
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+VFS: Mounted root (ext2 filesystem) readonly.
+-
+Freeing unused kernel memory: 224k freed
+-
+init started:  BusyBox v1.1.0 (2006.08.17-02:54+0000) multi-call binary
++
+Freeing unused kernel memory: 480k freed
++
+init started:  BusyBox v1.00-rc2 (2004.11.18-16:22+0000) multi-call binary
++
++PTXdist-0.7.0 (2004-11-18T11:23:40-0500)
++
+ mounting filesystems...
+-loading script...
++EXT2-fs warning: checktime reached, running e2fsck is recommended
++
+loading script...
+ setting up network...
+ eth0: link now 1000F mbps, full duplex and up.
+waiting for server...server ready
+ starting test...
+ netperf warmup
+-/benchmarks/netperf-bin/netperf -H 10.0.0.1 -t TCP_STREAM -l -100k
+-TCP STREAM TEST to 10.0.0.1 : dirty data
+-Recv   Send    Send
+-Socket Socket  Message  Elapsed
+-Size   Size    Size     Time     Throughput
+-bytes  bytes   bytes    secs.    10^6bits/sec
+-
+-5000000 5000000 5000000    1.29       30.91
+-netperf benchmark
+-/benchmarks/netperf-bin/netperf -H 10.0.0.1 -t TCP_STREAM -k16384,0 -K16384,0 -- -m 65536 -M 65536 -s 262144 -S 262144
+-TCP STREAM TEST to 10.0.0.1 : dirty data
++/bench
+\ No newline at end of file
+Only in build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic: ethertrace
+diff -ubr -I '^command line:' -I '^M5 compiled ' -I '^M5 started ' -I '^M5 executing on ' -I '^Simulation complete at' -I '^Listening for' -I 'listening for remote gdb' --exclude=m5stats.txt --exclude=SCCS --exclude=outdiff tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/stdout build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/stdout
+--- tests/quick/80.netperf-stream/ref/alpha/linux/twosys-tsunami-simple-atomic/stdout   2006-12-06 16:09:54.000000000 -0500
++++ build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic/stdout    2007-03-08 12:22:10.000000000 -0500
+@@ -5,10 +5,9 @@
+ All Rights Reserved
+-M5 compiled Nov 29 2006 16:48:25
+-M5 started Sat Dec  2 11:01:31 2006
+-M5 executing on zed.eecs.umich.edu
++M5 compiled Mar  8 2007 09:45:31
++M5 started Thu Mar  8 11:15:48 2007
++M5 executing on chi.eecs.umich.edu
+ command line: build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic tests/run.py quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic
+-Resetting stats at cycle 4093398828306!
+-Resetting stats at cycle 4293399617774!
+-Exiting @ tick 4293400403752 because checkpoint
++Resetting stats at cycle 2732572857060!
++Exiting @ tick 2732576163757 because m5_exit instruction encountered
+===== Statistics differences =====
+Maximum error magnitude: +1209568.000000%
+                                  Reference  New Value   Abs Diff   Pct Chg
+Key statistics:
+  host_inst_rate                   38710250 2703500463 2664790213  +6883.94%
+  host_mem_usage                     411152     463844      52692   +12.82%
+  sim_insts                       276189231 6943854428 6667665197  +2414.17%
+  sim_ticks                      200000789468    3306697 -199997482771  -100.00%
+Largest 20 relative errors (> 0%):
+  drivesys.cpu.dtb.accesses          401302        153    -401149   -99.96%
+  drivesys.cpu.dtb.acv                   40          0        -40  -100.00%
+  drivesys.cpu.dtb.hits              624298       3920    -620378   -99.37%
+  drivesys.cpu.dtb.misses               569          4       -565   -99.30%
+  drivesys.cpu.dtb.read_accesses     268057        141    -267916   -99.95%
+  drivesys.cpu.dtb.read_acv              30          0        -30  -100.00%
+  drivesys.cpu.dtb.read_hits         393538       2465    -391073   -99.37%
+  drivesys.cpu.dtb.read_misses          487          4       -483   -99.18%
+  drivesys.cpu.dtb.write_accesses     133245         12    -133233   -99.99%
+  drivesys.cpu.dtb.write_acv             10          0        -10  -100.00%
+  drivesys.cpu.dtb.write_hits        230760       1455    -229305   -99.37%
+  drivesys.cpu.dtb.write_misses          82          0        -82  -100.00%
+  drivesys.cpu.itb.accesses         1337980        816   -1337164   -99.94%
+  drivesys.cpu.itb.acv                   22          0        -22  -100.00%
+  drivesys.cpu.itb.hits             1337786        816   -1336970   -99.94%
+  drivesys.cpu.itb.misses               194          0       -194  -100.00%
+  drivesys.cpu.kern.callpal            4443         84      -4359   -98.11%
+  drivesys.cpu.kern.callpal_rdps    359.000     18.000   -341.000   -94.99%
+  drivesys.cpu.kern.callpal_rti     322.000      1.000   -321.000   -99.69%
+  drivesys.cpu.kern.callpal_swpipl   3654.000     65.000  -3589.000   -98.22%
+[... additional errors omitted ...]
+Missing 49 reference statistics:
+  drivesys.cpu.kern.callpal_callsys                     25      0.56%     99.84%
+  drivesys.cpu.kern.callpal_imb                         7      0.16%    100.00%
+  drivesys.cpu.kern.callpal_rdusp                       1      0.02%     92.03%
+  drivesys.cpu.kern.callpal_swpctx                      70      1.58%      1.58%
+  drivesys.cpu.kern.callpal_tbi                         5      0.11%      1.69%
+  drivesys.cpu.kern.ipl_count_22                        205      4.89%     33.50%
+  drivesys.cpu.kern.ipl_good_22                         205      7.91%     54.15%
+  drivesys.cpu.kern.ipl_ticks_22                        17630      0.00%    100.00%
+  drivesys.cpu.kern.ipl_used_22                         1
+  drivesys.cpu.kern.syscall                             22
+  drivesys.cpu.kern.syscall_101                         2      9.09%     50.00%
+  drivesys.cpu.kern.syscall_102                         3     13.64%     63.64%
+  drivesys.cpu.kern.syscall_104                         1      4.55%     68.18%
+  drivesys.cpu.kern.syscall_105                         3     13.64%     81.82%
+  drivesys.cpu.kern.syscall_106                         1      4.55%     86.36%
+  drivesys.cpu.kern.syscall_118                         2      9.09%     95.45%
+  drivesys.cpu.kern.syscall_150                         1      4.55%    100.00%
+  drivesys.cpu.kern.syscall_17                          2      9.09%     27.27%
+  drivesys.cpu.kern.syscall_2                           1      4.55%      4.55%
+  drivesys.cpu.kern.syscall_6                           3     13.64%     18.18%
+  drivesys.cpu.kern.syscall_97                          1      4.55%     31.82%
+  drivesys.cpu.kern.syscall_99                          2      9.09%     40.91%
+  drivesys.tsunami.ethernet.rxBandwidth                 38400
+  drivesys.tsunami.ethernet.rxBytes                     960
+  drivesys.tsunami.ethernet.rxIpChecksums               8
+  drivesys.tsunami.ethernet.rxPPS                       40
+  drivesys.tsunami.ethernet.rxPackets                   8
+  drivesys.tsunami.ethernet.rxTcpChecksums              8
+  drivesys.tsunami.ethernet.rxUdpChecksums              0
+  testsys.cpu.kern.ipl_count_22                         205      1.64%     43.58%
+  testsys.cpu.kern.ipl_good_22                          205      1.95%     51.85%
+  testsys.cpu.kern.ipl_ticks_22                         17630      0.00%    100.00%
+  testsys.cpu.kern.ipl_used_22                          1
+  testsys.cpu.kern.syscall_101                          2      2.41%     90.36%
+  testsys.cpu.kern.syscall_102                          2      2.41%     92.77%
+  testsys.cpu.kern.syscall_104                          1      1.20%     93.98%
+  testsys.cpu.kern.syscall_105                          3      3.61%     97.59%
+  testsys.cpu.kern.syscall_118                          2      2.41%    100.00%
+  testsys.cpu.kern.syscall_20                           1      1.20%     33.73%
+  testsys.cpu.kern.syscall_33                           3      3.61%     37.35%
+  testsys.cpu.kern.syscall_97                           2      2.41%     85.54%
+  testsys.cpu.kern.syscall_98                           2      2.41%     87.95%
+  testsys.tsunami.ethernet.txBandwidth                  38400
+  testsys.tsunami.ethernet.txBytes                      960
+  testsys.tsunami.ethernet.txIpChecksums                2
+  testsys.tsunami.ethernet.txPPS                        40
+  testsys.tsunami.ethernet.txPackets                    8
+  testsys.tsunami.ethernet.txTcpChecksums               2
+  testsys.tsunami.ethernet.txUdpChecksums               0
+Found 3 new statistics:
+  testsys.cpu.kern.syscall_67                           5      6.49%     71.43%
+  testsys.cpu.kern.syscall_73                           2      2.60%     90.91%
+  testsys.cpu.kern.syscall_91                           4      5.19%    100.00%
+***** build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic FAILED!
+scons: done building targets.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

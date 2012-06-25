@@ -1,0 +1,12 @@
+>   2) I tried to use the newest M5 and run the X86_SE or X86_FS mode
+> with the binaries compiled from conventional x86 gcc compiler. The
+> status is even worse....
+Could you please let me know what didn't work? X86 support is a work in progress
+so there may be major limitations like an unimplemented feature that will keep
+it from working, but it might be a simple bug.
+Gabe
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

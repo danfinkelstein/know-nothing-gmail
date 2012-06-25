@@ -1,0 +1,80 @@
+In Beta 3 the coherence requires the use of the ownership protocol
+because there was no support for the caches to snarf data.  The
+solution would either be to add a snarf option to the L2 cache and
+implement it, or make sure that you have a ownership protocol.
+I assume the particular case that you are failing is: One cache has
+the data in the modified state and then another cache does a read
+request.  Both caches end up in the shared state and because the L2
+cache does not snarf data , then the data in the L2 is stale.  If
+another cache does a read request, without the ownership state, the L2
+will respond with the stale data.
+-Ron
+- Show quoted text -
+On Dec 10, 2007 1:49 AM, Steve Reinhardt <stever@gmail.com> wrote:
+> If the pristine M5 code fails the memtest regression test, that's news
+> to me.  Not sure what's really happening, but here are a couple of
+> thoughts:
+>
+> - It's probably much better to use the beta4 release; the cache
+> coherence code in particular has been substantially cleaned up.  Is
+> there a particular reason you're using beta3 instead?
+>
+> - The caches don't do data snarfing in the normal case, so either your
+> diagnosis is mistaken or you're using snarfing with a different
+> meaning than how I define it.
+>
+> Steve
+>
+>
+> On Dec 9, 2007 9:37 PM, Paul Cooper <pcbling@umich.edu> wrote:
+> >
+> >
+> >
+> >
+> > Hi,
+> >
+> >
+> >
+> > I am currently working with M5 to test out the possible benefits of a cache
+> > coherence protocol that adds a conflicted state on top of the standard MESI
+> > protocol.  To test the correctness of my change I ran the regression tests
+> > and was unable to pass the memtest regression test.  Also I was unable to
+> > get any of the splash benchmarks to complete.  After debugging my code I
+> > eventually tried to run it on pristine M5 code using the MESI protocol and
+> > was still unable to pass the memtest regression test or finish any of the
+> > splash benchmarks (I am running in SE mode) as well.
+> >
+> >
+> >
+> > I think I have tracked down the issue to a problem with the L2 cache failing
+> > to snarf bus responses when the cpus broadcast the data across the bus.  I
+> > cannot completely confirm this but it currently explains all of the behavior
+> > I see.  I was wondering if this issue has ever been identified before and if
+> > you had any other suggestions.  Also I was wondering where the code for
+> > snarfs by the L2 cache is as I was unable to track it down in the M5 code or
+> > if there are other places I should look.
+> >
+> >
+> >
+> > Any help you could provide would be greatly appreciated and please let me
+> > know if you have any questions or concerns.
+> >
+> >
+> >
+> > Thanks
+> >
+> > Paul Cooper
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

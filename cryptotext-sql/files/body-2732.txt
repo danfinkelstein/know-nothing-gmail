@@ -1,0 +1,11 @@
+Hi all,
+Is it possible to put m5ops into a binary that is being simulated in m5
+full system? In this case, I want very accurate timing of a getpid, and
+want to do resetstats, the system call, and then dump stats. So it would
+be nice if I could put these calls into a binary without actually
+inacting the system call utility to call the m5 binary.
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

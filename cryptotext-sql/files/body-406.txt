@@ -1,0 +1,62 @@
+  
+Hey,
+Since I modified the python-scripts a little bit it will be difficult
+to execute the exact same command line as I do. However I'm using
+build/ALPHA_SE/m5.opt -d simulator-out/8stagesAlt/hello/inorder
+--trace-file=tracedump --trace-flags=AddrDep configs/config-max/max.py
+--inorder --caches --exe=benchmarks/hello/hello --cmd=hello
+-output=simulator-out/8stagesAlt/hello/inorder/bench.out
+--errout=simulator-out/8stagesAlt/hello/inorder/bench.errout
+The address 0x120000d70 is maybe a better example: It gets added a lot
+of times but never gets removed (or maybe once).
+At tick 1697000 the instruction gets added to the dependency list, and
+at tick 1698000 the instruction gets squashed.
+You'll probably need my configuration for this, since the ticks might
+be different, thats why I added the config-file.
+(You might note that some parameters were set to unrealistic values.
+However the problem also occured for normal values, in case you would
+wonder :-)
+Most of the addresses are indeed added to the list more than once (but
+get removed only once)!
+Some of the addresses are added to the list once, and never removed.
+(I built a small program to identify the adresses that get added but
+not removed, if you are interested I can send it to you).
+What do you mean with a time sync?
+Thanks!
+Max- Show quoted text -
+On 03/12/2010 05:29 PM, Korey Sewell wrote:
+- Show quoted text -Hi Max,
+thanks for further investigating. it does look like the mismanagement
+of that function is a "time sync".
+  
+  
+  
+    Take for example instruction
+0x12000067c. This one is added to
+addrList, a little bit later a squash occurs and this instruction never
+gets removed!  This never happens in the case of 5 pipeline stages.
+If you want I can give you all instructions that aren't removed..
+    
+  
+  Can you provide the command line you're using as well as the
+simulation ticks in which you witness the above error?
+  
+I would guess either something is not catching in that squash()
+function OR somehow the same addresses are getting added to that list
+more than once.
+  
+ An assertion on some reasonable address list size will eventually be 
+a good bug catcher as well.
+ 
+  
+  
+- Korey
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+P.S. I think that on restore from a checkpoint, tickNextIdle starts from zero.
+After that it increments in 1000s up to curTick - which can be a really big
+number.
+Ah, that makes more sense as to why it is so slow.  What we should really do is do the math in the unserialize function to get the idle to the right place and maybe leave in the current method for calculating the next tick.
+It hadn't registered for me that the problem was really resuming from the checkpoint.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

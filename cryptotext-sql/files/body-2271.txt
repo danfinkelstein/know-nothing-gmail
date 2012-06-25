@@ -1,0 +1,10 @@
+i accidently deleted a lot of data in my home directory and after that I am geting this error if I try to install m5. Any idea what is lost?
+'import site' failed; use -v for traceback
+Traceback (most recent call last):
+  File "/home/data3/scons-0.97/bin/scons", line 39, in ?
+    import os
+ImportError: No module named os
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

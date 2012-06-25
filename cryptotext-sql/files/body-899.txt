@@ -1,0 +1,41 @@
+Dear m5-users,
+I am trying to get the SPEC2000 eio traces to run on M5 with
+InOrderCPU in SE mode. I built m5 with "EXTRAS" support using this
+command:
+scons EXTRAS=/path/to/m5_2.0_encumbered build/ALPHA_SE/m5.debug
+To run the eio traces, I modified the "se.py" script following
+Michael's direction
+(http://osdir.com/ml/emulators.m5.users/2006-10/msg00013.html). Then I
+use the following command:
+./build/ALPHA_SE/m5.debug ./configs/example/se.py --inorder --caches
+--l2cache --eio=/path/to/EIO_traces
+But I got core dump and the error message as following:
+**** REAL SIMULATION ****
+For more information see: http://www.m5sim.org/warn/7f11c91a
+info: Entering event queue @ 0.  Starting simulation...
+panic: Tried to execute unmapped address 0.
+ @ cycle 58000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+Memory Usage: 547308 KBytes
+For more information see: http://www.m5sim.org/panic/95542d88
+Program aborted at cycle 58000
+gzip: Abort (core dumped)
+stdout: Broken pipe
+==================================================
+I installed several versions of M5 (with support for InOrderCPU model)
+from the repository and got the same error message. I printed some
+traces, it seems that there is bug in "Fetch-Seq-Unit" which assigns
+dynamic instruction to PC 0x000000 (From trace: "58000:
+system.cpu.Fetch-Seq-Unit: [tid:0]: Assigning [sn:3] to PC 0x000000,
+NPC 0x000004, NNPC 0x000008"). I looked into the source code of
+"cpu/inorder/first_stage.cc" and related files but still cannot figure
+out the problem.
+I wonder if someone met the same problem before (at least I haven't
+found solution from the list archive) and how to make it work
+correctly. Any help would be greatly appreciated.  Thanks in advance.
+Best,
+Jing
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

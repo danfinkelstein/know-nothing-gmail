@@ -1,0 +1,5 @@
+when creating a complex interconnection network where request and response paths are very different, sometimes there is a problem of desta and src have same port id, and thus the failure of dest!=src assertion. However, if the order of declaration of buses is changed, the port ids somehow change, and the assertion failure no more and thus messages are received by nodes who earlier sent them, because src and dest are different. Now, one should be careful about final destination port being same as beginning (src) port, but hte order of declaration changing the bus port-ids look suspicious?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

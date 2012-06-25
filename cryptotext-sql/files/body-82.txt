@@ -1,0 +1,6 @@
+Hi all,i want to know the cache block's status at the very end of the simulation. like how many L2 cache blocks are dirty and so on. Does anyone know how to get this information? if i can scan all L2 cache blocks at the very end of the simulation, i think i can make it but how to do this?
+Thanks,Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

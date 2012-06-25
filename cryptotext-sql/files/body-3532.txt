@@ -1,0 +1,15 @@
+> I can get around it by using my own variables. But  I LOVE m5 and I would
+> prefer to use its stats if possible.
+Wow, that's quite an endorsement.
+> It's a pity that the functionality is turned off. Is there a patch for it?
+The funny thing (or not funny from your perspective) is that the old
+feature is exactly for what you want.  m5_1.1 does have the binning
+feature, and stats haven't changed much so it could probably be
+re-added.
+I actually liked the idea of the feature.  It could be re-added.  Any
+old time developers have any opinions?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

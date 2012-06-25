@@ -1,0 +1,24 @@
+I meant I believe this info:glibc, binutils, linux headers and patches were used to build each of the crosscompilersIs in the build log it self, you just gotta search for it. So I guess that entails opening the cross compiler, but not nesscarily running it just getting the log file...
+Hope that helps.On Tue, Dec 1, 2009 at 8:29 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+Thanks ,- Show quoted text -  It would be nice, however, to have a solution that doesn't require downloading the crosscompiler... is this information available somewhere else?  Perhaps it would make sense to add to the M5 site?
+  JoelOn Tue, Dec 1, 2009 at 5:50 PM, ef <snorlaxgb@gmail.com> wrote:
+The file released should have a build.log or another log that has all those details.On Tue, Dec 1, 2009 at 10:24 AM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+Hi,  On UTCS systems, we have always had trouble using the precompiled crosscompilers on the M5 site, as we have run into issues with directory structure or host system architecture.  However, we have been able to build our own crosscompilers using crosstool to get by.  We noticed that the M5 site has gcc-4.3.2 available in the downloads section, but we were hoping to get more information about the build, so that we can replicate it.  Can someone let us know which versions of glibc, binutils, linux headers and patches were used to build each of the crosscompilers?
+  Thanks,  Joel--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

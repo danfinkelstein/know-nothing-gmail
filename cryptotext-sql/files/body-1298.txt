@@ -1,0 +1,6 @@
+HiI am interested in performing the trace for the data flow(blocks) between main memory and the L3 cache; between L2 and L3 cache. So is there any methodology in M5 to do that like dump trace the data into a file or to carry out the trace.
+Thanks in advanceAshutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

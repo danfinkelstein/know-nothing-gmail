@@ -1,0 +1,59 @@
+The current point of failure in bleeding edge full system x86 is
+actually an init script that populates /dev, so there's a possibility
+there aren't beyond the absolute necessities. I've installed Gentoo
+many times on real machines and I've never had to make a device file
+by hand. If you do, though, you should look at the mknod command.
+Gabe
+- Show quoted text -
+Quoting nathan binkert <nate@binkert.org>:
+> Out of curiosity, are there any devices in /dev on the image?  My
+> guess is that one of the steps in installing the image is to create
+> all of the devices.  I'm don't have a good connection right now, and I
+> can't remember what I did, but take a look at the gentoo alpha
+> handbook and see if you can figure out which step does that for you.
+>
+>   Nate
+>
+> On Mon, Feb 23, 2009 at 5:12 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+>> Hi, Ali, you are right. There is not /dev/ttyS0 on the stage image. How can
+>> I add that to the image? Is there any way to solve this? I hope I don't have
+>> to create an image myself.
+>>
+>>>
+>>> I would guess that there isn't a /dev/ttyS0 on the disk image. I don't
+>>> know what is in the stage 3 image as far as dev inodes go, but it
+>>> should be populated with approximately what is in the image we
+>>> distribute.
+>>>
+>>> Ali
+>>>
+>>> On Feb 23, 2009, at 7:30 AM, Veydan Wu wrote:
+>>>
+>>> > Hi, Ali, Thanks for you help. I have created a blank image and copy
+>>> > Gentoo stage 3 in it. Everything seems OK, but when I used it to run
+>>> > M5 in FS mode, I got an error below:
+>>> >
+>>> > Warning: unable to open an initial console.
+>>> > Restarting system.
+>>> >
+>>> > The simulator just quit from there. The default console I used is
+>>> > downloaded from the website and runs fine if I use the default image
+>>> > download from the website. How can I solve this problem. Thanks !
+>>> >
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

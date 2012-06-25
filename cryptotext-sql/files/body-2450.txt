@@ -1,0 +1,39 @@
+In case Steve wants a closer look at the system being implemented, attached is a pdf file. The shared bus I am implementing is a bit complex than I explained below.
+- Show quoted text -
+---- Original message ----
+>Date: Mon, 6 Oct 2008 00:03:54 -0400
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] MSHR downStreamPending
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>The bridge isn't supported in the middle of a coherent hierarchy.
+>Steve can probably comment more about why, but minimally it would need
+>to support passing the express-snoops and it currently doesn't.
+>
+>Ali
+>
+>On Oct 5, 2008, at 11:21 PM, Shoaib Akram wrote:
+>
+>> I am simulating a multiprocessor system with a shared bus. Private
+>> L1,l2 and shared L3 (connected to shared bus through tol3bus). When
+>> I insert a bridge between the shared bus and tol3bus, the L2 cache
+>> on a miss, after allocating mshr and sending the bus packet on
+>> shared bus, calls cleardownStreamPending(). This is not supposed to
+>> happen since cleardownStreamPending() should be called by last-
+>> level(L3) cache. cleardownStreamPending() is indeed called by the L3
+>> cache if there is no bridge. Any of the developers aware of the
+>> implementation of this feature can throw some light maybe?
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

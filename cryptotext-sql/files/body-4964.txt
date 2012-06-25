@@ -1,0 +1,60 @@
+For those of you that are interested, I figured out the problem. Basically the sys.exec_prefix variable is not being set properly.  The quick work around is to set the PYTHONHOME variable to <prefix>:<exec_prefix>
+For me, on my mac, that's:
+export PYTHONHOME=/opt/local/Library/Frameworks/Python.framework/Versions/2.4:/opt/local
+  Nate
+I'm not sure that this is a packaging thing.  It seems to have to do with the --enable-framework configure option.  I haven't figured out what needs to be done to the compile to fix this yet. distutils.sysconfig.get_config_vars seems to be promsing in that it will help figure out how things were built.
+Unfortunately, I don't have time to figure this out right now.  Maybe I can whack at it again tonight.
+ Nate
+I actually had this problem the other day on my mac using darwinports. It seems that the problem has to do with a messed up python install.  At least things were fixed when I downgraded python to 2.4.2.  I'm guessing that it is a packaging problem of some sort.
+ Nate
+That's very bizarre... we have 2.4.3 and have no problems.  I'm sure it has more to do with how your Python is installed on your system than what version it is.  What OS/distro are you using?  Did you install Python from a standard package/rpm or from source?  Do you have multiple versions of Python installed on the machine?
+The scons script tries to deduce the correct Python directories by querying the Python interpreter that's running scons itself, using what I think are the standard, official methods, so I'd say that at best your Python install is unusual (in which case we'd want to fix our scons scripts to deal with it) and at worst maybe you need to reinstall Python.
+Keep us posted.
+Steve
+Michael Van Biesbrouck wrote:
+I attempted to build M5 using Python 2.4.3 (the current stable
+release), but have run into problems suggesting that this version is
+not compatible with M5.  First, the scons scripts auto-generated the
+wrong directory for linking to libpython2.4.a.  That I was able to
+fix, but I also need to add dl, pthread and util to the libraries
+linked.  After those changes I was able to build M5 but it fails to
+run correctly during the dynamic loading of Python modules.  The build
+tests fail with this message:
+Traceback (most recent call last):
+ File "<string>", line 1, in ?
+ File "build/ALPHA_SE/python/m5/__init__.py", line 79, in ?
+   from main import options, arguments, main
+ File "build/ALPHA_SE/python/m5/main.py", line 30, in ?
+   import code, optparse, os, socket, sys
+ File "/projects/mvanbies/m5_2.0_b1/tools//lib/python2.4/optparse.py",
+line 72, in ?
+   from gettext import gettext as _
+ File "/projects/mvanbies/m5_2.0_b1/tools//lib/python2.4/gettext.py",
+line 49, in ?
+   import locale, copy, os, re, struct, sys
+ImportError: /projects/mvanbies/m5_2.0_b1/tools/lib/python2.4/lib-dynload/struct.so:
+undefined symbol: PyString_Type
+Traceback (most recent call last):
+ File "<string>", line 1, in ?
+NameError: name 'm5' is not defined
+Michael
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

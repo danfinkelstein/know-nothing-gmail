@@ -1,0 +1,17 @@
+Hi All,
+I am new to the M5. I am wondering if there are any algorithm people
+using M5 for application level performance evaluation. I am working on
+application level schedulers on multicore processor. In order to
+understand the scalability of the scheduler, I intend to execute our
+Pthreads code on a virtual processor simulated by M5, where we can
+assign the number of cores in the processor (saying, 32 or 64).  I am
+wondering if the above idea is feasible on M5 and if it is possible to
+accurately  measure the execution time when various number of cores
+(concurrent threads) are used in the simulated processor. Any comments
+are highly appreciated.
+Best,
+Yinglong.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

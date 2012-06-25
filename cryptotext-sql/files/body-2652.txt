@@ -1,0 +1,28 @@
+Hi all:
+In order to run more than 4 cores in fs, I compile a new linux kernel
+with patches:
+(1)compile a new linux kernel with the BIG_TSUNANMI configuration option
+(2)use the tsb_osfpal file to replace ts_osfpal
+When running the simulator, I get the following error:
+command line: /home/m5-2.0b5/build/ALPHA_FS/m5.debug -d result
+/home/m5-2.0b5/fs.py -t --caches -n 1 --l2cache -b hello
+Global frequency set at 1000000000000 ticks per second
+warn: kernel located at: /dist/m5/system/binaries/vmlinux
+0: system.tsunami.io.rtc: Real-time clock set to Thu Jan 1 00:00:00 2009
+Listening for system connection on port 3456
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0. Starting simulation...
+44068861000: system.cpu.break_event: break event panic triggered
+panic: M5 panic instruction called at pc=0xfffffc000101b5d0.
+@ cycle 44072519000
+[execute:build/ALPHA_FS/arch/alpha/timing_simple_cpu_exec.cc, line 11834]
+Program aborted at cycle 44072519000
+Aborted
+If I use the original kernel and ts_osfpal, there is no problem.
+Does anybody know the reason? please give me a help.
+Thank you very much.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

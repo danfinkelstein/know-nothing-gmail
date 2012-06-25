@@ -1,0 +1,5 @@
+Is there any particular reason why IEEE floating point is integrated in the cross compiler on the M5 website. It seems to really kill performance, since software is responsible for  being ieee compliant.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

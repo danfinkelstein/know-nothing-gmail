@@ -1,0 +1,58 @@
+Hi all
+In TimingSimpleCPU copied below, I have encountered a case where
+_status==IcacheWaitResponse as the core is currently waiting for a
+response from the instruction cache and I see the response from the
+icache about to be satisfied (1000 ticks later). At this point, I have
+resumed from a  checkpoint in atomic mode, switch to timingMode for 100
+ticks and am now switching the core to O3.  It appears that some event
+is supposed to make sure the _status of the core is in running or idle
+before this function is called. Upon further debugging, I notice that
+the drain() function is being called in timing.cc for each of 4 cores
+(in a 4 core system) and then core 0 is initially able to change state
+to drained. However, CPU 1 and 3 are waiting on a nICacheReply. While
+waiting, I see core0's fetch() (in timing.cc) get called  which creates
+a new event that prevents switch out. It appears that there is a race
+condition between drain being called and switchOut that sometimes leads
+to problems (with more problems happening as I go to 64 cores). Should
+there be code in TimingSimpleCPU::fetch() (marked in a comment below)
+that prevents this corner case from happening? Is there some other means
+that prevents fetch from being called after the core has been drained?
+Thanks in advance,
+-Richard Strong
+void
+TimingSimpleCPU::switchOut()
+{
+    assert(_status == Running || _status == Idle);
+    _status = SwitchedOut;
+    numCycles += tickToCycles(curTick - previousTick);
+    // If we've been scheduled to resume but are then told to switch out,
+    // we'll need to cancel it.
+    if (fetchEvent.scheduled())
+        deschedule(fetchEvent);
+}
+void
+TimingSimpleCPU::fetch()
+{
+    DPRINTF(SimpleCPU, "Fetch\n");
+    /* PLACE TO ADD CHECK FOR STATE DRAINED */
+    if (!curStaticInst || !curStaticInst->isDelayedCommit())
+        checkForInterrupts();
+    checkPcEventQueue();
+    bool fromRom = isRomMicroPC(thread->readMicroPC());
+    if (!fromRom && !curMacroStaticInst) {
+        Request *ifetch_req = new Request();
+        ifetch_req->setThreadContext(_cpuId, /* thread ID */ 0);
+        setupFetchRequest(ifetch_req);
+        thread->itb->translateTiming(ifetch_req, tc, &fetchTranslation,
+                BaseTLB::Execute);
+    } else {
+        _status = IcacheWaitResponse;
+        completeIfetch(NULL);
+        numCycles += tickToCycles(curTick - previousTick);
+        previousTick = curTick;
+    }
+}
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

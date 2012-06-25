@@ -1,0 +1,25 @@
+I’m trying to add extra symbols to the symbol table M5
+uses internally from user code using the m5_addsymbol() pseudo-instruction. 
+So far my attempts have not worked, user code is still being labeled at
+__bss_start.
+ 
+To add the symbols I’m using the wrapper functions
+provided by m5op.h.
+ 
+Here is a snippet of what I’m doing in the main
+function of the benchmark I’m using:
+ 
+…
+m5_addsymbol(&xactionAbort, “xactionAbort”);
+m5_addsymbol(&xactioinBackoff, “xactionBackoff);
+…
+ 
+Will m5_addsymbol work for user code? Or will I have to
+modify M5 to work with user code symbols?
+ 
+Thanks,
+Geoff
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

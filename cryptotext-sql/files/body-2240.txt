@@ -1,0 +1,217 @@
+Basically, yes.  If you are just copying your files to the disk image we provided, and you don't change the name of the image, then you don't need to change anything in the config scripts.  You'd just need to make rcS scripts to do what you want with the files you added.
+Lisa- Show quoted text -On Wed, Nov 19, 2008 at 4:38 PM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com> wrote:
+Hi Lisa thanks for your answer, so do you mean that I should mount
+your img file linux-latest.img then I add my own benchmarks to that
+img and after I copy the img to the simulator and change the python
+configuration file to point to the img and cross the fingers to see if
+everything is right?. Thanks.
+On Wed, Nov 19, 2008 at 1:10 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+> Try this:
+>
+> http://m5sim.org/wiki/index.php/Frequently_Asked_Questions#OS.2FLinux_Related
+>
+> That should help you add files to an image - you can just start with the one
+> we distribute.
+>
+> Lisa
+>
+> On Wed, Nov 19, 2008 at 4:05 PM, Eduardo Olmedo Sanchez <eolmsan2@gmail.com>
+> wrote:
+>>
+>> Hi I have been able to run knoppix on vmware, but I still do not get
+>> what I have to do, do I need to do all the procedure from here
+>>
+>> http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+>> to create the disk image?, or how can I use an existing disk image to
+>> add my own benchmarks and after run then in the simulator?. Thank andd
+>> sorry for bother you with my simple  questions.
+>>
+>> On Tue, Nov 18, 2008 at 5:30 PM,  <gblack@eecs.umich.edu> wrote:
+>> > Gentoo stage 3 install CDs are fairly minimal but reliable live CDs.
+>> > I've heard
+>> > they work well.
+>> >
+>> > Gabe
+>> >
+>> > Quoting Bob Nagel <nasmloe@gmail.com>:
+>> >
+>> >> Hello,
+>> >>
+>> >> I have been using some virtual machine environments, but I have not
+>> >> found what I need, usually the only disk images that I found are with
+>> >> complete linux environments that includes applications and user
+>> >> interface. So Clint or anyone can you tell me where I can get a disk
+>> >> image with a simple linux on it without user interface and that
+>> >> stuff?. thanks so much.
+>> >>
+>> >> 2008/11/13 Eduardo Olmedo Sanchez <eolmsan2@gmail.com>:
+>> >> > Hello,
+>> >> >
+>> >> > I have installed bochs and now I have dllinux running and it using as
+>> >> > hard disk a file called hd10meg.img, the kernel is 1.3.89. So the
+>> >> > procedure that I should is: add my binary to the hd10meg.img and
+>> >> > after
+>> >> > move the img to the simulator. Where should I put the binary in the
+>> >> > img? and Should I use another Linux with a 2.5 kernel?. Sorry for
+>> >> > bother you with this simple questions, but my Linux experience is not
+>> >> > very high. Thank you.
+>> >> >
+>> >> > On Wed, Nov 12, 2008 at 3:36 PM, Clint Smullen
+>> >> > <cws3k@cs.virginia.edu>
+>> >> wrote:
+>> >> >> It is much easier to mount the existing disk image, than to make a
+>> >> >> new
+>> >> >> one, unless you are adding an addition disk to the configuration.
+>> >> >> After you have done the mount command (which you may have to prefix
+>> >> >> with sudo, depending on your flavor of Linux), you then need to copy
+>> >> >> the files to the mount point, verify the permissions and ownership
+>> >> >> (I
+>> >> >> make all the files I copy onto the disk have root ownership and
+>> >> >> group), and then umount it with (sudo) umount /mount/point.
+>> >> >>
+>> >> >> You will still need vmlinux, as that is loaded separately from the
+>> >> >> disk image.
+>> >> >>
+>> >> >>        - Clint
+>> >> >>
+>> >> >> On Nov 12, 2008, at 6:18 PM, Bob Nagel wrote:
+>> >> >>
+>> >> >>> Thanks for your answer Clint, I know how to move the files, so the
+>> >> >>> thing that I should do is:
+>> >> >>>
+>> >> >>> - Follow the steps from here Using linux-dist to Create Disk Images
+>> >> >>> and Kernels for M5 to create my disk image
+>> >> >>> - Add the binaries using this commnad /bin/mount -o
+>> >> >>> loop,offset=32256
+>> >> >>> /z/foo.img /mount/point
+>> >> >>> - Submit the image and point the configuration py file to the image
+>> >> >>> file
+>> >> >>>
+>> >> >>> To run the simulation do I still need to install the vmlinux in the
+>> >> >>> machine that is running the simulation?. Thank you so much for your
+>> >> >>> help.
+>> >> >>>
+>> >> >>> 2008/11/12 Clint Smullen <cws3k@cs.virginia.edu>
+>> >> >>>>
+>> >> >>>> If you install Linux into a virtual machine (Bochs, VirtualPC,
+>> >> >>>> VMWare, etc.), you will have root privilege and will be able to
+>> >> >>>> mount the disk image within the virtual machine to make changes
+>> >> >>>> (albeit using sudo mount ...). I move the disk images around using
+>> >> >>>> scp, which performs file transfers through a SSH session. If you
+>> >> >>>> have SSH access to the server that M5 is running on, then this is
+>> >> >>>> the simplest way of getting it working. If you happen to have a
+>> >> >>>> real Linux machine which you have root privilege on, you can do
+>> >> >>>> the
+>> >> >>>> same procedure to get the files moved. Other methods for copying
+>> >> >>>> the files would be FTP, SMB, or any other method that you normally
+>> >> >>>> use for copying files onto and off of that machines access.
+>> >> >>>> - Clint
+>> >> >>>>
+>> >> >>>> On Nov 12, 2008, at 5:20 PM, Bob Nagel wrote:
+>> >> >>>>
+>> >> >>>> Hi Ali thanks for your answer, I do not know what you mean. Are
+>> >> >>>> you
+>> >> >>>> saying that I should create the Disk Image in another machine in
+>> >> >>>> which I have root privileges? and after how do I submit that disk
+>> >> >>>> image to the machine in which I have m5 installed?, I should run
+>> >> >>>> the simulation in that machine because it is much faster than
+>> >> >>>> mine.
+>> >> >>>> Thank you.
+>> >> >>>>
+>> >> >>>> 2008/11/12 Ali Saidi <saidi@umich.edu>
+>> >> >>>>>
+>> >> >>>>> No, you don't need to have root privileges on the machine that
+>> >> >>>>> you're
+>> >> >>>>> running M5 on, but you do need them on some system because the
+>> >> >>>>> mount
+>> >> >>>>> requires root privileges. You could run linux inside a VM or with
+>> >> >>>>> a
+>> >> >>>>> emulator such as Bochs for this purpose.
+>> >> >>>>>
+>> >> >>>>> Ali
+>> >> >>>>>
+>> >> >>>>> On Nov 12, 2008, at 3:44 PM, Bob Nagel wrote:
+>> >> >>>>>
+>> >> >>>>>> Hello,
+>> >> >>>>>>
+>> >> >>>>>> I want to run some of my own tests in FS mode, and I have seen
+>> >> >>>>>> here
+>> >>
+>> >
+>> > http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+>> >> >>>>>> , that to create the disk image and to add files to it I need to
+>> >> >>>>>> have root privileges. Is there any way to avoid this?,  I am
+>> >> >>>>>> able
+>> >> >>>>>> to
+>> >> >>>>>> run the benchmarks that comes with the installation of FS, is
+>> >> >>>>>> there
+>> >> >>>>>> any way to add my binaries to that disk image. Thank you so
+>> >> >>>>>> much.
+>> >> >>>>>> _______________________________________________
+>> >> >>>>>> m5-users mailing list
+>> >> >>>>>> m5-users@m5sim.org
+>> >> >>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>>>>
+>> >> >>>>> _______________________________________________
+>> >> >>>>> m5-users mailing list
+>> >> >>>>> m5-users@m5sim.org
+>> >> >>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>>>
+>> >> >>>> _______________________________________________
+>> >> >>>> m5-users mailing list
+>> >> >>>> m5-users@m5sim.org
+>> >> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>>>
+>> >> >>>> _______________________________________________
+>> >> >>>> m5-users mailing list
+>> >> >>>> m5-users@m5sim.org
+>> >> >>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>> _______________________________________________
+>> >> >>> m5-users mailing list
+>> >> >>> m5-users@m5sim.org
+>> >> >>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>
+>> >> >> _______________________________________________
+>> >> >> m5-users mailing list
+>> >> >> m5-users@m5sim.org
+>> >> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >>
+>> >> > _______________________________________________
+>> >> > m5-users mailing list
+>> >> > m5-users@m5sim.org
+>> >> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >> >
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>
+>> >
+>> >
+>> >
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

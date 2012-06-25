@@ -1,0 +1,16 @@
+Dear Veydan
+If you need to do modifications to the splash code, then use a cross compiler
+from (http://www.kegel.com/crosstool/) to compile the modified splash program.
+Then use them in SE mode with -c option. I like this feature of SE mode because
+you dont need to create an image with your programs. Three simple steps.
+Write your c program.
+Compile using the cross compiler.
+Give the location of binaries as an command line argument to the SE mode.
+regards,
+Isuru
+- Show quoted text -
+Veydan Wu <veydanwu <at> gmail.com> writes:
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+Is there a case i havent build properly the pthreads program for the simulation?
+How do i know i done it correctly?
+Did you compile the splash benchmarks yourself?  Did you use pthreads?  SE mode doesn't support pthreads.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

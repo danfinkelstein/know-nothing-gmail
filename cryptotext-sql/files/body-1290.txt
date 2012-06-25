@@ -1,0 +1,5 @@
+Ah, whoops did not realize how confusing I could be. I am just making some topologies using this m5 patch:http://www.cs.virginia.edu/~jm6dg/fractal/m5patches.htm
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

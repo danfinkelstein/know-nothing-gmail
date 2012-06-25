@@ -1,0 +1,15 @@
+> When we say unmodified, we mean those versions will work and you don't
+> have to modify them. If you want to modify them anyway, assuming
+> you're modifications are correct, they should still work.
+>
+> Gabe
+Actually, when we say unmodified, we do mean that you can take a
+properly configured linux kernel *without* any m5 specific patches and
+run it on M5.  That said, you generally don't want to do this because
+there will be severe performance issues because we can't fixup busy
+loops.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

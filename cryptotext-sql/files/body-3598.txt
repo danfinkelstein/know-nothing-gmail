@@ -1,0 +1,7 @@
+Hi, I am a graduate student who is interested in multicore architecture. Now I am doing a project about a new multicore architecture for low-power consumption and high-performance. I need a multicore simulator to implement some new componentes and do cycle-accurate simulation and find out the task-level behavior of the benchmark program. I do not know weather "m5" simulator can give me what I need.  Does your "m5" support cycle-accurate simulation for 64 or 128 cores ? If yes, how fast is it ? If No, how to modify it ?Does "m5 " support  parallelized SPEC CPU2000 benchmark program so thatone program can generate different threads to run in different cores in "m5" simulator ?Or, I can only run different benchmark program on different cores ? Does "m5" support  PowerPC or Intel x86 ? Would you please help me with it ?Or could you please recommmand other
+ simulators for paralle multi-core architecture ?thanks a lot !!!TonyJan. 23 2008  
+      Looking for last minute shopping deals?  
+Find them fast with Yahoo! Search._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

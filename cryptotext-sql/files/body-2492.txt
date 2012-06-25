@@ -1,0 +1,6 @@
+I never have this problem. Could you post your operation system information?
+I build the crosstool under RedHat, and there has no problem.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

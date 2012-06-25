@@ -1,0 +1,220 @@
+Please look at the snapshot of file below. This was causing trouble. I will reproduce the problem if it does not make sense. np=2 was causing trouble. I changes it to options.num_cpus=2, np=options.num_cpus and it worked. But if it works for you, I might be wrong somewhere else.
+#models multicore processor with two c with the new bus model
+# Simple test script
+#
+# "m5 test.py"
+import m5
+from m5.objects import *
+import os, optparse, sys
+m5.AddToPath('../common')
+import Simulation
+from Caches import *
+#from SharedBus import *
+from cpu2000 import *
+# Get paths we might need.  It's expected this file is in m5/configs/example.
+config_path = os.path.dirname(os.path.abspath(__file__))
+config_root = os.path.dirname(config_path)
+m5_root = os.path.dirname(config_root)
+parser = optparse.OptionParser()
+# Benchmark options
+parser.add_option("-c", "--cmd",
+                  default=os.path.join(m5_root, "tests/test-progs/hello/bin/alpha/linux/hello"),
+                  help="The binary to run in syscall emulation mode.")
+parser.add_option("-o", "--options", default="",
+                  help="The options to pass to the binary, use \" \" around the entire\
+                        string.")
+parser.add_option("-i", "--input", default="",
+                  help="A file of input to give to the binary.")
+parser.add_option("--bench", action="store", type="string", default=None,
+                  help="base names for --take-checkpoint and --checkpoint-restore")
+parser.add_option("-S", "--simpoint", action="store_true", default=False,
+                   help="""Use workload simpoints as an instruction offset for
+--checkpoint-restore or --take-checkpoint.""")
+#Benchmark and Node options#
+parser.add_option("-B", "--Benchmark", action="store")
+parser.add_option("-N", "--Node", action="store",type="int")
+parser.add_option("-O", "--Opt", action="store")
+#
+execfile(os.path.join(config_root, "common", "Options.py"))
+(options, args) = parser.parse_args()
+if options.detailed:
+    #check for SMT workload
+    workloads = options.cmd.split(';')
+    if len(workloads) > 1:
+        process = []
+        smt_idx = 0
+        inputs = []
+        if options.input != "":
+            inputs = options.input.split(';')
+        for wrkld in workloads:
+            smt_process = LiveProcess()
+            smt_process.executable = wrkld
+            smt_process.cmd = wrkld + " " + options.options
+            if inputs and inputs[smt_idx]:
+                smt_process.input = inputs[smt_idx]
+            process += [smt_process, ]
+            smt_idx += 1
+if args:
+    print "Error: script doesn't take any positional arguments"
+    sys.exit(1)
+if options.bench:
+    try:
+        if m5.build_env['TARGET_ISA'] != 'alpha':
+            print >>sys.stderr, "Simpoints code only works for Alpha ISA at this time"
+            sys.exit(1)
+        exec("workload = %s('alpha', 'tru64', 'ref')" % options.bench)
+        process = workload.makeLiveProcess()
+    except:
+        print >>sys.stderr, "Unable to find workload for %s" % options.bench
+        sys.exit(1)
+(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+#--------------------------------------------------------------------#
+np =2
+Benchmark=options.Benchmark
+Node=options.Node
+opt=options.Opt
+#--------------------------------------------------------------------#
+- Show quoted text -
+---- Original message ----
+>Date: Sun, 26 Oct 2008 23:00:57 -0700
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] switch cpus problem
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>I don't understand how this can be an issue. Setting options.num_cpus
+>from the command line should be equivalent to setting it in the code.
+>Where are you setting it by hand? After it's used in fs.py?
+>
+>Ali
+>
+>
+>
+>On Oct 26, 2008, at 10:42 PM, Shoaib Akram wrote:
+>
+>> its kindof ugly what i am doing but...Instead of taking the number
+>> of cpus from command line i am setting options.num_cpus=2 and then
+>> np=options.num_cpus....if i do np=2 directly, I had that problem...
+>>
+>> ---- Original message ----
+>>> Date: Fri, 24 Oct 2008 14:50:51 -0700
+>>> From: "nathan binkert" <nate@binkert.org>
+>>> Subject: Re: [m5-users] switch cpus problem
+>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>
+>>> I don't quite understand the problem, but if there is a bug we need
+>>> to
+>>> fix, a diff would be appreciated.
+>>>
+>>> Nate
+>>>
+>>> On Fri, Oct 24, 2008 at 2:46 PM, Shoaib Akram
+>>> <sakram3@illinois.edu> wrote:
+>>>> turns out that, changing
+>>>> options.num_cpus=2
+>>>> np=options.num_cpus
+>>>> with np=2 was causing the problem...strange?
+>>>>
+>>>> ---- Original message ----
+>>>>> Date: Fri, 24 Oct 2008 15:48:20 -0400
+>>>>> From: Ali Saidi <saidi@umich.edu>
+>>>>> Subject: Re: [m5-users] switch cpus problem
+>>>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>>>
+>>>>> It seems like your checkpoint didn't have 2 cpus in it. If you
+>>>>> look at
+>>>>> m5.cpt do you see a system.cpu1 section?
+>>>>>
+>>>>> Ali
+>>>>>
+>>>>> On Oct 24, 2008, at 2:56 PM, Shoaib Akram wrote:
+>>>>>
+>>>>>> I am usig default Simulation.py. I think it is doing what you
+>>>>>> mentioned plus I have used fast-forward with multiple cpus some
+>>>>>> months back (dont know which release of m5 was it )...By the way,
+>>>>>> when I use the method you describe, I get,
+>>>>>>
+>>>>>> Restoring from checkpoint
+>>>>>> fatal: Can't unserialize 'system.cpu1:_status'
+>>>>>>
+>>>>>>
+>>>>>> ---- Original message ----
+>>>>>>> Date: Fri, 24 Oct 2008 13:26:30 -0400
+>>>>>>> From: Ali Saidi <saidi@umich.edu>
+>>>>>>> Subject: Re: [m5-users] switch cpus problem
+>>>>>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>>>>>
+>>>>>>> It should work, although I generally use the checkpoint, restore,
+>>>>>>> switch method when sampling. There might be a problem with fast-
+>>>>>>> forwarding with multiple cpus. You should take a look at
+>>>>>>> Simulation.py
+>>>>>>> and see what happens after the atomic cpu exits. All the atompc
+>>>>>>> cpus
+>>>>>>> should be replaced with timing or detailed cpus and the atomic
+>>>>>>> cpus
+>>>>>>> should be deactivated. Are you sure you're specifying a different
+>>>>>>> type
+>>>>>>> of CPU after the switch?
+>>>>>>>
+>>>>>>> Ali
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> On Oct 24, 2008, at 6:17 AM, Shoaib Akram wrote:
+>>>>>>>
+>>>>>>>> I made some changes to memory system and collected data for
+>>>>>>>> several
+>>>>>>>> uniprocessor experiemts.However, for multiprogramming
+>>>>>>>> workloads I
+>>>>>>>> ran into this assertion at switch of cpus.
+>>>>>>>>
+>>>>>>>> m5.opt: build/ALPHA_SE/cpu/simple/atomic.cc:202: virtual void
+>>>>>>>> AtomicSimpleCPU::resume(): Assertion `system->getMemoryMode() ==
+>>>>>>>> Enums::atomic' failed.
+>>>>>>>>
+>>>>>>>> Any idea whats wrong? I use --fast-forward=X --max-inst=Y to
+>>>>>>>> fast
+>>>>>>>> forwarding.
+>>>>>>>> _______________________________________________
+>>>>>>>> m5-users mailing list
+>>>>>>>> m5-users@m5sim.org
+>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

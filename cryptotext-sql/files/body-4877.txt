@@ -1,0 +1,33 @@
+Chaitali,
+You need to compile the programs with the cross compiler. Depending on the programs this may be as simple as setting your CC variable to the cross compiler, or if it is a more complex process it make have a parameter you can pass to configure to do it or perhaps you'll have to do some work to make it work.  After you have a binary you'll need to put it on the disk image -- look at www.m5sim.org for instructions.
+Normally the linux scheduler will schedule the threads as it sees fit. If you want to change this take a look at this article from IBM: http://www-128.ibm.com/developerworks/linux/library/l-affinity.html?ca=dgr-lnxw09Affinity
+Ali- Show quoted text -
+On Nov 11, 2006, at 12:51 PM, Chaitali Gupta wrote:
+Hi,
+I have successfully installed and run m5 2.0 in full
+system mode. I can run the benchmarks in full system
+and see the stats.
+But, I want to run two programs - one single-threaded
+and one multithreaded program on m5 in full system
+mode. I have installed cross compiler - crosstool-0.42
+from the kegel site mentioned in the m5 webpage.
+My question is -
+How can I compile and run my own programs on m5 and
+also how can I specify the threads to be run on
+different cores of the processor for the
+multi-threaded program?
+Eagerly waiting for a reply.
+Regards-
+Chaitali
+____________________________________________________________________________________
+Yahoo! Music Unlimited
+Access over 1 million songs.
+http://music.yahoo.com/unlimited
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hey all,I've been noticing a large amount of memory usage for long simulations and after looking at Valgrind output, I noticed that for the small (relative to the entire simulation) heap profiler output, I was able to see that the following function in cache_blk.hh was a large contributor:
+    void recordHit()        {                intervals.push_back(curTick-lastRefTime);                lastRefTime = curTick;        }As an extreme example, after commenting out intervals.push_back(curTick-lastRefTime); I was able to see a simulation that grew over 12GB with that line there to stay under 400MB.  
+Is recordHit() very important? Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,29 @@
+Here is beta 2.0 of the patches that provide 
+on-chip network(2D mesh), directory-based coherence (MSI and MESI), and a 
+threading API in SE mode. The patches are still based on changeset 
+5505:90d6811d5ea6, and in the future I'll integrate it into a more recent 
+release. The major updates are in DirectoryCache.patch.
+ 
+webpage:
+http://www.cs.virginia.edu/~jm6dg/fractal/m5patches.htm
+ 
+download:http://www.cs.virginia.edu/~jm6dg/fractal/VF2_patches.tar.bz2
+ 
+to Rick:
+ 
+For MSI directory coherence only, you don't have to care about other 
+patches on top of it unless you need them, which include MESI, MultiPortedCache, 
+CacheStats, and SimpleMultiThreads.
+ 
+Note that in this version, a read/write request that will replace an 
+existing block will combine two packets (an Evict piggybacked by a read/write). 
+This was originally done in two phases which lead to the bug about incorrect 
+store conditionals.
+ 
+Regards,
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

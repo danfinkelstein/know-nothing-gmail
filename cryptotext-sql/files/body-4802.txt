@@ -1,0 +1,13 @@
+Hi Sasa,Look in m5/configs/fullsys/run.py.  That should have the framework for everythign you might want to do.  To run from a checkpoint, if I recall you just need to have --Root.checkpoint=checkpoint_name, or -ECKPT_FILE=checkpoint_name on the command line.
+Lisa- Show quoted text -On 12/5/06, Saša Tomić <sasa.tomic@bsc.es> wrote:- Show quoted text -
+I've been trying really hard to work with checkpoints, without much success... :(I tried SimpleCPU, booting Linux, saving a checkpoint with "m5 checkpoint" inside console of booted Linux, and wanted to restore to that checkpoint later on, in order not to have to wait for booting Linux every time I change something.
+I haven't found any documentation about how to do that...I'm using version 1.1 of M5.Can somebody help me with this, please...It's quite urgent, as always things always are :)
+-- Saša TomićBSC - Barcelona SuperComputing Centerc\ Jordi Girona 29, Nexus I, 08034 Barcelona, EspañaTel.: +34671218062,  +34934054289
+http://www.bsc.es                                
+http://sasa-tomic.blogspot.com
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

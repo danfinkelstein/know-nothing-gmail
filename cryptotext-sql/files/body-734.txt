@@ -1,0 +1,7 @@
+Hi ,   I find out that my MPI does not with well with the cross compiler. THe binary mpicc produced is not a target alpha one, but a x86 one. I am working back on rebuilding the mpi. HOwever it seems that MPICH does not support cross compiler....
+Just wondering waht to do now. -- - Show quoted text -************************************************Gu Junli--谷俊丽PHD Candidate of Tsinghua UniversityBeijing 100084,ChinaTel: 86-10-62795139
+************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

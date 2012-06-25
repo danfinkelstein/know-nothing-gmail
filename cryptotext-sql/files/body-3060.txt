@@ -1,0 +1,120 @@
+The 'workload' parameter only applies to SE simulations, and you're running the FS binary.Steve- Show quoted text -On Wed, May 14, 2008 at 5:30 PM, Mike Anderson <m5kernel8@hotmail.com> wrote:
+Hi, 
+thanks,
+I have created a sim script based on yours.
+ 
+I want to run different cpu2000 benchmark on each core in m5.
+ 
+In   m5_2.0b4/configs/common/cpu2000.py  , I found that 
+ 
+ 
+all = [ ammp, applu, apsi, art110, art470, equake, facerec, fma3d, galgel,        lucas, mesa, mgrid, sixtrack, swim, wupwise, bzip2_source,        bzip2_graphic, bzip2_program, crafty, eon_kajiya, eon_cook,        eon_rushmeier, gap, gcc_166, gcc_200, gcc_expr, gcc_integrate,
+        gcc_scilab, gzip_source, gzip_log, gzip_graphic, gzip_random,        gzip_program, mcf, parser, perlbmk_diffmail, perlbmk_makerand,        perlbmk_perfect, perlbmk_splitmail1, perlbmk_splitmail2,        perlbmk_splitmail3, perlbmk_splitmail4, twolf, vortex1, vortex2,
+        vortex3, vpr_place, vpr_route ]
+ 
+So, I  submit the cpu2000 program to each core by 
+           system.cpu[i].workload =cpu2000.all[i]
+ 
+But I gor errors: 
+ 
+-----------------------------------------
+command line: ./build/ALPHA_FS/m5.opt -d 
+/tmp/output/m5_FS_cmp /home/m5_2.0b4/tests/mycmptest.py/home/m5_2.0b4/tests/home/m5_2.0b4/configs/home/m5_2.0b4
+Traceback (most recent call last):  File "<string>", line 1, in ?  File "build/ALPHA_FS/python/m5/main.py", line 350, in main    execfile(sys.argv[0], scope)  File "/home/m5_2.0b4/tests/mycmptest.py", line 64, in ?
+    system.cpu[i].workload =cpu2000.all[i]  File "build/ALPHA_FS/python/m5/SimObject.py", line 611, in __setattr__    raise AttributeError, "Class %s has no parameter %s" \
+AttributeError: Class AtomicSimpleCPU has no parameter workload
+ 
+I have tried other ways to assign workload to cpu[i].workload, all do not work.
+ 
+thanks for you help  !!!
+ 
+May  14  2008 
+ 
+-----------------------------
+ 
+My  script is :
+ 
+ 
+simple test script for CMP
+#
+# "m5 test.py"
+ 
+import m5
+from m5.objects import *
+import os, optparse, sys
+m5.AddToPath('/home/m5_2.0b4/configs/common')
+import Simulation
+from Caches import *
+import cpu2000
+import Benchmarks
+ 
+config_path = os.path.dirname(os.path.abspath(__file__))
+print config_path
+config_root = os.path.dirname(config_path)+"/configs"
+print config_root
+m5_root = os.path.dirname(config_root)
+print m5_root
+parser = optparse.OptionParser()
+ 
+# Benchmark options
+parser.add_option("-b", "--benchmark", default="",
+help="The benchmark to be loaded.")
+parser.add_option("-c", "--chkpt", default="",
+help="The checkpoint to load.")
+execfile(os.path.join(config_root, "common", "Options.py"))
+(options, args) = parser.parse_args()
+ 
+(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+CPUClass.clock = '2.0GHz'
+np = options.num_cpus
+system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+physmem = PhysicalMemory(range=AddrRange("512MB")),
+membus = Bus(), mem_mode = 'timing')
+system.physmem.port = system.membus.port
+ 
+for i in xrange(np):
+ 
+    if options.caches:
+        system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '64kB'),
+        L1Cache(size = '64kB'))
+ 
+   if options.l2cache:
+        system.l2 = L2Cache(size='2MB')
+        system.tol2bus = Bus()
+        system.l2.cpu_side = system.tol2bus.port
+        system.l2.mem_side = system.membus.port
+        system.cpu[i].connectMemPorts(system.tol2bus)
+    else:
+        system.cpu[i].connectMemPorts(system.membus)
+          system.cpu[i].workload =cpu2000.all[i]
+ 
+root = Root(system = system)
+Simulation.run(options, root, system, FutureClass)
+exit_event = m5.simulate()
+print 'Exiting @ cycle', m5.curTick(), 'because', exit_event.getCause()
+ 
+ 
+===================================
+ 
+ 
+> Date: Wed, 14 May 2008 13:00:40 -0400> From: mengjuwu@gmail.com> To: m5-users@m5sim.org
+> Subject: Re: [m5-users] about multi-thread benchamrk> > This is my cmp configuration. You can change the cpu numbers, and you> can also assign different processes to different cpu worloads. I hope
+> this can give you some hints.> > # Simple test script> #> # "m5 test.py"> > import m5> from m5.objects import *> import os, optparse, sys> m5.AddToPath('./configs')
+> import Simulation> from Caches import *> import Mybench> > > config_path = os.path.dirname(os.path.abspath(__file__))> print config_path> config_root = os.path.dirname(config_path)+"/configs"
+> print config_root> m5_root = os.path.dirname(config_root)> print m5_root> > parser = optparse.OptionParser()> > # Benchmark options> > parser.add_option("-b", "--benchmark", default="",
+> help="The benchmark to be loaded.")> > parser.add_option("-c", "--chkpt", default="",> help="The checkpoint to load.")> > execfile(os.path.join(config_root, "configs", "Options.py"))
+> > (options, args) = parser.parse_args()> > > (CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)> > CPUClass.clock = '2.0GHz'> > np = options.num_cpus
+> > system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],> physmem = PhysicalMemory(range=AddrRange("512MB")),> membus = Bus(), mem_mode = 'timing')> > system.physmem.port = system.membus.port
+> > for i in xrange(np):> if options.caches:> system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '64kB'),> L1Cache(size = '64kB'))> if options.l2cache:> system.l2 = L2Cache(size='2MB')
+> system.tol2bus = Bus()> system.l2.cpu_side = system.tol2bus.port> system.l2.mem_side = system.membus.port> system.cpu[i].connectMemPorts(system.tol2bus)> else:> system.cpu[i].connectMemPorts(system.membus)
+> system.cpu[i].workload = process <== change the process> > > root = Root(system = system)> > Simulation.run(options, root, system, FutureClass)> _______________________________________________
+> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+With Windows Live for mobile, your contacts travel with you. Connect on the go.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Hi Matt,I'm a little confused... shouldn't it behave differently when you change the value of an important constant? :-)I'm not too surprised that there are some hard-coded 31s in the Alpha ISA definition; those should be converted to say ZeroReg if that's what they are representing.
+I guess it's just not clear to me what "correct" behavior you're expecting here.FYI, check out the "tracediff" tool in utils... it's invaluable for seeing where two different executions diverge.  I use it all the time with --trace-flags=All or All,-Event.  See the comments in the script header for instructions, and let me know if you have any questions about it.
+Steve- Show quoted text -On 8/15/07, horsnelm@cs.man.ac.uk <horsnelm@cs.man.ac.uk
+> wrote:I am progressing with my ISA implementation. As mentioned before I am
+porting the Alpha ISA to use our in house ISA.Interestingly, today when I tried to change the ZeroReg definition (reg 31in alpha) to reg 0, I get different output from a trace run of the firstfew instructions of my program (a binary compiled to our ISA, have
+manipulated the elf libraries to accept it in m5).Can anyone tell me why there is a reliance on ZeroReg (andReturnAddressReg) being redefined? A quick search of the alpha code (whichmy port is based on) reveals that a lot of hard-coded constants are still
+left in the code (== 31, != 31 etc), I have tried changing these to (==ZeroReg, != ZeroReg) in my port, but I still get incorrect output whendefining ZeroReg as 0.I've not yet had a good luck inside the ISA specific parts of the CPU
+code, are there any hard-coded constants there?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

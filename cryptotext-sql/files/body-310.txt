@@ -1,0 +1,18 @@
+Hi all,
+Can someone provide me more information on why branch instructions cause
+the pipeline to be squashed starting from the decode unit?
+I understand that a mispredicted branch should squash the pipeline when,
+in the Ex-stage, it is known which path to take. However, when a branch
+is predicted as "taken" there will allways be an additional squash (see
+cpu/inorder/resources/fetch_seq_unit.cc, function "execute", case
+"UpdateTargetPC").
+A couple of weeks ago I posted a patch for the inorderCPU's branch
+predictor, where I also mentioned a problem with squashing.
+I mentioned that sometimes there were multiple squashes that tried to
+remove 2 times the same entry in the predHist-table.
+Greets,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

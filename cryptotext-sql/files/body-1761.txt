@@ -1,0 +1,29 @@
+>     Hi, Nathan, I mistook your meaning in my last letter, you mean that the
+> 0xffff fdxx xxxx xxxx is the uncached access address.
+>
+>     But the M5 configs that   ALPHA_TLASER   is 0, which is in
+> build/ALPHA_FS/config/alpha_tlaser.hh.  In this case, uncache access bit is
+> the 43 bit, which is the highest bit of the "d" in 0xffff fdxx xxxx xxxx.
+> So the difference between cached and uncached access address should be
+> 0xffff f7xx xxxx xxxx and 0xffff f800 xxxx xxxx. Is that right ? Thank you !
+>
+>
+>      I run a program writing somthing in 0xffff f810 0000 0000, but got an
+> segmentation fault. The writing code is simply like this:
+>
+>    *(unsigned long*)addr = 0xaaaaa;       ( addr is defined as 0xffff f810
+> 0000 0000 )
+>
+>      I thought that's at least a valid PIO address. What may be the reason
+> of this ? Thanks !
+Where were you trying to execute this code?  In M5 or in the guest?
+It certainly won't work in M5.  In the guest, it will only work in the
+kernel.  Those directly mapped addresses aren't legal in user code.
+If you need to read/write to physical addresses in guest user code,
+it's going to take a lot more work and you're going to need to learn
+more about how to do that in linux.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

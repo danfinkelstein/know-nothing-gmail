@@ -1,0 +1,9 @@
+When trying to boot from the extended disk image, following error shows up and refuses to boot correctly.Need help desperately./****************************************************************//* start of screen                                                      */
+/****************************************************************/==== m5 slave console: Console 0 ====cpu Probing I/O busesSun Fire T2000, No KeyboardCopyright 2005 Sun Microsystems, Inc.  All rights reserved.
+OpenBoot 4.20.0, 256 MB memory available, Serial #1122867.[mo23723 obp4.20.0 #0]Ethernet address 0:80:3:de:ad:3, Host ID: 80112233.ok bootBoot device: vdisk  File and args: Bad magic number in disk label
+Can't open disk label packageCan't open boot deviceok /****************************************************************/
+/* emd of screen                                                       *//****************************************************************/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

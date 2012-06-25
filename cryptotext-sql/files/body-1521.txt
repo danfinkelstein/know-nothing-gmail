@@ -1,0 +1,31 @@
+First, I sortof agree with Nathan. It did confuse me a lot until this recet exchange of email among Ali,Steve and Nathan. In my case, I introduced two cache ports in every cache. One port is used to send packets on a bus that connects to a bridge port. The bridge port is the only destination so I set the destination of packets as the port id of bridge. The bridge processes the packet and send it to another bus. The other bus also connects to the second port of all caches. This is where the problem breaks in. I thought setting destination to BROADCAST will sent the packets to all the cache ports. As for Ali's question on what address I am using; none. The way I solved the problem was using the m5:hash_map<short,Busport*> data structure to send the packet to every cache connected to bus. This is the behavior I presume should be reserved for BROADCAST flag. I have three questions moving forward:
+what does the address used in packets represent anyway? How to register devices as snoop devices? How to get around the dirty fix of printing the port ids and setting deestinations in packets as I often do?
+Thanks !
+- Show quoted text -
+---- Original message ----
+>Date: Tue, 28 Apr 2009 10:45:33 -0700
+>From: nathan binkert <nate@binkert.org>
+>Subject: Re: [m5-users] Broadcast Packets to Newly created Cache ports
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>> I disagree... as Ali said, the addressing stuff is really a way to model
+>> broadcast in a fashion that doesn't require you to send every packet to
+>> every device on the bus.  That distinction shouldn't matter to you unless
+>> you're working with the bus at a relatively low level, as Shoaib is.
+>I think that the optimization is fine, but when you set the
+>"Broadcast" target on a packet and don't actually get a broadcast, I
+>think that's confusing.  For example, I was trying to use the bus for
+>something else and was surprised by this.  Furthermore, when I
+>implemented a network, it seemed strange to use "Broadcast" to mean,
+>hey network, figure out the destination for me, as opposed to, hey
+>network, make sure this packet gets to everyone.
+>
+>  Nate
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

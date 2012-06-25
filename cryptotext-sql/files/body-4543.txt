@@ -1,0 +1,233 @@
+Hi Ali,
+Thank you so much for the helpful elaboration!
+Some follow up questions:
+Where can I find 00.hello-mp?
+For simulating the multithreaded program, we actually want to test different
+scheduling policies and load balance the workloads among cores. Using
+Pthreads under FS mode might be a good option, is there a scheduler in FS
+mode where I can implement different scheduling policies? If there isn't a
+scheduler, what do I have to do to add one myself?
+Thanks again!
+Jiayuan
+- Show quoted text -
+On May 16, 2007, at 11:19 PM, Jiayuan wrote:
+> Thanks Gabe! So Alpha is the choice at this time.
+>
+> But I'm still fuzzy on the CMP simulation with M5.
+>
+>  1. is it possible to simulate a CMP under SE mode? If so, do you
+> have any
+>  example scripts on configuring the CMP architecture? (in configs/
+> example,
+>  se.py has only one SimpleCPU configured)
+It is possible. If you look at our 00.hello-mp regression test you
+can get an idea of how a CMP would be setup. However,
+by default there isn't any sharing. Each core is executing a
+different process.
+>  2. Since I have to run threads on this configuration with SE mode,
+> I will
+>  need to implement some thread creation/termination primitives in the
+>  simulator. There might be other primitives as well. This may involve:
+> adding more ops to the ISA, adding a load balancer unit to the
+> simulator
+> that creates threads (allocate stack size, set per-thread stack
+> pointers,
+> passing thread contexts). Would you please give some hints on how to
+> implement these in M5?
+This will be very difficult to implement in M5. You'll have to pretty
+much re-implement the pthreads library as well as a process/context
+switcher and a scheduler. Why not just run a full-system simulation
+and use pthreads?
+* New instructions can be implemented as pseudo ops: src/sim/
+pseudo_inst.* and src/arch/alpha/isa/decoder.isa
+* To add new syscalls have a look at src/arch/alpha/(linux|tru64)/*
+and kern/(tru64|linux)/*
+* Initial stacks and the like are created in src/sim/process.cc and
+src/arch/alpha/process.cc
+* We haven't implemented something like a scheduler, so there isn't a
+place for you to look at source code, but to implement it well you'll
+probably want some kind of interrupt to happen in the cpu's tick()
+loop and you can go off and save one threads state and restore a
+different ones. We do something like that for window traps on SPARC.
+(src/arch/sparc/faults.cc|process.cc)
+> 3. How Flexible is the memory system? In se.py, private L1 caches are
+> specified, and I saw in BaseCPU.py that a private L2 cache can also be
+> added, but what if I want to have private L1 caches for each core
+> and a
+> shared L2 cache?
+That would work fine as well, but with 2.0b3 you can only have one
+level of coherence. By the time 2.0f is out that will be solved.
+>  4. How fast is M5? How many instructions can M5 run in one second on
+> average?
+It completely depends on your memory system configuration, how many
+cpus you have and what kind of cpus you have as well as what hardware
+you're running it on. 64bit x86 machine tend to be significantly
+faster than 32bit ones.
+>
+> 5. Why the test case radix doesn't work under ALPHA_SE, and instead it
+> prints out:
+> warn: loadGlobalSymbols: bad symbol header magic on
+> tests/test-progs/radix/bin/radix
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+> warn: ignoring syscall sigprocmask(3, 0, ...)
+> warn: ignoring syscall sigaction(8, 4831387552, ...)
+> warn: ignoring syscall sigaction(11, 4831387552, ...)
+> warn: ignoring syscall sigaction(10, 4831387552, ...)
+> warn: ignoring syscall sigaction(4, 4831387552, ...)
+> warn: ignoring syscall sigaction(7, 4831387552, ...)
+> warn: ignoring syscall sigaction(6, 4831387552, ...)
+> warn: ignoring syscall sigaction(12, 4831387552, ...)
+> warn: ignoring syscall sigaction(5, 4831387552, ...)
+> warn: ignoring syscall sigaction(13, 4831387552, ...)
+These warnings are normal. They are just informative, the benchmark
+is running.
+Ali
+>  Thanks!
+>
+>  Jiayuan
+>
+>
+>
+> -----Original Message-----
+> From: gblack@eecs.umich.edu [mailto:gblack@eecs.umich.edu]
+> Sent: Tuesday, May 15, 2007 11:37 PM
+> To: M5 users mailing list; Jiayuan
+> Subject: Re: CMP simulation in SE mode + RE: [m5-users] question on
+> test
+> code compilation
+>
+>     One thing I noticed is that you said you compiled your binaries
+> on a
+> SunOS
+> machine. SPARC SE only supports Linux binaries at the moment, so
+> you'll need
+> to
+> recompile. Also, SPARC support is not totally production ready
+> right now, so
+> you
+> could quite possibly run into problems which are not your fault. If
+> you need
+> something that's very likely to work, I would recommend using
+> Alpha. If you
+> decide to use SPARC, please let us know of any bugs you might find
+> and/or
+> fix.
+>
+> Gabe
+>
+> Quoting Jiayuan <jerrygonair@hotmail.com>:
+>
+>> Thanks a lot Steve!
+>>
+>> I am trying to model a CMP architecture. I think at this stage, I
+>> will not
+>> model OS. I would prefer to run with syscall emulation mode. So I
+>> have two
+>> following questions:
+>>
+>> 1. is it possible to simulate a CMP under SE mode? If so, do you
+>> have any
+>> example scripts on configuring the CMP architecture? (in configs/
+>> example,
+>> se.py has only one SimpleCPU configured)
+>>
+>> 2. Since I have to run threads on this configuration with SE mode,
+>> I will
+>> need to implement some thread creation/termination primitives in the
+>> simulator. There might be other primitives as well. This may involve:
+> adding
+>> more ops to the ISA, adding a load balancer unit to the simulator
+>> that
+>> creates threads (allocate stack size, set per-thread stack pointers,
+> passing
+>> thread contexts). Would you please give some hints on how to
+>> implement
+> these
+>> in M5?
+>>
+>> Thanks!
+>>
+>> Jiayuan
+>>
+>> -----Original Message-----
+>> From: m5-users-bounces@m5sim.org [mailto:m5-users-
+>> bounces@m5sim.org] On
+>> Behalf Of Steve Reinhardt
+>> Sent: Tuesday, May 15, 2007 2:39 PM
+>> To: M5 users mailing list
+>> Subject: Re: [m5-users] question on test code compilation
+>>
+>> M5 can run pthreads binaries in full-system mode, which means you're
+>> restricted to Alpha for now.
+>>
+>> There are directions on building a gcc-based cross compiler here:
+>>
+>>
+> http://www.m5sim.org/wiki/index.php/Using_linux-
+> dist_to_Create_Disk_Images_a
+>> nd_Kernels_for_M5
+>>
+>> Note that you just need to follow the first section (on building the
+>> cross compiler); the other parts on building a new kernel are
+>> unnecessary if you're just compiling new applications.
+>>
+>> Steve
+>>
+>> Jiayuan Meng wrote:
+>>> Hi all,
+>>>
+>>> I am a starter on M5, and I'm interested in simulating a
+>>> multithreaded
+>>> program on a CMP architecture. My question is, can M5 run programs
+>>> written with pthreads? what crosscompiler do you recommend to
+>>> compile C
+>>> or C++ code on a x86 host to SPARC/ALPHA binaries that can be run
+>>> on M5?
+>>>
+>>> I tried to compile helloworld code on UltraSparc IIIi/SunOS using
+>>> gcc
+>>> version 3.3.6. However, the sparc binary generates faults when
+>>> the code
+>>> is run on M5. Would you please give me some hints?
+>>>
+>>> Thanks!
+>>>
+>>> Jiayuan
+>>>
+>>>
+>>> --------------------------------------------------------------------
+>>> ----
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

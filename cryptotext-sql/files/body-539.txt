@@ -1,0 +1,30 @@
+On 02/09/2010 08:09 AM, Korey Sewell wrote:
+>
+> Hey Max,
+> make sure you double check the latency for the functional units you
+> are evaluating. I believe the default latency for the MDU is 1 while
+> the default for the ALU is 0. Thus, it would make sense that you're
+> multiply dependency would take 1 longer stall cycle since the multiply
+> isnt completing until stage 4 not stage 3.
+Okay, but this extra cycle is only visible when there is a dependent
+instruction directly following the multiply. So when I set the multiply
+latency for example to 3, the latency is 3 when no dependent instruction
+is immediately following this multiply. If there actually is a dependent
+instruction immediately following the multiply, the latency would be 4.
+> Similarly,  a load memory operation isnt something that will be
+> completed with a 0 cycle latency. You'll need 1 cycle to make the
+> request and on the following cycle you can retreive the data.
+The same holds here: an independent instruction following the load can
+already be in stage 3 (MEM) when the load is in stage 4 (WB).
+A dependent instruction directly following the load is in stage 1 (ID)
+when the load is in stage 4.
+It makes sense that there is an extra stall-cycle because the data
+returns in cycle 3, but here there are two extra stall-cycles accounted
+in stead of one.
+Thanks,
+- Show quoted text -
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

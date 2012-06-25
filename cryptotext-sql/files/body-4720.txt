@@ -1,0 +1,8 @@
+I think I've heard here something about slow resume from a saved checkpoint.(e.g. m5.debug configs/myconf/myconf.py -r 1)Well, the patch is quite simple:in file: src/mem/bus.cc:void Bus::occupyBus(PacketPtr pkt)
+{replace:"""    while (tickNextIdle < curTick)    tickNextIdle += clock;"""with:"""    tickNextIdle = (curTick/clock)*clock + clock;"""
+which gives the same value but much much faster.you can do it by yourself, you don't need to wait for a next beta. :)best regards,-- Saša TomićBSC - Barcelona SuperComputing Center
+c\ Jordi Girona 29, Nexus I, 08034 Barcelona, EspañaTel.: +34671218062,  +34934054289http://www.bsc.es
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

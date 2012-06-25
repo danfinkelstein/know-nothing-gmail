@@ -1,0 +1,24 @@
+MemoryPort is just a simple adapter to interface the PhysicalMemory object with the rest of the system.  If you're looking to extend PhysicalMemory you should put your code in PhysicalMemory itself and not in MemoryPort (though you may have to tweak MemoryPort a little to make it properly interface your new PhysicalMemory to the rest of the world).
+The key thing to understand is that the primary purpose of SimpleTimingPort is to implement recvTiming() and recvFunctional() in terms of recvAtomic().  This lets us take devices where the latency of each access is independent of any other access (and thus the semantics of recvAtomic() are adequate) and lets them just implement one function (
+i.e., recvAtomic()), and SimpleTimingPort takes care of handling functional and timing accesses.  (If you're not clear on the difference between functional, atomic, and timing accesses, see 
+http://m5sim.org/wiki/index.php/Memory_System.)MemoryPort is a slight adjustment of SimpleTimingPort that doesn't implement recvFunctional() in terms of recvAtomic, but instead does it the other way around.  This is because for PhysicalMemory we can avoid calculating the latency altogether for recvFunctional().  Not a big deal with our current fixed-latency PhysicalMemory object, but if the latency calculation was more complex it would improve performance for recvFunctional().
+The reason you see multiple ports is that some of the ports are used for functional accesses to initialize memory, for syscall emulation in SE mode, and for the remote debugger in FS mode.Steve- Show quoted text -
+On 10/7/07, laymanyang <laymanyang@163.com> wrote:- Show quoted text -
+Hi all,
+       I'm trying to implement a memory access scheduling algorism now. I will calculate latency for each packet, and invoke SimpleTimingPort::sendTiming() in my function. I want to add my function into class MemoryPort, but I find that when class PhysicalMemory is constructed, it implements three MemoryPort. Why does a PhysicalMemory need three ports? Is there only one port binding to CPU? Do these three port all have data accessing?
+      I have added my code into src, and run some benchmarks. I find all these three ports have data access to memory at the same time. Multi- recvTiming() are invoked, and program runs wrongly. And when I run 
+M5-2.0.3 originally, SimpleTimingPort::recvTiming() is invoked from only one port sequentially, and it even does not access MemoryPort, just from SimpleTimingPort. I don't know what make this change. My codes are all added into class MemoryPort, and I want to know if it is right to add here.
+       I will appreciate so much if you can tell me detailedly how it works when one access is sent from CPU to memory. And what is the function of these three ports individually?
+       Thank you all so much!
+ 
+       Lei Yang
+   
+ 
+ 
+网 易 Yeah.net 免 费 邮 箱 全 新 改 版，珍 藏 帐 号 开 放，快 来 抢 注 >> _______________________________________________
+m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

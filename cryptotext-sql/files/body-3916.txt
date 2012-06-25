@@ -1,0 +1,70 @@
+I have a question regarding the recvtiming() function in bus.cc. Please refer to the following code snippet:
+if (dest == Packet::Broadcast) {
+        port = findPort(pkt->getAddr(), pkt->getSrc());
+        if (timingSnoop(pkt, port ? port : interfaces[pkt->getSrc()])) {
+            bool success;
+            pkt->flags |= SNOOP_COMMIT;
+            success = timingSnoop(pkt, port ? port : .....
+Does the destination field in packet is set to Broadcast each time a cache miss occurs? If not, under what scenario is the destination of packet a Broadcast. Looks like timingsnoop() is being called on events other than a cache miss ! Also, any ideas how I can track the information that the current packet needs to occupy the bus because of an earlier cache miss.
+---- Original message ----
+>Date: Sun, 18 Nov 2007 16:23:00 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] Changing Bus Latency for Packet
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>Just to be clear: ticks are just ticks, the smallest discrete unit of
+>time.  They aren't processor cycles.  It may just so happen that your
+>processor cycle time is 1 tick, but that's not a given.  Particularly
+>in FS mode we use 1 tick == 1ps, and we've been trying to move there
+>in SE mode too.
+>
+>The 'clock' field in the bus object is the number of ticks in a bus
+>clock.  You should not be adding values that are not a multiple of
+>clock to tickNextIdle, as then the bus may start processing events at
+>times that are not bus clock edges... this won't necessarily break
+>things but it doesn't make sense from a timing perspective.
+>
+>I don't see any reason why your code change would lead to negative
+>numbers; you should run under gdb to figure that kind of thing out.
+>
+>Steve
+>
+>On Nov 18, 2007 3:52 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>> The -ve number was an issue with something else ! However, if I add busCycles, the traces are what is expected. But if I insert processor cycles e.g., tickNextIdle+=78, the traces are not in accordance with what is expected and even the total numebr of cycles are less than without adding extra cycles. I am looking for the right way to insert processor cycles (ticks rather than numCycles) for a certain packet?
+>>
+>>
+>> ---- Original message ----
+>> >Date: Sun, 18 Nov 2007 16:47:23 -0600 (CST)
+>> >From: Shoaib Akram <sakram3@uiuc.edu>
+>> >Subject: [m5-users] Changing Bus Latency for Packet
+>> >To: m5-users@m5sim.org
+>> >
+>> >I want to have extra bus cycles added for certain type of packets. If I add a busCycle, tickNextIdle+=clock, something anomalous happens. At one point after first 4000 cycles, the tickNextIdle gets calculated to a negative number, which the following trace on bus shows: Please suggest whats the right way to add busCycles. If I add processor cycles (tickNextIdle+=100), I dont have negative numbers but the traces show results not expected !
+>> >
+>> >1001: system.membus: recvTiming: packet src 1 dest -1 addr 0x140 cmd ReadReq
+>> >1001: system.membus:   found addr 0x140 on device 0
+>> >1001: system.membus: The bus is now occupied from tick 1001  to 4000
+>> >1002: system.membus: recvTiming: packet src 0 dest 1 addr 0x140 cmd ReadResp
+>> >1002: Event_10318838: Waiting on retry
+>> >4000: system.membus: Received a retry
+>> >4000: system.membus: Sending a retry
+>> >4000: system.membus: recvTiming: packet src 0 dest 1 addr 0x140 cmd ReadResp
+>> >4000: system.membus: The bus is now occupied from tick 4000 to -243651592
+>> >
+>> >_______________________________________________
+>> >m5-users mailing list
+>> >m5-users@m5sim.org
+>> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

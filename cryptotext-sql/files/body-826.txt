@@ -1,0 +1,7 @@
+> Do we have McPAT framework in M5 repository?
+McPAT is a separate tool.  It does work with M5 though.  McPAT can be found at:
+http://www.hpl.hp.com/research/mcpat/
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

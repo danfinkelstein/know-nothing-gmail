@@ -1,0 +1,23 @@
+Welcome to the m5-users@m5sim.org mailing list! Welcome to the
+m5-users mailing list. Please feel free to post your questions here
+and answer any you may know the answer to.
+To post to this list, send your email to:
+  m5-users@m5sim.org
+General information about the mailing list is at:
+  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+If you ever want to unsubscribe or change your options (eg, switch to
+or from digest mode, change your password, etc.), visit your
+subscription page at:
+  http://m5sim.org/cgi-bin/mailman/options/m5-users/dfinke01%40cis.poly.edu
+You can also make such adjustments via email by sending a message to:
+  m5-users-request@m5sim.org
+with the word `help' in the subject or body (don't include the
+quotes), and you will get back a message with instructions.
+You must know your password to change your options (including changing
+the password, itself) or to unsubscribe.  It is:
+  Gravity
+Normally, Mailman will remind you of your m5sim.org mailing list
+passwords once every month, although you can disable this if you
+prefer.  This reminder will also include instructions on how to
+unsubscribe or change your account options.  There is also a button on
+your options page that will email your current password to you.

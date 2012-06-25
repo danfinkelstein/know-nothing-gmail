@@ -1,0 +1,28 @@
+I don't believe that there is a fundamental reason that you can't
+build M5 with visual studio 2008 or visual studio 2008 express  (don't
+try an earlier version).  That said it would probably take a few days.
+ If you do decide to go down this road, please share your experience
+with the list as I would love to try to integrate support.  I'd also
+suggest using SCons and not converting the build environment.
+  Nate
+On Mon, May 12, 2008 at 12:56 PM, abc def <jose_6154@yahoo.es> wrote:
+- Show quoted text -> Hi,
+>
+> For some unavoidable reason i have to run m5 in windows environment. It is
+> Vista Business edition. I can not install vmware. Can you please help me how
+> to go forward with it?
+>
+>
+> ________________________________
+> Enviado desde Correo Yahoo!
+> La bandeja de entrada más inteligente.
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

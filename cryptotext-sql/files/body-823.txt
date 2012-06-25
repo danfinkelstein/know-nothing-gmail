@@ -1,0 +1,7 @@
+HiI am interested in collecting bus statistics related to the bus traffic. Is there any way to collect statistical data similar like the way for the caches. I am using M5 2.0b6 with updated current repository. Its giving stats.txt file that doesn't have any bus statistics.  My idea is to collect the bus idle cycle or bus utilization for all the specific buses.
+Thanks
+Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

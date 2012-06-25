@@ -1,0 +1,8 @@
+Hi,I am trying to use the SConstruct file provided with m5.When I give the command scons (assuming everything is taken as default), I get the following errorscons: Reading SConscript files ...scons: warning: The Options class is deprecated; use the Variables class instead.
+File "/home/thatsme/m5/m5-stable-d8b246a665c1/SConstruct", line 299, in ?Checking for leading underscore in global variables...nosys exec path is  /home/thatsme/m5/Python-2.4.4Checking for C header file Python.h... no
+Error: can't find Python.h header in /home/thatsme/m5/Python-2.4.4/IncludeNote that I am running python from my home directory and have set the LD_LIBRARY_PATH to point to that location. The file Python.h is listed in the above directory but somehow scons is unable to find it.
+Can anyone help please? Best,Syed
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

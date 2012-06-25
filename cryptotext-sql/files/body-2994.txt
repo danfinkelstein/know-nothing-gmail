@@ -1,0 +1,29 @@
+I believe this means you added a statistic but didn't initialize it; see
+http://m5sim.org/wiki/index.php/Using_the_Statistics_Package.
+2008/5/28 fractal218 <fractal218@126.com>:
+- Show quoted text ->  Hi,
+>
+>  I changed only the code of cache and recompiled it successfully. But it
+> report the following error when running:
+>
+>     panic: stat check failed for
+>      @ cycle 0
+>
+>     What's wrong?
+>
+>  Thank you!
+>
+>
+>
+>
+> ________________________________
+> 伊利525健康中国公益日
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

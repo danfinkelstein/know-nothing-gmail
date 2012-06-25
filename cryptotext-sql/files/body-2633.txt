@@ -1,0 +1,31 @@
+My only guess is that you created the checkpoint from a system with
+caches. We do not currently support checkpoints, with caches since any
+dirty lines in the cache aren't written back.
+Ali
+- Show quoted text -
+On Aug 11, 2008, at 2:17 AM, Jibang Liu wrote:
+> When I restore from a checkpoint and use standard_switch, m5 generated
+> this error:
+>
+> **** REAL SIMULATION ****
+> warn: Entering event queue @ 0. Starting simulation...
+> 216835500: system.sim_console: attach console 0
+> m5.debug: build/ALPHA_FS/mem/cache/cache_impl.hh:1282: Packet*
+> Cache<TagStore>::getTimingPacket() [with TagStor
+> e = LRU]: Assertion `tags->findBlock(mshr->addr) == __null' failed.
+> Program aborted at cycle 1695448729500
+> Abort
+>
+> If any of you once had the same problem, please give me a help.Thanks.
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

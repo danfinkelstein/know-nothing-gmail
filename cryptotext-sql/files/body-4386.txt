@@ -1,0 +1,20 @@
+Hi all,
+ 
+When I am running a multithreaded benchmark on a 
+multicore structure on M5, I encountered an assertion failure in the following 
+function. Can you give me any hints on what this function does and how 
+might this failure occur?
+ 
+Thanks!
+ 
+Jiayuan
+ 
+src/base/fenv.c
+ 
+void m5_fesetround(int rm) {    
+assert(rm > 0 && rm < 4);    
+fesetround(m5_round_ops[rm]);}
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

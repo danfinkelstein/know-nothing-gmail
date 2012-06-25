@@ -1,0 +1,6 @@
+Hi Steve ,I am working on prefetching techniques and trying to get the miss rate for ghb, stride and tagged. I have made the required changes you mentioned in the repository "Fixes to get prefetching working again." and "Update stats for new prefetching fixes."  I have trouble regarding the files you have been provided and the files present in M5_2.0b6 such as the file "/src/mem/request.hh". The changes you provided for a file which is different from the file present in the M5_2.0b6. Its so confusing with whether I have to make changes to existing files in M5 or to change the whole file. There are many such files and is really creating trouble to update the changes. Consequently can you please share with me your updated M5_2.0b6 so that I can have it as reference and can concentrate on prediction techniques rather than how to make M5 run.....
+Hoping kind cooperation and eagerly waiting for the replyThanks in advance Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

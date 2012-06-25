@@ -1,0 +1,44 @@
+> 1. encumber files seem to be the source code of a EIO trace reader. EIO
+> trace, I think, is a kind of file for tracing or debugging in M5
+> (http://osdir.com/ml/emulators.m5.users/2008-06/msg00139.html). But for
+> licence reason, M5 didn't include the EIO trace reader code in the source
+> tree. It has to use the EXTRA option of scons to compile the code in.
+> (http://www.m5sim.org/wiki/index.php/Extras)
+We didn't write the trace reader.  It came from simplescalar and the
+license isn't very friendly so we don't include it in our
+distribution.
+> 2. The eio related regression tests failed because the folder containing the
+> eio test has no EIO trace files not because m5 is installed wrongly.
+> (http://www.mail-archive.com/m5-users@m5sim.org/msg00804.html). M5 gets no
+> input and therefore has to exit and claims the test failed. Namely, in fact,
+> m5 didn't run and no outcome at all. Generally, we define failure as the
+> case where the new output is different with the old output provided by the
+> simulator. However, here, the failure also contains the case where test
+> didn't get run.
+You're completely right and we've long had an item on our todo list to
+improve our regression system so these tests aren't run in this
+situation.
+> if you refer to the compiling history carefully, you can find for successful
+> tests, M5 gets run and outputs something. Then, one tool named diff is in
+> charge of comparing the outcoming with the old one. But for the failed
+> tests, only two lines records appear. That means m5 doesn't get run at all.
+> It doesn't mean M5 is installed in a wrong way. If that's the case, why
+> other tests can run? It at most means M5 doesn't have EIO support. But we
+> compile it with encumber files. So, the most possible thing is that the test
+> itself has no input files.
+You're right, it doesn't have the input files.  In the output
+directory for the test, you can look at the stdout and stderr files to
+find out more information abotu why a test failed.
+> However, I still get all tests failed when I run scons
+> build/ALPHA_SE/tests/debug/long EXTRAS=encumbered USE_MYSQL=FALSE
+> I don't know why. Some of them are not eio related.
+Not all tests faile, but only the ones for which you don't have input
+files.  All of the tests based on SPEC2000 require input files and
+binaries which we can't redistribute because of license issues.
+Again, we need to fix our test system so these don't run.
+I apologize for the troubles you're having.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

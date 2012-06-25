@@ -1,0 +1,88 @@
+If I only want a new memory which is similar to the DRAM but has different
+latencies. Both should be present in the system. Can I add this new module
+by deriving it from physicalmemory, chancing latencies and adding some
+python parameters, or would I need to edit c++ code for this?
+Thanks,
+Sujay
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+- Show quoted text -Sent: Thursday, July 30, 2009 11:03 AM
+Subject: Re: [m5-users] adding a new memory module in the System
+If you actually are designing a new module then you do need to write a
+C++ object for it.  This process is best covered in the ASPLOS
+tutorial slides available on the web site.  I thought you were just
+asking about adding another instance of an existing class to
+configuration; my mistake.
+Steve
+On Wed, Jul 29, 2009 at 12:18 PM, Sujay Phadke<sphadke@eecs.umich.edu>
+wrote:
+> Thanks Steve. I read thru the config hierarchy. I didnt get how I can add
+> a
+> module without touching the c++ files. If I want to add a NewMem, how do I
+> add it in the System unless I add relevant lines (like creating function
+> port) in the system.cc file?
+>
+> Sujay
+>
+> ----- Original Message -----
+> From: "Steve Reinhardt" <stever@gmail.com>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Tuesday, July 28, 2009 4:17 PM
+> Subject: Re: [m5-users] adding a new memory module in the System
+>
+>
+> That should just work as you have it (adding a comma at the end of the
+> newmem line of course). Basically you can add child objects anywhere
+> you want; even though the syntax is the same as parameters, you don't
+> need to touch the C++ to do that.
+>
+> See
+> http://m5sim.org/wiki/index.php/Simulation_Scripts_Explained#The_configuration_hierarchy
+>
+> Steve
+>
+> On Tue, Jul 28, 2009 at 11:45 AM, Sujay Phadke<sphadke@eecs.umich.edu>
+> wrote:
+>> Hello,
+>> I want to add a new memory module in the system. (say NewMem). It
+>> connects to dram on one side. I need to include this NewMem in the
+>> instantiation of the system as:
+>>
+>> system = System(cpu = [CPUClass(cpu_id=i) for i in xrange(np)],
+>> physmem = PhysicalMemory(range=AddrRange("512MB")),
+>> newmem = NewMem(...)
+>> membus = Bus(), mem_mode = test_mem_mode)
+>>
+>>
+>> Is this correct? For this, do I have to modify the original system.cc
+>> file
+>> to include the definition for NewMem or is there a better way of doing
+>> this?
+>>
+>> Thanks,
+>> Sujay
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

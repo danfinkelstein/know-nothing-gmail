@@ -1,0 +1,17 @@
+I have copied the patch given by Clint Smullen in the post
+http://m5sim.org/cgi-bin/mailman/private/m5-users/2009-January/004014.html to a
+patch file (m5.patch).
+But when i try to apply the patch with git: git apply ./m5.patch
+It generate a fatal error saying "fatal: patch with only garbage at line 52".
+Line 52 is just the start of a new chunk of code to be patched, shown as follows:
+ 49 diff --git a/src/mem/SConscript b/src/mem/SConscript
+ 50 --- a/src/mem/SConscript
+ 51 +++ b/src/mem/SConscript
+ 52  <at>  <at>  -57,3 +57,21  <at>  <at>
+I am pretty new with the git tool and have tweaked the patch the whole night
+without resolving this problem.
+I will really appreciate if anyone can help.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

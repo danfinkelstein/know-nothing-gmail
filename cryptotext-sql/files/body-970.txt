@@ -1,0 +1,178 @@
+The bug is not fixed in beta 6.  The fix is here:
+http://repo.m5sim.org/m5-stable/rev/f43dbc09fad3
+The reason you don't see it with m5.fast is that m5.fast disables
+assertion checking.
+There's no reason not to use the tip of the m5-stable repository.
+Steve
+- Show quoted text -
+On Wed, Sep 2, 2009 at 5:14 PM, Fei Hong<tithonus.hf@gmail.com> wrote:
+> Hi Steve,
+>
+> I just changed to the beta 6 version. It is better now.
+>
+> The message still appear when cores number >=8 using m5.debug executable,
+> but it works fine with m5.fast executable when cores number >=8.
+>
+> Thank you.
+>
+> --------------------------------------------------
+> From: <m5-users-request@m5sim.org>
+> Sent: Wednesday, September 02, 2009 9:00 AM
+> To: <m5-users@m5sim.org>
+> Subject: m5-users Digest, Vol 38, Issue 2
+>
+>> Send m5-users mailing list submissions to
+>> m5-users@m5sim.org
+>>
+>> To subscribe or unsubscribe via the World Wide Web, visit
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> or, via email, send a message with subject or body 'help' to
+>> m5-users-request@m5sim.org
+>>
+>> You can reach the person managing the list at
+>> m5-users-owner@m5sim.org
+>>
+>> When replying, please edit your Subject line so it is more specific
+>> than "Re: Contents of m5-users digest..."
+>>
+>>
+>> Today's Topics:
+>>
+>>   1. problem about running simulation with cores number more than
+>>      8 (tithonus)
+>>   2. Re: problem about running simulation with cores number more
+>>      than 8 (Steve Reinhardt)
+>>
+>>
+>> ----------------------------------------------------------------------
+>>
+>> Message: 1
+>> Date: Tue, 1 Sep 2009 10:41:42 -0700
+>> From: tithonus <tithonus.hf@gmail.com>
+>> Subject: [m5-users] problem about running simulation with cores number
+>> more than 8
+>> To: m5-users@m5sim.org
+>> Message-ID:
+>> <39724e770909011041i54ed73b4q2f6d83c6c220906b@mail.gmail.com>
+>> Content-Type: text/plain; charset="utf-8"
+>>
+>> Hi all,
+>>
+>> I am running the CMP simulation. It works fine with cores number <= 6.
+>> However, when I try 8 cores it appears the following message.
+>> ----------------------------------------------------
+>>
+>> Dumping Instruction List
+>> Instruction:0
+>> PC:0x120011f2c
+>> [tid:0]
+>> [sn:1756]
+>> Issued:1
+>> Squashed:0
+>>
+>> Instruction:1
+>> PC:0x120011f30
+>> [tid:0]
+>> [sn:1757]
+>> Issued:0
+>> Squashed:0
+>> ...
+>>
+>> 212: [sn:1917] not destroyed
+>> 213: [sn:1918] not destroyed
+>> ...
+>>
+>> m5.debug: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:178: void
+>> BaseDynInst<Impl>::initVars() [with Impl = AlphaSimpleImpl]:
+>> Assertion `instcount <= 1500' failed.
+>>
+>> --------------------------------------------------------------
+>> I am using the SE mode. Does anyone know how to fix this problem?
+>>
+>> Thanks in advance!
+>>
+>> Fei
+>> -------------- next part --------------
+>> An HTML attachment was scrubbed...
+>> URL:
+>> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090901/766f9d25/attachment.html
+>>
+>> ------------------------------
+>>
+>> Message: 2
+>> Date: Tue, 1 Sep 2009 15:16:16 -0700
+>> From: Steve Reinhardt <stever@gmail.com>
+>> Subject: Re: [m5-users] problem about running simulation with cores
+>> number more than 8
+>> To: M5 users mailing list <m5-users@m5sim.org>
+>> Message-ID:
+>> <28fce2300909011516o131f99e2p1ce6e0b68a2297d2@mail.gmail.com>
+>> Content-Type: text/plain; charset=ISO-8859-1
+>>
+>> Are you running the latest code?  This looks like a bug that's been fixed.
+>>
+>> Steve
+>>
+>> On Tue, Sep 1, 2009 at 10:41 AM, tithonus<tithonus.hf@gmail.com> wrote:
+>>> Hi all,
+>>>
+>>> I am running the CMP simulation. It works fine with cores number <= 6.
+>>> However, when I try 8 cores it appears the following message.
+>>> ----------------------------------------------------
+>>>
+>>> Dumping Instruction List
+>>> Instruction:0
+>>> PC:0x120011f2c
+>>> [tid:0]
+>>> [sn:1756]
+>>> Issued:1
+>>> Squashed:0
+>>>
+>>> Instruction:1
+>>> PC:0x120011f30
+>>> [tid:0]
+>>> [sn:1757]
+>>> Issued:0
+>>> Squashed:0
+>>> ...
+>>>
+>>> 212: [sn:1917] not destroyed
+>>> 213: [sn:1918] not destroyed
+>>> ...
+>>>
+>>> m5.debug: build/ALPHA_SE/cpu/base_dyn_inst_impl.hh:178: void
+>>> BaseDynInst<Impl>::initVars() [with Impl = AlphaSimpleImpl]:
+>>> Assertion `instcount <= 1500' failed.
+>>>
+>>> --------------------------------------------------------------
+>>> I am using the SE mode.?Does anyone know how to fix this problem?
+>>>
+>>> Thanks in advance!
+>>>
+>>> Fei
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>> ------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>> End of m5-users Digest, Vol 38, Issue 2
+>> ***************************************
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

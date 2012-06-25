@@ -1,0 +1,5 @@
+Hi all, does M5 support SMT system? Can I instansitate more functional unit to support it? If not, and if a multi-thread program is running on a single cpu core, how to distinguish different threads? Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

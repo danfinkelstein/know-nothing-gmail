@@ -1,0 +1,38 @@
+There hasn't been much push (yet) to work on this, though I plan to
+start devoting some effort to it myself very soon.  Would you care to
+give me all of your current patches and explain how you ran M5 and
+what your detailed error messages were? (If you had any, though it
+doesn't sound like you do.)
+  Nate
+- Show quoted text -
+On Thu, Feb 14, 2008 at 12:46 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+> Is it possible to run a multiprogram simulation with more than 128
+>  cores? Using a slightly modified se.py and running in simple timing
+>  mode, I've tried to run the hello world default benchmark on 129
+>  cores, and it never gets past the "starting simulation" message. For
+>  128 cores it runs fine (including printing out the "warning:
+>  increasing stack size by one page" message, but the moment I go above
+>  128 I never see that warning and it hangs.
+>
+>  On the other hand, running in atomic simple cpu mode it completes for
+>  even 256 cores.
+>
+>  This is using an unmodified m5 2.0b4 source. Does anyone know what may
+>  be causing this issue, and if there is a way to get around it? Or how
+>  I may go about tracing the problem down? I'm not sure what all steps
+>  occur between the "starting simulation" message and when the programs
+>  get loaded (which I assume causes the stack size increase), but that's
+>  when the simulator appears to get stuck.
+>
+>  Thanks,
+>  Nick
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

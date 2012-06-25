@@ -1,0 +1,13 @@
+Hi Pritha,If your program is in assembly, then you'd just have to make changes to the Alpha assembler (in binutils). If your program is in C (or any other high level language), then you'd also have to make changes to the alpha machine description file (<gcc-root>/gcc/config/alpha/alpha.md) to specify how to emit your specialized instructions in assembly from GCC's RTL representation. You'll find information about it in the gcc internals documentation (http://gcc.gnu.org/onlinedocs/gccint/).
+regards,Soumyaroop- Show quoted text -On Sat, Apr 3, 2010 at 5:52 PM, Pritha Ghoshal <pritha9987@tamu.edu> wrote:
+- Show quoted text -Hi, We need to make some modifications to the Alpha ISA and insert a few more instructions. But while compiling a program through crosscompiler, we need to let the cross compiler know about the new instructions. I guess we need to modify the assembler code of gcc for that. 
+Could someone help us about how to do this and is there any other way? -- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Soumyaroop RoyPh.D. Candidate
+Department of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

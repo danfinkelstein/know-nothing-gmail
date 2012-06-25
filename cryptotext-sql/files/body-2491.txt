@@ -1,0 +1,11 @@
+Hi, I hope that someone can help me, I know that this is a error of the cross-compiler, but I have tried to send the message to the mailing list of cross-tool and it's always rejected. I'm trying to install the crosscompiler locally and not in /opt/crosstool, I'm doing this because I cannot create a directory in /opt, I have modified the demo-alpha.sh with the changes from here http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks, and after I run the script with sh demo-alpha.sh, and this is the output that I get:
+ 
+configure: warning: LDFLAGS=-all-static: invalid host typecreating cache ./config.cacheconfigure: error: can only configure for one host and one target at a time
+ 
+Any ideas?, thank you.
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

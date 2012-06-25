@@ -1,0 +1,8 @@
+On Thu, May 8, 2008 at 8:04 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+It looks like when you ran mke2fs you reformatted the image...
+agreed.  your image is fubar'ed so i'd download a fresh one and then follow those instructions from the FAQ exactly.  like nate said, this is somethign we've all done hundreds of times, it will work.
+lisa
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

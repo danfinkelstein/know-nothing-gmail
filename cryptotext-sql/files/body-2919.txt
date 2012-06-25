@@ -1,0 +1,8 @@
+I connect to M5 running in FS mode using m5term. It 
+display all the console output messages but I cannot get the prompt. Is there a 
+special command to get the prompt?
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users m

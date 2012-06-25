@@ -1,0 +1,8 @@
+I'm a little confused about the sim_ticks, sim_seconds, host_seconds, and how these are all related to the numCycles.  I take it that sim_ticks is the most important figure and is the total simulation time.  How does this relate with host_seconds?
+I'm having a little trouble with increasing the clock frequency and getting some weird results.  I think it's probably something on my end, and I think part of the problem is that I don't really understand how sim_seconds, host_seconds, and numCycles are related.
+When I've been doubling the frequency for the simple timing cpu, I'm getting very little speedup (for example a setup with 2GHz takes 0.004076 seconds and a 4GHz setup takes 0.004013 seconds).  The program that I've been running is a simple double for loop that sums up all of the loop counters and then prints the result to the screen.
+Thanks in advance,Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Assertions are disable in m5.fast, it does not mean that the error is
+not occurring.
+- Show quoted text -
+On Sep 29, 2008, at 1:25 PM, Shoaib Akram wrote:
+> With m5.debug I receive an assertion failure, which disappears with
+> m5.fast. Is it explicable? Any insight into the assertion itself
+> will be appreciated.
+>
+> m5.debug: build/ALPHA_SE/mem/cache/mshr.cc:179: void
+> MSHR::clearDownstreamPending(): Assertion `downstreamPending' failed.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

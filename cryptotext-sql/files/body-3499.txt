@@ -1,0 +1,85 @@
+Hey Nam,
+I went through your cases and you're right for #1 / #2 but I think
+wasnt having a problem with #3 really (so maybe that's fixed in the
+new releases' code).
+Responses to your 1st 2 below.
+>
+> 1. In function removeThread() in cpu.cc, when a thread is removed, some
+> physical registers allocated for this thread are freed from the rename map.
+> However, a subset of these registers have actually been freed previously
+> from the history buffer in rename stage. This make them to be freed twice,
+> causing threads that are still executing to crash. I tried to fix this by
+> not allowing registers to be added into the freelist more than one time. The
+> simulator works for some workload combinations after this.
+What's happening here is that in removeThread() O3CPU goes through
+EVERY architected register from the thread being removed and tries to
+reset the scoreboard and freelist for the current physical register
+mapping for that architected register. Problem is, it's possible that
+all the mappings aren't being used, so you end up with the case you're
+experiencing in which you free a register twice by either:
+(1) removeThread() freeing a register mapping that is already freed:
+thus potentially setting a bad value in the scoreboard or putting a
+register on the free list twice.
+(2) removeThread() frees a register mapping that was valid, THEN the
+rename stage squash() function tries to free that same register again
+causing a problem.
+The correct solution to this is tricky, because stopping registers
+from getting added twice  seems to solve the effect of the problem
+instead of solving the cause of the problem.
+Two solutions come to mind:
+- The best solution seems to be to go through the renameMap entries
+for that thread and free all the entries that are valid. Problem is
+from my initial perusing through the code, it doesnt seem that this
+valid/unvalid book-keeping is being kept correctly (or anywhere?)
+since the way O3 is implemented it's not necessary any other case
+except this one I believe. I believe that updating this book-keeping
+and then changing the removeThread() function to look to see if a a
+renameEntry is valid before releasing freeList/scoreboard stuff will
+solve the problem.
+- The other solution is to go through each non-squashed, inFlight
+instruction (cpu->instsList) for that thread, look at the renamed
+destination register for that thread and then just free those
+registers. Problem is that you need to make sure that the instruction
+has at least made it through the rename stage. You can do that by
+calling some utility functions on each instruction to see if that
+instruction is in the Instruction Queue or Reorder Buffer
+(inst->isInIQ() , etc.). If so, the instruction should be safe to
+probe for renamed registers to free.
+If you can, please post a patch for your solution that blocks
+free-list regs from being added twice to the mailing list as it could
+be useful for beta4 users.
+I'll see that the above problem gets put on the bug-tracker and we get
+it ironed out before the tutorial if possible. If not before the
+tutorial, this should be handled relatively soon after. If you would
+like to get a jumpstart on it, then just let me know and I can help
+out.
+>
+> 2. For some other combinations, the simulator crashed at line 701 in cpu.cc:
+>
+>     assert(iew.ldstQueue.getCount(tid) == 0);
+This was another good catch. What's happening is that the IEW stage
+communicates with the commit stage each cycle through "wires" so as to
+know what is the most recently committed or squashed instruction. BUT,
+since the removeThread() is being caused by a instruction that is
+being committed (not all the way there yet) it's possible that
+instructions can slide through that window.
+In the removeThread() function, it calls iew.squash(tid) which should
+handle things for the LSQ inside of it but you're fix is necessary
+since there is no overloaded squash function that will just squash
+based on a pre-specified sequence number.
+That should be a short function to write so that you can call
+iew.squash(squash_seq_num, tid) and then that will degenerate to what
+you prescribed:
+>     iew.ldstQueue.squash(squash_seq_num, tid);
+Once again, thanks for the bug catches and fixes. The user-community
+involvement is what makes M5 a constantly-improving, useful tool!!!
+--
+- Show quoted text -----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

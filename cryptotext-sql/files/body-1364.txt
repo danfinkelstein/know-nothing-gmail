@@ -1,0 +1,57 @@
+See PhysicalMemory::calculateLatency() in src/mem/physical.cc.  If all
+you want to do is vary the latency based on the DRAM power state you
+could do it there, I would think.
+- Show quoted text -
+On 11/10/07, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> How do I change the latency of Phy Mem dynamically? I want to simulate dram
+> state transitions and all I need to do is change the latency to model
+> active, standby, powerdown states. (is this right?).
+>
+> - Sujay
+>
+> ----- Original Message -----
+> From: "Steve Reinhardt" <stever@gmail.com>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Saturday, November 10, 2007 12:02 PM
+> Subject: Re: [m5-users] 2.0b4 PhysicalMemory::doAtomicAccess() for
+> ExclusiveReads Problem
+>
+>
+> > OK, I'll take a look... I just hacked a randomized latency into
+> > PhysicalMemory to try and reproduce the problem but it's still working
+> > for me.  I'll run some longer tests to see if I can reproduce it.  If
+> > not, would you be willing to send me your code so I can see if I can
+> > track it down?
+> >
+> > Also, what kind of memory hierarchy are you using (uni- vs
+> > multiprocessor, # of cache levels, etc.)?
+> >
+> > Steve
+> >
+> > On 11/9/07, Joe Gross <joegross@umd.edu> wrote:
+> >> Same problem even when doAtomicAccess() is performed before delaying the
+> >> return of the packet (thus ensuring that this is performed in order). I
+> >> checked to see if the packets were being returned in order with any
+> >> configuration of my memory simulator and they frequently aren't (some
+> >> ranks/banks see much more traffic). So it seems that it's a problem not
+> >> of doing the doAtomicAccess() but rather of sending the packets back in
+> >> a different order and it's somehow different than b3 when this
+> >> rearrangement worked fine.
+> >>
+> >> Joe
+> >>
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

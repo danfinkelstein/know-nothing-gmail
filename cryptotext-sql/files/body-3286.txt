@@ -1,0 +1,10 @@
+Thanks for all your help.
+ 
+Can you give me more details about how to control the system so that all threads were done before system halt?
+ 
+Regards,
+Jerry 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

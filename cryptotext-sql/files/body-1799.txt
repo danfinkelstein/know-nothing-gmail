@@ -1,0 +1,9 @@
+Hello Clint thanks a lot for the patch. I have been testing it and it seems that works fine. Thanks a lot. I have a question regarding the reordering of the accesses. Do the selection policies Greedy, FCFS... work?. What I mean is that when there are several accesses at the *same* time all the accesses are stored inside of the transaction queue in DRAMSim? or on the contrary the accesses are sent one by one to DRAMSim (then DRAMSim process the petition and send the answer, in this case DRAMSim works as FCFS). In this last case then they are stored in the retry list in the bus.cc file. My interest for this is to give some priorities for accesses from some cores, that's why I am asking this, because I want to know who stores the petition, to reorder them there.
+ 
+I hope you knwo what I mean if not please let me know. Thanks a lot in advance.
+ 
+> Date: Fri, 23 Jan 2009 12:41:10 -0500> From: cws3k@cs.virginia.edu> To: m5-users@m5sim.org> Subject: [m5-users] [PATCH] Beta patch for M5 2.0 DRAMsim implemention> > # HG changeset patch> # User Clint Smullen <cws3k@cs.virginia.edu>> # Date 1232732406 18000> # Node ID a95dd3a28ecb82a074de030367fe641d52aaf148> # Parent 0397aa216e2290a50fb7138bd28563926573c929> Beta patch for M5 2.0 DRAMsim implemention. Con el nuevo Windows Live lo tendrás  todo al alcance de tu mano
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

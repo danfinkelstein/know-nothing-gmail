@@ -1,0 +1,36 @@
+Hi,
+ I've attached a modified cpu2000.py that I use. This 
+incorporates changes that were discussed a while back (I think in 2007) by  
+Vilas. I think the m5 repo did have those changes, but I dont see them in the 
+latest version.
+ 
+For some benchmarks, you have to use a specific name. Like for 
+gzip, use gzip_source. for parser, use spec2000_parser (to avoid confusion with 
+the M5 parser object).
+ 
+- Sujay
+ 
+- Show quoted text -
+  ----- Original Message ----- 
+  From: 
+  皓曹 
+  
+  To: m5-users@m5sim.org 
+  Sent: Tuesday, September 15, 2009 4:49 
+  AM
+  Subject: [m5-users] Questions about 
+  cpu2000.py
+  Hi,I was looking in the archieve on how to use the 
+  cpu2000.py file for spec2000benchmarks. Though I found some help from the 
+  archieve, I was not able toget results using what was mentioned. I had 
+  created the same file structurethat was mentioned in the 
+  archieves.Unable to find workload for gzip. This is what that I can 
+  see in the .e filewhen i run it..Thanks,
+  
+  
+  _______________________________________________m5-users mailing 
+  listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,91 @@
+On Jun 25, 2008, at 7:16 PM, prannav shrestha wrote:
+> i changed the MAX_STREAM value in both exolex.cc and exolex.l file
+> to 256 and then recompiled the m5, but the problem is still the
+> same. so what to do next?
+You get familiar with GDB and try to figure out why you're still
+hitting that fatal if there are enough streams.
+> And Steve, i switched to m5-0b3. This version doesn't have the
+> problem. Initially i was using m5-0b5
+You may have worked around one problem like that, but b3 has lots of
+bugs that have been fixed in b5 which you'll probably start running
+into. It's probably best to find & fix the problem in the most current
+code (the mercurial repository) rather than use an older version.
+Ali
+- Show quoted text -
+>
+>
+> regards
+> prannav
+>
+> On Wed, Jun 25, 2008 at 6:10 PM, Ali Saidi <saidi@umich.edu> wrote:
+> You'll need edit the exolex.cc file since we don't generate the cc
+> file in the build script because it would require users to have flex/
+> lex installed.
+>
+> Ali
+>
+> On Jun 25, 2008, at 4:37 PM, Steve Reinhardt wrote:
+>
+> > As the error message indicates, it's coming from the eio code.  The
+> > limitation is on the number of simultaneously open EIO traces.  The
+> > error message also tells you how to fix it.
+> >
+> > Does this mean you got past the error you were having previously
+> where
+> > the second thread never seemed to commit any instructions?  If so,
+> can
+> > you let us know what the problem was in case others run into it?
+> >
+> > Steve
+> >
+> > On Wed, Jun 25, 2008 at 12:53 PM, prannav shrestha
+> > <prannav@gmail.com> wrote:
+> >> hi,
+> >> i am trying to run 8 core with each having 4 threads, using O3CPU.
+> >> the
+> >> number of instruction to be run by each thread is 10M. the threads
+> >> are
+> >> loaded with speccpu2000 benchmarks. but while rub the simulation, i
+> >> am
+> >> getting error like
+> >>
+> >> fatal: out of lex buffer streams, increase MAX_STREAMS
+> >> @ cycle 0
+> >> [yy_setstream:/z/stever/bk/m5/eio/exolex.l, line 201]
+> >>
+> >> the simulation ran successfully for 4 core 2 thread and 8 core 1
+> >> thread
+> >> system. What may be the reason for this? is there any limitation on
+> >> the
+> >> number of threads m5 can handle?
+> >> would appreaciate if someone help me to solve this problem
+> >>
+> >> thank u
+> >>
+> >> prannav
+> >>
+> >>
+> >> _______________________________________________
+> >> m5-users mailing list
+> >> m5-users@m5sim.org
+> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >>
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

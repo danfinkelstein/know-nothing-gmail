@@ -1,0 +1,44 @@
+Hi Ali,
+   Thanks a lot for your reply.
+Tracy
+- Show quoted text -
+> There are two possibilities.
+> a) You were running for a set number of ticks, so you wouldn't see
+> any change in sim_ticks because the number of ticks was controlling
+> the length of the simulation.
+> b) You were using the AtomicSimpleCPU instead of either the
+> TimingSimpleCPU or the O3CPU, so the DRAM latency wasn't being
+> accounted for.
+>
+> Ali
+>
+> On Jul 27, 2007, at 9:44 PM, rlai@mtu.edu wrote:
+>
+>> Hi,
+>>
+>>    I implement different page allocation algorithms(virtual to
+>> physical
+>> address translation algorithm) based on current DRAM model in full
+>> system(m5_2.0b). After running simulations(benchmark is ValStream), I
+>> could see more than 20% difference in average DRAM access latency
+>> within all these algorithms, but almost 0% difference in sim_ticks.
+>>    Is that because the caculated dram latency is not used? Can anybody
+>> explain that to me?
+>>    Thanks.
+>>
+>> Tracy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

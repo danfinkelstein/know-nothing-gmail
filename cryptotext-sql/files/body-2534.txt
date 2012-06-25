@@ -1,0 +1,9 @@
+Hello I'm trying to run the m5-simulator, but I'm stuck in this error, here is the output that I get:
+ 
+-bash-3.00$ scons build/ALPHA_FS/m5.debugscons: Reading SConscript files ...Checking for C header file Python.h... yesAdding /ufs3/home/scs/eolmsan/local/python/lib to LIBPATH for python2.4Checking for C library python2.4... no
+Error: can't find Python library python2.4
+I don't know what's happening I got python2.4 here /ufs3/home/scs/eolmsan/local/python/lib, it seems that m5 is adding the path well to LIBPATH but after says that it can't find the library, any idea?, thanks so much. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

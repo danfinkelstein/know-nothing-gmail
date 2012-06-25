@@ -1,0 +1,25 @@
+thank you!- Show quoted text -On Sun, May 18, 2008 at 11:11 PM, Ali Saidi <saidi@umich.edu> wrote:
+On May 18, 2008, at 1:14 AM, nathaniel jones wrote:
+i am trying to use multiple FUPools, specifically in the instruction queue. So i doubled all instances and modified inst_queue a bit. I also doubled all FUPool declarations, specifically in Params.
+I think I missed nothing in the C++ codes,  but  I don't know where to begin in modifying Python, I assumed that Python part would also have to be changed, since I'd be creating a new simobject. when i try to compile without modifying the python code
+i tried changing the the file 03CPU.py
+from
+    fuPool = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
+to
+    fuPool0 = Param.FUPool0(DefaultFUPool(), "Functional Unit pool")
+    fuPool1 = Param.FUPool1(DefaultFUPool(), "Functional Unit pool")
+any pointers, on how i could get my replication of FUPools reflected in the Python code? thanks
+The syntax of the lines in the file are:
+<parameter name> = Param.<parameter type>(<default if unassigned>, <string describing parameter)
+So unless you've created two different classes called FUPool0 and FUPool1 you probably want:
+    fuPool0 = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
+    fuPool1 = Param.FUPool(DefaultFUPool(), "Functional Unit pool")
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

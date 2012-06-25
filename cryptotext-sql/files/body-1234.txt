@@ -1,0 +1,17 @@
+Hi all,
+I want to implement this year's ISCA paper, "Reactive NUCA" in the M5
+SE mode and compare the results with my research. Basically, the paper
+is dynamically remapping the physical pages. After I change the TLB, I
+need to write the dirty blocks back to main memory directly and set
+the cache block to be invalid.
+What is the best way to implement the writeback? Up to now, I think
+the functional writeback without timing will be fine. Is there a
+function in the cache_impl.hh can be used as an example to implement
+this writeback function? If I check the dirty blocks in L1, then how
+to write the blocks in L1 to memory directly?
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

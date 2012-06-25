@@ -1,0 +1,70 @@
+OK. Right now I really don't have the time to do some real profiling (e.g.
+with gprof), but with this simple _integer_ divide and multiply I got very
+good performance, much better then the original b2 and it's almost as fast as
+v1.1. So I'm happy with it for now.
+I first need to get my code working and after that I'll invest a couple of
+days on profiling.
+BTW, integer divide and multiply is quite inexpensive. You do a lot more
+expensive stuff in other places, I'm sure. :)
+I might give a try to your sample of code, but I'm not sure that four
+comparisons, branches and additions can perform much faster than one
+comparison and integer division/multiply + add. Could be a little faster :)
+P.S. I think that on restore from a checkpoint, tickNextIdle starts from zero.
+After that it increments in 1000s up to curTick - which can be a really big
+number.
+best regards,
+El Miércoles, 21 de Febrero de 2007 17:06, Nathan Binkert escribió:
+- Show quoted text -> Old:
+> >> while (tickNextIdle < curTick)
+> >>     tickNextIdle += clock;
+>
+> New:
+> > if (tickNextIdle < curTick)
+> >        tickNextIdle = (curTick / clock) * clock + clock;
+>
+> We actually went back and forth about this.  The question is, when is the
+> divide better than the loop?  We never profiled the code, so we didn't
+> have evidence that one was better than the other.  It seems that you're
+> saying that the divide is better.  We were even thinking that it might
+> make sense to try the add say four times, and do the multiply if it didn't
+> work out.  (That way busy busses only pay the cost of an add or two, and
+> slow busses escape with a divide/multiply.)  Would you be willing to try
+> somethign like this?
+>
+> if (tickNextIdle < curTick)
+>      tickNextIdle += clock
+>
+> if (tickNextIdle < curTick)
+>      tickNextIdle += clock
+>
+> if (tickNextIdle < curTick)
+>      tickNextIdle += clock
+>
+> if (tickNextIdle < curTick)
+>      tickNextIdle += clock
+>
+> if (tickNextIdle < curTick)
+>      tickNextIdle = (curTick / clock) * clock + clock;
+>
+>
+>
+> It really has been quite a while since anyone in the core group has
+> profiled M5, so we'd appreciate this sort of help from people!  If you can
+> identify something that's slow and what fraction of the total execution it
+> accounts for, that'd be fantastic.  Suggestions on improvement are an
+> added bonus.  A statement about what kind of speedup is achieved is icing
+> on the cake.
+>
+> Thanks,
+>
+>    Nate
+--
+Saša Tomić
+BSC - Barcelona SuperComputing Center
+c\ Jordi Girona 29, Nexus I, 08034 Barcelona, España
+Tel.: +34671218062,  +34934054289
+http://www.bsc.es
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

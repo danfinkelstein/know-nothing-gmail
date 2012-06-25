@@ -1,0 +1,12 @@
+You need a directory named build at the top of the build path, but no where else in the path.
+Ali
+On Nov 22, 2007, at 7:16 PM, Steve Stephen wrote:
+No non-leaf build directory found on target path......when i try to install an older version of m5..any idea why the error?
+Get easy, one-click access to your favorites. Make Yahoo! your homepage. _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

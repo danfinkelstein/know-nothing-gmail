@@ -1,0 +1,13 @@
+> According to the OpenVMS chapter of the Alpha Manual, IPL 31 is machine
+> check errors, which is baffling. I am curious to why their "seems" to be so
+> many of these IPL changes to this level. It doesnt sound right if IPL 31
+> correspond to machine check errors, I am wondering if this is incorrect. And
+> exploring that their is a possible cross compiler bug.
+There are two different IPLs.  There's the IPL in the CPU and one
+that's in the platform.  I believe that the IPL 31 is the platform IPL
+whereas the mchk that you're talking about is the CPU IPL.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

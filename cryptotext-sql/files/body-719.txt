@@ -1,0 +1,55 @@
+Hello,
+  This is similar to the discussion 
+thread  from May 2008. My system config had 8 cores. Running M5 in SE mode. 
+If I assign the same benchmark to multiple cores, only 1 cpu fetches and 
+executes instructions. all others lock up. Only if I assign different benchmarks 
+do all cpus fetch instruction correctly.
+ 
+eg: (spec2006)
+a. 8 gcc - only 1 cpu executes
+ 
+b. 7 gcc, 1 astar - 1 cpu executes astar, and 
+only 1 cpu executes gcc
+ 
+ 
+I assign the benchmarks in this way in the modified 
+se.py file:
+ 
+...
+newp0 = Mybench.astar
+newp1 = Mybench.astar_2
+....
+ 
+system.cpu[0].workload = newp0
+system.cpu[1].workload = newp1
+ 
+I changed the Mybench.py file to include different 
+object names for the workload objects.
+ 
+#473.astarastar=LiveProcess()astar.executable =  
+binary_dir + '/astar'astar.cmd = 
+[astar.executable]+['rivers.cfg']astar.cwd = data_dir + 
+'/astar/ref/input/'astar.output = data_dir + 
+'/astar/ref/output/rivers.out'
+ 
+#473.astar_2astar_2=LiveProcess()astar_2.executable =  
+binary_dir + '/astar'astar_2.cmd = 
+[astar.executable]+['rivers.cfg']astar_2.cwd = data_dir + 
+'/astar/ref/input/'astar_2.output = data_dir + 
+'/astar/ref/output/rivers.out'
+ 
+....
+...
+ 
+Now if I assign astar and astar_2 , and so on 
+to the 8 cores, they seem to execute fine. (o3). all cpus fetch and 
+execute correctly.
+ 
+can someone throw some light on this?
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Hi all,
+I would like to run spec2000 on full system and notice mcf.rcS and
+equake.rcsS all reference /benchmarks/spec which doesn't appear on my
+image. Does anyone have the alpha-linux FS spec2000 benchmarks on an image.
+Thanks in advance,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

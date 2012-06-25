@@ -1,0 +1,107 @@
+  
+Thank you very much Nate.
+In order to increase the memory size, I forcely describes the memory
+size in alhpa backdoor.
+void
+AlphaBackdoor::startup()
+{
+    system->setAlphaAccess(pioAddr);
+    alphaAccess->numCPUs = system->numContexts();
+    alphaAccess->kernStart = system->getKernelStart();
+    alphaAccess->kernEnd = system->getKernelEnd();
+    alphaAccess->entryPoint = system->getKernelEntry();
+    //alphaAccess->mem_size = system->physmem->size();
+    alphaAccess->mem_size = 160*1024*1024;
+I sucess to install total 160MB memory in Linux(32MB physmem and 128MB
+physmem2).
+In my opinion, it has no problem to use physmem and physmem2 at the
+same time.
+Both physmem and physmem2 have their own address ranges. 
+By the physical address, M5 decide to access phymem or phymem2.
+Is it right?
+I think I can modify AlphaBackdoor to insert the parameter of memory
+size.
+Youngwoo Park
+nathan binkert 쓴 글:
+- Show quoted text -
+  hmmm.  This is a problem with the way the alpha console works.
+There's an object called AlphaBackdoor that allows the console code to
+get parameters about the system.  The AlphaBackdoor uses the system
+pointer to get to physmem and query it about how much memory it has.
+Unfortunately, this all happens on the C++ side (an artifact of the
+way things used to work long ago.)  Really, the AlphaBackdoor should
+have at least some of its parameters exposed in python and the python
+mecahanism should be used to set the defaults.  Check out
+src/dev/alpha
+  Nate
+2009/11/9 Youngwoo Park <ywpark@core.kaist.ac.kr>:
+  
+  
+    I want to add a second memory module for ALPHA_FS simulator.
+First, I create 'physmem2' object in FSConfig.py files when making Linux
+alpha system.
+def makeLinuxAlphaSystem(mem_mode, mdesc = None):
+    class BaseTsunami(Tsunami):
+        ethernet = NSGigE(pci_bus=0, pci_dev=1, pci_func=0)
+        ide = IdeController(disks=[Parent.disk0, Parent.disk2],
+                            pci_func=0, pci_dev=0, pci_bus=0)
+    self = LinuxAlphaSystem()
+    if not mdesc:
+        # generic system
+        mdesc = SysConfig()
+    self.readfile = mdesc.script()
+    self.iobus = Bus(bus_id=0)
+    self.membus = MemBus(bus_id=1)
+    self.bridge = Bridge(delay='50ns', nack_delay='4ns')
+    self.physmem = PhysicalMemory(range = AddrRange(Addr('0MB'), size =
+'128MB'))
+    self.physmem2 = PhysicalMemory(range = AddrRange(Addr('128MB'), size
+='128MB'))
+    self.bridge.side_a = self.iobus.port
+    self.bridge.side_b = self.membus.port
+    self.physmem.port = self.membus.port
+    self.physmem2.port = self.membus.port
+...
+After I start to the alpha machine, I can find that the 'physmem2' object is
+created.
+The 'config.ini' is show that
+[system.physmem2]
+type=PhysicalMemory
+file=
+latency=30000
+latency_var=0
+null=false
+range=134217728:268435455
+zero=false
+port=system.membus.port[2]
+However, when I start to boot Linux OS, it can only recognize 'physmem'.
+The final memory size of Linux is 128MB like belows?
+M5 console: m5AlphaAccess @ 0xFFFFFD0200000000
+Got Configuration 623
+memsize 8000000 pages 4000
+Is there anything to do that I use both of physmem and physmem2?
+Thank you in advance.
+Youngwoo Park
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+  
+  _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+-- 
+Youngwoo Park
+Ph.D Student
+CORE(COmputer engineering REsearch) Lab
+Dept. EECS, KAIST, Daejeon 305-701, Korea
+Phone: +82-42-869-5425 Fax: +82-42-8695425
+e-mail: ywpark@core.kaist.ac.kr
+--
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

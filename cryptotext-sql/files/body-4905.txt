@@ -1,0 +1,13 @@
+you proably dont have python installed, try running it. if it is installed add its location to your path env- Show quoted text -On 11/9/06, Steve Reinhardt <
+stever@eecs.umich.edu> wrote:Is this all the output you get?  If not, can you send it all?
+Also, have you verified that you can execute python by itself?Chaitali Gupta wrote:> Hi All,>> I am new to this simulator. I am trying to install m5 2.0. I have> already installed Python, Scons, Swig and zlib.
+>> When I compiled m5 using scons, I used the command ->>  > scons build/ALPHA_FS/m5.debug>> and got one error - "cannot execute -python ... compilation terminated because of 1 error"
+>> Can anyone help me find the reason ?>> Thanks in advance.>> Regards->> Chaitali>>>>>>>> __________________________________________________
+> Do You Yahoo!?> Tired of spam? Yahoo! Mail has the best spam protection around> http://mail.yahoo.com>>> ------------------------------------------------------------------------
+>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--                /              /      \ O  /       \/_( .__  /   \  __\/     )./         (
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+You can get the files from the opensparc website. However, unless you're willing to put in a substantial amount of work I don't think you'll find the full-system SPARC support particularly useful.
+Ali
+- Show quoted text -
+On Apr 26, 2010, at 12:18 PM, Eberle wrote:
+> Does someone have a linux kernel and disk image for SPARC_FS, like the ones for ALPHA_FS?
+> Or, at least, know how to build one?
+>
+> Thanks,
+>
+> --
+> Eberle A. Rambo.
+> Federal University of Santa Catarina (UFSC)
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

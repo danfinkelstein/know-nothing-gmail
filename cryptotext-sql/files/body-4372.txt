@@ -1,0 +1,8 @@
+Hi Matt,On 8/20/07, Matthew James Horsnell <horsnell@cs.man.ac.uk> wrote:
+Having followed Steve's suggestions I have debugged the the binariesusing gdb, and can indeed see that when ZeroReg is set to 31 (andReturnAddressReg is 0) then the code calls JsrAndLink, whereas when theconstants are switched the code calls Jsr, but I have extensively
+searched to see where I may have missed a constant.If this is the case, then I suggest setting a breakpoint on decodeInst() in decoder.cc and stepping through to see why when the machine instruction is being decoded it is returning a Jsr object and not a JsrAndLink object.  That line I pointed out earlier in 
+branch.isa is what's supposed to control that, but obviously it's not working...Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

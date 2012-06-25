@@ -1,0 +1,26 @@
+Hi all,
+ 
+I want to print some statistics of physical memory in the m5stats.txt file. Following the example in dram.cc and dram.hh, I first add " virtual void regStats();" function as a public member and " Stats::Formula bandwidth;" as a protected member of MemoryPort class where I want to get the statistics. The body of regStats() in 
+physical.cc file is as follows:
+ 
+void PhysicalMemory::MemoryPort::regStats(){
+ 
+        using namespace Stats;
+        bandwidth
+        .name(name()+".bandwidth")
+        .desc("bandwidth of memory")
+        ;
+        bandwidth = data_bus_cycle*5000/curTick; //data_bus_cycle is a variable defined by myself
+ 
+        }
+ 
+However,  there is no bandwidth information in the m5stats.txt. I think maybe the function regStats is never called but I do not know how to call it, or is there anything wrong with what I have done? Could anybody help me?
+ 
+Thank you very much!
+ 
+Jun Pang
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

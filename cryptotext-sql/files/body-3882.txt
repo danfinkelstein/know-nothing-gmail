@@ -1,0 +1,12 @@
+What exactly are you trying to do?- Show quoted text -
+ Could anyone tell me how to modify the number of memory ports (for simple CPU) while using M5? Thank you very much.
+Best
+Chenguang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

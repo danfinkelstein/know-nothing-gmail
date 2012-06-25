@@ -1,0 +1,43 @@
+On Sat, Jun 12, 2010 at 3:17 PM, Wang, Weixun <wewang@cise.ufl.edu> wrote:
+> Hi all,
+>
+> I have several questions about cache in M5:
+>
+> 1) First and most importantly, is it under developing to support different
+> block sizes in different cache levels / cores? If not, is it possible to
+> modify M5 to make it support this (and what is the estimating workload for
+> this extension)?
+No one is working on this that I know of.  The coherence block size
+must be the same across all caches, but you could develop a
+sub-blocked cache to use for larger block sizes.  Hard to know how
+long this would take; it depends a lot on your coding skill and your
+familiarity with the existing code.
+>
+> 2) MSHR (miss status holding registers) is not playing any role (or does not
+>  make any difference) in TimingSimpleCPU or InorderCPU, right?
+The MSHRs do get used in timing mode, but since the CPU models you
+mention only have at most one outstanding miss, you won't see more
+than one of them active at a time in any private cache.
+>
+> 3) system.cpu.numCycles has in-cooperated all the timing issue in memory
+> hierarchy (cache, bus, memory) if the memory access mode is "timing", right?
+Yes.
+Steve
+- Show quoted text -
+>
+> Thanks.
+>
+> --
+> Best Regards,
+>
+> Wang, Weixun
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

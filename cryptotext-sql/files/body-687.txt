@@ -1,0 +1,48 @@
+Hi, Nate,Thanks for your reply!Leonard- Show quoted text -On Fri, Nov 20, 2009 at 10:21 PM, nathan binkert <nate@binkert.org> wrote:
+I don't know if anyone has ever run M5 on an itanium.  I can imagine
+you having to do some debugging.  The uncaught std::bad_alloc
+exception is usually due to running out of memory though.
+  Nate
+On Fri, Nov 20, 2009 at 3:26 PM, Sage <leonard951@gmail.com> wrote:
+> Hi, everyone,
+>
+> I got the following errors when I tried to execute the m5 simulator on a
+> IA64 machine with SUSE linux. Do you have any idea of how to fix this
+> problem?
+>
+> Thanks,
+> Leonard
+>
+>
+>
+>> build/ALPHA_SE/m5.fast --help
+> m5.fast(32677): unaligned access to 0x6000000000055236,
+> ip=0x40000000007a6531
+> m5.fast(32677): unaligned access to 0x6000000000041fb7,
+> ip=0x40000000007a6551
+> m5.fast(32677): unaligned access to 0x600000000004554d,
+> ip=0x40000000007a6570
+> m5.fast(32677): unaligned access to 0x6000000000046a55,
+> ip=0x40000000007a65d0
+> m5.fast(32677): unaligned access to 0x60000000000440ad,
+> ip=0x40000000007a6940
+> terminate called after throwing an instance of 'std::bad_alloc'
+>   what():  St9bad_alloc
+> Program aborted at cycle 0
+> Aborted
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

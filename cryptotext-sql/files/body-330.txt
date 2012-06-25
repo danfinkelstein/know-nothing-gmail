@@ -1,0 +1,50 @@
+Writebacks don't have CPU IDs etc. associated with them, since there's
+no way to reliably associate a CPU ID with a block in a shared cache.
+If you use the development branch, there's a "context ID" that
+replaces the cpu and thread ID, and you can call hasContextID() before
+calling contextID() to avoid the error (and similarly call hasPC()
+before getPC(), etc.).
+Steve
+- Show quoted text -
+On Wed, Apr 7, 2010 at 1:55 PM, 健勇 张 <yorkzjy@yahoo.com.cn> wrote:
+> hello, everybody,
+>
+>
+> I met some problems
+>
+> I  ran benchmarks on m5 ALPHA SE mode.
+>
+> int bus.cc , I wanted to get the details of a pkt in " bool Bus::recvTiming(PacketPtr pkt)" , and I called from the " packet.hh "  the function " int Request::getCpuNum()".  if a pkt contains "Writeback" instruction , the simulation would be terminated and it would get the following error message:
+>
+>
+> // error message ///////////////////////////////////////
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7008
+> 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7009
+> warn: Entering event queue @ 0.  Starting simulation...
+> warn: Increasing stack size by one page.
+> warn: Increasing stack size by one page.
+> m5.opt: build/ALPHA_SE/mem/request.hh:261: int Request::getCpuNum(): Assertion `validCpuAndThreadNums' failed.
+> Program aborted at cycle 21498000
+>
+> // error message //////////////////////////////////////
+>
+> but I need to collect the unformation even when the pkt has "Writeback" instruction.
+>
+> could anybody kindly tell me how to use getCpuNum() , getThreadNum() and getPC() without errors? or are there some other ways?
+>
+> thank you very much in advance
+>
+> York
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,14 @@
+> > 2)Does anyone have an existing methodology for getting thread
+> > migration delay (between cores) in m5?
+> Not that I know of....
+You could of course use the operating system and force the process to move.
+> > 3)If no for 2, would anyone be interested in having support to find
+> > this delay?
+We'd be happy to have cache flush operations added to the cache if
+that's what you're referring to.  I'm not the best person to help, but
+I'm sure people on the list can help as you have questions.
+ Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

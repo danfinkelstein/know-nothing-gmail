@@ -1,0 +1,14 @@
+Hello,
+I want to statically link all shared libraries to m5 so that I can run
+the m5.opt on another machine. I tried to do this by adding a CCFLAG
+-static to the Sconscript, but I still got the following error on the
+remote machine:
+./m5.opt: error while loading shared libraries: libpython2.6.so.1.0:
+cannot open shared object file: No such file or directory
+How do I do this?
+Thanks,
+Felix
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

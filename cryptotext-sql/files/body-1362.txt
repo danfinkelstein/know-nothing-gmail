@@ -1,0 +1,47 @@
+Currently I take the standard se.py file and all its settings and just replace PhysicalMemory with my own simulator, leaving everything else alone.
+I also test using the stream benchmark (http://www.cs.virginia.edu/stream/ref.html), cross-compiled with the -O3 flag.
+I'm able to reproduce the error by using only the following code in recvTiming():
+bool nr = pkt->needsResponse();
+memory->doAtomicAccess(pkt);
+if (nr)
+{
+   memory->ports[memory->lastPortIndex]->doSendTiming(pkt,curTick + 18750 + rand()%400);
+}
+else
+{
+   delete pkt->req;
+   delete pkt;
+}
+return true;
+Interestingly, it seems to work when I use 1875, but breaks with 18750. Since the default CPU is 1THz and the memory system is ~400/800MHz, latencies can be up to 200000 CPU cycles.
+Joe- Show quoted text -
+Steve Reinhardt wrote:
+OK, I'll take a look... I just hacked a randomized latency into
+PhysicalMemory to try and reproduce the problem but it's still working
+for me.  I'll run some longer tests to see if I can reproduce it.  If
+not, would you be willing to send me your code so I can see if I can
+track it down?
+Also, what kind of memory hierarchy are you using (uni- vs
+multiprocessor, # of cache levels, etc.)?
+Steve
+On 11/9/07, Joe Gross <joegross@umd.edu> wrote:
+  
+Same problem even when doAtomicAccess() is performed before delaying the
+return of the packet (thus ensuring that this is performed in order). I
+checked to see if the packets were being returned in order with any
+configuration of my memory simulator and they frequently aren't (some
+ranks/banks see much more traffic). So it seems that it's a problem not
+of doing the doAtomicAccess() but rather of sending the packets back in
+a different order and it's somehow different than b3 when this
+rearrangement worked fine.
+Joe
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

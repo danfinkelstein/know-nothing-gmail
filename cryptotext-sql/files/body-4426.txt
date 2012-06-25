@@ -1,0 +1,16 @@
+newbie here:I'm trying to test my FS in FS mode, it already passed all of the tests in SE mode. I copied all of the system files(from the m5_system tar file) in the m5-2.0b3 folder which also contains the build directory. Did I miss on something here? Some of the tests passed and some failed. Was it bound to be this way? I only followed the steps in the Compiling M5 page in the wiki(
+http://www.m5sim.org/wiki/index.php/Compiling_M5). Thanks in advance.-Dean Michael Ancajas%scons build/ALPHA_FS/tests/scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yesChecking for C library python2.4... (cached) yesChecking for accept(0,0,0) in C++ library None... (cached) yesChecking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yesBuilding in /home/cdsmgr/dean/m5/m5-2.0b3/build/ALPHA_FSUsing saved options file /home/cdsmgr/dean/m5/m5-2.0b3/build/options/ALPHA_FSCompiling in ALPHA_FS with MySQL support.
+scons: done reading SConscript files.scons: Building targets ...***** build/ALPHA_FS/tests/debug/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic FAILED!***** build/ALPHA_FS/tests/debug/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual FAILED!
+***** build/ALPHA_FS/tests/debug/quick/10.linux-boot/alpha/linux/tsunami-simple-timing FAILED!***** build/ALPHA_FS/tests/debug/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual FAILED!***** build/ALPHA_FS/tests/debug/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic FAILED!
+***** build/ALPHA_FS/tests/fast/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic passed.***** build/ALPHA_FS/tests/fast/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual passed.***** build/ALPHA_FS/tests/fast/quick/10.linux-boot/alpha/linux/tsunami-simple-timing passed.
+***** build/ALPHA_FS/tests/fast/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual passed.***** build/ALPHA_FS/tests/fast/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic passed.
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic FAILED!***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual FAILED!***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing FAILED!
+***** build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual FAILED!***** build/ALPHA_FS/tests/opt/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic FAILED!
+***** build/ALPHA_FS/tests/prof/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic passed.***** build/ALPHA_FS/tests/prof/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic-dual passed.***** build/ALPHA_FS/tests/prof/quick/10.linux-boot/alpha/linux/tsunami-simple-timing passed.
+***** build/ALPHA_FS/tests/prof/quick/10.linux-boot/alpha/linux/tsunami-simple-timing-dual passed.***** build/ALPHA_FS/tests/prof/quick/80.netperf-stream/alpha/linux/twosys-tsunami-simple-atomic passed.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

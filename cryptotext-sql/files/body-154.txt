@@ -1,0 +1,12 @@
+I'm pretty sure there isn't any way to do that with the code as is. After Googling a little, it looks like you could use the PARSEC hooks to run a new M5 pseudo instruction that turned on or off tracing. There are probably other ways to do that, although I expect you'll have to write some code no matter what.
+Gabe- Show quoted text -
+Quoting sheng qiu <herbert1984106@gmail.com>:
+Hi all,
+I am using PARSEC benchmarks on M5, i want to DPRINT some information of ROI
+of PARSEC applications. But how can i let M5 only DPRINT information of ROI.
+Thanks,
+Sheng
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

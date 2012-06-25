@@ -1,0 +1,17 @@
+Hi Vilas,
+If anything is released in the near future it won't be a major change to an underlying subsystem (e.g. the big cache change in b4).
+Ali- Show quoted text -
+On Dec 10, 2007, at 10:01 AM, Vilas Sridharan wrote:
+- Show quoted text -
+Hi m5 developers --
+Just a quick question: do you happen to know whether another release of m5 will be forthcoming in the near future?  I'm using v2.0b2, and I have made a number of modifications that it will take me a while to port to a new release.  If there's another release imminent ( i.e. within the next month), I will wait, but otherwise I'll port over to using v2.0b4.
+Thanks,
+    -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

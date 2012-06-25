@@ -1,0 +1,15 @@
+Hi Sheng,  If you are using the disk image from our website, the benchmarks are compiled to dump M5 statistics before and after the computational region of interest of the benchmark, and the simulation dumps statistics when it exits.
+  I would encourage you to read through section 6.5 our technical report, in particular the part about M5 hooks, for more information on what your simulations are doing.  Good luck,  Joel
+- Show quoted text -On Tue, Apr 27, 2010 at 1:45 PM, sheng qiu <herbert1984106@gmail.com> wrote:- Show quoted text -
+Hi all,when i running PARSEC on M5 FS mode, the simulation results of each application has three parts of the following sections ---------- Begin Simulation Statistics ----------...............................
+......................---------- End Simulation Statistics   ----------my script is:#!/bin/sh# File to run the blackscholes benchmarkcd /parsec/install/bin/sbin/m5 resetstats./blackscholes 1 /parsec/install/inputs/blackscholes/in_4K.txt /parsec/install/inputs/blackscholes/prices.txt
+/sbin/m5 exitSo why there are three statistics in one application result? which one is the benchmark simulation result? maybe my question is a little trivial.Thanks,Sheng 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

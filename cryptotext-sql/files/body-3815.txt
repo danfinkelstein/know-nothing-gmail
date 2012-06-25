@@ -1,0 +1,105 @@
+Yes, it's BaseBufferArg::copyIn(). I paste the back traced stack at the end.
+In GDB, I get the following:
+Packet::checkFunctional(this=0x7fffa419f290, addr=0xd4000, size=8, data=...)
+p/x getAddr()
+    0xd4000
+p    getSize()
+    28
+the differece in the two sizes leads to that func_end>val_end, which causes the panic.
+I'm not sure whether it's doing cache-block chunks. How do I find it out?
+Thanks!
+Jiayuan
+-------------------back traced stack--------------
+#3  0x00000000005da1d3 in Packet::checkFunctional (this=0x7fffa419f290, addr=868352, size=8,
+    data=0x139b400 "\n\n\nlalah?\005\001") at build/ALPHA_SE/mem/packet.cc:186
+#4  0x00000000005b8234 in Packet::checkFunctional (this=0x7fffa419f290, otherPkt=0x13cd078)
+    at build/ALPHA_SE/mem/packet.hh:586
+#5  0x00000000006516fe in MSHR::TargetList::checkFunctional (this=0xf64e40, pkt=0x7fffa419f290)
+    at build/ALPHA_SE/mem/cache/miss/mshr.cc:126
+#6  0x0000000000654079 in MSHR::checkFunctional (this=0xf648b8, pkt=0x7fffa419f290)
+    at build/ALPHA_SE/mem/cache/miss/mshr.hh:236
+#7  0x0000000000652da5 in MSHRQueue::checkFunctional (this=0xf62d58, pkt=0x7fffa419f290, blk_addr=868352)
+    at build/ALPHA_SE/mem/cache/miss/mshr_queue.cc:97
+#8  0x0000000000628fd9 in Cache<LRU>::functionalAccess (this=0xf62d20, pkt=0x7fffa419f290,
+    otherSidePort=0xfaec00) at build/ALPHA_SE/mem/cache/cache_impl.hh:655
+#9  0x00000000006290bf in Cache<LRU>::CpuSidePort::recvFunctional (this=0x13997c0, pkt=0x7fffa419f290)
+    at build/ALPHA_SE/mem/cache/cache_impl.hh:1279
+#10 0x00000000005b686c in Port::sendFunctional (this=0x13994c0, pkt=0x7fffa419f290)
+    at build/ALPHA_SE/mem/port.hh:205
+#11 0x00000000005efff7 in Port::blobHelper (this=0x13994c0, addr=868352, p=0xd96070 "", size=28, cmd=
+      {static commandInfo = 0xaaece0, cmd = MemCmd::ReadReq}) at build/ALPHA_SE/mem/port.cc:67
+#12 0x00000000005f014d in Port::readBlob (this=0x13994c0, addr=868352, p=0xd96070 "", size=28)
+    at build/ALPHA_SE/mem/port.cc:81
+#13 0x00000000005fa44c in TranslatingPort::tryReadBlob (this=0x13994c0, addr=65536, p=0xd96070 "",
+    size=28) at build/ALPHA_SE/mem/translating_port.cc:61
+#14 0x00000000005fa4c5 in TranslatingPort::readBlob (this=0x13994c0, addr=65536, p=0xd96070 "", size=28)
+    at build/ALPHA_SE/mem/translating_port.cc:71
+#15 0x0000000000425c5c in BaseBufferArg::copyIn (this=0x7fffa419f660, memport=0x13994c0)
+    at build/ALPHA_SE/sim/syscall_emul.hh:119
+#16 0x00000000006d929b in writeFunc (desc=0xaa8b80, num=4, p=0xc9d8d0, tc=0xefdd20)
+    at build/ALPHA_SE/sim/syscall_emul.cc:163
+- Show quoted text -
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: 2007年12月2日 9:17 AM
+Subject: Re: [m5-users] panic on partially satisfying the functional request
+> Just to clarify: it's using BaseBufferArg::copyIn() and not
+> VirtualPort::CopyIn(), right?  I just noticed that these are two
+> different functions with totally opposite semantics (explaining Ali's
+> earlier confusion).
+>
+> Can you print the values of 'size' and 'getSize()' at the point in
+> Packet::checkFunctional() where you get this assertion failure?  One
+> solution is probably to do the readFunctional() in smaller chunks, but
+> I don't know what size chunks it's already using.  If it's trying to
+> do the whole buffer and we need to do it in cache-block chunks, that's
+> reasonable.  If it's already doing cache-block chunks and still
+> failing, then that's a little more puzzling.
+>
+> Steve
+>
+>
+>
+> On Nov 30, 2007 3:54 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>>
+>>
+>> Hey all,
+>>
+>> I'm adding my own benchmarks which spawns multiple threads each printing out
+>> a string.
+>>
+>> Things are fine at beginning but when I scale the number of threads to 100,
+>> a panic takes place:
+>>
+>> "Memory value only partially satisfies the functional request. Now what?"
+>>
+>> This panic takes place in Packet::checkFunctional(Addr addr, int size,
+>> uint8_t* data) (mem/packet.cc). A backtrace with gdb reveals that it is
+>> triggered by the writeFunc( ) system call (sim/syscall_emul.cc), which is
+>> trying to use CopyIn to emulate printing to the screen. The CopyIn sends a
+>> functional read request which in turn caused the panic.
+>>
+>> I appreciate your help.
+>>
+>> Thanks!
+>>
+>> Jiayuan
+>>
+>> p.s. patch is available, just let me know how to send it to you.
+>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

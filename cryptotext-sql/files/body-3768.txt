@@ -1,0 +1,40 @@
+On Dec 6, 2007, at 11:06 AM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hello,
+I have created an EtherSwitch model to replace the EtherLink.
+However, I got two problems:
+1) In original EtherLink model, each Interface has only one
+  txlink, so when Interface::recvPacket(packet) is called by
+  its peer, txlink->transmit(packet) is returned. But in
+  the EtherSwitch model, each Interface has N-1 txlinks(N is
+  # of systems), so function recvPacket(packet) must
+  determine
+  which txlink is needed to transmit the packet.
+The idea is that each two endpoints should have an EtherInt. So each system will have an EtherInt and then the switch should have a separate EtherInt for each "port" that exists on the switch. The probably should be connected with an EtherLink.
+I tried to
+  find the destination information in the packet. I looked
+  through base/inet.hh and found the function dst() can
+  return
+  the destination address, so I wrote the following codes:
+              IpPtr p = IpPtr(packet);
+              uint32_t ip_address = p->dst();
+  But the simulator exited with error when it ran the
+  above codes. Can anyone know how to get the destination
+  information from the packet?
+You should read the IEEE 802.1D ethernet standard. Not all packets transfered across ethernet are IP packets. You need to route based on MAC addresses, not on IP addresses. The switch model needs to keep a list of MAC addresses behind each port and then when it receives a packet it needs to find the appropriate port and send the packet to it. To be complete the model also needs to detect when no port exists and respond appropriately.
+2) similar to the above problem. In original EtherLink model,
+  when Interface::isBusy() is called, it just returns
+  txlink->busy() since it has only one txlink. But in the
+  EtherSwitch model,  isBusy doesn't know which txlink
+  is needed to transmit the packet and the worse is no packet
+  can be used to determine the destination. One feasible
+  solution is make sure all txlinks are free before a packet
+  is transmitted although only one txlink is used. My
+  question is how to modify the original code in order to
+  replace isBusy() by isBusy(packet).
+I think this will be more clear when you read the above specification, but the architecture should look something like this:
+http://zeep.eecs.umich.edu/~saidi/etherswitch.pdf
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

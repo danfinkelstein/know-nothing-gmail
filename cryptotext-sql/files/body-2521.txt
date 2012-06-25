@@ -1,0 +1,15 @@
+Hi Nate thanks for your answer. I'm using g++ 3.4.3 version, do you recommend to update the g++ to another version or use another one different than g++?. Thanks.- Show quoted text -
+On Mon, Sep 29, 2008 at 9:49 AM, nathan binkert <nate@binkert.org> wrote:
+An internal compiler error is a problem with the compiler, not M5.  Isuggest you use a different compiler.
+ Nate
+On Mon, Sep 29, 2008 at 9:21 AM, Eduardo Olmedo Sanchez<eolmsan2@gmail.com> wrote:> Hi whem I'm compiling the m5 with this option scons USE_MYSQL=False
+> build/ALPHA_FS/m5.debug, everything seems goes well but finally I get this> output:>> build/ALPHA_FS build/ALPHA_FS/enums/Enum.cc> build/ALPHA_FS/enums/Enum.cc:5: internal compiler error: in tree_low_cst, at
+> tree.c:3318> Please submit a full bug report,> with preprocessed source if appropriate.> See <URL:http://bugzilla.redhat.com/bugzilla> for instructions.
+> Preprocessed source stored into /tmp/cctdk24y.out file, please attach this> to your bugreport.> scons: *** [build/ALPHA_FS/enums/Enum.do] Error 1> scons: building terminated because of errors.
+> Anyone know how I can solve this problem. Thanks in advance.> _______________________________________________> m5-users mailing list> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

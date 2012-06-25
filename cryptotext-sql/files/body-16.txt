@@ -1,0 +1,199 @@
+Hi Joe,
+I pushed some changes a couple of days ago that might be giving you
+trouble... they aren't attempting to fix anything that you've found,
+so there's no reason you need them.  Please go back to an earlier rev
+(b26258d233d2 would be a good choice) and let me know if you still
+have problems.
+Steve
+- Show quoted text -
+On Fri, Jun 18, 2010 at 9:26 AM, Joe Gross <joegross@umd.edu> wrote:
+> We're getting a variety of assertion errors in the memory and I/O subsystem
+> after the latest round of patches. Things like:
+>
+> panic: I/O Read - va0x801fc000005 size 1
+>
+> or
+>
+> build/ALPHA_FS/mem/cache/mshr.hh:228: MSHR::Target* MSHR::getTarget() const:
+> Assertion `hasTargets()' failed.
+>
+> We make the L3 cache like this, essentially:
+> class L1Cache(BaseCache):
+>    size = '32kB'
+>    assoc = 4
+>    block_size = 64
+>    latency = '3ns'
+>    num_cpus = 1
+>    mshrs = 10
+>    tgts_per_mshr = 5
+>
+> class L2Cache(BaseCache):
+>    size = '256kB'
+>    assoc = 8
+>    block_size = 64
+>    latency = '9ns'
+>    num_cpus = 1
+>    mshrs = 20
+>    tgts_per_mshr = 12
+>
+> class L3Cache(BaseCache):
+>    size = '8MB'
+>    assoc = 16
+>    block_size = 64
+>    latency = '25ns'
+>    num_cpus = 4
+>    mshrs = 80
+>    tgts_per_mshr = 12
+>
+> and config_cache is changed to include:
+>        system.l3cache = L3Cache()
+>        system.tol3bus = Bus()
+>        system.l3cache.cpu_side = system.tol3bus.port
+>        system.l3cache.mem_side = system.membus.port
+>        system.l3cache.num_cpus = options.num_cpus
+>
+>        for i in xrange(options.num_cpus):
+>            system.cpu[i].addTwoLevelCacheHierarchy(L1Cache(), L1Cache(),
+> L2Cache())
+>            system.cpu[i].connectMemPorts(system.tol3bus)
+>
+> Anyone know what's going wrong with this configuration? It worked for most
+> PARSEC workloads before the updates in the past 3-4 days.
+>
+> Joe
+>
+>
+> On 6/17/2010 2:39 PM, Joe Gross wrote:
+>>
+>> That seems to fix the segfault problem, based on my testing thus far.
+>>
+>> I seem to have run across another obscure bug as well:
+>> panic: Inconsistent DMA transfer state: dmaState = 2 devState = 0
+>>   @ cycle 437119165559000
+>>
+>> #0  0x00007ffff5c5b4b5 in *__GI_raise (sig=<value optimized out>) at
+>> ../nptl/sysdeps/unix/sysv/linux/raise.c:64
+>> #1  0x00007ffff5c5ef50 in *__GI_abort () at abort.c:92
+>> #2  0x00000000007086e5 in __exit_message (prefix=<value optimized out>,
+>> code=<value optimized out>, func=<value optimized out>, file=<value
+>> optimized out>, line=323,
+>>      fmt=<value optimized out>, a01=..., a02=..., a03=..., a04=...,
+>> a05=..., a06=..., a07=..., a08=..., a09=..., a10=..., a11=..., a12=...,
+>> a13=..., a14=..., a15=..., a16=...)
+>>      at build/ALPHA_FS/base/misc.cc:90
+>> #3  0x00000000008eac25 in IdeDisk::doDmaTransfer (this=<value optimized
+>> out>) at build/ALPHA_FS/dev/ide_disk.cc:323
+>> #4  0x0000000000907a42 in DmaPort::recvTiming (this=0x2689370,
+>> pkt=0xeb05620) at build/ALPHA_FS/dev/io_device.cc:146
+>> #5  0x00000000004abb15 in Port::sendTiming (this=0x24f16d0,
+>> pkt=0xeb05620) at build/ALPHA_FS/mem/port.hh:186
+>> #6  Bus::recvTiming (this=0x24f16d0, pkt=0xeb05620) at
+>> build/ALPHA_FS/mem/bus.cc:243
+>> #7  0x00000000004dbd5b in Port::sendTiming (this=0x158e9d0) at
+>> build/ALPHA_FS/mem/port.hh:186
+>> #8  SimpleTimingPort::sendDeferredPacket (this=0x158e9d0) at
+>> build/ALPHA_FS/mem/tport.cc:150
+>> #9  0x0000000000413754 in EventQueue::serviceOne (this=<value optimized
+>> out>) at build/ALPHA_FS/sim/eventq.cc:203
+>> #10 0x000000000045e56a in simulate (num_cycles=9223372036854775807) at
+>> build/ALPHA_FS/sim/simulate.cc:73
+>>
+>> I was running dedup, from PARSEC, using the kernel and compiled binaries
+>> that are provided.
+>>
+>> Prior to that one I ran into a bug in the simulated program (same
+>> simulator run, first attempt at running dedup):
+>> [HOOKS] Entering ROI
+>> *** glibc detected *** ./dedup: corrupted double-linked list:
+>> 0x00000200185351a0 ***
+>>
+>> I don't think these are related to the 3-level cache setup, but I can't
+>> be sure. We're still using PhysicalMemory also.
+>>
+>> Joe
+>>
+>>
+>> On 6/16/2010 1:21 PM, Steve Reinhardt wrote:
+>>
+>>>
+>>> Yea, that even looks familiar... I feel like I've fixed this once
+>>> already, but obviously if I did it didn't get checked in.  I think
+>>> just changing this conditional to:
+>>>      if (prefetcher&&   !mshrQueue.isFull()) {
+>>> should take care of it.  Let me know either way, and if it does I'll
+>>> commit the fix.
+>>>
+>>> Steve
+>>>
+>>>
+>>> On Wed, Jun 16, 2010 at 10:04 AM, Joe Gross<joegross@umd.edu>   wrote:
+>>>
+>>>
+>>>>
+>>>> Hello,
+>>>>
+>>>> We've modified the cache hierarchy to include private L1, private L2 and
+>>>> a
+>>>> shared L3 cache, but we get a segfault when running certain PARSEC
+>>>> workloads. The prefetcher value is NULL, as we have it turned off
+>>>> because
+>>>> the prefetcher is causing problems lately. Specifically, the problem is
+>>>> at:
+>>>>
+>>>> Program received signal SIGSEGV, Segmentation fault.
+>>>> BasePrefetcher::getPacket (this=0x0) at
+>>>> build/ALPHA_FS/mem/cache/prefetch/base.cc:135
+>>>> 135         if (pf.empty()) {
+>>>> (gdb) bt
+>>>> #0  BasePrefetcher::getPacket (this=0x0) at
+>>>> build/ALPHA_FS/mem/cache/prefetch/base.cc:135
+>>>> #1  0x0000000000503ceb in Cache<LRU>::getNextMSHR() ()
+>>>> #2  0x0000000000503dc0 in Cache<LRU>::getTimingPacket() ()
+>>>> #3  0x000000000050a589 in Cache<LRU>::MemSidePort::sendPacket() ()
+>>>> #4  0x0000000000413754 in EventQueue::serviceOne (this=<value optimized
+>>>> out>) at build/ALPHA_FS/sim/eventq.cc:203
+>>>> #5  0x000000000045e56a in simulate (num_cycles=9223372036854775807) at
+>>>> build/ALPHA_FS/sim/simulate.cc:73
+>>>> ...
+>>>>
+>>>> I think the problem is in cache_impl.hh at line 1305:
+>>>>
+>>>> PacketPtr pkt = prefetcher->getPacket();
+>>>>
+>>>> Other points in the cache always have a conditional "if (prefetcher)"
+>>>> before
+>>>> they access it, but not at this point. Hopefully this is the only
+>>>> problem
+>>>> and is easily fixed.
+>>>>
+>>>> Joe
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+Hello,
+Now everything compiles fine.
+I am having problems using your Mybench.py this the error I get:
+Traceback (most recent call last):
+  File "<string>", line 1, in ?
+  File "/home/TestM5/m5-work3/m5-9279812da5ee/src/python/m5/main.py",
+line 380, in main
+    exec filecode in scope
+  File "configs/example/cmp.py", line 18, in ?
+    import Mybench
+  File "/home/TestM5/m5-work3/m5-9279812da5ee/configs/common/Mybench.py",
+line 4, in ?
+    perlbench = LiveProcess()
+NameError: name 'LiveProcess' is not defined
+Any ideas?. Thanks a lot in advance.
+- Show quoted text -
+On Mon, Mar 23, 2009 at 2:19 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+> Hi Ryan,
+>
+> You can use linux32-i386-gcc42.cfg and replace the gcc with your cross-compiler.
+>
+> Meng-Ju
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

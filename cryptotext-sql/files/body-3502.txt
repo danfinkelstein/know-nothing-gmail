@@ -1,0 +1,76 @@
+Hi Steve,My problems don't involve writebacks or SPLASH.
+There was no intentional redefining of cache stats in b4.  Also, this
+change you describe of looking in the MSHR first doesn't correspond to
+the code as I see it... Cache<TagStore>::access() still calls
+tags->findBlock() (which is the regular cache check) before it does
+anything else.  Can you point out where in the code you think the MSHR
+is being checked first?
+My reading of the code is that on a cache request, the CPU calls sendTiming() on its cache port, which in turn calls the cache recvTiming() function on the cache's CpuSidePort (cache_impl.hh:1252).  recvTiming() calls myCache()->timingAccess(), which contains the following code (cache_impl.hh:406-418):
+    MSHR *mshr = mshrQueue.findMatch(blk_addr);    if (!mshr) {        // no outstanding access to this block, look up in cache        // (otherwise if we allow reads while there's an outstanding
+        // write miss, the read could return stale data out of the        // cache block... a more aggressive system could detect the        // overlap (if any) and forward data out of the MSHRs, but we        // don't do that yet)
+        BlkType *blk = NULL;        satisfied = access(pkt, blk, lat);    }This will only call access() when findMatch returns NULL, which happens on an MSHR miss.  Based on the comment, it appears that this was at least somewhat intentional :).  My guess is that the change was intentional to avoid getting stale data on a hit to line with an in-process upgrade request, but the effect on the stats was not taken into account.
+The one significant change that's been observed is that writeback hits
+in L2 caches pretty much went to zero in b4.  This was an unintended
+consequence of a minor design change: in the new coherence protocol,
+the L2 doesn't hold on to a copy of the block when the L1 does a read
+exclusive (so that the L1 has a truly exclusive copy), and on a
+writeback miss the decision was made just to forward the miss on to
+the next level instead of trying to store it in the cache.  As a
+result, writebacks from the L1 always went all the way to memory, and
+then subsequent L1 misses to that block also went all the way to
+memory (missing in the L2).  I'm describing this in the past tense
+since I've recently fixed this in our internal tree and it should be
+appearing soon in the "b5" release we're working to get out in advance
+of the tutorial this weekend.
+Can you clarify what is changing in b5?  Will the L2 now keep a copy of blocks that are exclusive in the L1, or will the writebacks of these blocks allocate into L2?Thanks,    -Vilas
+ - Show quoted text -On Tue, Feb 26, 2008 at 1:57 PM, Vilas Sridharan
+<vilas.sridharan@gmail.com> wrote:
+> Hi folks --
+>
+> I saw a couple threads on cache stats in m5 2.0b4, but didn't see these
+> specific questions answered, and haven't seen this documented anywhere.
+>
+> It seems like the meaning of various cache stats -- "accesses", "mshr_hits",
+> "mshr_misses", and so on -- have changed from b2 to b4, and I'm trying to
+> figure out whether this was intentional since they appear (to me) to be less
+> intuitive in b4.
+>
+> In b4, requests first check the MSHR, and only check the full cache on an
+> MSHR miss.  v2.0b2 worked in reverse -- requests first checked the cache,
+> and only checked the MSHRs on a miss.  I assume this change was to avoid
+> issues with pending coherence (S->E) upgrades (when the value exists in both
+> the cache and the MSHR, but the MSHR might have the most up-to-date value).
+> Functionally, this seems to be fine.  From a stats point of view, however,
+> it seems to have the following issues:
+>
+> (1)  The cache_accesses stat does not report the total number of cache
+> requests (as per, I believe, v2.0b2), but rather the total number of MSHR
+> misses.  The total number of requests seems to only exist as "mshr_hits +
+> mshr_misses".  (There is no mshr_accesses stat).
+>
+> (2)  The mshr_misses stat does not provide any additional information --
+> it's always the same as cache_misses.
+>
+> At least to me, this is counter-intuitive -- I would expect
+> "caches_accesses" to be the total number of requests (cache + MSHR), and for
+> cache_misses = mshr_hits + mshr_misses.  I believe this is how b2 worked.
+> Am I missing something in the algorithm?  Is this one of the 'known issues'
+> in the 2.0b4 release?
+>
+>  Thanks,
+>
+>     -Vilas
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

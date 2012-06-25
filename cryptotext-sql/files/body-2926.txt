@@ -1,0 +1,10 @@
+Do you apply patches for m5?
+I have the same unmapped addresses problem on SPEC2006. After I
+applied the patches, I don't have this problem.
+You can get the patches at this thread.
+http://www.mail-archive.com/m5-users@m5sim.org/msg00460.html
+Meng-Ju
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

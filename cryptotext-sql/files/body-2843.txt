@@ -1,0 +1,16 @@
+hi!!I am trying to simulate multicore-multithreading in o3cpu. I am using m5-ob3. I want the simulation to terminate exactly after reaching some fixed number of instructions. But the problem is not all threads thread terminated at same number of instructions. I also tried to solve the problem using the patch provided by Korey Swellel. But It gave me the segmentation fault, may be because the patch is not for m5-0b3.  
+Here is the part of my configuration file:CPUClass.clock = '2GHz'np = 2system = System(cpu = [DerivO3CPU(cpu_id=i) for i in xrange(np)],                physmem = PhysicalMemory(range=AddrRange("1024MB")),
+                membus = Bus(), mem_mode = test_mem_mode)system.physmem.port = system.membus.port## @bipin L3 Cachesystem.l3 = L3Cache(size='2MB')system.tol3Bus = Bus()system.l3.cpu_side = system.tol3Bus.port
+system.l3.mem_side = system.membus.port## @bipin end of L3 Cachesystem.l2 = L2Cache(size='1MB')system.tol2Bus = Bus()system.l2.cpu_side = system.tol2Bus.portsystem.l2.mem_side = system.tol3Bus.port
+system.cpu[0].workload = [Benchmarks.SPECGCCEIO(),Benchmarks.SPECBZIP2EIO()]system.cpu[1].workload = [Benchmarks.SPECPARSEREIO(), Benchmarks.SPECPERLBMKEIO()]   ## system.cpu[1].workload = [Benchmarks.SPECGCCEIO()]
+system.cpu[0].addPrivateSplitL1Caches(L1Cache(size = '16kB'),                                              L1Cache(size = '8kB'))system.cpu[0].connectMemPorts(system.tol2Bus)system.cpu[0].max_insts_all_threads = 100
+system.cpu[1].addPrivateSplitL1Caches(L1Cache(size = '16kB'),                                              L1Cache(size = '8kB'))system.cpu[1].connectMemPorts(system.tol2Bus)system.cpu[1].max_insts_all_threads = 100
+root = Root(system = system)Simulation.run(options, root, system, FutureClass)and the reading from m5stat file is:.........system.cpu0.commit.COM:count                      557                       # Number of instructions committed
+system.cpu0.commit.COM:count_0                    105                       # Number of instructions committedsystem.cpu0.commit.COM:count_1                    452                       # Number of instructions committed
+...............................system.cpu1.commit.COM:count                      206                       # Number of instructions committedsystem.cpu1.commit.COM:count_0                     91                       # Number of instructions committed
+system.cpu1.commit.COM:count_1                    115                       # Number of instructions committedeven though i have used maximum number of instructions fixed to 100 why the result is so varying?
+any help would be appreciatedregards,Prannav
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

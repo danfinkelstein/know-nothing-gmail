@@ -1,0 +1,12 @@
+My switch model is much like EtherLink model, the bandwidth
+(rate) is a parameter used to create switch model, as it is
+used in EtherLink.
+Is the bandwidth managed for the whole switch or for each link or both? If it's not both, then you're not actually implementing anything resembling a real switch.  If the bandwidth is for just the links, then you're close, but you'd be doing some sort of infinite rate internally which isn't what you'd see on a cluster (but it's probably close enough). If the bandwidth is for the whole switch, then you're just implementing a hub.  Given that you don't even need to implement the EtherLink, why are you so resistant to using it?
+I feel my switch model is more easily implemented.
+I'd say it's barely easier.  If at all.  All you need to do if you don't know a mac address is send the packet out on all ports and then when you see a packet come in on a port you record the source mac address in an stl hash_map.  You're also not going to succeed if you don't have broadcast capability because I guarantee that you will see broadcase packets sent out.
+I guess I was hoping that you'd implement a real switch model and contribute it so others can use it, but if you're planning on doing it your way, we can't really accept it without fixing it.- Show quoted text -
+   Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

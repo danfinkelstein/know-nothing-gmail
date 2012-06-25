@@ -1,0 +1,5 @@
+How are ll/sc instructions handled? I see no special care being taken in cache_impl.hh?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

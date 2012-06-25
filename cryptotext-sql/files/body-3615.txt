@@ -1,0 +1,9 @@
+> > I can take a crack at updating the FAQ later if you don't get to it.
+> I'll do it right now.
+Done, let me know if it needs work (or just fix it :)
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,32 @@
+As far as I know there's no reason why switching back to the original
+CPU shouldn't work.  If it's not working I'd say that's a bug.  If the
+symptom is that nothing happens, it sounds like the tick events on the
+CPUs aren't getting scheduled, or maybe the thread context is not
+properly transitioning to the active state.  The first thing I'd check
+is what state the thread context of an old CPU is left in after you do
+a takeOverFrom() on it... if that's not the same state as a newly
+created idle CPU then that's probably at least part of the problem.
+Steve
+- Show quoted text -
+On Mon, Nov 3, 2008 at 2:18 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+> I ran a test that tried to switch back to a a set of timing simple
+> CPUs after running with the O3 cpus for a while, but the simulator
+> just goes off into space. Using a fresh set of simple CPUs solves the
+> problem, but I was curious if someone might know of an inherent reason
+> why switching back did not work. If a user wanted to switch back and
+> forth multiple times (perhaps executing a set of simpoints with O3,
+> and the rest with simple timing to get accurate cache modeling),
+> having to have all new sets of cores for each part would be annoying
+> (though still doable). For a scheme where the switching is more
+> dynamic, this solution would not be feasible.
+>
+>        - Clint Smullen
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

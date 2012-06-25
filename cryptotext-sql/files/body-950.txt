@@ -1,0 +1,32 @@
+It should be where the benchmark's (not the simulator's) stdout is
+redirected to.  If that's not happening then it's a bug in the script.
+Steve
+- Show quoted text -
+On Fri, Sep 4, 2009 at 1:43 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+> Hello all,
+>
+> In the cpu2000.py script, there is an "output" attribute to each
+> benchmark object. What is its purpose? It does not seem to be the name
+> of the file that the stdout should be directed to because the stdout
+> seems to be getting directed to "simout" by default. Nor does it seem
+> to the gold output that the output produced during a benchmark run
+> should be compared with.
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

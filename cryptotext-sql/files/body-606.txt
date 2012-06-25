@@ -1,0 +1,16 @@
+Folks,
+I had been working on m5-2.0b6 with 4 cores/2threads and what I found is
+that it would never complete even after months (runaway).
+I downloaded and compiled the later versions and then for some reason
+any attempt at running the benchmarks wouldn't work.
+So my questions are:
+1. Is there a resolution to the runaway problem?
+2. What are the steps to transition from m5-2.0b6 to newer versions?
+3. A colleague said we need to recompile the benchmarks for the newer
+version, is that so?
+(also does anyone have a copy handy of the config/alpha.cfg ?)
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks#Build_the_SPEC2006_alpha_binaries
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

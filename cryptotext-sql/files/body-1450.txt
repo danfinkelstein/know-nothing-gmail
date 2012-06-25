@@ -1,0 +1,36 @@
+Another important question would be how would one study scheduling in
+this simulator?
+- Show quoted text -
+Korey Sewell wrote:
+>> You can't make an ISA independent CPU model.  It's just not possible.
+>> It must use virtual functions, templates, or #defines.
+>I disagree on if you *could* but agree on why it's infeasible to
+>construct such a solution.
+>
+>IMO, There's no reason that you couldnt replace virtual functions,
+>templates, or defines (VFDs) with an ISA object in whatever specific
+>cases that are needed. In essence the CPU models are already
+>independent save for a few spots where you have VFDs to go to
+>something that needs an ISA specific implementation. So I don't see
+>why you couldn't hack away and force that to work.
+>
+>But I totally agree why you wouldn't embark on such a herculean task
+>and primarily because of the costs involved with getting that to work
+>(time) and using it when it works (performance).
+>
+>
+>
+>--
+>- Korey
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+-----------------------------------
+Will Beazley|Sys. Software Analyst
+409.880.7847|wgbeazley@my.lamar.edu
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi,
+I've just been reading the under-construction "Defining ISAs" wiki page.
+I'm pretty keen to port an ISA we have here in Manchester to M5. The ISA
+is pretty similar to Alpha (although its only 32-bit), but has a few
+unique additions.
+I'm not sure who is responsible for updating the wiki page, but I'd be
+happy to act as a guinea pig in testing the instructions.
+regards,
+Matt Horsnell
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

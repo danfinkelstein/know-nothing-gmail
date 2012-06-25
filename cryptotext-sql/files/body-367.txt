@@ -1,0 +1,10 @@
+Hi all,
+I am getting an error when I execute bzip2 in m5 SE mode.
+panic: attempt to execute unimplemented instruction 'maxub8' (inst 0x70430781, opcode 0x1c)
+Did anyone face this error? Is there a way to work around this error?
+Thanks,
+Tarun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

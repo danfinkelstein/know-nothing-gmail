@@ -1,0 +1,40 @@
+Hi,
+Thanks for the quick reply!
+First, I agree that switching to FS mode is the better option. I will get FS mode up and running as soon as I can find the time :-)
+I’ll elaborate a bit on the deadlock problem with Splash in SE mode. I’m using the standard inputs except for with LUNoncontig where I have increased the problem size to 512. The Ocean benchmark is the one that is causing the most trouble. With my extensions (different L1-L2 interconnects and directory coherence) it simulates less than 1 million instructions before all threads suspend. This happens for 2, 4 and 8 cores. To makes sure that it is not a problem with my code, I ran a test with vanilla M5, 8 cores and the MSI, MESI or MOESI coherence protocols. In this case, the problem arises for Barnes, both Ocean benchmarks, both LU benchmarks, WaterSpatial and WaterNSquared with all coherence protocols. Furthermore, FMM has the problem with the MSI protocol and Radix with the MOESI protocol.
+If we assume that all threads are waiting for the scheduler thread, a possible dirty hack would be to start up the thread at the head of the wait queue. Then, it should be possible to get at least some results. Of course, it is far from ideal and might create more problems than it solves. What do you think?
+In addition, I notice that some benchmarks call the nxm_thread_blockFunc, nxm_blockFunc and nxm_unblockFunc. However, these methods only print their arguments to stdout and return 0. What should these methods do?
+Regards,
+Magnus- Show quoted text -
+Steve Reinhardt wrote:
+Hi Magnus,
+What inputs are you using for the benchmarks?  I don't recall this happening, but they haven't been tested extensively, so it wouldn't be a huge surprise if this happened when you use different input sizes or numbers of processors.  The Tru64 pthreads library (like the Linux pthreads library) has a "manager" thread in addition to the application threads.  In order to keep the m5 support manageable, we don't create a manager thread (because then you'd have N+1 threads trying to run on only N CPUs).  If the application ever gets into the situation where all the worker threads are waiting on the manager thread then you're hosed.   We don't see that happen under SPLASH (since they're pretty simple in their use of threads) but it could be you've run into a situation where that's happening.
+I don't believe it's possible to build a cross-compiler for Tru64 Alpha binaries; at least we've never been able to.  Thus unless you have a native Tru64 Alpha machine you can't really generate new binaries for the existing SPLASH support.
+Unfortunately supporting Linux pthreads in SE mode is even harder than under Tru64 (and the situation with Tru64 is that my goal was to support pthreads but I gave up partway through, which is why it's kind of a mess).  This question comes up a lot, so if you're interested you can probably find more detailed answers in the mailing list archive.
+Actually this question comes up often enough that I'm just going to create a wiki page for it:
+http://www.m5sim.org/wiki/index.php/Splash_benchmarks
+The bottom line is that you're probably best off running with Linux pthreads in FS mode.
+Steve
+Magnus Jahre wrote:
+Hi,
+I’m using the precompiled Splash benchmarks for M5 version 1.1 and the SE mode. The problem is that many of these benchmarks eventually deadlock. I have traced the problem to the synchronization functions in alpha_tru64_process.cc. Here, all processors end up calling the m5_cond_waitFunc() method and they all suspend. The really bad thing is that if you simulate for a fixed number of clock cycles, it is very difficult to see that something has gone wrong.
+I’ve added the following code to the end of the m5_cond_waitFunc() method to detect the problem:
+if(process->waitList.size() == process->numCpus()){
+fatal("We have a deadlock");
+}
+Have you seen this problem before?
+I think it might be a problem with the thread library. However, I have not been able to look into this as I do not have a working cross compiler. Have you been able to build a cross compiler for the Splash benchmarks and the thread libraries?
+Regards,
+Magnus Jahre
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

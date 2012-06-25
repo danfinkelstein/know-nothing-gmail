@@ -1,0 +1,30 @@
+That should do it. You don't strictly need USE_SSE2 to solve this problem, but it doesn't hurt anything.
+Gabe
+Quoting Ankit Sethia <asethia@eecs.umich.edu>:
+- Show quoted text -
+Hi,
+I am using "-O3 -msse2" during compilation of the application and USE_SSE2
+during M5 compilation. Kindly let me know if i am missing something.
+On Tue, Jun 1, 2010 at 8:15 PM, Gabriel Michael Black <gblack@eecs.umich.edu
+wrote:
+ The GHB, prefetching mechanism works fine in all cases.
+Another problem that i am currently facing is as follow:
+There are only integers and floating point numbers in the application
+that
+i am trying to run.
+Check the mailing list archives but I'm not sure Floating Point support is
+all the way there for x86. I'll let someone else chime in.
+This is a good point if you're doing floating point. Make sure you compile
+to use SSE instead of x87, and then it should pretty much work. This is
+independent of your block size problem, though.
+Gabe
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+Ankit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,16 @@
+> If anyone on the list has any good reasons why a trace-driven CPU
+> should or should not derive from BaseCPU I'd be happy to hear them.  I
+> can see some advantages (like inheriting some of the memory hierarchy
+> helper functions, like addPrivateSplitL1Caches()), but you also end up
+> having to support ThreadContext objects, which really make no sense in
+> the context of a trace-driven CPU (where I specifically mean a CPU
+> that's just playing back an address trace, not one that's consuming an
+> instruction-level trace).
+I don't have much to add other than if BaseCPU has baggage that
+wouldn't be used for TraceCPU, perhaps it would be good to move some
+of BaseCPU into a "memory system driver" class.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

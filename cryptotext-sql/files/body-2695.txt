@@ -1,0 +1,9 @@
+hi all,
+i am reading o3 model these days, and i don't quite understand how the data is fetched from cache to cpu...
+can anyone tell me some details about the whole process? i am not sure if it is something to do with the 'read' and 'write' function in src\cpu\o3\Lsq.hh? 
+i don't quite understand the two functions, can anyone give me some help, thanks a lot...-- RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081
+dunning2006@gmail.comdnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

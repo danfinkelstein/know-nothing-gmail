@@ -1,0 +1,40 @@
+I'm finally switching over to the native python, with a non macports scons (in this case scons 0.98.1), and am getting the following error when trying to compile m5b5:
+g++ -o build/ALPHA_SE/arch/alpha/linux/linux.o -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -arch x86_64 -g -O3 -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/System/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5 -Ibuild/libelf -Ibuild/ALPHA_SE build/ALPHA_SE/arch/alpha/linux/linux.cc
+In file included from build/ALPHA_SE/arch/alpha/linux/linux.cc:31:
+build/ALPHA_SE/arch/alpha/linux/linux.hh:34:31: error: kern/linux/linux.hh: No such file or directory
+build/ALPHA_SE/arch/alpha/linux/linux.hh:41: error: expected class-name before ‘{’ token
+build/ALPHA_SE/arch/alpha/linux/linux.hh:46: error: ‘OpenFlagTransTable’ does not name a type
+build/ALPHA_SE/arch/alpha/linux/linux.cc:36: error: ‘OpenFlagTransTable’ does not name a type
+build/ALPHA_SE/arch/alpha/linux/linux.cc:71: error: ‘openFlagTable’ is not a member of ‘AlphaLinux’
+build/ALPHA_SE/arch/alpha/linux/linux.cc:71: error: ‘openFlagTable’ is not a member of ‘AlphaLinux’
+scons: *** [build/ALPHA_SE/arch/alpha/linux/linux.o] Error 1
+scons: building terminated because of errors.
+Looking in build/ALPHA_SE/arch/alpha/linux, there is indeed no linux.hh. I'm not familiar enough with SCons to know why it wouldn't copy that over from the src directory. Any ideas what may cause this?
+By the way, would it be possible to add those -arch x86_64 options to the m5b4 SConscript code to get 64 bit binaries for b4? Or is it more complicated than that (and maybe bringing everything over to b5 would be less hassle)?
+-Nick- Show quoted text -
+On Apr 4, 2008, at 7:17 PM, Nicolas Zea wrote:
+Ah, had no idea, I'll look into using the default python then. Thanks!
+-Nick
+On Apr 4, 2008, at 6:03 PM, Ali Saidi wrote:
+If you're on a 64bit capable OS X host the configure script assumes that you want to compile a 64bit binary. Unfortunately macports doesn't (at least not easily) compile 64 bit binaries or fat binaries. So if you're using the macports version of python that won't work for a 64bit compile. However, the version of Python that comes with 10.5 has libraries that are fat (32 & 64 bit), so you can compile a 64 bit binary. The speed of the 64 bit m5 binaries is drastic enough that I deal with the hassle, but perhaps we need a more elegant solution.
+Ali
+On Apr 4, 2008, at 6:48 PM, Nicolas Zea wrote:
+Using the normal SConstruct, it is unable to find my Python.h file (located in /opt/local/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4), despite appearing to check the correct directory. The following error message is printed:
+Checking for C header file Python.h... no
+Error: can't find Python.h header in /opt/local/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4
+Looking into the SConstruct, I found that in b5 some 64bit compilation option was added ("-arch x86_64"). When I comment out the appends done to the environment variables (starting at line 396), I am once again able to build the simulator without error.
+I'm not familiar enough with SCons to know if there is a bug in this code, but this may be an issue.
+Not sure if it matters but I'm using OSX 10.5 on a core 2 duo.
+-Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

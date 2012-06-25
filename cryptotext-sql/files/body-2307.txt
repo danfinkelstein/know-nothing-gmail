@@ -1,0 +1,188 @@
+I just ran into this myself for the first time... I don't know when
+the compilers stopped setting the OSABI flag, because I never saw it
+before.
+I suggest that to make life simpler we just change the code so that if
+the OS is undefined we print a warning but assume it's Linux instead
+of considering that a fatal error.  Any objections?
+Steve
+- Show quoted text -
+On Wed, Nov 12, 2008 at 10:25 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+> There are two mechanisms via which M5 detects the OS: 1) the OSABI
+> field in the header of the ELF file (note that this field is NOT set
+> by the distributed compilers), or 2) the .note.ABI-tag section. One
+> could change the first with a hex editor, but I will describe a simple
+> solution for adding the latter onto an arbitrary executable.
+>
+> I am assuming that the alpha-crosstool/bin is in your path. I also
+> assume that m5 is installed into ~/m5. You can fix either of these as
+> needed, of course.
+>
+> All we need to do is extract a copy of the .note.ABI-tag section, so
+> we use objcopy. Fortunately, M5 ships with a working "hello, world",
+> so we will use that:
+>
+>        alpha-unknown-linux-gnu-objcopy -j .note.ABI-tag ~/m5/tests/test-
+> progs/hello/bin/alpha/linux/hello abi-tag.o
+>
+> You can now link that into your program:
+>
+>        gcc -nostdlib nm.c abi-tag.o
+>
+> Kick it off into M5, and you are greeted with a delightful endless
+> loop :P
+>
+>        - Clint
+>
+> On Nov 13, 2008, at 12:07 AM, Shoaib Akram wrote:
+>
+>> Thanks both. As you guys described, things work fine using x86 gcc
+>> on an x86 machine. But when I use crosscompiler and take the alpha
+>> binary to  m5, i get, unknown/unsupported OS. Any idea?
+>>
+>> ---- Original message ----
+>>> Date: Wed, 12 Nov 2008 19:35:41 -0500
+>>> From: Clint Smullen <cws3k@cs.virginia.edu>
+>>> Subject: Re: [m5-users] statictics
+>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>
+>>> Different platforms choose whether or not to automatically prefix
+>>> underscores and whether start or _start is the default symbol. On a
+>>> linux system, I was able to compile and link the following program:
+>>>
+>>>      void _start() { }
+>>>
+>>> Using just:
+>>>
+>>>      gcc -nostdlib nm.c
+>>>
+>>> The resulting program crashes, however, since it does not have what
+>>> is
+>>> typically contained within crt0. The important thing to keep in mind,
+>>> is that start() should never return. Adding a trivial loop proves
+>>> this, as with the following variant:
+>>>
+>>>      void start() { while (1) { } }
+>>>
+>>> Since you are running it within M5, I would suggest putting a
+>>> trailing
+>>> m5_exit to keep it from running of into no-man's land.
+>>>
+>>>      - Clint
+>>>
+>>> On Nov 12, 2008, at 7:18 PM, nathan binkert wrote:
+>>>
+>>>> You should be able to just create a function called _start.  Does
+>>>> that
+>>>> not work?  What does nm say when you do that?
+>>>>
+>>>> I think the thing you're missing here is that you need to tell the
+>>>> linker that you're using _start as the entry point for your program.
+>>>> The kernel doesn't actually look for _start (you should be able to
+>>>> call it whatever you want).  It looks in the elf header for the
+>>>> address of an entry point.  Because you've told it not to use the
+>>>> stdlib, I'm guessing that the linker might not add the entry point
+>>>> if
+>>>> you don't tell it which symbol it is.
+>>>>
+>>>> Good luck.
+>>>>
+>>>> Nate
+>>>>
+>>>> On Wed, Nov 12, 2008 at 4:12 PM, Shoaib Akram <sakram3@illinois.edu>
+>>>> wrote:
+>>>>> Kind of not related to m5, but do you know how do I define my own
+>>>>> _start symbol in a c program?
+>>>>>
+>>>>> ---- Original message ----
+>>>>>> Date: Tue, 11 Nov 2008 01:05:35 -0800
+>>>>>> From: Gabe Black <gblack@eecs.umich.edu>
+>>>>>> Subject: Re: [m5-users] statictics
+>>>>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>>>>
+>>>>>> I believe you use the -nostdlib option to leave out all of the
+>>>>>> standard
+>>>>>> library stuff, including _start which kicks off all the things Ali
+>>>>>> mentioned and more and then finally calls main(). In your program
+>>>>>> you'll
+>>>>>> then need to define _start yourself. If you're writing your
+>>>>>> program in
+>>>>>> assembly, then all you need to do is include a label called _start
+>>>>>> and
+>>>>>> put everything you want to run after it. If your program uses any
+>>>>>> system
+>>>>>> calls you'll have to implement stubs for those since those are
+>>>>>> part of
+>>>>>> the standard library too.
+>>>>>>
+>>>>>> Gabe
+>>>>>>
+>>>>>> Ali Saidi wrote:
+>>>>>>> No it's probably from all the libc _start code that is executed.
+>>>>>>> Even
+>>>>>>> if main() is a single line there is much more code that is
+>>>>>>> included in
+>>>>>>> the binary to setup the environment properly, get the arguments
+>>>>>>> in
+>>>>>>> order, see if the terminal is character or line buffered, etc.
+>>>>>>> You
+>>>>>>> should be able to convince the linker to not include all of
+>>>>>>> this -
+>>>>>>> fno-
+>>>>>>> builtin, but you'll need to define a _start symbol.
+>>>>>>>
+>>>>>>> Ali
+>>>>>>>
+>>>>>>> On Nov 10, 2008, at 11:21 PM, Shoaib Akram wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>>> I wrote a simple program with 3 branches and ran it on m5. The
+>>>>>>>> statstics show much more branches and the number of instructions
+>>>>>>>> executed are also more than the assembly generated. Is it
+>>>>>>>> because of
+>>>>>>>> noise from emulated system calls?
+>>>>>>>> _______________________________________________
+>>>>>>>> m5-users mailing list
+>>>>>>>> m5-users@m5sim.org
+>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>
+>>>>>>>>
+>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

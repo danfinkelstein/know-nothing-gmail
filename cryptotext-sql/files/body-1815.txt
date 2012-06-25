@@ -1,0 +1,23 @@
+Buses serialize all accesses, so the memory controller cannot see any
+contention caused by simultaneous accesses. Modern memory controllers
+(which DRAMsim models) are designed to overlap as many operations as
+possible, so precisely defining what it means for two requests that do
+not arrive simultaneously to contend with each other is a difficult
+thing to do. This contention instead occurs at the bus. You might want
+to look and see if bus contention is at all an issue for your program.
+An effective cache hierarchy mostly eliminates memory access contention.
+        - Clint
+On Feb 27, 2009, at 3:39 PM, Bob Nagel wrote:
+> Hello Clint,
+>
+> I am using the DRAMsim patch you sent a while ago and I am interested
+> in see the contention of my workload. In your mail you say that using
+> a bus will skew the results, can you or anyone please explain why a
+> bus is going to cause this?. Also is there any alternative solution to
+> see a more realistic contention.
+>
+> Thanks a lot in advance.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

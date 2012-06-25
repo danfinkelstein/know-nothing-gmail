@@ -1,0 +1,16 @@
+Hi,
+ 
+Am looking to model a CMP based system. Wanted to try and model the memory system accurately as well. So wanted to interface M5 with DRAMsim - http://www.enee.umd.edu/dramsim/#version2
+ . 
+ 
+Wanted to interface it in an execution-driven fashion. Has anybody else perhaps already tried doing this? I know there are ports of DRAMsim that work with SimpleScalar and GEMs. Is there anything about the software organization of M5 that makes interfacing with M5 potentially easier/harder? Any advice on how to go about doing this would be greatly appreciated.
+ 
+By the way, does anybody know how the existing built-in detailed memory models of M5 compare with DRAMsim?
+ 
+Thanks very much,
+Shyam
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

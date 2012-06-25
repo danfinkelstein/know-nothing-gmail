@@ -1,0 +1,6 @@
+is there a way to easily change the specification of delay for caches, bridges, and memory from 'ns' etc to actual number of cycles.
+This is useful when comparing across different frequencies since number of cycles remain constant.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

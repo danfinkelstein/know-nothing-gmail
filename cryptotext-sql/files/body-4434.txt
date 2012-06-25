@@ -1,0 +1,44 @@
+Thanks for the guidance, Steve. I was able to get this to work.
+For anyone else who is interested, this is what I did:
+I followed Steve's suggestion and created a prefetch() path similar to the path that read() takes to the LSQ. The code is a little streamlined because there are Fault conditions and memory dependence issues that are important for loads but are not relevant for prefetches. Hence you can rip out a lot of related checks/special cases.
+The one important difference is that prefetches don't writeback. This has a comple of consequences. First, you want to use a single execute() rather than the iniateAcc()/completeAcc() sequence for a normal load. Second, the memory hierarchy responds to the prefetch with a Read response (even if you generate the original request as a SoftPFReq). So, you have to make sure that it doesn't try to follow the conventional load writeback path.
+You can do this in part by setting the LSQState to noWB when you make the request. There are a couple of places along the way that you have to check for this noWB condition (or inst->isDataPrefetch()) to make sure that the right thing is being done.
+But overall, it wasn't too difficult.
+Thanks, again,
+Russ- Show quoted text -
+On Fri, 13 Jul 2007, Steve Reinhardt wrote:
+Hi Russ,
+It shouldn't be too hard.. basically you'd have to duplicate the path that
+read() takes from BaseDynInst through the CPU object (e.g., AlphaO3CPU) to
+the o3 LSQ with prefetch() functions that will be similar.  Once you get to
+the LSQ then the key difference is to set the command field of the packet
+you send to the dcache to SoftPFReq rather than ReadReq.
+Maybe Kevin can speak up if there are subtleties I'm not aware of.
+Let us know if it's not that simple...
+Steve
+On 7/12/07, Russ Joseph <rjoseph@ece.northwestern.edu> wrote:
+Hi,
+It looks as if software prefetch instructions are ignored by the O3 model
+in the m5 2.0 release (e.g. they 'execute' and 'commit' but do not impact
+the microarchitectural state). In particular,
+BaseDynInst<Impl>::prefetch(Addr addr, unsigned flags) does nothing.
+How difficult would it be to re-enable swp?
+Thanks,
+Russ
+-------------------------------------------------------------
+Russ Joseph                           Technological Institute
+Assistant Professor                   2145 Sheridan Road
+Electrical Engineering and            Evanston, IL 60208
+    Computer Science
+Northwestern University               voice: 847-491-3061
+rjoseph@ece.northwestern.edu          fax:   847-467-4144
+            http://www.ece.northwestern.edu/~rjoseph
+-------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

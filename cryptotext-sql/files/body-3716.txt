@@ -1,0 +1,49 @@
+I see. Thanks Steve!
+- Show quoted text -
+----- Original Message -----
+From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: 2007年12月13日 3:47 PM
+Subject: Re: [m5-users] how is store-conditional handled?
+> Basically the stq_c needs to get an exclusive copy in the local cache
+> to complete.
+>
+> You should be getting a response to your UpgradeReq from main memory
+> (or from the L2 if it has an exclusive copy).  That's one of the
+> things that changed from b3 to b4.
+>
+> Steve
+>
+> On Dec 12, 2007 9:40 PM, Jiayuan Meng <jerrygonair@hotmail.com> wrote:
+>>
+>>
+>> I'm trying to adapt the cache model to my interconnection module which
+>> duplicates packets. I came into "simulate() limit reached" when replacing
+>> the toL2bus with my interconnenction in splash2/run.py (SE mode). A further
+>> investigation show that this happens upon a Stq_c.
+>>
+>> Can you give some information about how M5 handles store-conditional/link
+>> load? I observe that the TimingSimpleCPU switched to DcacheWaitResponse
+>> while the L1 cache sends UpgradeReq requests, which, however, never gets any
+>> responses. Hence the cpu hangs there and ran out of events.
+>>
+>> I noticed that some where in the cache the UpgradeReq is replaced by
+>> ReadExReq, but I can't figure out under what conditions. I'd appreciate any
+>> help.
+>>
+>> Thanks!
+>>
+>> Jiayuan
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

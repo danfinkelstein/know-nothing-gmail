@@ -1,0 +1,33 @@
+Hi Tian,
+I imagine that you're running in with an atomic memory system so there
+is never any need for a mshr. The titled Memory System on the wiki
+documents the different memory modes and what they're useful for.
+Ali
+- Show quoted text -
+On Jun 24, 2008, at 10:28 PM, Tian Hangpei wrote:
+>
+> Hi,
+> When I run FFT of Splash2 binary in ALPHA_SE model, I found that
+> mshr of L2 cache hadn't been used, why. Here is the information from
+> m5stats.txt
+>
+> system.l2.demand_mshr_hits
+> 0                       # number of demand (read+write) MSHR hits
+> system.l2.demand_mshr_misses
+> 0                       # number of demand (read+write) MSHR misses
+>
+> Why mshr hit and miss are all 0? Is this mean that mshr queue
+> haven't been used?
+>
+> Many Thanks,
+> Tian Hangpei
+> 2008-06-25
+> Tian Hangpei
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

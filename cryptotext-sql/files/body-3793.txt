@@ -1,0 +1,8 @@
+hello everybody,
+  please ignore my previous problem. apparently i do not have g++ installed and M4 macro processor. to those using Ubuntu, i think you're going to encounter this problem.
+Hope this helps,
+dean
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

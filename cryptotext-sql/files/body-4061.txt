@@ -1,0 +1,95 @@
+Does M5 provide the message passing communication over
+the network? Can I have several machines(each has its cpu and
+memory) work together with data transfers among them?
+Xin
+---- Original message ----
+>Date: Tue, 6 Nov 2007 15:58:04 -0800
+>From: "Steve Reinhardt" <stever@gmail.com>
+>Subject: Re: [m5-users] how to use m5 to do Network-on-chip simulation
+>To: "M5 users mailing list" <m5-users@m5sim.org>
+>
+>M5 does not provide any general network models out of the box; our
+>only interconnect model at this point is a split-transaction bus
+>(which you can combine with caches and bus bridges to make fairly
+>complex hierarchies).
+>
+>If you are interested in writing your own network models M5 would
+>provide a good substrate though.  We've recently updated our memory
+>system so that the caches and busses use a generic "port" model for
+>interconnection, so at the lowest level it would be easy to rip out a
+>bus and replace it with a network model of your choosing.
+>
+>Our current cache coherence protocol relies on bus broadcast, so if
+>you want to do cache coherence across the network that would be
+>additional work.
+>
+>Steve
+>
+>On 11/6/07, Igor Andjelkovic <igor.andjelkovic@yahoo.com> wrote:
+>> Hi,
+>>
+>> I am also a student who is interested in this topic.
+>> Can anyone answer, please.
+>>
+>> Igor
+>>
+>>
+>> Tony Frank <dtustudy@yahoo.com> wrote:
+>>  Hi ,
+>>
+>> I am a graduate student who is doing research work on Network-on-chip for
+>> multi-core computer.
+>>
+>> I need a simulator that can do simulation for network-on-chip with different
+>>  topology, routing algorithm, router architecture, or different bus
+>> topology.
+>>
+>> I also need to implement some blocks or units to the network-on-chip so that
+>> I
+>>  can verify that my optimization design on the network-on-chip can improve
+>>  performnce , power consumption and reliability, scalability.
+>>
+>> I also expect the simulator can generate the detailed information about
+>>  cycle-accurate, packet-level bus behavior.
+>>
+>> I found  "m5" simulator here.
+>>
+>> I do not know weather it can give me what I need.
+>>
+>> Would you please help me with it ?
+>>
+>> Or could you please recommmand other simulator for Network-on-chip?
+>>
+>> thanks a lot !!!
+>>
+>> Tony
+>>
+>> Oct.  25  2007
+>>  __________________________________________________
+>> Do You Yahoo!?
+>> Tired of spam? Yahoo! Mail has the best spam protection around
+>> http://mail.yahoo.com
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>>
+>>  __________________________________________________
+>> Do You Yahoo!?
+>> Tired of spam? Yahoo! Mail has the best spam protection around
+>> http://mail.yahoo.com
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

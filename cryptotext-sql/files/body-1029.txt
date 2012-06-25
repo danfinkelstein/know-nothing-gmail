@@ -1,0 +1,49 @@
+I see that the wiki neglects to mention that you need to connect to
+the console of th simulated machine using telnet or (preferably)
+m5term, something like:
+% telnet localhost 3456
+or
+% m5term localhost 3456
+where 3456 is the port number m5 prints out after "Listening for
+system connection".
+See also http://www.m5sim.org/wiki/index.php/M5term.
+Steve
+- Show quoted text -
+On Tue, Aug 18, 2009 at 8:33 PM, <leonard951@gmail.com> wrote:
+> Hi, everyone,
+>
+> I am starting to use the M5 simulator to implement some research idea. Right
+> now, I come across a problem with initializing the full system simulation,
+> which can be described as follows:
+>
+> (1) I installed the required system files under the directory
+> "/dist/m5/system", which contains two sub-directories "binaries" and "disk";
+> (2) I launched the command "./build/ALPHA_FS/m5.opt configs/example/fs.py",
+> and the shell shows the following information:
+>
+> some preceding information
+> **** REAL SIMULATION ****
+> info: Entering event queue @ 0. Starting simulation...
+>
+> (3) then, the simulation stayed still and doesn't proceed to show any
+> further information. According to the introduction of the M5 full system
+> mode at the link
+> http://www.m5sim.org/wiki/index.php/Running_M5_in_Full-System_Mode, I
+> expected to see the root filesystem "/" but I didn't see such kind of a
+> thing.
+>
+> Did I miss any steps when doing so? What should I do if I want to get the
+> shell of the simulated OS like what I can in Simics. Any help would be
+> greatly appreciated!
+>
+> Thanks,
+> Leonard
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hi All,
+I am doing my experiment under m5-arm(supported by steve), but firstly i need to add the spm into m5, i am reading everything about m5 and its modification... can anyone help me and give me some suggestion about it? thanks a lot...
+-- RegardsDengningSchool Of Computer Science and Technologydnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

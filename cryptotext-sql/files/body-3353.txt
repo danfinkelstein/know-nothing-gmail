@@ -1,0 +1,80 @@
+Seems like we have some fixing to do either way.
+- Show quoted text -
+On undefined, Steve Reinhardt <stever@gmail.com> wrote:
+> If that doesn't fix it, try specifying the directory one level up instead
+> (space/bipink/M5_5/encumbered).
+>
+>
+>
+> On Wed, Apr 2, 2008 at 8:09 PM, Ali Saidi <saidi@umich.edu> wrote:
+>
+> > I believe you need to specify an absolute path to the EXTRAS directory
+> > you're trying to add.
+> >
+> > Ali
+> >
+> >
+> >
+> >
+> > On Apr 2, 2008, at 9:42 PM, bipin kadel wrote:
+> > > Hi,
+> > >           I tried to compile the M5 2.0 beat 5 using EXTRAS but
+> > > during compilation, i got error during compilation.
+> > > The command used to compile is:
+> > >
+> > >         scons EXTRAS=space/bipink/M5_5/encumbered/eio build/ALPHA_SE/
+> > > m5.opt -j 5
+> > >
+> > > The information shown in console is:
+> > >
+> > > scons: Reading SConscript files ...
+> > > Checking for C header file Python.h... yes
+> > > Checking for C library python2.4... yes
+> > > Checking for accept(0,0,0) in C++ library None... yes
+> > > Checking for zlibVersion() in C++ library z... yes
+> > > Checking for C header file fenv.h... yes
+> > > Reading /space/bipink/M5_5/m5-2.0b5/src/arch/sparc/SConsopts
+> > > Reading /space/bipink/M5_5/m5-2.0b5/src/arch/alpha/SConsopts
+> > > Reading /space/bipink/M5_5/m5-2.0b5/src/arch/mips/SConsopts
+> > > Reading /space/bipink/M5_5/m5-2.0b5/src/cpu/o3/SConsopts
+> > > Reading /space/bipink/M5_5/m5-2.0b5/src/cpu/simple/SConsopts
+> > > Building in /space/bipink/M5_5/m5-2.0b5/build/ALPHA_SE
+> > > Options file /space/bipink/M5_5/m5-2.0b5/build/options/ALPHA_SE not
+> > > found,
+> > >   using defaults in build_opts/ALPHA_SE
+> > > Compiling in ALPHA_SE with MySQL support.
+> > >
+> > > scons: *** '.' already has a source directory: '/space/bipink/M5_5/
+> > > m5-2.0b5/src'.
+> > > File "/space/bipink/M5_5/m5-2.0b5/build/ALPHA_SE/SConscript", line
+> > > 193, in ?
+> > >
+> > >
+> > > Could you please help me in compiling the m5 2.0 beta 5 with m5
+> > > 2.0b5 encumbered files.
+> > >
+> > > Thanks
+> > >
+> > > Use video conversation to talk face-to-face with Windows Live
+> > > Messenger. Get started!
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,39 @@
+Have you downloaded Patch 1 from the Downloads page?  I believe this bug is fixed in there.  If you still have problems let us know.
+Steve
+Rajdeep Bhowmik wrote:
+- Show quoted text -
+Hi Tracy,
+ I had also got the same error yesterday while running m5 2.0. Any help will be greatly appreciated.
+ thanks-
+Chaitali
+*/rlai@mtu.edu/* wrote:
+    Hi,
+    I just start to run full-system simulation.
+    Now I have passed the compile and build, and try to run the fs.py
+    configuration file in the m5/configs/examples directory.
+    But I got an error:
+    command line: build/ALPHA_FS/m5.opt -d output configs/example/fs.py
+    Error creating object 'system.cpu':
+    parameter 'mem': not found
+    Program aborted at cycle 0
+    Aborted
+    Can anybody help me about it ? Thanks.
+    Tracy
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+__________________________________________________
+Do You Yahoo!?
+Tired of spam? Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

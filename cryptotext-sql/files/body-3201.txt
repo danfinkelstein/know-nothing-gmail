@@ -1,0 +1,30 @@
+Are these warnings normal running spec2K in SE 
+mode:
+ 
+adjust_type_value pushdecl pushdecl_top_level 
+push_overloaded_decl_top_level pushdecl_class_level overloaded_globals_p 
+push_overloaded_decl implicitly_declare redeclaration_error_message 
+lookup_label shadow_label define_label define_case_label getdecls gettags 
+storedecls storetags lookup_tag set_current_level_tags_transparency 
+lookup_tag_reverse typedecl_for_tag globalize_nested_type maybe_globalize_type 
+lookup_nested_type lookup_name lookup_name_current_level sigsegv 
+record_builtin_type output_builtin_tdesc_entries push_overloaded_decl_1 
+init_decl_processingwarn: Increasing stack size by one page.
+ 
+define_function shadow_tag groktypename start_decl 
+make_temporary_for_reference grok_reference_init finish_decl expand_static_init 
+complete_array_type member_function_or_else grokfndecl grokvardecl 
+grokdeclarator
+ 
+push_to_top_level pop_from_top_level 
+set_identifier_type_value set_identifier_local_value set_nested_typename pushtag 
+make_anon_name clear_anon_tags decls_match duplicate_declswarn: Increasing 
+stack size by one page.
+ 
+ 
+- Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

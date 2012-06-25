@@ -1,0 +1,27 @@
+Hi Bhavani,
+You'll need to be a lot more specific about what you did to get this error... what command line did you use, what changes if any did you make to the simulation scripts, etc.
+Steve- Show quoted text -
+vegesna bhavani wrote:
+ Hi every one,
+ I am trying to run compression code on simulator m5.
+I am getting an error:
+parameter error in section [trace]:
+  parameter 'flags': not found
+parameter aborted at cycle 0
+Abort
+can anyone say what is this error about and what i
+should do.
+thanks
+bhavani 
+ ____________________________________________________________________________________
+Do you Yahoo!?
+Everyone is raving about the all-new Yahoo! Mail beta.
+http://new.mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,102 @@
+hi,
+We are using 64-bit machine with 16GB memory and SPEC CPU 2000
+benchmarks. As we have already run other configurations of simulations
+with these benchmarks, this may not be the problem. 
+We are able to simulate 16 copies of SPEC CPU2000 benchmarks for one
+simulation with 2GB physical memory in the configuration file. system = System(cpu = [CPUClass(cpu_id = i) for i in xrange(np)],                physmem = PhysicalMemory(range = AddrRange("2056MB")),
+                membus = ToMemBus(), mem_mode = test_mem_mode)
+When we use 32 copies of these benchmarks for one simulation, we had
+the problems. We tried physical memory with 10GB,  12 GB, 14 GB, and
+16GB and got "Out of memory" error.  Then we tried physical memory with
+32 GB and we got "can not allocate memory" error.
+could you please help me about this...........- Show quoted text -On Fri, Nov 14, 2008 at 6:55 PM,  <gblack@eecs.umich.edu> wrote:
+I just noticed your failure is happening before the simulation even starts, but
+my question is still relevant. Why is your configuration using up 16 GB of
+memory before the simulation even gets going? I would be extremely surprised if
+your binary was that big, and there shouldn't be much of anything else in memory
+when you're starting up. You'd probably do well to figure that out since you may
+never be able to give it enough memory otherwise.
+Gabe
+Quoting gblack@eecs.umich.edu:
+> Also, what sort of benchmark are you running? It's quite possible you have
+> some
+> sort of run away recursion or infinite loop with allocation in it and you're
+> filling and exceeding any available amount of simulated memory. I would
+> suggest
+> looking at what instructions are executing after a while (--trace-flags=Exec
+> --trace-start=<a little while before the failure>) to see if you're getting
+> stuck in a loop. This shouldn't happen if you're running m5 right out of the
+> box, but if you've written your own benchmark or modified something it could.
+>
+> Gabe
+>
+> Quoting nathan binkert <nate@binkert.org>:
+>
+> > You don't have enough virtual memory on your machine to support that
+> > much simulated physical memory.  There are two causes:
+> > 1) You're on a 32-bit OS and you just don't have the virtual address
+> > space available.  There's nothing you can do here.
+> > 2) You don't have enough RAM + SWAP to cover the amount of physical
+> > memory you want to support.  You can add a swap partition or file and
+> > that will solve your problem.
+> >
+> > On Fri, Nov 14, 2008 at 4:23 PM, Devraj Chapagain <drchapagain@gmail.com>
+> > wrote:
+> > > hi,
+> > >
+> > > I have encountered a problem while simulating a configuration(.py) file.
+> > >
+> > > The error is:
+> > > fatal: Out of memory, please increase size of physical memory.
+> > >  @ cycle 0
+> > > [new_page:build/ALPHA_SE/sim/system.cc, line 230]
+> > > Memory Usage: 2295488 KBytes
+> > >
+> > > Then in order to remove this error, i changed the allocated physical
+> memory
+> > > size, i.e., initially was "2056 MB" then changed to "16GB" step by step
+> but
+> > > got still the same problem.
+> > >
+> > > When i increase the physical memory to 32 GB for checking, at this time
+> the
+> > > error is as:
+> > > mmap: Cannot allocate memory
+> > > fatal: Could not mmap!
+> > >  @ cycle 0
+> > > [PhysicalMemory:build/ALPHA_SE/mem/physical.cc, line 66]
+> > > Memory Usage: 131804 KBytes
+> > >
+> > >
+> > > Could you please help me, i could not fix this problem.....
+> > >
+> > > Thank you,
+> > > devraj
+> > >
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

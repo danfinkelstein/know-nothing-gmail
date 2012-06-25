@@ -1,0 +1,6 @@
+How does the simpoint attribute work? Is it like ffwd in Simplescalar? Is simpoint specified in ticks or in number of committed instructions? 
+-Soumyaroop.-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,22 @@
+Fernando,
+You just need to not use the Cow object for the disks. If you look at FSConfig.py you could create a new class:
+class RawIdeDisk(IdeDisk):
+     image = RawDiskImage(read_only=False)
+     def childImage(self, ci):
+          self.image.image_file = ci
+Then replace the occurrences of CowIdeDisk later in the f ile with RawIdeDisk and you should be done.
+Ali- Show quoted text -
+On Aug 29, 2006, at 4:42 PM, Fernando Hernandez wrote:
+- Show quoted text -
+Friends,
+I was wondering how to disable the COW feature in the new version of m5.  I was able to disable this in the previous version so that I could make persistent changes to the disk, but I have been largely unsuccessful at setting up the configuration to allow me to create a normal disk with the new beta version.  I was wondering if anyone had the adjustment that needs to be made in the FSConfig.py to allow persisent disk changes from within the simulator, or point me to some documentation where I can find it?
+Thank you in advance,
+Fernando
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

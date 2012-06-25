@@ -1,0 +1,43 @@
+I'm a little confused by your comments... the Request object has
+fields for pc, _threadID, and _contextID (which is a combined
+cpu/thread ID, equivalent to the cpu ID for non-multithreaded cores).
+I believe we're pretty good about setting them when appropriate.
+(Some operations, like writebacks, don't have meaningful values that
+you can assign there.)  A pointer to the same request object is
+generally passed around to all the Packet objects associated with the
+original request, so ince that information is set it should not get
+lost in the memory system.
+There is an INST_READ flag in the request too that logically ought to
+signal an instruction fetch, though I see that the cores generally
+don't set that flag.  That should be easy to fix though.  There's also
+a VPTE bit that indicates a page-table read on Alpha, though what if
+anything other ISAs do to distinguish page-table accesses I don't
+know.
+Steve
+- Show quoted text -
+On Tue, Dec 9, 2008 at 9:43 PM, Joe Gross <joegross@umd.edu> wrote:
+> Hello,
+>
+> Is it possible to somehow determine the program counter, thread ID
+> and/or cpu ID from a Packet or Request object? It seems that Request was
+> setup to be either contain this type of data or to contain only physical
+> memory location data (stripping this data before it reaches the memory
+> system). This information would be very useful for a memory controller
+> to implement quality of service scheduling similar to what is in POWER5.
+> It would also be nice to distinguish between page table lookups,
+> instruction fetches and load/store ops. I see that I can reimplement the
+> cache component to be able to pass along the data (or possibly assign a
+> priority and send only the priority of the request), but I'm hoping that
+> there's an easier way that doesn't need to change so much of M5. Any
+> help is appreciated.
+>
+> Joe
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

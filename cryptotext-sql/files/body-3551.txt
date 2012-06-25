@@ -1,0 +1,11 @@
+> Can M5 be configured to simulated heterogeneous multicore processors? For
+> example, can I have a configuration where one core is OOO, one core is
+> scalar in-order? Similarly, can I configure cores with different CPU
+> frequencies, different cache sizes, different number of functional units?
+The answer is yes to all questions.  I do so on a daily basis, though
+our in-order model is currently very trivial.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

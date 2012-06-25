@@ -1,0 +1,5 @@
+Hi All,     I have started using M5 recently and i am trying to modify it for supporting transactional memory management.     Right now i have simple cpu model and only 1 processor during simulation and i am booting linux in it.     I am trying to understand how exactly m5 handles context switching between threads by running a multithreaded program.     My question is: When Linux decides to deschedule a thread and start executing another thread, exactly where in the M5 code all registers get saved?     -Thanks  uday 
+Check out the all-new Yahoo! Mail beta - Fire up a more powerful email and get things done faster._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

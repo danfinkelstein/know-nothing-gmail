@@ -1,0 +1,65 @@
+Thanks Nate, I understand. But for some reason we had a hacked version based on 1.1 so that's the reason we are still working on 1.1, we should use the most recent version for the next project.Thanks,Qingyuan- Show quoted text -
+On Tue, Jun 1, 2010 at 11:40 PM, nathan binkert <nate@binkert.org> wrote:
+v1.1 is nearly 5 years old.  Please use a more recent version.  So
+many things have been fixed since then that it's not even worth
+answering questions about 1.1.
+  Nate
+On Wed, Jun 2, 2010 at 2:23 AM, Qingyuan Deng <ddqqyy@gmail.com> wrote:
+> Thanks Korey, does that work on v1.1? I put --trace-flags=Cache there but it
+> aborted the running and complained "cannot assign object", and when I set it
+> to be "--traceflags", it runs, but didn't print out any traces.
+> Qingyuan
+>
+> On Tue, Jun 1, 2010 at 7:40 PM, Korey Sewell <ksewell@umich.edu> wrote:
+>>
+>> Use the "Exec" flag to trace your progam and possibly other traceflags
+>> depending on what CPU Model your using. You can always turn on some
+>> traceflags in the memory system too (src/mem/SConscript ...I think 'Cache'
+>> will work")...
+>>
+>> But there is initialization code in your binary that gets the arguments
+>> ready for the main function as well as setup some libraries so more than
+>> likely thats the culprit.
+>>
+>> On Tue, Jun 1, 2010 at 7:11 PM, Qingyuan Deng <ddqqyy@gmail.com> wrote:
+>>>
+>>> Hi,
+>>>
+>>> I am trying to figure out the following issue:
+>>> When I run a "null" program (empty main function without anything), there
+>>> are still more than 160 dcache misses, and more than 200 icache misses. Is
+>>> that normal? Or where do they come from?
+>>> I am using SE mode with one core and the version is 1.1
+>>>
+>>> Thanks a lot,
+>>> Qingyuan
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>>
+>> --
+>> - Korey
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

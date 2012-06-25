@@ -1,0 +1,5 @@
+When i use the -d option to set the output directory for stats, m5 copies all the files needed as benchmark inputs to that directory which is waste of space. Is there a way i can specify the output for stats only and m5 used the benchmark input files/folders from one place?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,88 @@
+Hi,
+First, some important concepts about simpoints. The use of simpoints is
+dependent on the binary you are running. Depending on how your Spec2K
+benchmarks were compiled (optimization level) and for what operating
+system (OSF vs Linux), the location of the simpoints can change. The
+first thing you need to do is run simpoint analysis on your benchmarks
+to find the correct location for the simulation. Make sure you
+accurately account for whether your simpoint location accounts for
+no-ops or not as this can effect the absolute location in the binary.
+Once you know the correct simpoint location, you should modify the
+simpoints counts in cpu2000.py
+To directly answer your question, you will know that the thread has
+reached it fastforward location because the simulator will have an exit
+event of "a thread reached the max instruction count" in
+configs/common/Simulation.py (assuming you did not add a second max
+instruction count event). You could add an explicit M5 dump stats
+command at this point if you wanted to verify the instruction count
+(which will presumably be the top entry of stats in your m5stats.txt file).
+If you want more help with how to use this feature, look through the
+mailing list for "simpoint" and you find the development decisions and
+examples that were posted to the m5 community.
+Best,
+-Rick
+Ashutosh Jain wrote:
+> Hi Lisa
+>
+> Thanks for your reply.
+>
+> cpu2000.py contains all the simpoint values of all benchmarks that we
+> are using. But while simulation is running and we got some results,
+> then how should we know that we have used the fast forwarding
+> technique and have skipped some instructions, that is, I want to know
+> is there any other file(s) where the description of use of fast
+> forwarding is mentioned or in otherwords confirmation of skipped
+> instructions is mentioned in some file.
+>
+> Once again thanks
+>
+> Ashutosh Jain
+>
+> On Tue, Jan 27, 2009 at 9:36 AM, Lisa Hsu <hsul@eecs.umich.edu
+> <mailto:hsul@eecs.umich.edu>> wrote:
+>
+>     The simpoint value *is* the number of instructions fast forwarded
+>     - you can see all the values in cpu2000.py.
+>
+>     Lisa
+>
+>     On Sat, Jan 24, 2009 at 6:28 PM, Ashutosh Jain
+>     <ashujain7@gmail.com <mailto:ashujain7@gmail.com>> wrote:
+>
+>         Hi there,
+>
+>         I am using fast forwarding technique using simpoint defined in
+>         cpu2000.py file. I want to know how should we detect the
+>         number of instructions skipped during the fast forwarding
+>         after setting the simpoint.
+>         Thanks in advance,
+>
+>         --
+>         Ashutosh Jain
+>
+>
+>         _______________________________________________
+>         m5-users mailing list
+>         m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+- Show quoted text ->     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+When configuring M5 to have a more than one L3 cache, I am hitting the following assertion in cache_impl.hh (within handleResponse):
+        assert(mshr->needsExclusive() && !blk->isWritable());
+The assertion is occurring because there are no exclusive targets, and the assertion is encountered even while booting the Linux kernel. I was wondering what problem the check for exclusive access was designed to correct. I have read the comments, and looked at what it references, but cannot find a clear explanation for why that particular part of the assertion is there. Also, there is nothing that keeps a non-exclusive request from being placed into the deferred targets list in the first place.
+I am able to complete execution if i remove the first half of the assertion (I have not seen it deadlock).
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

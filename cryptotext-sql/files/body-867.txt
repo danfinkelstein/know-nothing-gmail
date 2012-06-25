@@ -1,0 +1,56 @@
+Ah thanks for the advice, I see the problem(s) now . Just suprised
+that the fetch rate  is much lower than expected .I am pretty new in
+this part of M5, so excuse the questions:
+However, I am not an expert at all, it seems that theirs really
+nothing wrong with M5 (from what I can tell now), and perhaps the IPC
+for Blackscholes is really this low. The only other issue at the
+moment I can think of is that I did not compile my benchmarks
+optimally. Is there any recommended flags to include to compile any
+benchmarks into m5?
+I basically used the ev67 pre-compiled compiler on the website. I did
+not tune for ev5.ev6 or ev4, I noticed those were much slower.
+Thanks,
+EF
+- Show quoted text -
+On Fri, Oct 2, 2009 at 9:29 PM, Steve Reinhardt <stever@gmail.com> wrote:
+> You'd have to look back from there in the trace to see what the
+> threads are up to... probably an icache or itlb miss, I would guess.
+> The statistics should tell you more about various stalls, but I don't
+> recall off the top of my head what the specific stats are.
+>
+> Steve
+>
+> On Fri, Oct 2, 2009 at 7:24 PM, ef <snorlaxgb@gmail.com> wrote:
+>> Hello,
+>>
+>> I am testing Blackscholes 2.1 on M5. Alpha FS Mode. It seems that the
+>> IPC is pretty low around .73, I noticed that the fetching rate is
+>> pretty low , avg fetch of .98 per cycle, out of a 4 wide machine.
+>> Going through traces, everything seems normal except: I get messages
+>> like this doing certain spots, which I believe is the culprit:
+>>
+>> 8039402330674: system.detail_cpu1.fetch: Running stage.
+>> 8039402330674: system.detail_cpu1.fetch: There are no more threads
+>> available to fetch from.
+>>
+>> This happens for several cycles, then fetching appears normal.
+>>
+>> Right now I have two cores running two threads. Is there anyways I can
+>> find out more about whats going on?
+>>
+>> Thanks,
+>> EF
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

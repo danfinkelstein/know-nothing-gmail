@@ -1,0 +1,49 @@
+This document contains a basic outline for how to install the
+PEBIL binary instrumentation package.
+
+Before installing, if you are an HPC user consider emailing me
+to see if I maintain an installation on the system you are interested
+in installing for -- michaell@sdsc.edu
+
+1. System Requirements
+
+Operating System        Linux
+Binary Format           Elf
+Architecture            ia32 or x86_64
+
+
+2. configure your environment
+
+Add the following to your shell login script (assuming the installation is
+at /path/to/PEBIL/)
+
+bash (64bit example):
+export PEBIL_ROOT=/path/to/PEBIL
+export PEBIL_LIB=${PEBIL_ROOT}/lib
+export PEBIL_BIN=${PEBIL_ROOT}/bin
+export PEBIL_GFORT=gfortran
+export PATH=${PATH}:${PEBIL_BIN}
+
+csh (32bit example):
+setenv PEBIL_ROOT /path/to/PEBIL/
+setenv PEBIL_LIB ${PEBIL_ROOT}/lib
+setenv PEBIL_BIN ${PEBIL_ROOT}/bin
+setenv PEBIL_GFORT gfortran
+setenv PATH ${PATH}:${PEBIL_BIN}
+
+
+3. build external libraries
+go the the external directory and read the INSTALL file there
+
+
+4. build PEBIL
+run `gmake' from the top-level directory
+
+5. run PEBIL
+Details on how to run:
+pebil --help
+
+Examples:
+pebil --typ jbb --app testapps/dynTest.gnu
+pebil --lib lib --typ ide src/pebil
+pebil --typ crp --trk $PEBIL_ROOT/scripts/inputlist/test.wrap --app cg.A.8

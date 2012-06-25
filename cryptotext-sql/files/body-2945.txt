@@ -1,0 +1,14 @@
+Hi,
+ 
+Could you please point me to the patch file for the .config.m5
+file needed for Linux 2.6.22?  I notice that the Linux Patches tarball
+contains defaultconfig files for 2.6.13, 2.6.16, and 2.6.18, but not 2.6.22.
+ 
+Thanks for your help!
+ 
+Brad
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

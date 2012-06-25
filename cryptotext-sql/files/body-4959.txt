@@ -1,0 +1,21 @@
+Hi,
+m5.fast v2.0b1 (patched) fails to compile using the following options:
+% scons build/ALPHA_FS/m5.fast CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+...
+g++ -o build/ALPHA_FS/cpu/o3/commit.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_ISA=ALPHA_ISA -DNDEBUG -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/cpu/o3/commit.cc
+cc1plus: warnings being treated as errors
+build/ALPHA_FS/cpu/o3/commit_impl.hh: In member function 'void DefaultCommit<Impl>::skidInsert() [with Impl = AlphaSimpleImpl]':
+build/ALPHA_FS/cpu/o3/commit.cc:34:   instantiated from here
+build/ALPHA_FS/cpu/o3/commit_impl.hh:1204: warning: unused variable 'tid'
+scons: *** [build/ALPHA_FS/cpu/o3/commit.fo] Error 1
+scons: building terminated because of errors.
+(I am using g++-4.0.3, Python 2.4.4c0, scons v0.96.92 and SWIG v 1.3.29)
+m5.debug and m5.opt are compiling fine using the same options...
+An additional question regarding checkpointing (in FS mode): which is the command line option in m5 v2.0b1 to load a checkpoint?
+I think that m5 v1.1  uses this one: -ECKPT_FILE=<checkpoint dir name> , but I cannot find sth. similar in v2.0b1 ...
+Thanks a lot,
+Nick.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,31 @@
+I have seen data collected using SpecWeb running on top of M5 in FS mode. I was wondering how they did it?
+- Show quoted text -
+---- Original message ----
+>Date: Thu, 4 Jun 2009 10:27:17 -0700
+>From: nathan binkert <nate@binkert.org>
+>Subject: Re: [m5-users] JVM on M5
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>> As far as I know no one has ever run a JVM on M5, someone correct me if I'm
+>> wrong.
+>> I looked into it a while ago - since we really only have ALPHA as the
+>> totally mature FS, you'd need a JVM for Alpha, which there used to be one
+>> that was under development but seeing as I can't find it on the web anymore
+>> I think it might be a dead project.
+>> It would be much simpler to find a JVM for Sparc, but I'm not up on how much
+>> is going on with SPARC_FS right now.
+>
+>SPARC_FS works with one CPU right now.  There are some issues that
+>need to be worked out for multiprocessor SPARC_FS (though, the code is
+>mostly there and it seems that it's mostly a matter of figuring out
+>how to get the hypervisor and M5 to agree on the system configuration)
+>
+>  Nate
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

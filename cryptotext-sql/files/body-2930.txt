@@ -1,0 +1,54 @@
+I don't know of anyone who's done it, but it sounds cool.  My vote is
+for option #3.  Option #1 seems really invasive and would make it
+tricky to deal with wrong-path code or anything else that might be
+non-deterministic.  Option #2 doesn't scale past N=2.  Option #3 might
+not be too bad if you interleave things on a page-by-page basis; e.g.,
+for an N-thread workload, physical page p of thread i maps to physical
+page N*p+i of the new system.  This would also give you reasonable
+conflict behavior in a physically indexed cache (another issue that
+might backfire on you in options 1 or 2... particularly in option 1 if
+all the threads have overlapping fake physical addresses).
+Steve
+- Show quoted text -
+On Mon, Jun 9, 2008 at 6:24 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> Hi all,
+>
+> I am going to add a system that would allow opening two single threaded
+> checkpoints in SE mode and run them on a detailed SMT simulation. A few
+> questions to make sure no one has implemented this already:
+>
+> 1) Does anyone already have this support and is willing to share?
+>
+> Deciding between three options:
+>
+> 1) Add to the checkpoint all memory reads for the simulation interval of
+> interest and then redirect all M5 memory reads to use this file to
+> satisfy requests instead of its simulated physical memory and to make
+> sure that memory reads for different threads go to their respective files.
+>
+> 2) Each thread could be checkpointed two times with a memory allocator
+> that allocates all memory in either the beginning or end of physical
+> memory. That way when two threads are started, clever selection of the
+> two checkpoint files will make sure that physical memory address do not
+> collide. The negative of this situation is that the number of
+> checkpoints necessary will double, but this isn't too bad.
+>
+> 3) The third option is extending option 2 to just use a single
+> allocator, but make a script which dynamically creates new checkpoint
+> files from two single threaded checkpoints, and re-assigns
+> virtual-to-physical memory mappings for the phymem file and TLB section.
+>
+> If anyone has a good alternative or convincing argument why they would
+> choose one alternative, pipe it on up and let me know.
+>
+> Thanks in advance,
+> -Rick
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

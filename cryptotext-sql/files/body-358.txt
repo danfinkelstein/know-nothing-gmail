@@ -1,0 +1,21 @@
+Hi,
+I am looking for a way to reset/dump stats from the application itself
+in ALPHA_FS mode.
+As I understood, all the pseudoinsts as part of the m5 util only works
+in the rcS script which
+does not understand where the program is in a finer granularity.
+Is there a way to do so already in M5?
+The method I am working on is based on a memory mapped variable. And
+whenever I see a
+write to it, I am trying to reset/dump stats. The  do_reset_stats
+functions though are in util directory
+instead of src. So the default compilation script is not going to
+support that. I have some trouble
+calling back to these psudoinsts from the cache mode itself.
+Do you think this is the right way to go or is there is better way?
+Thanks for your help in advance.
+john
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

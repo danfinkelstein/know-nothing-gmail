@@ -1,0 +1,21 @@
+Hi, Lisa
+ 
+I only need few stats to analyze the runtime characteristics of an application. For example the number of dcache.ReadReq_hits, icache.ReadReq_hits, etc. I added these codes  "Stats::StatEvent(true,false);" in function simulate(Tick num_cycles) located simulate.cc. But I didn't get the result I wanted. Could you tell me what is the correct way to get thest stats? Thank you very much!
+ 
+Jerry- Show quoted text -
+ 
+On 5/5/08, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+doing this will result in millions of large files full of stat text - what is it that you want this for?
+lisa
+On Sat, May 3, 2008 at 11:39 PM, jerry lrui <jerry.lrui@gmail.com> wrote:
+Hi,
+ 
+I want to dump m5stats after per cycle. I've looked up the code. Maybe I can add some codes in function simulate(Tick num_cycles) located simulate.cc. Fox example, add a StatEvent like "Stats::StatEvent(true,false);" in this function? But I'm not sure how to do it correctly. I'm using m5sim 2.0b5 in SE model.  What is the correct way to get this information? Thanks!
+ 
+Jerry_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

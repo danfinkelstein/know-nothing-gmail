@@ -1,0 +1,6 @@
+I am going through the explanation on Simulation Scripts, however not able to find the /src/python/m5/objects directory in the source. 
+Please let me know if I am looking at the correct location. That directory is automatically generated during the build process.  Nate 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

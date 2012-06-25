@@ -1,0 +1,48 @@
+As far as I know, the O3 model has only been used extensively with
+Alpha, particularly in multiprocessor systems.  (Someone please speak
+up if you've used it with another ISA in MP modeling.)  As a result,
+O3 has only been designed to support Alpha's weak memory model.  If
+whatever it does is sufficient for TSO or PSO that's purely
+coincidence.  One thing that would need to be added for some stronger
+models (certainly for SC) is that invalidations forwarded from the L1
+dcache up to the CPU, which are currently dropped on the floor, would
+need to be handled in order to invalidate speculative loads as well.
+Steve
+- Show quoted text -
+On Tue, May 4, 2010 at 11:46 AM, Gabriel Michael Black
+<gblack@eecs.umich.edu> wrote:
+> I don't remember either myself or anyone else implementing anything to
+> change the memory model implemented by O3, so I'm pretty sure it's going to
+> be the same no matter what. I'm not sure which of the SPARC memory models it
+> corresponds to, though. The configuration of the memory system itself might
+> also partially determine that. Could someone that knows the memory system
+> better comment?
+>
+> Gabe
+>
+> Quoting Eberle <rambo.ufsc@gmail.com>:
+>
+>> Does the Sparc O3 processor implement the specified memory model? In this
+>> case, TSO and optionally PSO.
+>> Or is the program executed sequentially?
+>>
+>> If yes, does the simple processor model also implement it?
+>>
+>>
+>> Thanks in advance,
+>>
+>> --
+>> Eberle A. Rambo.
+>>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+You can easily set up independent systems, each with their own CPU(s) and memory.  Right now the only way to interconnect them is via a simulated Ethernet.  If you want a higher-performance network, you'd have to figure out what kind of network you want and develop models for the network and network interfaces.
+Steve- Show quoted text -On Sun, Feb 1, 2009 at 10:28 AM, Aaron Williams <aswilli@gmail.com> wrote:- Show quoted text -
+I am referring to a message passing system I guess.  I want each machine to only know about its individual set of meory and no one else's.  -- Aaron S. WilliamsGraduate Student
+Arizona State University
+Department of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

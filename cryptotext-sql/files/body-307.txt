@@ -1,0 +1,6 @@
+Hi, all. I am using the M5 Alpha FS mode, with the functional CPU model and timing memory access. When one event is serviced, the corresponding process function is invoked, but I want to know what type of event it is and who schedules it into the event queue. For example, when the /mem/tport.cc/sendDeferredPacket() is invoked, I want to know where this deferred event come from and when it is scheduled. Is there any way I can know this information? GDB seems only give me the function invoke sequence, but the function which schedules the event has already returned. Can anyone help me about this? Thanks in advance.
+-- Weidan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

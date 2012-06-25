@@ -1,0 +1,14 @@
+horsnelm@cs.man.ac.uk wrote:
+Hi I'm new to M5 so bear with me...
+I've followed the compilation instructions, installed all the relevant
+packages and built ALPHA_FS/m5.debug.
+I then moved onto the regression tests section, and couldn't manage to run
+the example given, indeed the directories you suggest on the compiling
+page didn't exist. I have downloaded and unzipped the full system tarball
+into /dist/m5/system...
+I'm curious what you mean by this... what errors did you get when you tried to run the regressions?  Which directories didn't exist?  If you're referring to the regression directories themselves (e.g., build/ALPHA_FS/tests/opt/quick), those get created by scons the first time the regression is run, so they won't exist initially.
+Steve- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

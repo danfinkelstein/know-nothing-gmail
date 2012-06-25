@@ -1,0 +1,17 @@
+Hi all,
+ 
+I'm a freshman using M5. When I compile m5 with the command, 'scons build/MIPS_FS/m5.opt', I encountered errors as follows.
+I compile m5 on Debian 5.0.4, Linux kernel 2.6.26-2-686, and m5-stable code is downloaded from http://repo.m5sim.org/
+ 
+I need anyone's instructions to solve it.
+ 
+____________________Error information_______________________
+ 
+AttributeError: Flag MC146818 already specified:  File "/root/m5-stable-94c016415053/SConstruct", line 898:    exports = 'env')  File "/usr/lib/scons/SCons/Script/SConscript.py", line 596:    return apply(method, args, kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 533:    return apply(_SConscript, [self.fs,] + files, subst_kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 256:    exec _file_ in call_stack[-1].globals  File "/root/m5-stable-94c016415053/build/MIPS_FS/SConscript", line 252:    SConscript(joinpath(root, 'SConscript'), build_dir=build_dir)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 596:    return apply(method, args, kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 533:    return apply(_SConscript, [self.fs,] + files, subst_kw)  File "/usr/lib/scons/SCons/Script/SConscript.py", line 256:    exec _file_ in call_stack[-1].globals  File "/root/m5-stable-94c016415053/build/MIPS_FS/dev/mips/SConscript", line 39:    TraceFlag('MC146818')  File "/root/m5-stable-94c016415053/build/MIPS_FS/SConscript", line 204:    raise AttributeError, "Flag %s already specified" % name__________________________________________________________________
+ 
+Any help is appreciated!
+ 
+csm_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,17 @@
+On Mar 28, 2008, at 4:54 PM, Jeff Diamond wrote:
+Our research group is evaluating M5 as a possible new simulator standard.  Some key information I have not been able to find anywhere, so your help is greatly appreciated:
+(1) Full system simulation on SPARC:  The Docs imply this is available, but the tutorial implies you still can only do a full system simulation on an Alpha.  Can I get hardware acceleration out of a SPARC machine?
+You can do single processor full-system simulation on SPARC and boot Solaris.  In theory multi-processors should work -- the code is written -- but it hasn't been tested/debugged. If you're interested in doing it we have some infrastructure to do cycle checking Legion (Sun's functional simulator) that we can share. There is currently no support for native execution on SPARCs.
+(2) Simulation speed.  I need a sense of both the software and hardware performance in instructions/second.  This is a critical piece of information and I have not found it anywhere in the docs or tutorial.  I would even accept anecdotal information about M5 speed.
+We get about 2M IPS on a simple CPU model. Full-system isn't supported on our out-of-order model, but it would be a good bit slower.
+Ali- Show quoted text -
+Thanks so much for your help,
+- Jeff
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

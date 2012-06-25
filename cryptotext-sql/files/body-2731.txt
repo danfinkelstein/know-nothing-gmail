@@ -1,0 +1,19 @@
+> Currently, I am working on something like "Coroutines". The basic idea
+> is when I have a L2 miss, then I will jump to other functions. Now, I
+> am using the simple timing CPU model and CMP configuration. My
+> question is  how could I pass the L2 miss information to the
+> corresponding CPU. For example, If the CPU0 needs to read the data and
+> there is a l2 miss, then how could the CPU0 know this?
+To my knowledge, there is no path for this sort of notification.
+There are a couple of options.  The most accurate would be to create a
+new command called MissNotification, and add an option to the cache to
+generate miss notification requests upon a miss and have the cache
+send the message back to the source of the initial request.  Then
+you'd have to modify the CPU code to do something with that
+MissNotification message.
+Anyone have any better ideas?
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

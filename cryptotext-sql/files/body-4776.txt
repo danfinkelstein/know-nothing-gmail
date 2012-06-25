@@ -1,0 +1,6 @@
+Hello M5 developers --Using M5 2.0, is there any way (using the O3 CPU) to track cache level misses?  Given an instruction (memory reference), I'd like to be able to determine in which level of cache (if any) it hit.  I can see how to determine that it's a memory reference, but don't see any way of getting hit/miss information.  I also don't see any way of tracking this in the memory system (to associate a given miss with a particular instruction).  Am I missing something?
+Thanks!   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

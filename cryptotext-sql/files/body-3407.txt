@@ -1,0 +1,23 @@
+should I apply this patch over the one you had already sent before, or on the original files?
+----- Original Message ----- From: "Steve Reinhardt" <stever@gmail.com>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Cc: "Sujay Phadke" <sphadke@eecs.umich.edu>
+Sent: Tuesday, March 25, 2008 10:18 AM
+Subject: Re: [m5-users] error running splash2 in beta 5
+- Show quoted text -
+OK, this time I think it's *really* fixed.  The funny thing is that I
+always test in timing mode, since that's the much harder case to get
+right, and it wasn't until yesterday I realized you were running in
+atomic mode.  Turns out there was a rare but simple case where the
+common code assumed it was in timing mode so it stuck a writeback in
+the writeback buffer to be processed later, except in atomic mode you
+never look in the writeback buffer so that writeback got lost.
+Anyway, let me know if this doesn't work, but it works for me (even
+with the -t -s options to Radix).
+Thanks for your patience...
+Steve
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

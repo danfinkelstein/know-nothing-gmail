@@ -1,0 +1,57 @@
+Hello Ali thanks for your answer, what is the difference between
+"commit.COM:count # Number of instructions committed" and "num_insts #
+Number of instructions executed"?
+And also if commit.COM:count  is the number of instructions executed
+for the CPU, They are ver disproportioned in my simulation, my results
+of commit.COM:count are:
+CPU0: 500k
+CPU1: 8k
+CPU2: 8k
+CPU3: 300k
+Is this a problem of the Simulator or it just depend of my workload?.
+And also I have a question regarding the host_seconds ,  is this the
+time that the simulation have been running in the host?, in my stats
+it says that is 85 seconds, that is a number very low compare to the
+hours that the simulation have been running.
+2009/1/5 Ali Saidi <saidi@umich.edu>:
+>
+- Show quoted text -> On Jan 5, 2009, at 4:20 PM, Bob Nagel wrote:
+>
+>> Hello I have a couple of questions regarding the instructions counter
+>> that are in the statistics
+>>
+>> My post is related with this one
+>> http://thread.gmane.org/gmane.comp.emulators.m5.users/3324/focus=3328,
+>> I have read it but I still have some questions.
+>>
+>> - What is this value,  system.cpu0.num_insts    2    # Number of
+>> instructions executed? and why is so low?. For all my CPUs I have a
+>> similar low number.
+> Because you probably switched from one cpu type to another in your
+> simulation. If you started with an atomic CPU and immediately
+> transitioned to a timing CPU, the atomic CPU probably only executed 2
+> instructions
+>
+>>
+>> - What is the difference between system.cpu0.num_insts   and
+>> system.switch_cpus0.num_insts?
+> They are different CPUs (in this case before and after the switch
+> respectively)
+>>
+>>
+>> - What is commit.COM:loads?, is the number of accesses to the memory?
+> The number of committed loads that were executed (this doesn't include
+> issued and subsequently squashed loads because of miss speculation).
+>
+> Ali
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

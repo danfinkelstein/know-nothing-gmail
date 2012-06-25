@@ -1,0 +1,8 @@
+Hello All,Has anyone had success running the Splash2 benchmarks on M5 in SE mode?  I've read through a lot of the posts on this type of subject and it looks like maybe as of Sep/Oct last year, it's best to run in FS mode because of the lack of pthreads and PARMACS support in SE.  Is that still the case?
+Here's what I have tried so-far.  I have built M5 on my Linux box and I'm running Alpha Linux in SE.  I have cross-compiled the Splash2 benchmarks for Alpha.  I used the configs/example/se.py as a starting point to call the various benchmarks.  The first problem I ran into was that _sysctl wasn't emulated.  The second problem I ran into (with benchmarks that don't appear to call _sysctl or if I tell the emulation to ignore sysctl) is a page table fault.
+I also tried running the pre-compiled Splash2 benchmarks from the m5 dist page (v1-splash-alpha.tgz), but I'm having the same problem with those as with the benchmarks that I cross compiled myself.Any hints would be greatly appreciated.  I'd love to be able to run the benchmarks in SE, but if that's not possible, I suppose I could brave the FS world...
+Regards,-Edith
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

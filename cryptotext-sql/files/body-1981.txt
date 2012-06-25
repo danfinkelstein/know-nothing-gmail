@@ -1,0 +1,16 @@
+Hi all,
+I'm simulating a single core LinuxAlphaSystem with the bitcount
+benchmark from Mibench. The configuration script I used is exactly the
+same as configs/example/fs.py. The command I used is as follows:
+m5.opt fs.py -b bitcount --caches --l2cache -t
+After the simulatin finished succesfully, I noticed the total number of
+cache misses in the level 1 caches, i.e., both L1 instruction cache and
+L1 data cache, is slightly larger than the total number of accesses to
+the L2 cache. Intuitively, these two numbers should be the same, right?
+Is there anything that I'm missing here?
+Thank you,
+--Xi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

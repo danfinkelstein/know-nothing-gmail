@@ -1,0 +1,28 @@
+It's possible that the statistics in the O3 cpu model are broken; I
+know we had problems with them at one point, though I thought they had
+been fixed.
+Steve
+- Show quoted text -
+On Thu, Aug 20, 2009 at 3:01 AM, Arun Rangasamy<arun.rangasamy@gmail.com> wrote:
+> Hi all,
+> I want to know the fraction of time spent in kernel/user modes for my
+> application when doing my timing simulation.
+> For my simulations, I fast forward a few hundred millions of instructions
+> and then switch to detailed simulation.
+> I find in m5stats.txt that only "system.cpu<i>.kern.mode_ticks_kernel"
+> entries have non-zero values, and
+> "system.switch_cpus<i>.kern.mode_ticks_kernel" all have zero values.
+> Could anyone please explain why this is so?
+> Thank you very much in advance!
+> Best Regards,
+> arun
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

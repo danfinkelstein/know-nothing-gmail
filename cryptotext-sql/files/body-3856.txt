@@ -1,0 +1,7 @@
+i am running FFM from the splash2 benchs and i am following the cache and the bus traces.
+I am using two processors and the L1 caches are connected to the shared bus with the memory. I have configured the system for only atomic type of accesses. In the traces i cannot see the second cache and at sometimes i am getting functional access on the bus. How is this possible?
+-panos
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

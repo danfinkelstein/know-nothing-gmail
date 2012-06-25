@@ -1,0 +1,145 @@
+As mentioned in the previous email,Full System is that implemente yet for InOrder.To the best of my knowledge, FS for Alpha works on the O3CPU. I'm not sure what other ISAs work on O3_FS though.
+On Sat, May 8, 2010 at 9:36 PM, Gedare Bloom <gedare@gwmail.gwu.edu> wrote:
+Thanks this is clearing things up for me.
+So do any of the full system simulators run with InOrderCPU or O3CPU?
+Thanks,
+Gedare
+On Sat, May 8, 2010 at 9:26 PM, Korey Sewell <ksewell@umich.edu> wrote:
+> Gabe is correct in that InOrderCPU is currently only tested with ALPHA and
+> MIPS in SE mode.
+>
+> Given that an ISA is implemented in some other timing CPU, I don't
+> anticipate porting other ISAs too difficult to InOrder. If anyone wants to
+> try, myself and the m5-dev list would more than happy to assist in the
+> debugging effort.
+>
+> InOrderCPU does not work for FS mode currently, although the plan is use the
+> current ALPHA FS implementation on other CPU models as a golden model for
+> InOrderCPU.
+>
+> The wiki is correct on MIPS_FS: A lot of MIPS work toward FS mode had been
+> done in the past (esp. toward getting the UnifiedTLB working and also the
+> modeling the MIPS Cop-0 system state correctly). If I remember correctly, I
+> left off close to MIPS_FS booting and running. It'll take one more push by
+> someone interested in MIPS_FS  to finish the job there.
+>
+> -Korey- Show quoted text -
+>
+> On Sat, May 8, 2010 at 9:03 PM, Gedare Bloom <gedare@gwmail.gwu.edu> wrote:
+>>
+>> Thanks Gabe,
+>>
+>> This was with the OpenSparc disk image, but really it never gets that
+>> far.  Presumably it starts with the openboot code, maybe I'll try
+>> tracing through it sometime.
+>>
+>> I got the AtomicSimpleCPU to boot a custom OS (RTEMS), and was seeing
+>> how well SPARC_FS works with CPU models that are capable for
+>> architectural research.
+>>
+>> Is the MIPS with InOrderCPU working with full system simulation?  If
+>> so is there some good documentation I might consult on using MIPS_FS
+>> with InOrderCPU?  (The wiki indicates MIPS_FS still needs a lot of
+>> work.)
+>>
+>> Thanks again,
+>> Gedare
+>>
+>> On Sat, May 8, 2010 at 7:03 PM, Gabe Black <gblack@eecs.umich.edu> wrote:
+>> > As far as I know InOrderCPU only works with MIPS and Alpha right now (my
+>> > apologies to Korey if that's not true). Also as far as I know we didn't
+>> > explicitly get SPARC_FS working with the TimingSimpleCPU. It does work
+>> > with AtomicSimpleCPU and I couldn't tell you why it wouldn't (or
+>> > apparently doesn't) work with the timing version. There may be some
+>> > atomicity guarantee that's not being met, or some TLB flushing
+>> > mechanism, etc. Ali did most of the FS part of SPARC and can probably
+>> > give you more detail.
+>> >
+>> > What workload are you running? If this is your custom OS you might be
+>> > running into a genuine timing bug in your code. One way or the other it
+>> > would probably help to check the address the failed packet was
+>> > accessing, and trace execution near the failure to see what it was
+>> > trying to do and if anything else seemed to be off near then.
+>> >
+>> > If you figure it out and it's our fault, please let us know.
+>> >
+>> > http://www.m5sim.org/wiki/index.php/Debugging_M5
+>> >
+>> > Gabe
+>> >
+>> > Gedare Bloom wrote:
+>> >> Hello,
+>> >>
+>> >> Has anyone successfully used SPARC_FS with the TimingSimpleCPU or
+>> >> InOrderCPU models?  I found some small hints on the mailing lists that
+>> >> it might be possible, but no firm indication one way or another.  I
+>> >> gave it a try with the OpenSparc image and binaries.
+>> >>
+>> >> I tried TimingSimpleCPU:
+>> >> build/SPARC_FS/m5.debug configs/example/fs.py -t
+>> >>
+>> >> And it crashes with:
+>> >> m5.debug: build/SPARC_FS/cpu/simple/timing.cc:870: void
+>> >> TimingSimpleCPU::completeDataAccess(Packet*): Assertion
+>> >> `!pkt->isError()' failed.
+>> >> Program aborted at cycle 6365141000
+>> >> Aborted
+>> >>
+>> >> I tried InOrderCPU:
+>> >> build/SPARC_FS/m5.debug configs/example/fs.py --inorder --caches
+>> >>
+>> >> And it crashes with:
+>> >> Traceback (most recent call last):
+>> >>   File "<string>", line 1, in <module>
+>> >>   File "/home/gedare/work/m5/m5/src/python/m5/main.py", line 359, in
+>> >> main
+>> >>     exec filecode in scope
+>> >>   File "configs/example/fs.py", line 87, in <module>
+>> >>     (TestCPUClass, test_mem_mode, FutureClass) =
+>> >> Simulation.setCPUClass(options)
+>> >>   File "/home/gedare/work/m5/m5/configs/common/Simulation.py", line
+>> >> 53, in setCPUClass
+>> >>     class TmpClass(InOrderCPU): pass
+>> >> NameError: global name 'InOrderCPU' is not defined
+>> >>
+>> >> I was wondering if anyone had any idea if these should work, if I'm
+>> >> doing something wrong, or if I should try some different configuration
+>> >> options?
+>> >>
+>> >> Sincerely,
+>> >> Gedare
+>> >> _______________________________________________
+>> >> m5-users mailing list
+>> >> m5-users@m5sim.org
+>> >> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>
+>> >
+>> > _______________________________________________
+>> > m5-users mailing list
+>> > m5-users@m5sim.org
+>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> - Korey
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

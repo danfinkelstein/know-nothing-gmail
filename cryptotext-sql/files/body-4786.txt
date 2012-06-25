@@ -1,0 +1,33 @@
+Hi everyone,
+Steve Reinhardt schrieb:
+Here are some other things that I came across:
+1. When enabling the caches, m5 takes quite a lot of time to start the
+simulation. I have not done any profiling yet, though.
+Yes, we've noticed this too... we tracked it down (though I forgot what the exact cause was) and hopefully we'll get it fixed for the final 2.0 release.
+Well, I have also ran a profiler and it seems like sorting the
+statistics takes up most of the time spent before simulation starts. The
+function Stats::StatData::less(), which compares two StatDatas, is the
+main time consumer. Especially the tokenize() function on each
+StatsData.name takes time.
+It looks like less() does unneccessary work: it splits up the
+hierarchical name at the "." (using tokenize()) and then compares the
+token lists component-wise.
+IMHO, a simple string compare of both StatsData.name should yeild the
+same result w/o taking the strings apart. Thus, one could simplify
+Stats::StatData::less():
+bool
+StatData::less(StatData *stat1, StatData *stat2)
+{
+   // simple string compare (instead of tokenizing the names and
+comparing the tokens)
+   return stat1->name < stat2->name;
+}
+In my measurements, using this implementation results in the same orders
+m5stats.txt and runs MUCH faster.
+What do you think?
+Regards,
+Jonas.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

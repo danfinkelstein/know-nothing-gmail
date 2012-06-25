@@ -1,0 +1,21 @@
+All busses have a width parameter.  Check out config.ini.
+  Nate
+- Show quoted text -
+On Wed, Aug 27, 2008 at 3:00 PM, richard strong <rstrong@hp.com> wrote:
+> Hi,
+>
+> I am trying to determine the bus width of the bus connected to a cache.
+> Is this just the address range of the port connected to the cache?
+>
+> -Rick
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

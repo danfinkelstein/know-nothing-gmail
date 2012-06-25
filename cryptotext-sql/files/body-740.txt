@@ -1,0 +1,11 @@
+> I have the cross compiler. But I'm not very sure what the requirements of
+> binaries for full system mode.
+>
+> Will some one help?  Or give the right gcc command?
+It's just like building a binary for a real system.   You must compile
+(and link) to create an executable.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

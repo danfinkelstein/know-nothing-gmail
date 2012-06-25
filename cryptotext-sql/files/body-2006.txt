@@ -1,0 +1,38 @@
+Hi Yinglong,
+It certainly is possible, however the ease of measurement and effort
+required depend on a few things. Are you planning on modifying the
+linux scheduler or running your own scheduler? If the prior then
+everything should work immediately, although it will be more difficult
+to modify and capturing statistics on all the processors will be more
+difficult as well. If you plan to use your own scheduler within M5, no
+one has done that, however someone recently got pthreads (where the
+number of threads < number of processors) working in M5 syscall
+emulation mode. I think their patches should make it into the
+repository soon.
+Ali
+- Show quoted text -
+On Jan 27, 2009, at 2:40 AM, Yinglong Xia wrote:
+> Hi All,
+>
+> I am new to the M5. I am wondering if there are any algorithm people
+> using M5 for application level performance evaluation. I am working on
+> application level schedulers on multicore processor. In order to
+> understand the scalability of the scheduler, I intend to execute our
+> Pthreads code on a virtual processor simulated by M5, where we can
+> assign the number of cores in the processor (saying, 32 or 64).  I am
+> wondering if the above idea is feasible on M5 and if it is possible to
+> accurately  measure the execution time when various number of cores
+> (concurrent threads) are used in the simulated processor. Any comments
+> are highly appreciated.
+>
+> Best,
+> Yinglong.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

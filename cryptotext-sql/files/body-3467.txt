@@ -1,0 +1,70 @@
+Ah, yeah good point.  He has two choices.
+1) Explicitly list everything in CPATH and LIBRARY_PATH (including the
+special gcc directories and such)
+2) Don't use cross tools.  Just build gcc normally and install it as
+gcc-4.1, then you can set the CC and CXX environment vars.
+  Nate
+On Mon, Mar 10, 2008 at 12:08 AM, Ali Saidi <saidi@umich.edu> wrote:
+> The problem is that you compiled gcc with cross-tools. Cross-tools
+>  specifies a special include and lib directory probably: /hdd2/home/
+>  dean/crosstool/gcc-4.1.0-glibc-2.3.6/i386-unknown-linux-gnu/i386-
+>  unknown-linux-gnu/include and
+>  /hdd2/home/dean/crosstool/gcc-4.1.0-glibc-2.3.6/i386-unknown-linux-gnu/
+>  i386-unknown-linux-gnu/lib
+>
+>  Your overriding of CPATH and LIBRARY_PATH is changing those. I imagine
+>  that Python.h is not in /usr/include and that is why you're getting
+>  error 1.  You would probably have more luck just compiling gcc 4.0
+>  without crosstools. RHEL 4.0 is pretty old, is it possible for you to
+>  upgrade? Another option is you could run m5 inside a VM with a newer
+>  distribution. We're pretty partial to Ubuntu.
+>
+>  Ali
+>
+>
+>
+>
+>  On Mar 10, 2008, at 2:36 AM, dean michael ancajas wrote:
+>
+>  > hi nate,
+>  >   unfortunately scons didn't output any log file. I tried reading
+>  > the man page for any verbose option but it doesn't have.
+>  >
+>  > hi ali,
+>  >   I added the paths in my .bashrc file (also tried using 'export'
+>  > command in the terminal). The libz.so file is in the /usr/lib (I did
+>  > a softlink to the one in /usr/local/lib)
+>  >
+>  >   Here are some interesting observations I had but I cannot derive
+>  > useful insights out of them:
+>  >
+>  > 1. if I include '/usr/include/' (not the '/usr/local/include') in my
+>  > CPATH, scons gets an error that there is no libpython2.4 (so I cant
+>  > reach the checkZlibVersion() part..)
+>  >
+>  > output:
+>  > scons: Reading SConscript files ...
+>  > Checking for C header file Python.h... no
+>  > Error: can't find Python.h header in /hdd2/home/dean//python2.4/
+>  > include/python2.4
+>  >
+>  > 2. if I use the native GCC 3.2.3 of my OS, checkZlibVersion() passes
+>  > thru but it gets an error later on in the build process(probably
+>  > because of the fact that its not >= 3.4 version)...
+>  >
+>  > _______________________________________________
+>  > m5-users mailing list
+>  > m5-users@m5sim.org
+>  > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>  >
+>
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

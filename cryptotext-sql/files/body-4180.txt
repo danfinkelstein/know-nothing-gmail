@@ -1,0 +1,16 @@
+Hi Ali,Thank you for pointing that out -- I hadn't seen that originally.  Of course, one of the things that I glossed over in my initial mail was that I actually was hoping to be able to create a constant Stats::Vector in the constructor.  The Stats::constant seems to understandably only support single values.  (I am essentially trying to compute a weighted sum using a Stats::Formula as the product of two Stats::Vectors.)
+I have come up with a workaround for my own purposes, but it's ugly (set the Stats::Vector values the first time the object is called).  I was hoping for a slightly more elegant way of doing it, but oh well :-).
+Thanks,    -Vilas- Show quoted text -On 3/6/07, Ali Saidi <saidi@umich.edu> wrote:
+Vilias,Take a look at the the end of NSGigE::regStats(). I think you justneed to wrap your constant in Stats::constant(myconstant) like isdone with the txBandwidth formula.AliOn Mar 6, 2007, at 4:14 PM, Vilas Sridharan wrote:
+> Hello again -->> Using M5 2.0b2, I have created a class which I instantiate in> various CPU structures.  This class uses Stats::Formula objects to> calculate values for me at the end of simulation.  These values
+> involve per-structure parameters which are constant over simulation> but different between each structure.  I'm having trouble getting> these values into my Stats::Formula variables.  I may just be
+> overlooking something silly here...>> From what I can tell, it seems that all the Stats get re-> initialized sometime between the constructor call and the time> simulation starts.  (I've tried variously putting init code in the
+> constructor and in regStats(), after the Stats have been> registered, with the same results.)  Is there a way to declare a> 'constant' stat that doesn't get initialized like this at the
+> begining of execution?  For some reason, I can't seem to use the> value that I pass in directly in the Stats::Formula, either (the> website has a note to this effect.)>> Am I missing something?
+>> Thanks,>>    -Vilas> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,23 @@
+Thank you Eduardo, I have got the binaries onto the image. When I tried to run the program, I got an error:modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directory
+modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No such file or directorybash: ./OCEAN: cannot execute binary fileIt seems that the precompiled linux lacks some file. But I have no idea how to deal with this. I have found someone proposed such a problem before, but no answer followed.
+I downloaded the splash from the wiki of M5, and the file format is COFF for alpha.How can I add that file to the precompiled linux ?
+Hello,
+Regarding the question of how to run your own benchmarks in FS, it is
+not necessary that you create a new disk image. You can use the one
+that is provided in the wiki, in this link you can download one
+http://www.m5sim.org/dist/current/m5_system_2.0b3.tar.bz2
+What you need to do is add your own programs in the disk image
+(linux-latest.img), to see how to do it read this question in the FAQ,
+How do I add files to a disk image?. And after to run your program in
+FS you need to create the rcS file change the directory for the image
+in SysPath.py, and I think that?s all.
+I do not why you say that the SE mode is not suitable for what you
+want, you can run any program in SE mode, the thing that I do not
+quiet sure know is if you can is run multithread programs in SE, I saw
+some patches to do that, but in theory as M5 is provided you cannot.
+I hope it helps.
+-- Eduardo
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

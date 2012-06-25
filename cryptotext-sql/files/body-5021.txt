@@ -1,0 +1,9 @@
+{standard input}: Assembler messages:
+{standard input}:70: Warning: setting incorrect section attributes for .got
+do you think it is related to my problem? Thanks again.
+That error message is pretty typical.  I think ali is correct in suggesting that the most likely cause of your problem is that you ahve a null pointer somewhere.  You're getting the address 0x30 since it's probably a null pointer to a struct and you're accessing the element that's offset 0x30 bytes from the beginning of your struct.  That information can in fact help you figure out where the problem is occurring if you know which structs you're most often manipulating.  Another thing you can do other than the remote GDB is dump an instruction trace.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

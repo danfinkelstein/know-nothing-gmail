@@ -1,0 +1,24 @@
+Hi Jiayun,
+The assert is wrong, we fixed it in our tree a while ago but haven't released a new version yet. Change the assert to:
+assert(rm >= 0 && rm < 4);
+Ali- Show quoted text -
+On Aug 11, 2007, at 3:23 PM, Jiayuan Meng wrote:
+- Show quoted text -
+Hi all,
+When I am running a multithreaded benchmark on a multicore structure on M5, I encountered an assertion failure in the following function. Can you give me any hints on what this function does and how might this failure occur?
+Thanks!
+Jiayuan
+src/base/fenv.c
+void m5_fesetround(int rm)
+{
+    assert(rm > 0 && rm < 4);
+    fesetround(m5_round_ops[rm]);
+}
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+I receive errors while building in files locate at build/ALPHA_XX/X/Y etc....if I correct them it build fine. The next time I build, I got same errors. I can not figure out how are these files being generated or copied from?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

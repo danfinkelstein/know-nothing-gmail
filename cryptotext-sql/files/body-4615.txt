@@ -1,0 +1,24 @@
+I am using M5 to do some simulation and I am stuck with the following
+problem. I want to know what particular instruction is currently executed.
+Is it possible to do this in M5:
+e.g.,
+ADD r1 r1 r3
+SUB r3 r2 r1
+...
+...
+SUB r1 r2 r3
+...
+...
+ADD r4 r4 r3
+...
+...
+Is it possible to know at which clock tick 'SUB r1 r2 r3' instruction is
+executed my M5?
+In other words, how can I find the code which actually executes the
+instructions in the binary?
+Thanks,
+Prabhat
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

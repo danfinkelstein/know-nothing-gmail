@@ -1,0 +1,14 @@
+I don't believe anyone at Michigan has them, but if someone does it would be great to share. You wouldn't actually need the binaries at all only the checkpoints as the checkpoint contains a complete memory image.
+Ali- Show quoted text -
+On Oct 12, 2007, at 7:26 PM, Rick Strong wrote:
+Hi,
+I was wondering if anyone has speck2k-alpha-linux binaries with accompanied checkpoints at simpoints for quick simulation?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,46 @@
+Hi Rick,
+I haven't been able to duplicate either of these. Could you send us your
+command line?
+The first one it's possible you stepped on a bug in the switching code that
+is only triggered when the switch happens and a certain event is occurring.
+I just tried applu with the smred input set and didn't have a problem. The
+second bug I don't understand at all. The getKernelStats() function should
+only be called if you're running in FS mode.
+Ali
+On Wed, 07 Nov 2007 09:26:18 -0800, Rick Strong <rstrong@cs.ucsd.edu>
+wrote:
+- Show quoted text -> Hi,
+>
+> I started playing around with alpha_se checkpoints on the new release.
+> If I checkpoint at 100,000 instructions on applu for alpha_se with
+> atomicsimplecpu, I am able to resume execution in AtomicSimpleCPU and
+> SimpleTimingCPU, but as soon as standard_switch reaches DerivO3CPU, I
+get:
+>
+> Assertion failed: (curTick <= mainEventQueue.nextTick() && "event
+> scheduled in the past"), function simulate, file
+> build/ALPHA_SE/sim/simulate.cc, line 67
+>
+>
+> If I try to just use the the detailed model out of the box, I get:
+>
+> Program received signal EXC_BAD_ACCESS, Could not access memory.
+> Reason: KERN_PROTECTION_FAILURE at address: 0x00000094
+> 0x000bd2d1 in O3ThreadState<AlphaSimpleImpl>::getTC (this=0x0) at
+> thread_state.hh:108
+> 108        TheISA::Kernel::Statistics *getKernelStats() { return
+> kernelStats; }
+>
+> Any ideas?
+>
+> Thanks,
+> -Rick
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

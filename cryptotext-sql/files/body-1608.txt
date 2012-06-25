@@ -1,0 +1,23 @@
+Never mind my last email; I read your email too quickly and since you
+mentioned beta 4 I thought that's what you were using.  I see from the
+M5 revision that you're at the head, and that "default_port" is the
+port it's complaining about.
+Can you send the config.ini output from your run?  That might help
+track down the error.
+Steve
+On Mon, Apr 6, 2009 at 9:00 AM, Steve Reinhardt <stever@gmail.com> wrote:
+> Hi Javier,
+>
+> It's not clear what the issue is with your configuration from the
+> script you provided.  The first thing I would suggest is to update to
+> a much more recent version... get the m5-stable at the very least.
+> There have been numerous bug fixes since beta 4.  One of the minor
+> changes is that that assertion was expanded to print the name of the
+> unconnected port so you can figure out more easily what is going
+> wrong.
+>
+> Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

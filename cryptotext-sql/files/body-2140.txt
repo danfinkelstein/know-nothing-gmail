@@ -1,0 +1,20 @@
+On Tue, Dec 16, 2008 at 11:10:19PM -0800, Gabe Black wrote:
+> I just committed a fix which should take care of both of these problems.
+> I think I ran into this once before when working with o3 as evidenced by
+> the fix there, but I was trying to get things working for a deadline and
+> apparently neglected to fix the other CPUs too. Please let me know if
+> you still have this problem with the fix.
+>
+> Gabe
+Hi,
+I've just tested the latest version. I'm pleased to say that everything
+is now working properly on both my 32 bit and 64 bit machines.
+Thankyou very much!
+- Show quoted text -
+--
+Jack Whitham
+jack@cs.york.ac.uk
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

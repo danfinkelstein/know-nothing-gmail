@@ -1,0 +1,15 @@
+Hi all,
+I am trying to scale a cluster design to use 32 and 64 cores, but when I
+fast-forward in atomic mode to get to the  simulation point, I notice
+that linux tries to launch all the CPUs up to 63, and then I get:
+"smp_call_function_on_cpu: initial timeout -- trying long wait"at which
+point linux appears to be waiting for some response and the simulation
+waits. Has anyone successfully boot 32 or 64 cores in full system alpha
+without experiencing this delightful event? If so, what kernel and
+palcode did you use?
+Thanks in advance,
+Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

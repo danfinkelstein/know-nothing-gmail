@@ -1,0 +1,14 @@
+Hello all,
+I am building M5 on ubuntu7.10 and my input is as follows:
+sudo scons build/alpha_se/m5.fast
+The error is:
+.....
+configure: error: can not find sources in /home/xx/m5/ext/libelf
+scons: *** [build/libelf/lib/libelf.a] Error 256
+scons: building terminated because of errors.
+Can anybody tell me how to fix it? Thanks.
+Xin
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

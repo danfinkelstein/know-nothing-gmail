@@ -1,0 +1,14 @@
+Thanks, this is very interesting.  Have you looked at the output from
+the benchmarks that are producing weird results?  I'd say from those
+stats (and your comment that those benchmarks are finishing "extremely
+fast") that the real problem is that the benchmark is terminating
+early, before it even gets to forking off threads on the other CPUs,
+due to some error.  Presumably the output is indicating what the
+problem is if you look in the right place.
+So there's still some problem with b4 if you weren't encountering that
+error in b3, but it's not that the cache statistics are broken.
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

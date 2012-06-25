@@ -1,0 +1,18 @@
+        Since this seems like an easy mistake to make (I think even the example
+or regression scripts were wrong in this way at one point) it might make
+sense to put in a check like:
+if isInstance(cmd, string):
+   # Die horrible death
+This is probably my fault.  I can't remember exactly what was going on, but I did it to fix a real bug.  The reason you want it as an array is that because you do sometimes want an argument that has a space in it. Take the following shell example
+   sh -c echo foo
+and
+   sh -c "echo foo"
+The former would be [ 'sh', '-c', 'echo', 'foo' ] and the latter would be
+[ 'sh', '-c', 'echo foo' ].  If you try this at the shell prompt, you'll see that you do indeed get two different results.
+I could potentially do more magic to try to do what the shell does and accept a string, but I'm not that motivated right now.  If someone wants to write that code, I'll happily integrate it.  (Probably create a new param type in params.py.)
+As for the error message, that's probable a good idea.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

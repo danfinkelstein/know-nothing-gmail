@@ -1,0 +1,139 @@
+You probably do not have permision to create try.img in /. Try
+creating it in /tmp or create it as root.
+Ali
+- Show quoted text -
+On Feb 21, 2009, at 10:26 AM, Veydan Wu wrote:
+> Hi Ali, Thanks for you reply about using Gentoo stage 3 image on
+> creating my own linux image. When I use the mkblankimage.sh, it
+> fails to work.
+>
+> dd'ing the blank image (this make take a while)...
+> Unable to create the blank image try.img in ./
+>
+> I search into the script code and found that it uses this :
+>
+> dd if=/dev/zero of=$IMAGE_DIR/$IMAGE_NAME bs=512 count=$BLK_SIZE
+> $OUT_PUT
+>
+> while the /dev/zero maybe the reason of the failure. I don't know
+> whether others had encountered this, Is it necessary to inform other
+> users of M5 about that the script may fail to work. Thanks !
+>
+> Message: 2
+> Date: Fri, 20 Feb 2009 10:29:41 -0500
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] m5-users Digest, Vol 30, Issue 17
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <A0E09C76-60F2-4491-8FB8-CAAC1047A9B7@umich.edu>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+> If you create a disk image (using the blank image script available
+> from the download page) and untar the gentoo tarball onto it, that
+> should work.
+>
+> Ali
+>
+> On Feb 20, 2009, at 9:05 AM, Veydan Wu wrote:
+>
+> > Hi, could anybody tell me how exactly to build a image from Gentoo
+> > stage 3 image, all I got from the internet is an tar.gz file and no
+> > image file in it. If I don't have a image file to run M5 in FS mode
+> > first, how can I compile the image ? Sorry for such silly question,
+> > but it confused me for quite a long time. Thanks!
+> >
+> > Message: 3
+> > Date: Mon, 19 Jan 2009 13:24:39 -0500
+> > From: Ali Saidi <saidi@umich.edu>
+> > Subject: Re: [m5-users] compile vmlinux on m5
+> > To: M5 users mailing list <m5-users@m5sim.org>
+> > Message-ID: <F4398B3E-A4AC-4381-85D0-375CF8B1055D@umich.edu>
+> > Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+> >
+> > PTXDist hasn't been supported by M5 people for quite some time. I
+> > recommend you start with the gentoo stage 3 image.
+> >
+> > Ali
+> >
+> > On Jan 13, 2009, at 2:09 AM, Veydan Wu wrote:
+> >
+> > > Hi, I want to run m5 in full system mode target ALPHA.
+> > >
+> > > I follow the instruction on the page "Using linux-dist to Create
+> > Disk
+> > > Images and Kernels for M5", and I have reached the final step
+> > > "Compiling benchmarks for the image and creating the image with
+> > > linux-dist ".
+> > >
+> > > But the script seems mistake , it fetch a package ipkg-
+> > util-1.7.tar.gz
+> > > automatically from the internet, but failed. The ftp site does not
+> > > work, so I downloaded it manually and placed it in the directory
+> the
+> > > compile tool designates. Then the compilation continued, but after
+> > it
+> > > extract the package, the default path of some patch is different
+> > from
+> > > the package i download, so the compilation failed again.
+> > >
+> > > Does anyone encounter similar problem before? How can I deal with
+> > > this? Thank you!
+> > >
+> > >
+> > >
+> > > ps: The error message is as followed:
+> > >
+> > > -------------------------------
+> > > target: host-ipkg-utils.extract
+> > > -------------------------------
+> > >
+> > > extract: archive=/media/Study/CPU/CPUsource/M5/linux-dist/
+> > > my_workspace/src/ipkg-utils-1.7.tar.gz
+> > > extract: dest=/media/Study/CPU/CPUsource/M5/linux-dist/
+> my_workspace/
+> > > build-host
+> > > patchin: packet=ipkg-utils-1.7
+> > > patchin: dir=/media/Study/CPU/CPUsource/M5/linux-dist/
+> my_workspace/
+> > > build-host/ipkg-utils-1.7
+> > > patchin: name=/media/Study/CPU/CPUsource/M5/linux-dist/lib/
+> > > ptxdist-0.10.3/patches/ipkg-utils-1.7/generic/ipkg-utils-1.7-
+> > tarX.diff
+> > > ...
+> > > /bin/sh: patch: not found
+> > > exit: 1: Illegal number: -1
+> > > make: *** [/media/Study/CPU/CPUsource/M5/linux-dist/my_workspace/
+> > > state/host-ipkg-utils.extract]
+> > > Error 2
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> > >
+> >
+> >
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 31, Issue 26
+> ****************************************
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,26 @@
+Hi All,
+I am completley new to the field of simulation. Please provide me with
+few links to tutorials and getting started links for simulation. (i
+have gone through the slides and handouts on the wiki, however I still
+feel that there is some other resource needed for me to learn the
+basics)
+It would be quite helpful if someone can highlight the pre-requisites.
+Appreciate your efforts .
+--
+Thanks & Regards,
+Jitendra Singh | STE
+Maveric Systems Ltd.
+jitendras@maveric-systems.com
+Disclaimer:
+This message is intended only for the individual or entity to which it
+is addressed. It may contain privileged, confidential information which is
+exempt from disclosure under applicable laws. If you are not the intended
+recipient, please note that you are strictly prohibited from disseminating or
+distributing this information (other than to the intended recipient)
+or copying
+this information. If you have received this communication in error, please
+notify us immediately by return email.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

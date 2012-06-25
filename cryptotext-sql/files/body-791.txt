@@ -1,0 +1,39 @@
+On Wed, Oct 28, 2009 at 8:35 PM, nathan binkert <nate@binkert.org> wrote:
+>> Nate, what I meant is I can host it on one webservers available to me
+>> and provide its link through the M5 page.
+> It's probably best if we host it on the M5 site if you don't mind just
+> to avoid broken links in the future.
+Sure, absolutely! The link would then be something like what you
+already have for the 64-bit binaries
+(http://www.m5sim.org/dist/current/alphaev67-unknown-linux-gnu.tar.bz2)
+>
+>> My estimate is that the tar-zipped file should between 250-300 MB.
+> No problem.
+Let me host it somewhere and send you the link so that you may download it.
+>
+> Can you try to get the wiki figured out?
+Do you mean providing the link though the wiki? I do not have
+permissions to edit this page,
+http://www.m5sim.org/wiki/index.php/Download, which has links to the
+cross-compilers.
+>
+> Thanks,
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+regards,
+Soumyaroop
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

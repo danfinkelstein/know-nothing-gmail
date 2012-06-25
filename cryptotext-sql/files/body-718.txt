@@ -1,0 +1,33 @@
+Quoting "Md. Ashfaquzzaman Khan" <azkhan@bu.edu>:
+> Hi,
+> I am considering using M5 for my research and need to know if M5
+> supports SSE istructions?
+M5 can run most SSE instructions, although there are probably some
+bugs to work out.
+>
+>> From what I looked up, seems like it doesn't. I know that x86 is not
+> yet supported,
+> but  I was wondering if there's any other way I can study the
+> overhead/performance of SSE in M5?
+X86 is still a work in progress, but it's available to use and I would
+consider it supported.
+>
+> thanks.
+>
+> Ashfaq
+>
+> PS:
+> I want to study the overhead of packing/unpacking of data, performance
+> of SSE etc for a certain class of application;
+> I also want to see which instruction is in which stage of the pipeline
+> at a certain time and which instruction is being issued/retiring at a
+> certain time.
+> Are these possible at all?
+Generally you would use either O3 or the in order CPU model, but
+neither supports X86 right now.
+Gabe
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

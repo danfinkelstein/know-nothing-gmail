@@ -1,0 +1,22 @@
+Hi Ehsan and Lisa, We had tried with the Cache and bus flags, but the Config flags really helped us a lot to understand the flow. Thanks so much. PrithaOn Wed, Apr 21, 2010 at 7:09 PM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+The L2 bus should have a mem_side port which connects to the L2, which should receive the packet on its cpu_side port. If you turn on the trace-flag "Config", all ports and their peers should show up at the beginning of simulation so you can see how everything is hooked up.
+LisaOn Tue, Apr 20, 2010 at 11:58 PM, ef <snorlaxgb@gmail.com> wrote:
+turn on the trace flags it might helptry m5.opt --trace-help fs.pythen to --trace-flags=cache,bus,memmaybe some others that should helpOn Wed, Apr 21, 2010 at 1:42 AM, Pritha Ghoshal <pritha9987@tamu.edu> wrote:
+Hi, We found out that in the cache_impl.hh, if there is a miss, it calls sendatomic through memsideport - testsys.cpu.icache-mem_side_port, which in turn calls recvatomic through the peer port - testsys.tol2bus-p1 which is the bus. We are not able to understand the flow of the packet after this, how does the bus connect and send the packet to the L2? 
+-- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

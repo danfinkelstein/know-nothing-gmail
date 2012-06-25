@@ -1,0 +1,17 @@
+Hi all,
+ 
+I have added a new CPU model into M5, derived from 
+TimingSimpleCPU. When compiling on a 64bit machine, everything is successful. 
+However, when I tried to compile it on a 32bit machine, my cpu model is not 
+compiled (no files named "my_cpu_exec.cc" are created in 
+build/ALPHA_SE/arch/alpha. 
+ 
+Can you give me any hints?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

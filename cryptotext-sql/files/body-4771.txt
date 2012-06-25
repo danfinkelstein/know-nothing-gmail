@@ -1,0 +1,27 @@
+Is this full system or syscall emulation mode? Can you provide us with a backtrace?
+Thanks,
+Ali- Show quoted text -
+On Jan 3, 2007, at 12:21 AM, Zhenyu Gu wrote:
+Hi, Everyone,
+does anyone has the same problem before?
+M5 compiled on Jan  2 2007 19:35:44
+M5 executing on taoyuan.ece.northwestern.edu
+M5 simulation started Tue Jan  2 22:59:20 2007
+****************************************
+panic: invalid physical memory access!
+system.physmem: prot_write(addr=0xfffffc00, size=23748) out of range
+(max=0x7ffffff)
+ @ cycle 0
+[prot_access_error:m5/mem/functional/physical.cc, line 104]
+Program aborted at cycle 0
+.
+-- 
+Zhenyu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

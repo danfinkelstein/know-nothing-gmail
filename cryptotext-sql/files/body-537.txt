@@ -1,0 +1,50 @@
+There is something that bothers me on the InOrderCPU.
+How come that certain instructions have to wait extra stall cycles on
+instructions they depend on?
+------------------------------------------------------------
+As an example we could make the following artifical instruction trace:
+Trace A:
+Inst 1: r1 <- r4 * r3
+Inst 2: r2 <- r1+r3
+The following situation holds until the multiply finished executing:
+IF        ID        EX        MEM        WB
+         Inst2    Inst1
+Then Inst1 can proceed to the next stage, but Inst2 can't:
+IF        ID        EX        MEM        WB
+         Inst2                    Inst1
+Now consider a trace with an instruction dependent on an ALU operation:
+Trace B:
+Inst 1: r1 <- r4 + r3
+Inst 2: r2 <- r1 + r3
+Here no extra stall cycle is accounted:
+IF        ID        EX        MEM        WB
+                     Inst2         Inst1
+------------------------------------------------------------
+First I thought this had to do with forwarding paths, but when i looked
+into the code of cpu/inorder/reg_dep_map.cc I found this:
+In the function "canForward" at line 179 we see that if the producer
+(Inst1) is executed at the same tick (or later) when the consumer
+(Inst2) is in the ID stage no forwarding is possible:
+if (forward_inst->isExecuted() &&
+             forward_inst->readResultTime(src_idx) < curTick) {
+             return forward_inst;
+else return NULL;
+Since an ALU instruction executes at the end of the ID stage in stead of
+the EX stage, trace B behaves differently; At the moment that Inst1 is
+in the EX stage it is already executed so Inst2 does not have to wait in
+the ID stage.
+A possible fix to avoid the extra stall cycles could be done by changing
+the "less then" sign into a "less  then or equal" sign. Unfortunately
+this would cause another error in a superscalar processor: when 2
+ALU-instructions are in the ID stage at the same time and one depends on
+the other.
+------------------------------------------------------------
+Is there an explenation for the extra stall cycles of long latency
+instructions like multiplications and loads?
+And how should the absence of forwarding ports be modeled in M5?
+Thanks for your help,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

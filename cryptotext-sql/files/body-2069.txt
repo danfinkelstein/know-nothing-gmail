@@ -1,0 +1,51 @@
+The kind of thing you're proposing would need to be done in C++.
+Python is primarily used for configuration and a few other
+infrequently executed events, but things that happen frequently (like
+cache accesses) need to be done in C++ for performance so there's no
+interface to handle them in Python.
+I'd suggest writing a new SimObject that has a couple of Ports, one
+for the CPU and one for the cache, and just passes requests/packets
+through after modifying the address.  You could also do it by
+modifying the cache or the cpu to make the change internally, which
+might be easier in the short run but is a little less elegant.
+I think the best documentation for the C++/Python interface is in the
+slides for our ASPLOS 2008 tutorial, which are available on the web
+site:
+http://www.m5sim.org/wiki/index.php/Tutorials
+If you still have questions after looking at the material there,
+please let us know.
+Steve
+- Show quoted text -
+On Mon, Dec 29, 2008 at 6:43 AM, Isuru Herath <isuru81@yahoo.com> wrote:
+> Dear All,
+>
+> I am trying to plug a new component to the cpu to get the address issued by the
+> cpu to the cache. My intention is to change that address and send it to the
+> cache. so that the cache doesnot know that it has been modified and cache serves
+> the cpu with the address it receives. I was wondering where to do this. I mean
+> do I need to write this new component in c++ and use it as a configuration
+> component in python file or can I just use the python configuration file to get
+> the address and write the modified address back. The concern I am having is this
+> has to happen with every data access issued by the core to the DCache. (I am not
+> sure whether I am asking the question in a correct manner, cos still I am trying
+> to understand the big picture of m5, still bit confusing how things are
+> happening with c++ and python, for example if I write a new c++ component what
+> things do i need to do to make that component visible to the python
+> configuration file )
+>
+> any help/advice on this regard would be greatly appreciate.
+>
+> regards,
+> Isuru
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

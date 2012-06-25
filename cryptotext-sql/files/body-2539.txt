@@ -1,0 +1,22 @@
+Hi again Nathan & Steve, thanks for your answers, I don;t know exactly what is the best option for me, Dynamic (shared) Python library with dynamic modules, Static Python library with dynamic modules, Static Python library with static modules. I think that the best one is the first, so now what I have to do is reinstall python with this command ./configure --prefix=/usr --enable-shared and wait if everything goes well?, thanks.- Show quoted text -
+On Fri, Sep 26, 2008 at 2:43 PM, nathan binkert <nate@binkert.org> wrote:
+You need to add a configure option to get python to build the sharedlibrary.  The details are described in the second wiki link that steve
+posted.On Fri, Sep 26, 2008 at 1:56 PM, Eduardo Olmedo Sanchez
+<eolmsan2@gmail.com> wrote:> Hi thanks for your answer, I'll tell you what I did, since I cannot have> root privileges in my machine I installed locally all the packages Python,
+> Swig, Scons... . For the installation of python I did ./configure> --prefix=My local directory, after that make, and finally make install. On> the other hand I have edited the path because I got two different versions
+> of Python in my system one is older and the other one is the new, the one> that I installed locally, maybe the problem is there, but I don't think so> because m5 is trying to put in the libpath the new. In the directory of
+> /lib/python2.4 I don't have the file libpython2.4.so, thanks again.> On Fri, Sep 26, 2008 at 1:36 PM, nathan binkert <nate@binkert.org> wrote:
+>>>> It looks like you compiled python yourself.  Currently, we require>> that you used the same exact version of python for running SCons as>> linking with m5 (so we can set things up properly.)  Is the version
+>> built in that directory not python2.4?  Do you have a libpython2.4.so>> in that directory?>>>>  Nate>>>> On Fri, Sep 26, 2008 at 1:28 PM, Eduardo Olmedo Sanchez
+>> <eolmsan2@gmail.com> wrote:>> > Hello I'm trying to run the m5-simulator, but I'm stuck in this error,>> > here>> > is the output that I get:
+>> >>> > -bash-3.00$ scons build/ALPHA_FS/m5.debug>> > scons: Reading SConscript files ...>> > Checking for C header file Python.h... yes>> > Adding /ufs3/home/scs/eolmsan/local/python/lib to LIBPATH for python2.4
+>> > Checking for C library python2.4... no>> > Error: can't find Python library python2.4>> > I don't know what's happening I got python2.4 here>> > /ufs3/home/scs/eolmsan/local/python/lib, it seems that m5 is adding the
+>> > path>> > well to LIBPATH but after says that it can't find the library, any>> > idea?,>> > thanks so much.>> > _______________________________________________
+>> > m5-users mailing list>> > m5-users@m5sim.org>> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>> >>> _______________________________________________>> m5-users mailing list>> m5-users@m5sim.org>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

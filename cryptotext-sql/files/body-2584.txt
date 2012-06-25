@@ -1,0 +1,11 @@
+Timing accesses are handled by using a SimpleTimingPort to interface the memory object to the memory system.  See mem/tport.*.Steve- Show quoted text -On Tue, Sep 2, 2008 at 5:37 PM, claker <iamclaker@gmail.com> wrote:
+In src/mem/physical.hh, we can find doAtomicAccess() and
+doFunctionalAccess(). But why not include doTimingAccess()?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

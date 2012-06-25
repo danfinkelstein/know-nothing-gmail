@@ -1,0 +1,5 @@
+ Hi, Suppose there are four processors and only one multi-thread program run in the first processor. Why does the simulator assign some threads to the other three processors which are free.Thank you!   
+中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

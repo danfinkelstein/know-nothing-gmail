@@ -1,0 +1,127 @@
+Hi All,
+I have tried with a multithreaded program which runs
+on different cores. Initially I had two threads in my
+program and I created 2 cores in the fs.py file.
+That's working fine. But when I tried with three
+threads running on 3 cores, the simulation gets
+hanged. Below is my fs.py file. Please let me know
+where I am doing wrong.
+***************************************************
+import optparse, os, sys
+import m5
+from m5.objects import *
+m5.AddToPath('../common')
+from FSConfig import *
+from SysPaths import *
+from Benchmarks import *
+parser = optparse.OptionParser()
+parser.add_option("-d", "--detailed",
+action="store_true")
+parser.add_option("-t", "--timing",
+action="store_true")
+parser.add_option("-m", "--maxtick", type="int")
+parser.add_option("--maxtime", type="float")
+parser.add_option("--dual", action="store_true",
+                  help="Simulate two systems attached
+with an ethernet link")
+parser.add_option("-b", "--benchmark", action="store",
+type="string",
+                  dest="benchmark",
+                  help="Specify the benchmark to run.
+Available benchmarks: %s"\
+                          % DefinedBenchmarks)
+parser.add_option("--etherdump", action="store",
+type="string", dest="etherdump",
+                  help="Specify the filename to dump a
+pcap capture of the ethernet"
+                  "traffic")
+(options, args) = parser.parse_args()
+if args:
+    print "Error: script doesn't take any positional
+arguments"
+    sys.exit(1)
+if options.detailed:
+    cpu = DetailedO3CPU()
+    cpu2 = DetailedO3CPU()
+    mem_mode = 'timing'
+elif options.timing:
+    cpu = TimingSimpleCPU()
+    cpu2 = TimingSimpleCPU()
+    mem_mode = 'timing'
+else:
+    cpu = AtomicSimpleCPU()
+    cpu2 = AtomicSimpleCPU()
+    mem_mode = 'atomic'
+cpu.clock = '2GHz'
+cpu2.clock = '2GHz'
+if options.benchmark:
+    if options.benchmark not in Benchmarks:
+        print "Error benchmark %s has not been
+defined." % options.benchmark
+        print "Valid benchmarks are: %s" %
+DefinedBenchmarks
+        sys.exit(1)
+    bm = Benchmarks[options.benchmark]
+else:
+    if options.dual:
+        bm = [Machine(), Machine()]
+    else:
+        bm = [Machine()]
+if len(bm) == 2:
+    s1 = makeLinuxAlphaSystem(mem_mode, bm[0])
+    s1.cpu = cpu
+    cpu.connectMemPorts(s1.membus)
+    cpu.mem = s1.physmem
+    s2 = makeLinuxAlphaSystem(mem_mode, bm[1])
+    s2.cpu = cpu2
+    cpu2.connectMemPorts(s2.membus)
+    cpu2.mem = s2.physmem
+    root = makeDualRoot(s1, s2, options.etherdump)
+elif len(bm) == 1:
+    #root = Root(clock = '1THz',
+    #           system =
+makeLinuxAlphaSystem(mem_mode, bm[0]))
+    #root.system.cpu = cpu
+    #cpu.connectMemPorts(root.system.membus)
+    #cpu.mem = root.system.physmem
+    system = makeLinuxAlphaSystem(mem_mode, bm[0])
+    system.cpu = [AtomicSimpleCPU(clock = '1GHz'),
+AtomicSimpleCPU(clock
+= '1GHz'), AtomicSimpleCPU(clock = '1GHz')]
+    system.cpu[0].connectMemPorts(system.membus)
+    system.cpu[0].mem = system.physmem
+    system.cpu[1].connectMemPorts(system.membus)
+    system.cpu[1].mem = system.physmem
+    system.cpu[2].connectMemPorts(system.membus)
+    system.cpu[2].mem = system.physmem
+    root = Root(clock = '3GHz', system = system)
+else:
+    print "Error I don't know how to create more than
+2 systems."
+    sys.exit(1)
+m5.instantiate(root)
+if options.maxtick:
+    maxtick = options.maxtick
+elif options.maxtime:
+    simtime = int(options.maxtime * root.clock.value)
+    print "simulating for: ", simtime
+    maxtick = simtime
+else:
+    maxtick = -1
+exit_event = m5.simulate(maxtick)
+while exit_event.getCause() == "checkpoint":
+    m5.checkpoint(root, "cpt.%d")
+    exit_event = m5.simulate(maxtick - m5.curTick())
+print 'Exiting @ cycle', m5.curTick(), 'because',
+exit_event.getCause()
+*************************************************
+Regadrs-
+Rajdeep
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around
+http://mail.yahoo.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

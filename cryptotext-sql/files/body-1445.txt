@@ -1,0 +1,35 @@
+> First off, I totally agree with Nate. It wiill take a pretty big code
+> overhaul to get the CPUs to be ISA dependent.
+I assume you meant independent, but actually we don't need to make
+them ISA independent.  We just need to change the build system to
+compile a different say SimpleCPU for each ISA.  There are other bits
+of M5 that would have to be ISA independent (e.g. some devices, and
+the memory system), but this shouldn't be too difficult.
+> Second, the ways I thought it might work is:
+> (1) Somehow link 2 M5 binaries and have them interface through the
+> same EventQueue. I'm not sure how ISA independent devices/memory are
+> though so another opinion would be needed to flesh out the feasibility
+> of that idea.
+I'm not sure how this would work.
+> (2) Turn the "TheISA" namespace into an object. A overly conservative
+> way to do it would be to capture all of the ISA information into say
+> an "AlphaISA" class containing literally everything in the
+> src/arch/alpha/* folder (regfiles, process objects, etc.). Then, you
+> could just pass the ISA into the CPU model and wherever you see a
+> TheISA::func() you can turn it into a theISA->func(). Mind you, that
+> would be a not-so efficient way to do things but on a first cut that
+> is what makes sense to me if you want to start making ISA objects
+> portable instead of hard-coded in.
+This is not really very easy because it puts WAY too much stuff in a
+single class and would cause major compiler strain.  Another way to do
+it would be to use template specialization making every class that is
+normally in the namespace, instead take an ISA class as a template
+parameter.  (I REALLY wish you could use namespaces in template
+parameters, or templatize namespaces, feh...)
+It would probably be easiest to add namespace wrappers around the CPU
+objects and use the build system to automate this process.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

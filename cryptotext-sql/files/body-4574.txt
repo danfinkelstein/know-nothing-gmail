@@ -1,0 +1,124 @@
+If I want to trace the traffic of the main memory, should it just be:
+root.client.ram = M5Writer(filename = 'tracefile')
+I'm not sure whether 'ram' represents main memory. I checked the output
+statistics of Netperf Maerts, the total bytes sent by ram is 0. What
+represent main memory in M5?
+Thanks,
+Yu
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Steve Reinhardt
+Sent: Wednesday, April 25, 2007 4:35 PM
+To: M5 users mailing list
+- Show quoted text -Subject: Re: [m5-users] MemoryTrace
+Right now only caches are set up to take a mem_trace parameter.  You
+have to decide which cache you want to assign it to; it would look
+something like:
+root.server.cpu.dcache.mem_trace = M5Writer(filename = 'tracefile')
+If you really want to trace just the traffic going into the main memory
+module, it looks like the C++ code is set up to take a mem_trace
+parameter (looking at m5/mem/memory_builder.cc) but the parameter was
+left out of the python code.  You might be able to enable that just by
+copying the 'mem_trace = Param.MemTraceWriter' line from BaseCache.py to
+BaseMemory.py.
+Steve
+Yu Zhang wrote:
+> I've already create the MemoryTrace object. How can I assign the object to
+> the mem_trace parameter of the main memory?
+>
+> Thanks,
+> Yu
+>
+> -----Original Message-----
+> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+> Behalf Of Yu Zhang
+> Sent: Wednesday, April 25, 2007 2:28 PM
+> To: 'M5 users mailing list'
+> Subject: RE: [m5-users] MemoryTrace
+>
+> Thanks a lot. I'm using v1.1 and I'd like to track the traffic of the main
+> memory.
+>
+> I really don't know how to modify the config file. I attached my config
+> file. Will you please create the object for me?
+>
+> Thanks,
+> Yu
+> -----Original Message-----
+> From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+> Behalf Of Steve Reinhardt
+> Sent: Wednesday, April 25, 2007 10:54 AM
+> To: M5 users mailing list
+> Subject: Re: [m5-users] MemoryTrace
+>
+> Hi Yu,
+>
+> We don't use the memory trace writer much... in fact I just found that
+> it never made the transition from v1.1 to v2.0 beta, and this is the
+> first time I know of that anyone has noticed.  (Since we rewrote the
+> memory system interface between those versions, the trace writer needs
+> to be rewritten too, and no one has bothered.)
+>
+> If you're using v1.1, then you need to go into your config file and
+> create either an M5Writer or ITXWriter object (see
+> python/m5/objects/MemoryTrace.py) and assign it to the mem_trace
+> parameter of the cache whose accesses you want to trace.  It's not
+> something you can enable purely via the command line.
+>
+> If you're using v2.0, then my suggestion is just to hack in some code to
+> write out the address at the top of the handleAccess() method in
+> src/mem/cache/cache_impl.hh.  It's not that complex, and that way you
+> can output whatever format you'd like.  If you don't want to mess around
+> with adding parameters to the cache to enable/disable tracing for
+> particular caches (which is admittedly much more complex than it should
+> be right now... we're working on simplifying that...), then you can just
+> add some per-cache flags in cache.hh and set them based on the value of
+> _name in the constructor (which is at the top of cache_impl.hh).
+>
+> Hope that helps...
+>
+> Steve
+>
+> Yu Zhang wrote:
+>> Hi,
+>>
+>>
+>>
+>> I'd like to get the information of memory traffic for an application.
+>> However, when I use command -MemoryTrace.trace=<filename>, there is no
+>> trace file dumped. For a single core processor and only one application
+>> is running, the default thread is 0, isn't it? So, I don't need to
+>> specify the parameter "MemoryTrace.thread", which is 0 by default. I
+>> wonder why the MemoryTrace doesn't work. BTW: I'm using M5_1.1.
+>>
+>>
+>>
+>> Thanks,
+>>
+>> Yu
+>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

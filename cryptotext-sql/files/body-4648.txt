@@ -1,0 +1,27 @@
+The SE-mode support for multithreaded applications is based on a hacked-up variant of the Tru64 pthreads library, so you need to compile you app on a Tru64 machine and link it with a custom m5 library to get it to work.  The available SPLASH2 binaries were built this way, but we really don't recommend it.
+In general, implementing SE-mode support for pthreads is very complex (you'd end up building a thread scheduler inside of m5).  Given that you can run multithreaded Linux apps in FS mode it's just not worth the effort (in my opinion).
+Running a multithreaded app in FS mode is just like running it on a real MP machine.
+Steve- Show quoted text -
+Meeta Gupta wrote:
+Hi Nathan,
+then I get the error : fatal: Syscall 427 out of range
+What version of m5 are you running?  Is this M5 1.1?  Syscall 427 is fstat64 which is implemented in 2.0b2.  If you want to stick with 1.1, you could backport the syscall.
+I have backported fstat64 syscall to v1.1, but there are more system calls like clone, sigsuspend, pipe which are unimplemented. I think system calls like clone etc would be necessary for multithreaded applications.
+I also had another fundamental question, if in my run.py script for the SE mode, I specify 4 CPUs, and my application has 4 threads, then it would schedule a thread on each of the CPUs,right?
+I'm no expert on the threading stuff in SE mode, but it's not just a matter of running a threaded program in SE mode.  We don't fully implement the user-level threading stuff since you can just run in FS mode and get everything.  [ Steve, Kevin: what exactly can we do here? ]
+So, if i specify NUMCPUS=4 in my run.py for full-system mode then I would be able to get a 4-CMP system? And then would my multi-threaded application have one thread on each CPU?
+Actually I am confused about how to run a 4-threaded application like MPGdec on M5, in FULL_system mode.
+Also, would I get all the same statistics like I get on System Emulator mode?
+Also, can anyone tell me the significance of the code in the encumbered directory?
+That code is stuff with a more restrictive license than our own.  You can use it provided that you are happy with the license.
+so, whatever I add in encumbered mode would also be there for the full-system mode?
+thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

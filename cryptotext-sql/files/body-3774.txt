@@ -1,0 +1,8 @@
+Actually, the EtherLink model can be completely replaced
+by the EtherSwitch model.
+You can do that, but you probably shouldn't.  The EtherLink itself is what manages the bandwidth of the links.  The switch however will have some sort of internal bandwidth that is far higher than individual link.  If you don't have the links, you're going to get the bandwidth wrong unless you more or less implement the link in the interface.
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

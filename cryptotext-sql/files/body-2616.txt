@@ -1,0 +1,12 @@
+> Thanks for your response.
+> I work on fs simulation. Is there any sample python config file in m5 like
+> example/se.py to tell us how to set SMT? I assume it is a very different way
+> to use SMT workloads in fs and se simulation.
+I don't know that anyone has worked on using SMT in full system, so
+you might have to just try it out.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+Is this with the m5 development repository or m5-stable?  If you're using the stable release, the first thing to do is try the development release and see if it's been fixed there.  If you also see it in the development version, then it's a bug, and you'll need to provide enough information for us to reproduce it before it can be fixed.
+Steve- Show quoted text -On Sat, Feb 14, 2009 at 12:32 AM, Hari Kiran <harikiran22@gmail.com> wrote:- Show quoted text -
+I am running eight-core system simulation for integer benchmarks.I got a warning and also some  message likewarn: Increasing stack size by one page.m5.opt: build/ALPHA_SE/mem/cache/cache_impl.hh:312: bool Cache<TagStore>::access(Packet*, typename TagStore::BlkType*&, int&, PacketList&) [with TagStore = LRU]: Assertion `blkSize == pkt->getSize()' failed.
+how to solve this problem?Thanks-- RegardsH A R I
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

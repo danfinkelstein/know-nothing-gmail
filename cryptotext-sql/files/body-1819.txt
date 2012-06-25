@@ -1,0 +1,35 @@
+The two different paths for memory accesses (initiateAcc/completeAcc
+vs. execute) because the former is needed for split-transaction timing
+mode (O3 and TimingSimpleCPU) while the latter is simpler for atomic
+mode (AtomicSimpleCPU).
+Uncached accesses are special because they may have side effects and
+thus cannot be executed speculatively.
+Steve
+- Show quoted text -
+On Thu, Feb 26, 2009 at 6:34 PM, Veydan Wu <veydanwu@gmail.com> wrote:
+>     Hi all, I searched deep into the source code to find out the whole
+> execution path of a memory instruction in o3 cpu model. It actually divides
+> into two parts  initiateAcc and completeAcc, the latter is call by the
+> recvTiming().
+>
+>     In the same file of initiateAcc, there is a function execute() that
+> combines the two function initiateAcc and completeAcc. I wander why the M5
+> wants to execute an instruction by two functions not by one , making the
+> execution path kind of confused?
+>
+>     Further, I found that the uncached access must be executed only when it
+> reachs the head of Load/Store queue. Why the uncached access cannot be
+> treated like cached access? and when it actually reaches the head, does M5
+> perform the access through sendTiming and recvTiming, I seemed to not find
+> any code in these two functions that distinguishes cached and uncached
+> access. Thanks !
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

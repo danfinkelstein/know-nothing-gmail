@@ -1,0 +1,121 @@
+Hi Nate,
+Thanks very much for the quick reply.
+I'll switch to 64-bit.
+I'm surprised this hasn't been a problem for Windows users, as I expect
+the majority are still running 32-bit XP due to lack of 64-bit device
+driver support.
+Cheers,
+David
+> Date: Thu, 5 Nov 2009 08:48:25 -0800
+> From: nathan binkert <nate@binkert.org>
+> Subject: Re: [m5-users] M5 Compilation Error: 'uint64_t' does not name
+>       a       type, [build/ALPHA_SE/base/bigint.fo] Error 1
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+>       <217accd40911050848q9e32827v52713ce7d50724ad@mail.gmail.com>
+> Content-Type: text/plain; charset=ISO-8859-1
+- Show quoted text ->
+> Right now, M5 doesn't work on 32-bit systems.  Very few people use
+> them anymore and unfortunately, we haven't kept things working.  I
+> have a couple of patches waiting for OK from gabe to fix the compile
+> problems, but there are regressions that fail.
+>
+> As for Karmic Koala itself, I pushed changes yesterday that fix the
+> compile errors with it.
+>
+> Unfortunately, you're going to have to get a 64-bit system to run M5
+> without doing some debugging first.
+>
+>   Nate
+>
+>> I am receiving an error compiling M5. ?I have recent versions of all
+>> necessary tools, and have the same problem both after checking out from
+>> the repository and using a tarball.
+>>
+>> Error message is below.
+>>
+>> I'm using Ubuntu Linux 9.10 Karmic Koala, 32-bit.
+>>
+>> Any idea what the problem is?
+>>
+>> Thanks,
+>>
+>> David
+>>
+>> In file included from build/ALPHA_SE/base/bigint.cc:31:
+>> build/ALPHA_SE/base/bigint.hh:39: error: 'uint64_t' does not name a type
+>> build/ALPHA_SE/base/bigint.hh:40: error: 'uint64_t' does not name a type
+>> build/ALPHA_SE/base/bigint.hh:43: error: ISO C++ forbids declaration of
+>> 'uint64_t' with no type
+>> build/ALPHA_SE/base/bigint.hh:43: error: expected ',' or '...' before 'x'
+>> build/ALPHA_SE/base/bigint.hh:48: error: ISO C++ forbids declaration of
+>> 'uint64_t' with no type
+>> build/ALPHA_SE/base/bigint.hh:48: error: expected ',' or '...' before 'x'
+>> build/ALPHA_SE/base/bigint.hh:55: error: expected type-specifier before
+>> 'uint64_t'
+>> build/ALPHA_SE/base/bigint.hh: In constructor
+>> 'm5_twin64_t::m5_twin64_t(int)':
+>> build/ALPHA_SE/base/bigint.hh:45: error: 'a' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:45: error: 'x' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:46: error: 'b' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh: In member function 'm5_twin64_t&
+>> m5_twin64_t::operator=(int)':
+>> build/ALPHA_SE/base/bigint.hh:50: error: 'a' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:50: error: 'x' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:51: error: 'b' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh: At global scope:
+>> build/ALPHA_SE/base/bigint.hh:63: error: 'uint32_t' does not name a type
+>> build/ALPHA_SE/base/bigint.hh:64: error: 'uint32_t' does not name a type
+>> build/ALPHA_SE/base/bigint.hh:67: error: ISO C++ forbids declaration of
+>> 'uint32_t' with no type
+>> build/ALPHA_SE/base/bigint.hh:67: error: expected ',' or '...' before 'x'
+>> build/ALPHA_SE/base/bigint.hh:72: error: ISO C++ forbids declaration of
+>> 'uint32_t' with no type
+>> build/ALPHA_SE/base/bigint.hh:72: error: expected ',' or '...' before 'x'
+>> build/ALPHA_SE/base/bigint.hh:79: error: expected type-specifier before
+>> 'uint32_t'
+>> build/ALPHA_SE/base/bigint.hh: In constructor
+>> 'm5_twin32_t::m5_twin32_t(int)':
+>> build/ALPHA_SE/base/bigint.hh:69: error: 'a' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:69: error: 'x' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:70: error: 'b' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh: In member function 'm5_twin32_t&
+>> m5_twin32_t::operator=(int)':
+>> build/ALPHA_SE/base/bigint.hh:74: error: 'a' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:74: error: 'x' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.hh:75: error: 'b' was not declared in this scope
+>> build/ALPHA_SE/base/bigint.cc: In function 'std::ostream&
+>> operator<<(std::ostream&, const Twin64_t&)':
+>> build/ALPHA_SE/base/bigint.cc:39: error: 'const struct m5_twin64_t' has
+>> no member named 'a'
+>> build/ALPHA_SE/base/bigint.cc:39: error: 'const struct m5_twin64_t' has
+>> no member named 'b'
+>> build/ALPHA_SE/base/bigint.cc: In function 'std::ostream&
+>> operator<<(std::ostream&, const Twin32_t&)':
+>> build/ALPHA_SE/base/bigint.cc:45: error: 'const struct m5_twin32_t' has
+>> no member named 'a'
+>> build/ALPHA_SE/base/bigint.cc:45: error: 'const struct m5_twin32_t' has
+>> no member named 'b'
+>> scons: *** [build/ALPHA_SE/base/bigint.fo] Error 1
+>> scons: building terminated because of errors.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 40, Issue 9
+> ***************************************
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

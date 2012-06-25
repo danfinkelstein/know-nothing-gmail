@@ -1,0 +1,6 @@
+Hi,I want to trace the address request between caches (L2-L3) and memory. Is there any parameters or function which i can use to dump it?One more thing, i'm trying to hack the bus.cc file (src/mem/bus.cc) and want to print some parameters into another file to trace. How would i can see that file and where I could find that in M5?
+Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

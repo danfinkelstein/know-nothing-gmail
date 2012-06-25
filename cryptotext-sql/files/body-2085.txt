@@ -1,0 +1,8 @@
+Hi,
+Can M5 be used to simulate a cc-NUMA architecture?
+Cheers
+Haseeb
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

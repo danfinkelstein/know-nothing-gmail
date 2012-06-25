@@ -1,0 +1,21 @@
+Hello All,
+I am working with the DRAM model for my simulations in SE mode. I use
+the default configuration in PhysicalMemory.py for the RAS, CAS, ACT
+etc times. It seems when the DRAMMemory object is initialized the
+cas_lat, act_lat etc timing parameters are set in ps or the number of
+simulation ticks. These variables are then used by the
+calculateLatency function to estimate the latency of the memory access
+in terms of simulation ticks. However, before returning this latency
+value, the calculateLatency function multiplies it with cpu_ratio
+(defined as ratio of CPU and memory bus frequency; set to 5 by
+default). This looks confusing and unintuitive, since all the prior
+calculations in the function are done in terms of simulation ticks
+only, so how does cpu_ratio come into the picture?
+Can anyone please provide insights here into what could be the
+possible reason for doing so?
+Thanks in advance,
+-Gaurav
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

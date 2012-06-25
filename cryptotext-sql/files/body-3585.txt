@@ -1,0 +1,36 @@
+Hi Allan,
+Since nobody answered, it seems that nobody has anything they want to
+give you.  I'm pretty sure people have done this sort of thing in the
+past.  I'm quite certain that it can be done now.  Unfortunately you
+can never apply the word "easy" or any of its derivative forms to
+directory coherence, but I will say that there are many positive
+aspects of M5's design that might make it less hard.  The primary
+thing being the port interface and the way memory objects can
+communicate with each other.  If you do decide to give it a shot, feel
+free to ask questions on the list.  Many of us know quite a bit about
+these sorts of things.  I will ask that you be specific and detailed
+though.  You're much more likely to receive a response on this sort of
+stuff if you've done your homework and ask a thoughtful question.
+  Nate
+On Jan 27, 2008 7:17 PM, Allan Noriel Estrella
+- Show quoted text -<allan.noriel.estrella@gmail.com> wrote:
+> Hi!
+>
+> Has anyone worked on a directory protocol implementation on m5 or are there
+> existing projects that use  m5 to simulate a system with a directory cache
+> protocol? I am looking for something to build upon or easily extend to show
+> that m5 can be used for directory protocols.
+>
+> Thanks
+>
+> Allan
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

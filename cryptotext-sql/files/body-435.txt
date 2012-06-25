@@ -1,0 +1,65 @@
+Also, someone correct me if I'm wrong, but I think the "t" is for
+"ticks" (ie periods of the global clock) rather than terahertz. If you
+want to change a clock frequency, I think you need to use units like GHz
+or ghz or similar. You can probably find examples of that in the configs
+directory. You should also not change the settings in BaseCPU.py because
+you'd be changing the default value for all CPUs in the simulation. That
+would work if all CPUs were supposed to be the same, but really the
+better way would be to either subclass the base CPU in your python
+configuration script, or to instantiate a CPU and update its settings
+individually. The following link should explain how that all works.
+http://m5sim.org/wiki/index.php/Simulation_Scripts_Explained
+Gabe
+Lisa Hsu wrote:
+> Veydan,
+>
+> the clock you are talking about refers to the global system clock. The
+> CPU clock setting that you noticed in fs.py is the CPU clock.  The
+> global system clock is fast so that you can have clocks of other
+> components in the system (busses, etc.) set relative to the global
+> clock at a fine granularity.
+>
+> Lisa
+>
+> On Wed, Mar 10, 2010 at 5:07 AM, Veydan Wu <veydanwu@gmail.com
+> <mailto:veydanwu@gmail.com>> wrote:
+>
+>     Hi, all, I found that the default simulated CPU clock frequency is
+>     1T, if I do not make any mistake. The running log is as followed:
+>
+>     M5 executing on ubuntu
+>     command line: build/ALPHA_FS/m5.fast configs/example/fs.py -n 4
+>     --caches --l2cache
+>     Global frequency set at 1000000000000 ticks per
+>     second                                (1T here)
+>     warn: kernel located at:
+>     /media/Study/CPU/CPUsource/M5/m5-stable-733318abb7b1/dist/m5/system/binaries/vmlinux
+>
+>     I check the src/cpu/BaseCPU.py, there is one statement here:
+>
+>     clock = Param.Clock('1t', "clock speed");
+>
+>     But the Clock class in src/python/m5/param.py seems only support
+>     "t" but not "g", how can I change that? I don't want the CPU run
+>     so fast. Besides, in the fs.py, the CPU is set to 1GHZ, what about
+>     this? Thank you!
+>
+>
+>     Weidan
+>
+>     _______________________________________________
+>     m5-users mailing list
+>     m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+>     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+> ------------------------------------------------------------------------
+- Show quoted text ->
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,33 @@
+Hi David,Are you using the crosstool gcc to compile the m5.debug?   You want m5.debug to be compiled with the native compiler, the crosstool is for compiling any potential binaries you woudl want to use during simulation.  Since you're using using se.py, there's nothing thus far that you've needed the crosstool for.
+Lisa- Show quoted text -On Wed, Mar 12, 2008 at 7:32 AM, David Robert White <drw@cs.york.ac.uk> wrote:
+Hi,
+I'm a new user of M5 and I'm having some problems trying to get a basic
+"Hello World" test program running.
+I've used crosstool to compile GCC targeted for the MIPS architecture
+(without TLS), and I've compiled m5.debug for MIPS in SE mode.
+I compile an example program, statically linked, but when running M5
+using configs/example/se.py with the -c option, I receive the following
+output:
+- - -
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+panic: Page table fault when accessing virtual address 0x1c3c
+ @ cycle 1500
+[invoke:build/MIPS_SE/sim/faults.cc, line 66]
+Program aborted at cycle 1500
+Aborted
+- - -
+I'm probably making an elementary mistake, can anyone suggest what I
+might be doing wrong?
+Thanks
+David
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

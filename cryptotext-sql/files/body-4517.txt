@@ -1,0 +1,40 @@
+Sounds Great! Thanks Ali!
+Jiayuan
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Ali Saidi
+Sent: Saturday, May 26, 2007 11:49 AM
+To: M5 users mailing list
+Subject: Re: [m5-users] Flexibility w/r cpu model and combinations
+On May 25, 2007, at 6:32 PM, Jiayuan wrote:
+> Hi all,
+>
+> We have some general questions on the flexibility of M5:
+>
+> How flexible is the simple-core model?  For example, how to extend it
+> to support vector insts? I know we need to add new instructions, but
+> since we will add new vector registers, how will this affect the
+> decoder, the ISA parser, and the CPU?
+Happily, if you add an instruction to the decoder all the CPU models will be
+able to execute that instruction. Now adding vector registers is going to be
+a bit more complex since we don't have explicitly vector registers (The
+vector ops on SPARC and Alpha use FP registers). You'll probably have to
+duplicate all the setXXXReg(),
+readXXXReg() methods in the CPU models but this time for a vector register
+file. (See thread_context.hh and simple_thread.hh)
+>
+> Just want to make sure: can we compose different cores in one
+> simulation, to do a heterogeneous processor? Say, with one O3 CPU and
+> several simple cpus?
+> (I assume O3 and TimingSimpleCPU can coexist?)
+Yes they can.
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

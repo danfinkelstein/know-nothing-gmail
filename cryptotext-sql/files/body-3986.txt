@@ -1,0 +1,48 @@
+I have checked the etherlink model and etherint model which
+has an etherint peer. Once the peer is set, two etherints
+on both ends of the etherlink are binded together. So a direct
+point-to-point link is set. As you said, I can just create a
+switch model with some interfaces and make each etherint bind
+with a switch interface instead of the etherints on other
+systems. However, this network topology is a kind of star
+network which is different from the fully-connected network
+because the etherint on one system is shared to connect with
+other systems, sometimes causing the transmission delay.
+I think each system should have N-1 etherints in order to
+implement a fully-connected network of N systems. How do
+you think of that?  I know there is a limit on PCI devices.
+Do you think it possible to modify this limit? If yes, where
+should I start with? Is this about the pci bus address limit?
+Xin
+---- Original message ----
+>Date: Sat, 10 Nov 2007 11:45:32 -0500 (EST)
+>From: Nathan Binkert <nate@binkert.org>
+>Subject: Re: [m5-users] simulating multicomputer system with M5
+- Show quoted text ->To: M5 users mailing list <m5-users@m5sim.org>
+>
+>> Thanks for your reply. The number of systems on the network
+>> is less than 20. Could you provide a sample for the switch
+>> model and the configuration for the network issue(e.g. fs.py)?
+>
+>I think the best you'd do with the fully connected network is 7.  I can't
+>remember what our limit on PCI devices is, but it's something like that.
+>YOu may be able to "share" pci slots and share irqs and but use different
+>PCI functions for multiple NICs.  That works in real systems, but I
+>haven't ever needed to do that.
+>
+>As for providing a switch model, sorry, I don't have the time right now.
+>You could certainly start with the etherlink model to see how it models a
+>wire, and just create a new model that has many interfaces with some
+>switching logic in the middle.  It really wouldn't be that hard.  (And if
+>you do go through the trouble, please contribute the code back to the M5
+>team.)
+>
+>   Nate
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,26 @@
+Hi everyone,
+First of all, is there some kind of channel for M5 users on IRC or is
+there anyone who would be willing to answer my general-noob questions
+on AIM or IRQ or some kind of chat client?  I'm desperate for help,
+and though I'm finding lots of high level answers on the website, some
+of the walkthroughs on the M5 site go over my head.  Again I'm very
+new to M5.
+Now to my real questions:
+The SPLASH2 Benchmarks page
+(http://m5.eecs.umich.edu/wiki/index.php/Splash_benchmarks) there's a
+link to an email
+(http://article.gmane.org/gmane.comp.emulators.m5.users/1365) that
+says that the author does not know of anyone who's tried out of order
+CPUS for the pre-compiled splash2 benchmark package provided on the M5
+website.  I just wanted to know if anyone in the mailing list has
+tried it and knows if it works.
+Also, what is a diff. (word seen in
+http://article.gmane.org/gmane.comp.emulators.m5.users/1365)?
+Thanks for any feedback in advance.
+Sincerely,
+Julian Bui
+julianbui@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

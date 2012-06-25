@@ -1,0 +1,5 @@
+The following type is defined in the class Event.My question is what is the meaning of the member variable?    enum Flags {            None = 0x0,            Squashed = 0x1,            Scheduled = 0x2,            AutoDelete = 0x4,            AutoSerialize = 0x8,            IsExitEvent = 0x10        }; What's more, there are many more of these type. Where can i find the meaning of their member?Thank you very much!   
+中 国 最 强 网 游 --- 网 易 梦 幻 西 游 ，166 万 玩 家 同 时 在 线 _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

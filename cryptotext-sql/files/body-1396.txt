@@ -1,0 +1,5 @@
+I dont quite undestand the steps required to boot more than 4 cpus in FS mode. Can anyone with experience comment?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+Anyone else interested in some sort of a (basic) transactional memory implementation within M5?
+I am, and I'm just querying to see if anyone else working on/with M5
+would be interested, and perhaps interested in collaborating. If so,
+please let me know.
+Thanks,
+Steve Lieberman
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

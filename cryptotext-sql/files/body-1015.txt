@@ -1,0 +1,44 @@
+Thanks. I tried doing this, but this is all I get running specweb:
+0: testsys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009
+0: drivesys.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009
+4694261844000: drivesys.terminal: attach terminal 0
+nothing more in the file.
+Can any method in threadinfo.hh help?
+- Sujay
+- Show quoted text -
+----- Original Message -----
+From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Monday, August 10, 2009 12:48 PM
+Subject: Re: [m5-users] memory trace and thread ID
+>
+> Remove the false condition from src/arch/alpha/linux/system.cc:139 and
+> Thread should work.
+>
+> Ali
+>
+>
+> On Mon, 10 Aug 2009 12:10:58 -0400, "Sujay Phadke"
+> <sphadke@eecs.umich.edu>
+> wrote:
+>> Hello,
+>>      I want to generate memory traces and associate them with the thread
+> ID
+>>      or process ID. Is there a way to do this? I am running m5 in FS mode
+>>      and want to differentiate the memory accesses of a particular
+> process
+>>      from those of others, including the OS. I looked into the "Thread"
+> and
+>>      "ExecThread" traceflags but they dont help.
+>>
+>> Thanks,
+>> Sujay
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

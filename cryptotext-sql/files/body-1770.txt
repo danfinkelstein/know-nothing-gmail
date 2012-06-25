@@ -1,0 +1,50 @@
+Try running with --trace-flags=Exec and finding where the division
+occurs in the trace... this should tell you if it's an instruction
+implementation error and, if so, what the broken opcode is.
+Steve
+- Show quoted text -
+On Thu, Mar 5, 2009 at 6:30 AM, David Robert White <drw@cs.york.ac.uk> wrote:
+> Hi,
+>
+> When using the ARM_SE simulator, the following program prints out 19:
+>
+> #include <stdio.h>
+> int main() {
+>  int a = 50;
+>  a = a / 7;
+>  printf("The Result is %d \n", a);
+>  return 0;
+> }
+>
+> However, I would expect it to be 7.
+>
+> Any ideas why this is happening?
+>
+> If I modify the fourth line as follows:
+>
+>  a = (float)a / 7;
+>  a = a / (float)7;
+>  a = (float)a / (float)7;
+>
+> Then it works.
+>
+> Thanks
+>
+> David
+>
+> --
+> David R White
+> Research Student
+> Dept. of Computer Science
+> University of York,
+> Heslington, YO10 5DD
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

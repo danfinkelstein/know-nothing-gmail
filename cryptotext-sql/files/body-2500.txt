@@ -1,0 +1,5 @@
+Hi, I have to simulate a at least 16 multicore processor with a three levels cache L1, L2, L3, what we are trying to do is get perfomance results about  the access of the cores to the cache and the memory. I've been reading the wiki and the sildes of the tutorial at ASPLOS 2008, but I still don;t know how to start with this, there is some example code in the paper of Network-Oriented Full-System Simulation using M5, but I would like to have a complete example configuration, does anyone can post one or tell me where I can get it?, thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

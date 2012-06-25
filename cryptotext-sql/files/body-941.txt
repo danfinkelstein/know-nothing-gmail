@@ -1,0 +1,8 @@
+Hi,     I am a graduate student who is trying to do some research on the M5 simulator . Now I am trying to use the SPEC2K Command Lines (Syscall Emulation) to run statically-linked ,Alpha program .The version I am using is m5-2.0b5. And the command is like this : $ build/ALPHA_SE/m5.debug configs/example/se.py --cmd=eon00 --options="chair.control.cook chair.camera chair.surfaces chair.cook.ppm ppm pixels_out.cook" . So my question is how can construct the command to run multicore and switch the spec2000 tests between the cores .    
+ 
+Best  regards !
+Hao Cao
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

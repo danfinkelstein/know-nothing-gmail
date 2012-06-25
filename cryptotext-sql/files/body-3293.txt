@@ -1,0 +1,39 @@
+   Also, if you're using syscall emulation mode, there was some work to get remote gdb to work there too. I would recommend simple cpu as I've had some problems with o3. It's also not something that got exercised a lot, so if you find/fix problems please let us know. To use it, basically do exactly what you would for full system, but like you said use your executable instead of the kernel image. Like Nate said though, this is for SE only.
+Gabe- Show quoted text -
+nathan binkert wrote:
+If you're in full system mode, I'm pretty sure that this is currently
+not possible.  It's not impossible though.  There are likely to be
+some issues with translation step, and you need to keep track of which
+process you're in, so that your breakpoints and such only get set on
+the process you're debugging.  You should just try it and start
+hacking on the remote debugger stuff.  There's a trace flag that you
+can turn on to try to dump some information about what's going on.  If
+you do get this working, please consider contributing the fixes.
+  Nathan
+On Thu, Apr 10, 2008 at 12:20 PM, abc def <jose_6154@yahoo.es> wrote:
+  
+One quick question: I want to debug a program which is
+ running in the M5. Can i use remote debugger for this?
+ As wiki says i have to use this command
+ "gdb-linux-alpha arch/alpha/boot/vmlinux". And also i
+ should have the kernel source code available
+ obviously.
+ Now i dont want to debug kernel. So can i give my
+ alpha executable name in place of vmlinux? Will it
+ work? If not, can you please tell me how to do it?
+      ______________________________________________
+ ¿Con Mascota por primera vez? Sé un mejor Amigo. Entra en Yahoo! Respuestas http://es.answers.yahoo.com/info/welcome
+ _______________________________________________
+ m5-users mailing list
+ m5-users@m5sim.org
+ http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

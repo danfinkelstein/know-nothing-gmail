@@ -1,0 +1,17 @@
+It depends... have you modified the cache code at all?  If not, then this is very weird.  A cache never sends a LoadLockedReq (see getBusPacket(), it's just not an option).  It can receive one from a CPU, but if that request misses, then it sends a normal ReadReq to fetch the block.  This of course means it should never receive a LoadLockedResp either.
+I'd suggest using --trace-flags=Cache,Bus to generate a longer memory trace and then grep through it to see if your cache really is sending a LoadLockedReq (in which case the question is: why?) or if not then why are you getting a LoadLockedResp when you didn't send a LoadLockedReq.
+Steve- Show quoted text -On Fri, Apr 18, 2008 at 8:48 PM, Clint Smullen <cws3k@cs.virginia.edu> wrote:
+I have traced through on an error I was getting. The assertion says the following:
+        void Cache<TagStore>::handleResponse(Packet*) [with TagStore = LRU]:
+                Assertion `target->pkt->cmd == MemCmd::ReadResp' failed.
+I annotated the Cache trace printout to display what command the packet his right before that assertion and the one causing the error is a LoadLockedResp. Given that a LoadLockedResp is both an IsRead and an IsResponse, I was wondering if it was safe to modify the assertion to allow LoadLockedResp's as well, or if this would have other unintended side-effects.
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

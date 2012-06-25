@@ -1,0 +1,198 @@
+Message: 1
+Date: Tue, 4 Nov 2008 10:08:22 -0500
+From: Ali Saidi <saidi@umich.edu>
+Subject: Re: [m5-users] error calling suspendContext(); segfault
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID: <B85EC855-8D54-4480-99B2-58D324DEC85B@umich.edu>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+You should run M5 in a debugger and see where the segfault comes from.
+Looking over the code you have below I don't see a problem. As for the
+array, sure but you would have to insert each element in the array
+separately.
+Ali Hi ,    I've been single stepping in gdb, I set my break points at the ff: FullO3CPU<AlphaSimpleImpl>::SuspendThreadEvent::process() at build/ALPHA_SE/cpu/o3/cpu.cc:388
+        breakpoint already hit 2 times std::list<unsigned int, std::allocator<unsigned int> >::begin() const    at /usr/include/c++/4.1.3/bits/stl_list.h:589 std::list<unsigned int, std::allocator<unsigned int> >::begin() at /usr/include/c++/4.1.3/bits/stl_list.h:580
+        breakpoint already hit 1 timeAnd it actually has an error in the following statement:Breakpoint 9, std::list<unsigned int, std::allocator<unsigned int> >::begin (this=0x2cbb) at /usr/include/c++/4.1.3/bits/stl_list.h:580
+580           { return iterator(this->_M_impl._M_node._M_next); }If i try to access "this->_M_impl._M_node._M_next" it cannot be accessed that is why it yields a segfault.(gdb)print this->_M_impl._M_node._M_next
+Cannot access memory at address 0x2cbbHonestly, I'm clueless about the error. All I know is that the statement has been called by the          "std::find(activeThreads.begin(), activeThreads.end(), tid)" method of "FullO3CPU<AlphaSimpleImpl>::deactivateThread" at build/ALPHA_SE/cpu/o3/cpu.cc
+I'm printing below part of the backtrace of the program:#0  std::list<unsigned int, std::allocator<unsigned int> >::begin (this=0x2cbb) at /usr/include/c++/4.1.3/bits/stl_list.h:580
+#1  0x080b8fe9 in FullO3CPU<AlphaSimpleImpl>::deactivateThread (this=0xffffffff, tid=1) at build/ALPHA_SE/cpu/o3/cpu.cc:596#2  0x080b9fc3 in FullO3CPU<AlphaSimpleImpl>::SuspendThreadEvent::process (this=0x87cfc78) at build/ALPHA_SE/cpu/o3/cpu.cc:389
+#3  0x083d47a8 in EventQueue::serviceOne (this=0x876a480) at build/ALPHA_SE/sim/eventq.cc:118#4  0x080be210 in EventQueue::serviceEvents (this=0x876a480, when=100) at build/ALPHA_SE/sim/eventq.hh:362#5  0x080be30f in FullO3CPU<AlphaSimpleImpl>::instDone (this=0x8791b88, tid=1) at build/ALPHA_SE/cpu/o3/cpu.cc:1286
+much thanks,-dean
+On Nov 4, 2008, at 3:41 AM, Dean Michael Ancajas wrote:
+> -------------- next part --------------
+> An HTML attachment was scrubbed...
+> URL: http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20080918/c7a931f3/attachment-0001.htm
+>
+>
+> I think you have a misconception about the events. Events can be
+> reused, so as long as you don't have more than one event outstanding
+> for a specific task (and you really shouldn't ever do this), you
+> shouldn't need to dynamically create them.  Of the top of my head I
+> can' think of what the copy constructor looks like for an Event, but
+> it doesn't seems like it would do what you appear to want it to do. I
+> would imagine that the event copying is the root of the problem, that
+> or something subtle about using the comInstEventQueue.
+>
+> Ali
+>
+> hi Ali,
+>    I know my reply is late, very sorry. Anyways, I've fixed the
+> thread-ID error, it turns out I haven't initialized it properly in
+> the constructor list. So now I can schedule the event to be
+> process()'d at the correct instruction count in each thread, however
+> I still get a segmentation fault error when I call
+> suspendContext(tid) or even deactivateThread(tid). Any tips on how
+> to debug this? And also my reason that I dynamically create
+> SuspendThreadEvent is because I can only find out the number of
+> threads(which would be important when Queue-ing the event in the
+> comInstEventQueue array),instruction count depending on the
+> configuration of the CPU. I'm fairly new to C++ and after reading
+> about copy constructors I understand the fundamental problem of my
+> previous code in scheduleSuspendThreadEvent() method,
+>
+> so my new scheduleSuspendThreadEvent() is now:
+>
+>
+> void scheduleSuspendThreadEvent(int _tid,Tick when){
+> 190         // Schedule thread to suspend, regardless of its current
+> state.
+> 191         DPRINTF(Event,"suspend thread:%d \n",_tid);
+> 192
+> 193         new SuspendThreadEvent(comInstEventQueue[_tid],
+> 1000,_tid); //hard-coded to suspend in 1000 instructions each
+> thread; will be changed later
+> 202         }
+>
+> I removed the "SuspendThreadEvent
+> suspendThread[Impl::Maxthreads]"(see code below from previous email)
+> line to prevent issues in copy constructors and just dyamically
+> created the events(the downside is that I cannot access the created
+> events after, which I guess is fine as of now). Also, I know that
+> this is not an M5-related question but a C++ one: Is it possible
+> create an array of Events in M5 that wouldn't use the standard
+> constructors? The relevance of my question is that I wanted to pass
+> the thread_id of each event so that it would be queued in its own
+> comInstEventQueue[].
+>
+>
+>
+> Thanks in advance!
+>
+>
+>
+>
+>
+> On Sep 18, 2008, at 4:20 AM, Dean Michael Ancajas wrote:
+>
+> > hi everybody,
+> >     I've create d an Event called SuspendThreadEvent(same properties
+> - Hide quoted text -
+>
+> > with ActivateThreadEvent in src/o3/cpu.cc) which will call
+> > FullO3CPU<Impl>::
+> suspendContext(int tid), to be able to initialize a
+> > SuspendThreadEvent instance, I created
+> > scheduleSuspendThreadEvent(tid,cpu), the problem is when I passed
+> > the correct parameter to scheduleSuspendThreadEvent but according to
+> > the generated traces(see below) the value used in the initialization
+> > is different.
+> >
+> > commandline:
+> > dean@stallman:~/m5/repos/smt$ ./m5.debug --trace-file=event2.out --
+> > trace-flags=Event tests/run.py quick/01.hello-2T-smt/alpha/tru64/o3-
+> > timing
+> >
+> >
+> > in cpu.cc
+> >  if( params->max_insts_pause_each_thread == 0 ){ //number of
+> > instructiosn has been coded in initialization at cpu.hh
+> >  279
+> >  280         for(int tid=0;tid < numThreads; tid++){
+> >  281
+> >  282            DPRINTF(Event,"Num of threads: %d\n",numThreads); //
+> > print number of threads
+> >  283            DPRINTF(Event,"1. scheduling suspend thread: %d
+> > \n",tid); //print out thread # to be suspended
+> >  284            scheduleSuspendThreadEvent(tid,params-
+> > >max_insts_pause_each_thread);
+> >  285            DPRINTF(Event,"2. scheduling suspend thread: %d
+> > \n",tid); //double check if value of tid has changed
+> >  286         }
+> >  287     }
+> >
+> >
+> > in cpu.hh
+> >  /** added by dean michael ancajas, Schedule thread to suspend **/
+> > 189         void scheduleSuspendThreadEvent(int _tid,Tick when){
+> > 190         // Schedule thread to suspend, regardless of its current
+> > state.
+> > 191         DPRINTF(Event,"suspend thread:%d \n",_tid);
+> > 192
+> > 193         suspendThreadEvent[_tid] = *(new
+> > SuspendThreadEvent(comInstEventQueue[_tid],100)); //for now this is
+> > hard-coded to suspend in 100 instructions each thread
+> > 194         suspendThreadEvent[_tid].init(_tid,this);
+> > 201         }
+> >
+> >
+> > Generated traces from event2.out:
+> >
+> >    2       0: system.cpu: Num of threads: 2
+> >    3       0: system.cpu: 1. scheduling suspend thread: 0
+> >    4       0: system.cpu: suspend thread:0
+> >    5       0: Event_15: FullO3CPU "Suspend Thread" event scheduled @
+> > 100
+> >    6       0: Event_15: thread suspend: 0
+> >    7       0: system.cpu: 2. scheduling suspend thread: 0
+> >    8       0: system.cpu: Num of threads: 2
+> >    9       0: system.cpu: 1. scheduling suspend thread: 1
+> >   10       0: system.cpu: suspend thread:1
+> >   11       0: Event_16: FullO3CPU "Suspend Thread" event scheduled @
+> > 100
+> >   12       0: Event_16: thread suspend: 9
+> >   13       0: system.cpu: 2. scheduling suspend thread: 1
+> >   14       0: Event_2: FullO3CPU tick event scheduled @ 0
+> >
+> >
+> > The first SuspendThreadEvent was initialized properly(line 3's
+> > thread # and line 6's thread # are equal, but the 2nd is not, line 9
+> > says it must suspend thread #1 but in line 12 it passed thread #9.
+> > I'm confused as to where the value started to change. As we can also
+> > see in line 13, the value of tid in cpu.cc hasn't change after
+> > calling the scheduleSuspendThreadEvent. So I guess the culprit must
+> > be in the scheduleSuspendThreadEvent.. Any help/ideas would be
+> > greatly appreciated.
+> >
+> > thanks in advance,
+> > Dean Michael Ancajas
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 26, Issue 10
+> ****************************************
+>
+>
+> --
+> Dean Michael B. Ancajas
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi Dean,
+Does this mean I am going to add a
+new object into M5(write C++ code for perfect_branch_predictor, then
+instantiate it using python)?
+I'm thinking you would have to do write a "perfect_branch_predictor"
+object to plug in.
+The only complication is you have to figure out how to resolve the
+branches of speculative instructions if you are using that for an
+out-of-order machine.
+If your workload is small enough, an idea may be figuring out how to
+pre-execute your workload and save the the branch history so as to use
+as input to your perfect predictor.
+There is no way to do a perfect branch predictor without future knowledge of instructions. This is not that easy to do with our current CPU model that executes instructions at execute (a coupled model, as opposed to a functional first model). A possible option is like what Korey mentioned, to pre-execute the workload using a simple CPU model and save the branch history for future use. Another option is to instantiate another system and use its instruction stream to determine branch directions, but that's a bit more involved.
+Kevin- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+> Today I accidentally saw something called gem5 in the M5 repository with the
+> description 'M5 source code -- gems & M5 integration'. If anybody can give me a
+> brief explanation n current status of that it would be grateful. Hope M5
+> administrators  will bear me being impatient and I apologies if I am abusing the
+> purpose of the mailing list.
+We're not trying to keep secrets.  Basically, the developers of GEMS
+and the developers of M5 are experimenting with replacing the M5 cache
+hierarchy with the ruby cache hierarchy with the goal of having the
+best of both simulators.  If we succeed, we will have a better
+simulator and we can have a larger team sharing the burden of
+simulator design.  It is still very preliminary work, and no where
+near ready for consumption.  I'm sure that as we become more
+successful, we'll announce more about it.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

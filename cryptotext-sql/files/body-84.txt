@@ -1,0 +1,25 @@
+Hi All,I
+ am trying to vary the block size of dcache and L2 cache and i run into 
+the following problem.Using a single processor with dcache and 
+L2, I am trying to use a stride prefetcher between L2 and memory.
+When i set the block size of both the caches to 8 bytes, i run out of 
+memory in 10 mins even when using 16 GB RAM. If the prefetch_latency of 
+the cache is kept at default value(10*cache_latency) it works fine and 
+consumes very little memory. But if i reduce it to the latency of the 
+cache or a little higher it blows out of memory. Has anyone come across 
+such an issue or can any one suggest me what is the appropriate way of 
+finding out where the problem lies?
+The GHB, prefetching mechanism works fine in all cases.Another 
+problem that i am currently facing is as follow:There are only 
+integers and floating point numbers in the application that i am trying 
+to run. So when i try to run the app with a dcache block_size of 4 bytes
+ i get the following assert failure:
+build/X86_SE/cpu/simple/timing.cc:438: Fault 
+TimingSimpleCPU::read(Addr, T&, unsigned int) [with T = uint64_t]: 
+Assertion `split_addr <= addr ||
+ split_addr - addr < block_size' failed.
+Is it possible to simulate a 32 bit X86 architecture with M5?-- Ankit
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi all:
+    I would like to use the fetch event to put a fetch function call
+on to the event queue and pop that call off the event on the next
+tick. I tried
+schedule(fetchEvent, nextCycle(curTick + tick(delay))), but the event
+queue doesn't seem to pop the fetchEvent off at time curTick +
+tick(delay).
+    Could someone explain to me how the event queue of M5 works? And
+how I should use events with M5? I did not find any documentation
+about it on the ASPLOS slides.
+    Thanks for any comments in advance.
+--
+Regards
+James Wang
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

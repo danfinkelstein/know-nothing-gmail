@@ -1,0 +1,6 @@
+hi ali,
+  I've included the base/trace.hh in the mycpu.cc file but the same errors showed up.- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

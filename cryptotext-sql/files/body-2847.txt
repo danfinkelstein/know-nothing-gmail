@@ -1,0 +1,6 @@
+hi all, my plan to add a sram into m5 encounters some troubles...i just want to ask how to add it is much easier? derive from the PhysicalMemory or the cache? can anyone give me a scheme of doing that? thks a lot... -- 
+RegardsDengningSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

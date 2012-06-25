@@ -1,0 +1,21 @@
+translate() in tlb.cc implements an alpha like TLB. So it does virtual to physical translation for the guest.
+vtophys() converts a virtual address for the guest into a virtual address for the host.
+Ali- Show quoted text -
+On Jan 22, 2007, at 2:26 PM, rlai@mtu.edu wrote:
+Hi all,
+    I find two virtual to physical address translation functions in M5:
+    One is translate() defined in AlphaITB/AlphaDTB class in tlb.cc,
+    the other one is vtophys() defined in vtophys.cc.
+    Does anyone know which one is for simulated virtual address to
+simulated physical address translation? And which on is for simulated
+virutal address to host physical address translation?
+    Thanks!
+Tracy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

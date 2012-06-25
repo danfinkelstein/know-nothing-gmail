@@ -1,0 +1,20 @@
+> For a multiple core system in m5 with shared bus , consider two writes issued by two different cores at the same time. What is the criteria as to which one will be granted access first? What memory consistency model m5 implements? And which are the associated files to understand it?
+Since nobody has answered this question yet, I will give it a shot.
+Basically, we currently implement weak consistency and require that
+fences or barriers be inserted in code to guarantee order.  This is
+mostly because we started with Alpha as a model.  That said, Sparc and
+x86 have stronger guarantees, but I don't believe that we currently
+implement them.  As for which files, that's really hard to say since
+it doesn't really exist.  If you were to implement sequential
+consistency, you'd probably have to do it in the lsq and the
+storebuffer and the memory dependence unit stuff, but I'm not sure
+that that would be it.  The fence instructions accomplish their goal
+by serializing the pipeline. You can search for the sMemBarrier and
+isWriteBarrier instruction flags.
+If this doesn't give you enough information, let us know and maybe
+steve or kevin can answer better.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,137 @@
+Yea that is exactly what I'm doing. The default port on all the busses
+but the I/O bus responds with a BadPacket packet, nothing more. You
+don't need to be coherent on an address that doesn't exist.
+Ali
+- Show quoted text -
+On Nov 30, 2008, at 8:56 PM, Steve Reinhardt wrote:
+> Does this really work?  It looks to me like you're never doing any
+> snooping on any packet that targets the bus's default port, which I
+> would think would eliminate pretty much all snoops (and thus make
+> coherence not work).
+>
+> I have a changeset locally that I think should fix this problem.  It
+> adds a 'forward_snoops' flag to the cache object that controls whether
+> it forwards snoops it receives on its mem port to its cpu-side port.
+> The default is true but I set it to false for the I/O cache, so the
+> I/O bus never sees snoops.
+>
+> Unfortunately it might be another week until I have time to dig it out
+> and apply it to the public repo; if someone feels that it's urgent
+> enough that they're willing to work with an untested bare patch let me
+> know.
+>
+> Steve
+>
+> On Sun, Nov 30, 2008 at 12:08 PM, Ali Saidi <saidi@umich.edu> wrote:
+>> It helps if I include the patch...
+>>
+>> Ali
+>>
+>>
+>> On Nov 30, 2008, at 1:40 PM, Ali Saidi wrote:
+>>
+>>> Here is a fix (a) that works for booting. However, we need to decide
+>>> what the correct thing to do is. What about other interconnects?
+>>>
+>>> Ali
+>>>
+>>> On Nov 28, 2008, at 1:12 AM, Ali Saidi wrote:
+>>>
+>>>> I did some digging and figured out the problem. The issue occurs
+>>>> when
+>>>> the o3 cpu is miss-speculating and loads from an invalid address.
+>>>> The
+>>>> request gets to the dcache which issues a readreq for the block
+>>>> on the
+>>>> membus. The membus matches the default responder (which would
+>>>> return a
+>>>> response with BadAddress), however the bus also sends the snoops to
+>>>> the I/O Cache, which in turn forwards it to the i/o bus. The I/O
+>>>> bus
+>>>> already has a default responder (for PCI config space), so the
+>>>> panic
+>>>> occurs.
+>>>>
+>>>> I don't exactly understand why this doesn't occur when an L2 is
+>>>> present as well and can't really imagine that we always just get
+>>>> lucky.
+>>>>
+>>>> There are a variety of possible solutions:
+>>>> a) Don't send accesses to the default responder to the snoopers. If
+>>>> you're there the address isn't cacheable so no one should be
+>>>> supplying
+>>>> data.
+>>>> b) Make the I/O cache filter snoop ranges based on the filter
+>>>> ranges
+>>>> it already has for range change passing.
+>>>> c) Have two default options for busses. A default port that is
+>>>> user-
+>>>> settable, and a port of last resort that always just returns a
+>>>> BadAddr
+>>>> packet.
+>>>> d) ?? There are probably a couple more options.
+>>>>
+>>>> Ali
+>>>>
+>>>>
+>>>>
+>>>>
+>>>> On Nov 26, 2008, at 3:59 PM, Steve Reinhardt wrote:
+>>>>
+>>>>> It runs fine with --l2cache.  Interesting...
+>>>>>
+>>>>> On Wed, Nov 26, 2008 at 1:48 PM, Steve Reinhardt
+>>>>> <stever@gmail.com>
+>>>>> wrote:
+>>>>>>
+>>>>>> Looks like the main difference is that the regression has an L2
+>>>>>> cache
+>>>>>> where just saying --caches only gives you L1s.  I'm rerunning the
+>>>>>> problematic version with --l2cache to see if that fixes the
+>>>>>> problem.
+>>>>>>
+>>>>>> Steve
+>>>>>>
+>>>>>> On Wed, Nov 26, 2008 at 12:59 PM, Ali Saidi <saidi@umich.edu>
+>>>>>> wrote:
+>>>>>>>
+>>>>>>> The o3 regression with caches does successfully run. So, what us
+>>>>>>> the
+>>>>>>> difference between what you're running and what the regressions
+>>>>>>> run?
+>>>>>>>
+>>>>>>> Ali
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

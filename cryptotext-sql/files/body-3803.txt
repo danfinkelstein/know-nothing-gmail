@@ -1,0 +1,75 @@
+Hi Nathan,
+   I have enclosed sdram_ctrl.hh for your review.
+   Thanks a lot.
+Tracy
+- Show quoted text -
+> This problem is probably in the way you define your stats in your header
+> file.  Can you post your sdram_ctrl.hh?
+>
+>>   I added a new SDRAM model called SdramCtrl into M5_2.0b3. I met some
+>> problems when I compiled the code:
+>>
+>>   build/ALPHA_FS/base/statistics.hh: In member function std::string
+>> Stats::ScalarProxy<Stat>::str() const [with Stat =
+>> Stats::VectorBase<Stats::StatStor>]:
+>> build/ALPHA_FS/base/statistics.hh:2000:   instantiated from std::string
+>> Stats::ScalarProxyNode<Stat>::str() const [with Stat =
+>> Stats::VectorBase<Stats::StatStor>]
+>> build/ALPHA_FS/mem/sdram/sdram_ctrl.cc:1019:   instantiated from here
+>> build/ALPHA_FS/base/statistics.hh:1009: error: class
+>> Stats::VectorBase<Stats::StatStor> has no member named str
+>> scons: *** [build/ALPHA_FS/mem/sdram/sdram_ctrl.o] Error 1
+>> scons: building terminated because of errors.
+>>
+>>    This error occurs almost at the end of the file when I use
+>> REGISTER_SIM_OBJECT("SdramCtrl", SdramCtrl) to register my new SDRAM
+>> class.
+>> My code is like:
+>> ========================================================
+>> CREATE_SIM_OBJECT(SdramCtrl)
+>> {
+>>    SdramCtrl::Params params;
+>>
+>>    params.verbose = verbose;
+>>    params.frequency = frequency;
+>>    params.timing_itb = timing_itb;
+>>    params.timing_dtb = timing_dtb;
+>>    params.addr_convert = addr_convert;
+>>    params.addr_map = addr_map;
+>>    params.sdram_dev = sdram_dev;
+>>    params.wb = wb;
+>>    params.maq = maq;
+>>    params.addr_ranges = addr_ranges;
+>>    params.access_pool_size = access_pool_size;
+>>    params.write_queue_size = write_queue_size;
+>>    params.stat_read_lat_cap = stat_read_lat_cap;
+>>    params.stat_read_lat_bkt = stat_read_lat_bkt;
+>>    params.stat_write_lat_cap = stat_write_lat_cap;
+>>    params.stat_write_lat_bkt = stat_write_lat_bkt;
+>>
+>>    SdramCtrl *sdram_ctrl = new SdramCtrl(getInstanceName(), params);
+>>    assert(sdram_ctrl);
+>>    return sdram_ctrl;
+>> }
+>> <Here is line 1019 in sdram_ctrl.cc>
+>> REGISTER_SIM_OBJECT("SdramCtrl", SdramCtrl)
+>> ========================================================
+>>
+>>    Does anyone know what is the problem?
+>>
+>> Thanks,
+>> Tracy
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

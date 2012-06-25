@@ -1,0 +1,6 @@
+ The following is a section of program in function snoopTiming() of class Cache<TagStroe>.  The function of doTimingSupplyResponse(pkt, wb_pkt->getPtr<uint8_t>(), false, false); will be called at line 1153 as follows.  But it will be called in the function handleSnoop(pkt, blk, true, false, false) again. So, it will be called twice. Consequently, the response will be send twice. I don't know if it is correct. Thank you!  //////////////////////////    std::vector<MSHR *> writebacks;    if (writeBuffer.findMatches(blk_addr, writebacks)) {        DPRINTF(Cache, "Snoop hit in writeback to addr: %x\n",                pkt->getAddr());            .....................            doTimingSupplyResponse(pkt, wb_pkt->getPtr<uint8_t>(),                                   false, false);            .....................    }    handleSnoop(pkt, blk, true, false, false);/////////////////////////////////////////
+深切哀悼汶川大地震遇难同胞！ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

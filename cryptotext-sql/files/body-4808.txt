@@ -1,0 +1,20 @@
+Hello,
+I am just doing my first steps with m5 2.0b1p1, so I have a few questions:
+1) Is it possible to configure a unified L1 cache? If so, how is it done?
+2) The simulator aborts when I configure the l1dc to be 1-way associative:
+command line: ./build/ALPHA_SE/m5.debug ./configs/jonas/se1.py -c
+tests/test-progs/hello/bin/alpha/linux/hello -t
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack 0x11ff92000:0x11ff9b000 to
+0x11ff90000:0x11ff9b000 because of access to 0x11ff91ff0
+m5.debug: build/ALPHA_SE/mem/request.hh:229: int
+Request::getThreadNum(): Assertion `validCpuAndThreadNums' failed.
+Program aborted at cycle 3916
+Aborted
+Is this a known issue?
+Regards,
+Jonas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

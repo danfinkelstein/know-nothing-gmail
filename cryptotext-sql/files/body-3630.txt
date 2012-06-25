@@ -1,0 +1,22 @@
+Thanks for your advice. Yu- Show quoted text -On Jan 11, 2008 3:42 PM, nathan binkert <nate@binkert.org> wrote:
+Certainly nothing that is going to be quick (as counted in days).You're basically going to have to implement the network link/switchcomponents and the coherence protocol that you wish to run on top ofit.  We can certainly help you along the way with pointing you at the
+interfaces that you need to use, but you're basically going to have towrite a coherence protocol yourself (or fake it).   NateOn Jan 11, 2008 1:29 PM, Zhang Yu <
+thuzhangyu@gmail.com> wrote:> Thanks for the reply. Furthermore, if I want to use other interconnection> network topologies in M5, is there a quick way to get start?
+>> Thanks,> Yu>>>> On Jan 11, 2008 3:15 PM, Geoffrey Blake < blakeg@umich.edu> wrote:> >> >> >
+> >> >> >> >> > The interconnection between cpus that M5 currently uses is a snoopy bus.> Unfortunately, there is no other way to interconnect CPUs.  Though as of> 
+M52.0b4, you can construct a hierarchal bus structure, ie: 4 CPUs, each pair> of cpus shares an L2, and coherence is done among the local and remote pair,> similar to how an Intel quad core is setup.  (Someone please correct me if
+> this not correct.)> >> >> >> > Geoff> >> >> >> >> > From: m5-users-bounces@m5sim.org
+ [mailto:m5-users-bounces@m5sim.org] On> Behalf Of Zhang Yu> > Sent: Friday, January 11, 2008 4:08 PM> > To: 
+m5-users@m5sim.org> > Subject: [m5-users] Interconnection between multiple processors> >> >> >> >> >> >> > Hi,> >> > I want use the full system mode booting with multiple processors to run
+> some MPI programs. I was wondering how the processors are connected to each> other. Since in the configuration, the only thing I could do is to set the> number of cpus. Is there a default interconnection network between these
+> cpus? Or there is no interconnection at all but only a shared memory? I want> to know how the cpus communicate with each other and how I can get control> of the communication.> >> > Thanks,
+> > Yu> >> > No virus found in this incoming message.> > Checked by AVG Free Edition.> > Version: 7.5.516 / Virus Database: 269.19.0/1216 - Release Date: 1/9/2008> 10:16 AM
+> >> >> > No virus found in this outgoing message.> > Checked by AVG Free Edition.> > Version: 7.5.516 / Virus Database: 269.19.0/1216 - Release Date: 1/9/2008> 10:16 AM
+> >> > _______________________________________________> > m5-users mailing list> > m5-users@m5sim.org> > 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> >>>> _______________________________________________> m5-users mailing list> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

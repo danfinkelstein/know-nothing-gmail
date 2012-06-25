@@ -1,0 +1,45 @@
+Hi~
+I try to add a new disk into the M5-2.0b6 under ALPHA_FS mode.
+I have done this in M5-2.0b5, and it works.
+Here is my modification to FSConfig.py, just like I have done in M5-2.0b5:
+def makeLinuxAlphaSystem(mem_mode, mdesc = None):
+    class BaseTsunami(Tsunami):
+        ethernet = NSGigE(pci_bus=0, pci_dev=1, pci_func=0)
+        ide = IdeController(disks=[Parent.disk0, Parent.disk2,
+Parent.disk3], pci_func=0, pci_dev=0, pci_bus=0)
+                ^^^^^^^^^^^^^^  I add this one.
+                   ...........................
+    self.disk0 = CowIdeDisk(driveID='master')
+    self.disk2 = CowIdeDisk(driveID='master')
+    self.disk3 = CowIdeDisk(driveID='slave')
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ I add this one.
+    self.disk0.childImage(mdesc.disk())
+    self.disk2.childImage(disk('linux-bigswap2.img'))
+    self.disk3.childImage(disk('x264.img'))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ and this one.
+However, the error message after I enter "./build/ALPHA_FS/m5.opt
+./configs/example/fs.py"
+M5 compiled Oct 12 2008 16:32:32
+M5 revision Unknown:Unknown
+M5 commit date Unknown
+M5 started Oct 12 2008 23:36:47
+M5 executing on acalab6
+command line: ./build/ALPHA_FS/m5.opt ./configs/example/fs.py
+Traceback (most recent call last):
+  File "<string>", line 1, in ?
+  File "src/python/m5/main.py", line 355, in main
+    execfile(sys.argv[0], scope)
+  File "./configs/example/fs.py", line 38, in ?
+    from FSConfig import *
+  File "/home/r96/Iris/m5-stable-733318abb7b1/configs/common/FSConfig.py",
+line 61
+    self.disk3 = CowIdeDisk(driveID='slave')
+    ^
+SyntaxError: invalid syntax
+I have no idea about what's going on.
+Any help would be grateful.
+Dennis
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

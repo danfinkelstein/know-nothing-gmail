@@ -1,0 +1,94 @@
+Sorry for the late reply on this subject. I figure I could chirp in with some data points and graphs. I have included the average IPC per core on a subset of the Parsec benchmarks for 2 cores, 4 cores, 8 cores, 16 cores and 32 cores (This is for the first 10e9 instructions of the region-of-interest) . The avg-IPC of blackscholes is about .91 for each core  which is much better than when I first saw results.  The 3 biggest contributions to original slow down were hw_mfpr, hw_mtpr, and trapb. Removing the stall for trapb was a simple edit in decoder.isa that did not result in simulation problems.  The penalty paid by hw_mfpr and hw_mtpr still exists, but it can be minimized by about 1/4 by reducing the ipr access latency from 3 cycles (default) to 1. I have further tried removing the isIprAccess from hw_mfpr and hw_mtpr to see overall benefit. canneal and blackcholes (2-5%) benefited the most because they spend the largest portion of cpu time waiting for serialized stalls, but the remaining parsec benchmarks did not receive any benefit (see sys_rename_stall_from_serialization as for why canneal and blackscholes benefit).
+The most significant factor so far in improving performance for me was to use simlarge instead of simsmall. However, the problem exists that running all of simlarge is impractical for M5 as it takes a very long time.  The other problem is that most of the analysis above is based on running a portion of entire execution of the parsec benchmarks which means that I am probably only capturing a few kernels of the larger overall program. The approach that makes the most sense in my mind is to improve the parallel benchmark simulation methodology and then to examine the source of stalls in the cpu or memory subsystem. I am current working on adding a systematically-uniform sampling policy that makes use of 100s of simulation points and simulates for a subset of total time. The idea is that I can then have some statistical guarantees that I am capturing important behavior for a working set that is sufficiently large to stress more than 8 cores and that I am not falling victim to the performance penalties of the linux scheduler performing load balancing or some other behavior. Once this is done, I would be happy to followup on the IPC of the different benchmarks.
+-Rick- Show quoted text -
+ef wrote:
+Hello,
+Here is a bit of an update:
+I went ahead and tracked the number of hw_m*pr instructions using
+Blackscholes, simlarge 2 cores. 5% of instructions fetched where
+hw_m*pr instructions. I think this is a huge amount considering that
+is 1 in 20 instructions, since I am using 8 wide machine, thats a
+stall of 3/5 of pipe stages one out of 3 cycles (stalling till the ROB
+is empty)...Not to mention the IPC is atrocious, which I suspect is
+caused by these serializing stalls.
+I went ahead and obj dumped my binaries, and looked at the
+decoder.isa. It seems that the only instructions from the parsec
+binaries generating hw_m*pr instructions is:
+rdunique (my code has lots of them) wruniqe(my code has 2) , halt(not
+important) and callsys(has quite a bit)
+Anyways the instruction count of these instructions is pointless due
+to branching loops and jumps. I was just trying to get some type of
+quantification.
+Unfortunately I was unable to find to much literature on these
+instructions (rdunique, wrunique) using google,  I need to work on
+that.
+I have 12 out of 13 PARSEC 2.1 benchmarks compiled and I consider them
+useless due to this issue. I am surprised that this issue has never
+been brought except by Rick Strong.
+My first thought was try to force the compiler to
+remove/reduce/optimize these instruction (rduniq,wduniq), however I
+dont think that is possible, so compiler solution seems to be out of
+the question. There is a way to replace these rduniq an wduniq
+instructions, the following is from gcc.org
+" The following builtins are available on systems that use the OSF/1
+PALcode.  Normally they invoke the `rduniq' and `wruniq' PAL calls,
+but
+when invoked with `-mtls-kernel', they invoke `rdval' and `wrval'."
+I dont think rdval and wrval are implemented into M5 so that seems useless.
+My next step I guess, is to attempt to fix M5. Unfortunately my C++
+skill level is pretty low, I would like to implement a solution based
+on what I can do, but I don't think I have that luxury. I am in the
+process of researching  Nathan's solutions and trying to implement
+them.  I am assuming the scoreboard is the most efficient
+implementation and realistic one (this correct?). I will try looking
+into that solution first..
+Any thoughts, advice and/or suggestions would be greatly appreciated.
+Thanks,
+EF
+On Mon, Oct 12, 2009 at 10:11 PM, nathan binkert <nate@binkert.org> wrote:
+  
+My guess is that this is the result of calling rdunique and wrunique.
+These pal instructions keep track of the currently running thread.
+They more or less just access a single internal pal temp register.
+There are a number of things that could potentially be done to fix the
+slowness here.  You could create an actual renamed register in the o3
+model and make those palcalls access that special register.  If that
+weren't enough, you could add a more generalized facility for renaming
+pal temp registers (there are many that are simply treated as
+registers) and allow mfpr and mtpr to not be serializing.  Another
+option is to make some sort of "barrier" between pal instructions that
+allows them to not necessarily be serializing, but forces them to be
+executed in order.  You could take that a step further if necessary
+and implement a scoreboard that indicates which instructions have to
+wait for others (which is how the ev6 really does it).
+None of these options are particularly simple, but they aren't overly
+massive changes either.
+ Nate
+    
+Based on the results I am getting, for PARSEC benchmarks, the OoO
+preformance is really bad, there are to many hw_mfpr and hw_mtpr,
+instructions. I am trying to figure out why I am in the PALcode so
+often (any ideas on how to figure this out?). I am running
+Blackscholes, which is a relatively simple PARSEC benchmark.
+I need to do more research, but I dont think this is caused at all for
+itb and dtb misses (i made them really large just in case).
+Right now for blackscholes, which isnt close to finish executing
+(about 30%) I have it so it will execute  1e9 instructions (running
+two cores),  From my perl scripts it seems to have it fetched 13
+million hw_mfpr and mtpr instructions (fetched, not committed). There
+is something really wrong with that ratio.
+      
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

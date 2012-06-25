@@ -1,0 +1,13 @@
+On Tue, Jun 1, 2010 at 9:33 AM, nathan binkert <nate@binkert.org> wrote:
+> [...] to be honest, I don't
+> see you getting something better anywhere else.
+This reminds me of something I told another group on the phone
+recently... something like "Most aspects of M5 are better than what
+you'll find in other available simulators.  Unfortunately, that bar is
+pretty low."
+Maybe that should be our motto...
+Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

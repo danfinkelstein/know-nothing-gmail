@@ -1,0 +1,22 @@
+Hi Xi,Yes, that is something that happens in M5 due to the coherence protocol (which is on no matter what kind of config you are running) and how we count misses/accesses.  I ran into this earlier.  Basically, some of the misses in the L1 are coherence misses but still placed in the demand miss bucket, but when those become accesses in the L2, they're not counted as demand accesses.  I can't actually remember all of the details - but if you subtract the two values L1 misses and L2 accesses, and grep your stats.txt file for that value, you'll find the difference lies in something like Upgrade Requests or something of the sort.
+Lisa- Show quoted text -On Thu, Feb 5, 2009 at 6:15 PM, Xi Chen <chexi@umich.edu> wrote:
+Hi all,
+I'm simulating a single core LinuxAlphaSystem with the bitcount
+benchmark from Mibench. The configuration script I used is exactly the
+same as configs/example/fs.py. The command I used is as follows:
+m5.opt fs.py -b bitcount --caches --l2cache -t
+After the simulatin finished succesfully, I noticed the total number of
+cache misses in the level 1 caches, i.e., both L1 instruction cache and
+L1 data cache, is slightly larger than the total number of accesses to
+the L2 cache. Intuitively, these two numbers should be the same, right?
+Is there anything that I'm missing here?
+Thank you,
+--Xi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

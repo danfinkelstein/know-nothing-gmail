@@ -1,0 +1,24 @@
+I've installed m52.0 and am trying to run the NetperfMaerts benchmark in FS mode.
+I simulation starts and hangs with the following output. I'm not sure what is going wong here.
+mounting filesystems...
+EXT2-fs warning: checktime reached, running e2fsck is recommended
+loading script...
+setting up network...
+eth0: link now 1000F mbps, full duplex and up.
+waiting for server...server ready
+starting test...
+netperf warmup
+/benchmarks/netperf/netperf -H 10.0.0.1 -t TCP_MAERTS -l -100k
+establish_control: control socket connect failed: Connection refused
+Are you sure there is a netserver running on 10.0.0.1 at port 12865?
+netperf benchmark... starting 1...
+/benchmarks/netperf/netperf -H 10.0.0.1 -t TCP_MAERTS -k16384,0 -K16384,0 -- -m 65536 -M 65536 -s 262144 -S 262144
+configuring checkpointing at 1400000000...
+done configuring checkpointing...
+establish_control: control socket connect failed: Connection refused
+Are you sure there is a netserver running on 10.0.0.1 at port 12865?
+Ranjith
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

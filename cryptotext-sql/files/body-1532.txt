@@ -1,0 +1,13 @@
+Can you provide some instruction traces to illustrate the problem?  It's impossible to say for sure what's happening from your description.Steve- Show quoted text -On Tue, Apr 28, 2009 at 4:25 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+- Show quoted text -Hi all, I am confused with the behavior of conditional branch. I am running my program on ALPHA FS mode.
+My program execute to a conditional branch instruction bne, its address is 120000388, and the branch target is 120000390, but this branch is not taken, means that the next instruction should be 12000038c.
+I encounter this instruction many times in my program and it behavior normally, but sometimes the instruction's branch target change to 120000394(the next instruction of the correct target), and the next pc become its target(120000390). But the branch is not taken, how can the branch target be an instruction that is not a branch target at all?
+I get these information at commit stage, if that happen, I mean the 394 become the target, the program will crash. but the program execute correctly. Does anyone knows why ? Thanks a lot!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,12 @@
+>  > (2) Simulation speed.  I need a sense of both the software and
+>  > hardware performance in instructions/second.  This is a critical
+>  > piece of information and I have not found it anywhere in the docs or
+>  > tutorial.  I would even accept anecdotal information about M5 speed.
+>  We get about 2M IPS on a simple CPU model. Full-system isn't supported
+>  on our out-of-order model, but it would be a good bit slower.
+Actually on modern hardware, you can now get about 4-5MIPS.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

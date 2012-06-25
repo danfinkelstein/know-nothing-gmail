@@ -1,0 +1,134 @@
+I think we would like to see those changes in m5 so MQ might be
+better. With MQ you can still use hg view to see a list of all the
+changes, I'm not sure that hg revert will work but you should be
+careful about using it anyway, and you can commit changes in HQ with
+hgqcommit.
+Ali
+- Show quoted text -
+On Jul 22, 2008, at 11:05 AM, Sujay Phadke wrote:
+> changes to src/mem files for energy/delay calculations
+> changes to configs/common/* to allow modified configurations in FS
+> mode
+> new power files in src/power to integrate wattch
+>
+> Currently I can do 'hg view' to see a list of all changes as an ADG
+> and then
+> rollback if I want using 'hg revert' or commit new changes using 'hg
+> commit'. Do you think mq would be better?
+>
+> ----- Original Message -----
+> From: "nathan binkert" <nate@binkert.org>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Monday, July 21, 2008 8:13 PM
+> Subject: Re: [m5-users] Difference between using hg and mq
+>
+>
+>> Well, all of the m5 developers use mq.  What sorts of changes are you
+>> making?
+>>
+>> On Mon, Jul 21, 2008 at 5:06 PM, Sujay Phadke <sphadke@umich.edu>
+>> wrote:
+>>> Hi Nate,
+>>>    Thanks for replying. Well for the present I am using hg itself
+>>> and
+>>> making my own changes to the source. I commit them using hg
+>>> commit. I
+>>> have a
+>>> custom emacs merge file which makes merging easy in case the
+>>> source repo
+>>> changes. I think this works good for now. I do fold the changes back
+>>> using
+>>> hg. I really didnt hear back from anyone about their experience so
+>>> I dont
+>>> know if taking the mq approach is better.
+>>>
+>>> - Sujay
+>>>
+>>>
+>>> ----- Original Message -----
+>>> From: "nathan binkert" <nate@binkert.org>
+>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>> Sent: Monday, July 21, 2008 6:01 PM
+>>> Subject: Re: [m5-users] Difference between using hg and mq
+>>>
+>>>
+>>>> Did you get anywhere with this?  You should really look at the
+>>>> mercurial documentation.  The choice depends on the usage.  If
+>>>> you're
+>>>> planning on making massive changes across the board and don't
+>>>> plan to
+>>>> integrate them, then hg itself probably makes sense.  If you want
+>>>> to
+>>>> fold your changes back into the tree eventually as patches, or you
+>>>> have smallish changes that you'd like to benefit from our
+>>>> improvements, mq probably makes the most sense.
+>>>>
+>>>> If you're creating completely new models, then using EXTRAS with
+>>>> stuff
+>>>> in your own repository is probably the way to go.
+>>>>
+>>>> We'd encourage people to try to fold stuff back into M5 as we do,
+>>>> so
+>>>> we lean towards mq which is probably the best way to go for
+>>>> that.  I
+>>>> have HP stuff that is private to HP that I do with a separate
+>>>> repository and the EXTRAS thing.
+>>>>
+>>>> Nate
+>>>>
+>>>> On Fri, Jul 11, 2008 at 9:25 AM, Sujay Phadke <sphadke@eecs.umich.edu
+>>>> >
+>>>> wrote:
+>>>>> Hello,
+>>>>>     I read the M5 repo documentation and the hgbook on using hg
+>>>>> and
+>>>>> mq.
+>>>>> I
+>>>>> am confused between which approach I should be using for making
+>>>>> my own
+>>>>> changes to m5-stable. One way is to make my changes and use the hg
+>>>>> commit. I
+>>>>> can pull changes to the source using hg fetch and it does a 3-
+>>>>> way merge
+>>>>> when
+>>>>> required.
+>>>>>
+>>>>> The other way is to use the 'q' commands - qinit, qnew,
+>>>>> qrefresh, etc.
+>>>>> Could
+>>>>> someone elaborate whats the best way to go about it?
+>>>>>
+>>>>> Thanks,
+>>>>> Sujay
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

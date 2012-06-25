@@ -1,0 +1,18 @@
+>  Just a quick question. Can I write the following?
+>
+>  Formula f1;
+>  Formula f2;
+>  Scalar s;
+>
+>  f1 = constant(1.0)/s;
+>  f2 = f1+constant(3);
+Yes.
+>  btw, how do I compile stattest? I tried make stattest but it says
+>  "make: *** No rule to make target `base/python.cc', needed by `stattest'.
+> Stop."
+It's been a while since I used that.  You're just going to have to
+fiddle with the makefile.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

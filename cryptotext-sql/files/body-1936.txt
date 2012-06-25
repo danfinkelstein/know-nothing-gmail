@@ -1,0 +1,13 @@
+> yes, I want to get information about paging to disk. i.e, count the
+> paging out.
+Hmmm.  I never responded to this.  Anyway, M5 doesn't do these things.
+ The operating system does, so you have to query the running operating
+system to find out the information.  If you need very accurate
+statistics, you can do more sophisticated things of course by hacking
+m5 and the kernel, but for what you want, it seems that you just need
+to learn more about how to get this info from Linux.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

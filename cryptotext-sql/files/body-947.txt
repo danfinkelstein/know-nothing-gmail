@@ -1,0 +1,36 @@
+Korey, weren't you looking at this?  I think the lower number may not
+be counting no-ops or something like that.
+Steve
+- Show quoted text -
+On Fri, Sep 4, 2009 at 1:21 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+> Hello all,
+>
+> I made an observation that has me confused and I need some
+> clarification. On inspecting the o3-timing stats for 00.hello, I found
+> the following:
+> sim_insts = 6386
+> system.cpu.commit.commitCommittedInsts = 6403
+> system.cpu.committedInsts = 6386
+>
+> How is it that total number of instructions simulated is lower than
+> the total number of committed instructions? Also, shouldn't there be
+> some relation like, (commit_count + squashed_count  == sim_insts)?
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

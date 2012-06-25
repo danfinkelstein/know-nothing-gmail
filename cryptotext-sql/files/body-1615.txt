@@ -1,0 +1,13 @@
+Hi,all, I add a device to the iobus in makeLinuxAlphaSystem. Now I want to add a pointer in the class system, something look like device* dev;  I add it as the physmem of system, that is add a declaration in the system, change the constructor of system by adding   dev(p->dev), and change the System.py by adding one attribute  dev = Params.Dev(0), just like the way physmem does. but I got an error when running M5, 
+ File "src/python/m5/simulate.py", line 57, in instantiate    root.createCCObject()  File "src/python/m5/SimObject.py", line 820, in createCCObject    child.createCCObject()  File "src/python/m5/SimObject.py", line 817, in createCCObject
+    self.getCCParams()  File "src/python/m5/SimObject.py", line 780, in getCCParams    value = value.getValue()  File "src/python/m5/SimObject.py", line 823, in getValue    return self.getCCObject()
+  File "src/python/m5/SimObject.py", line 807, in getCCObject    params = self.getCCParams()  File "src/python/m5/SimObject.py", line 780, in getCCParams    value = value.getValue()  File "src/python/m5/SimObject.py", line 823, in getValue
+    return self.getCCObject()  File "src/python/m5/SimObject.py", line 807, in getCCObject    params = self.getCCParams()  File "src/python/m5/SimObject.py", line 780, in getCCParams    value = value.getValue()
+  File "src/python/m5/SimObject.py", line 823, in getValue    return self.getCCObject()  File "src/python/m5/SimObject.py", line 807, in getCCObject    params = self.getCCParams()  File "src/python/m5/SimObject.py", line 780, in getCCParams
+    value = value.getValue()  File "src/python/m5/SimObject.py", line 823, in getValue    return self.getCCObject()  File "src/python/m5/SimObject.py", line 807, in getCCObject    params = self.getCCParams()
+  File "src/python/m5/SimObject.py", line 780, in getCCParams    value = value.getValue()  File "src/python/m5/SimObject.py", line 823, in getValue    return self.getCCObject()  File "src/python/m5/SimObject.py", line 811, in getCCObject
+    % self.path()RuntimeError: system.race_v: Cycle found in configuration heirarchy.What's wrong? Does someone have any ideas ? Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,108 @@
+Probably the easiest fix in the long run is just to get rid of the variable and use 'inst->threadNumber' directly in both of the DPRINTFs.- Show quoted text -
+Kevin Lim wrote:
+Hi James,
+That is indeed a bug that shouldn't have made it into the release.  The
+problem is that DPRINTF's are not included when compiling m5.fast, and in
+that code the variable tid is only used in a DPRINTF.  If you comment out
+the line that declares the int tid, and the two DPRINTFs that use tid, that
+should fix that error.
+Kevin
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Steve Reinhardt
+Sent: Friday, September 22, 2006 7:55 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Example detailed mode configuration bug
+Hi James,
+This looks to be a problem with m5.fast... I get the same error when I try to compile that, but m5.opt compiles just fine.  m5.fast isn't always a lot faster than m5.opt anyway :-).
+Kevin, I added this bug to flyspray for you.  If it's really Korey's, feel free to reassign it to him.
+Steve
+James Anon wrote:
+Hi Kevin,
+Thanks, that was indeed the problem.  Unfortunately when I add the O3CPU to the scons command, m5 no longer properly compiles.  I used the command:
+% scons build/ALPHA_FS/m5.fast CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+and scons terminates with:
+/usr/bin/g++-3.4 -o build/ALPHA_FS/cpu/o3/base_dyn_inst.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_IS A=ALPHA_ISA -DNDEBUG -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/cpu/o3/base_dyn_inst.cc
+/usr/bin/g++-3.4 -o build/ALPHA_FS/cpu/o3/bpred_unit.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_ISA=A LPHA_ISA -DNDEBUG -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS
+build/ALPHA_FS/cpu/o3/bpred_unit.cc
+/usr/bin/g++-3.4 -o build/ALPHA_FS/cpu/o3/commit.fo -c -pipe -fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -O3 -DTHE_ISA=ALPHA _ISA -DNDEBUG -Iext/dnet -I/usr/include/python2.4 -Ibuild/libelf/include -Ibuild/ALPHA_FS build/ALPHA_FS/cpu/o3/commit.cc
+build/ALPHA_FS/cpu/o3/commit_impl.hh: In member function `void DefaultCommit<Impl>::skidInsert() [with Impl = O3CPUImpl]':
+build/ALPHA_FS/cpu/o3/commit.cc:34:   instantiated from here
+build/ALPHA_FS/cpu/o3/commit_impl.hh:1204: warning: unused variable 'tid'
+scons: *** [build/ALPHA_FS/cpu/o3/commit.fo] Error 1
+scons: building terminated because of errors.
+I haven't had any compilation problems with any of the other configurations.  This occurs both when trying to compile the full system and syscall emulation modes.  Have you experienced this?
+Thanks again,
+James
+On 9/13/06, *Kevin Lim* <ktlim@umich.edu <mailto:ktlim@umich.edu>> wrote:
+    Hi James,
+     
+    The problem is that the detailed model is not included in the models
+    being compiled by default.  Normally we only compile the
+    AtomicSimpleCPU and TimingSimpleCPU models.  When compiling M5, try
+    adding "CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU' to the
+    scons command.
+     
+    For example:
+    % scons build/ALPHA_SE/m5.debug
+    CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+     
+    That tells scons which CPU models to compile.  Sorry about the
+    confusion, and I'll add this to the FAQ.
+     
+    Kevin
+     
+------------------------------------------------------------------------
+    *From:* m5-users-bounces@m5sim.org
+    <mailto:m5-users-bounces@m5sim.org> [mailto:
+    m5-users-bounces@m5sim.org <mailto:m5-users-bounces@m5sim.org>] *On
+    Behalf Of *James Anon
+    *Sent:* Tuesday, September 05, 2006 2:30 PM
+    *To:* m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    *Subject:* [m5-users] Example detailed mode configuration bug
+     
+    Hi all,
+    After downloading, compiling, and setting up m5 to run in the full
+    system mode, I tried to boot the simulator in the detailed mode with:
+    ./m5.fast -d output/ configs/example/fs.py -d
+    and I get the following error:
+    M5 compiled Sep 1 2006 17:35:27
+    M5 started Tue Sep 5 14:08:08 2006
+    M5 executing on idealjames
+    command line: ./m5.fast -d output/ configs/example/fs.py -d
+    panic: Simulator object type 'DerivO3CPU' not found.
+    @ cycle 0
+    [createObject:build/ALPHA_FS/sim/builder.cc, line 121]
+    Program aborted at cycle 0
+    Aborted
+    Note that the system boots perfectly with the -t (for timing mode)
+    or with no argument (atomic mode). I found the Deriv03CPU class
+    within the src/python/m5/objects directory and attempted to setup
+    symlinks to see if this was simply a path error of some sort, but I
+    have never used Python before and didn't have much luck. I have also
+    installed the latest patch for m5 beta 2.
+    I also posted this as a bug in the "Flyspray" bug tracker linked off
+    of the website (I noticed I was the first, is this up and running
+yet?).
+    Thanks
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

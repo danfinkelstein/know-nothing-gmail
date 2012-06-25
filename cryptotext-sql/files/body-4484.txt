@@ -1,0 +1,12 @@
+Did you tell it to compile the FullCPU?  That cpu model has not worked in quite some time.  You would have had to change the CPU_MODELS flags to get it to compile.  Try building the default and it should work.
+Perhaps we shouldn't have released a known broken CPU model, but it's really just there for historical purposes.
+  Nate- Show quoted text -
+I am just starting using m5 and I have downloaded the v2 beta3 sources from the site. I have successfully compiled and run the tests for ALPHA_SE, but I have some compilation errors when trying to compile the FS version. Namely the compiler is complaining about not finding the files "encumbered/cpu/full/op_class.hh" and "mem/functional/functional.hh". In fact there is no "mem/functional" folder in the source files at all.
+I am attaching a file with all the compiler errors I am given.
+Any ideas?
+Thanks in advance,
+Nikolas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

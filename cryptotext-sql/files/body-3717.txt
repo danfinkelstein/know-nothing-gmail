@@ -1,0 +1,17 @@
+Hey all,
+ 
+I was trying to modify the memory system to allow multiple
+responses for interconnection modeling (in SE mode). However, it came to a “limit
+reached” (running out of events).
+ 
+The last packet that my interconnection dealt with is an
+UpgradeReq, which doesn’t trigger any responses. However, I’m not
+able to tell what it does. Can some one shed light on it?
+ 
+Thanks!
+ 
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

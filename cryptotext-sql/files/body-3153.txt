@@ -1,0 +1,45 @@
+You should look at the output files (build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic/*) and see what they say.
+Ali- Show quoted text -
+On May 5, 2008, at 7:13 PM, Andrew Stanely wrote:
+- Show quoted text -
+hi,
+I am trying to compile m5_2.0b4 with ALPHA FS .
+I can build m5 successfully by scons build/ALPHA_FS/m5.debug.
+I want to run the full-system version (including the full-system regression tests).
+I have downloaded the full-system files (disk images and binaries) from the Download page.
+M5 2.0b3 Full System Files -- Pre-compiled Linux kernels, PALcode/Console code, and a filesystem
+Then , I have done:
+% mkdir /dist/m5/system
+% cd /dist/m5/system
+% tar -vxf <path>/m5_system_2.0b3.tar.bz2
+% mv m5_system_2.0b3/* . ; sudo rmdir m5_system_2.0b3/
+Then , I run the regression tests on ALPHA_FS/m5.opt
+scons build/ALPHA_FS/tests/opt
+But, I got the error :
+[normal@ m5_2.0b4]$ scons build/ALPHA_FS/tests/opt
+scons: Reading SConscript files ...
+Checking for C header file Python.h... (cached) yes
+Checking for C library python2.4... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) yes
+Checking for zlibVersion() in C++ library z... (cached) yes
+Checking for C header file fenv.h... (cached) yes
+Building in /home/newm5_080505/m5_2.0b4/build/ALPHA_FS
+Using saved options file /home/newm5_080505/m5_2.0b4/build/options/ALPHA_FS
+scons: done reading SConscript files.
+scons: Building targets ...
+build/ALPHA_FS/m5.opt -d build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic tests/run.py quick/10.linux-boot/alpha/linux/tsunami-simple-atomic > build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic/stdout 2> build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic/stderr
+scons: *** [build/ALPHA_FS/tests/opt/quick/10.linux-boot/alpha/linux/tsunami-simple-atomic/stdout] Error 1
+scons: building terminated because of errors.
+I have followed the instrucions on  http://m5.eecs.umich.edu/wiki/index.php/Compiling_M5  step by step.
+Please help me with that .
+thanks !!!
+Andrew
+May  5  2008
+Make Windows Vista more reliable and secure with Windows Vista Service Pack 1. Learn more. _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hi all, I am running a multi-thread program on M5 under ALPHA-FS mode. When I tried to get the thread ID, it always return 0, and I cannot distinguish them between different threads.  I tried to get the thread ID throught the function in thread_state structure, which is supposed to return the thread ID. 
+My test program is implemented by POSIX thread library. Should I use the function in the thread_state structure to get the thread ID ? Is those functions supposed to return different thread ID? Sorry for such silly question, but it really confuses me. Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

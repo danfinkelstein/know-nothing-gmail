@@ -1,0 +1,52 @@
+Hi James,
+ 
+The problem is that the detailed model is
+not included in the models being compiled by default.  Normally we only compile the AtomicSimpleCPU and TimingSimpleCPU
+models.  When compiling M5, try adding “CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU’ to the scons
+command.
+ 
+For example:
+% scons build/ALPHA_SE/m5.debug
+CPU_MODELS=AtomicSimpleCPU,TimingSimpleCPU,O3CPU
+ 
+That tells scons
+which CPU models to compile.  Sorry about
+the confusion, and I’ll add this to the FAQ.
+ 
+Kevin
+ 
+From:
+m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of James Anon
+Sent: Tuesday, September 05, 2006
+2:30 PM
+To: m5-users@m5sim.org
+Subject: [m5-users] Example
+detailed mode configuration bug
+- Show quoted text -
+ 
+Hi all,
+After downloading, compiling, and setting up m5 to run in the full system mode,
+I tried to boot the simulator in the detailed mode with:
+./m5.fast -d output/ configs/example/fs.py -d
+and I get the following error:
+M5 compiled Sep 1 2006 17:35:27
+M5 started Tue Sep 5 14:08:08 2006
+M5 executing on idealjames
+command line: ./m5.fast -d output/ configs/example/fs.py -d
+panic: Simulator object type 'DerivO3CPU' not found.
+@ cycle 0
+[createObject:build/ALPHA_FS/sim/builder.cc, line 121]
+Program aborted at cycle 0
+Aborted
+Note that the system boots perfectly with the -t (for timing mode) or with no
+argument (atomic mode). I found the Deriv03CPU class within the
+src/python/m5/objects directory and attempted to setup symlinks to see if this
+was simply a path error of some sort, but I have never used Python before and
+didn't have much luck. I have also installed the latest patch for m5 beta 2.
+I also posted this as a bug in the "Flyspray" bug tracker linked off
+of the website (I noticed I was the first, is this up and running yet?).
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

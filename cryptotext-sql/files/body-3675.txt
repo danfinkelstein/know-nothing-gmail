@@ -1,0 +1,50 @@
+On Dec 26, 2007 6:29 AM, Wilson Mazo Tan <wmtan00@gmail.com> wrote:
+> i have a few newbie questions regarding the Timing Simple CPU(SE mode).
+>
+> I've been analyzing the CPU model from the ground up. I've seen
+> BaseSimpleCPU::preExecute() and BaseSimpleCPU::postExecute() in
+> base.cc(in the BaseSimpleCPU class, file m5/src/cpu/simple). My first
+> question is, where does the *actual* execution happen? It seems to me
+> that all that TimingSimpleCPU adds to BaseSimpleCPU are the cache ports.
+The key difference with TimingSimpleCPU is that all memory operations
+are two phase (the CPU initiates them and then they're completed in a
+callback from the memory system).  Instructions are executed when the
+instruction fetch completes, in completeIfetch.  Non-memory
+instructions are executed by calling curStaticInst->execute().  Memory
+instructions are initiated via curStaticInst->initiateAcc() and
+complete in completeDataAccess().
+>
+> Also, in m5/src/cpu/simple/base.cc, under BaseSimpleCPU::preExecute(),
+> could you explain in more detail the lines
+>
+>     // decode the instruction
+>     inst = gtoh(inst);
+>
+> how does gtoh decode the instruction? What exactly does gtoh do?
+gtoh is "guest-to-host" endian conversion... all that line does is a
+byte swap if needed.  The comment refers to the next 45 or so lines of
+code, not just that function.
+BTW, you might want to try "cscope" for looking up function
+definitions like gtoh... http://cscope.sourceforge.net.  There's a
+cscope-index.py script in util that autmatically builds a cscope index
+for m5.
+>
+> By the way I'm using M5 2.0b3
+>
+> Thanks a bunch. Help would be greatly appreciated. Happy Holidays everyone!
+Happy holidays to you too!
+Steve
+- Show quoted text -
+>
+> --------
+> "Gradatim Ferociter."
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

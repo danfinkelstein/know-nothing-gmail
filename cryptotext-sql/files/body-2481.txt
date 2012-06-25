@@ -1,0 +1,12 @@
+Hi all,
+So I tried to run splash benchmarks with more than 1 O3 cpu, and I get
+the error message, "nxm_threade_create: no idle contexts available". It
+appears that the O3CPU thread contexts are not being set to unallocated
+according to some emails I saw involving Sujay Phadke. Did we ever
+commit the fix to the O3CPU? If so, i don't see it.
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

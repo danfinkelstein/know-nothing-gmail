@@ -1,0 +1,58 @@
+Hello Ali,
+  Under the 'checkpoints' and/or 'simpoints' section are you going to discuss on how to restore multiple different checkpoints in a heterogeneous multiprocessor setup(different checkpoints restored for each processor or groups of processor) or possibly on an SMT machine(different checkpoints restored for each thread)?
+thanks,
+dean
+On 2/11/08, Ali Saidi <saidi@umich.edu> wrote:
+Everyone,
+Below is roughly the outline we've used for previous M5 tutorials.
+We're in the process of updating our slides for the ASPLOS tutorial in
+a few weeks and would like any input you have. Irrespective of if you
+plan to attend the tutorial or not we would like input about what
+should be covered in more detail and what we're spending too much time
+on.
+Thanks,
+Ali
+Introduction & Overview
+        History
+        Attributes
+        Objects/Events/Modes
+        Current work (lots has change)
+        Future Work (lots has changed)
+Compiling and Running M5
+        Source Tree
+        Building
+        Output files
+        Checkpoints
+        Simpoints
+Full system workloads
+        Network workloads
+        Parts of a workload
+Current M5 Object models
+        CPU Models
+                Time buffers
+                Templates
+                Checker
+                State
+        Memory System
+                Requests/Packets
+                Access modes
+                Interconnects
+                Caches
+                Coherence
+        I/O
+                Device overview
+                Disks
+                NICs
+Extending M5
+        M5 Internals
+        Configurations
+        Serialization
+        Events
+        ISA description
+        Statistics
+Debugging M5
+        Tracing
+        Debugger
+        Remote debugger
+Wrapup
+__________

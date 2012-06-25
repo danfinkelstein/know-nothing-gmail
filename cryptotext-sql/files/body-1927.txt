@@ -1,0 +1,37 @@
+I agree with Steve about flushing the dirty blocks of the disabled caches once you turned off a cache.If you were willing to edit the appropriate C++/Python cache and CPU objects, what you might be able to do is allow the CPU to have a direct port to the L1 and a direct port to the L2. Then, when you wanted to switch caches, you would need to edit the CPU/Cache interface to first flush the L1 cache of dirty blocks and then start using the direct L2 port instead of the L1 port.
+A second alternative might be to edit to Cache such that when you want that cache is "off" it would forward all requests to the next level in the hierarchy (e.g. L1 to L2) and then when that request was completed it would forward the result of that request to the CPU instead of altering Cache state.
+Either way, there's probably a little "programming legwork" you would have to do to get things acting the way you want them to act.- Show quoted text -On Fri, Feb 13, 2009 at 12:18 AM, Steve Reinhardt <stever@gmail.com> wrote:
+The python configuration is only processed once at the beginning of the simulation when the equivalent C++ configuration is set up (specifically in the call to m5.instantiate(root)).  Changing the python config after that point will have no effect as you saw.
+Even if you did change the C++ cache configuration on the fly it would die horribly due to coherence problems (e.g., all the dirty blocks in those caches that are no longer part of the system).  You would have to flush the dirty all of the caches you are disabling before you make the change (or leave them connected enough to continue to snoop).
+Steve
+On Thu, Feb 12, 2009 at 4:00 PM, Xi Chen <chexi@umich.edu> wrote:
+Hi all,
+Is it possible that I can reconfigure the cache hierarchy during runtime
+in M5? For example, say initially I have a three-level cache hierarchy,
+i.e., cpu->L1->L2->L3->off-chip memory, after simulating a few cycles, I
+want to disable L1 and connect cpu directly to L2. Is that doable?
+I tried something like this after simulating 1 million cycles. But it
+failed somehow.
+test_sys.cpu[0].icache = l1_ic # reconnect cpu to l1 icache
+test_sys.cpu[0].dcache = l1_dc # reconnect cpu to l1 dcache
+test_sys.cpu[0].icache_port = l1_ic.cpu_side
+test_sys.cpu[0].dcache_port = l1_dc.cpu_side
+test_sys.cpu[0].icache.mem_side = test_sys.cpu[0].toL2Bus.port[0]
+test_sys.cpu[0].dcache.mem_side = test_sys.cpu[0].toL2Bus.port[1]
+It looked to me that even after reconnecting the ports, the statistics
+for L1 instruction cache and data cache still keep increasing...
+Thank you,
+--Xi
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- ----------Korey L SewellGraduate Student - PhD Candidate
+Computer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

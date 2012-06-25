@@ -1,0 +1,52 @@
+It should compile just fine... that's something I generally test before each release.  There was a problem last time where the versions of swig and python that are packaged with cygwin were mutually incompatible, so I had to install a newer swig from the web site, so if you just used the preconfigured packages that could have been your problem.
+Steve- Show quoted text -On Mon, May 12, 2008 at 2:06 PM, Korey Sewell <ksewell@umich.edu> wrote:
+Interesting... I was not able to compile on cygwin using my local
+machine. Maybe I just didnt download the right packages.
+Are you using cygwin to log-on to another server AND then running M5
+or are you actually building M5 on your local machine cygwin?
+On 5/12/08, Shoaib Akram <sakram3@uiuc.edu> wrote:
+> m5 works seamlessly under cygwin. I have used it for a long time and on many machines.
+>
+> ---- Original message ----
+> >Date: Mon, 12 May 2008 19:56:28 +0000 (GMT)
+> >From: abc def <jose_6154@yahoo.es>
+> >Subject: [m5-users] m5 in vista
+> >To: M5 users mailing list <m5-users@m5sim.org>
+> >
+> >   Hi,
+> >
+> >   For some unavoidable reason i have to run m5 in
+> >   windows environment. It is Vista Business edition. I
+> >   can not install vmware. Can you please help me how
+> >   to go forward with it?
+> >
+> >
+> >
+> >     ------------------------------------------------
+> >
+> >   Enviado desde Correo Yahoo!
+> >   La bandeja de entrada más inteligente.
+> >________________
+> >_______________________________________________
+> >m5-users mailing list
+> >m5-users@m5sim.org
+> >http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

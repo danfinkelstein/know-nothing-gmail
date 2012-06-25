@@ -1,0 +1,22 @@
+Hi,
+I want to use m5 to create a distributed system to test some algorithms
+I am developing. The documentation is a bit fragmented regarding this
+issue and I am not sure if I understand this correctly.
+As I understand it, I can create as many CPUs as I like and connect them
+to each other. However, I want to create a distributed system where each
+machine can communicate with the other. While reading the fs.py file, I
+find that the last couple of lines are
+        print "Error I don't know how to create more than 2 systems."
+        sys.exit(1)
+Does this imply that m5 can only simulate a single client-server
+architecture? If not, could you please point me to some documentation
+that tells me how to create a distributed system (either full system or
+system emulation will do for my purpose). I am interested in a way of
+creating a system connected by Ethernet (preferably switched). Thanks in
+advance.
+yours,
+Sherif Fadel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

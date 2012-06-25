@@ -1,0 +1,24 @@
+Hello Lisa,I just want to run from the beginning using a detailed CPU, but I want to the simulation to be stopped when the CPU executes N instructions. (if N instruction execution is not clear for the detailed CPU model, N instruction fetches instead.)
+Thank you in advance.-Nam2009/5/2 Lisa Hsu <hsul@eecs.umich.edu>- Show quoted text -
+You've got some funniness going on with your command line - why are you using -s?  That's normally only used if you're coming out of a checkpoint, which you are not.  
+What do you want to do exactly, in terms of CPU models?  Do you want to use a checkpoint, or do you just want to run from the beginning using a detailed CPU?
+LisaOn Fri, May 1, 2009 at 11:34 AM, SungMin Nam <caramelife@gmail.com> wrote:
+Hi, all.I am a M5 newbie and I have one simple question about M5.I'd like to stop my simulation when a given number of instruction is executed.I tried to stop the simulation when 100000 instructions are executed like below, but failed.
+Please let me know how to do this.. Thank you in advance.=========================================================================sainthh@ppoppi:~/workspace/M5/m5-latest$ build/ALPHA_SE/m5.fast configs/example/se.py -d --caches -s -W 10000 -I 100000 -c ./bzip2_base.alpha-org
+M5 Simulator SystemCopyright (c) 2001-2008The Regents of The University of MichiganAll Rights ReservedM5 compiled Apr 25 2009 22:13:56M5 revision Unknown:UnknownM5 commit date Unknown
+M5 started May  2 2009 00:31:40M5 executing on ppoppicommand line: build/ALPHA_SE/m5.fast configs/example/se.py -d --caches -s -W 10000 -I 100000 -c ./bzip2_base.alpha-orgGlobal frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb on port 7000Switch at instruction count:1warn: Entering event queue @ 0.  Starting simulation...Switched CPUS @ cycle = 48500switching cpusSwitch at instruction count:10000
+warn: Entering event queue @ 48500.  Starting simulation...warn: Increasing stack size by one page.panic: Tried to execute unmapped address 0. @ cycle 188000[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+Program aborted at cycle 188000Aborted
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+>   I seem to recall reading in the mailing list about how to create and
+> modify disk images without having sudo or root access on a machine.  I have
+> searched through the archives, and I can't find anything about it.  Is there
+> a way to do this?
+Since nobody has responded, I will.
+You can create a disk image without root access using dd to create a
+file and run fdisk on that file.
+As for editing it, you can't mount it if you're not root.  Maybe some
+people suggested using the simulator itself or using a virtual
+machine.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

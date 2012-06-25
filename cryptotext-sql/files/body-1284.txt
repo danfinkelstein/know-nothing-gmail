@@ -1,0 +1,5 @@
+Hi all, I want to run a linux on M5 Alpha-FS mode and get it connected to the internet. Could somebody give me some suggestions about this?. I think this problem is primarily about how to configure the network card and configure the linux network connection. Could this be possible on M5? Thanks very much! 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

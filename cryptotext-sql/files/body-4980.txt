@@ -1,0 +1,29 @@
+James Srinivasan:
+> > Wow, this is all stuff that should buffed a bit and put on the wiki.  Any
+> > volunteers out there?  Of course, the original authors would have to
+> > agree.  I'm sure Ken would be willing to have his stuff posted.
+>
+> I would have posted my Benchmarks.py file on the wiki but I'm not 100%
+> sure it'll work with m5 v2 without changes. As far as I'm concerned it
+> can be used however anyone sees fit. It could do with more (some) error
+> checking and maybe a little more configurability. Unfortunately I have a
+> looming thesis deadline and it works well enough for my purposes so I'm
+> not really able to spend much time tinkering.
+Thank you for this!
+I was just working on something similar when I found your post.
+Now I just have to adapt it to the Lgred datasets. I do have a few
+questions though, that I hope you might be able to answer.
+1. Why do you have a specific constructor calling the LiveProcess
+base class? I thought this would be done automatically.
+2. There is a lot of duplicate code, is there any reason that you haven't
+made a class like Gzip that sets f.ex "executable" and let GzipSource
+inherit that from Gzip?
+Is there any way to set the working directory for the simulated binary?
+Copying the files work, but it is a bit dirty...
+Thanks in advance!
+--
+Marius Grannæs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

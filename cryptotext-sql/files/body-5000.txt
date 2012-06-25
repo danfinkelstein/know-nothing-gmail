@@ -1,0 +1,13 @@
+I see that there are some stubs in the code for other hardware
+prefetchers other than the sequentialtagged ones. Is it possible
+to download them from somewhere? Even if they are not complete or
+even tested yet?
+Also is there an anoymous CVS/SVN repository somewhere? I looked at
+the m5sim.org page and the sourceforge one, and I couldn't find anything
+there.
+--
+Marius Grannæs
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

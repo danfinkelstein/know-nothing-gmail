@@ -1,0 +1,18 @@
+What kind of configuration are you trying to model?  What you have here works in terms of putting multiple L2s between tol2bus and membus, but I'm not sure what will actually happen when you run the resulting simulation... if all of the L2s try to respond to a request, you'll get an error; on the other hand, if only one L2 responds to each request (maybe the first one that the request gets sent to) then your simulation may look like it's working fine but N-1 of your caches won't be doing anything.
+Steve- Show quoted text -On Fri, Jun 12, 2009 at 3:05 PM, ef <snorlaxgb@gmail.com> wrote:- Show quoted text -
+This was probably a stupid question ,as no one responded. But for the m5 newbies like me especially using Python, I figured it out (although seems somewhat trivial), hopefully it will help:test_sys.l2 = [ L2Cache(size = '4MB') for i in xrange(np)]
+num_caches = np/4for i in xrange(num_caches):    if options.l2cache:         test_sys.l2[i].cpu_side = test_sys.tol2bus.port        test_sys.l2[i].mem_side = test_sys.membus.port
+     
+On Thu, Jun 11, 2009 at 4:23 PM, ef 
+Hello,I think this question has been discussed before, but I am having difficulty  searching through m5 emails older than a year old. I want to create multple L2 Caches in fs mode, so I think my modifications need to be made under fs.py. The one thing I don't want to do is create L2 Caches with respect to the number of CPUs. I want to create them independently.
+I tried doing something like this:if options.l2cache:    num_caches = np/2    for i in xrange(num_caches):    test_sys.l2[i] = L2Cache(size = '4MB')     I also  tried something like this:
+num_caches = np    test_sys.l2 = [L2Cache(l2_id=i) for i in xrange(np)]Which also does not work, any hints or pointers? Am I doing this completely wrong? If so can someone point me to the material in the M5 source code in order to understand the Cache Class (in terms of python).
+Thanks!EF
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

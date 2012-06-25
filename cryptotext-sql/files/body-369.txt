@@ -1,0 +1,12 @@
+Hi,
+We are trying to implement a type of Hardware Transactional memory on M5
+Simulator. We need to modify a lot of parts for that and would like to check
+small modules before running the entire program on a benchmark. Is there any way
+to do that?
+Thanks,
+Regards
+Pritha
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

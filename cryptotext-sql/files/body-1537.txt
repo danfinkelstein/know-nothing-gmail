@@ -1,0 +1,60 @@
+The only issue I have ever had with using functional memory requests
+during timing mode is that some modules explicitly disable them. There
+is no intrinsic reason (other than that) for them to not work at any
+time, since the actual memory store is the same for the functional and
+"physical" memory. Below is my patch for tweaking the behavior of the
+PhysicalMemory to not create errors, not sure if this relates to the
+issue you are seeing, however.
+        - Clint
+diff --git a/src/mem/physical.cc b/src/mem/physical.cc
+--- a/src/mem/physical.cc
++++ b/src/mem/physical.cc
+@@ -325,12 +325,16 @@
+          if (pmemAddr)
+              memcpy(pkt->getPtr<uint8_t>(), hostAddr, pkt->getSize());
+          TRACE_PACKET("Read");
+-        pkt->makeAtomicResponse();
++                  if (pkt->needsResponse()) {
++                          pkt->makeAtomicResponse();
++                  }
+      } else if (pkt->isWrite()) {
+          if (pmemAddr)
+              memcpy(hostAddr, pkt->getPtr<uint8_t>(), pkt->getSize());
+          TRACE_PACKET("Write");
+-        pkt->makeAtomicResponse();
++                  if (pkt->needsResponse()) {
++                          pkt->makeAtomicResponse();
++                  }
+      } else if (pkt->isPrint()) {
+          Packet::PrintReqState *prs =
+              dynamic_cast<Packet::PrintReqState*>(pkt->senderState);
+- Show quoted text -
+On Apr 27, 2009, at 2:44 AM, Rick Strong wrote:
+> Hi all,
+>
+> I am writing a memory debugger that sits in between L1 and the cpu. It
+> maintains a functional memory (like MemTest) that mimics the actions
+> the
+> memory actions and tests the values for problems. I would like to be
+> able to plug this in right after restoring a checkpoint when the
+> physical memory has values (from checkpoint) but the functional memory
+> is blank. Is there an easy way to initialize a functional memory
+> from a
+> physical memory?
+>
+> Also, I see references to MemDebugger class in the cache
+> implementations
+> which makes me think someone else has gone down this road before. Any
+> one know anything?
+>
+> Thanks,
+> -Rick
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+That's great that that will work!  Remember though, if you want to distinguish stats of software threads, you'll have to do additional hacking because stats (like IPC, cache stats, etc) are with respect to hardware contexts only.
+ 
+Good luck!
+Lisa
+- Show quoted text -On Tue, Jun 9, 2009 at 8:14 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+- Show quoted text -Hi Gulay, thanks for your suggestion. IPR_PALtemp23 is sufficient for my current work. As my work may not limit on Alpha architecture in the future, so I have to find out something unique for every thread on other platforms. But right now, it works quite well. Thanks very much !
+RegardsVeydan 
+Hi Veydan,Is it enough to have some unique id belongs to each thread. For example is it enough to use a MiscRegister like IPR_PALtemp23 register value which is unique for each thread.
+RegardsGulay_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

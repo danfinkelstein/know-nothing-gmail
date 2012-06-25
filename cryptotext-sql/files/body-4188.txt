@@ -1,0 +1,10 @@
+in the example/se.py script i just see an example on how to open 1 file.  i have tried a couple of ways but none of them would work right- Show quoted text -
+On 10/7/07, Nathan Binkert <nate@binkert.org> wrote:
+> i am trying to write an script for syscall emulation m5 and i am unable> to figure out how to get it to load more then one input file.  are there
+> any examples that i can look at or can someone tell me how to load it> into the process?> thanks paulM5 emulates the open system call, so if your program tries to open a filefor input, it should work.
+  Nate_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--                /              /      \ O  /       \/_(.__  /   \  __\/     )./         ( 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

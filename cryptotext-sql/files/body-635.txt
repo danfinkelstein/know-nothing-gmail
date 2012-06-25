@@ -1,0 +1,32 @@
+Can you provide some more detail (error message, etc.)?
+On Sun, Dec 13, 2009 at 12:15 PM, ef <snorlaxgb@gmail.com> wrote:
+> I removed the check, and unfortantely it crashes. Anyone have any idea on
+> making store cond not serialize? What about the ev6 scoreboard not
+> implemented, should that solve it?
+>
+> On Mon, Dec 7, 2009 at 6:32 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>> According to the Alpha reference manual, there's no need to serialize
+>> on store conditionals; if the programmer cares about ordering of
+>> memory accesses around the store conditional, then an MB or WMB
+>> instruction must be added.  So making store conditionals serialize is
+>> unnecessary from an architectural perspective.
+>>
+>> I see that the comment says "This is mainly due to lack of support for
+>> out-of-order operations of either of those classes of instructions",
+>> so it may be that there's something in the O3 pipeline model that
+>> doesn't support register renaming on store conditionals (though I
+>> don't know why they wouldn't work).  I think Kevin would need to
+>> comment on this since he's the one that wrote that code and that
+>> comment (even though it was 3.5 years ago so he may not remember).
+>>
+>> I'd say just remove that check and see what happens... please let us
+>> know if you try it whether it causes any problems or not.
+>>
+>> Thanks,
+>>
+>> Steve
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

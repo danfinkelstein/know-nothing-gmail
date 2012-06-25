@@ -1,0 +1,128 @@
+I don't understand how this can be an issue. Setting options.num_cpus
+from the command line should be equivalent to setting it in the code.
+Where are you setting it by hand? After it's used in fs.py?
+Ali
+- Show quoted text -
+On Oct 26, 2008, at 10:42 PM, Shoaib Akram wrote:
+> its kindof ugly what i am doing but...Instead of taking the number
+> of cpus from command line i am setting options.num_cpus=2 and then
+> np=options.num_cpus....if i do np=2 directly, I had that problem...
+>
+> ---- Original message ----
+>> Date: Fri, 24 Oct 2008 14:50:51 -0700
+>> From: "nathan binkert" <nate@binkert.org>
+>> Subject: Re: [m5-users] switch cpus problem
+>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>
+>> I don't quite understand the problem, but if there is a bug we need
+>> to
+>> fix, a diff would be appreciated.
+>>
+>> Nate
+>>
+>> On Fri, Oct 24, 2008 at 2:46 PM, Shoaib Akram
+>> <sakram3@illinois.edu> wrote:
+>>> turns out that, changing
+>>> options.num_cpus=2
+>>> np=options.num_cpus
+>>> with np=2 was causing the problem...strange?
+>>>
+>>> ---- Original message ----
+>>>> Date: Fri, 24 Oct 2008 15:48:20 -0400
+>>>> From: Ali Saidi <saidi@umich.edu>
+>>>> Subject: Re: [m5-users] switch cpus problem
+>>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>>
+>>>> It seems like your checkpoint didn't have 2 cpus in it. If you
+>>>> look at
+>>>> m5.cpt do you see a system.cpu1 section?
+>>>>
+>>>> Ali
+>>>>
+>>>> On Oct 24, 2008, at 2:56 PM, Shoaib Akram wrote:
+>>>>
+>>>>> I am usig default Simulation.py. I think it is doing what you
+>>>>> mentioned plus I have used fast-forward with multiple cpus some
+>>>>> months back (dont know which release of m5 was it )...By the way,
+>>>>> when I use the method you describe, I get,
+>>>>>
+>>>>> Restoring from checkpoint
+>>>>> fatal: Can't unserialize 'system.cpu1:_status'
+>>>>>
+>>>>>
+>>>>> ---- Original message ----
+>>>>>> Date: Fri, 24 Oct 2008 13:26:30 -0400
+>>>>>> From: Ali Saidi <saidi@umich.edu>
+>>>>>> Subject: Re: [m5-users] switch cpus problem
+>>>>>> To: M5 users mailing list <m5-users@m5sim.org>
+>>>>>>
+>>>>>> It should work, although I generally use the checkpoint, restore,
+>>>>>> switch method when sampling. There might be a problem with fast-
+>>>>>> forwarding with multiple cpus. You should take a look at
+>>>>>> Simulation.py
+>>>>>> and see what happens after the atomic cpu exits. All the atompc
+>>>>>> cpus
+>>>>>> should be replaced with timing or detailed cpus and the atomic
+>>>>>> cpus
+>>>>>> should be deactivated. Are you sure you're specifying a different
+>>>>>> type
+>>>>>> of CPU after the switch?
+>>>>>>
+>>>>>> Ali
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> On Oct 24, 2008, at 6:17 AM, Shoaib Akram wrote:
+>>>>>>
+>>>>>>> I made some changes to memory system and collected data for
+>>>>>>> several
+>>>>>>> uniprocessor experiemts.However, for multiprogramming
+>>>>>>> workloads I
+>>>>>>> ran into this assertion at switch of cpus.
+>>>>>>>
+>>>>>>> m5.opt: build/ALPHA_SE/cpu/simple/atomic.cc:202: virtual void
+>>>>>>> AtomicSimpleCPU::resume(): Assertion `system->getMemoryMode() ==
+>>>>>>> Enums::atomic' failed.
+>>>>>>>
+>>>>>>> Any idea whats wrong? I use --fast-forward=X --max-inst=Y to
+>>>>>>> fast
+>>>>>>> forwarding.
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

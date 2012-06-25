@@ -1,0 +1,14 @@
+I don't remember either myself or anyone else implementing anything to change the memory model implemented by O3, so I'm pretty sure it's going to be the same no matter what. I'm not sure which of the SPARC memory models it corresponds to, though. The configuration of the memory system itself might also partially determine that. Could someone that knows the memory system better comment?
+Gabe- Show quoted text -
+Quoting Eberle <rambo.ufsc@gmail.com>:
+Does the Sparc O3 processor implement the specified memory model? In this
+case, TSO and optionally PSO.
+Or is the program executed sequentially?
+If yes, does the simple processor model also implement it?
+Thanks in advance,
+--
+Eberle A. Rambo.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

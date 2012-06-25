@@ -1,0 +1,6 @@
+Hi!Has anyone worked on a directory protocol implementation on m5 or are there existing projects that use  m5 to simulate a system with a directory cache protocol? I am looking for something to build upon or easily extend to show that m5 can be used for directory protocols.
+ThanksAllan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

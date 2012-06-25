@@ -1,0 +1,22 @@
+You're just missing a few shared libraries.  I think I've got them all here:
+http://www.m5sim.org/dist/current/gdb-libs.tgz- Show quoted text -
+Naoto Fukumoto wrote:
+Thank you for replying.
+I mount my disk image and copy gdb.
+I try running gdb.
+But I get following error messege.
+# gdb
+gdb: error while loading shared libraries: libreadline.so.5: cannot open shared object >file: No such file or directory
+Could you tell me how to run gdb correctly ?
+Best Regards,
+--
+Naoto Fukumoto
+E-mail:fukumoto@c.csce.kyushu-u.ac.jp
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

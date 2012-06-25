@@ -1,0 +1,33 @@
+Thank you for replying.
+My problem is simulation is not finished.(IPC is very small)
+I tried the simulation following simulation environment once again.
+I am trying to run the Splash2 in Chip MultiProcessors using SE mode.
+I get the Splash2 binary in the following link.
+http://www.m5sim.org/dist/m5_benchmarks/v1-splash-alpha.tgz
+I  try to run SPLASH2 in Detailed 4 CPU cores using default .py file (m5_1.1/m5/configs/splash2/run.py)
+  
+But Simulation isn't finished. (IPC is very small, too)
+Therefore  cause for not finishing the simulation  is not "prefetching". I'm sorry for the mistake.
+I have no idea what cause this problem.
+Could you tell me how to run Splash2 benchmarks correctly?
+following line is my comand line message and m5stat.txt
+##### comand line messege ######
+command line: ./m5.fast -ENP=4 -d output_splash_deffft/ ../../configs/splash2/run.py -ESYSTEM=Detailed -EBENCHMARK=FFT -EROOTDIR=/hom\
+e/fukumoto/m5_1.1/m5-test/splash2/splash2/codes/
+warn: Entering event queue.  Starting simulation...
+##### m5stat.txt ######
+cpu0.COM:IPC                                 0.012835                       # Committed instructions per cycle
+cpu0.COM:count                              154016099                       # Number of instructions committed
+cpu0.FETCH:idle_cycles                    11964858470                       # number of cycles where fetch stage was idle
+cpu0.FETCH:idle_rate                            99.71                       # percent of cycles fetch stage was idle
+toL2Bus.data_idle_cycles                     39429064                       # number of cycles bus was idle
+toL2Bus.data_idle_fraction                   0.003286                       # fraction of time data bus was idle
+cpu1.COM:IPC                                 0.002342                       # Committed instructions per cycle
+cpu2.COM:IPC                                 0.002343                       # Committed instructions per cycle
+cpu3.COM:IPC                                 0.002344                       # Committed instructions per cycle
+  
+Thanks and Best regards,- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

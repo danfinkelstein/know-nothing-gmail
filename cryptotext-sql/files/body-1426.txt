@@ -1,0 +1,12 @@
+Hi,
+I have installed and compiled M5 successfully, but when I want to verify
+it, it reports the following error:
+scons: ***
+[build/SPARC_SE/tests/debug/long/00.gzip/sparc/linux/o3-timing/stdout]
+Error 1
+do you have any idea?
+Thanks
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

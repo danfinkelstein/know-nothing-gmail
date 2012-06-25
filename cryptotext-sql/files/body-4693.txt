@@ -1,0 +1,94 @@
+Well, got it working at last. Turns out it wasn't a matter of versions. Exporting LIB=-lintl did the trick (didn't require C_INCLUDE_PATH or DYLD_LIBRARY_PATH at all). Odd, since in the configure it looks like it checks for -lintl, and decides it shouldn't be used. Is this possibly a bug with the configure script?
+-Nick- Show quoted text -
+On Mar 2, 2007, at 9:53 AM, Ali Saidi wrote:
+Nick,
+Here are the relevant versions:
+The following ports are currently installed:
+  expat @2.0.0_1 (active)
+  gettext @0.15_0 (active)
+  glib2 @2.12.4_0 (active)
+  glib2-devel @2.9.0_0
+  libiconv @1.11_0+darwin_8 (active)
+  mercurial @0.9.1_0 (active)
+  openssl @0.9.8d_0+darwin_8 (active)
+  pkgconfig @0.21_0 (active)
+  python24 @2.4.3_1+darwin_8 (active)
+  scons @0.96.92_0 (active)
+  swig @1.3.29_0+darwin_8 (active)
+  wget @1.10.2_0+darwin_8 (active)
+  zlib @1.2.3_0 (active)
+i686-apple-darwin8-gcc-4.0.1 (GCC) 4.0.1 (Apple Computer, Inc. build 5367)
+Ali
+On Mar 2, 2007, at 4:10 AM, Nicolas Zea wrote:
+No luck with the DYLD_LIBRARY_PATH. Still getting the following:
+gmake[2]: Entering directory `/Users/Nick/Workspace/m5-2.0b2/build/libelf/build/po'
+gcc -DHAVE_CONFIG_H -I.. -I. -I../lib -I/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po -I/Users/Nick/Workspace/m5-2.0b2/ext/libelf/lib  -g -O2  \
+           /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c   -o /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg
+/usr/bin/ld: Undefined symbols:
+_libintl_bindtextdomain
+_libintl_gettext
+_libintl_textdomain
+collect2: ld returned 1 exit status
+By chance, are you using a different version of python (mine is 2.4.3 installed through macports, compiled with gcc 4.0.1)?
+I'd really like to get this working on my laptop (at the moment, I'm using a paralllels ubuntu virtual setup to run it, and that just won't cut it). I'll try and replicate your setup as best I can.
+-Nick
+On Mar 1, 2007, at 11:03 PM, Ali Saidi wrote:
+I know of two people (myself included) who frequently compile on OS X 10.4. We both use gettext from DarwinPorts (MacPorts) without problem. So I don't know why you're having an issue, but if you could try passing -L/opt/local/lib to the compiler or setting DYLD_LIBRARY_PATH (as oppopsed to LD_LIBRARY_PATH).
+Ali
+On Mar 1, 2007, at 11:06 PM, Nicolas Zea wrote:
+Thanks for the suggestion, you were right, adding it to my include path let the file be found. Although it appears the library itself isn't being found now, since it complains about unresolved externals (textdomain, bindtextdomain, gettext). Grepping my libintl.a shows these guys, so I'm guessing they're there, but the linker is having trouble finding them. Unfortunately, I tried exporting LD_LIBRARY_PATH=/opt/local/lib, but no such luck.  Do you know of any other options for telling it where a library is?
+-Nick
+On Mar 1, 2007, at 9:11 PM, Gabriel Michael Black wrote:
+   I'm not sure what's causing your problem, but one thing I notice is that it's not scons that's having an error, it's make running in the libelf directory. We have a private copy of libelf just for m5's purposes, but it was developed seperately and has it's own build system. The real question is why make isn't finding the header files. That might be because they aren't in the compiler's include search paths, which you might be able to correct by setting the C_INCLUDE_PATH environment variable as explained here:
+http://gcc.gnu.org/onlinedocs/gcc-3.4.6/gcc/Environment-Variables.html#Environment-Variables
+Gabe
+Nicolas Zea wrote:
+When I try to compile m5 I get the following error:
+gmake[2]: Entering directory `/Users/Nick/Workspace/m5-2.0b2/build/ libelf/build/po'
+gcc -DHAVE_CONFIG_H -I.. -I. -I../lib -I/Users/Nick/Workspace/ m5-2.0b2/ext/libelf/po -I/Users/Nick/Workspace/m5-2.0b2/ext/libelf/ lib  -g -O2  \
+           /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c   - o /Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:28:21: error:  libintl.h: No such file or directory
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c: In function  'main':
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error:  'LC_ALL' undeclared (first use in this function)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error:  (Each undeclared identifier is reported only once
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:44: error: for  each function it appears in.)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:88: error:  'LC_MESSAGES' undeclared (first use in this function)
+/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg.c:89: warning:  incompatible implicit declaration of built-in function 'gettext'
+gmake[2]: *** [/Users/Nick/Workspace/m5-2.0b2/ext/libelf/po/gmo2msg]  Error 1
+gmake[2]: Leaving directory `/Users/Nick/Workspace/m5-2.0b2/build/ libelf/build/po'
+gmake[1]: *** [de.msg] Error 2
+gmake[1]: Leaving directory `/Users/Nick/Workspace/m5-2.0b2/build/ libelf/build/po'
+gmake: *** [install-recursive] Error 1
+scons: *** [build/libelf/lib/libelf.a] Error 512
+scons: building terminated because of errors.
+Now I know I have libintl.h on my system (its in the gettext's  macports directory at /opt/local/include). Is there any way to find  out where scons is looking for the file? Has anyone else run into  this problem? For info, my python version is 2.4.3 (from macports)  and scons is 0.96.95 (compiled myself).
+Thanks,
+Nick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

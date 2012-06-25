@@ -1,0 +1,141 @@
+You do, however it's not clear that you care about the initialization
+for whatever change you're attempting to evaluate. If you run an
+atomic cpu for a 1/4 of the benchmark and then create a checkpoint,
+you can then restore from the checkpoint and get new statistics on a
+detailed cpu running from that point. In reality you probably want to
+go ahead and warm-up for a little while and then reset your statistics
+again, but either way you can evaluate a variety of changes from the
+checkpoint instead of from the start of the program. If you're running
+a lot of variations this can significantly reduce the time required to
+get results (1/4 of the run-time is only executed once not for every
+variation). Additionally, the statistics you get won't be obfuscated
+by the warmup period which normally involves creating data structures
+and not the steady-state behavior found in the middle of the benchmark.
+The run-time for splash 2 depends a great deal on the parameters you
+specify. It can be very short or very long depending on the problem
+size.
+Ali
+- Show quoted text -
+On Jun 26, 2008, at 2:38 PM, Sujay Phadke wrote:
+> Hi Ali,
+>        Could you explain why simulating the initializing code in
+> Splash-2
+> can be avioded? I thought we would have to simulate the entire
+> thread to get
+> the correct results. The sim time for splash-2 is about 45mins for the
+> longest benchmark.
+>
+> - Sujay
+>
+> ----- Original Message -----
+> From: "Ali Saidi" <saidi@umich.edu>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Tuesday, June 24, 2008 3:22 PM
+> Subject: Re: [m5-users] error running O3 directly with more than 1 cpu
+>
+>
+>>
+>> On Jun 23, 2008, at 5:47 PM, Sujay Phadke wrote:
+>>
+>>> Well I wanted to run the O3 (n>1) for testing wattch. Is it wrong to
+>>> run it
+>>> in detailed mode directly w/o using any switching?
+>> No, however you'll be spending a very long time simulating, including
+>> simulating all initialization code in the splash 2 benchmarks that
+>> isn't incredibly useful.
+>>
+>>>
+>>> If so, can you give me an example file and command line which does
+>>> switching
+>>> for say Splash2?
+>> I don't have one but you can look at how switching is done in
+>> Simulation.py to get an idea.
+>>
+>> Ali
+>>
+>>
+>>>
+>>>
+>>> thanks,
+>>> Sujay
+>>>
+>>> ----- Original Message -----
+>>> From: "Ali Saidi" <saidi@umich.edu>
+>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>> Sent: Monday, June 23, 2008 5:39 PM
+>>> Subject: Re: [m5-users] error running O3 directly with more than 1
+>>> cpu
+>>>
+>>>
+>>>>
+>>>> On Jun 23, 2008, at 1:23 PM, Sujay Phadke wrote:
+>>>>
+>>>>> Hello,
+>>>>>       If I try to run O3 in SE mode directly, without using any
+>>>>> fastforwarding, it gives me the error:
+>>>>>
+>>>>> build/ALPHA_SE/m5.opt configs/splash2/runsplash.py -d -n4 -b
+>>>>> OceanContig
+>>>>>
+>>>>> warn: Increasing stack size by one page.
+>>>>> warn: ignoring syscall sigprocmask(3, 18446744073709551615, ...)
+>>>>> warn: ignoring syscall sigprocmask(3, 0, ...)
+>>>>> warn: ignoring syscall sigaction(8, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(11, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(10, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(4, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(7, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(6, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(12, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(5, 4831387552, ...)
+>>>>> warn: ignoring syscall sigaction(13, 4831387552, ...)
+>>>>> nxm_thread_create: no idle contexts available.
+>>>>> Program aborted at cycle 378945000
+>>>>> It works fine of numcpus (-n) = 1, or if I use atomic or timing
+>>>>> mode. The statement
+>>>>>
+>>>>> thread->setStatus(ThreadContext::Unallocated);
+>>>>>
+>>>>> appears in src/cpu/simple/base.cc and src/cpu/o3/
+>>>>> thread_context_impl.hh.
+>>>>>
+>>>> The statement and the context the statement is in are two different
+>>>> things. From a cursory look of the O3CPU, it appears as though the
+>>>> state of the thread context is never initialized when the thread
+>>>> context is created, and the places where it is set to unallocated
+>>>> are
+>>>> for switching CPUs. Initializing it to Unallocated should solve the
+>>>> problem.
+>>>>
+>>>> Are you planning on running a detailed CPU for the entirety of the
+>>>> benchmark?
+>>>>
+>>>> Ali
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

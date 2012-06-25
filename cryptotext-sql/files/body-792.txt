@@ -1,0 +1,16 @@
+>>> My estimate is that the tar-zipped file should between 250-300 MB.
+>> No problem.
+>
+> Let me host it somewhere and send you the link so that you may download it.
+Sure.  Once I get it on the m5 site, you can add the link.
+> Do you mean providing the link though the wiki? I do not have
+> permissions to edit this page,
+> http://www.m5sim.org/wiki/index.php/Download, which has links to the
+> cross-compilers.
+You should be able to, but you have to create an account.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,7 @@
+Hello,I am trying to find out in the L2 cache which memory object has sent a request. For example I want to know whether an L1 Data Cache or an L1 Instruction Cache has sent a request to the L2. Right now I am working under cache_impl.hh. Is there a way in this file to decrypt pkt->getSrc(), as this number is only a integer. So what I want to do is take pkt->getSrc() and retrieve the actual name of the module of that source.
+So lets say L2 gets a packet from source 5, I want to know what the name of that module is! I exhaustively searched the code, the only thing I could think of is using some functions from src/mem/bus.cc & bus.hh, but not sure if thats even possible or correct, that should be a very very last resort. The other method is brute force where I print a Cache trace, and manually decode srcs to the actual module.
+My question is, aside from the brute force method, is this possible, or are there easier ways?Thanks!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

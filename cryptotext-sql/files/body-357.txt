@@ -1,0 +1,119 @@
+On Mon, Apr 5, 2010 at 1:07 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+Hi Bhushan,  We haven't run across this issue in the context of checkpointing using our infrastructure.  However, I did have this problem when I was trying to modify M5, and I believe its caused by scheduling issues in the event queue.  I have a couple questions:
+   1) Have you made any modifications to M5?  If so, are they timing related?No, I haven't modified M5. 
+   2) Are you using the same simulated system and kernel image?Yes, the kernel image and the parsec binaries are same as the one mentioned in the tech report.  Btw, fast forwarding works without any issues. Any idea on how can localize the crash? Would unit testing help?
+- Show quoted text -  Thanks,  Joel
+---------- Forwarded message ----------From: Mark Gebhart <mgebhart@cs.utexas.edu>Date: Sun, Apr 4, 2010 at 8:24 PM
+Subject: Re: [m5-users] Checkpointing PARSEC benchmark in m5.To: Joel Hestness <jthestness@gmail.com>Hey Joel,
+I haven't ever seen this error. It looks like from his commands that
+is doing everything right so I am not sure why it is crashing.
+Mark
+On Sun, Apr 4, 2010 at 8:16 PM, Joel Hestness <jthestness@gmail.com> wrote:
+> Hey Mark,
+>   Do you have any insights on this?
+>   Thanks,
+>   Joel
+>
+> ---------- Forwarded message ----------
+> From: Bhushan <mohan@cs.virginia.edu>
+> Date: Sun, Apr 4, 2010 at 7:22 PM
+> Subject: Re: [m5-users] Checkpointing PARSEC benchmark in m5.
+> To: M5 users mailing list <m5-users@m5sim.org>
+>
+>
+> Any thoughts on the crash that I have mentioned?
+>
+> On Fri, Apr 2, 2010 at 6:10 PM, ef <snorlaxgb@gmail.com> wrote:
+>>
+>> A good explanation can be found here on ROI and checkpoints, also check
+>> out parsec benchmark code :
+>> http://www.cs.utexas.edu/~parsec_m5/TR-09-32.pdf
+>> basically roi region is where all the parallel portion of execution is
+>> done, exlcuding startup and exit code
+>>
+>>
+>> Ive also heard, take this with a grain of salt running 64 cores and trying
+>> to restore checkpoint is a bit buggy. I think other people have had similar
+>> problems.
+>>
+>> On Fri, Apr 2, 2010 at 4:03 PM, Bhushan <mohan@cs.virginia.edu> wrote:
+>>>
+>>> Hi,
+>>> I'm trying to use the checkpoint feature in m5 for the benchmarks in the
+>>> PARSEC suite. In the first run, the checkpoint gets created and in the
+>>> second run when I try to run in detailed mode using the restore checkpoint
+>>> option, I get some errors.
+>>>
+>>> first run - creating checkpoint - successful.
+>>> # ./build/ALPHA_FS/m5.opt ./configs/example/fs.py -n 1
+>>> --script=./scripts/blackscholes_64c_simdev_ckpts.rcS
+>>>
+>>>
+>>> second run - running in detailed mode:
+>>> #./build/ALPHA_FS/m5.opt ./configs/example/fs.py --detailed --caches
+>>> --l2cache --checkpoint-restore=1 -n 1
+>>> ..............
+>>> ..............
+>>> Switch at curTick count:10000
+>>> info: Entering event queue @ 2254485270500.  Starting simulation...
+>>> m5.opt: build/ALPHA_FS/sim/simulate.cc:68: SimLoopExitEvent*
+>>> simulate(Tick): Assertion `curTick <= mainEventQueue.nextTick() && "event
+>>> scheduled in the past"' failed.
+>>> Program aborted at cycle 2254485270500
+>>>
+>>>
+>>> The benchmarks in the PARSEC suite run fine if I do not use the
+>>> checkpointing feature.
+>>>
+>>>
+>>> Also, I have been trying to understand how exactly checkpointing is
+>>> invoked?
+>>> How does m5 know from which part the ROI starts? Where does (in the
+>>> scripts) m5 create a checkpoint? If these questions sound repetitive, could
+>>> anyone point me to the mailing list discussions that explain checkpointing
+>>> (references to checkpointing in mail archive seem to explain specific cases
+>>> instead of the general working)?
+>>>
+>>> --
+>>> Regards,
+>>> Bhushan
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Regards,
+> Bhushan
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+>  Joel Hestness
+>  PhD Student, Computer Architecture
+>  Dept. of Computer Science, University of Texas - Austin
+>  http://www.cs.utexas.edu/~hestness
+>
+--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Regards,Bhushan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

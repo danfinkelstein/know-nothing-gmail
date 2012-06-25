@@ -1,0 +1,6 @@
+Hi, I used the ptxdist to create an full system image to run on M5, and I have reached the last  step. When I run the command  ptxdist images, I just got an error !The error seems simple:Failed to run /media/Study/CPU/CPUsource/M5/linux-dist/lib/ptxdist-0.10.3/m5_files/MAKEDEV -d /media/Study/CPU/CPUsource/M5/linux-dist/my_workspace/root/dev console random urandom null hda hdb hdc hdd sda as root
+but the problem is I run the command under rootroot@ubuntu:/media/Study/CPU/CPUsource/M5/linux-dist/my_workspace# ptxdist imagesDoes anyone encounter such an problem yet? I have absolutely no idea now !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

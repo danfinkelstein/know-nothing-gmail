@@ -1,0 +1,21 @@
+Hi,  You need to tell the simulator to exit somewhere.  We usually add the following line to the end of our .rcS files:
+    /sbin/m5 exit  Hope this helps,  Joel2009/11/10 junli gu <gujunli@gmail.com>
+- Show quoted text -Hi everybody, I have been stuck on running my own benchmark. I guess I am lost in the script files. My situation is:
+  1.I have compiled the full system. It can run default benchmarks. And I installed M5term to check the running process. 
+ 2.I made my own benchmarks and cross compiled it into alpha executables,with the name 'hello'.   3.I copy the binaries 'hello' into my image disk, in the folder of benchmark. 4.I made a run script called 'hello.rcS' and put it into $Home/m5/configs/example/fs.py. THe content is like the following:
+   #! /bin/sh    echo "executing hello world"    eval /benchmark/hello5.Run in full system mode:   build/ALPHA_FS/m5.opt -d /home/junligu/output configs/example/fs.py --script configs/boot/hello.rcS
+ And I get the output of the benchmark by M5term and then the simulator seems like stuck there like the following:  output from M5term:      loading script...      executing hello world      hello world ! i= 9
+ Then the simulator stuck here by two days:    command line: build/ALPHA_FS/m5.opt -d /home/junligu/output configs/example/fs.py --script configs/boot/hello.rcS   Global frequency set at 1000000000000 ticks per second
+   info: kernel located at: /dist/m5/system/binaries/vmlinux    Listening for system connection on port 3456      0: system.tsunami.io.rtc: Real-time clock set to Thu Jan  1 00:00:00 2009   0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+     **** REAL SIMULATION ****    info: Entering event queue @ 0.  Starting simulation...  As to my knowledge, fs.py is about the configuration of simulated system . .rcS file is like a boot script file describing how to run the benchmark. So I need to create my own configuration and the boot scripts. Nut I believe the easiest way to start is to use the existed fs.py?
+ Any one can help me out? Thank you very muuch!-- ************************************************Gu Junli--谷俊丽PHD Candidate of Tsinghua UniversityBeijing 100084,ChinaTel: 86-10-62795139
+************************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users--   Joel Hestness  PhD Student, Computer Architecture
+  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

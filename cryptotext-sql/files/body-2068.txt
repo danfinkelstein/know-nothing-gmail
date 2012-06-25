@@ -1,0 +1,21 @@
+Dear All,
+I am trying to plug a new component to the cpu to get the address issued by the
+cpu to the cache. My intention is to change that address and send it to the
+cache. so that the cache doesnot know that it has been modified and cache serves
+the cpu with the address it receives. I was wondering where to do this. I mean
+do I need to write this new component in c++ and use it as a configuration
+component in python file or can I just use the python configuration file to get
+the address and write the modified address back. The concern I am having is this
+has to happen with every data access issued by the core to the DCache. (I am not
+sure whether I am asking the question in a correct manner, cos still I am trying
+to understand the big picture of m5, still bit confusing how things are
+happening with c++ and python, for example if I write a new c++ component what
+things do i need to do to make that component visible to the python
+configuration file )
+any help/advice on this regard would be greatly appreciate.
+regards,
+Isuru
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

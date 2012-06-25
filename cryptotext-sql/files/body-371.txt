@@ -1,0 +1,37 @@
+I know Geoff Blake had worked on some TM stuff on an older version of
+M5. It might be a good idea to check out some of the stuff he posted
+on his webpage:
+eecs.umich.edu/~blakeg
+With regards to component testing, it might be worth configuring the
+SimpleCPU model as a way to test different things. I know It's
+probably not exactly 'component testing' in its purest sense, but it
+may not be too difficult to get that model to execute some
+instruction/memory trace that you want to use for small-scale testing.
+Once you figure out where instructions interface to memory you can
+edit the simulation at that point. I'm not sure about what you would
+have to do if you want to isolate parts of the memory system though.
+- Show quoted text -
+On Tue, Mar 30, 2010 at 11:24 PM, nathan binkert <nate@binkert.org> wrote:
+>
+> > We are trying to implement a type of Hardware Transactional memory on M5
+> > Simulator. We need to modify a lot of parts for that and would like to check
+> > small modules before running the entire program on a benchmark. Is there any way
+> > to do that?
+>
+> I'm not exactly sure what you're asking for.  Component testing?  If
+> so, there aren't really test harnesses for each individual M5
+> components as they all pretty much depend on each other.  For generic
+> simulator functions like the event queue, statistics, etc., there are
+> some tests in src/unittest
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+- Korey
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

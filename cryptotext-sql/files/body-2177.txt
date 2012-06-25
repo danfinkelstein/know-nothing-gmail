@@ -1,0 +1,15 @@
+Since we don't provide a cpu2006.py file, you'll have to tell us what yours looks like before we can diagnose the problem.- Show quoted text -On Tue, Dec 9, 2008 at 9:38 AM, Pavan Kumar <jorrigal@gmail.com> wrote:
+- Show quoted text -hi,    when i tried to compile the alpha binaries on M5 it gave the following error message.
+command line: ./build/ALPHA_SE/m5.opt configs/example/cpu2006.py
+num of cpu:1Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000**** REAL SIMULATION ****warn: Entering event queue @ 0.  Starting simulation...
+fatal: default_port: Unconnected port! @ cycle 22[blowUp:build/ALPHA_SE/mem/port.cc, line 47]Memory Usage: 577080 KBytes
+could you please help me to find out the error .
+Pavan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

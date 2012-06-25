@@ -1,0 +1,30 @@
+m5 works seamlessly under cygwin. I have used it for a long time and on many machines.
+- Show quoted text -
+---- Original message ----
+>Date: Mon, 12 May 2008 19:56:28 +0000 (GMT)
+>From: abc def <jose_6154@yahoo.es>
+>Subject: [m5-users] m5 in vista
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Hi,
+>
+>   For some unavoidable reason i have to run m5 in
+>   windows environment. It is Vista Business edition. I
+>   can not install vmware. Can you please help me how
+>   to go forward with it?
+>
+>
+>
+>     ------------------------------------------------
+>
+>   Enviado desde Correo Yahoo!
+>   La bandeja de entrada más inteligente.
+>________________
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

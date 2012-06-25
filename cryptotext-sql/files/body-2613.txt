@@ -1,0 +1,5 @@
+I want to run a full system simuation. There are two cores and each core runs 2 thread. Can I run 4 benchmarks simultaneously and allocate one for each thread? Only O3cpu supports SMT? Thanks.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,23 @@
+> Hi Steve:
+>    Thank you for your reply. The problem for my code to be outside of
+> the m5/src tree is that there are code in src/cpu/cpu_model.py that
+> has to
+> #include "cpu/timingtracecpu/timing_trace.hh"
+>    If I put my code outside the m5/src/ how do I make sure the
+> cpu_model.py can still include the header file? Thank you again for
+> your comment.
+I believe that in this case, you're going to have to just edit that
+file.  I've actually got code that removes that file as part of my
+sweeping changes to scons and tests, but it's probably a few weeks
+from being committed.  (Basically there's a CPUModel directive in
+SCons now).
+The header file itself will have a path relative to the EXTRA
+directory that you provide.
+So if you have EXTRAS=foo/bar
+and you have a file called foo/bar/blah/baz.hh, you'll do
+#include "blah/baz.hh"
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

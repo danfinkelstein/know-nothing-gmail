@@ -1,0 +1,11 @@
+hi,everyone
+I am trying to compile m5 in ubuntu .   I am getting the following error: 
+xmc@xmc:~/桌面/m5-2.0b5$ scons build/ALPHA_SE/m5.debug scons: Reading SConscript files ... scons: warning: The Options class is deprecated; use the Variables class instead. File "/home/xmc/桌面/m5-2.0b5/SConstruct", line 261, in  TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':   File "/home/xmc/桌面/m5-2.0b5/SConstruct", line 299:     env['GCC'] = subprocess.Popen(env['CXX'] + ' --version', shell=True, xmc@xmc:~/桌面/m5-2.0b5$   
+I have all of the most current version of the software required. 
+ gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu4)    python2.6 m4 (GNU M4) 1.4.13 SCons v1.2.0.zlib 1.2.3.3 SWIG Version 1.3.36 
+ can you give me some advice ?
+thanks in advance
+ _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

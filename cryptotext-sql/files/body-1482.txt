@@ -1,0 +1,16 @@
+Hi everyone,I am running SPEC CPU2000 benchmarks with O3. However, some benchmarks: crafty, equake and swim, ammp, applu don't run correctly. Except for crafty which actually gives an error message the rest seem to just stop running becuase when I run "top" I see the m5.debug process get's killed and the terminal freezes. 
+This is how I am setting up the processes ( I have run them individually and in SMT mode and the result is the same):smt_process2 = LiveProcess()smt_process2.executable = 'cpu2000/binaries/crafty00.peak.ev6'
+smt_process2.cmd = ['cpu2000/binaries/crafty00.peak.ev6','<','cpu2000/data/crafty/input/crafty.in','>','cpu2000/data/crafty/output/crafty.out','2>','cpu2000/data/crafty/output/crafty.err' ]
+smt_process2.simpoint = 774 * 100E6process += [smt_process2, ]smt_process2 = LiveProcess()smt_process2.executable = 'cpu2000/binaries/equake00.peak.ev6'smt_process2.cmd = ['cpu2000/binaries/equake00.peak.ev6','<','cpu2000/data/equake/input/inp.in', '>', 'cpu2000/data/output/inp.out', '2>', 'cpu2000/data/equake/output/inp.err']
+smt_process2.simpoint = 812*100E6process += [smt_process2, ]smt_process2 = LiveProcess()smt_process2.executable = 'cpu2000/binaries/swim00.peak.ev6'smt_process2.cmd = ['cpu2000/binaries/swim00.peak.ev6','<','cpu2000/data/swim/input/swim.in','>','cpu2000/data/swim/output/swim.out','2>','cpu2000/data/swim/output/swim.err' ]
+smt_process2.simpoint = 2079*100E6process += [smt_process2, ]smt_process2 = LiveProcess()smt_process2.executable = 'cpu2000/binaries/ammp00.peak.ev6'smt_process2.cmd = ['cpu2000/binaries/ammp00.peak.ev6','<','cpu2000/data/ammp/input/ammp.in','>','cpu2000/data/ammp/output/ammp.out','2>','cpu2000/data/ammp/output/ammp.err' ]
+smt_process2.simpoint = 108*100E6process += [smt_process2, ]smt_process2 = LiveProcess()smt_process2.executable = 'cpu2000/binaries/applu00.peak.ev6'smt_process2.cmd = ['cpu2000/binaries/applu00.peak.ev6','<','cpu2000/data/applu/input/applu.in','>','cpu2000/data/applu/output/applu.out','2>','cpu2000/data/applu/output/applu.err' ]
+smt_process2.simpoint = 2179*100E6process += [smt_process2, ]I am sure the problem is on how it is interpreting the 'cmd', since they run fine in simplescalar and I've had similar problems with ALPBench and other benchmarks, but I can't really get around these.
+The error message from Crafty is the following:**** REAL SIMULATION ****info: Entering event queue @ 0.  Starting simulation...info: Increasing stack size by one page.Crafty v14.3ERROR "<" is unknown command-line option
+ERROR "crafty.in" is unknown command-line optionERROR ">" is unknown command-line optionERROR "crafty.out" is unknown command-line optionERROR "crafty.err" is unknown command-line option
+White(1): I'd appreciate the help. Another quick question: system.cpu[i].max_insts_all_threads = 100000000  <-- Is this the correct way of using max_insts_all_threads? Thanks,
+JavierTexas A&M University Computer Science and Engineering Department
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

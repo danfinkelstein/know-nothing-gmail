@@ -1,0 +1,65 @@
+To my knowledge,
+you can't run SMT on FS mode but you can run separate cores.
+My guess is that you are failing 3 ticks (500 cycles per tick) in AND
+probably things just aren't instantiated correctly.
+3 ticks sounds like:
+Cycle 1: Thread 1: Cache Miss
+Cycle 2: Thread 1: Return From Cache Miss
+Cycle 3: Thread 2: Fail! (because each stage goes through the
+functionality for each thread).
+Run the Simulator with some trace-flags to get some details....
+I would try "Fetch,Decode,IEW,Commit,Exec,O3CPU".
+- Show quoted text -
+On 5/6/08, sahithi krishna <sahithi.krishna@gmail.com> wrote:
+> Does anyone have an idea why I am getting this error? I am trying to run the
+> FFT splash benchmark on 2 CPU with 2-way SMT. I am attaching my config file
+> with this email. Any suggestions are welcome...I am really desperate now.
+>
+> Thanks,
+> Sahithi
+>
+> Error:
+>
+> M5 Simulator System
+>
+> Copyright (c) 2001-2008
+> The Regents of The University of Michigan
+> All Rights Reserved
+>
+>
+> M5 compiled May  6 2008 10:06:06
+> M5 started Tue May  6 14:01:45 2008
+> M5 executing on sunshyin.local
+> command line: /Users/Sunshyin/m5/build/ALPHA_SE/m5.debug
+> ../smt.py
+> Global frequency set at 1000000000000 ticks per second
+> 0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+> 0: system.remote_gdb.listener: listening for remote gdb #1 on port 7001
+> 0: system.remote_gdb.listener: listening for remote gdb #2 on port 7002
+> 0: system.remote_gdb.listener: listening for remote gdb #3 on port 7003
+> warn: Entering event queue @ 0.  Starting simulation...
+> Assertion failed: (insts[i].empty()), function sortInsts, file
+> build/ALPHA_SE/cpu/o3/decode_impl.hh, line 452.
+> Program aborted at cycle 1500
+> Abort trap
+>
+> Thanks,
+> Sahithi
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

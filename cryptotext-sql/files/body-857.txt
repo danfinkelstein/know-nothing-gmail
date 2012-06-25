@@ -1,0 +1,53 @@
+I have tried m5threads package, and used a SPARC 
+crosstool at http://www.m5sim.org/dist/current/sparc64_crosstool.tar.bz2
+Unfortunately, it gives another 
+error: 
+sparc64-unknown-linux-gnu-gcc -g -O3  -c ../pthread.c -o ../pthread.o 
+sparc64-unknown-linux-gnu-g++  -static -o test_stackgrow  test_stackgrow.o ../pthread.o 
+sparc64-unknown-linux-gnu/bin/ld: ../pthread.o: check_relocs: unhandled reloc type 72
+../pthread.o: could not read symbols: File format not recognized
+collect2: ld returned 1 exit status
+ 
+Did I miss any option or package?
+ 
+Thanks!
+ 
+2009-10-17 
+Guangming Tan
+tgm@ict.ac.cn
+http://asl.ncic.ac.cn/tgm
+ 
+发件人： Steve Reinhardt 
+发送时间： 2009-10-17  01:25:12 
+收件人： M5 users mailing list 
+抄送： 
+主题： Re: [m5-users] compiling 
+error -- splash2 
+ 
+It looks like you're trying to build the 
+m5-specific PARMACS library, which is specific to Alpha Tru64, and doesn't work 
+under Linux.  I expect that the asm file format is not compatible. 
+ That library is pretty hokey and deprecated anyway.You should use 
+the PARMACS macros that map to pthreads, then either use the native Linux 
+pthreads library and run on Linux in FS mode, or if you want to run in SE mode, 
+use Daniel Sanchez's m5threads package instead (available in a separate 
+repository at repo.m5sim.org).Steve2009/10/16 
+Guangming Tan <tgm@ict.ac.cn>:- Show quoted text -> 
+Both the alpha cross compiler and gcc can not work.> I will try the 
+recommended way. Thanks.> But, is there any way to fix this 
+error? >  >  > 2009-10-16> 
+________________________________> Guangming Tan> tgm@ict.ac.cn> http://asl.ncic.ac.cn/tgm> 
+ > ________________________________> 发件人： Shoaib 
+Akram> 发送时间： 2009-10-16  22:30:47> 收件人： M5 users mailing 
+list> 抄送：> 主题： Re: [m5-users] compiling error -- splash2> 
+what is your compilation procedure? Follow the directions here http://www.capsl.udel.edu/splash/ using the alpha cross compiler from m5 page (or compiler your own cross compiler). > 
+---- Original message ---->>Date: Fri, 16 Oct 2009 21:43:29 +0800>>From: "Guangming Tan" <tgm@ict.ac.cn>  >>Subject: [m5-users] compiling error -- splash2  >>To: "m5-users" <m5-users@m5sim.org>>>>>   Hi,>>   The compiling for splash2 with parmacs shows the following error:>>   m5_asm.s: Assembler messages:>>   m5_asm.s:12: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:13: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:14: Error: unknown pseudo-op: `.ent'>>   m5_asm.s:14: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:15: Error: unknown pseudo-op: `.frame'>>   m5_asm.s:15: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:16: Error: no such instruction: `ldiq $v0,SYS_x'>>   m5_asm.s:16: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:17: Error: expected comma after "noat">>   m5_asm.s:17: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:18: Error: invalid character '_' in mnemonic>>   m5_asm.s:18: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:19: Error: expected comma after "at">>   m5_asm.s:19: Error: junk at end of line, first unrecognized character is `\'>>   m5_asm.s:20: Error: junk at end of line, first unrecognized character is `\'>>   make: *** [m5_asm.o] Error 1>>    >>   Could you tell me how to fix it?>>    >>   Thanks!>>    >>   2009-10-16>>>>   ------------------------------------------------>>>>   Guangming Tan>>   tgm@ict.ac.cn>>   http://asl.ncic.ac.cn/tgm>>    >>________________>>_______________________________________________>>m5-users mailing list>>m5-users@m5sim.org>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> 
+_______________________________________________> 
+m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users> 
+_______________________________________________> m5-users mailing 
+list> m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,11 @@
+Hi,
+I just downloaded M5 and was running the SurgeSpecweb benchmark on full system.
+I used the given fs.py script to run the benchmark. However, after many cycles,
+the simulation gave a fatal error on line 316 of src/sim/main.cc. The reported
+num_cycles was -5034415120011. What could be the problem? How should I fix it?
+Thanks,
+Christopher
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

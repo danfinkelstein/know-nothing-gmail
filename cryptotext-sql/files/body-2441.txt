@@ -1,0 +1,41 @@
+Thanks! And what is the system.l2.UpgradeReq_accesses? For L2 shared cache, we have both 
+system.l2.Writeback_accesses and system.l2.writebacks at the same time. What is the difference between the two?
+ 
+Thanks
+-Sheng- Show quoted text -
+On Mon, Oct 13, 2008 at 10:46 AM, Steve Reinhardt <stever@gmail.com> wrote:
+Demand accesses are the complement of prefetch accesses, i.e., where the cpu "demands" the block instead of just asking politely.  If you want to see what specific requests are summed into a particular statistic, see BaseCache::regStats() in src/mem/cache/base.cc.
+The M5 cache model is writeback/write-allocate, so only the L1 sees regular write accesses (due to stores from the CPU).  If a write misses in the L1, it generates a read exclusive (ReadEx) to the L2 (and beyond).
+A "fast write" occurs when a full 64-byte block is written (other than a writeback), so that the block can be allocated without fetching the old value.  Currently this never happens; we used to perform this operation on an Alpha wh64 instruction but haven't got that code working since we updated the coherence protocol, but we left the stat in since we hope to get it working again some day.
+Steve
+On Sun, Oct 12, 2008 at 7:41 PM, Sheng Li <sheng.sli@gmail.com> wrote:
+Hi,
+ 
+We are working on a power consumption project and need detailed M5 stats. And we have some difficulty in understanding the exact meaning of some M5 stats. Could anybody tell us what does these stats mean? 
+ 
+1.      Stats of L1 cache: 
+What is the difference between demand_access and overall_access?
+ 
+2. Stats of shared L2 cache: 
+ 
+2.1 What do the following parameters mean? In other words, what operations do they represent? 
+2.2 What are relationships among all the stats? For example, what parameters can be added together to get system.l2.demand_accesses?  In our simulations system.l2.demand_accesses= system.l2.ReadExReq_accesses + system.l2.ReadReq_accesses, which makes no sense to us. 
+2.3 Why/in what condition does the shared L2 cache have no Write_accesses?
+ 
+system.l2.overall_accesses
+system.l2.demand_accesses
+system.l2.ReadExReq_accesses
+system.l2.ReadReq_accesses
+system.l2.UpgradeReq_accesses 
+system.l2.Writeback_accesses
+system.l2.writebacks
+system.l2.fast_writes
+ 
+Thanks a lot
+-Sheng and Rick_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

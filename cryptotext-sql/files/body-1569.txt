@@ -1,0 +1,32 @@
+You shouldn't send any email to both m5-dev and m5-users. Almost
+everyone that reads m5-dev also reads m5-users. What compile errors
+are you getting and with what version of gcc? ARM_SE was just
+integrated into our repository a little while ago and may not work,
+but it should at least compile.
+Gabe
+- Show quoted text -
+Quoting Javier Jose <javier.jose@gmail.com>:
+> Hi everybody,
+>
+> I have notices that there has been some modification to the ARM architecture
+> on m5 repository.
+>
+> I downloaded a few weeks ago the m5 with Mercurial and the ARM_SE does not
+> compile. (I had been working with ALPHA but, research wise I need ARM)
+>
+> I downloaded again from the repository and it still does not compile; this
+> time with different errors.
+>
+> Should it compile or is it not stable? Is there a stable version of ARM on
+> m5 at the moment?
+>
+> Thanks,
+>
+> Javier Malave
+> Texas A&M University
+> Computer Science and Engineering Department
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

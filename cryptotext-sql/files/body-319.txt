@@ -1,0 +1,128 @@
+Thanks Ali and Gabe for clarifying. But is that the expected behavior? I am
+just curious as to why spaces or tabs are enforced in the c code which is
+not indentation sensitive. And if it has to be enforced, why not have tabs
+insteads of spaces for blocks of code?
+Can I fix it to currently ignore non-style whitespaces and still commit?
+Thanks,
+Sujay
+- Show quoted text -
+----- Original Message -----
+From: "Gabe Black" <gblack@eecs.umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Saturday, April 10, 2010 6:07 PM
+Subject: Re: [m5-users] mercurial whitespace error with hg commit
+> This is what's supposed to happen. The style hook is ensuring that your
+> commit follows the M5 style guidelines, and in order to pacify it you'll
+> need to change all the tabs back into spaces and fix any other violations.
+>
+> Gabe
+>
+> Sujay Phadke wrote:
+>> Hello,
+>>      I am facing an error while doing an hg commit, which I haven't
+>> encountered before.
+>>
+>> If I change tabs back into spaces, the error goes away. I can go back
+>> and fix these, but then it lists other files with the same error.
+>> If i press 'i', to ignore, it gives this error. Does anyone know how to
+>> deal with this?
+>>
+>> ---------------------
+>> invalid whitespace: src/cpu/o3/commit_impl.hh:1318
+>> invalid whitespace: src/cpu/o3/commit_impl.hh:1319
+>> invalid whitespace: src/cpu/o3/commit_impl.hh:1320
+>> (a)bort, (i)gnore, or (f)ix? i
+>> error: pretxncommit.style hook raised an exception: substring not found
+>> transaction abort!
+>> rollback completed
+>> ** unknown exception encountered, details follow
+>> ** report bug details to http://mercurial.selenic.com/bts/
+>> ** or mercurial@selenic.com
+>> ** Mercurial Distributed SCM (version 1.3.1)
+>> ** Extensions loaded: mq, patchbomb, extdiff, fetch, hgk, style
+>> Traceback (most recent call last):
+>>   File "/usr/bin/hg", line 27, in <module>
+>>     mercurial.dispatch.run()
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 16, in
+>> run
+>>     sys.exit(dispatch(sys.argv[1:]))
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 27, in
+>> dispatch
+>>     return _runcatch(u, args)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 43, in
+>> _runcatch
+>>     return _dispatch(ui, args)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 449,
+>> in _dispatch
+>>     return runcommand(lui, repo, cmd, fullargs, ui, options, d)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 317,
+>> in runcommand
+>>     ret = _runcommand(ui, options, cmd, d)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 501,
+>> in _runcommand
+>>     return checkargs()
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 454,
+>> in checkargs
+>>     return cmdfunc()
+>>   File "/usr/lib/pymodules/python2.6/mercurial/dispatch.py", line 448,
+>> in <lambda>
+>>     d = lambda: util.checksignature(func)(ui, *args, **cmdoptions)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/util.py", line 402, in
+>> check
+>>     return func(*args, **kwargs)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/commands.py", line 667,
+>> in commit
+>>     node = cmdutil.commit(ui, repo, commitfunc, pats, opts)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/cmdutil.py", line 1213,
+>> in commit
+>>     return commitfunc(ui, repo, message, match(repo, pats, opts), opts)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/commands.py", line 665,
+>> in commitfunc
+>>     editor=e, extra=extra)
+>>   File "/usr/lib/pymodules/python2.6/hgext/mq.py", line 2418, in commit
+>>     editor, extra)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/localrepo.py", line 886,
+>> in commit
+>>     ret = self.commitctx(cctx, True)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/localrepo.py", line 956,
+>> in commitctx
+>>     parent2=xp2, pending=p)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/localrepo.py", line 139,
+>> in hook
+>>     return hook.hook(self.ui, self, name, throw, **args)
+>>   File "/usr/lib/pymodules/python2.6/mercurial/hook.py", line 119, in
+>> hook
+>>     r = _pythonhook(ui, repo, name, hname, hookfn, args, throw) or r
+>>   File "/usr/lib/pymodules/python2.6/mercurial/hook.py", line 52, in
+>> _pythonhook
+>>     r = obj(ui=ui, repo=repo, hooktype=name, **args)
+>>   File "/home/sphadke/research/m5/m5-dev/util/style.py", line 356, in
+>> check_whitespace
+>>     do_check_whitespace(ui, repo, **args)
+>>   File "/home/sphadke/research/m5/m5-dev/util/style.py", line 347, in
+>> do_check_whitespace
+>>     if prompt(fname, fixonly):
+>>   File "/home/sphadke/research/m5/m5-dev/util/style.py", line 278, in
+>> prompt
+>>     result = ui.prompt("(a)bort, (i)gnore, or (f)ix?", "^[aif]$", "a")
+>>   File "/usr/lib/pymodules/python2.6/mercurial/ui.py", line 289, in
+>> prompt
+>>     resps = [s[s.index('&')+1].lower() for s in choices]
+>> ValueError: substring not found
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

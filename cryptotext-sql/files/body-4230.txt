@@ -1,0 +1,120 @@
+I am using sim_ticks for my experiments, and other metrics derived from that. I am calculating DRAM power and latency. In fact, the "cycles*" (like cycles_all_precharge_nCKE, etc)
+metrics used in the dram.cc are incorrect, since currently they calculate the difference between curTick-busy_until[current_bank], (or something similar) which are in "Ticks", running on the sim_ticks clocks. Whereas they should actually be measuring the number of memory clock (or system) cycles.
+A simple fix is:
+sys_freq = cpu_freq / cpu_ratio;
+sys_cycles = (cycles * sys_freq) / 1E12;  //since sim_ticks is for 1THz
+Let me know if this is incorrect.
+- Sujay- Show quoted text -
+On Wed, 26 Sep 2007, Jonas Diemer wrote:
+Hi,
+Thanks for the fix, Kevin. The stats look much better now. Here are the
+results of the very same experiments with your patch included:
+Run 1:
+sim_insts                                    13149912
+sim_ticks                                  7559300000
+system.cpu0.cpi_total                        1.149828
+system.cpu0.numCycles                        15120138
+Run 2:
+sim_insts                                    13146947
+sim_ticks                                  5679495000
+system.cpu0.cpi_total                        0.864125
+system.cpu0.numCycles                        11360602
+Now, CPI and numCycles (almost) exactly correlate with sim_ticks.
+I wouldn't call that bug a slight descripancy, though. It basically rendered
+the CPI (and IPC) metrics invalid up to now - correct me if I judge this
+wrong. I just want to point this out clearly since other people may have
+relied on these metrics in their experiments.
+Also, can someone please make sure that this goes into the main tree?
+Thanks again.
+- Jonas
+On Tuesday 25 September 2007 21:48:21 Kevin Lim wrote:
+Actually my math is still a little off.  It'll give you ticks and not
+necessarily cycles.  I've attached a patch that should give you cycles
+instead.
+%: diff -u m5-2.0b3/src/cpu/o3/ m5-2.0b3-fixed/src/cpu/o3/
+diff -u m5-2.0b3/src/cpu/o3/cpu.cc m5-2.0b3-fixed/src/cpu/o3/cpu.cc
+--- m5-2.0b3/src/cpu/o3/cpu.cc  2007-04-18 17:55:27.000000000 -0400
++++ m5-2.0b3-fixed/src/cpu/o3/cpu.cc    2007-09-25 15:42:56.000000000 -0400
+@@ -1393,7 +1393,8 @@
+     DPRINTF(Activity, "Waking up CPU\n");
+-    idleCycles += (curTick - 1) - lastRunningCycle;
++    idleCycles += ((curTick - 1) - lastRunningCycle) / this->clock;
++    numCycles += ((curTick - 1) - lastRunningCycle) / this->clock;
+     tickEvent.schedule(nextCycle());
+ }
+Kevin Lim wrote:
+Hi Jonas,
+This is a slight discrepancy in how the model tracks the total number
+of cycles the CPU has been running.  For efficiency we let the
+detailed CPU not schedule itself on the event queue if it has no
+activity (e.g. it's waiting on a long cache miss and the ROB fills up,
+or it can't fetch any new instructions).  The numCycles statistic only
+tracks cycles where the CPU is active, which now that I think about
+it, is really just a function of the model and isn't fully correlated
+with reality.  There's another statistic, idleCycles, that shows the
+number of cycles that the CPU has spent inactive.  Hopefully between
+your two runs you'll find that while numCycles is similar, run 1 (with
+the slower memory) should have a much higher idleCycles.  CPI and IPC
+really should be calculated using the sum of numCycles and idleCycles
+to provide the proper number of cycles that the CPU has
+You should be able to fix this by adding this line in cpu.cc, around
+line 1396:
+numCycles += (curTick - 1) - lastRunningCycle;
+This'll make numCycles properly add in the number of cycles that the
+CPU was spent inactive.
+I hope this helps,
+Kevin
+Jonas Diemer wrote:
+Hi,
+I have been doing some benchmarks (h.264 decoder from MediaBench2) on
+a single core system with L1 and L2 caches and varying memory
+bandwidth in SE mode.
+I couldn't make sense of some stats:
+Run 1:
+sim_insts                                    13149912
+sim_ticks                                  7559300000
+system.cpu0.cpi_total                        0.910270
+system.cpu0.numCycles                        11969969
+Run 2:
+sim_insts                                    13146947
+sim_ticks                                  5679495000
+system.cpu0.cpi_total                        0.854693
+system.cpu0.numCycles                        11236603
+For both runs, I ran the benchmark to completion (sim_insts are
+almost identical - why not perfectly the same?). The only difference
+is the memory bus clock speed (run 1 has about 10x less memory
+bandwidth).
+The two runs have a very different (>30%) sim_ticks (which I believed
+was the number of clock cycles from start to end of simulations, thus
+should be a measure for "total execution time"), but the cpi and
+numCycles differ much less (<7%).
+How can this mismatch be explained?
+Regards,
+Jonas.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,5 @@
+In the Tsunami system modeled, iocache is for optimization ? One can safely remove it and expect no anomaly. Or is it the source of communication b/w I/O sub-systm and processer caches?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

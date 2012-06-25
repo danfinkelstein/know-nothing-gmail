@@ -1,0 +1,52 @@
+Hi,
+We'll try to set something up, but I can't promise anything.
+Ali- Show quoted text -
+On Feb 7, 2008, at 2:40 AM, dean michael ancajas wrote:
+On Feb 6, 2008 2:51 PM, Ali Saidi <saidi@umich.edu> wrote:
+I just wanted to make everyone aware that we're holding a tutorial
+again at ASPLOS this year (Sunday 3/2) in the morning. We're planning
+to provide public access to the M5 repository in conjunction with the
+tutorial.
+Hi Ali!
+    If it isn't too much of a hassle would it be possible that someone  could record the tutorial on video? Slides + the speaker's voice is more than enough. I think a simple desktop session recorder(i.e. Istanbul in Ubuntu) can do the job just fine(i.e. you turn it on before the 1st speaker starts then turn off after the last speaker,sweet!). :)
+     I know that the slides would be uploaded in the wiki after the ASPLOS tutorial but it could be of great help especially for starters if we could have more information aside from the bullets in the slides(which is just a summary of what the speaker is going to convey). In essence, the video could help people climb the steep learning curve of the ins and outs of the simulator. I guess there are also many people in the list who wanted to go to the tutorial badly but cannot because it's just not possible(people located outside the US and doesn't have a paper in the conference,VISA issues etc...), the video tutorial would really help us.
+   Anyways if you decide to record the tutorial I'd be more than willing to help in the dissemination of the video(host it in my page or maybe upload it somewhere free such as rapidshare or yousendit).
+two cents,
+-dean michael
+We have some exciting new features in v2.0, including:
+- New cache model
+- More abstract cache coherence that is general enough to allow multi-
+level configurations
+- Inter-object protocol for memory-system objects
+- Python creation of object parameters
+- Support for ARM, SPARC, and MIPS
+- Performance improvements
+- Creating and using Simpoints
+Even if you came to last year's tutorial, you can come again to learn
+about these new features.
+We'll also be discussing:
+- M5 structure
+- Specifying configurations
+- Running experiments
+- Statistics
+- Debugging techniques
+- Future development directions
+So, if you're new to M5, you're going to learn enough to get started.
+Our tutorial page:
+http://www.m5sim.org/wiki/index.php/ASPLOS_2008
+ASPLOS web page (registration, schedule, etc.):
+http://research.microsoft.com/asplos08/
+Hope to see you there!
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

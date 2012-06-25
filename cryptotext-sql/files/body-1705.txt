@@ -1,0 +1,28 @@
+Hi Steve, thanks for your reply. Do you mean that the bridge is used to connect membus and iobus, and the cache is connected to the membus directly? In this case, The bridge is between the iobus and membus, is that right ? Thank you !
+Message: 4
+Date: Thu, 12 Mar 2009 06:07:18 -0800
+From: Steve Reinhardt <stever@gmail.com>
+Subject: Re: [m5-users] A question about memory bus
+To: M5 users mailing list <m5-users@m5sim.org>
+Message-ID:
+        <28fce2300903120707g6508c5feuf3f23a5950012662@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+A bridge is only needed to connect two buses.  Anything that's not a
+bus can connect directly to a bus.
+Steve
+On Thu, Mar 12, 2009 at 1:02 AM, Veydan Wu <veydanwu@gmail.com> wrote:
+> Hi, all, when the fs.py making a LinuxAlphaSystem which it invoke a function
+> makeLinuxAlphaSystem in FSConfig.py, there is a bridge connecting membus and
+> iobus.? But in fs.py, the cache is connected directly to membus, so where is
+> the bridge ?? Sorry for such silly question, but it really confuse me.
+> Thanks !
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,20 @@
+> One final confirmation for 2.6.18.8:
+What was the problem?
+> It seems to be booting extremely slow even with atomic
+> cpu model. It got stuck at "[4194001.857552] SMP:
+> Total of 8 processors activated (31985.87 BogoMIPS)."
+> for long time.
+> Earlier 2.6.13 was booting very fast though in same
+> machine with same workload.
+> Do you also see this slow boot-up?
+Let me check to see if there is a missing patch to 2.6.18.  There are
+certain functions (mostly delay functions and the idle loop) in the
+linux kernel that are very slow if not patched.
+> Just for curiosity, what does [4194001.857552] stand
+> for?
+This is a linux thing.  It's a timestamp.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

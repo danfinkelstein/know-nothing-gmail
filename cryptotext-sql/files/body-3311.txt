@@ -1,0 +1,83 @@
+thanks, korey. always, a great help. i kinda figured out some of the stuff myself already when i read the inst_queue code(it does a lot of things!), though an author's/coauthor's viewpoints and insights are always welcome. pretty smart way the way functional units act like as a token, just so we make that we only allow a limited number of operations to take place at any one time(though they are not really taking place or being executed) and the event thing too so that the operations would have latencies. again, thanks for the patience. I hope I'd be able to contribute to the wiki once I've completely figured things out!- Show quoted text -
+On Wed, Apr 9, 2008 at 1:57 AM, Korey Sewell <ksewell@umich.edu> wrote:
+I started an O3CPU FAQ on the WIKI page. I'm hoping that a lot of this
+O3 conversation
+and future ones can be transferred to the WIKI page so that as good
+questions get
+answered we can save them as documentation instead of filtering
+through the m5-dev
+list mail all the time.
+I placed the skeleton (to continually be updated) for that here:
+http://www.m5sim.org/wiki/index.php/O3CPU_FAQ
+> 1. What is the difference between issueToExecQueue and instQueue?
+So for the IEW stage, I look at it as multiple stages in one. Depending on
+pipeline parameters, the delay between issue , execute, or writeback
+can be variable. However, since these are all inter-related it makes sense
+to have them all in one generic stage.
+By issue, I mean sending insts to the ROB, IQ and LDSTQ.
+By execute, I mean use a Function Unit
+By writeback, I mean give a value back to the register file (and
+potentially update LDSTQ)
+Like we talked about before, there is a queue that connects stages together
+in order to enforce a stageWidth which is basically a set amount of instructions
+that can process in that stage on any given cycle.
+Thus, if the limit is 2 issues, then the issueToExecQueue should be 2
+instructions.
+The instQueue is the actual instruction queue of instructions waiting
+to be processed
+by the execute stage. I guess some people call this "instruction
+window" as well.
+> 2. In executeInsts
+>
+>     // Execute/writeback any instructions that are available.
+>      int insts_to_execute = fromIssue->size;
+>     int inst_num = 0;
+>     for (; inst_num < insts_to_execute;
+>           ++inst_num) {
+>
+>
+> does this mean that fromIssue->size is the maximum number of instructions
+> that could be issued to the processing units(ALUs, etc) in a cycle?
+Yep. fromIssue->size is probably connected to the issueToExecQueue
+and like we said before it set to a certain amount based on a parameter.
+These queues between stages are all time buffers such that if you put
+an instruction in the queue at time X in the issue stage, the exec stage
+wont see it until time X + 1.
+> 3. As I understand it, functional units are equivalent to ALUs, multipliers,
+> processing units. I also know that instructions "execute
+> themselves"(inst->execute()). Thus functional units control the latencies,
+> and the combinations of operations that could be done in a cycle. I've been
+> reading iew_impl.hh and I don't see where they come to the picture. There's
+>
+> fuPool->processFreeUnits();
+I'm not sure, but I think the functional units dont actually take an instruction
+and execute it, but just keep track of what instructions (or delays for those
+insts) are using it and then frees it later.
+I'm kind of fuzzy on this, but each DynInst instruction has some type of
+opClass which corresponds to a function unit. Somewhere in the code,
+the stage will check the opClass of the DynInst, then the stage
+will find a FU that handles that opClass, and manage the latencies
+associated with that opClass before actually executing the instruction.
+> Also, should I want to modify the number of
+> multipliers or adders, I'd be dealing functional units, right? How is that
+> done?
+I think you add the # of FUs in your configuration file. I'm kinda fuzzy on this
+too, but I think they are SimObjects such that you can define a Function
+Unit, it's class of instructions (isMultOp, isALU, etc.), and then
+pass that function unit to the O3 CPU as a parameter.
+That's actually a great question, so make sure to take note of this
+as you figure it out. It would go great on the WIKI.
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

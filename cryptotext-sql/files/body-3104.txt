@@ -1,0 +1,62 @@
+I would check your compiler and make sure you're using the newest version of m5.
+test.c:
+#include <stdio.h>
+int main( void )
+{
+    double a[2];
+    a[0] = 2.3;
+    a[1] = 5.7;
+    printf( "a[0] = %f\n", a[0] );
+    return 0;
+}
+11:46:39 [saidi:zeep ~/work/m5.dev] alpha-unknown-linux-gnu-gcc -static test.c
+11:46:45 [saidi:zeep ~/work/m5.dev] ./build/ALPHA_SE/m5.debug configs/example/se.py -c a.out
+M5 Simulator System
+Copyright (c) 2001-2008
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled May 10 2008 11:44:09
+M5 started Sat May 10 11:46:47 2008
+M5 executing on zeep
+command line: ./build/ALPHA_SE/m5.debug configs/example/se.py -c a.out
+Global frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+a[0] = 2.300000
+Exiting @ cycle 3986500 because target called exit()- Show quoted text -
+On May 10, 2008, at 10:03 AM, nathan binkert wrote:
+That is very odd.  Does the fault also occur if you put a[0] into a
+temporary variable before sending it to printf?  What compiler/library
+are you using?
+2008/5/10 fractal218 <fractal218@126.com>:
+hi,
+I found why the error of "panic: Page table fault when accessing virtual
+address 0" will occur.
+See the following program:
+    int main( void )
+   {
+         double a[2];
+         a[0] = 2.3;
+         a[1] = 5.7;
+         printf( "a[0] = %f\n", a[0] );
+   }
+   When you define an array of float point and you print the element of the
+array with printf ,then the fault will occur.
+   But i don't know why?
+   Thank you!
+________________________________
+送！送！送！正版瑞星2008半年免费！
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

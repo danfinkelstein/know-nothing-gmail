@@ -1,0 +1,43 @@
+Hello,
+   I am trying to compile a linux kernel according to the steps 
+listed in the M5 website. I finally got the cross-compiler compiled 
+(alphaev56-unknown-linux-gnu-gcc and alphaev67-unknown-linux-gnu-gcc). The 
+other versions of binaries and compilers used internally in its config are 
+according to the matrix on the crosstool-ng website.
+ 
+linux: 2.6.27 
+binutils: 2.19.1 
+c compiler: gcc 4.3.3 
+c 
+library: glibc 2.9 
+threading: nptl 
+fp: hardware float 
+ 
+I used the linux patches on the M5 website and pushed them thru hg. then 
+finally when I try to compile the kernel, I get the following error:
+>  make ARCH=alpha CROSS_COMPILE=alphaev67-unknown-linux-gnu- 
+vmlinux
+<few warnings before about some syscalls not being implemented>
+ 
+MODPOST vmlinux.oWARNING: "saved_config" [vmlinux] is COMMON 
+symbolWARNING: modpost: Found 12 section mismatch(es).To see full 
+details build your kernel with:'make 
+CONFIG_DEBUG_SECTION_MISMATCH=y'  GEN     
+.version  CHK     include/linux/compile.h  
+UPD     include/linux/compile.h  
+CC      init/version.o  
+LD      init/built-in.o  
+LD      .tmp_vmlinux1  KSYM    
+.tmp_kallsyms1.S/bin/sh: alphaev67-unknown-linux-gnu-nm: not foundNo 
+valid symbol.make: *** [.tmp_kallsyms1.S] Error 1
+ 
+ 
+How do I solve this?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

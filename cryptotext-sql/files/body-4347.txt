@@ -1,0 +1,53 @@
+Hi Jonas,
+Thanks for this patch, i've applied it in our tree. I'm not quite sure where the correct place is to fix the distribution stat, but one of us will fix that soon.
+Thanks again,
+Ali- Show quoted text -
+On Sep 4, 2007, at 11:07 AM, Jonas Diemer wrote:
+Hi,
+I get a segfault when running configs/example/se.py with --l2cache and -n2. I
+think the problem is that the L2 gets instantiated multiple times. Here's my
+fix (i simply moved the L2 instantiation outside of the for loop):
+--- ../m5-2.0b3-orig/configs/example/se.py      2007-05-17 04:25:48.000000000
++0200
++++ configs/example/se-j1.py    2007-09-04 16:58:58.963363162 +0200
+@@ -72,15 +72,17 @@
+ system.physmem.port = system.membus.port
+-for i in xrange(np):
++if options.l2cache:
++    system.l2 = L2Cache(size='2MB')
++    system.tol2bus = Bus()
++    system.l2.cpu_side = system.tol2bus.port
++    system.l2.mem_side = system.membus.port
++
++for i in xrange(np):
+     if options.caches:
+         system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '32kB'),
+                                               L1Cache(size = '64kB'))
+     if options.l2cache:
+-        system.l2 = L2Cache(size='2MB')
+-        system.tol2bus = Bus()
+-        system.l2.cpu_side = system.tol2bus.port
+-        system.l2.mem_side = system.membus.port
+         system.cpu[i].connectMemPorts(system.tol2bus)
+     else:
+         system.cpu[i].connectMemPorts(system.membus)
+- Jonas
+-- 
+Dipl.-Ing. Jonas Diemer
+Institut für Datentechnik und Kommunikationsnetze
+(Institute of Computer and Communication Network Engineering)
+Hans-Sommer-Str. 66
+D-38106 Braunschweig
+Germany
+Telefon: +49 531 391 3752
+Telefax: +49 531 391 4587
+E-Mail:  diemer@ida.ing.tu-bs.de
+Web:     http://www.ida.ing.tu-bs.de/
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

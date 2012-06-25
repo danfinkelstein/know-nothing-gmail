@@ -1,0 +1,39 @@
+I believe the only thing that ever nacks packets is the bus bridge, so
+one way to get around this is to increase the number of entries in the
+bridge's buffers.  It sort of makes sense that you're running into
+problems once you go past 16 cores, as each core should have at most
+one uncached access outstanding, and the default buffer size for the
+bridge is 16.
+Steve
+- Show quoted text -
+On Tue, Dec 16, 2008 at 5:57 AM, abc def <jose_6154@yahoo.es> wrote:
+> Hi,
+>
+> I was trying to run m5 latest version (m5-stable-733318abb7b1) for 32 cores
+> and 64 cores with the timing model and L1 caches enabled.
+>
+> But i got the following error:
+>
+> panic: Need to implement cache resending nacked packets!
+>  @ cycle 197946000
+> [recvTiming:build/ALPHA_FS/mem/cache/cache_impl.hh, line 1405]
+> Program aborted at cycle 197946000
+> Aborted
+>
+> Now, 16 cores case seems to be fine. But that was working anyway even in the
+> version beta 4 also.
+>
+> Specifically i am looking for very large number of cores like 64.
+>
+>
+>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

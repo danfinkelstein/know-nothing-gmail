@@ -1,0 +1,342 @@
+Hi Ali,
+Now, after updating nvram1, the first problem is resolved. i.e. opb
+boots automatically. However, the regression gets stuck at the solaris
+login prompt. The terminal output in the reference directory is
+....
+....
+iscsi0 at root
+iscsi0 is /iscsi
+Hostname: unknown
+Loading M5 readfile script...
+whereas my output is
+.....
+.....
+iscsi0 at root
+iscsi0 is /iscsi
+Hostname: unknown
+^M
+unknown console login:
+So, I suppose the login also needs to be automated.
+- Show quoted text -
+On Fri, Feb 19, 2010 at 1:31 AM, Ali Saidi <saidi@umich.edu> wrote:
+>
+> There is no facility built into M5 to do this. You could do something to
+> copy the data out after you write it (the file is just loaded into RAM), or
+> you could use the functional simulation from the that came with the images
+> to modify the file and save it.
+>
+> Ali
+>
+>
+>
+>
+> On Fri, 19 Feb 2010 01:11:56 +0530, prasun gera <prasun.gera@gmail.com>
+> wrote:
+>> I tried setting auto-boot? true with the following command:
+>> setenv auto-boot? true
+>> However, it sets the value only for the current session and doesn't
+>> last after i restart the simulation. Is there a way around?
+>>
+>> On Thu, Feb 18, 2010 at 4:47 AM, prasun gera <prasun.gera@gmail.com>
+> wrote:
+>>> Yes, I had used boot as the boot string and it used to boot solaris.
+>>> i.e It used to boot till the terminal stopped at the following prompt:
+>>> ....
+>>> ....
+>>> Loading: /platform/SUNW,Sun-Fire-T2000/ufsboot
+>>> Loading: /platform/sun4v/ufsboot
+>>>
+>>> Copyright 1983-2005 Sun Microsystems, Inc.  All rights reserved.
+>>> Use is subject to license terms.
+>>> Hostname: unknown
+>>> unknown console login:
+>>>
+>>> At this prompt, the couple of times when I was quick enough, I could
+>>> enter root as the login and I could see the solaris promt, shortly
+>>> after which m5 used to exit. At other times,
+>>> m5 would just quit at the 'unknown console login' prompt. Can you tell
+>>> me where I need to change the boot settings for it to boot
+>>> automatically? Also, does the console login string need to be passed
+>>> automatically? Or is it normal to enter it manually?
+>>>
+>>> Thanks,
+>>> Prasun
+>>>
+>>> On Thu, Feb 18, 2010 at 4:21 AM, Ali Saidi <saidi@umich.edu> wrote:
+>>>>
+>>>> If your previous simulations were sitting at the ok prompt, that would
+>>>> explain it. The settings aren't compile in, but rather are saved into
+>>>> the
+>>>> nvram blob that is loaded. If you connect to the simulator and provide
+> a
+>>>> proper boot string (I can't remember what one is, maybe just boot),
+> does
+>>>> it
+>>>> boot into Solaris?
+>>>>
+>>>> Ali
+>>>>
+>>>>
+>>>>
+>>>> On Thu, 18 Feb 2010 03:33:36 +0530, prasun gera <prasun.gera@gmail.com>
+>>>> wrote:
+>>>>> I'm running the solaris boot regression test right now with the
+> command
+>>>>> line
+>>>>> scons build/SPARC_FS/tests/opt/long/80.solaris-boot
+>>>>> but it seems to be stuck since openboot expects a manual boot command.
+>>>>> My system.t1000.pterm shows:
+>>>>> ^Qcpu Probing I/O buses
+>>>>>
+>>>>>
+>>>>> Sun Fire T2000, No Keyboard
+>>>>> Copyright 2005 Sun Microsystems, Inc.  All rights reserved.
+>>>>> OpenBoot 4.20.0, 256 MB memory available, Serial #1122867.
+>>>>> [mo23723 obp4.20.0 #0]
+>>>>> Ethernet address 0:80:3:de:ad:3, Host ID: 80112233.
+>>>>>
+>>>>>
+>>>>>
+>>>>> ok
+>>>>>
+>>>>> where I used to enter the boot command at the ok prompt while running
+>>>>> fs.py.
+>>>>> However, the corresponding file in the reference directory shows
+>>>>> ^Qcpu
+>>>>>
+>>>>> Sun Fire T2000, No Keyboard
+>>>>> Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+>>>>> OpenBoot 4.23.0, 256 MB memory available, Serial #1122867.
+>>>>> [saidi obp #30]
+>>>>> Ethernet address 0:80:3:de:ad:3, Host ID: 80112233.
+>>>>>
+>>>>>
+>>>>>
+>>>>> Boot device: /virtual-devices/disk@0  File and args: -vV
+>>>>> Loading ufs-file-system package 1.4 04 Aug 1995 13:02:54.
+>>>>> FCode UFS Reader 1.12 00/07/17 15:48:16.
+>>>>> Loading: /platform/SUNW,Sun-Fire-T2000/ufsboot
+>>>>> Loading: /platform/sun4v/ufsboot
+>>>>> ......
+>>>>> ......
+>>>>>
+>>>>> It seems to me that the openboot binary you used for the regression
+>>>>> was configured to autoboot. Do I need to recompile openssparc t1 with
+>>>>> openboot configured for autoboot?  Also, does this explain my earlier
+>>>>> problem of m5 exiting at max_tick?
+>>>>>
+>>>>> Thanks,
+>>>>> Prasun
+>>>>>
+>>>>>
+>>>>>
+>>>>> On Wed, Feb 17, 2010 at 9:17 PM, Ali Saidi <saidi@umich.edu> wrote:
+>>>>>> Can you run the SPARC_FS regression successfully?
+>>>>>>
+>>>>>> Ali
+>>>>>>
+>>>>>> On Feb 16, 2010, at 8:11 PM, prasun gera wrote:
+>>>>>>
+>>>>>>> Forgot that I edited a cc file and not a script and hence didn't
+>>>>>>> rebuild. I suppose this won't happen once i rebuild m5.
+>>>>>>>
+>>>>>>> On Wed, Feb 17, 2010 at 7:19 AM, prasun gera <prasun.gera@gmail.com>
+>>>>>>> wrote:
+>>>>>>>> Ali,
+>>>>>>>> I saw the simulate(Tick num_cycles) function in
+>>>>>>>> build/SPARC_FS/sim/simulate.cc and it has the following lines of
+>>>>>>>> code
+>>>>>>>> (lines 58 to 60)
+>>>>>>>>
+>>>>>>>> Event *limit_event =
+>>>>>>>> new SimLoopExitEvent("simulate() limit reached", 0);
+>>>>>>>>    mainEventQueue.schedule(limit_event, num_cycles);
+>>>>>>>>
+>>>>>>>> As far as I can tell, this is the only place where a limit_event is
+>>>>>>>> added to the event queue. (and should be the only one right?) So I
+>>>>>>>> commented the aforementioned lines out just to see what happens.
+>>>>>>>> However, m5 still exit with same error message about limit being
+>>>>>>>> reached. I expected m5 to exit with an assert failure(inside the
+>>>>>>>> following while loop) since the queue would be empty after the
+> event
+>>>>>>>> before the limit_event is executed, but that didn't happen.  So
+> does
+>>>>>>>> it mean that another(possibly interfering) limit_event was added to
+>>>>>>>> the queue earlier?
+>>>>>>>>
+>>>>>>>> Thanks,
+>>>>>>>> Prasun
+>>>>>>>>
+>>>>>>>> On Mon, Feb 15, 2010 at 3:08 AM, Ali Saidi <saidi@umich.edu> wrote:
+>>>>>>>>> Prasun,
+>>>>>>>>>
+>>>>>>>>> I imagine what is happening is you're running the simple cpu,
+>>>>>>>>> booting
+>>>>>>>>> Solaris and then there is nothing to do, since you didn't specify
+>>>>>>>>> anything. The only think that occurs after that point are timer
+>>>>>>>>> interrupts which makes the simulation tick quite quickly up until
+>>>>>>>>> you
+>>>>>>>>> reach MaxTick. Have you looked at the terminal? What is the output
+>>>>>>>>> there?
+>>>>>>>>>
+>>>>>>>>> Ali
+>>>>>>>>>
+>>>>>>>>> On Feb 14, 2010, at 2:33 PM, prasun gera wrote:
+>>>>>>>>>
+>>>>>>>>>> Hi,
+>>>>>>>>>> You mentioned that I'm using the O3 CPU model. Isn't the default
+>>>>>>>>>> model
+>>>>>>>>>> simple atomic? I mean, I didn't pass any arguments to the script
+>>>>>>>>>> fs.py
+>>>>>>>>>> and from setCPUClass, it seemed as though it is using the simple
+>>>>>>>>>> atomic model.
+>>>>>>>>>> In fact, later I tried the command line
+>>>>>>>>>>
+>>>>>>>>>> build/SPARC_FS/m5.opt -v -d /tmp/output/ configs/example/fs.py -d
+>>>>>>>>>> --
+>>>>>>>>>> caches
+>>>>>>>>>>
+>>>>>>>>>> to use the detailed CPU model but it threw an error
+>>>>>>>>>> NameError: global name 'DerivO3CPU' is not defined.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> On Sat, Feb 13, 2010 at 6:56 AM, Gabriel Michael Black
+>>>>>>>>>> <gblack@eecs.umich.edu> wrote:
+>>>>>>>>>>> It looks like the simulation ran out of things to do and stopped
+>>>>>>>>>>> at
+>>>>>>>>>>> the end of simulated time. You could use the Exec trace flag to
+>>>>>>>>>>> see
+>>>>>>>>>>> what, if anything, is executing when that happens. If the
+>>>>>>>>>>> simulation
+>>>>>>>>>>> runs for a while before failing, Exec will output a lot of text.
+>>>>>>>>>>> You'll want to start tracing close to the interesting point.
+>>>>>>>>>>>
+>>>>>>>>>>> One other thing I notice is that you're using the O3 CPU model
+>>>>>>>>>>> with
+>>>>>>>>>>> SPARC_FS. While that model should work with SPARC_SE and
+> SPARC_FS
+>>>>>>>>>>> works with the simple CPUs, I don't know if anyone ever got the
+>>>>>>>>>>> bugs
+>>>>>>>>>>> worked out of that particular combination (someone please say
+>>>>>>>>>>> something if you know otherwise). That makes me think that O3 is
+>>>>>>>>>>> losing track of work that it needs to do, thinks it should
+> become
+>>>>>>>>>>> idle, and effectively goes to sleep and never wakes up.
+>>>>>>>>>>>
+>>>>>>>>>>> Gabe
+>>>>>>>>>>>
+>>>>>>>>>>> Quoting prasun gera <prasun.gera@gmail.com>:
+>>>>>>>>>>>
+>>>>>>>>>>>> I could boot solaris in SPARC_FS, but m5 exited abruptly after
+>>>>>>>>>>>> that
+>>>>>>>>>>>> with the following message:
+>>>>>>>>>>>> Exiting @ cycle 9223372036854775807 because simulate() limit
+>>>>>>>>>>>> reached
+>>>>>>>>>>>>
+>>>>>>>>>>>> The command line I executed was:
+>>>>>>>>>>>> build/SPARC_FS/m5.opt -v -d /tmp/output/ configs/example/fs.py
+>>>>>>>>>>>>
+>>>>>>>>>>>> Host system: Ubuntu 32 bit
+>>>>>>>>>>>>
+>>>>>>>>>>>> I tried it twice, and it quit at the same cycle count both the
+>>>>>>>>>>>> times.
+>>>>>>>>>>>> To ascertain whether the error was caused because of something
+> I
+>>>>>>>>>>>> did,
+>>>>>>>>>>>> I didn't enter anything on the solaris terminal the second
+> time.
+>>>>>>>>>>>> i.e.
+>>>>>>>>>>>> The computer was idle for the entire duration except for the
+>>>>>>>>>>>> boot
+>>>>>>>>>>>> command on opb. Has anyone run into a similar error? Or any
+>>>>>>>>>>>> hints
+>>>>>>>>>>>> regarding debugging this?
+>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> On Fri, Feb 12, 2010 at 10:26 PM, Ali Saidi <saidi@umich.edu>
+>>>>>>>>>>>> wrote:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> The original binaries should work just fine, the _new versions
+>>>>>>>>>>>>> were ones
+>>>>>>>>>>>>> that we verified we could compile from source.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Ali
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> On Fri, 12 Feb 2010 20:50:07 +0530, prasun gera
+>>>>>>>>>>>>> <prasun.gera@gmail.com
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>> wrote:
+>>>>>>>>>>>>>> Figured it out. Copied the files to the binaries and disks
+>>>>>>>>>>>>>> directories
+>>>>>>>>>>>>>> and could run configs/example/fs.py after that. One small
+>>>>>>>>>>>>>> thing
+>>>>>>>>>>>>>> though. The names of the solaris binaries used in m5 have new
+>>>>>>>>>>>>>> as a
+>>>>>>>>>>>>>> suffix ( for eg. openboot_new.bin and q_new.bin). Does it
+> mean
+>>>>>>>>>>>>>> that
+>>>>>>>>>>>>>> the original binaries from opensparc need to be modified in
+>>>>>>>>>>>>>> some
+>>>>>>>>>>>>>> way?
+>>>>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>>>
+>>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>
+>>>>>>>>>> _______________________________________________
+>>>>>>>>>> m5-users mailing list
+>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> _______________________________________________
+>>>>>>>>> m5-users mailing list
+>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>
+>>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

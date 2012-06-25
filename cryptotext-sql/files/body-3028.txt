@@ -1,0 +1,7 @@
+Is there presently a way to interleave the address ranges of a set of memory devices? If not, what is the opinion on extending the AddrRange class to incorporate a stride field? Would this break certain objects in subtle ways? Obviously, the stride would have to be at at least the granularity of the smallest memory request (in the absence of further changes).
+Thanks,
+        - Clint Smullen
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hi,I want use the full system mode booting with multiple processors to run some MPI programs. I was wondering how the processors are connected to each other. Since in the configuration, the only thing I could do is to set the number of cpus. Is there a default interconnection network between these cpus? Or there is no interconnection at all but only a shared memory? I want to know how the cpus communicate with each other and how I can get control of the communication.
+Thanks,Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

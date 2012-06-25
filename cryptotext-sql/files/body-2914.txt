@@ -1,0 +1,34 @@
+Thank Nate. Hopefully this will be up soon. By the way, is there any effort
+currently to validate the memory timing model?
+- Show quoted text -
+----- Original Message -----
+From: "nathan binkert" <nate@binkert.org>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Saturday, June 07, 2008 8:41 PM
+Subject: Re: [m5-users] passing config parameters to rcS
+>> Is there a way to pass config parameters to create a .rcS file to use
+>> those?
+>> For example I want to pass the number of cpus parameters to the rcS file,
+>> which will invoke the benchmark with that parameter.
+>
+> There's no great way currently.  I think the best option is to add
+> things to the linux command line using the system.boot_osflags
+> parameter.  Then you can read them by looking at /proc/cmdline.  With
+> a little bit of intelligent scripting, you can accomplish a fair
+> amount using this method.
+>
+> That said, I'm mostly done with a rather elaborate replacement for the
+> rcS files that allow you to have multiple rcS files and pass
+> parameters into M5.  I need it for my own work, so I'd hope to have it
+> in the tree relatively soon.
+>
+>  Nate
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,15 @@
+Hi all,
+We have some general questions on the flexibility of M5:
+How flexible is the simple-core model?  For example, how to extend it to
+support vector insts? I know we need to add new instructions, but since we
+will add new vector registers, how will this affect the decoder, the ISA
+parser, and the CPU?
+Just want to make sure: can we compose different cores in one simulation, to
+do a heterogeneous processor? Say, with one O3 CPU and several simple cpus?
+(I assume O3 and TimingSimpleCPU can coexist?)
+Thanks!
+Jiayuan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,735 @@
+Like my previous e-mail said I don't know about Alpha SE simulated on
+a SPARC because of the endian issues and looking at this output it
+appears as though Solaris doesn't support the same fstatfs() call an
+Linux/FreeBSD/OS X do. You can figure out how fstatfs() differs in
+Solaris and make the changes, but that leads me to believe that you'll
+also have to fix a variety of endian issues as well.
+Ali
+- Show quoted text -
+On Jul 6, 2008, at 4:23 PM, Robert Pulumbarit wrote:
+> Thanks for the help everyone.
+>
+> I changed the command line to use gcc and g++, but got new errors,
+> so I did a search on the mailing list and thought maybe it had
+> someting to do with the version of scons I was using.  So I
+> installed an older version of scons:
+>
+> [robertpu@sisu ~/m5-2.0b3]$ scons -version
+> SCons by Steven Knight et al.:
+>         engine: v0.97.0d20070918.r2446, 2007/09/18 11:41:57, by
+> knight on bangkok
+>
+> and retried compiling, but I am now stuck on these errors:
+>
+> [robertpu@sisu ~/m5-2.0b3]$ scons CC=gcc CXX=g++ EXTRAS=src/
+> encumbered build/ALPHA_SE/m5.opt -j 5
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... yes
+> Checking for C library python2.5... yes
+> Checking for accept(0,0,0) in C++ library None... no
+> Checking for accept(0,0,0) in C++ library socket... yes
+> Checking for zlibVersion() in C++ library z... yes
+> Checking for C header file fenv.h... yes
+> Building in /home/robertpu/m5-2.0b3/build/ALPHA_SE
+> Using saved options file /home/robertpu/m5-2.0b3/build/options/
+> ALPHA_SE
+> scons: done reading SConscript files.
+> scons: Building targets ...
+> MakeSwigInit(["build/ALPHA_SE/python/swig/init.cc"], ["'core'",
+> "'debug'", "'event'", "'random'", "'sim_object'", "'stats'",
+> "'trace'"])
+> Defining NO_FAST_ALLOC as 0 in build/ALPHA_SE/config/no_fast_alloc.hh.
+> make_hh(["build/ALPHA_SE/base/traceflags.hh"], ["build/ALPHA_SE/base/
+> traceflags.py"])
+> Generating switch header build/ALPHA_SE/arch/interrupts.hh
+> Generating switch header build/ALPHA_SE/arch/isa_traits.hh
+> Defining FULL_SYSTEM as 0 in build/ALPHA_SE/config/full_system.hh.
+> Generating switch header build/ALPHA_SE/arch/stacktrace.hh
+> Generating switch header build/ALPHA_SE/arch/regfile.hh
+> Generating switch header build/ALPHA_SE/arch/types.hh
+> Generating switch header build/ALPHA_SE/arch/utility.hh
+> Generating switch header build/ALPHA_SE/arch/vtophys.hh
+> Generating static_inst_exec_sigs.hh: AtomicSimpleCPU, O3CPU,
+> TimingSimpleCPU
+> Generating switch header build/ALPHA_SE/arch/predecoder.hh
+> Generating switch header build/ALPHA_SE/arch/tlb.hh
+> g++ -o build/ALPHA_SE/cpu/base.o -c -pipe -fno-strict-aliasing -Wall
+> -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/base.cc
+> Defining ALPHA_TLASER as 0 in build/ALPHA_SE/config/alpha_tlaser.hh.
+> g++ -o build/ALPHA_SE/cpu/quiesce_event.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> quiesce_event.cc
+> g++ -o build/ALPHA_SE/cpu/exetrace.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/exetrace.cc
+> g++ -o build/ALPHA_SE/cpu/pc_event.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/pc_event.cc
+> g++ -o build/ALPHA_SE/cpu/static_inst.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> static_inst.cc
+> Generating switch header build/ALPHA_SE/arch/kernel_stats.hh
+> Generating switch header build/ALPHA_SE/arch/syscallreturn.hh
+> g++ -o build/ALPHA_SE/cpu/simple_thread.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> simple_thread.cc
+> g++ -o build/ALPHA_SE/cpu/thread_state.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> thread_state.cc
+> Generating switch header build/ALPHA_SE/arch/locked_mem.hh
+> Generating switch header build/ALPHA_SE/arch/mmaped_ipr.hh
+> g++ -o build/ALPHA_SE/cpu/simple/atomic.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> simple/atomic.cc
+> g++ -o build/ALPHA_SE/cpu/simple/timing.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> simple/timing.cc
+> Generating switch header build/ALPHA_SE/arch/faults.hh
+> Defining USE_MYSQL as 0 in build/ALPHA_SE/config/use_mysql.hh.
+> g++ -o build/ALPHA_SE/cpu/simple/base.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> simple/base.cc
+> g++ -o build/ALPHA_SE/cpu/o3/base_dyn_inst.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/base_dyn_inst.cc
+> g++ -o build/ALPHA_SE/cpu/o3/bpred_unit.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/bpred_unit.cc
+> Defining USE_CHECKER as 0 in build/ALPHA_SE/config/use_checker.hh.
+> g++ -o build/ALPHA_SE/cpu/o3/commit.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/commit.cc
+> g++ -o build/ALPHA_SE/cpu/o3/cpu.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/cpu.cc
+> g++ -o build/ALPHA_SE/cpu/o3/decode.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/decode.cc
+> g++ -o build/ALPHA_SE/cpu/o3/fetch.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/fetch.cc
+> g++ -o build/ALPHA_SE/cpu/o3/iew.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/iew.cc
+> g++ -o build/ALPHA_SE/cpu/o3/inst_queue.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/inst_queue.cc
+> g++ -o build/ALPHA_SE/cpu/o3/lsq.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/lsq.cc
+> g++ -o build/ALPHA_SE/cpu/o3/lsq_unit.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/lsq_unit.cc
+> g++ -o build/ALPHA_SE/cpu/o3/mem_dep_unit.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/mem_dep_unit.cc
+> g++ -o build/ALPHA_SE/cpu/o3/rename.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/rename.cc
+> g++ -o build/ALPHA_SE/cpu/o3/rob.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/rob.cc
+> g++ -o build/ALPHA_SE/cpu/o3/alpha/cpu.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/alpha/cpu.cc
+> g++ -o build/ALPHA_SE/cpu/o3/alpha/cpu_builder.o -c -pipe -fno-
+> strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/alpha/cpu_builder.cc
+> g++ -o build/ALPHA_SE/cpu/o3/alpha/dyn_inst.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/alpha/dyn_inst.cc
+> g++ -o build/ALPHA_SE/cpu/o3/alpha/thread_context.o -c -pipe -fno-
+> strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/alpha/thread_context.cc
+> g++ -o build/ALPHA_SE/cpu/o3/2bit_local_pred.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/2bit_local_pred.cc
+> g++ -o build/ALPHA_SE/cpu/o3/btb.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/btb.cc
+> g++ -o build/ALPHA_SE/cpu/o3/ras.o -c -pipe -fno-strict-aliasing -
+> Wall -Wno-sign-compare -Werror -Wundef -g -O3 -DTHE_ISA=ALPHA_ISA -
+> DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/
+> include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/o3/ras.cc
+> g++ -o build/ALPHA_SE/cpu/o3/tournament_pred.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> o3/tournament_pred.cc
+> g++ -o build/ALPHA_SE/cpu/memtest/memtest.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/
+> memtest/memtest.cc
+> g++ -o build/ALPHA_SE/arch/alpha/faults.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/faults.cc
+> g++ -o build/ALPHA_SE/arch/alpha/floatregfile.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/floatregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/intregfile.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/intregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/miscregfile.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/miscregfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/regfile.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/regfile.cc
+> g++ -o build/ALPHA_SE/arch/alpha/remote_gdb.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/remote_gdb.cc
+> g++ -o build/ALPHA_SE/arch/alpha/process.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/process.cc
+> g++ -o build/ALPHA_SE/arch/alpha/linux/linux.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/linux/linux.cc
+> g++ -o build/ALPHA_SE/arch/alpha/linux/process.o -c -pipe -fno-
+> strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/linux/process.cc
+> g++ -o build/ALPHA_SE/arch/alpha/tru64/tru64.o -c -pipe -fno-strict-
+> aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/tru64/tru64.cc
+> g++ -o build/ALPHA_SE/arch/alpha/tru64/process.o -c -pipe -fno-
+> strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -g -O3 -
+> DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> arch/alpha/tru64/process.cc
+> In file included from build/ALPHA_SE/kern/tru64/tru64.hh:60,
+>                  from build/ALPHA_SE/arch/alpha/tru64/tru64.hh:34,
+>                  from build/ALPHA_SE/arch/alpha/tru64/tru64.cc:31:
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> fstatfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*)':
+> /usr/include/sys/statfs.h:54: error: too few arguments to function
+> `int fstatfs(int, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:757: error: at this point in file
+> In file included from build/ALPHA_SE/arch/alpha/tru64/tru64.hh:34,
+>                  from build/ALPHA_SE/arch/alpha/tru64/tru64.cc:31:
+> build/ALPHA_SE/kern/tru64/tru64.hh: In static member function
+> `static void Tru64::copyOutStatfsBuf(TranslatingPort*, Addr,
+> global_statfs*)':
+> build/ALPHA_SE/kern/tru64/tru64.hh:410: error: 'struct
+> global_statfs' has no member named 'f_type'
+> build/ALPHA_SE/kern/tru64/tru64.hh:415: error: 'struct
+> global_statfs' has no member named 'f_bavail'
+> build/ALPHA_SE/kern/tru64/tru64.hh:420: error: 'struct
+> global_statfs' has no member named 'f_fsid'
+> build/ALPHA_SE/kern/tru64/tru64.hh:420: error: 'struct
+> global_statfs' has no member named 'f_fsid'
+> /usr/bin/python build/ALPHA_SE/arch/isa_parser.py build/ALPHA_SE/cpu/
+> cpu_models.py build/ALPHA_SE/arch/alpha/isa/main.isa build/ALPHA_SE/
+> arch/alpha AtomicSimpleCPU O3CPU TimingSimpleCPU
+> build/ALPHA_SE/kern/tru64/tru64.hh: In static member function
+> `static SyscallReturn Tru64::getdirentriesFunc(SyscallDesc*, int,
+> LiveProcess*, ThreadContext*)':
+> build/ALPHA_SE/kern/tru64/tru64.hh:451: error: `getdirentries' was
+> not declared in this scope
+> build/ALPHA_SE/kern/tru64/tru64.hh:451: warning: unused variable
+> 'getdirentries'
+> scons: *** [build/ALPHA_SE/arch/alpha/tru64/tru64.o] Error 1
+> Generating build/ALPHA_SE/arch/alpha/decoder.hh
+> Generating build/ALPHA_SE/arch/alpha/decoder.cc
+> Generating build/ALPHA_SE/arch/alpha/atomic_simple_cpu_exec.cc
+> Generating build/ALPHA_SE/arch/alpha/o3_cpu_exec.cc
+> Generating build/ALPHA_SE/arch/alpha/timing_simple_cpu_exec.cc
+> In file included from build/ALPHA_SE/kern/tru64/tru64.hh:60,
+>                  from build/ALPHA_SE/arch/alpha/tru64/tru64.hh:34,
+>                  from build/ALPHA_SE/arch/alpha/tru64/process.cc:32:
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> fstatfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*)':
+> /usr/include/sys/statfs.h:54: error: too few arguments to function
+> `int fstatfs(int, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:757: error: at this point in file
+> In file included from build/ALPHA_SE/arch/alpha/tru64/tru64.hh:34,
+>                  from build/ALPHA_SE/arch/alpha/tru64/process.cc:32:
+> build/ALPHA_SE/kern/tru64/tru64.hh: In static member function
+> `static void Tru64::copyOutStatfsBuf(TranslatingPort*, Addr,
+> global_statfs*)':
+> build/ALPHA_SE/kern/tru64/tru64.hh:410: error: 'struct
+> global_statfs' has no member named 'f_type'
+> build/ALPHA_SE/kern/tru64/tru64.hh:415: error: 'struct
+> global_statfs' has no member named 'f_bavail'
+> build/ALPHA_SE/kern/tru64/tru64.hh:420: error: 'struct
+> global_statfs' has no member named 'f_fsid'
+> build/ALPHA_SE/kern/tru64/tru64.hh:420: error: 'struct
+> global_statfs' has no member named 'f_fsid'
+> build/ALPHA_SE/kern/tru64/tru64.hh: In static member function
+> `static SyscallReturn Tru64::getdirentriesFunc(SyscallDesc*, int,
+> LiveProcess*, ThreadContext*)':
+> build/ALPHA_SE/kern/tru64/tru64.hh:451: error: `getdirentries' was
+> not declared in this scope
+> build/ALPHA_SE/kern/tru64/tru64.hh:451: warning: unused variable
+> 'getdirentries'
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> statfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*) [with OS
+> = Tru64_PreF64]':
+> build/ALPHA_SE/arch/alpha/tru64/process.cc:366:   instantiated from
+> here
+> /usr/include/sys/statfs.h:53: error: too few arguments to function
+> `int statfs(const char*, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:733: error: at this point in file
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> fstatfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*) [with
+> OS = Tru64_PreF64]':
+> build/ALPHA_SE/arch/alpha/tru64/process.cc:367:   instantiated from
+> here
+> /usr/include/sys/statfs.h:54: error: too few arguments to function
+> `int fstatfs(int, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:757: error: at this point in file
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> statfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*) [with OS
+> = Tru64_F64]':
+> build/ALPHA_SE/arch/alpha/tru64/process.cc:433:   instantiated from
+> here
+> /usr/include/sys/statfs.h:53: error: too few arguments to function
+> `int statfs(const char*, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:733: error: at this point in file
+> build/ALPHA_SE/sim/syscall_emul.hh: In function `SyscallReturn
+> fstatfsFunc(SyscallDesc*, int, LiveProcess*, ThreadContext*) [with
+> OS = Tru64_F64]':
+> build/ALPHA_SE/arch/alpha/tru64/process.cc:434:   instantiated from
+> here
+> /usr/include/sys/statfs.h:54: error: too few arguments to function
+> `int fstatfs(int, statfs*, int, int)'
+> build/ALPHA_SE/sim/syscall_emul.hh:757: error: at this point in file
+> /usr/ccs/bin/as: "<stdin>", line 15687: error: symbol
+> "_ZN8AlphaISA17AlphaTru64ProcessD1Ev" is used but not defined
+> /usr/ccs/bin/as: "<stdin>", line 15687: error: symbol
+> "_ZN8AlphaISA17AlphaTru64ProcessD0Ev" is used but not defined
+> /usr/ccs/bin/as: "<stdin>": , approx line 15687: internal error:
+> evaluate_symbol_expression(): op 48?
+> scons: *** [build/ALPHA_SE/arch/alpha/tru64/process.o] Error 1
+> scons: building terminated because of errors.
+> [robertpu@sisu ~/m5-2.0b3]$
+> What should I try next?
+>
+> Thanks,
+> Robert Pulumbarit
+>
+> On Sun, Jul 6, 2008 at 11:47 AM, Ali Saidi <saidi@umich.edu> wrote:
+> Using SunCC is not supported as a front end. If you really want to use
+> SunCC the latest Sun Studio Express release might be compatible, it
+> was close last time I tried, but we were still using some gcc-isms
+> that weren't supported.
+>
+> James is correct that you're still using CC (the Sun compiler). You
+> can change this either by setting environment variables or if you pass
+> CC=gcc CXX=g++ on the command line that will work too: scons CC=gcc
+> CXX=g++ build/ALPHA_SE/m5.opt.
+>
+> As an important note, full-system alpha simulation requires a little-
+> endian host. You might be able to do syscall emulation on a big-endian
+> host, but I'm not completely certain. All the other ISAs are cross-
+> endian.
+>
+> Finally, gcc code generation for SPARC is pretty awful. If you don't
+> end up making SunCC work, you should probably install gccfss (gcc
+> front-end for sun studio). It uses gcc for the front-end and SunCC for
+> the back-end, resulting in a huge performance increase on SPARC
+> hardware over the standard gcc code generator.
+>
+> Ali
+>
+>
+> On Jul 6, 2008, at 3:29 AM, Robert Pulumbarit wrote:
+>
+> > Hello again,
+> >
+> > I am trying to compile m5-2.0b3 on an UltraSPARC T1 running Solaris
+> > 10.
+> >
+> > Here are the versions of all prerequisite software that I have
+> > installed:
+> >
+> > [robertpu@sisu ~]$ scons --version
+> > SCons by Steven Knight et al.:
+> >         script: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on
+> > bangkok
+> >         engine: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on
+> > bangkok
+> >
+> > [robertpu@sisu ~]$ python --version
+> > Python 2.5.2
+> >
+> > [robertpu@sisu ~]$ gcc -v
+> > gcc version 3.4.6
+> >
+> > [robertpu@sisu ~]$ swig -version
+> > SWIG Version 1.3.29
+> > Compiled with g++ [sparc-sun-solaris2.10]
+> > Please see http://www.swig.org for reporting bugs and further
+> > information
+> > [robertpu@sisu ~]$ m4 --version
+> > m4 (GNU M4) 1.4.10
+> >
+> > zlib version 1.2.3
+> >
+> > When I try to compile m5-2.0b3, I get the following errors which
+> > cause compilation to abort:
+> >
+> > [robertpu@sisu ~/m5-2.0b3]$ scons EXTRAS=src/encumbered build/
+> > ALPHA_SE/m5.opt -j 5
+> > scons: Reading SConscript files ...
+> > Checking for C header file Python.h... (cached) yes
+> > Checking for C library python2.5... (cached) yes
+> > Checking for accept(0,0,0) in C++ library None... (cached) no
+> > Checking for accept(0,0,0) in C++ library socket... (cached) yes
+> > Checking for zlibVersion() in C++ library z... (cached) yes
+> > Checking for C header file fenv.h... (cached) yes
+> > Building in /home/robertpu/m5-2.0b3/build/ALPHA_SE
+> >
+> > scons: warning: The env.Copy() method is deprecated; use the
+> > env.Clone() method instead.
+> > File "/home/robertpu/m5-2.0b3/SConstruct", line 577, in <module>
+> > Using saved options file /home/robertpu/m5-2.0b3/build/options/
+> > ALPHA_SE
+> > scons: done reading SConscript files.
+> > scons: Building targets ...
+> > /opt/SUNWspro/bin/CC -o build/ALPHA_SE/python/swig/pyevent.o -c -
+> > Qoption ccfe -features=gcc -features=extensions -library=stlport4 -
+> > xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/
+> > include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/
+> > ALPHA_SE/python/swig/pyevent.cc
+> > /opt/SUNWspro/bin/CC -o build/ALPHA_SE/python/swig/pyobject.o -c -
+> > Qoption ccfe -features=gcc -features=extensions -library=stlport4 -
+> > xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/
+> > include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/
+> > ALPHA_SE/python/swig/pyobject.cc
+> > /opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/activity.o -c -Qoption
+> > ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O
+> > -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> > python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> cpu/
+> > activity.cc
+> > Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/
+> > ccfe'.
+> > "build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining
+> > VarArgs::Base<VarArgs::RECV> after use in
+> > VarArgs::Argument<cp::Print>.
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While
+> > specializing "VarArgs::Argument<cp::Print>".
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized
+> > in non-template code.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration
+> > for _Pragma.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for file.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for line.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for format.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/
+> > ccfe'.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining
+> > VarArgs::Base<VarArgs::RECV> after use in
+> > VarArgs::Argument<cp::Print>.
+> > "build/ALPHA_SE/sim/sim_events.hh", line 66: Warning: _when hides
+> > Event::_when.
+> > 15 Error(s) and 1 Warning(s) detected.
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While
+> > specializing "VarArgs::Argument<cp::Print>".
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized
+> > in non-template code.
+> > 1 Error(s) detected.
+> > /opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/base.o -c -Qoption ccfe -
+> > features=gcc -features=extensions -library=stlport4 -xar -g -O -
+> > DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> > python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> cpu/
+> > base.cc
+> > scons: *** [build/ALPHA_SE/python/swig/pyevent.o] Error 15
+> > /opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/cpuevent.o -c -Qoption
+> > ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O
+> > -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/
+> > python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/
+> cpu/
+> > cpuevent.cc
+> > scons: *** [build/ALPHA_SE/cpu/activity.o] Error 1
+> > Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/
+> > ccfe'.
+> > "build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining
+> > VarArgs::Base<VarArgs::RECV> after use in
+> > VarArgs::Argument<cp::Print>.
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While
+> > specializing "VarArgs::Argument<cp::Print>".
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized
+> > in non-template code.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration
+> > for _Pragma.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for file.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for line.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for format.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/sim/param.hh", line 541: Warning:
+> > SimObjectBaseParam::showValue hides the virtual function
+> > BaseParam::showValue(std::ostream &) const.
+> > "build/ALPHA_SE/sim/param.hh", line 541: Warning:
+> > SimObjectBaseParam::parse hides the virtual function
+> > BaseParam::parse(const std::string &).
+> > 15 Error(s) and 2 Warning(s) detected.
+> > scons: *** [build/ALPHA_SE/python/swig/pyobject.o] Error 15
+> > Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/
+> > ccfe'.
+> > "build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining
+> > VarArgs::Base<VarArgs::RECV> after use in
+> > VarArgs::Argument<cp::Print>.
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While
+> > specializing "VarArgs::Argument<cp::Print>".
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized
+> > in non-template code.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration
+> > for _Pragma.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for file.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for line.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for format.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead
+> > of "a01".
+> > 15 Error(s) detected.
+> > scons: *** [build/ALPHA_SE/cpu/cpuevent.o] Error 15
+> > Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/
+> > ccfe'.
+> > "build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining
+> > VarArgs::Base<VarArgs::RECV> after use in
+> > VarArgs::Argument<cp::Print>.
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While
+> > specializing "VarArgs::Argument<cp::Print>".
+> > "build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized
+> > in non-template code.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration
+> > for _Pragma.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed
+> > expression.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for file.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for line.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate
+> > declarations.
+> > "build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration
+> > for format.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error:
+> > VarArgs::Argument<VarArgs::RECV> is not a static data member.
+> > "build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead
+> > of "a01".
+> > "build/ALPHA_SE/arch/alpha/types.hh", line 71: Warning: Identifier
+> > expected instead of "}".
+> > "build/ALPHA_SE/cpu/base.hh", line 84: Warning: numCycles hides
+> > BaseCPU::numCycles.
+> > "build/ALPHA_SE/cpu/base.hh", line 291: Warning:
+> > BaseCPU::takeOverFrom hides the virtual function
+> > SimObject::takeOverFrom(BaseCPU*).
+> > "build/ALPHA_SE/sim/byteswap.hh", line 130: Error: "static" is not
+> > allowed here.
+> > "build/ALPHA_SE/sim/byteswap.hh", line 138: Error: "static" is not
+> > allowed here.
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 283: Warning: Identifier
+> > expected instead of "}".
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: "}" expected
+> > instead of "return".
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 397: Error:
+> > "StaticInst::branchTarget(ThreadContext*) const" is expected to
+> > return a value.
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: Use ";" to
+> > terminate declarations.
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: A declaration
+> > was expected instead of "return".
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: No direct
+> > declarator preceding "(".
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 404: Error: The function
+> > "hasBranchTarget(unsigned long long, ThreadContext*, unsigned long
+> > long&) const" cannot be declared const.
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 413: Error: "virtual" is
+> > not allowed here.
+> > "build/ALPHA_SE/cpu/static_inst.hh", line 415: Error: The function
+> > "disassemble(unsigned long long, const SymbolTable*) const" cannot
+> > be declared const.
+> > Compilation aborted, too many Error messages.
+> > scons: *** [build/ALPHA_SE/cpu/base.o] Error 1
+> > scons: building terminated because of errors.
+> >
+> > Can anyone help?
+> >
+> >
+> > On Mon, Jun 30, 2008 at 5:39 PM, Ali Saidi <saidi@umich.edu> wrote:
+> > It should compile just fine with gcc on Solaris.
+> >
+> > Ali
+> >
+> > On Jun 30, 2008, at 6:12 PM, Robert Pulumbarit wrote:
+> >
+> > > We have an UltraSPARC T1 running Solaris.  Is it possible to
+> compile
+> > > and run M5 on this machine?  The M5 compilation page mentions that
+> > > M5 can be ported to Unix-like OSes.  Are there any extra steps
+> > > needed to compile and run M5 on Solaris?
+> > > _______________________________________________
+> > > m5-users mailing list
+> > > m5-users@m5sim.org
+> > > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

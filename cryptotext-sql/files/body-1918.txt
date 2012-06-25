@@ -1,0 +1,69 @@
+Hi Ali,      Thanks for your reply, i changes the following in different way still it is not working    /* 116 */ SyscallDesc("gettimeofday", gettimeofdayFunc), //32 bit    /* 116 */ SyscallDesc("gettimeofday", gettimeofdayFunc<SparcLinux>), //32 bit
+    /* 116 */ SyscallDesc("gettimeofday", ignoreFunc), //32 bitand gettimeofday() is declared in src/sim/syscal_emul.hh/// Target gettimeofday() handler.template <class OS>SyscallReturn
+gettimeofdayFunc(SyscallDesc *desc, int callnum, LiveProcess *process,        ThreadContext *tc){    TypedBufferArg<typename OS::timeval> tp(tc->getSyscallArg(0));    getElapsedTime(tp->tv_sec, tp->tv_usec);
+    tp->tv_sec += seconds_since_epoch;    tp->tv_sec = htog(tp->tv_sec);    tp->tv_usec = htog(tp->tv_usec);    tp.copyOut(tc->getMemPort());    return 0;}Does anybody know how to solve this problem.
+for other benchmarks, error are getting because of unimplemented instructions like for, fpadd32si found out these should be implemented in /arch/sparc/isa/decoder.isaso, i checked in /arch/alpha/isa/decoder.isa to get an idea so that i can implement in sparc, but for and fpadd32s are not implemented overthere. 
+Could anybody help me in this regard by give a brief idea on this.Thanks,Pavan- Show quoted text -On Fri, Jan 30, 2009 at 12:26 PM, Ali Saidi <saidi@umich.edu> wrote:
+On Jan 30, 2009, at 1:11 PM, Pavan Kumar wrote:
+> Hello,
+>
+>          I am trying to run SPEC CPU 2006 benchmarks on
+> m5-2.0b6(SPARC_SE mode), and some of them are showing the following
+> error messages.
+>
+>
+> perlbench  ---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+You need to implement gettimeofday(). Implementations exist for
+AlphaLinux and Tru64. Replacing the unimplementedFunc in the syscall
+table with the appropriate one should do the trick.
+> gcc           ---           error (fatal: syscall stat (#38)
+> unimplemented.)
+Same as above
+> bwaves     ---           error (fatal: syscall ioctl (#54)
+> unimplemented.)
+Maybe same as above. You would need to figure out what it's calling
+ioctl on.
+>
+> gobmk      ---           error (fatal: fault (fp_disabled) detected
+> @ PC 0x16e74c)
+I'm aware of no programs that intentionally take an fp fault for
+correct behavior, but I could be wrong.
+>
+> soplex      ---           error (panic: attempt to execute
+> unimplemented instruction 'for' (inst 0x7c99b30f88))
+Implement the for instruction in src/arch/sparc/isa
+>
+> povray      ---           error (fatal: syscall getcwd (#119)
+> unimplemented.)
+see above
+>
+> hmmer     ---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+see above
+> lbm          ---           error (fatal: syscall stat (#38)
+> unimplemented.)
+see above
+> astar        ---           error (panic: attempt to execute
+> unimplemented instruction 'fpadd32s' (inst 0x5385b18a63))
+Implement the fpadd32s instruction in src/arch/sparc/isa
+> xalancbmk---           error (fatal: syscall gettimeofday (#116)
+> unimplemented.)
+see above
+>
+> zeusmp    ---           error (fatal: syscall ioctl (#54)
+> unimplemented.)
+see above
+If you're going to work on getting these fixed, please use the
+development repository http://repo.m5sim.org/m5 and PLEASE contribute
+the changes back when you are done.
+Thanks,
+Ali
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

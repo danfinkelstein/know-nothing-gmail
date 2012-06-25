@@ -1,0 +1,19 @@
+>  I want to run the following multiprogramming workload. Two different programmes with multiple threads running on the same multiprocessor system.
+>
+>  Looks like m5 only supports runing one programme with multiple threads on a multiprocessor system .
+I'm not an expert in the syscall emulation stuff, but since nobody
+responded, I'll give it a shot.
+I'm not sure why this shouldn't be possible.  A CPU object takes a
+workload parameter.  If multiple CPUs point to the same workload, then
+they will attempt a multithreaded simulation of that workload.  If one
+group of CPUs pointed to one workload and another group of CPUs
+pointed to another, then I should think that you'd be able to run two
+multithreaded workloads in parallel.  That said, I don't believe that
+anyone has done this, so there could be a bug.  Please try it out and
+let us know.  If any bugs do exist shouldn't be too tough to figure
+out.
+  Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

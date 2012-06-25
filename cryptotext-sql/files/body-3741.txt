@@ -1,0 +1,50 @@
+Hi all,
+   I met some problems by using Stats:Formula.
+Here is my code :
+   enum MemAccessType {
+       MemRead,         // reads
+       MemWrite,                // writes
+       MemOther,                // unknown
+       MEM_ACCESS_NUM
+   };
+   Stats::Vector<> statAccessReceived;
+   Stats::Formula statAccessTotalReceived;
+    statAccessReceived
+        .init(MEM_ACCESS_NUM)
+        .name(name() + ".access_received")
+        .flags(pdf | dist)
+        ;
+    for (int i = 0; i < MEM_ACCESS_NUM; i++) {
+        stringstream ss_name, ss_desc;
+        ss_name.width(10);
+        ss_name << "" << memAccessNameStr[i];
+        ss_desc << "received " << memAccessDescStr[i];
+        statAccessReceived.subname(i, ss_name.str());
+        statAccessReceived.subdesc(i, ss_desc.str());
+    }
+   statAccessTotalReceived
+        .name(name() + ".access_total_received")
+        .desc("total recevied memory accesses")
+        .flags(total)
+        ;
+         statAccessTotalReceived = statAccessReceived[MemRead] +
+                              statAccessReceived[MemWrite] +
+                              statAccessReceived[MemOther];
+When I compiled the code, I got this error message:
+build/ALPHA_FS/base/statistics.hh: In member function āstd::string
+Stats::ScalarProxy<Stat>::str() const [with Stat =
+Stats::VectorBase<Stats::StatStor>]:
+build/ALPHA_FS/base/statistics.hh:2000:   instantiated from std::string
+Stats::ScalarProxyNode<Stat>::str() const [with Stat =
+Stats::VectorBase<Stats::StatStor>]
+build/ALPHA_FS/mem/sdram/sdram_ctrl.cc:1098:   instantiated from here
+build/ALPHA_FS/base/statistics.hh:1009: error: class
+Stats::VectorBase<Stats::StatStor> has no member named str
+scons: *** [build/ALPHA_FS/mem/sdram/sdram_ctrl.o] Error 1
+Does anyone know what is the problem?
+Thanks,
+Rongrong Lai
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

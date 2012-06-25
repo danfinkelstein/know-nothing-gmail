@@ -1,0 +1,27 @@
+Thanks, that modification really helped. But I got stuck in a new error
+Can you help me out on this.
+ 
+[root@iowa m5-2.0b3]# scons build/ALPHA_FS/tests/debug/quick
+scons: Reading SConscript files ...Checking for C header file Python.h... yesAdding /usr/local/lib to LIBPATH for python2.5
+Checking for C library python2.5... noError: can't find Python library python2.5 I have install Python 2.5.1 and also the standard library
+ 
+Regards,
+Amit.- Show quoted text -
+ 
+On 9/28/07, Steve Reinhardt <stever@gmail.com> wrote:
+Interesting... I bet that's due to your using an extremely recent version of scons.Please try changing the line:
+   env.Append(ENV = { 'M5_PLY' : Dir('ext/ply') })to:   env.Append(ENV = { 'M5_PLY' : str(Dir('ext/ply')) }) in the SConstruct file and let us know if that works.
+If you continue to run into problems you might want to downgrade to an earlier version of scons.Steve
+On 9/28/07, amit patil <
+apatil83@gmail.com> wrote:
+Hi,  When i tried to compile M5 I got this error. I am new to M5[root@iowa m5-2.0b3]# scons build/ALPHA_FS/tests/debug/quickscons: Reading SConscript files ...
+TypeError: putenv() argument 2 must be string, not instance:   File "/root/Desktop/m5-2.0b3/SConstruct", line 210:    env.Append(ENV = { 'M5_PLY' : Dir('ext/ply') })  File "/usr/local/lib/scons-
+0.97.0d20070918/SCons/Environment.py", line 1068:     orig[k] = v  File "/usr/local/lib/python2.5/os.py", line 476:    putenv(key, item)[root@iowa m5-2.0b3]#Could you please help me out what this error is and what should I do... 
+Thanks,Amit_______________________________________________m5-users mailing list
+m5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

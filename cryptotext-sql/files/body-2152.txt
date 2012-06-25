@@ -1,0 +1,303 @@
+Hello Ali thanks for your confirmation. Can you give me the last
+confirmation. The retryList that is in void Bus::recvRetry(int id), in
+the bus.cc file, is the list in which all the failed attempts from any
+devices are stored?. And finally it seems that the management process
+between devices is very transparent and the mechanism is always the
+same between all the different devices in the system, using the
+functions recvRetry() and sendRetry, is this true for all the memory
+devices and cpu's or is there any exception?.
+And finally another question can you give me an advice in which fields
+should I use to differentiate the different caches, I only know
+gedId(). I have seen that each device has a different port number, but
+is there any way to know what port belongs to each cache?.
+Thanks.
+- Show quoted text -
+On Tue, Dec 16, 2008 at 11:20 AM, Ali Saidi <saidi@umich.edu> wrote:
+>
+> On Dec 16, 2008, at 12:12 PM, Bob Nagel wrote:
+>
+>> Hello Clint thanks for your answer I have been exploring the code and
+>> you are right the things work as you explained. But I have another
+>> problem, what happen when the bus is not busy but is the L2 cache the
+>> one that is busy. In my system I have a shared L2 cache between all
+>> the cores, when one core attempts to access and the shared cache is
+>> busy do you know what happen?. I have not been able to understand how
+>> the simulate manage this situations.
+> Exactly the same way, the bus being busy and the target being busy
+> both result in the sender failing to send the transmission at that
+> time and a retry being sent at a later time.
+>
+>>
+>>
+>> I beleive that the situation is something similar than before, when a
+>> core attempts to access to the cache and it is busy then it enters in
+>> a DcacheRetry state and after a while the bus tries to send again the
+>> petition to the cache until it is successful. But I have several
+>> questions, when does the bus send again the petition?, is there a
+>> singal from the cache to the bus that indicates that now the cache is
+>> free a then the bus can attempt to send a petition.?
+> Yes, the cache sends a sendRetry() to the bus which then calls
+> sendRetry() on the first waiter.
+>
+>> And if for
+>> example there are several petitions from different cores what is the
+>> policy that the bus uses in order to manage all the accesses FCFS?.
+>> Sorry for all of these questions adn thanks for the help.
+> Yes, it is FCFS.
+>
+> Ali
+>
+>>
+>>
+>>
+>> 2008/12/15 Clint Smullen <cws3k@cs.virginia.edu>:
+>>> Fundamentally, no device should continuously try to send a request
+>>> again. The behavior for "most" memory system objects currently in M5
+>>> is to "block" the port and wait for a retry message to be sent by the
+>>> other end.
+>>>
+>>> For instance, if a bus is busy, it will return false from its
+>>> recvTiming (returning false from the call to sendTiming), and the
+>>> sender should then block that port so that no more sends are
+>>> attempted. If you look in src/cpu/simple/timing.cc, whenever a
+>>> sendTiming fails (for icache or dcache), they enter the IcacheRetry
+>>> or
+>>> DcacheRetry state. In this state, no new requests should be
+>>> initiated.
+>>>
+>>> Once the bus is cleared, it will use sendRetry to call recvRetry on
+>>> the sender's port. The sender then tries to send the packet again.
+>>> You
+>>> can see this shown in TimingSimpleCPU::IcachePort::recvRetry(). Note
+>>> that the new attempt to send could also fail, which is not an error.
+>>>
+>>> As the assertions in that function show, recvRetry should never be
+>>> called unless a previous sendTiming failed. This means that the
+>>> receiving side must remember if a port is blocked (and thus needs to
+>>> receive a retry).
+>>>
+>>> Hope that helps. Others might have more precise details, as well.
+>>>
+>>>       - Clint
+>>>
+>>> On Dec 15, 2008, at 2:31 PM, Ryan Markley wrote:
+>>>
+>>>> Hello,
+>>>>
+>>>> I have been studying the code and the tutorial and I have come up
+>>>> with
+>>>> this, and I would like to ask you guys if is right.
+>>>>
+>>>> When a cpu want to access to the cache sends a petition with
+>>>> sendTiming to the port of the cache, and then the cache will call
+>>>> recvTiming and if the access is successful then perfect and if not
+>>>> there is no access. Then in the next execution cycle the cpu will
+>>>> try
+>>>> to access again and the cycle repeats until the access is
+>>>> successful.
+>>>> Is this right?, or those missing accesses are stored somewhere and
+>>>> there is another policy to management them.
+>>>>
+>>>> Thank you.
+>>>>
+>>>> On Wed, Dec 10, 2008 at 8:37 AM, Ryan Markley <overgeo@gmail.com>
+>>>> wrote:
+>>>>> Hello,
+>>>>>
+>>>>> Thanks for the link, now the thing is more clear, where is the
+>>>>> place
+>>>>> in which they are stored?, Are they stored in the retry list that I
+>>>>> said in my first mail?.
+>>>>>
+>>>>> Thanks.
+>>>>>
+>>>>>
+>>>>> On Wed, Dec 10, 2008 at 2:00 AM, Ali Saidi <saidi@umich.edu> wrote:
+>>>>>> Ryan,
+>>>>>>
+>>>>>> They are stored back in the bus and then at a later time the bus
+>>>>>> attempts to resend the packet to the cache. Eventually, it should
+>>>>>> accept it. Take a look at: http://www.m5sim.org/wiki/index.php/Memory_System
+>>>>>>
+>>>>>> Ali
+>>>>>>
+>>>>>> On Dec 10, 2008, at 12:21 AM, Ryan Markley wrote:
+>>>>>>
+>>>>>>> Hello Lisa thanks for your answer, I have checked the code of
+>>>>>>> CpuSidePort::recvTiming and I have seen that when the petition
+>>>>>>> cannot
+>>>>>>> be executed the function returns a false, this function is called
+>>>>>>> for
+>>>>>>> the Port, but I do not what happen after when the petition cannot
+>>>>>>> be
+>>>>>>> processed. I imagine that those not successful accesses are
+>>>>>>> stored
+>>>>>>> somewhere, can you tell me where are those accesses stored?.
+>>>>>>>
+>>>>>>> Thanks.
+>>>>>>> On Tue, Dec 9, 2008 at 1:42 PM, Lisa Hsu <hsul@eecs.umich.edu>
+>>>>>>> wrote:
+>>>>>>>> If you look in mem/cache/cache_impl.hh, you'll see
+>>>>>>>> recvTiming/Atomic/Function implementations.  So, when a bus
+>>>>>>>> sends a
+>>>>>>>> sendTiming to the cache, the cache port on the other end of the
+>>>>>>>> bus
+>>>>>>>> port
+>>>>>>>> does a recvTiming and does the appropriate things.
+>>>>>>>>
+>>>>>>>> Lisa
+>>>>>>>>
+>>>>>>>> On Tue, Dec 9, 2008 at 4:18 PM, Ryan Markley <overgeo@gmail.com>
+>>>>>>>> wrote:
+>>>>>>>>>
+>>>>>>>>> Hello Ali thanks for your answer, yes you are right I think
+>>>>>>>>> that the
+>>>>>>>>> best way to solve my problem is looking specifically in the
+>>>>>>>>> cache
+>>>>>>>>> code. I have been browsing the code in mem/cache/, but I have
+>>>>>>>>> not
+>>>>>>>>> seen
+>>>>>>>>> anything similar to the retry list that there is in the bus
+>>>>>>>>> code.
+>>>>>>>>> For
+>>>>>>>>> the bus, when the bus is busy then it puts the requests in a
+>>>>>>>>> retry
+>>>>>>>>> list and after those petitions are serve in FCFS. Is there any
+>>>>>>>>> similar
+>>>>>>>>> for the cache?, where is the code that management the petitions
+>>>>>>>>> to
+>>>>>>>>> the
+>>>>>>>>> cache?.
+>>>>>>>>>
+>>>>>>>>> Thanks.
+>>>>>>>>>
+>>>>>>>>> On Tue, Dec 9, 2008 at 6:56 AM, Ali Saidi <saidi@umich.edu>
+>>>>>>>>> wrote:
+>>>>>>>>>>
+>>>>>>>>>> On Dec 8, 2008, at 3:49 PM, Ryan Markley wrote:
+>>>>>>>>>>
+>>>>>>>>>>> Hello,
+>>>>>>>>>>>
+>>>>>>>>>>> I have a system with 4 cpu and one L2 cache shared with all
+>>>>>>>>>>> of the
+>>>>>>>>>>> cores, I am doing the simulations with the detail cpu. I am
+>>>>>>>>>>> interested
+>>>>>>>>>>> in study how the cores access to the shared cache. I have
+>>>>>>>>>>> been
+>>>>>>>>>>> looking
+>>>>>>>>>>> in the code of mem/bus.cc and mem/bus.hh. In the file bus.cc
+>>>>>>>>>>> there is
+>>>>>>>>>>> a function called  recvTiming, this is the function that is
+>>>>>>>>>>> used
+>>>>>>>>>>> to
+>>>>>>>>>>> access to the bus and when the bus is busy the accesses are
+>>>>>>>>>>> stored in
+>>>>>>>>>>> a retryList, but my question is: is this the function used to
+>>>>>>>>>>> access
+>>>>>>>>>>> to the shared cache?
+>>>>>>>>>> Ultimately, yes. When it is able to it will call
+>>>>>>>>>> sendTiming() on
+>>>>>>>>>> the
+>>>>>>>>>> port that connects to the L2 cache. However, if you want to
+>>>>>>>>>> look at
+>>>>>>>>>> the L2 cache specifically, it would probably be better to look
+>>>>>>>>>> at
+>>>>>>>>>> the
+>>>>>>>>>> actual cache and put any instrumentation you like inside
+>>>>>>>>>> there.
+>>>>>>>>>>
+>>>>>>>>>>> or it is used only to access to the main memory.
+>>>>>>>>>>> I have been printing the accesses in the retryList , but I do
+>>>>>>>>>>> not see
+>>>>>>>>>>> enough access from the different cores, that's why I am
+>>>>>>>>>>> thinking
+>>>>>>>>>>> that
+>>>>>>>>>>> maybe that retryList is not the retryList for the shared
+>>>>>>>>>>> cache.
+>>>>>>>>>> The retryList only is populated when the bus cannot send the
+>>>>>>>>>> request
+>>>>>>>>>> immediately. If you're in the cache the request object has
+>>>>>>>>>> various
+>>>>>>>>>> fields that identify the CPU it's coming from (contextId() and
+>>>>>>>>>> threadId()),
+>>>>>>>>>>
+>>>>>>>>>>> And another question is there a way to assign a core per
+>>>>>>>>>>> program
+>>>>>>>>>>> in
+>>>>>>>>>>> full system mode, I know that is a linux question and not a
+>>>>>>>>>>> M5
+>>>>>>>>>>> simulator problem, but I would like to know if anybody
+>>>>>>>>>>> knows a
+>>>>>>>>>>> way to
+>>>>>>>>>>> assign a program to each core.
+>>>>>>>>>> You can do it with the sched_setaffinity() system call. Nate
+>>>>>>>>>> just
+>>>>>>>>>> pushed a change to the m5 binary (which stays on the disk
+>>>>>>>>>> image)
+>>>>>>>>>> that
+>>>>>>>>>> allows a syntax like m5 pin <cpu id> <program to run>, however
+>>>>>>>>>> you can
+>>>>>>>>>> just call sched_setaffinity from your workload if you like.
+>>>>>>>>>> However, I
+>>>>>>>>>> believe that the disk image we supply doesn't support that
+>>>>>>>>>> system
+>>>>>>>>>> call, so you would need to get the gentoo alpha disk image or
+>>>>>>>>>> create
+>>>>>>>>>> you own with a newer  glibc on it.
+>>>>>>>>>>
+>>>>>>>>>> Ali
+>>>>>>>>>>
+>>>>>>>>>> _______________________________________________
+>>>>>>>>>> m5-users mailing list
+>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>
+>>>>>>>>> _______________________________________________
+>>>>>>>>> m5-users mailing list
+>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> _______________________________________________
+>>>>>>>> m5-users mailing list
+>>>>>>>> m5-users@m5sim.org
+>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

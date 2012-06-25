@@ -1,0 +1,40 @@
+Hey Ali,
+I sent the patch through "hg email" to the dev mailing list.
+I've got another suggestion for the tournament predictor: maybe we should drop some parameters we can initialize the predictor with.
+Since the same threshold is used for all 3 predictors (global-, local- and choice-predictor) some parameters are dependent.
+An example: choiceCtrBits and globalCtrBits should both be equal to localCtrBits (in cpu/pred/tournament.{cc,hh}).
+These dependencies can be omitted when we use 3 different thresholds. However there are still some other dependencies that can't.
+It might be better for someone who wants to set parameters for the branch predictor, he doesn't need to take these dependencies into account.
+Max- Show quoted text -
+On 05/03/2010 07:44 PM, Ali Saidi wrote:
+Hi Max,
+I think that is a bug. Would you mind working up a diff, comment, etc. I'll volunteer to update all of our local regressions if you do.
+Thanks,
+Ali
+On May 3, 2010, at 4:28 AM, Maximilien Breughe wrote:
+   
+Hi all,
+I was digging a little bit in the implementations of your branch predictors and I think I bumped into a small bug (which might affect performance of the target machine a lot):
+Around line 108 in cpu/pred/tournament.cc:
+    threshold = (1<<  (localCtrBits - 1)) - 1;
+    threshold = threshold / 2;
+Shouldn't this be
+    threshold = (1<<  (localCtrBits - 1)) - 1;
+?
+When you take localCtrBits=2 for example, the threshold should be 1, not 0.
+Regards,
+Max
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+   
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

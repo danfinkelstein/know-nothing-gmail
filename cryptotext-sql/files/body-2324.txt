@@ -1,0 +1,51 @@
+The device between the I/O and coherent space doesn't need to be a
+cache, but it needs to do everything a cache does with the exception
+of caching data. As Steve said, a full-block DMA write is the only
+case that isn't problematic as a broadcast invalidate will do. Partial
+block writes require the device sitting between the I/O and coherent
+space to merge the data, and all kinds of reads require snooping all
+the caches in the system for a dirty version of that data.
+Ali
+- Show quoted text -
+On Nov 7, 2008, at 7:28 PM, Steve Reinhardt wrote:
+> Yes, the whole reason for having an IO cache is to make device
+> accesses work in coherent space.  An IO cache isn't the only solution
+> but it's the only one we have in m5.  You might be able to get away
+> with doing a broadcast invalidate on full-block DMA writes, but
+> partial-block DMA writes require getting an exclusive copy of the
+> block and then merging in the DMA data.
+>
+> Steve
+>
+> On Fri, Nov 7, 2008 at 4:25 PM, Rick Strong <rstrong@cs.ucsd.edu>
+> wrote:
+>> Hi all,
+>>
+>> I have been working to get Jiayuan Meng's directory coherence model
+>> working for full system m5-dev. I had a question about an IO-Cache.
+>> If
+>> you have an I/O cache connected between the memory bridge and
+>> iobus, do
+>> have have to keep the IO-cache coherent as a level 3 cache (I have
+>> connections cpu->l1-cache->l2-bus,
+>> l2->cache->membus->membridge->IO-cache->iobus) ? I guess I am
+>> wondering
+>> if the IO-cache has to be apart of coherent memory.
+>>
+>> Best,
+>> -Rick
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

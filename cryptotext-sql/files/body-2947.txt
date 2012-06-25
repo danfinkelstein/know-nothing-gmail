@@ -1,0 +1,75 @@
+Hi Ali,
+Thanks for the response.  I've created a config file for 2.6.22 and I
+now have a follow-up question about cross-compiling.  I've been
+following the directions you published on the website
+(
+http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Ima
+ges_and_Kernels_for_M5) and I'm blocked on a glibc error.  The
+particular error is the following:
+svvint02[/proj/aatl_perfmod_arch/users/bbeckman/m5-ext/linux-2.6/linux-2
+.6]% make ARCH=alpha
+CROSS_COMPILE=../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-lin
+ux-gnu/bin/alpha-unknown-linux-gnu- vmlinux
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-gcc: /lib64/tls/libc.so.6: version `GLIBC_2.4' not
+found (required by
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-gcc)
+  CHK     include/linux/version.h
+  CHK     include/linux/utsrelease.h
+  CC      arch/alpha/kernel/asm-offsets.s
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-gcc: /lib64/tls/libc.so.6: version `GLIBC_2.4' not
+found (required by
+../../m5_downloads/gcc-4.1.1-glibc-2.3.5/alpha-unknown-linux-gnu/bin/alp
+ha-unknown-linux-gnu-gcc)
+make[1]: *** [arch/alpha/kernel/asm-offsets.s] Error 1
+make: *** [prepare0] Error 2
+So I noticed that the libc version in my environment is libc-2.3.2.so
+and I believe this is the source of my problem:
+svvint02[/tool/pandora/.package/glib-2.4.4]% ls -l /lib64/tls/libc.so.6
+lrwxrwxrwx    1 root     root           13 Mar 29 18:30
+/lib64/tls/libc.so.6 -> libc-2.3.2.so
+Would you suspect this is the problem as well?  I don't have root
+permissions on the machines I'm using so I can't directly install a
+newer version of libc.  I just wanted to check if there was another
+solution possible.
+Thanks,
+Brad
+- Show quoted text -
+-----Original Message-----
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On
+Behalf Of Ali Saidi
+Sent: Friday, May 23, 2008 7:45 PM
+To: M5 users mailing list
+Subject: Re: [m5-users] Config File for Linux 2.6.22
+Hi Brad,
+I created the other config files, but I don't have one for 2.6.22. If
+you want one you should just start with the 2.6.18 config file and if
+you attempt to make the kernel you'll get prompted for any new
+parameters that weren't in 2.6.18.
+Ali
+On May 23, 2008, at 9:59 PM, Beckmann, Brad wrote:
+> Hi,
+>
+> Could you please point me to the patch file for the .config.m5 file
+> needed for Linux 2.6.22?  I notice that the Linux Patches tarball
+> contains defaultconfig files for 2.6.13, 2.6.16, and 2.6.18, but not
+> 2.6.22.
+>
+> Thanks for your help!
+>
+> Brad
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

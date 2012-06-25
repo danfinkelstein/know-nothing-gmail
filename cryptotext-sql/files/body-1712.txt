@@ -1,0 +1,90 @@
+If you look at repo.m5sim.org there is a linux-patches mercurial
+repository that contains patches for various linux kernel versions.
+Please see: http://www.m5sim.org/wiki/index.php/Using_linux-dist_to_Create_Disk_Images_and_Kernels_for_M5
+  for more information.
+Ali
+- Show quoted text -
+On Mar 17, 2009, at 2:08 AM, Rick Strong wrote:
+> Veydan Wu wrote:
+>> Hi, Rick, the download page provide the pre-compiled kernel vmlinux,
+>> but what I need is to compile some device drivers, so I need the
+>> compiled source code.  Look neard
+> Look near the bottom of the M5-download page under "Really Old
+> Version"
+> and you will find a  slightly modified linux 2.6.8.1 source tree. You
+> can cross-compile that. In general, I think all you really need is any
+> 2.6+ kernel and a M5 diff that contains support for special M5
+> instructions (like checkpoint, dumpstats ... etc). After that, use the
+> alpha cross compiler also found on the download page and you are ready
+> to go. If that version of the kernel does not work and there are no
+> objections, I can provide a 2.6.18 kernel for you. I have problems
+> with
+> the alpha cross compiler on my AMD machine (although I have stirred
+> fervor that AMD is not the cause) from a kernel panic, but no problems
+> on an Intel machine. Anyways, might as well try it out.
+>>
+>> I also try to look at what the linux-bigswap2.img contains, but
+>> it's a
+>> data file not the type like linux-latest.img that can be mounted.
+>> so I
+>> am not sure whether there is something I need in linux-bigswap2.img.
+> This was answered by Nate.
+>>
+>> I only have x86 platform so all I can do is to cross compile the
+>> source code of linux for alpha and it is full of errors and I am not
+>> sure whether it will work. I guess somebody here must have compiled
+>> the source for alpha becasue the vmlinux is already provided, if that
+>> can be provided then my problem would be solved, I think that maybe
+>> necessary for others too.
+> You are going to want to appl  the diffs that are present on the M5
+> download page. Also, make sure you are building with the right cross
+> compiler command for the linux kernel. Set your environment variable
+> CROSS_COMPILE,  and do 'make O="<path to your build directory>"
+> ARCH=alpha' and you should get a kernel. If you are getting gcc errors
+> related to a lack of ev6 support, make sure you are using the most
+> update gcc cross compiler.
+>>
+>>
+>>    Message: 2
+>>    Date: Sun, 15 Mar 2009 14:07:09 -0700
+>>    From: Rick Strong <rstrong@cs.ucsd.edu
+>> <mailto:rstrong@cs.ucsd.edu>>
+>>    Subject: Re: [m5-users] linux kernel for alpha
+>>    To: M5 users mailing list <m5-users@m5sim.org
+>>    <mailto:m5-users@m5sim.org>>
+>>    Message-ID: <49BD6DFD.3040900@cs.ucsd.edu
+>>    <mailto:49BD6DFD.3040900@cs.ucsd.edu>>
+>>    Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+>>
+>>    The linux kernel for the alpha architecture can be found on the
+>>    download
+>>    page for M5 @ http://www.m5sim.org/wiki/index.php/Download
+>>    Veydan Wu wrote:
+>>> Hi, does anybody have a linux kernel for alpha architecture. I
+>>    want to
+>>> compile some device driver running on M5 FS mode, I only have kernel
+>>> for x86 now, it will take much time to compile using a cross
+>>    compiler,
+>>> so if anyone have one, please send me a copy. Thanks very much !
+>>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>>
+>>
+>> ------------------------------------------------------------------------
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,18 @@
+Hi, Steve. Thank you for your reply. You provide a good way to use in simulation. I have one more question. I want to simulate the I/O device executing in parallel with the CPU. In verilog, we have the always statement which keeps the device running all the time. How can I find a loop in the simulation to put the main function of the device?
+ 
+The simulate() seems only serve events, without the knowledge of specific object. I think there must be a natural way to keep the device running as in verilog. How should I implement this in M5? Thank you!
+2010/3/11 Steve Reinhardt <stever@gmail.com>- Show quoted text -
+If you have another object that needs to know about your new object,the easiest thing is to add a parameter to the other object so that
+you can pass the new object in:class OldObject:   myObject = Param.SimObject("ptr to my object")You can then read the C++ object pointer out of the C++ old object'sparam struct.
+There's also a SimObject::find() function that lets you find objectsby name, but it's really for debugging and not for normal programmaticusage.Steve
+On Wed, Mar 10, 2010 at 1:41 AM, Veydan Wu <veydanwu@gmail.com> wrote:> Hi, all. I am using M5 ALPHA FS mode. The objects added in python script
+> function correct, but is there any way I can refer it in C++ code. Right> now, I implement a C++ object I/O device and add it in the> FSConfig.py/makeLinuxAlphaSystem.>> self.myIO = myIO(pio_addr = xxx, devicename = xxx);
+> self.myIO.pio = self.iobus.port.>> It functions correctly and I can read or write the device from the CPU. If I> want to refer to it by the name, NOT by read/write functio; for example, I> want to invoke a function in the I/O object, what should I do? I know this
+> requirement sounds wierd, but I really need this. Could anybody here give me> a hint? Thank you very much !>>> Weidan>
+> _______________________________________________> m5-users mailing list> m5-users@m5sim.org> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 吴为丹中科院计算所 微处理器中心0853北京海淀区科学院南路6号 100190(86-10)6260-0853   (86-10)8268-3196(86)138-112-10636veydanwu@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

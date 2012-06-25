@@ -1,0 +1,9 @@
+Hi all, the default  linux-latest.img provides a very simple initial process for booting linux on M5. But I doubt that if it misses something.  I wrote a device driver and try to insert it into the kernel at boot, to do this I add insmod race.ko to the initial scripte /etc/init.d/rcS. Everything seems all right, the init function of the driver work correctly to print something on the screen, and I type lsmod to list the modules currently in the linux, the driver that I add come up as I expected, which is
+# lsmodModule                  Size  Used by    Not taintedrace                    9664  0 When I use mknod to make a node for it, which is mknod /dev/race c 254 0, a node appear in the /dev, which is /dev/race. But when I tried to open it by 
+fd = open ("/dev/race",O_RDWR);it fails. Furthermore, when I tried to insert the module at boot time using modprobe instead of insmod, it fails at boot time loading script...
+modprobe: could not parse modules.depScript from M5 readfile is empty, starting bash shell...the modules.dep is supposed to be /lib/modules/2.6.13 and the directory is not exist, I created the directory modules/2.6.13 myself but I can't create the files which are supposed to be there. I know that they are created by depmod but even Iadd this to the initial script, the open function still fail.
+Now my major concern is to open the device correctly. I used a gentoo stage3 image, it is even not able to insert the driver, the race doesn't exist when I type lsmod. does anybody have some idea how to deal with this? Thanks !
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

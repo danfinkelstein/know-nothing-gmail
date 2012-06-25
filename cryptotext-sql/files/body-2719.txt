@@ -1,0 +1,6 @@
+Hi allI am confused about the interface between python and c++ in m5.For example, I set the size and latency of L1 cache in python configuration file. Then, how do these values are passed to c++ codes and affect them? Can you give me an introduction about it?
+Thanks a lot.Gary
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

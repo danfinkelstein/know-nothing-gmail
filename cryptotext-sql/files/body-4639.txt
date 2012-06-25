@@ -1,0 +1,13 @@
+Hi,
+I can move to 2.0b2. I had issues earlier with the compilation and hence had gone with v1.1 .
+Right now i cannot get the files in encumbered/cpu/full to be a part of my compilation. It picks the eio files but not the cpu/full files. Is there anything i need to change to make it compile that directory too?
+And can you also tell me how to add the sampler support in fs.py?
+thanks,
+Meeta
+On Wed, 21 Mar 2007, Nathan Binkert wrote:
+If you're just starting to get things up and running and haven't put a lot of effort into things, can you please use 2.0b2.  We're a bunch of academics and are willing to support our current stuff, but we're not very interested in getting people working on old code.  That said, we won't leave you hanging if you have a lot of time invested in 1.1, but would sill encourage you to switch.
+ Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

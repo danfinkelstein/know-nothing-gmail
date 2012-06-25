@@ -1,0 +1,36 @@
+Hi Zhe,
+There is a testcase in the tests/quick directory - 00.hello.mp
+Here is the workload script:
+http://repo.m5sim.org/m5/file/c880d4812539/tests/quick/00.hello.mp/test.py
+-Soumyaroop
+- Show quoted text -
+On Mon, Jun 21, 2010 at 12:37 PM, Zhe Wang <zhwang@cise.ufl.edu> wrote:
+> In FAQ of m5 wiki site, it says:  "In SE mode, simply create a system with
+> multiple CPUs and assign a different workload object to each CPU's workload
+> parameter. If you're using the O3 model, you can also assign a vector of
+> workload objects to one CPU, in which case the CPU will run all of the
+> workloads concurrently in SMT mode"
+>
+> Is there any sample script of how to assign a workload object to different
+> CPUs, thanks? Right now, I am trying to run different mibench benchmarks on
+> a multicore system.
+>
+> Thanks
+>
+> Zhe
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+Soumyaroop Roy
+Ph.D. Candidate
+Department of Computer Science and Engineering
+University of South Florida, Tampa
+http://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

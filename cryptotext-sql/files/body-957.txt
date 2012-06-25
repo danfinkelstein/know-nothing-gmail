@@ -1,0 +1,359 @@
+Hi John,
+The patch is already in that page. Just go to page through the link you
+provided. Copy the patch file content in that page to a text file and save
+it as .patch file.
+Fei
+-------------------------------------------------
+From: <m5-users-request@m5sim.org>
+Sent: Friday, September 04, 2009 3:01 PM
+To: <m5-users@m5sim.org>
+Subject: m5-users Digest, Vol 38, Issue 5
+> Send m5-users mailing list submissions to
+> m5-users@m5sim.org
+>
+> To subscribe or unsubscribe via the World Wide Web, visit
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> or, via email, send a message with subject or body 'help' to
+> m5-users-request@m5sim.org
+>
+> You can reach the person managing the list at
+> m5-users-owner@m5sim.org
+>
+> When replying, please edit your Subject line so it is more specific
+> than "Re: Contents of m5-users digest..."
+>
+>
+> Today's Topics:
+>
+>   1. Re: Question about results? (Steve Reinhardt)
+>   2. Committed Instructions Count on O3 (soumyaroop roy)
+>   3. Regarding the output attribute in cpu2000.py script
+>      (soumyaroop roy)
+>   4. simpoint and checkpoint computation in M5 (Ashutosh Jain)
+>   5. simpoint and checkpoint computation in M5 (Ashutosh Jain)
+>   6. FS Stall Near Program Termination (Joe Gross)
+>   7. DRAMSim patch with M5 (John Xu)
+>
+>
+> ----------------------------------------------------------------------
+>
+> Message: 1
+> Date: Fri, 4 Sep 2009 12:37:28 -0700
+> From: Steve Reinhardt <stever@gmail.com>
+> Subject: Re: [m5-users] Question about results?
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+> <28fce2300909041237w7158d717r6f291ab9a4ce0491@mail.gmail.com>
+> Content-Type: text/plain; charset=ISO-8859-1
+>
+> I don't know all the ins and outs of how stats are accumulated
+> (they're not always counting what you think they are), but do realize
+> that in FS mode cores that aren't running user code are in the kernel
+> idle loop (just like on a real machine).  So total ticks should
+> normally be consistent across all the cores since the cores don't
+> magically vanish and reappear based on whether they have something to
+> do.  (Though there may be differences if you're simulating from boot
+> and the OS actually enables the extra cores later in the boot
+> process.)
+>
+> As for 2 vs 4 cores, that's more mysterious, but if your benchmark is
+> too small then you could be getting eaten up by overheads.
+>
+> Steve
+>
+> On Mon, Aug 31, 2009 at 12:42 PM, Aaron Williams<aswilli@gmail.com> wrote:
+>> Hello All,
+>>
+>> I had a question about the results I am obtaining while running a
+>> benchmark
+>> program I wrote using pthreads.? The benchmark I am using to test is a
+>> simple operation where each thread created does a dot product of two
+>> vectors
+>> with 1 million elements in each. ? I am seeing a result where the ticks
+>> from
+>> USER mode look proper the way I am exspecting them.? That is to say that
+>> one
+>> core has a higher load as it is where the main thread runs and then each
+>> of
+>> the other cores has some small amount of usage on them.? Then when I look
+>> at
+>> the total number of ticks spent on each core, they are all equal.? This
+>> happens because there is a large portion of the time spent in "KERNEL"
+>> mode
+>> on the cores with lower utilization.? I am not sure why the KERNEL mode
+>> is
+>> so high on these other cores.? Any insight.
+>>
+>> Also another strange artifact that is occuring is that when I run a two
+>> core
+>> version, the total number of ticks on spent on each core is about half
+>> that
+>> of the time for the 4 core version.? This makes no sense to me as I would
+>> expect? the 4 core version to take half the time not twice the time...
+>>
+>> Any insights?
+>>
+>> Thanks in advance.
+>>
+>> --
+>> Aaron S. Williams
+>> Graduate Student
+>> Arizona State University
+>> Department of Electrical Engineering
+>> aswilli@gmail.com
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>
+> ------------------------------
+>
+> Message: 2
+> Date: Fri, 4 Sep 2009 16:21:22 -0400
+> From: soumyaroop roy <sroy@cse.usf.edu>
+> Subject: [m5-users] Committed Instructions Count on O3
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+> <4687e04b0909041321m1a64da74jc00f8c65133eca0f@mail.gmail.com>
+> Content-Type: text/plain; charset=UTF-8
+>
+> Hello all,
+>
+> I made an observation that has me confused and I need some
+> clarification. On inspecting the o3-timing stats for 00.hello, I found
+> the following:
+> sim_insts = 6386
+> system.cpu.commit.commitCommittedInsts = 6403
+> system.cpu.committedInsts = 6386
+>
+> How is it that total number of instructions simulated is lower than
+> the total number of committed instructions? Also, shouldn't there be
+> some relation like, (commit_count + squashed_count  == sim_insts)?
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+>
+>
+> ------------------------------
+>
+> Message: 3
+> Date: Fri, 4 Sep 2009 16:43:03 -0400
+> From: soumyaroop roy <sroy@cse.usf.edu>
+> Subject: [m5-users] Regarding the output attribute in cpu2000.py
+> script
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+> <4687e04b0909041343ladce2c4v51c89308d049f28e@mail.gmail.com>
+> Content-Type: text/plain; charset=UTF-8
+>
+> Hello all,
+>
+> In the cpu2000.py script, there is an "output" attribute to each
+> benchmark object. What is its purpose? It does not seem to be the name
+> of the file that the stdout should be directed to because the stdout
+> seems to be getting directed to "simout" by default. Nor does it seem
+> to the gold output that the output produced during a benchmark run
+> should be compared with.
+>
+> regards,
+> Soumyaroop.
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+>
+>
+> ------------------------------
+>
+> Message: 4
+> Date: Fri, 4 Sep 2009 15:49:37 -0500
+> From: Ashutosh Jain <ashujain7@gmail.com>
+> Subject: [m5-users] simpoint and checkpoint computation in M5
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+> <ba1368ad0909041349q56ff59c5n34b30809a7a98481@mail.gmail.com>
+> Content-Type: text/plain; charset="iso-8859-1"
+>
+> Hi
+> I am dealing with simpoint and checkpoint values. I have setup simpoint
+> with
+> the benchmarks. Also using the checkpoint on the command line as shown;
+>
+> command line:
+>
+> /home/ashutoshj/newm5/build/ALPHA_SE/m5.opt -d
+> ./spcp2000/cmp02_thds02_L2cache01/2C2T/Esimoutput100M
+> /home/ashutoshj/newm5/configs/cpu2000/cmp02_thds02_L2cache01.py --detailed
+> --caches --l2cache -*S --take-checkpoint=100000000*
+>
+> I have been using the max_insts_all_thread = 100000000 (100M) under the
+> configuration file for running the benchmarks.
+>
+> *My query* is how this *checkpoint is computed in M5*? Whether the max
+> instruction all threads means "sum of simpoint value + checkpoint" or just
+> the " checkpoint value".
+>
+> One more thing do the checkpoint and simpoint value have any relation with
+> statement like the following appeared at the end of simulation
+>       "Exiting @ cycle 62465151500 because all threads reached the max
+> instruction count"
+>
+>
+> Thanks in advance
+> Ashutosh Jain
+> -------------- next part --------------
+> An HTML attachment was scrubbed...
+> URL:
+> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090904/51d16990/attachment-0001.htm
+>
+> ------------------------------
+>
+> Message: 5
+> Date: Fri, 4 Sep 2009 15:50:59 -0500
+> From: Ashutosh Jain <ashujain7@gmail.com>
+> Subject: [m5-users] simpoint and checkpoint computation in M5
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID:
+> <ba1368ad0909041350r6e91e865o4103b400b44d7562@mail.gmail.com>
+> Content-Type: text/plain; charset="iso-8859-1"
+>
+> Hi
+> I am trying to simulate two experiments dealing with multi-core
+> multi-threaded system. Say case is 2 core X 2 thread. So there are 4
+> benchmarks used. I am using following SPEC CPU 2000 benchmarks: swim,
+> lucas,
+> equake, fma3d. I have also setup the early simpoint values for each for
+> them
+> ( 5, 35, 194, 298 respectively) .
+>
+> Now I am running three simulations with max_insts_all_thread = 100M:
+>
+> case (0) when all benchmarks have simpoint values 0.
+>
+> case (1) When benchmarks are used in following order with their early
+> simpoint values
+>
+> system.cpu[0].workload = Benchmarks.SPECSWIM() (500,000,000),
+> Benchmarks.SPECFMA3D() (29,800,000,000)
+> system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000),
+> Benchmarks.SPECART() (3,500,000,000)
+>
+> case (2) When benchmarks are used in with their early simpoint values
+> while
+> inter-changing the benchmarks for cpu [0].
+>
+> system.cpu[0].workload = Benchmarks.SPECFMA3D() (29,800,000,000),
+> Benchmarks.SPECSWIM() (500,000,000)
+> system.cpu[1].workload = Benchmarks.SPECEQUAKE()(19,400,000,000),
+> Benchmarks.SPECART() (3,500,000,000)
+>
+> I have compared the simulations stats on m5stats file. The case (0) and
+> case
+> (2) produces no differences in the statistics in the stats file. But the
+> case (1) produces the difference in the statistics. Why this happens??
+>
+> Ashutosh Jain
+> -------------- next part --------------
+> An HTML attachment was scrubbed...
+> URL:
+> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090904/a3588cb5/attachment-0001.htm
+>
+> ------------------------------
+>
+> Message: 6
+> Date: Fri, 04 Sep 2009 17:23:46 -0400
+> From: Joe Gross <joegross@umd.edu>
+> Subject: [m5-users] FS Stall Near Program Termination
+> To: M5 users mailing list <m5-users@m5sim.org>
+> Message-ID: <4AA18562.3000800@umd.edu>
+> Content-Type: text/plain; charset="iso-8859-1"
+>
+> Hello,
+>
+> Lately I've had the problem that my benchmark will simply stall (MSHRs
+> waiting for request?) very near to completion of the executable.
+> I am running the latest dev build, using FS mode and am running the
+> stream benchmark in alpha linux. When I adjust the parameters of my DRAM
+> simulator, esp. to a configuration that yields a lower latency for
+> reads/writes that occur far apart, the problem goes away and the
+> benchmark finishes. The simulator should use the same handling criteria
+> for each type of request as physical.cc does, affecting only the timing
+> of the requests.
+>
+> I have attached a trace file showing the last hundred items printed by
+> using --trace-flags=Cache,LLSC,MemoryAccess
+> It shows that the last request sent was to 0x1f8e6a40, which my
+> simulator does timing for and returns, using physmem to do the actual
+> read from the memory array. After this point, the system stops executing
+> instructions and making memory requests and I am unsure why this
+> happens. There are no outstanding requests in the memory system at this
+> point. Any help tracking down why this is happening would be
+> appreciated. I can send my custom fs.py or other code if it's useful.
+>
+> Joe
+> -------------- next part --------------
+> An embedded and charset-unspecified text was scrubbed...
+> Name: short.txt
+> Url:
+> http://m5sim.org/cgi-bin/mailman/private/m5-users/attachments/20090904/695f4c2e/attachment-0001.txt
+>
+> ------------------------------
+>
+> Message: 7
+> Date: Fri, 4 Sep 2009 17:02:22 -0500
+> From: John Xu <johnzxu@gmail.com>
+> Subject: [m5-users] DRAMSim patch with M5
+> To: m5-users@m5sim.org
+> Message-ID:
+> <ce77eafd0909041502m79f25c81meb4df516515b5cd6@mail.gmail.com>
+> Content-Type: text/plain; charset=ISO-8859-1
+>
+> Hi,
+>
+> I am new to M5 and want to explore M5 with DRAMSim. I saw Clint's post
+> with a patch.
+> http://m5sim.org/cgi-bin/mailman/private/m5-users/2009-January/004014.html
+>
+> Am wondering if the patch is still available in the repositary. I did
+> not see [mq] in the message.
+>
+> Pardon my ignorance, I am completely new to Mercury and don't know
+> what's required to get the patch. But searching the patches on the
+> repository did not
+> show the patch anymore either.
+> http://repo.m5sim.org/m5/log?rev=dram
+>
+> Could anybody point me to where and how to get your patches?
+>
+> Thanks a lot for your help in advance.
+>
+> Best regards,
+> john
+>
+>
+> ------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> End of m5-users Digest, Vol 38, Issue 5
+> ***************************************
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

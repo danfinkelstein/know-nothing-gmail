@@ -1,0 +1,6 @@
+I was just wondering if there is some performance degradation modeled for the SimpleCPU as you keep increasing the clk frequency.  I'm noticing in my simulations that after 16GHz, it seems that performance starts to decrease. 
+Thanks,Paul
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

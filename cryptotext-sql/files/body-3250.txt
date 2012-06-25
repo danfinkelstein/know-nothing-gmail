@@ -1,0 +1,62 @@
+I just sent out a patch that should enforce all threads finishing before ending simulation.This hasnt been implemented as a command line option yet. I'll be doing that soon ....Let me know if what I'm doing in the patch makes sense to people (or if I need to explain what I'm doing)....
+-Korey- Show quoted text -On Tue, Apr 15, 2008 at 11:26 AM, Korey Sewell <ksewell@umich.edu> wrote:
+well... it's the exit() syscall and then it's modifying the
+ThreadContext exit() function which is called in the exit() syscall so
+that it looks at the other threads in the system and and returns the
+right value (1?) only if it is the only thread remaining.
+Something like this is already done for the O3 CPU, but not for
+SimpleCPU as of yet (patch outstanding)...
+It might be a little tricky, but definitely do-able if you need it
+*like now/today* instead of the pretty near future...
+FYI:
+exit syscall should be found in syscall_emul.hh/cc
+thread context is found in cpu/thread_context.hh
+On Tue, Apr 15, 2008 at 11:03 AM, Ali Saidi <saidi@umich.edu> wrote:
+> You can modify the exit() syscall to not exits until the number of CPUs in
+> the system all have called exit(). That would solve the problem, however
+> it's not completely clear that's what you want to do. If you're running a
+> multiprogrammed workload you probably want to capture time when all the
+> programs are running. The only reason I could see doing otherwise was if you
+> were running all the benchmarks from beginning to end.
+>
+>  Ali
+>
+>
+>
+>
+>  On Apr 15, 2008, at 5:57 AM, jerry lrui wrote:
+>
+> >
+> >
+> >
+> > Thanks for all your help.
+> >
+> > Can you give me more details about how to control the system so that all
+> threads were done before system halt?
+> >
+> > Regards,
+> > Jerry
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+>
+>  _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+-- ----------Korey L SewellGraduate Student - PhD CandidateComputer Science & EngineeringUniversity of Michigan
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

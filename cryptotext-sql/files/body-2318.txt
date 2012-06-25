@@ -1,0 +1,12 @@
+Would it affect coherency if I added a bridge between  the membus and
+iocache? I currently do checkpoints with a bridge between the two buses
+(iobus and membus) and then I add a cache between the membus and iobus
+and would like to get rid of the bridge. However, debugging would be
+easier if I kept the bridge. Would there be any problem with having a
+bridge right before the iocache?
+Best,
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

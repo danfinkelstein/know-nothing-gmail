@@ -1,0 +1,144 @@
+Thank you for your quick response, Korey. I just verified that when I print out numThreads from cpu.cc it prints out 2.Although, I have another question for you now. When you say that number of threads in an SMT workload gets derived from the number
+of workloads presented, is it true only for SE mode? Because in FS mode, we should be able to have (# workloads >= # h/w threads), right?regards,Soumyaroop.- Show quoted text -On Sun, Jul 12, 2009 at 5:22 PM, Korey Sewell <ksewell@umich.edu> wrote:
+Hi Soumyaroop,
+The situation you describe is interesting. Something to note is that
+the number of threads in an SMT workload gets derived from the number
+of workloads presented not necessarily from the numThreads parameter
+on the CPU.
+I'm actually starting a revamp of the SMT regressions this week, so
+stay tuned to the m5-dev list to see progress.
+The discrepancy you make in the "numThreads=1" does seem confusing and
+should be ironed out if possible.
+On Sun, Jul 12, 2009 at 4:45 PM, soumyaroop roy<sroy@cse.usf.edu> wrote:
+> Hi Steve,
+>
+> The config.ini file for the testcase "01.hello-2T-smt" shows "numThreads=1"
+> while there are two workloads on it.
+> In the FAQs, it says:
+> "If you're using the O3 model, you can also assign a vector of workload
+> objects to one CPU, in which case the CPU will run all of the workloads
+> concurrently in SMT mode."
+> (http://www.m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_run_multiprogram_workloads_on_M5.3F)
+>
+> I am confused now because you said, regarding the above FAQ point, that
+> (refer to the attached reply):
+> "... it's talking about situations where you have more software threads than
+> hardware thread contexts and thus require a software scheduler to do context
+> switching."
+>
+> Is "numThreads" not the same as the number of h/w thread contexts?
+>
+> regards,
+> Soumyaroop.
+>
+> On Sun, Jun 14, 2009 at 6:39 PM, Steve Reinhardt <stever@gmail.com> wrote:
+>>
+>>
+>> On Sat, Jun 13, 2009 at 6:26 PM, soumyaroop roy <sroy@cse.usf.edu> wrote:
+>>>
+>>> Dear m5 users and developers,
+>>>
+>>> I have a few questions about the M5's current capabilities:
+>>>
+>>> 1. The FAQ section
+>>>
+>>> (http://m5sim.org/wiki/index.php/Frequently_Asked_Questions#How_do_I_run_multiprogram_workloads_on_M5.3F)
+>>> says:
+>>> "Note that SE mode has no thread scheduling; if you need a scheduler,
+>>> run in FS mode and use the fine scheduler built into the Linux
+>>> kernel."
+>>> This is not talking about the thread scheduler in the processor core
+>>> that picks up instructions from various threads during the
+>>> instructions fetch stage, is it?
+>>
+>> It's not; it's talking about situations where you have more software
+>> threads than hardware thread contexts and thus require a software scheduler
+>> to do context switching.
+>>
+>>>
+>>> 2. If my understanding above is correct and if I were to model SMT
+>>> capabilities of a single core of the OpenSparc T1, I may build the
+>>> simulator for Sparc in SE mode. Otherwise, I will have to build the
+>>> same in FS mode. Is this correct?
+>>
+>> No, it's not related to whether you have multiple cores or not.  FS vs SE
+>> is only about whether you want to simulate the OS code or just an
+>> application.
+>>
+>>>
+>>> 3. I also found out from the m5-users archive
+>>> (http://www.mail-archive.com/m5-users@m5sim.org/msg02138.html) that
+>>> the Sparc support in FS mode is not as mature as Alpha support in FS
+>>> mode. Is it a better idea to model a generic SMT and/or CMP processor
+>>> on the Alpha processor instead of the Sparc processor from the
+>>> perspective of not running into simulator limitations?
+>>
+>> If you need FS mode and CMP works for you, then Alpha probably is the
+>> better choice.  CMP Alpha FS has been fairly heavily used, at least for
+>> modest core counts (say 4-8).  Though Alpha FS with the "big tsunami"
+>> patches theoretically supports up to 64 cores, I recall from the mailing
+>> list that people have run into scalability issues before that point.
+>>
+>> If you need FS and SMT, then unfortunately there's no good answer...
+>> neither Alpha nor Sparc works in FS mode with SMT to my knowledge.  My guess
+>> is that it would be easier to get Sparc working in that case since at least
+>> there are real SMT Sparc machines to emulate.
+>>
+>>> 4. The M5 documentation
+>>> (http://www.m5sim.org/wiki/index.php/Main_Page) mentions that the
+>>> Alpha support in M5 is modeled on a DEC Tsunami system. Is that a CMP
+>>> processor (corresponding to Opensparc T1 for Sparc)? I could not find
+>>> a manual for it.
+>>
+>> Tsunami was an internal DEC/Compaq chipset code name that came out as the
+>> 21272, and was used in a couple of different products, including the
+>> AlphaServer DS10/20 and the XP1000 workstation.
+>> http://www.alphalinux.org/docs/goldrush
+>> http://en.wikipedia.org/wiki/Alpha_21264#21272
+>>
+>>>
+>>> 5. Is it possible to simulate both SMT and CMP capabilities in M5?
+>>
+>> In theory, yes.  I haven't done it myself, but it should work in SE mode.
+>>
+>> Steve
+>>
+>>>
+>>> regards,
+>>> Soumyaroop.
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> --
+> Soumyaroop Roy
+> Ph.D. Candidate
+> Department of Computer Science and Engineering
+> University of South Florida, Tampa
+> http://www.csee.usf.edu/~sroy
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- - Show quoted text -Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

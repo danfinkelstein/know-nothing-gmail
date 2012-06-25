@@ -1,0 +1,15 @@
+Hello,
+I was wondering what the use / purpose of the 'forwardSnoops' variable
+in the handleSnoop Function located in the
+/src/mem/cache/cache_impl.hh file. I see that this variable is set to
+'true' in the BaseCache.py file (line:49) in order to enable
+forwarding from the memory side to the cpu side of the cache, but I
+don't quite understand why that would need to be done? Also, since it
+is by default set to true, under which circumstances would it be
+useful to set it to false?
+Thanks.
+Malek
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

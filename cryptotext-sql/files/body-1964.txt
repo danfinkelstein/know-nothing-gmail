@@ -1,0 +1,15 @@
+> I am not very sure that I remember everything. However, the operation
+> flow may help others who want to do the same thing. If there is any
+> missing steps or mistakes, please correct me. And, I have a question.
+> How do I post this on the wiki or where should I post it?
+Just create an account on the wiki (http://m5sim.org) and create a new
+page titled "SpecOMP".  It should hopefully be pretty easy for you.
+We probably also need a workloads page that we can link it to, and
+probably link the workloads page to running m5, but we can take care
+of this if you don't want to.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

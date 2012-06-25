@@ -1,0 +1,48 @@
+Hi Steve,  Thanks for the quick response.  I tried the m5 repository and ran into the same issue.  I have attached the updated src/mem/bus.cc that we had in our old source.  The changes that cause the problem are in calcPacketTiming, updating tickNextIdle and the packet firstWordTime and finishTime.
+  Thanks,  Joel- Show quoted text -On Fri, Nov 27, 2009 at 4:14 PM, Steve Reinhardt <stever@gmail.com> wrote:
+This bug may or may not be related to your changes; there were a
+number of prefetcher bugs that I worked through a while ago and I'm
+not sure if they're in m5-stable or not..  In general, m5-stable is
+pretty stale and we haven't been very good about pushing bug fixes
+there, so if you're trying to bring your code up to date it's much
+better to go with the main m5 repository than m5-stable.  If you still
+have trouble at that point, let us know.
+Steve
+On Fri, Nov 27, 2009 at 12:32 PM, Joel Hestness <hestness@cs.utexas.edu> wrote:
+> Hi,
+>   I recently pulled down the current m5-stable repository to do some
+> testing, and I patched it with my changes from our group's older repository
+> (versions below). When I try to run some of our tests, I get a segmentation
+> fault. I have traced it back to our modification the the bus in
+> ./src/mem/bus.cc. We had modified calcPacketTiming so that we could simulate
+> a zero-latency/no-contention bus in detailed simulation (recvTiming). I am
+> not sure where to start debugging this problem. I have attached the gdb
+> output.
+>   Is there, perhaps, a better way to simulate a bus with no contention in
+> detailed simulation?
+>   Thanks,
+>   Joel
+> Revisions:
+>   Old: changeset:   5589:733318abb7b1
+>   Current: changeset:   6283:94c016415053
+>
+> --
+>  Joel Hestness
+>  PhD Student, Computer Architecture
+>  Dept. of Computer Science, University of Texas - Austin
+>  http://www.cs.utexas.edu/~hestness
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--   Joel Hestness  PhD Student, Computer Architecture  Dept. of Computer Science, University of Texas - Austin  http://www.cs.utexas.edu/~hestness
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

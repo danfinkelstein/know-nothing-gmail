@@ -1,0 +1,8 @@
+Hi all,
+    I am running the splash2 benchmarks in SE mode in M5. I want to capture the DRAM access patterns. I wanted to know if the physic_address used in the dram.cc is actually the physical address, (as would be translated by the TLB in the FS mode), or is it some trivial conversion from the virtual address? Is the TLB used at all in the SE mode?
+Thanks,
+- Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

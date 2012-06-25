@@ -1,0 +1,25 @@
+SIGUSR1 will do it.
+Ali
+On Mar 18, 2008, at 6:27 AM, Daniel Alex Finkelstein wrote:
+Hi folks,
+Is there a way to send a signal (or a debug command) to an m5.* simulation in progress to dump out the m5stats.txt file (that is, the stats in the file) at any particular time?
+Thanks,
+Dan
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

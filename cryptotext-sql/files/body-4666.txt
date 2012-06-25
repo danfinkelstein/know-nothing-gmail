@@ -1,0 +1,10 @@
+Hi,
+I am trying to run SPLASH2 benchmarks using the ALPHA_SE mode for M5 v1.1
+I don't see statistics for all the threads even if  I run with -ENP=4 and run it for max_insts_any_thread = 50000000. this is specially for CHolesky and FFT. I did get some statistics for radix/LU/Ocean
+Do I need to run these benchmarks for longer?
+Thanks,
+Meeta
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

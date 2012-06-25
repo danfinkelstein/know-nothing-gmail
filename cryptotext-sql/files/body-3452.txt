@@ -1,0 +1,19 @@
+The faults are served by palcode and if that fails then the OS gets involved. We haven't made up the fault names, they're the the ones defined in the Alpha ISA hardware reference manual. In particular a dtb_miss_single fault is a normal data tlb miss, and a dtb_miss_double is a fault that happened when trying to handle a dtb_miss_single. dtb_miss_double corresponds  to a double fault, and thus requiring OS intervention since the fast path palcode handler was unable to satisfy the request.
+Ali- Show quoted text -
+On Mar 12, 2008, at 1:59 PM, abc def wrote:
+One doubt: as i see from tlb.cc both PDtb_miss_fault
+and NDtb_miss_fault are actually page faults which
+will be served by os. My doubt is why one is called
+dtb_miss_single and another is called dtb_miss_double?
+Is there any specific reason for that?
+     ______________________________________________
+Enviado desde Correo Yahoo!
+El buzón de correo sin límite de almacenamiento. http://es.docs.yahoo.com/mail/overview/index.html
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

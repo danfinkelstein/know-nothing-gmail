@@ -1,0 +1,4 @@
+Hello again...Has anyone ever seen the subject error.  I'm in the process of using --trace_flags and adding DPRINTFs to try and figure out exactly what's going on.My interpretation of this error is that the store conditional is basically always failing (I repeatedly get this message in increments of 100000).  So, that's sounds pretty bad...  It makes me wonder if the code being simulated is deadlocking (if it's using LL/SC to implement locking and the SC keeps failing, maybe it can never acquire a lock?).
+If anyone has seen this type of message and know what it means, I'd appreciate any feedback you can provide.FYI, I'm running ALPHA_SE.Regards,-Edith
+_______________________________________________
+m5-users mailing list

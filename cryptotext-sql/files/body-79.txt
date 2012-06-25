@@ -1,0 +1,56 @@
+I was asking about the existing queue.
+Sorry, i guess now that i look at it, my questions could have been
+regarded to references in how to parallelize it.
+Malek
+- Show quoted text -
+On Thu, Jun 3, 2010 at 2:53 AM, nathan binkert <nate@binkert.org> wrote:
+>> at simulated cycle 1001: would these particular events have already
+>> been set for execution?
+> At cycle 1001 they would have been executed and removed from the event queue.
+>
+>> Also, how does the number of cpus determine (if it does assumingly) or
+>> impact whether or not the bin of events for a particular cycle is
+>> empty or not in the subsequent cycle? For example, would an event be
+>> scheduled onto an available core?
+> I'm confused now, are we talking about parallel simulation, or the
+> existing queue?  Events are dispatched and removed from the queue.  It
+> is up to whatever code is executed to schedule new events.  I'll wait
+> for an answer to this before attempting to answer the questions below.
+>  (They're a bit confusing to me.)
+>
+>> It seems from your previous response that it is possible to have more
+>> events scheduled at the same time then there are available CPUs, and
+>> depending on which cpus's generated the event request, does that mean
+>> some of the events may not be set in execution at that particular
+>> timestamp (due to data hazards/dependencies or cpu resources?)
+>
+>> Moreover, from your previous response it seems that it is possible
+>> (even if it is not the common case) for a single thread/core to set
+>> for execution more than a single event (whether or not in a multi-core
+>> system, if we just concern ourselves from perspective of a single
+>> thread/core).
+>>
+>> I see that there are functions available for event rescheduling, that
+>> would deal with such situations, but just to confirm, once an event is
+>> placed in this main queue, all such possibilities of needing to
+>> reschedule have already been determined, such that at this point,
+>> there is no reason for it to  be rescheduled or not be executed?
+>>
+>> Thanks.
+>>
+>> Malek
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

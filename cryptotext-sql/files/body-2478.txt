@@ -1,0 +1,6 @@
+I have an application written with openmp pragma directives. How can i run it in M5? The current cross-compiler i am using is based on gcc-3.4.3 and does not support -fopenmp.
+Probably building a cross compiler with a later version of gcc could be a solution. Do you have any specific recommendation regarding the version of gcc? or any other way..
+      _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

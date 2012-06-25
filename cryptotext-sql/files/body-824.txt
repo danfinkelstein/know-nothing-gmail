@@ -1,0 +1,14 @@
+Take a look at the way they add statistics for any other component, say caches. It is a very straightforward procedure. Or take a look at ASPLOS tutorial for an example.
+---- Original message ----
+>Date: Sun, 25 Oct 2009 13:10:41 -0500
+>From: Ashutosh Jain <ashujain7@gmail.com>
+>Subject: [m5-users] Bus Statistics in M5 2.0b6
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Hi
+>   I am interested in collecting bus statistics related
+>   to the bus traffic. Is there any way to collect
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

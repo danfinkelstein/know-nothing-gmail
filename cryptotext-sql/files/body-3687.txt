@@ -1,0 +1,35 @@
+There's no particular magic for it... if I run into this problem, I
+make the breakpoint conditional on "this == 0x<whatever>".  This works
+OK as long as there aren't too many other instances you're dealing
+with (in which case it slows down a lot checking all the
+false-positive breakpoints).
+Steve
+- Show quoted text -
+On Dec 15, 2007 5:19 PM, Nicolas Zea <nicolas.zea@gmail.com> wrote:
+> Correction, l2 bus is what I want to look at, but you get the point.
+>
+>
+> On Dec 15, 2007, at 7:04 PM, Nicolas Zea wrote:
+>
+> > What is the recommended way to debug a particular instance of an
+> > object in m5? In particular, I want to debug the L1 data bus, but
+> > there are so many buses in my system that normal breakpoints are a
+> > pain to use. Is there any way to debug a particular instance of an
+> > object easily? Or is the only option writing some custom code that
+> > parses the name() result, and breaking on that?
+> >
+> > -Nick
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

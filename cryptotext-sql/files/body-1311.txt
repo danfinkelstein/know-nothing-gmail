@@ -1,0 +1,57 @@
+Hi Arun, thanks very much for your help. The code you attached in your mail gave a good example. As far as I can
+understand, you use the IPR_PALtemp23, which is unique to each thread
+to simulate the threadID, is that right?  I do not quite understand the ppP->readBlob portion, can you explain that further? Thank you very much!Further, in SOFTWARE, I try to get the threadID　as followed. Pthread_self() return an variable of pthread_t type, pointing to a thread structure. The thread structure contains a thread identifier and a process identifier, it looks like this 
+struct _pthread_descr_struct{    ........     pthread_descr p_nextlive, p_prevlive;                                /* Double chaining of active threads */  pthread_descr p_nextwaiting;  /* Next element in the queue holding the thr */
+  pthread_descr p_nextlock;    /* can be on a queue and waiting on a lock */  pthread_t p_tid;              /* Thread identifier */  int p_pid;                    /* PID of Unix process */  int p_priority;               /* Thread priority (== 0 if not realtime) */
+  struct _pthread_fastlock * p_lock; /* Spinlock for synchronized accesses */  int p_signal;                 /* last signal received */     ............}this structure is in descr.h and there is no interfece to access them. So In SOFTWARE, I try to get the threadID as below, but I still doubt it.
+struct pthread_fake {   void* nothing[n];                       /* n is the number of words before p_tid */   pthread_t p_tid;              /* Thread identifier */
+  int p_pid;                    /* PID of Unix process */};and the threadID will be(_pthread_fake*)pthread_self() -> p_tidI am not sure whether it works, as glibs source code seems to change from one version to another. 
+Thanks again for your help !- Show quoted text -
+Hi Veydan, Lisa,
+I'm sorry I forgot to mention this. I also don't know how to get software
+thread id from hardware legally. But I tried a hack which seems to work -
+I'm not sure if it will work correctly always - Sometimes I get weird thread
+ids with this method. If someone can fix it, it would be great.
+I followed what was done in pthreads library code for alpha-linux:
+0000000120000bd8 <__pthread_self>:
+   120000bd8:    9e 00 00 00     rduniq
+   120000bdc:    a0 00 00 a4     ldq    v0,160(v0)
+   120000be0:    01 80 fa 6b     ret
+I'm not sure, though, what rduniq returns (Surely it is an address value in
+user space, and if we add 160 to it, we get the address of the location
+where thread id is stored).
+http://www.koders.com/noncode/fid0127B7742C33DC234D462F13D3CAD5800EF8F586.aspxhas
+the OSF implementation for rduniq (I guess it will be similar for
+linux).
+In m5 simulator (cpu/simple/timing.cc), I tried to get the thread id like
+this:
+#if FULL_SYSTEM
+  /* WARNING: This will only work for ALPHA systems */
+  Addr uLUniqueID,  uLUserSpaceAddr, uLSWTId;
+  VirtualPort *vpP;
+  FunctionalPort *ppP;
+  /* Set up software thread id */
+  uLUniqueID = readMiscRegNoEffect(TheISA::IPR_PALtemp23);
+  ppP = thread->getPhysPort();
+  assert(ppP);
+  ppP->readBlob((Addr) (uLUniqueID + 0x20),
+                (uint8_t*) &uLUserSpaceAddr,
+                sizeof(Addr));
+  vpP = thread->getVirtPort();
+  assert(vpP);
+  vpP->readBlob((Addr) (uLUserSpaceAddr + 160), (uint8_t*) &uLSWTId,
+                sizeof(Addr));
+  if (uLSWTId > 0x1000000000000000LL) {
+    uLSWTId = (unsigned long long) -1;
+  }
+#endif
+For THIS to work, we need to link with -lpthreads.
+Thanks and Regards,
+Arun
+PS:
+This is a nice reference for Alpha Architecture:
+ftp.compaq.com/pub/products/alphaCPUdocs/alpha_arch_ref.pdf
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

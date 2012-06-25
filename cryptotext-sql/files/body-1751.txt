@@ -1,0 +1,365 @@
+Here is a list of files on my disk image that works...
+/lib:
+-rwxr-xr-x 1 root root  134759 2008-06-26 17:54 ld-2.3.5.so
+lrwxrwxrwx 1 root root      11 2007-04-20 19:11 ld-linux.so.2 ->
+ld-2.3.5.so
+lrwxrwxrwx 1 root root      15 2007-04-20 19:11 libaio.so.1 ->
+libaio.so.1.0.1
+-rwxr-xr-x 1 root root    5656 2007-03-03 13:26 libaio.so.1.0.1
+-rwxr-xr-x 1 root root 1725696 2008-06-26 17:54 libc-2.3.5.so
+-rwxr-xr-x 1 root root   33503 2008-06-26 17:54 libcrypt-2.3.5.so
+lrwxrwxrwx 1 root root      15 2007-04-20 19:11 libcrypt.so ->
+libcrypt.so.1.1
+lrwxrwxrwx 1 root root      17 2007-04-20 19:11 libcrypt.so.1.1 ->
+libcrypt-2.3.5.so
+lrwxrwxrwx 1 root root      13 2007-04-20 19:11 libc.so.6.1 ->
+libc-2.3.5.so
+-rwxr-xr-x 1 root root   25390 2008-06-26 17:54 libdl-2.3.5.so
+lrwxrwxrwx 1 root root      12 2007-04-20 19:11 libdl.so -> libdl.so.2.1
+lrwxrwxrwx 1 root root      14 2007-04-20 19:11 libdl.so.2.1 ->
+libdl-2.3.5.so
+lrwxrwxrwx 1 root root      13 2007-04-20 19:11 libgcc_s.so ->
+libgcc_s.so.1
+-rwxr-xr-x 1 root root  280637 2008-06-26 17:54 libgcc_s.so.1
+-rwxr-xr-x 1 root root  598388 2008-06-26 17:54 libm-2.3.5.so
+lrwxrwxrwx 1 root root      11 2007-04-20 19:11 libm.so -> libm.so.6.1
+lrwxrwxrwx 1 root root      13 2007-04-20 19:11 libm.so.6.1 ->
+libm-2.3.5.so
+-rwxr-xr-x 1 root root  124300 2008-06-26 17:54 libnsl-2.3.5.so
+lrwxrwxrwx 1 root root      13 2007-04-20 19:11 libnsl.so -> libnsl.so.
+1.1
+lrwxrwxrwx 1 root root      15 2007-04-20 19:11 libnsl.so.1.1 ->
+libnsl-2.3.5.so
+-rwxr-xr-x 1 root root   53375 2008-06-26 17:54 libnss_compat-2.3.5.so
+lrwxrwxrwx 1 root root      18 2007-04-20 19:11 libnss_compat.so ->
+libnss_compat.so.2
+lrwxrwxrwx 1 root root      22 2007-04-20 19:11 libnss_compat.so.2 ->
+libnss_compat-2.3.5.so
+-rwxr-xr-x 1 root root   33459 2008-06-26 17:55 libnss_dns-2.3.5.so
+lrwxrwxrwx 1 root root      15 2007-04-20 19:11 libnss_dns.so ->
+libnss_dns.so.2
+lrwxrwxrwx 1 root root      19 2007-04-20 19:11 libnss_dns.so.2 ->
+libnss_dns-2.3.5.so
+-rwxr-xr-x 1 root root   71731 2008-06-26 17:55 libnss_files-2.3.5.so
+lrwxrwxrwx 1 root root      17 2007-04-20 19:11 libnss_files.so ->
+libnss_files.so.2
+lrwxrwxrwx 1 root root      21 2007-04-20 19:11 libnss_files.so.2 ->
+libnss_files-2.3.5.so
+-rwxr-xr-x 1 root root   34371 2008-06-26 17:55 libnss_hesiod-2.3.5.so
+lrwxrwxrwx 1 root root      18 2007-04-20 19:11 libnss_hesiod.so ->
+libnss_hesiod.so.2
+lrwxrwxrwx 1 root root      22 2007-04-20 19:11 libnss_hesiod.so.2 ->
+libnss_hesiod-2.3.5.so
+-rwxr-xr-x 1 root root   64097 2008-06-26 17:55 libnss_nis-2.3.5.so
+-rwxr-xr-x 1 root root   71653 2008-06-26 17:55 libnss_nisplus-2.3.5.so
+lrwxrwxrwx 1 root root      19 2007-04-20 19:11 libnss_nisplus.so ->
+libnss_nisplus.so.2
+lrwxrwxrwx 1 root root      23 2007-04-20 19:11 libnss_nisplus.so.2 ->
+libnss_nisplus-2.3.5.so
+lrwxrwxrwx 1 root root      15 2007-04-20 19:11 libnss_nis.so ->
+libnss_nis.so.2
+lrwxrwxrwx 1 root root      19 2007-04-20 19:11 libnss_nis.so.2 ->
+libnss_nis-2.3.5.so
+-rwxr-x--- 1 root root  120605 2008-06-26 17:55 libpthread-2.3.5.so
+lrwxrwxrwx 1 root root      19 2008-06-26 17:56 libpthread.so.0 ->
+libpthread-2.3.5.so
+-rwxr-xr-x 1 root root  108735 2008-06-26 17:55 libresolv-2.3.5.so
+lrwxrwxrwx 1 root root      16 2007-04-20 19:11 libresolv.so ->
+libresolv.so.2.1
+lrwxrwxrwx 1 root root      18 2007-04-20 19:11 libresolv.so.2.1 ->
+libresolv-2.3.5.so
+-rwxr-xr-x 1 root root   68862 2008-06-26 17:55 librt-2.3.5.so
+lrwxrwxrwx 1 root root      10 2007-04-20 19:11 librt.so -> librt.so.1
+lrwxrwxrwx 1 root root      14 2007-04-20 19:11 librt.so.1 ->
+librt-2.3.5.so
+-rwxr-xr-x 1 root root   43320 2008-06-26 17:55 libthread_db-1.0.so
+lrwxrwxrwx 1 root root      17 2007-04-20 19:11 libthread_db.so ->
+libthread_db.so.1
+lrwxrwxrwx 1 root root      19 2007-04-20 19:11 libthread_db.so.1 ->
+libthread_db-1.0.so
+-rwxr-xr-x 1 root root   24919 2008-06-26 17:56 libutil-2.3.5.so
+lrwxrwxrwx 1 root root      14 2007-04-20 19:11 libutil.so ->
+libutil.so.1.1
+lrwxrwxrwx 1 root root      16 2007-04-20 19:11 libutil.so.1.1 ->
+libutil-2.3.5.so
+- Show quoted text -
+On Mar 6, 2009, at 3:07 PM, Bob Nagel wrote:
+> Hi Steve thanks for the answer,
+>
+> In this link there is more information
+> http://jeff.squyres.com/journal/archives/2005/10/linux_processor.html.
+> There it explains all the problems with glibc and sched_affinity. Also
+> there is this packet Portable Linux Processor Affinity (PLPA), that it
+> is suppose to make work the sched_afifnity call indepently of the
+> problmes caused by the kernel and the glibc versions.
+>
+> One option is compile PLPA for alpha integrating in the m5.c file and
+> maybe in this way it works.
+>
+> 2009/3/6 Steve Reinhardt <stever@gmail.com>:
+>> Do we know for sure what version of libc you need to get a working
+>> sched_setaffinity?  That would be a good place to start.  For
+>> example,
+>> here's a link that indicates (though not conclusively) that 2.3.6
+>> doesn't have it, which would make it unlikely that 2.3.5 does:
+>>
+>> https://www.codeblog.org/viewsrc/glibc-2.3.6/sysdeps/generic/sched_setaffinity.c
+>>
+>> On Fri, Mar 6, 2009 at 10:32 AM, Bob Nagel <nasmloe@gmail.com> wrote:
+>>> Hello again,
+>>>
+>>> Sorry for keep bothering with the problem. Is there any other
+>>> suggestion to make it work or my only option is do the gentoo
+>>> thing?.
+>>> Did anyone try this process of copy the libc files with success to
+>>> make work the pin command?.
+>>>
+>>> Thanks a lot again.
+>>>
+>>> 2009/3/5 Bob Nagel <nasmloe@gmail.com>:
+>>>> Hi Ali and Gabe thanks for the answers:
+>>>>
+>>>> It is still not working. I did what  Ali proposed delete the libc*
+>>>> files from the image and copy again the libc* files. And also I
+>>>> linked
+>>>> statically the m5.c file. To be more concrete these are the steps I
+>>>> did.
+>>>>
+>>>> For the compilation :  alpha-unknown-linux-gnu-gcc-3.4.3 -o m5 m5.o
+>>>> m5op_alpha.o --static
+>>>>
+>>>> Regarding the libc* files, I copied them from this directory:
+>>>> /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/
+>>>> alpha-unknown-linux-gnu/lib.
+>>>> That I believe is the same version than the compiler.
+>>>>
+>>>> Also I am sure that I unmount the image and the files were really
+>>>> copied into the img. Any other suggestions? or any other way to do
+>>>> this?.
+>>>>
+>>>> Thanks a lot again and sorry for the problems.
+>>>>
+>>>>
+>>>> 2009/3/5 Gabriel Michael Black <gblack@eecs.umich.edu>:
+>>>>> Also make sure you unmount the disk image before you try
+>>>>> simulating
+>>>>> with it. Otherwise your changes might be buffered in the kernel
+>>>>> and
+>>>>> not actually visible to M5.
+>>>>>
+>>>>> Gabe
+>>>>>
+>>>>> Quoting Ali Saidi <saidi@umich.edu>:
+>>>>>
+>>>>>> Hmm... Maybe delete libc* from the image and then copy it over
+>>>>>> incase
+>>>>>> an old version is being used. You could also try statically
+>>>>>> linking
+>>>>>> the m5 binary with your complier. Did you compile the m5 binary
+>>>>>> with
+>>>>>> the same gcc/libc version?
+>>>>>>
+>>>>>> Ali
+>>>>>>
+>>>>>> On Mar 5, 2009, at 1:48 PM, Bob Nagel wrote:
+>>>>>>
+>>>>>>> Hi Ali thanks for your help,
+>>>>>>>
+>>>>>>> I am getting this error:
+>>>>>>>
+>>>>>>> m5: setaffinity: Function not implemented
+>>>>>>> Done :D
+>>>>>>>
+>>>>>>> I believe is because there is a problem with libc. This is
+>>>>>>> what I did
+>>>>>>> I went to the directory:
+>>>>>>>
+>>>>>>> /opt/crosstool/gcc-3.4.3-glibc-2.3.5/alpha-unknown-linux-gnu/
+>>>>>>> alpha-
+>>>>>>> unknown-linux-gnu/lib
+>>>>>>>
+>>>>>>> And I copy all the libc* and libstdc++* files from there to
+>>>>>>> the /lib
+>>>>>>> directory in the disk image. Then I unmount I ran the
+>>>>>>> simulation and I
+>>>>>>> get the error I said before.
+>>>>>>>
+>>>>>>> Am I missing any file or something in the process to make it
+>>>>>>> work?.
+>>>>>>> Thanks a lot for your help.
+>>>>>>>
+>>>>>>>
+>>>>>>> 2009/3/5 Ali Saidi <saidi@umich.edu>:
+>>>>>>>> You need to overwrite the files you have with the ones from
+>>>>>>>> the cross
+>>>>>>>> compiler. The problem is the version of libc on the disk
+>>>>>>>> doesn't
+>>>>>>>> support the sched_setaffinity() call.
+>>>>>>>>
+>>>>>>>> Ali
+>>>>>>>>
+>>>>>>>> On Mar 5, 2009, at 1:33 AM, Bob Nagel wrote:
+>>>>>>>>
+>>>>>>>>> Hi Ali thanks a lot for your answer.
+>>>>>>>>>
+>>>>>>>>> I already have a bigger image so the option of copy the
+>>>>>>>>> libc* and
+>>>>>>>>> libstdc++* from one of the cross compilers works perfect for
+>>>>>>>>> me.
+>>>>>>>>> In my
+>>>>>>>>> image I already have some libc files in the lib directory,
+>>>>>>>>> so I just
+>>>>>>>>> copied the files that I did not have libstdc++.so.6.0.3,
+>>>>>>>>> libstdc++.so.6, libstdc++.so. But it did not work. Can you
+>>>>>>>>> provide
+>>>>>>>>> more details with what files I need to copy and where
+>>>>>>>>> specifically
+>>>>>>>>> in
+>>>>>>>>> the disk image. Sorry for this simple question and thanks a
+>>>>>>>>> lot
+>>>>>>>>> again.
+>>>>>>>>>
+>>>>>>>>> 2009/3/4 Ali Saidi <saidi@umich.edu>:
+>>>>>>>>>> Hi Bob,
+>>>>>>>>>>
+>>>>>>>>>> The m5 binary on the disk image that we distribute doesn't
+>>>>>>>>>> support
+>>>>>>>>>> the
+>>>>>>>>>> pin command. You'll need to compile it yourself.
+>>>>>>>>>> Additionally, I
+>>>>>>>>>> don't
+>>>>>>>>>> believe libc on the disk image supports sched_setaffinity
+>>>>>>>>>> (needed
+>>>>>>>>>> by
+>>>>>>>>>> pin). This is something we need to fix, but it unfortunately
+>>>>>>>>>> involves
+>>>>>>>>>> distributing a new disk image to everyone and updating a
+>>>>>>>>>> bunch of
+>>>>>>>>>> regressions. You can easily make a new disk image by starting
+>>>>>>>>>> with a
+>>>>>>>>>> gentoo image or you can copy the libc* and libstdc++* from
+>>>>>>>>>> one of
+>>>>>>>>>> the
+>>>>>>>>>> cross compilers on the m5sim.org website onto the disk
+>>>>>>>>>> image (you
+>>>>>>>>>> might need to make the actual image bigger to do this).
+>>>>>>>>>>
+>>>>>>>>>> Ali
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> On Mar 4, 2009, at 11:54 AM, Bob Nagel wrote:
+>>>>>>>>>>
+>>>>>>>>>>> Hello all,
+>>>>>>>>>>>
+>>>>>>>>>>> This message is related with this one,
+>>>>>>>>>>> http://thread.gmane.org/gmane.comp.emulators.m5.users/3939/focus=3967
+>>>>>>>>>>> .
+>>>>>>>>>>>
+>>>>>>>>>>> In that message Ali gives an explanation about how to use
+>>>>>>>>>>> pin. I
+>>>>>>>>>>> have
+>>>>>>>>>>> been trying to use it but it seems that  when I am running
+>>>>>>>>>>> the
+>>>>>>>>>>> script
+>>>>>>>>>>> m5 does not recognize the command, following you can see
+>>>>>>>>>>> my script
+>>>>>>>>>>> and
+>>>>>>>>>>> the output.
+>>>>>>>>>>>
+>>>>>>>>>>> #!/bin/sh
+>>>>>>>>>>> cd /parsec/install/bin
+>>>>>>>>>>> /sbin/m5 pin 0 ./ferret /parsec/install/inputs/ferret/
+>>>>>>>>>>> coreld lsh
+>>>>>>>>>>> /parsec/install/inputs/ferret/queriesd 5 5 8
+>>>>>>>>>>> /parsec/install/inputs/ferret/output.txt
+>>>>>>>>>>> echo "Done :D"
+>>>>>>>>>>> /sbin/m5 exit
+>>>>>>>>>>>
+>>>>>>>>>>> loading script...
+>>>>>>>>>>> usage: m5 ivlb <interval>
+>>>>>>>>>>>       m5 ivle <interval>
+>>>>>>>>>>>       m5 initparam
+>>>>>>>>>>>       m5 sw99param
+>>>>>>>>>>>       m5 exit [delay]
+>>>>>>>>>>>       m5 resetstats [delay [period]]
+>>>>>>>>>>>       m5 dumpstats [delay [period]]
+>>>>>>>>>>>       m5 dumpresetstats [delay [period]]
+>>>>>>>>>>>       m5 checkpoint [delay [period]]
+>>>>>>>>>>>       m5 readfile
+>>>>>>>>>>>       m5 debugbreak
+>>>>>>>>>>>       m5 switchcpu
+>>>>>>>>>>>
+>>>>>>>>>>> All times in nanoseconds!
+>>>>>>>>>>> Done :D
+>>>>>>>>>>>
+>>>>>>>>>>> I looked to the code in /util/m5/m5.c and I see that the pin
+>>>>>>>>>>> command
+>>>>>>>>>>> is only executed if linux is define. I do not understand
+>>>>>>>>>>> why the
+>>>>>>>>>>> pin
+>>>>>>>>>>> command is inside those defines. Also I tried to delete the
+>>>>>>>>>>> defines
+>>>>>>>>>>> but that did not work. Any help about how to use it?.
+>>>>>>>>>>>
+>>>>>>>>>>> Thanks a lot in advance.
+>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> _______________________________________________
+>>>>>>>>>> m5-users mailing list
+>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>
+>>>>>>>>> _______________________________________________
+>>>>>>>>> m5-users mailing list
+>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> _______________________________________________
+>>>>>>>> m5-users mailing list
+>>>>>>>> m5-users@m5sim.org
+>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>
+>>>>>
+>>>>>
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

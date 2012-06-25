@@ -1,0 +1,37 @@
+It's true that cygwin simply does not have fenv.h.  Note that not
+having fenv.h is merely a warning and not a fatal condition.  M5
+should still build just fine, you just might end up with very minor
+differences in FP results because it can't precisely mimic all the FP
+rounding modes etc. that a program might use (since M5 just uses the
+host's FPU to implement FP instructions).
+So SE mode should work under cygwin; let us know if it doesn't.  Last
+time I checked, FS mode doesn't work because some of the I/O stuff
+relies on signals which aren't properly supported under cygwin either.
+ Overall due to fundamental cygwin limitations (e.g., gdb support is
+also lousy, so it's hard to debug) I strongly recommend just running a
+pared-down Linux in a VM if you need to develop on a Windows
+machine... there are several free options out there (I use VMware
+Server).
+Steve
+- Show quoted text -
+On Wed, Mar 19, 2008 at 9:16 PM, Sam Bumatay <dj_sam_931@yahoo.com> wrote:
+> hi, newbie here..  im trying to install m5 using cygwin.. but it seems that
+> cygwin does not have the fenv.h header file.. i have looked around for
+> fenv.h solutions to cygwin over the net but im not successful.. has this
+> been solved?
+>
+>  im building m5.opt..  what should i do? thanks in advance!
+>
+>  ________________________________
+>
+> Be a better friend, newshound, and know-it-all with Yahoo! Mobile. Try it
+> now.
+> _______________________________________________
+>  m5-users mailing list
+>  m5-users@m5sim.org
+>  http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

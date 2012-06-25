@@ -1,0 +1,13 @@
+Can you give me a bit more detailed instructions on how to check both of these paths and make sure they are set correctly?  I am not sure how to do this.Aaron>The python library must be the same python library as the one being >used to
+>execute scons.  If you have two installation paths of python (example>/usr/local/lib and /usr/lib) you need to make sure that you use the >same>version to run scons.   To verfiy the installation type "which python" to
+>find what version of python is being used and then change the default >path>to python to point to that version.>-RonOn 10/25/07, Aaron Williams <
+aswilli@gmail.com> wrote:>> Hello,>> I am getting an error on compiling the M5 simulator where it is unable to> properly recognize python 2.4 that is installed.  I am compiling on a
+> FreeBSD platform, version 6.4 I believe.  I have confirmed that> /usr/lib/libpython2.4.so exists and yet for some reason, on compile I sti=ll- Show quoted text -> get the following error.  Please help....>
+> -bash2-2.05b$ scons build/ALPHA_FS/m5.debug> scons: Reading SConscript files ...> Checking for C header file Python.h... yes> Adding /usr/local/lib to LIBPATH for python2.4> Checking for C library 
+python2.4.. . no> Error: can't find Python library python2.4>> Aaron>> _______________________________________________> m5-users mailing list> 
+m5-users@m5sim.org> 
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

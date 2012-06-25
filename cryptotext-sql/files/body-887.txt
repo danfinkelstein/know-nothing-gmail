@@ -1,0 +1,182 @@
+Aah, very interesting solution, thanks for tracking this down. I had
+structured my memory system to reject all requests if the incoming
+transaction queue was full, including packets that don't actually
+require space, like memInhibit packets. I actually changed it to turn
+away only packets that consume resources (R/W) and handle the others
+normally, regardless of resource contention and haven't seen any errors
+so far.
+Joe
+- Show quoted text -
+Steve Reinhardt wrote:
+> OK, I found my problem... I had disabled dramsim in my scripts so I
+> could isolate the earlier bug in the cpu, and forgot to re-enable it.
+> Now that I'm really using dramsim I do see the hasTargets() assertion
+> failure.  I haven't tried to reproduce the newer one.  Anyway, that
+> seems to indicate that the bug is in your code... I ran under the
+> debugger to find the address in the packet it's dying on (0x149a000),
+> then re-ran like this:
+>
+> build/ALPHA_FS/m5.opt -d nopre-trace  --trace-start=1813000000000
+> --trace-flags=Cache,Bus configs/example/dramsimfs.py -b stream -F
+> 10000000000 --mp "physicaladdressmappingpolicy sdramhiperf
+> commandorderingalgorithm bankroundrobin rowBufferPolicy closepage"
+> --nopre |& egrep -i '[ x:]149a0[0-3][0-9a-f]' >& trace.out
+>
+> and found this at the end of the trace:
+> 1813625971850: system.membus: recvTiming: src 2 dst 3 ReadResp 0x149a000
+> 1813625971850: system.iocache: Handling response to 149a000
+> 1813625971850: system.iocache: Block for addr 149a000 being updated in Cache
+> 1813625971850: system.iocache: replacement: replacing 1faffc00 with
+> 149a000: writeback
+> 1813625971850: system.iocache: Block addr 149a000 moving from state 0 to 5
+> 1813625971851: system.membus: recvTiming: src 2 dst 3 ReadResp 0x149a000 BUSY
+> 1813625973000: system.tol2bus: recvTiming: src 2 dst 0 ReadResp 0x149a000
+> 1813625973001: system.tol2bus: recvTiming: src 2 dst 0 ReadResp 0x149a000 BUSY
+> 1813625973390: system.membus: recvTiming: src 2 dst 3 ReadResp 0x149a000
+> 1813625973390: system.iocache: Handling response to 149a000
+>
+> ...which shows that the iocache is getting two ReadResp responses to a
+> single request.  I did a little more digging and found that the
+> problem is in M5dramSystem::MemoryPort::recvTiming(), where you check
+> memory->needRetry and return false *before* you check
+> packet->memInhibitAsserted().  What happens is that you're causing a
+> packet with memInhibit asserted to get retried, so after the cache
+> that asserted memInhibit responds, the bus retries the transaction
+> again, but the cache has already sent its response so it doesn't
+> inhibit memory again, and then your memory module sends a second
+> response.  I just reordered those two checks in that function and it
+> seems to work.
+>
+> I'm going to add an assert in bus.cc so that this problem can be
+> detected more easily in the future.
+>
+> Steve
+>
+> On Wed, Sep 30, 2009 at 9:43 PM, Joe Gross <joegross@umd.edu> wrote:
+>
+>> I'm also seeing a new one when I disable prefetchers and run stream again:
+>>  build/ALPHA_FS/mem/cache/cache_impl.hh:1335: Packet*
+>> Cache<TagStore>::getTimingPacket() [with TagStore = LRU]: Assertion
+>> `tags->findBlock(mshr->addr) == __null' failed.
+>>
+>> command line:
+>> m5/configs/example/dramsimfs.py -F 10000000000 --mp
+>> "physicaladdressmappingpolicy sdramhiperf commandorderingalgorithm
+>> bankroundrobin rowBufferPolicy closepage" -b stream
+>>
+>> I wonder if this could be the memory simulator handling the packet
+>> requests incorrectly, i.e. returning a packet that didn't need a
+>> response or something like that.
+>>
+>> The prefetcher was disabled, caches were set as follows:
+>> test_sys.l2 = L2Cache(size = '512kB', assoc=16, latency="6ns")
+>> test_sys.cpu[i].addPrivateSplitL1Caches(L1Cache(size =
+>> '64kB'),L1Cache(size = '64kB'))
+>>
+>> If you aren't able to replicate these, then we should compare setups and
+>> fix whatever's going on with my system. Or if you need any other info on
+>> how I'm running simulations, please let me know.
+>>
+>> Joe
+>>
+>> Steve Reinhardt wrote:
+>>
+>>> Thanks... I think you had mentioned that assertion failure before but
+>>> it's not one I've been able to reproduce so I forgot about it.  Sorry
+>>> about that.  I'll try again to see if I can reproduce it.
+>>>
+>>> Steve
+>>>
+>>> On Tue, Sep 29, 2009 at 12:33 AM, Joe Gross <joegross@umd.edu> wrote:
+>>>
+>>>
+>>>> Steve,
+>>>>
+>>>> Thanks for looking into this. I'm able to get the stream benchmark to
+>>>> run to completion now.
+>>>>
+>>>> I'm not sure if this is the problem you're talking about (so sorry in
+>>>> advance if this is a repeat), but I'm still having trouble running bzip2
+>>>> and getting the assertion error:
+>>>>  build/ALPHA_FS/mem/cache/mshr.hh:228: MSHR::Target* MSHR::getTarget()
+>>>> const: Assertion `hasTargets()' failed.
+>>>>
+>>>> This turns into a segfault on m5.fast.
+>>>>
+>>>> I pulled your changes a few days ago and have been testing them out
+>>>> after updating a few of my files (changes pushed to my head rev). I
+>>>> tried running again with the prefetcher moved to the L1 cache and even
+>>>> removed all prefetchers from the system and still get this assertion, so
+>>>> I think this isn't related to the prefetcher, but I could be wrong. I
+>>>> even removed the old workaround of increasing the tgts_per_mshr and it
+>>>> remains.
+>>>>
+>>>> I use these flags when running to get the assertion error (config files
+>>>> no longer necessary):
+>>>> m5/configs/example/dramsimfs.py -b bzip2 -F 10000000000 --mp
+>>>> "physicaladdressmappingpolicy sdramhiperf commandorderingalgorithm
+>>>> bankroundrobin rowBufferPolicy closepage"
+>>>>
+>>>> Joe
+>>>>
+>>>> Steve Reinhardt wrote:
+>>>>
+>>>>
+>>>>> Joe,
+>>>>>
+>>>>> I think with the changes I pushed recently both the CPU stalling and
+>>>>> the assertion failure should be taken care of.  Note that if you pull
+>>>>> from the head you'll have to make some minor changes in your python
+>>>>> scripts because of some code reorganization that Nate did.
+>>>>>
+>>>>> Unfortunately I've run into another bug that's more complicated to
+>>>>> fix: because our cache hierarchy does not enforce inclusion, it's
+>>>>> possible for the L2 prefetcher to prefetch a block that's already
+>>>>> modified in the L1 and end up prefetching a stale copy out of main
+>>>>> memory.  In at least one situation (where the L1 writes its modified
+>>>>> copy back to the L2 in the interval between where the L2's prefetch is
+>>>>> issued and the prefetch response returns), the stale copy can
+>>>>> overwrite the modified copy and data is lost.  I think the best way to
+>>>>> address this is to have L2 prefetches probe the L1s, but there's no
+>>>>> clean mechanism for that right now, so it's not a trivial fix.  In the
+>>>>> meantime, having the prefetcher be associated with the L1 dcache and
+>>>>> not the L2 should be sufficient to avoid this problem.
+>>>>>
+>>>>> Please let us know if you run into anything else...
+>>>>>
+>>>>> Steve
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>>
+>>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

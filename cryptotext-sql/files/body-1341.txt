@@ -1,0 +1,44 @@
+Hi all,
+I've having trouble running M5 after building it without any
+problems using
+$scons build/SPARC_FS/m5.debug
+then running the regression tests fails
+$scons build/SPARC_FS/tests/debug
+...
+scons: ***
+[build/SPARC_FS/tests/debug/long/80.solaris-boot/sparc/solaris/
+t1000-simple-atomic/stdout]
+Error 1
+scons: building terminated because of errors.
+with the above error stream file
+Warning: rounding error > tolerance
+   0.002000 rounded to 0
+Warning: rounding error > tolerance
+   0.002000 rounded to 0
+warn: No kernel set for full system simulation. Assuming you
+know what you're doing...
+fatal: Could not load reset binary /home/amm/M5/system/
+binaries/reset_new.bin
+@ cycle 0
+[SparcSystem:build/SPARC_FS/arch/sparc/system.cc, line 80]
+Memory Usage: 92708 KBytes
+same happens when running
+$build/SPARC_FS/m5.debug -d /tmp/output configs/example/fs.py
+...
+warn: No kernel set for full system simulation. Assuming you
+know what you're doing...
+fatal: Could not load reset binary /home/amm/M5/system/
+binaries/reset_new.bin
+@ cycle 0
+[SparcSystem:build/SPARC_FS/arch/sparc/system.cc, line 80]
+Memory Usage: 93032 KBytes
+I guess I'm missing the bin files, "reset_new.bin" and may be
+others. currently I only have (console, ts_osfpal, vmlinux)
+I couldn't find those files, where can I get them?
+or does the following bug means that SPARC is currently not supported?
+http://www.m5sim.org/flyspray/task/126
+TIA
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

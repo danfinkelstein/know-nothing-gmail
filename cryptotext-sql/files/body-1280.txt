@@ -1,0 +1,14 @@
+> I am wondering what exactly the use of trace_addr defined on the Basecache.py. It says "address to trace" on the file but from there it doesn't clear whats the use of that and whats the purpose and how we can implement or use that to trace something. One more thing what exactly does it trace it out??
+grep seems to indicate that that file is the only place where
+trace_addr is mentioned in the cache. There's something in the
+memtester, but that seems to be more or less unused as well.  Perhaps
+it is something that is old and needs to be removed.  Steve also added
+a tracing mechanism to the memory system, but I think it relied on
+marking requests as needing tracing.  At any rate this was probably
+for debugging, not trace generation.
+I'm not sure if anyone can comment any further.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+Hi,
+ 
+I’d like to collect the memory access traces of
+an application in M5. Which traceflag should I use to get such traces? I
+checked the traceflag file, but I’m not sure which is the right one.
+I’m using 1.1 version.
+ 
+Thanks,
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

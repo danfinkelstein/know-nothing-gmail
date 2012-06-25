@@ -1,0 +1,9 @@
+Hi,
+I want to run the following multiprogramming workload. Two different programmes with multiple threads running on the same multiprocessor system.
+Looks like m5 only supports runing one programme with multiple threads on a multiprocessor system .
+Regards,
+Shoaib.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

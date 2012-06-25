@@ -1,0 +1,51 @@
+I forot to mention he clusters on either side of bridge have a single physical memory. So essentially there is no communication on the bridge. The purpose is that if the two clusters are running independent two-threaed applications,then coherence and snooping overheads are assumed to be that resulting from two cores rather than four cores.
+- Show quoted text -
+---- Original message ----
+>Date: Fri, 14 Dec 2007 21:35:23 -0600 (CST)
+>From: Shoaib Akram <sakram3@uiuc.edu>
+>Subject: Re: [m5-users] Clustering/Interconnection Related
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>Thanks Steve for the reply. Infact, I dont want coherence across the bus bridge. It is assumed that clusters either side of bridge are running independent applcations. So, I want coherence to work accurately on the pair of two cores rather than across all four cores. This will work right?
+>
+>---- Original message ----
+>>Date: Fri, 14 Dec 2007 18:50:31 -0800
+>>From: "Steve Reinhardt" <stever@gmail.com>
+>>Subject: Re: [m5-users] Clustering/Interconnection Related
+>>To: "M5 users mailing list" <m5-users@m5sim.org>
+>>
+>>You could certainly build this configuration, but the coherence
+>>protocol will not work transparently across the bus bridge.  You'd
+>>have to adapt the coherence protocol and/or the bridge to make it work
+>>(just like in the real world).
+>>
+>>Steve
+>>
+>>On Dec 14, 2007 1:19 PM, Shoaib Akram <sakram3@uiuc.edu> wrote:
+>>> I want to simulate the following system:
+>>>
+>>> A total of four cores each with L1 private L1 caches. Two cores connected by a shared bus. The other two cores also connected by a shared bus. The two clusters connected together by a point to point link or something.
+>>>
+>>> In essence, the goal is to have two separate shared bus fabrics in the system.
+>>>
+>>> Any idea how to model this in m5. I know m5 has this bridge mechanism but has anybody used it successfully?
+>>>
+>>> Regards,
+>>> Shoaib
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>_______________________________________________
+>>m5-users mailing list
+>>m5-users@m5sim.org
+>>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

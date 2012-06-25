@@ -1,0 +1,151 @@
+For the record, you were using two different process objects in the
+first place; the parentheses on the end of "Benchmarks.SPECGCCEIO()"
+indicate that it's creating an instance (just standard python class
+instantiation syntax).  In order to assign the same instance to both
+CPUs (which is what you'd want to do for a multithreaded program)
+you'd need to assign an instance to a variable and then use that
+variable inside the loop.
+That said, it's not clear to me what's happening.  The fact that cpu1
+has 400 squashed instructions means that something is going on there
+though.  I'd guess that cpu1 is misspeculating so badly that cpu0 gets
+to 1000 committed instructions (thus ending the simulation) before
+cpu1 gets any. I'm not sure why the misspeculation rates would be so
+different though.  I'd run with --trace-flags=Exec and see what the
+cpus are really doing.  If you want you can also try raising the
+max_insts to 10000 and see if cpu1 gets any instructions committed.
+Steve
+- Show quoted text -
+On Sun, Jun 22, 2008 at 3:18 PM, prannav shrestha <prannav@gmail.com> wrote:
+>
+> HI meng-ju!!
+>  Evein if I used two different workloads for tiw CPUs the result is still
+> the same. Ok Now I have changed the code as:
+> .............
+> ............
+> system.cpu[0].workload = [Benchmarks.SPECGCCEIO()]
+> system.cpu[1].workload = [Benchmarks.SPECGAPEIO()]
+> for i in xrange(np):
+>     system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '16kB'),
+>                                               L1Cache(size = '8kB'))
+>     system.cpu[i].connectMemPorts(system.tol2Bus)
+>     system.cpu[i].max_insts_all_threads = 1000
+>    ## system.cpu[1].workload = [Benchmarks.SPECGCCEIO()]
+> root = Root(system = system)
+> still the result is same. So what mmay be the reason, why M5 2.0b5 is not
+> able to run simulation for multiple core?
+>
+> Regards
+> Prannav
+>
+> Hi all!!
+> i tried to simulate multi-core system in M5.0b5 with cache upto level three.
+> I am trying to run O3 cpu in SE. Part of corresponding configuration file is
+> as below:
+>
+> ................
+> ..............
+> CPUClass.clock = '2GHz'
+>
+> np = 2
+>
+> system = System(cpu = [DerivO3CPU(cpu_id=i) for i in xrange(np)],
+>                 physmem = PhysicalMemory(range=AddrRange("1024MB")),
+>                 membus = Bus(), mem_mode = test_mem_mode)
+>
+> system.physmem.port = system.membus.port
+>
+>
+> system.l3 = L3Cache(size='2MB')
+> system.tol3Bus = Bus()
+> system.l3.cpu_side = system.tol3Bus.port
+> system.l3.mem_side = system.membus.port
+>
+>
+> system.l2 = L2Cache(size='1MB')
+> system.tol2Bus = Bus()
+> system.l2.cpu_side = system.tol2Bus.port
+> system.l2.mem_side = system.tol3Bus.port
+>
+>
+> for i in xrange(np):
+>     system.cpu[i].addPrivateSplitL1Caches(L1Cache(size = '16kB'),
+>                                               L1Cache(size = '8kB'))
+>     system.cpu[i].connectMemPorts(system.tol2Bus)
+>     system.cpu[i].max_insts_all_threads = 1000
+>     system.cpu[i].workload = [Benchmarks.SPECGCCEIO()]
+>    ## system.cpu[1].workload = [Benchmarks.SPECGCCEIO()]
+> root = Root(system = system)
+>
+> Simulation.run(options, root, system, FutureClass)
+>
+>
+> .............
+> I have used 2 core in this example, which runs the same program. The problem
+> is that, i found that only one of the CPU reaches its maximum instruction
+> count to 1000 while the instruction count at another CPU remains zero. The
+> m5stat.txt files shows following :
+> ......
+> sim_insts                                        1000
+> # Number of instructions simulated
+> sim_seconds                                  0.000004
+> # Number of seconds simulated
+> .........
+> ......
+> system.cpu0.commit.COM:count                     1067
+> # Number of instructions committed
+> system.cpu0.commit.COM:loads                      265
+> # Number of loads committed
+> system.cpu0.commit.COM:membars                      0
+> # Number of memory barriers committed
+> system.cpu0.commit.COM:refs                       388
+> # Number of memory references committed
+> system.cpu0.commit.COM:swp_count                    0
+> # Number of s/w prefetches committed
+> system.cpu0.commit.branchMispredicts               61
+> # The number of times a branch was mispredicted
+> system.cpu0.commit.commitCommittedInsts          1067
+> # The number of committed instructions
+> system.cpu0.commit.commitSquashedInsts            294
+> # The number of squashed insts skipped by commit
+> system.cpu0.committedInsts                       1000
+> # Number of Instructions Simulated
+> system.cpu0.committedInsts_total                 1000
+> # Number of Instructions Simulated
+>
+> .....
+> ...
+> ...
+> system.cpu1.commit.COM:count                        0
+> # Number of instructions committed
+> system.cpu1.commit.COM:loads                        0
+> # Number of loads committed
+> system.cpu1.commit.COM:membars                      0
+> # Number of memory barriers committed
+> system.cpu1.commit.COM:refs                         0
+> # Number of memory references committed
+> system.cpu1.commit.COM:swp_count                    0
+> # Number of s/w prefetches committed
+> system.cpu1.commit.commitSquashedInsts            400
+> # The number of squashed insts skipped by commit
+> system.cpu1.committedInsts                          0
+> # Number of Instructions Simulated
+> system.cpu1.committedInsts_total                    0
+> # Number of Instructions Simulated
+>
+> ..
+> why is the instruction count in cpu1 zero.?As I am new in m5, i am not able
+> to figure out the problem. Suggestion from anyone would be appreciated..
+>
+> regards
+> prannav
+>
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

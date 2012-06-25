@@ -1,0 +1,13 @@
+Hello there,
+The performance of M5 in simulating an inorder-timing CPU seems to be
+significantly lower than that in simulating an o3-timing CPU (0.33X for
+gzip for 10 M instructions) in their default configurations. Does that
+sound correct? I would expect it to be the other way around unless, of
+course, there are differences in their implementations which affects
+the performance. I am using the Alpha ISA in SE mode.
+regards,
+Soumyaroop.-- Soumyaroop RoyPh.D. CandidateDepartment of Computer Science and EngineeringUniversity of South Florida, Tampahttp://www.csee.usf.edu/~sroy
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

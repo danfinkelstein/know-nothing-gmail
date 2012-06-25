@@ -1,0 +1,8 @@
+> Thanks, Nate. I had thought that updating the path variable to reflect
+> the locally installed python should've fixed things. But I was wrong.
+It depends on how the #! is set up at the top of scons.  You could
+edit that line if you wanted.
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,6 @@
+Hi everybody,  Is it possible to use instruction count as the basis for switching between 2 cpu models  instead of using clock cycle count ? There was an email[1] in the  list about using Sampler (for simpoints also) but I believe it is from a different version of M5 and that sampling is handled in a different way in the latest version. My purpose for this is for use in Simpoints(UCSD).
+thanks,dean[1]http://www.mail-archive.com/m5-users@m5sim.org/msg00120.html-- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,8 @@
+1.
+Whenever, the packet intersects the bus and the command is WriteReq, recvFunctional() is called which carries no latency with it. Why this is so?
+2.
+Does the command WriteReqNoAck|Writeback means an L2 write miss and the packet is broadcasted so all caches can update their value for that address and ultimate write back to memory.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

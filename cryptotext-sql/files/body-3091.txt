@@ -1,0 +1,15 @@
+If you can't run a virtual machine of any kind, then the only option I know of is to use cygwin.  M5 should compile under cygwin and I believe it runs ok in SE mode, but FS mode is iffy because it relies on signals which aren't implemented correctly in cygwin (though I think this could be worked around).
+Steve- Show quoted text -On Mon, May 12, 2008 at 12:56 PM, abc def <jose_6154@yahoo.es> wrote:- Show quoted text -
+Hi,
+ 
+For some unavoidable reason i have to run m5 in windows environment. It is Vista Business edition. I can not install vmware. Can you please help me how to go forward with it?
+ 
+      Enviado desde Correo Yahoo!
+La bandeja de entrada más inteligente._______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

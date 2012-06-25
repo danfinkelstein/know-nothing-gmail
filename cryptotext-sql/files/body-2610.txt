@@ -1,0 +1,22 @@
+On 8/20/08, Ali Saidi <saidi@umich.edu> wrote:
+>  I think that is a pretty reasonably idea, however as you state the con
+>  is reasonably high. I don't think we would want to distribute them
+>  with M5 proper, because it would be difficult to verify that all the
+>  configurations still work. I think the best option is to have a
+>  contribution section on the wiki. People could post full scripts, or
+>  snippets along with information and comments. I don't think file
+>  uploading is enabled on the website at this moment, but I'll work on
+>  making that happen.
+The wiki is what I had in mind. I don't think you'd want to maintain a
+bunch of contributions as you'd pretty much have to if you distributed
+them because whatever disclaimer to the contrary, if they were in the
+distro, someone would complain if one didn't work.
+- Show quoted text ---
+Philip Machanick (Visiting Academic, School of ITEE, University of Queensland)
+39 Cunningham Street, Taringa, Qld 4068, Australia
+http://opinion-nation.blogspot.com/
++61-7-3871-0963 (office 3365-1624) skype philipmach
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

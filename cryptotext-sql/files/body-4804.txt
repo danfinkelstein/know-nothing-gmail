@@ -1,0 +1,22 @@
+Hello,
+The M5 team would like to announce the availability of the second beta for m5 2.0.  This release is a major bugfix release over the previous beta and should hopefully fix many of the problems that people have been experiencing.
+Some highlights:
+- Many cache issues resolved
+- Uni-coherence fixes in full-system
+- Proper LL/SC Support
+- Draining/Switchover
+- Functional Accesses
+- Bus now has real timing
+- Single config file for all SpecCPU2000 benchmarks
+- Several other minor bug fixes and enhancements
+Outstanding issues for 2.0 release:
+- Multiprocessor linux boot using the detailed O3 CPU model
+You can get the beta on the download page:
+http://www.m5sim.org/wiki/index.php/Download
+Please give us feedback so we can get a solid 2.0 release.
+Thanks!
+The M5 Team
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

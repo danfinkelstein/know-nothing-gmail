@@ -1,0 +1,12 @@
+Hi,
+    Is anyone using spec2006? I want 
+to download this and use it with M5, but I dont know anyone who is using it. Can 
+anyone tell me if it'll work with M5 v2beta3 or beta 4?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

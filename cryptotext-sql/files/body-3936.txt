@@ -1,0 +1,49 @@
+I don't recall what the output files are called... each benchmark is a
+little different in splash.  You're looking for the benchmark output
+in addition to the m5 output... I'm guessing something bad happened
+and the benchmark quit because it encountered an error.
+- Show quoted text -
+On Nov 14, 2007 4:26 PM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> Ok. Though I dont know what to look for, since there's nothing that I have
+> changed since beta3. Which output files should I examine?
+> The benchmarks ends because m5 reports "target called exit()".
+>
+> - Sujay
+>
+> ----- Original Message -----
+> From: "Steve Reinhardt" <stever@gmail.com>
+> To: "M5 users mailing list" <m5-users@m5sim.org>
+> Sent: Wednesday, November 14, 2007 6:31 PM
+> Subject: Re: [m5-users] sims with m5 beta4 - cache stats - any update on
+> this?
+>
+>
+>
+> > Thanks, this is very interesting.  Have you looked at the output from
+> > the benchmarks that are producing weird results?  I'd say from those
+> > stats (and your comment that those benchmarks are finishing "extremely
+> > fast") that the real problem is that the benchmark is terminating
+> > early, before it even gets to forking off threads on the other CPUs,
+> > due to some error.  Presumably the output is indicating what the
+> > problem is if you look in the right place.
+> >
+> > So there's still some problem with b4 if you weren't encountering that
+> > error in b3, but it's not that the cache statistics are broken.
+> >
+> > Steve
+>
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+> >
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

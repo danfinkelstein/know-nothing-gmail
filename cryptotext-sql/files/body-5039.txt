@@ -1,0 +1,13 @@
+Steve Reinhardt <stever@eecs.umich.edu> writes:
+> Would it help if we repackaged our releases so that the base package
+> didn't include the encumbered code, and you could download it
+> separately if you needed it?
+That would be perfect as then there really would be no room for
+speculation. I was thinking something like this but did not dare
+suggest it :-)
+--
+http://www.iki.fi/~ananaza/
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

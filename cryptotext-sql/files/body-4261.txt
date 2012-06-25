@@ -1,0 +1,6 @@
+Hello all --(I feel like I or someone else has asked this before, but I can't seem to find it in the archives.)Does M5 call a specific function at the end of simulation (similar to the calls to regStats() at the beginning of simulation) for cleanup code?  I need to do some additional processing at the end of simulation (before stats are calculated and printed) and was wondering if there's a standard place I can put my code.  I can't seem to find anything like this in the code or documentation, but thought I may be missing something.
+Thanks,   -Vilas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,9 @@
+Hi Meng yes I got my config.ini, the problem was that M5 couldn't write in /tmp/output and it didn't say anything, I just changed the directory to a local one and everything was fine, thank you again.- Show quoted text -
+On Thu, Oct 2, 2008 at 9:27 AM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+Hi Eduardo,Do you have the config.ini in the /tmp/output ? I use your command,and it's fine in my M5. I have the correct outputs in the /tmp/output.
+I think you can try:(1) Remove the "-d /tmp/output" from command line. The M5 will writethe config.ini and m5stats.txt directly into your work directory.(2) Do you have enough quota on your file system?
+Meng-Ju_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

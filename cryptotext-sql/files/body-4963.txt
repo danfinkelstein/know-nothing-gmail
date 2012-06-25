@@ -1,0 +1,43 @@
+Hi Rajdeep,
+ 
+It seems like you want to study some type of thread-scheduling policy across multiple CPUs. I think M5 can handle what you want given that you are able to modify some code to hook in your thread-scheduling policies.
+ 
+It seems to me that you would have to modify the code in two places:
+(1) The system call table in process.cc - These are defined for each architecture-OS pair in the src/arch directory (e.g. src/arch/alpha/linux or src/arch/alpha/tru64/ or etc. etc.)
+ 
+(2) The system call declaration & definition  in src/sim/syscall_emul.hh & src/sim/syscall_emul.cc
+ 
+Basically, the table in the aforementioned 'process.cc' is a map of the names of system calls and function pointers to their appropriate functions definitions (usually in syscall_emul.hh/cc) In that table you will find system calls like "fork", "open", "write", etc.
+Some of the calls are unimplemented (which map to say 'unimplementedFunc'  function pointer) while others are implemented.
+ 
+I didnt see a function defined for the 'fork' in the tables but I think it shouldnt be too hard if you look at the definition for 'nxm_thread_create' as an example. That syscall is for the alpha-tru64 combo, where the system call is mapped in src/alpha/tru64/process.cc (#32), and it is defined in src/kern/tru64/tru64.hh.
+ 
+If you are just doing a syscall-emulation mode simulation I think the bottom of the definition would be most useful, where the code right now looks like:
+ 
+// Find a free simulator execution context.            for (int i = 0; i < process->numCpus(); ++i) {                ExecContext *xc = process->execContexts[i];
+                if (xc->status() == ExecContext::Suspended) {                    // inactive context... grab it                    init_exec_context(xc, attrp, uniq_val);
+       ...
+What's tricky here is that process->numCpus() is a bit of a misnomer since it really is giving you the number of thread contexts available in the system. In a multicore simulation with one thread per CPU then you are fine. But in a multicore simulation where there are multiple threads per CPU you would also need to check the 'ExecContext' "cpu_id" for whatever scheduling purposes are appropriate.
+So I guess your 'fork' implementation  might have a similar loop with some of the aforementioned changes.
+If you want to specify what workloads are assigned to specific cores at the beginning of simulation then that would be something to handle in your M5 configuration script (and I didnt have to write this long email!). 
+ 
+Anyways, I hope what I wrote above helps....
+ 
+- Show quoted text -On 10/7/06, Rajdeep Bhowmik <rajdeepbhowmik81@yahoo.com> wrote:
+- Show quoted text -
+Hi,
+ 
+I want to use the m5 simulator to learn how multi-threaded matrixmultiplication code will work on a multi-core architecture. Is itpossible for me to specify how the various threads of this code shouldbe mapped to the different cores? Or, does m5 have any special library
+calls to spawn off threads to different cores (eg: equivalent of afork() call).
+ 
+regards-
+Rajdeep
+__________________________________________________Do You Yahoo!?Tired of spam? Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com _______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- -- Korey LaMar SewellUniversity of Michigan Computer Science & Engineering Ph.D Student------``Experience is not what happens to you. It is what you do with what happens 
+to you.'' 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

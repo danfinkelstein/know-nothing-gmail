@@ -1,0 +1,16 @@
+Hi all,
+ 
+I'm using M5_1.1 version. Under original condition, 
+when I'm running netperf-maerts benchmark, and do the sampling with 
+'Sampler(periods = [1e9, 200e6])', it always gives me about 67k packets 
+transmitted during this period. However, after I modified the ethernet dev 
+file a little bit, it only gave me about 2k packets transmitted, and there is 
+almost no statistics in the output file. It seems like nothing is excuting 
+during the 200e6 cycles. How to figure out this problem?
+ 
+Thanks,
+Yu
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

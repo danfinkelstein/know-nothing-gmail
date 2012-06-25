@@ -1,0 +1,36 @@
+I just want them to be set to constant number of cycles. And change the frequency. for instancem bridge should queue requets for 5 cycles, at 2GHz or at 4GHz...
+- Show quoted text -
+---- Original message ----
+>Date: Tue, 28 Oct 2008 21:22:47 -0700
+>From: Ali Saidi <saidi@umich.edu>
+>Subject: Re: [m5-users] specification of delay
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>You can specify them is Hz I believe (e.g. 2GHz == .5ns) or are you
+>wanting it to be relative to the CPU frequency?
+>
+>Ali
+>
+>
+>
+>On Oct 28, 2008, at 9:15 PM, Shoaib Akram wrote:
+>
+>> is there a way to easily change the specification of delay for
+>> caches, bridges, and memory from 'ns' etc to actual number of cycles.
+>>
+>> This is useful when comparing across different frequencies since
+>> number of cycles remain constant.
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+>_______________________________________________
+>m5-users mailing list
+>m5-users@m5sim.org
+>http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

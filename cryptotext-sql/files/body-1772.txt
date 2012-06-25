@@ -1,0 +1,37 @@
+Do you have g++ installed?
+Ali
+- Show quoted text -
+On Mar 2, 2009, at 11:44 PM, Mingliang Liu wrote:
+> When I tried to run
+> scons build/ALPHA_SE/m5.debug
+> I got error as following:
+> ----------------------------------------------------------------------------------------------------
+> scons: Reading SConscript files ...
+> TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':
+>   File "/home/liuml07/proj/m5/SConstruct", line 335:
+>     env['GCC'] = subprocess.Popen(env['CXX'] + ' --version',
+> shell=True,
+> ----------------------------------------------------------------------------------------------------
+>
+> My OS is GUN/Linux Debian 5, scons is 1.0 and gcc version is 4.3.1.
+>
+> I am a newbie to scons and need your kind help.
+>
+> Thanks!
+> --
+> Mingliang Liu (刘明亮 in Chinese)
+>
+> Dept. of Computer Science & Technology
+> Tsinghua University
+> Beijing, P.R.China, 100084
+> Tel: +86-010-6278 0839 (Office)
+> Email: liuml07@mails.tsinghua.edu.cn
+> Sent from: Beijing 11 China.
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

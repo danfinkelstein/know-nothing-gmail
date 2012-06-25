@@ -1,0 +1,38 @@
+Is there a better way to get these stats after very cycle, if I can not dump all these stats? I only need few stats such as cache hits to analyze the runtime characteristic. Thanks. 
+Jerry - Show quoted text -
+On 5/5/08, Geoffrey Blake <blakeg@umich.edu> wrote:
+If you just need aggregate stats at the end of the simulation run, such as number of dcache.ReadReq_hits, M5 already does this.  When the simulation finishes, it dumps the file: m5stats.txt to your current working directory with everything added up for you.
+ 
+Dumping stats every cycle can easily lead to multi gigabyte files that will be very hard to work with and store.
+ 
+Geoff
+ 
+From: m5-users-bounces@m5sim.org [mailto:m5-users-bounces@m5sim.org] On Behalf Of jerry lrui
+Sent: Monday, May 05, 2008 11:17 AMTo: M5 users mailing listSubject: Re: [m5-users] How to dump m5stats per cycle?
+ 
+Hi, Lisa
+ 
+I only need few stats to analyze the runtime characteristics of an application. For example the number of dcache.ReadReq_hits, icache.ReadReq_hits, etc. I added these codes  "Stats::StatEvent(true,false);" in function simulate(Tick num_cycles) located simulate.cc. But I didn't get the result I wanted. Could you tell me what is the correct way to get thest stats? Thank you very much!
+ 
+Jerry
+ 
+On 5/5/08, Lisa Hsu <hsul@eecs.umich.edu> wrote: 
+doing this will result in millions of large files full of stat text - what is it that you want this for?lisa
+On Sat, May 3, 2008 at 11:39 PM, jerry lrui <jerry.lrui@gmail.com> wrote:
+Hi,
+ 
+I want to dump m5stats after per cycle. I've looked up the code. Maybe I can add some codes in function simulate(Tick num_cycles) located simulate.cc. Fox example, add a StatEvent like "Stats::StatEvent(true,false);" in this function? But I'm not sure how to do it correctly. I'm using m5sim 2.0b5 in SE model.  What is the correct way to get this information? Thanks!
+ 
+Jerry
+ 
+_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+ 
+No virus found in this incoming message.Checked by AVG.Version: 7.5.524 / Virus Database: 269.23.8/1413 - Release Date: 5/3/2008 11:22 AM
+No virus found in this outgoing message.Checked by AVG.Version: 7.5.524 / Virus Database: 269.23.8/1413 - Release Date: 5/3/2008 11:22 AM_______________________________________________
+m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

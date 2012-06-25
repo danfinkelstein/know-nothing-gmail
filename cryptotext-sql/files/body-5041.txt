@@ -1,0 +1,61 @@
+I just added that check... try commenting it out (search for 'zlib' in m5/SConstruct) and replacing it with this:
+env.Append(LIBS=['z'])
+and see if you can compile anyway.  If so, then there's something messed up with the way scons is checking for the library.
+Steve
+Daniel Alex Finkelstein wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+Hi all,
+I've recently upgraded to m5 2.0 beta 1 with the first patch and, as  a result, also upgraded my Python, scons, and swig installations.  When I run the first sanity check, 'scons build/ALPHA_SE/tests/debug/ quick' I get this error:
+scons: Reading SConscript files ...
+Checking for main() in C++ library z... no
+Error: did not find needed zlib compression library and/or zlib.h  header file.
+        Please install zlib and try again.
+I'm on CentOS 4.3 and both zlib and zlib-dev are installed as both  regular packages as well as the latest versions in /usr/local. This  looks like an easy fix to do, somehow, if I knew how to do it...
+Best regards,
+Dan
+- --
+Daniel Alex Finkelstein
+Graduate Research Fellow
+Computer & Information Science
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201
+tel: 718-260-3378
+fax: 718-260-3609
+url: http://pages.poly.edu/~dfinke01
+-----BEGIN PGP SIGNATURE-----
+Version: PGP Desktop 9.0.6 (Build 6060)
+iQA/AwUBRPDBgZcnyjn38MHdEQJj0QCglJr8FMYoLiIHy7n8Q/i63mRXXE8AoKB1
+7PIs6GISY4st10pS6H+wXvjg
+=7Hyh
+-----END PGP SIGNATURE-----
+------------------------------------------------------------------------
+Hi all,
+I've recently upgraded to m5 2.0 beta 1 with the first patch and, as a result, also upgraded my Python, scons, and swig installations. When I run the first sanity check, 'scons build/ALPHA_SE/tests/debug/quick' I get this error:
+scons: Reading SConscript files ...
+Checking for main() in C++ library z... no
+Error: did not find needed zlib compression library and/or zlib.h header file.
+       Please install zlib and try again.
+I'm on CentOS 4.3 and both zlib and zlib-dev are installed as both regular packages as well as the latest versions in /usr/local. This looks like an easy fix to do, somehow, if I knew how to do it...
+Best regards,
+Dan
+--
+Daniel Alex Finkelstein
+Graduate Research Fellow
+Computer & Information Science
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201
+tel: 718-260-3378
+fax: 718-260-3609
+url: http://pages.poly.edu/~dfinke01
+------------------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

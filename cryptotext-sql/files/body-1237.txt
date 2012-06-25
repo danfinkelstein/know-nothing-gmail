@@ -1,0 +1,25 @@
+Hello,
+ 
+I am interested in tracing what C++ code is causing requests to the cache. For example I have developed a L1 and L2 cache memory  trace, telling me, using the request packets what physical memory addresses are being accessed/requested.
+ 
+So using ALPHA FS mode we have C++ code being compiled into Alpha ASM.  (this is the issue!)
+ 
+(1)From my understanding I can do for each memory request: packet->request->pc which will give me the pc address of the instruction that requested the memory access. Is this correct?
+ 
+(2) I can then use this pc address to trace the code of C++ that requested this memory access? Is this correct?
+ 
+_______________________________________
+The second part is a bit hazy to me.
+Basically each benchmark that I create a memory trace from the linux disk image, I need to re-compile the benchmarks using -g, which is a flag for debugging info. Using the DWARFS format I can use a program like readelf to read the debugging info. Using readelf (any better programs) I will be able to see what sections of C++ code are requesting memory accesses using the pc addresses from the 1st part.
+ 
+Is this correct?Any better ideas or methods? Any help in giving me additional details or advice is greatly appreciated. As the second part is pretty hazy to me.
+ 
+ 
+Thanks,
+EF
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

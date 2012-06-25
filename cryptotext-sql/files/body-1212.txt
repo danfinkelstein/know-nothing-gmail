@@ -1,0 +1,6 @@
+Hello,I am using FS mode running parallel benchmarks, not using SMT (don't think it even works). I am interested in determining every time  a processors  starts executing a NEW thread, for example a parsec parallel pipeline benchmarks, a new thread will  execute on a proccessor during  the initial time of  exection  , as well as during the various pipeline stages, so maybe 5 threads will be executed on one processors throughout execution. Is there any way I can tell that a new thread has started to execute on a processors? Can I find this information within a proccesor module? What about at cache modules (see if proccessor X has a new thread)?
+Also, lets say that  a jump or branch has occured is this instruction piggybaccked into memory request like the pc address,  or will I have to add this in, would this be difficult?Thanks,EF 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

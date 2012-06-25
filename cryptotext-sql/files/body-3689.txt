@@ -1,0 +1,5 @@
+In bus.cc of beta 4, I see in recvtiming(), the packet occupies the bus only when isExpressSnoop() is not true. What is the purpose of isExpressSnoop() ?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

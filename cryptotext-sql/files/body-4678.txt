@@ -1,0 +1,52 @@
+Hi 
+Chaitali Gupta,
+    If you are using m5-2.0b2, you 
+just using the follow command:
+    ./build/ALPHA_FS/m5.opt 
+configs/examples/fs.py --num_cpus 
+4
+    It's OK.
+    Check the file 
+(configs/examples/fs.py) for details.
+xiaojun.chen
+2007-03-12
+Sender: Chaitali Gupta
+Receive Date: 
+2007-03-11 12:36:24
+Receiver: 
+m5-users@m5sim.org
+Copyto: 
+Subject: [m5-users] Multiple Core 
+Configuration- Show quoted text -
+ 
+Hi,
+ 
+I am configuring 4 cores in the following way -
+ 
+"
+system = makeLinuxAlphaSystem(mem_mode, bm[0])
+system.cpu = [AtomicSimpleCPU(), AtomicSimpleCPU(), AtomicSimpleCPU(), 
+AtomicSimpleCPU()]
+system.cpu[0].connectMemPorts(system.membus)
+system.cpu[0].mem = system.physmem
+system.cpu[1].connectMemPorts(system.membus)
+system.cpu[1].mem = system.physmem
+system.cpu[2].connectMemPorts(system.membus)
+system.cpu[2].mem = system.physmem
+system.cpu[3].connectMemPorts(system.membus)
+system.cpu[3].mem = system.physmem
+root = Root(clock = '1GHz', system = system)
+"
+ 
+It would be great if someone can let me know if I am doing the 
+configuration correctly.
+ 
+regards-
+Chaitali
+Get 
+your own web address.Have a HUGE year through Yahoo! 
+Small Business. 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

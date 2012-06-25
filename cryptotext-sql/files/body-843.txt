@@ -1,0 +1,22 @@
+> Ah, yes... I used grep to see that there was a rduniq entry in decoder.isa
+> but failed to realize that that was the SE-mode-only version.
+The funny thing is that even though I rightly pointed that out, I
+still was confusing the callpal rduniq and the MTPR/MFPR.  Seems that
+we could have MTPR be serializing and MFPR not be, though we may in
+fact need some mechanism to determine which if any of the MFPRs have
+side effects.  From a quick glance of readIPR, it seems that none do.
+That said, there's a panic in there on some write only registers and
+we probably need to turn that into an opdec fault somehow so
+misspeculative accesses don't crash the simulator.
+> It does seem that having the serialization decision made based on the
+> particular IPR is necessary.  I see that call_pal is non-speculative, which
+> could cause problems even if the IPR accesses are fixed.
+I wonder why the callpal itself needs to be non-speculative.  Does it
+have to do with switching modes?  The mode is in the PC, so it would
+seem to me to be renamed already.
+- Show quoted text -
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

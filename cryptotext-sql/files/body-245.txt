@@ -1,0 +1,6 @@
+Hi, We are trying to set up a data transfer from L2 back to the CPU through bus and ports. It is an abort condition which is initiated in L2 and should propagate back to the CPU.  But we are facing a problem in the bus.hh file. The getPort function takes an address as an input and returns the output port to which the bus should connect. The port is found in the higher level of hierarchy, that is if it is called from Dcache, L2 port is returned and if it is called from L2, Mem port is returned. Is there any way we can do the reverse, that is on calling from L2, Dcache port will be returned? 
+It seems in the present cache functioning, the return path is built through the return calls, not through port and bus interface. Thanks in advance, -- Pritha Ghoshal 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

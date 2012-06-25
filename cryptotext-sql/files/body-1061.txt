@@ -1,0 +1,19 @@
+Thank you for your response
+ 
+I notice that calculateLatency function in Dram.hh is the main function to calculate access latency of the DRAM model. However, the DRAM object is never instantiated and no object call calculateLatency function in M5. why?
+ 
+I think create a SPM model just like the DRAM is hard for me. The  electrical character of SRAM is unfamiliar for me.  Or, because SPM is in the same address space with memory, maybe I can just simulate a SPM region with simple access latency configuration in PhysicalMemory.hh. Is that acceptable? 
+ 
+ 
+2009/8/12 Ali Saidi <saidi@umich.edu>- Show quoted text -
+You should be able to create another PhysicalMemory device and attach it tothe memory system somewhere. You can assign it an address range and for SE
+mode it would probably be pretty easy to access. To access it in FS modeyou'll need to modify the kernel to make it available to a user spaceapplication which will probably be quite time consuming.Ali
+On Wed, 12 Aug 2009 14:40:03 +0800, 邓宁 <dunning2006@gmail.com> wrote:> Hi all,>> Scratchpad memory(SPM) is a small on-chip memory managed by software,
+which> is widely adopted in embedded processors.>> SPM is addressed in the uniform address space with memory but with> lower access latency. How can I simulate SPM in M5 to support my research
+> on multicore with SPM?>> THANK YOU :)_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+- Show quoted text -
+-- RegardsNing DengSchool Of Computer Science and Technology Beijng Institute of Technology, China, 100081dunning2006@gmail.comdnenging@bit.edu.cn
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

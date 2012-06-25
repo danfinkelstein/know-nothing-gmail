@@ -1,0 +1,106 @@
+This is interesting; thanks for doing the experiment.  I think there
+are at least two things going on here:
+1. The times reported are obtained using the CLOCK() macro, which
+calls times(), which returns the elapsed time in "ticks".  Clearly
+Linux and SE mode have very different ideas of how big a "tick" is.
+It would be easy to tweak SE mode to return something more in line
+with Linux.  Note that in both cases TRACKTIME is about half of
+COMPUTETIME, and PARTITIONTIME and RESTTIME are negligible, so the
+TREEBUILDTIME/FORCECALCTIME ratio is the only major inconsistency.
+2. The synchronization primitives in SE mode are done in M5 directly
+rather than using ldl/stc, so synchronization is more efficient (but
+less realistic) than in FS mode, and the processors don't issue loads
+of instructions spinning on locks etc.  I'm sure that's where most of
+the difference in instruction counts comes from (the rest would be due
+to the instructions executed on syscalls, which of course are also
+magic in SE mode, and in other OS overheads).  I don't know if that
+explains the huge difference in the TREEBUILDTIME/FORCECALCTIME ratio
+or not.  It'd be interesting to go back to the original SPLASH-2 paper
+and see if it says anything about what the expected fraction of time
+in each of those phases is.  Or just run it native on a quad-core
+machine and see what you get.
+Steve
+- Show quoted text -
+On Fri, Jun 13, 2008 at 11:12 AM, Sujay Phadke <sphadke@eecs.umich.edu> wrote:
+> Also, the number of instructions simulated (from m5stats.txt) is different
+> for the 2 modes by:
+>
+> FS: 18894761556
+> SE:  3704147106
+>
+> diff: 15190614450
+>
+> ----- Original Message -----
+> From: Sujay Phadke
+> To: M5 users mailing list
+> Sent: Friday, June 13, 2008 2:08 PM
+> Subject: [m5-users] differences in output stats between FS and SE in splash2
+> Hello,
+>      I ran some splash2 benchmarks in M5 beta 5 in both FS and SE mode to
+> see the differences in the two. For example, barnes gives the following:
+>
+> SE mode:
+> --------------
+>                 Hack code: Plummer model
+>
+>      nbody     dtime       eps       tol     dtout     tstop    fcells
+> NPROC
+>      16384   0.02500    0.0500      1.00     0.250     0.075
+> 2.00         4
+>
+> COMPUTESTART  =            1
+> COMPUTEEND    =           57
+> COMPUTETIME   =           56
+> TRACKTIME     =           27
+> PARTITIONTIME =            0     0.00
+> TREEBUILDTIME =            1     0.04
+> FORCECALCTIME =           26     0.96
+> RESTTIME      =            0     0.00
+> warn: ignoring syscall sigprocmask(1, 18446744073709547831, ...)
+>
+> FS mode:
+> --------------
+>                 Hack code: Plummer model
+>
+>      nbody     dtime       eps       tol     dtout     tstop    fcells
+> NPROC
+>      16384   0.02500    0.0500      1.00     0.250     0.075
+> 2.00         4
+>
+> COMPUTESTART  =   4294666516
+>
+> COMPUTEEND    =   4294691052
+> COMPUTETIME   =        24536
+> TRACKTIME     =        12258
+> PARTITIONTIME =            3     0.00
+> TREEBUILDTIME =        10047     0.82
+> FORCECALCTIME =         2114     0.17
+> RESTTIME      =           94     0.01
+> ----------------
+>
+> All config params were the same in both. I had given a resetstats in the rcS
+> file for FS. I expected that the various times would not vary by such a
+> large amount.  Is this difference expected or am I doing something wrong?
+>
+> The benchmarks do run correctly, I verified them by using the "-t" switch.
+>
+> Sujay
+>
+>
+>
+> ________________________________
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

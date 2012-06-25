@@ -1,0 +1,60 @@
+I'm fairly certain it's encoded in the symbol table records. We only
+extract the symbol name field, but there are other ones, however I'm
+not completely sure.
+Ali
+- Show quoted text -
+On Jul 21, 2008, at 1:58 PM, richard strong wrote:
+> Are you sure libelf has this information. I read through a tutorial,
+> but
+> it seems like the most likely candidate for this information is in the
+> section headers and I did not see it. Have you actually seen a
+> function
+> that will allow you to navigate from a program counter address to the
+> name of the source file and line number that contributed the machine
+> code?
+>
+> -Rick
+>
+> Ali Saidi wrote:
+>> The information is in the symbol table, so you could use the libelf
+>> code to load that data somewhere. Generally I don't need all that
+>> information so just typing in the symbol name into lxr.linux.no does
+>> the job.
+>>
+>> Ali
+>>
+>> On Jul 18, 2008, at 3:01 PM, richard strong wrote:
+>>
+>>
+>>> Hi,
+>>>
+>>> I was wondering if it would be easy (or already exists) to get the
+>>> file
+>>> name and line number of a particular machine instruction that
+>>> executed
+>>> during full system in the kernel while doing an Exec trace?
+>>>
+>>> -Rick
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

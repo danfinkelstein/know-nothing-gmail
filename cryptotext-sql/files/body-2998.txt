@@ -1,0 +1,14 @@
+there has been interest, but as far as we know no one has made anything publicly available or worked it to completion.lisa- Show quoted text -On Sat, May 24, 2008 at 10:09 PM, jerry lrui <jerry.lrui@gmail.com> wrote:
+- Show quoted text -Hi,
+ 
+I would like to analyze the power consumption using the M5 simulator. From the mailing list I know a few people were interested in this topic before. Is there any power analysis tool available in M5 now? Thanks!
+ 
+Jerry
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

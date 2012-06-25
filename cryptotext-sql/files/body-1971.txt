@@ -1,0 +1,65 @@
+Hi, Nathan:
+  Thank you for your response. I think that I have no ability to
+implement the system calls. Therefore, I should try another
+alternative. I have also tried to run M5 in full system mode. However,
+when I put the executable binaries in the image and mount it in the
+simulated system, the programs always suffer "Killed" or "Segmentation
+fault". Not only the threaded executables encounters the problem, but
+also non-threaded version. In fact, I can not execute any benchmark in
+the SpecOMP in ALPHA full system simulation environment.
+  My steps are 1) compile the benchmarks of SpecOMP by the
+pre-compiled cross-compiler for ALPHA obtained from M5 website. 2)
+create a disk image and put the compiled binaries in the image. 3) run
+a full system simulation by ALPHA_FS/m5.fast with the disk image
+obtained from M5 website. 4) mount the benchmark image in the
+simulated system. 5) run the binaries in the simulated system. There
+is no error message in both the simulated system and M5 except
+"Killed" and "Segmentation fault".
+  Does it mean that M5 full system simulation can not support OMP
+threaded applications? Or I do something by mistake. How can I obtain
+some additional error message besides "Killed" or "Segmentation fault"
+to know what is wrong in the simulated system?
+Thanks in advance.
+  sitos
+2009/1/20 nathan binkert <nate@binkert.org>:
+- Show quoted text -> M5 in SE mode doesn't support several of the system calls required for
+> implementing multithreading.  To solve the problem, you need to
+> implement the system calls required by OpenMP.  Also, depending on how
+> you want things to work, you might have to write a thread scheduler
+> for SE mode to load balance the CPUs.  If you do any of this, please
+> share your patches.
+>
+> Another alternative is to run M5 in Full System mode.  If you do this,
+> you'll be running the linux kernel and get all of the system calls it
+> supplies.
+>
+>  Nate
+>
+> On Mon, Jan 19, 2009 at 10:15 AM, Sitos Lin <sitos.lin@gmail.com> wrote:
+>> Hi all:
+>>  I am trying to run Spec OMP in the APLHA_SE mode. I used the
+>> pre-compiled cross-compile to compile the code of Spec OMP. When I
+>> compile the code without -fopenmp flag, the code is not parallelized,
+>> and the m5 simulator can execute them normally. However, When I
+>> compile the code with -fopenmp flag, the compilation has no error, but
+>> the m5 simulator would say "fatal: syscall set_tid_address (#411)
+>> unimplemented." I have also tested a test program such as hello world.
+>> It shows the same behavior. It seems that m5 can not execute the
+>> compiled openmp code. How can I solve this problem?
+>> Thanks in advance
+>>  sitos
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

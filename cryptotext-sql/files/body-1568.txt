@@ -1,0 +1,7 @@
+Hi everybody,I have notices that there has been some modification to the ARM architecture on m5 repository.I downloaded a few weeks ago the m5 with Mercurial and the ARM_SE does not compile. (I had been working with ALPHA but, research wise I need ARM)
+I downloaded again from the repository and it still does not compile; this time with different errors.Should it compile or is it not stable? Is there a stable version of ARM on m5 at the moment?Thanks,
+Javier MalaveTexas A&M UniversityComputer Science and Engineering Department
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

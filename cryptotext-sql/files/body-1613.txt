@@ -1,0 +1,5 @@
+The way m5 coherence protocol is set-up, if a core need exclusive access to a block, it send an upgrade request on bus and all sharers invalidatethe blocks?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

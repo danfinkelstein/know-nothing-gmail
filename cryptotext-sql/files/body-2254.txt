@@ -1,0 +1,85 @@
+That's true... strictly speaking all DMA accesses must go through the
+cpu side of some cache before they interact with any other caches.  It
+doesn't have to be a dedicated IO cache, so you could share it with a
+CPU L1.  You can't use an L2 for this purpose though because then the
+DMA accesses will be seen by the L1(s) before they hit the L2 and it
+won't work.
+Steve
+- Show quoted text -
+On Thu, Nov 20, 2008 at 8:15 PM, Ali Saidi <saidi@umich.edu> wrote:
+> Although you could attach the disk to the cpu side of the l1. That
+> might work. You'll still need to attach the config port to the I/O bus
+> so that PCI configuration happens normally.
+>
+> Ali
+>
+> On Nov 20, 2008, at 11:00 PM, Steve Reinhardt wrote:
+>
+>> Actually that's not true... you need an io cache to make sure block
+>> writes are coherent regardless of where the device is attached.  The
+>> device by itself doesn't know how to make coherent accesses.
+>>
+>> Steve
+>>
+>> On Thu, Nov 20, 2008 at 7:51 PM, nathan binkert <nate@binkert.org>
+>> wrote:
+>>> Sorry for the late response, but there really isn't another disk
+>>> model.  You should in theory be able to hang the disk device off
+>>> whatever bus memory hangs off of.  You only need an io cache if you
+>>> want a separate IO bus.
+>>>
+>>> Nate
+>>>
+>>> On Wed, Nov 19, 2008 at 4:21 PM, Rick Strong <rstrong@cs.ucsd.edu>
+>>> wrote:
+>>>> Hi all,
+>>>>
+>>>> I have mesh + directory coherence (based on Jiayuan's patches)
+>>>> running
+>>>> the beginning of a script  in full system and see output coming
+>>>> from the
+>>>> terminal. However, I am getting an assertion in the ide_disk.cc a
+>>>> little
+>>>> later:
+>>>>
+>>>> Assertion failed: (cmdBytesLeft == 0), function dmaWriteDone, file
+>>>> /Users/rickstrong/build/m5powerfs/build/ALPHA_FS/dev/ide_disk.cc,
+>>>> line 497.
+>>>>
+>>>> As I am running for a deadline, I don't really care about the
+>>>> accuracy
+>>>> of the disk model. Is there a simpler disk that I could use that
+>>>> might
+>>>> get me around the complexity of figuring how dma is interacting
+>>>> with the
+>>>> disk?
+>>>>
+>>>> Best,
+>>>> -Rick
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

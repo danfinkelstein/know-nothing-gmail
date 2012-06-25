@@ -1,0 +1,37 @@
+In order to display the accessed data in disk,I want to add "DDUMP" in
+the file src/dev/disk_image.cc. I assume I should add in the functions
+of CowDiskImage::write(const uint8_t*data, off_t offset) and
+CowDiskImage::read(const uint8_t*data, off_t offset). Does it make
+sense? What about RawDiskImage::write(const uint8_t*data, off_t offset)
+and RawDiskImage::read(const uint8_t*data, off_t offset)? What is the
+difference between CowDiskImage and RawDiskImage?
+Thanks a lot for your help.
+- Show quoted text -
+nathan binkert wrote:
+> M5 does not support this, but you can easily edit the code to gather
+> this type of information.  Depending on what you want, you'd either
+> want to look at modifying the disk controller device model or the disk
+> image object.  Both are in the src/dev directory.
+>
+>   Nate
+>
+> On Thu, Apr 2, 2009 at 5:33 PM, Eddie Liu <ameseacla@gmail.com> wrote:
+>
+>> I want to record the trace the access to disk. During every access, I
+>> hope M5 to display the data which is accessed. For example, if an read
+>> access to disk, I want to know the data that would be read. For an write
+>> access, the data before and after writing are wanted. Does M5 support
+>> such operations? If not, can I make some modifications based on M5?
+>> Thanks in advance.
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>>
+>>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

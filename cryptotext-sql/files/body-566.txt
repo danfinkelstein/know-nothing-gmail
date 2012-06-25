@@ -1,0 +1,29 @@
+Alpha requires that memory accesses are aligned.  If they're not, they
+trap and must be fixed up in software.  x86 explicitly allows
+unaligned accesses and they're handled in hardware.  So, it's arguably
+a bug in your benchmark.  You might be able to get the linux kernel to
+handle the trap, but I can't give you details.
+Read this:
+http://www.gentoo.org/proj/en/base/alpha/doc/alpha-porting-guide.xml
+  Nate
+- Show quoted text -
+> Has anyone seen anything similar to this while running a benchmark in full
+> system:
+> # ./a.out -i 5
+> a.out(790): unaligned trap at 0000000120005d54: 0000000120010b6c 2b 1
+> a.out(789): unaligned trap at 0000000120005d54: 0000000120010b6c 2b 1
+> Bus error
+> This is a benchmark that uses pthreads and runs fine if I compile it with
+> x86 gcc. Any idea?
+> Thanks
+> Amir
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

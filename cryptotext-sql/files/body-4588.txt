@@ -1,0 +1,19 @@
+Hi there, now I am using the M52.0b2 in the Full system mode.I have a benchmark which can run on the simulator successfully by using the scripts ready for it such as modifying Benchmark.py and creating the new .rcS for the benchmark.But I found I get a wrong timing information because the m5stats.txt counts all the cycles since the boot up of the system.So I want to know how I can count the cycles just for the duration of the benchmark.I know there are some useful tools like m5 reset stats, m5 dumpstats and m5 dumpresetstats,but how to use those tools and what is the different between m5 dumpstats and m5 dumpresetstats?
+Should I insert those commands like the following ones?
+/sbin/m5 resetstats
+/sbin/m5 dumpstats
+/benchmarks/benchmark
+/sbin/m5 exit
+or /sbin/m5 dumpresetstats
+ /benchmarks/benchmark
+ /sbin/m5 exit
+Another question is why there are two clocks rate for M5?One is 1THz and
+the other is 2GHz.But the cycles for the system and the CPU are nearly same.
+Thank you very much for your help.Best wishes to you!
+                          Yue Li
+                          04/18/2007
+----------------------------------------------------------------
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

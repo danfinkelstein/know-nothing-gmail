@@ -1,0 +1,22 @@
+On Oct 29, 2007, at 8:04 PM, Rick Strong wrote:
+This sounds like what I want to do. I am trying to get two threads from two separate checkpoints to run in a SMT core under ALPHA_SE. I can get both threads to run in separate cores, I am just trying to figure out a good way to get them to move to a single smt o3 core.
+It can be done, but I don't know how off the top of my head. Maybe Kevin or Korey can comment on this since they wrote SMT support.
+When you say that I need to add page table support for different thread ids/address space identifiers, I was under the impression that the SMT o3 already has a way of distinguishing between thread ids in SMT execution. Is this not the case?
+Yes it has  a thread id, but that isn't the problem I'm referring to. In the case that you're taking two workloads from separate checkpoints they will almost certainly have the same virtual addresses mapped to some physical memory (their text and data sections, stack, heap, etc). Right now the syscall emulation page table doesn't distinguish one thread id from another as far as mapping virtual->physical addresses goes.
+Ali- Show quoted text -
+Ali Saidi wrote:
+You should be able to switch from two simple cpus into an smt o3 core, although I don't think it's been done for a little while.  That isn't scheduling per-say, so I'm not 100% sure I've answered your question.
+I still think the general problem is that if you have to some how restore individual checkpoints which each have the same memory layout. The easiest way I can see to get around this is to start the physical memory allocation for each benchmark at a different place (although you might have to have the same benchmark at a variety of places so you could make any collection you wanted). The next think you would need is some way to make the page table support different thread ids/address space identifiers/etc.
+Ali
+On Oct 29, 2007, at 1:13 PM, Rick Strong wrote:
+Hi,
+Is there any good method of scheduling a thread between CPUs? I am trying open two threads from a checkpoint and put them into a SMT processor. What would be the best way to proceed. I could imagine scheduling them from a single core to a SMT core, or just finding a way to schedule them together at the beginning. Any ideas?
+-Richard
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

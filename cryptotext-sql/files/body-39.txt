@@ -1,0 +1,144 @@
+Okay,
+Thanks for the clarification.
+Maximilien- Show quoted text -
+On 06/09/2010 05:12 PM, Steve Reinhardt wrote:
+In this particular case, the functional accesses you're seeing are
+from the syscall emulation layer.  If a syscall needs to update memory
+(e.g., you called read()) then it uses functional accesses because all
+of this happens instantaneously and you don't know what other accesses
+may be in-flight from other processors if you're in timing mode.
+Steve
+On Wed, Jun 9, 2010 at 7:53 AM, Ali Saidi<saidi@umich.edu>  wrote:
+   
+ From the Wiki:
+  Access Types
+There are three types of accesses supported by the ports.
+   1. Timing - Timing accesses are the most detailed access. They reflect
+our best effort for realistic timing and include the modeling of queuing
+delay and resource contention. Once a timing request is successfully sent
+at some point in the future the device that sent the request will either
+get the response or a NACK if the request could not be completed (more
+below). Timing and Atomic accesses can not coexist in the memory system.
+   2. Atomic - Atomic accesses are a faster than detailed access. They are
+used for fast forwarding and warming up caches and return an approximate
+time to complete the request without any resource contention or queuing
+delay. When a atomic access is sent the response is provided when the
+function returns. Atomic and timing accesses can not coexist in the memory
+system.
+   3. Functional - Like atomic accesses functional accesses happen
+instantaneously, but unlike atomic accesses they can coexist in the memory
+system with atomic or timing accesses. Functional accesses are used for
+things such as loading binaries, examining/changing variables in the
+simulated system, and allowing a remote debugger to be attached to the
+simulator. The important note is when a functional access is received by a
+device, if it contains a queue of packets all the packets must be searched
+for requests or responses that the functional access is effecting and they
+must be updated as appropriate. The Packet::intersect() and fixPacket()
+methods can help with this.
+Ali
+On Wed, 09 Jun 2010 13:55:02 +0200, Maximilien Breughe
+<Maximilien.Breughe@elis.ugent.be>  wrote:
+     
+Hi,
+After running some (spec2006 and MiBench) benchmarks I noticed the
+following:
+Most of the time a memory request packet triggers the "doAtomicAccess"
+function. However sometimes "doFunctionalAccess" is called.
+I noticed the latter happens after a syscall.
+What's the philosophy behind it?
+Max
+On 06/07/2010 10:09 AM, Maximilien Breughe wrote:
+       
+Thanks,
+I got it =), it was easier than I thought ;)
+Regards,
+Max
+On 06/04/2010 06:35 PM, Korey Sewell wrote:
+         
+Thanks Lisa.
+I should've payed more attention to his configuration: "I'm running
+one core, with one thread, split level 1 caches and physical memory."
+MSHRs arent really a big deal in that case.
+Max,
+if you just go into the physical memory object and create relevant
+read/write statistics you can be sure of the values you get.
+On Fri, Jun 4, 2010 at 12:23 PM, Lisa Hsu<hsul@eecs.umich.edu
+<mailto:hsul@eecs.umich.edu>>  wrote:
+     I assume the InOrderCPU has blocking caches in which case you
+     will definitely have no mshr hits, since each core only has one
+     outstanding memory request at a time.
+     Lisa
+     On Fri, Jun 4, 2010 at 12:46 AM, Maximilien Breughe
+     <Maximilien.Breughe@elis.ugent.be
+     <mailto:Maximilien.Breughe@elis.ugent.be>>  wrote:
+         Korey,
+         Could it be that in the InOrderCPU, all mshr accesses are
+         misses? But only for the dcache.
+         I have over a hundred traces of programs that have executed
+         more than 140 million instructions all showing the same
+         thing: overall_mshr_hits=0.
+         The overal_misses of the dcache equals overall_mshr_misses of
+         the dcache.
+         If it would help I could send my config-file.
+         This entry in the config-file says that I do have mshrs for
+         the dcache:
+         [system.cpu.dcache]
+         .....
+         mshrs=10
+         .....
+         Regards,
+         Max
+         On 06/03/2010 03:08 PM, Korey Sewell wrote:
+           
+             The number of memory writes will be more difficult to
+             calculate: it equals [number of evicted cache lines that
+             were written] plus [number of data cache
+             
+WriteReq_misses].
+     
+         Check the stats for "MSHR" misses there (and corresponding
+         code if you want to know when that gets updated). Y
+         You could technically have a miss to the same block that a
+         MSHR is handling, so that "miss" is kind of being
+         double-serviced so to speak.
+         --
+         - Korey
+         _______________________________________________
+         m5-users mailing list
+         m5-users@m5sim.org<mailto:m5-users@m5sim.org>
+         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+             
+         _______________________________________________
+         m5-users mailing list
+         m5-users@m5sim.org<mailto:m5-users@m5sim.org>
+         http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     _______________________________________________
+     m5-users mailing list
+     m5-users@m5sim.org<mailto:m5-users@m5sim.org>
+     http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--
+- Korey
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+           
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+         
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+     
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+   
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

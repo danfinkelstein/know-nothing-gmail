@@ -1,0 +1,47 @@
+Hi all!
+ 
+Daily questions J
+ 
+As I am tracking down the thread creation process in
+splash2(FFT) with SE mode, I found that in tru64.hh, the system call stack_createFunc
+is executed twice before the system call nxm_thread_createFunc is executed. I
+don’t know why pthread is implemented in this way since I thought
+stack_createFuns needs only be called once. Do you by any chance have any
+clues?
+ 
+What I want to do is to add a load balancer/scheduler to the
+system.  Instead of using pthread and monitoring threads with system
+calls, I want to add new instructions and monitor threads with the scheduler,
+bypassing related OS level system calls. I also assume that all the threads
+take a single void* as their argument. On thread creation, the mainthread executes
+new instructions to store pc and the void* in a packet, and then another instruction
+sends the packet to the scheduler and signals the scheduler to create a new thread.
+ 
+My question is, what steps are there to create a thread
+without system calls? My assumptions are:
+      0.   pool some
+unallocated thread contexts on all the cpu/cores at the beginning of the
+simulation
+ one thread creation, call
+     stack_createFunc once
+ push in the void* as arguments
+     to the stack
+ follow what
+     nxm_thread_createFunc does and initialize the attrp, call init_thread_context
+     and activate a thread context in a cpu/core.
+ 
+Is this the right thing to do or it’s much more
+complex than what I see?
+ 
+Btw, some questions regarding code in tru64.hh::nxm_thread_createFunc:
+What is RAD and VP slots? Can you point me to any background references?
+ 
+Thanks and have a nice weekend!
+ 
+Jiayuan
+ 
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

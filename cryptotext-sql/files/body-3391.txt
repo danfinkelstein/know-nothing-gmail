@@ -1,0 +1,12 @@
+Hello all,
+         
+Using cpu2000, how do I specify if I want to use the reference input set or test 
+set for running the spec2K benchmarks?
+ 
+Thanks,
+Sujay
+ 
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

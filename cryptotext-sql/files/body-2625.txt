@@ -1,0 +1,9 @@
+Hi all,
+Given that the quest for the niagara has failed, now I wonder if anyone
+has an "in-order cpu model" done. I would want to develop this model for
+a niagara system.
+-Rick
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

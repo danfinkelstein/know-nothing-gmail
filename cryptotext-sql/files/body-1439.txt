@@ -1,0 +1,12 @@
+Hi,
+I have downloaded M5 full-system files and set M5_PATH environment
+variable. Now when I run "sudo mkdir -p /dist/m5/system" command, it
+asks for my password and then report "my id is is not in the sudoers
+file.  This incident will be reported."
+How can I fix this problem?
+Thanks,
+Somayeh
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

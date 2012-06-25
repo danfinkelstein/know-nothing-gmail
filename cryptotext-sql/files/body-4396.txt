@@ -1,0 +1,12 @@
+[m5user@kardel m5-2.0b3]$ ./build/ALPHA_SE/m5.debug -d gccintg_out tests/run.py long/90.gcc/alpha/tru64/simple-atomicM5 Simulator SystemCopyright (c) 2001-2006The Regents of The University of MichiganAll Rights Reserved
+M5 compiled Aug 10 2007 08:11:42M5 started Fri Aug 10 14:52:32 2007M5 executing on kardelcommand line: ./build/ALPHA_SE/m5.debug -d gccintg_out tests/run.py long/90.gcc/alpha/tru64/simple-atomic
+Global frequency set at 1000000000000 ticks per secondwarn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack size by one page.warn: ignoring syscall setrlimit(3, 4831387568, ...)warn: ignoring syscall sigaction(8, 4831387472, ...)
+warn: ignoring syscall sigaction(13, 4831387472, ...) __sigismember __sigaddset __sigdelset mem_access_latencywarn: Increasing stack size by one page. dl1_access_fn dl2_access_fn il1_access_fn il2_access_fn itlb_access_fn dtlb_access_fn sim_reg_optionswarn: Increasing stack size by one page.
+warn: Increasing stack size by one page.panic: Page table fault when accessing virtual address 0x11ff87a40 @ cycle 17251974000[invoke:build/ALPHA_SE/sim/faults.cc, line 65]Program aborted at cycle 17251974000
+AbortedIs it because the syscalls were ignored? Do I need to run this in FS mode? I also had this problem when runing gcc_integrate... This is the configuration file for the benchmarktest.py
+:m5.AddToPath('../configs/common')from cpu2000 import gcc_166workload = gcc_166('alpha', 'tru64', 'ref')root.system.cpu.workload = workload.makeLiveProcess()
+Thanks everybody.-- Dean Michael B. Ancajas
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

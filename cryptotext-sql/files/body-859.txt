@@ -1,0 +1,6 @@
+Hi,Is it possible to set different latency for buses connecting to the same L2 cache or Mem?It seems to me that this is not possible in the current release because of the cache snooping protocol. But is there a way to change the source code without changing the snooping protocol to reflect the different interconnect delay?
+Any suggestions?thanks,di  
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

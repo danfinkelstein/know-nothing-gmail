@@ -1,0 +1,31 @@
+Hello,
+I am having trouble running programs in SE mode.  I compiled a binary on an Alpha workstation running Gentoo linux, with kernel 2.6.21 and gcc 4.1.  When I run the binary in m5, I get the following output:
+mahesri@blackbox:~/acshome/m5-2.0b3$ build/ALPHA_SE/m5.debug configs/example/se.py -c ../smallprogs/hello
+M5 Simulator System
+Copyright (c) 2001-2006
+The Regents of The University of Michigan
+All Rights Reserved
+M5 compiled Jul  5 2007 11:03:43
+M5 started Wed Jul 11 11:23:55 2007
+M5 executing on blackbox
+command line: build/ALPHA_SE/m5.debug configs/example/se.py -c ../smallprogs/hello
+Global frequency set at 1000000000000 ticks per second
+warn: More than two loadable segments in ELF object.
+warn: Ignoring segment @ 0x120090000 length 0x20.
+warn: More than two loadable segments in ELF object.
+warn: Ignoring segment @ 0x0 length 0x0.
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+FATAL: kernel too old
+panic: Page table fault when accessing virtual address 0x30
+@ cycle 213500
+[invoke:build/ALPHA_SE/sim/faults.cc, line 65]
+Program aborted at cycle 213500
+Aborted
+Can anyone help me fix this?
+Thanks,
+Aqeel
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

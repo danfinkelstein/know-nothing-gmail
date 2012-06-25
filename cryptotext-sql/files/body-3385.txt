@@ -1,0 +1,43 @@
+Thanks.
+But if we run the smred (or other reduced benchmarks), there is no output directory in the /data/<banchmark>/smred
+directory to compare with. I can see the output directory only for the reference case.
+- Sujay
+----- Original Message ----- From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+Sent: Friday, March 28, 2008 5:41 PM
+Subject: Re: [m5-users] Running Spec2K in SE mode beta 5- Show quoted text -
+On Mar 28, 2008, at 4:44 PM, Sujay Phadke wrote:
+Hello all,
+    I am trying to run the specint benchmarks in SE mode in beta 5, using m5.fast. I am facing errors with some of them as follows:
+I am running them on a machine with 2GB ram. I made the correction  to the cpu2000.py script as suggested by Vilas in previous postings.
+1. mcf -
+warn: Entering event queue @ 0.  Starting simulation...
+warn: Increasing stack size by one page.
+fatal: Out of memory, please increase size of physical memory.
+ @ cycle 45551000
+[new_page:build/ALPHA_SE/sim/system.cc, line 235]
+It means exactly what it says. You have a physical memory of probably 128MB, and the binary used all the available memory. Increase the size  of the PhysicalMemory Object.
+2. parser -
+AttributeError: OptionParser instance has no __call__ method. I
+think it needs input thru STDIN but does not seem to work
+You've managed to grab the wrong module. There is a paser benchmark,  and a parser python module. You've called the latter. Instead of from  XXXX import * lines you should use import XXXX and then call  XXX.callable()
+3. amongst the specint benchmarks, perlbmk and bzip2 do not have a  smred
+input set. So what input_set options do we have to pass on?
+You can use any of the defined input sets. I believe the minnespec benchmarks for bzip just used different parameters.
+Also, how do we check if the benchmarks ran correctly or no?
+By comparing the output to the reference output
+Has anyone gotten all these to run correctly?
+thanks,
+Sujay
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

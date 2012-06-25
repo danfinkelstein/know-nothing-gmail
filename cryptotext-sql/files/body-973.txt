@@ -1,0 +1,5 @@
+I see some loadlocked/storecond requests over the bus. Is there a reason or them to come over the bus. These operations are completed corresponding a single processor. Are other processors being made aware of it?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

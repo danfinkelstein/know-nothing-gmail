@@ -1,0 +1,28 @@
+There have been a lot of coherence bug fixes since beta5.  I'd recommend upgrading to the head of the m5 development tree and seeing if that works for you.Steve- Show quoted text -On Fri, May 29, 2009 at 10:17 PM, Shoaib Akram <sakram3@illinois.edu> wrote:
+Thanks Steve for the reply. Things seem to be working fine for 8 cpus but with more than this I have an assertion failure.
+Assertion `target->pkt->cmd == MemCmd::ReadResp from cache_impl.hh (809, m5-beta5, cache patches applied).
+This is happening in handleResponse() after satisfying cpuSide request. The packet is inValidate but the cmd is not ReadResp.
+Do u have any idea?
+---- Original message ----
+>Date: Fri, 29 May 2009 15:29:26 -0700
+>From: Steve Reinhardt <stever@gmail.com>
+>Subject: Re: [m5-users] More than 4 cpus in FS mode
+>To: M5 users mailing list <m5-users@m5sim.org>
+>
+>   Glad it worked... thanks for following up.  That
+>   I/O bridge doesn't exist in SE mode so that's why
+>   this only shows up with Linux.  Hard to say about
+>   real systems... in some cases because a real system
+>   design has a hard limit on the number of cores then
+>   it is practical to simply design buffering in for
+>   the worst case and not worry about specific flow
+>   control problems.
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

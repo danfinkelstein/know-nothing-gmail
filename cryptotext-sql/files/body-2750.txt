@@ -1,0 +1,71 @@
+Hello again,
+I am trying to compile m5-2.0b3 on an UltraSPARC T1 running Solaris 10.
+Here are the versions of all prerequisite software that I have installed:
+[robertpu@sisu ~]$ scons --versionSCons by Steven Knight et al.:        script: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on bangkok        engine: v0.98.5.r3057, 2008/06/09 22:21:00, by knight on bangkok
+[robertpu@sisu ~]$ python --versionPython 2.5.2
+[robertpu@sisu ~]$ gcc -vgcc version 3.4.6
+[robertpu@sisu ~]$ swig -versionSWIG Version 1.3.29
+Compiled with g++ [sparc-sun-solaris2.10]Please see http://www.swig.org for reporting bugs and further information
+[robertpu@sisu ~]$ m4 --versionm4 (GNU M4) 1.4.10
+zlib version 1.2.3
+When I try to compile m5-2.0b3, I get the following errors which cause compilation to abort:
+[robertpu@sisu ~/m5-2.0b3]$ scons EXTRAS=src/encumbered build/ALPHA_SE/m5.opt -j 5scons: Reading SConscript files ...Checking for C header file Python.h... (cached) yesChecking for C library python2.5... (cached) yes
+Checking for accept(0,0,0) in C++ library None... (cached) noChecking for accept(0,0,0) in C++ library socket... (cached) yesChecking for zlibVersion() in C++ library z... (cached) yesChecking for C header file fenv.h... (cached) yes
+Building in /home/robertpu/m5-2.0b3/build/ALPHA_SE
+scons: warning: The env.Copy() method is deprecated; use the env.Clone() method instead.File "/home/robertpu/m5-2.0b3/SConstruct", line 577, in <module>Using saved options file /home/robertpu/m5-2.0b3/build/options/ALPHA_SE
+scons: done reading SConscript files.scons: Building targets .../opt/SUNWspro/bin/CC -o build/ALPHA_SE/python/swig/pyevent.o -c -Qoption ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/python/swig/pyevent.cc
+/opt/SUNWspro/bin/CC -o build/ALPHA_SE/python/swig/pyobject.o -c -Qoption ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/python/swig/pyobject.cc
+/opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/activity.o -c -Qoption ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/activity.cc
+Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/ccfe'."build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining VarArgs::Base<VarArgs::RECV> after use in VarArgs::Argument<cp::Print>.
+"build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While specializing "VarArgs::Argument<cp::Print>"."build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized in non-template code.
+"build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 76: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member."build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead of "a01".
+"build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration for _Pragma."build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for file.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for line."build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for format."build/ALPHA_SE/base/misc.hh", line 94: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member.
+Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/ccfe'."build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead of "a01"."build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining VarArgs::Base<VarArgs::RECV> after use in VarArgs::Argument<cp::Print>.
+"build/ALPHA_SE/sim/sim_events.hh", line 66: Warning: _when hides Event::_when.15 Error(s) and 1 Warning(s) detected."build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While specializing "VarArgs::Argument<cp::Print>".
+"build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized in non-template code.1 Error(s) detected./opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/base.o -c -Qoption ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/base.cc
+scons: *** [build/ALPHA_SE/python/swig/pyevent.o] Error 15/opt/SUNWspro/bin/CC -o build/ALPHA_SE/cpu/cpuevent.o -c -Qoption ccfe -features=gcc -features=extensions -library=stlport4 -xar -g -O -DTHE_ISA=ALPHA_ISA -DTRACING_ON=1 -Iext/dnet -I/usr/include/python2.5 -Ibuild/libelf/include -Ibuild/ALPHA_SE build/ALPHA_SE/cpu/cpuevent.cc
+scons: *** [build/ALPHA_SE/cpu/activity.o] Error 1Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/ccfe'."build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining VarArgs::Base<VarArgs::RECV> after use in VarArgs::Argument<cp::Print>.
+"build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While specializing "VarArgs::Argument<cp::Print>"."build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized in non-template code.
+"build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 76: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member."build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead of "a01".
+"build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration for _Pragma."build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for file.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for line."build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for format."build/ALPHA_SE/base/misc.hh", line 94: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member.
+"build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead of "a01"."build/ALPHA_SE/sim/param.hh", line 541: Warning: SimObjectBaseParam::showValue hides the virtual function BaseParam::showValue(std::ostream &) const.
+"build/ALPHA_SE/sim/param.hh", line 541: Warning: SimObjectBaseParam::parse hides the virtual function BaseParam::parse(const std::string &).15 Error(s) and 2 Warning(s) detected.scons: *** [build/ALPHA_SE/python/swig/pyobject.o] Error 15
+Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/ccfe'."build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining VarArgs::Base<VarArgs::RECV> after use in VarArgs::Argument<cp::Print>.
+"build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While specializing "VarArgs::Argument<cp::Print>"."build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized in non-template code.
+"build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 76: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member."build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead of "a01".
+"build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration for _Pragma."build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for file.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for line."build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for format."build/ALPHA_SE/base/misc.hh", line 94: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member.
+"build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead of "a01".15 Error(s) detected.scons: *** [build/ALPHA_SE/cpu/cpuevent.o] Error 15Bad value 'gcc' for flag '-features' for '/opt/SUNWspro/prod/bin/ccfe'.
+"build/ALPHA_SE/base/varargs.hh", line 153: Error: Redefining VarArgs::Base<VarArgs::RECV> after use in VarArgs::Argument<cp::Print>."build/ALPHA_SE/base/cprintf.hh", line 112:     Where: While specializing "VarArgs::Argument<cp::Print>".
+"build/ALPHA_SE/base/cprintf.hh", line 112:     Where: Specialized in non-template code."build/ALPHA_SE/base/misc.hh", line 75: Error: Badly formed expression."build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations.
+"build/ALPHA_SE/base/misc.hh", line 75: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 76: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member.
+"build/ALPHA_SE/base/misc.hh", line 76: Error: "," expected instead of "a01"."build/ALPHA_SE/base/misc.hh", line 87: Error: Multiple declaration for _Pragma."build/ALPHA_SE/base/misc.hh", line 93: Error: Badly formed expression.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for file."build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for line.
+"build/ALPHA_SE/base/misc.hh", line 93: Error: Use ";" to terminate declarations."build/ALPHA_SE/base/misc.hh", line 93: Error: Multiple declaration for format."build/ALPHA_SE/base/misc.hh", line 94: Error: VarArgs::Argument<VarArgs::RECV> is not a static data member.
+"build/ALPHA_SE/base/misc.hh", line 94: Error: "," expected instead of "a01"."build/ALPHA_SE/arch/alpha/types.hh", line 71: Warning: Identifier expected instead of "}".
+"build/ALPHA_SE/cpu/base.hh", line 84: Warning: numCycles hides BaseCPU::numCycles."build/ALPHA_SE/cpu/base.hh", line 291: Warning: BaseCPU::takeOverFrom hides the virtual function SimObject::takeOverFrom(BaseCPU*).
+"build/ALPHA_SE/sim/byteswap.hh", line 130: Error: "static" is not allowed here."build/ALPHA_SE/sim/byteswap.hh", line 138: Error: "static" is not allowed here."build/ALPHA_SE/cpu/static_inst.hh", line 283: Warning: Identifier expected instead of "}".
+"build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: "}" expected instead of "return"."build/ALPHA_SE/cpu/static_inst.hh", line 397: Error: "StaticInst::branchTarget(ThreadContext*) const" is expected to return a value.
+"build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: Use ";" to terminate declarations."build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: A declaration was expected instead of "return".
+"build/ALPHA_SE/cpu/static_inst.hh", line 398: Error: No direct declarator preceding "("."build/ALPHA_SE/cpu/static_inst.hh", line 404: Error: The function "hasBranchTarget(unsigned long long, ThreadContext*, unsigned long long&) const" cannot be declared const.
+"build/ALPHA_SE/cpu/static_inst.hh", line 413: Error: "virtual" is not allowed here."build/ALPHA_SE/cpu/static_inst.hh", line 415: Error: The function "disassemble(unsigned long long, const SymbolTable*) const" cannot be declared const.
+Compilation aborted, too many Error messages.scons: *** [build/ALPHA_SE/cpu/base.o] Error 1scons: building terminated because of errors.
+Can anyone help?- Show quoted text -
+On Mon, Jun 30, 2008 at 5:39 PM, Ali Saidi <saidi@umich.edu> wrote:
+It should compile just fine with gcc on Solaris.Ali
+On Jun 30, 2008, at 6:12 PM, Robert Pulumbarit wrote:> We have an UltraSPARC T1 running Solaris.  Is it possible to compile> and run M5 on this machine?  The M5 compilation page mentions that
+> M5 can be ported to Unix-like OSes.  Are there any extra steps> needed to compile and run M5 on Solaris?> _______________________________________________> m5-users mailing list> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users_______________________________________________m5-users mailing listm5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

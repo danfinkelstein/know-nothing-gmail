@@ -1,0 +1,8 @@
+Are there any applications or scripts that already exist in the standard M5 install that allows the user to create a load on the CPU only? I am familiar with using the SurgeSpecweb application to place a load on a server by having the client initiate more connections, but this stresses other parts of the simulated node as well. I also tried using MutexTest, but even using the maximum threads does not place a large load on the CPU.
+I am looking for something else that could be used to place a load just on the CPU and stress the rest of the node very little. On real nodes I use the complier gcc or g++ to compile a small program continuously. To increase the CPU load I submit multiple instances of this script (using &).
+Have you already ported gcc or some equivalent to M5 or is this something that can be easily done?
+Lanier
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

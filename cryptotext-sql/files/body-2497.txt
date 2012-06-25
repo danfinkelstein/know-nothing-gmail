@@ -1,0 +1,92 @@
+I thought that might be the case... it might even be that the modprobe errors are from the kernel trying to load in the OSF/1 compatibility module.Steve- Show quoted text -On Thu, Oct 2, 2008 at 11:54 AM, Ali Saidi <saidi@umich.edu> wrote:
+It is possible to run an osf/1 binary on linux, but you would need to
+compile a custom kernel with osf/1 syscall support.
+Ali
+On Oct 2, 2008, at 2:16 PM, Steve Reinhardt wrote:
+> You might be trying to run DEC OSF/1 binaries on Linux.
+>
+> Steve
+>
+> On Thu, Oct 2, 2008 at 10:28 AM, Hongbin Sun
+> <sunsir1129@hotmail.com> wrote:
+>               Can anyone tell me this problem has been fixed ? I am
+> facing the same problem as Tan did. When I run cpu2000 benchmarks on
+> FS mode,  m5 report :
+>
+>                modprobe: FATAL: Could not load /lib/modules/2.6.13/
+> modules.dep: No such file or directory
+>
+>                modprobe: FATAL: Could not load /lib/modules/2.6.13/
+> modules.dep: No such file or directory
+>
+>                bash: ./mcf00.peak.ev6: cannot execute binary file
+>
+>                then the simulation just ended.
+>
+>                Thanks a lot for taking your time!
+>
+>                Hongbin
+>
+>
+>
+> actually the entire command line output went like
+>
+> # ./twolf00.peak.ev6 test
+> modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+> such file or directory
+>
+> modprobe: FATAL: Could not load /lib/modules/2.6.13/modules.dep: No
+> such file or directory
+>
+> bash: ./twolf00.peak.ev6: cannot execute binary file
+>
+> (sorry for not including the last line in my last email, my bad)
+>
+> so i think the benchmark was not executed. and besides, no output
+> file was produced. the name of the executable changed  since i
+> switched to the precompiled binary i downloaded off the Internet(so
+> the crosscompiler can't be the culprit).
+>
+> am i missing something? i mean, what i did basically was place the
+> binary and the input files in the image(latest-linux.img, the one
+> that came with the m5 distro), boot the simulator, and then run the
+> executable.
+>
+> is that the correct procedure  for running  benchmarks in FS mode?
+>
+> thanks a lot for taking time to answer my questions.
+>
+> Ali Saidi <saidi at umich.edu> wrote: That error shouldn't be a
+> problem. The benchmark is almost certainly still running, just some
+> syscall it did attempted to load a module, however that module isn't
+> necessary.
+> AliOn Oct 5, 2007, at 9:49 PM, w. tan wrote: i am trying to run
+> cpu2000 benchmarks in full system mode, and already compiled the
+> benchmarks using the crosscompiler. after copying the binaries to
+> the image i then tried running the benchmarks within the simulated
+> system. i got the error # ../TimberWolfSC stdcell modprobe: FATAL:
+> Could not load /lib/modules/2.6.13/modules.dep: No such file or
+> directory modprobe: FATAL: Could not load /lib/modules/2.6.13/
+> modules.dep: No such file or directory after looking around the net
+> for a while i came upon this message wherein steve advised another
+> user to have the benchmark(it was not exactly the same benchmark
+> though) statically linked to get around this. i then tried
+> statically linking twolf by adding "-static" to the makefile's
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

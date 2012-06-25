@@ -1,0 +1,76 @@
+Please post this to the m5-user@m5sim.org mailing list, no to me
+directly.
+Python is a indent-sensitive language. You must have changed the
+indentation when you added that line.
+Ali
+On Sep 21, 2008, at 2:06 PM, Haigen Li wrote:
+> Hi Sir,
+> This is my system information:
+> [root@localhost m5-2.0b5]# uname -r
+> 2.6.25-14.fc9.i686
+> [root@localhost m5-2.0b5]# mysql_config --version
+> 5.0.51a
+>
+> When i replaced the line have_mysql = mysql_config != None with
+> have_mysql = False, some other error come out.
+> [root@localhost m5-2.0b5]# scons build/ALPHA_FS/m5.debug
+> scons: Reading SConscript files ...
+>   File "/reseach/m5/m5-2.0b5/SConstruct", line 478
+>
+>     have_mysql = False
+>
+>    ^
+>
+> IndentationError: unexpected indent
+>
+> Thank you for you help.
+>
+> Regards,
+> Hegen
+>
+>
+> 2008/9/21 Ali Saidi <saidi@umich.edu>
+> Hi Hegen,
+>
+> That would appear to mean that mysql is returning a version that
+> isn't an integer.
+> What OS/Distribution/Version are you running? What is the output of
+> mysql_config --version?
+>
+> To make it work you can replace the line have_mysql = mysql_config !
+> = None with have_mysql = False, but we would like to know exactly
+> why this is happening so we can fix it.
+>
+> Hope that helps,
+> Ali
+>
+>
+>
+> On Sep 20, 2008, at 11:05 PM, Haigen Li wrote:
+>
+> Dear developer,
+> when i ran M5 simulator, I encountered a problem:
+> [root@localhost m5-2.0b5]# scons build/ALPHA_SE/m5.debug
+> scons: Reading SConscript files ...
+> Checking for C header file Python.h... yes
+> Checking for C library python2.5... yes
+> Checking for accept(0,0,0) in C++ library None... yes
+> Checking for zlibVersion() in C++ library z... yes
+> Checking for C header file fenv.h... yes
+> ValueError: invalid literal for int() with base 10: '51a\n':
+>  File "/reseach/m5/m5-2.0b5/SConstruct", line 483:
+>    if compare_versions(mysql_version, min_mysql_version) < 0:
+>  File "/reseach/m5/m5-2.0b5/SConstruct", line 155:
+>    v1 = map(int, v1.split('.'))
+>
+> I don't know why?Help me.
+> Thank you for your attention.
+>
+> Regards,
+> Hegen
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

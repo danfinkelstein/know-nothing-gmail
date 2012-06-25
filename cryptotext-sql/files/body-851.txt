@@ -1,0 +1,62 @@
+This is a swig problem.  I haven't yet had confirmation as to which
+version actually causes this problem, but if you upgrade to at least
+1.3.31, I believe that it solves this problem.  I'm just going to
+update the webpage and make this the minimum version.
+  Nate
+On Sun, Oct 18, 2009 at 11:26 AM, Vidya Sangkar Lakshmivenkatraman
+<vidyasangkar@mail.usf.edu> wrote:
+>
+- Show quoted text -> Hello M5 users,
+>                       I'm a new user to the M5. My name is VidyaSangkar
+> Lakshmivenkatraman. I currently doing my Masters in computer engineering at
+> University of South Florida. I had the following errors when i tried to
+> install them. Could someone help me with this.
+>
+> M5 development branch
+>
+> These are the error messages:
+> g++ -o build/ALPHA_SE/python/swig/event_wrap.do -c -Wno-deprecated -pipe
+> -fno-strict-aliasing -Wall -Wno-sign-compare -Wundef -ggdb3 -Werror
+> -Wno-uninitialized -Wno-sign-compare -Wno-parentheses -DDEBUG -DTRACING_ON=1
+> -Ibuild/gzstream -Ibuild/libelf -Iext -I/usr/include/python2.4
+> -Ibuild/ALPHA_SE build/ALPHA_SE/python/swig/event_wrap.cc
+> build/ALPHA_SE/python/swig/event_wrap.cc: In function 'void
+> EventQueue_schedule(EventQueue*, Event*, Tick)':
+> build/ALPHA_SE/python/swig/event_wrap.cc:2947: error: '$self' was not
+> declared in this scope
+> build/ALPHA_SE/python/swig/event_wrap.cc: In function 'void
+> EventQueue_deschedule(EventQueue*, Event*)':
+> build/ALPHA_SE/python/swig/event_wrap.cc:2950: error: '$self' was not
+> declared in this scope
+> scons: *** [build/ALPHA_SE/python/swig/event_wrap.do] Error 1
+> scons: building terminated because of errors.
+>
+> The machine configuration that I am trying to build M5 on is:
+> Linux c4labpc20.csee.usf.edu 2.6.18-128.1.10.el5 #1 SMP Thu May 7 10:39:21
+> EDT 2009 i686 i686 i386 GNU/Linux.
+> The flavour of linux used here is the centOS linux.
+>
+> The versions of the tools required to build m5 are:
+> hg - mercurial-1.3.1
+> swig -SWIG Version 1.3.29
+> scons - v1.2.0.r3842
+> python - Python 2.4.3
+> g++ - g++ (GCC) 4.1.2
+>
+> If you need any more information, please let me know.
+>
+> Thank you in advance
+>
+> VidyaSangkar lakshmivenkatraman
+>
+>
+>
+- Show quoted text -> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

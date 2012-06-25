@@ -1,0 +1,69 @@
+On Friday 28 May 2010 07:01:52 am nathan wrote:
+> > My current understanding of the simulator's event queue, is that there
+> > is currently only one main Event Queue in which all the corresponding
+> > simobjects place their scheduled events into this single queue.
+>
+> This is correct.
+>
+> > This is as opposed to having each SimObject have their own
+> > SelfEventQueue that feeds into the Main Event Queue (something that
+> > would lead towards parallelizing the simulator, not sure if this is
+> > currently being worked on?)
+>
+> We don't want to give every SimObject their own event queue, rather we
+> want to have an event queue per host thread (one thread per core
+> probably) and assign SimObjects to certain event queues.  If an object
+> needs to post an event to multiple queues, then that object will have
+> to be a bit more intelligent.  I've taken the first baby steps to make
+> this happen by creating the EventManager class and making all
+> SimObjects use it to schedule events.
+>
+> There was someone that was going to work on completing this, but I
+> don't know what happened to him.  Other than that, nobody is actively
+> working on it.
+> In case you are referring to me I feel obliged to answer since everyone on
+In case you are referring to me I feel obliged to answer since everyone on
+this list has been so generous with their help.
+First, what happened to me? : I had a lot of work finishing my thesis and I
+still have a lot of work to do  ;-).
+I would still like to commit my (working) parallel code (or at least the base-
+algorithms) once I'm done but my thesis advisers reminded me that my code is
+the property of the university so I will have to see what is possible. I spent
+to much time on this to let it go to waist so there must be something I can
+contribute. At the very least I will send an extended abstract with my results
+so the people here know what is possible.
+As a reminder: My goal was to parallelize a multi-core simulation. By now, I
+have and I get good speedups.
+Second, referring to the actual question:
+The EventManager interface basically provides the illusion that every object
+has its own queue. What queue the events actually feed into depends on the
+reference the EventManager object got at construction.
+The most efficient way of working is having one queue per physical thread and
+to only have as many physical threads as there are processors in your host
+machine. The problem with a multi-threaded simulation is that the amount of
+logical threads can be higher then the amount of physical ones and that you
+don't know at configuration time which physical thread will execute which
+logical threads or even how many physical threads there will be. So at the
+beginning of the simulation loop they still need to be assigned.
+However the configuration phase requires an eventqueue to queue the inital
+events on. So what I do is assign one queue to all the SimObjects within the
+same logical thread. But since the EventManager interface allow you to get the
+pointer to it's underlying queue thus the initialization code can save this
+pointer and use it to queue events later, during the simulation. So you can't
+just copy all events from the logical threads queues into the one queue of
+their corresponding physical thread and replace the pointers in the
+EventManager objects since the SimObjects might still use the old pointer. So
+although It is not the most efficient way I manged to solved this generically
+by "linking" all the "logical queues" with their "physical queue" thus all
+events feed into the latter. This maintains the semantics at the cost of one
+extra memory operation.
+Since the mainEventQueue is a global variable and there is still quite a lot
+of code that accesses this mainEventQueue directly instead of using the
+EventManager interface the easiest way of implementing one "mainEventQueue"
+per thread is with thread local variables, supported by OpenMP.
+Kind regards,
+Stijn
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

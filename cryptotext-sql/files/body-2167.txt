@@ -1,0 +1,20 @@
+Hi All,
+I have been looking into the memory model of the M5 simulator. In the
+physical.cc file, I see that the doAtomicAccess function checks for
+the memory command, which is either swap, read, write or invalidate
+based on the checks over there. Can anyone tell what does the
+invalidate command mean in terms of memory accesses? The problem is
+that this function returns calculateLatency, which in detailed model
+calls the DRAM calculateLatency function. That function just checks
+for the memory access being a "read", and assumes it to be a "write"
+if that is not the case. This implies, this function treats an
+invalidate command as a write command, and returns a latency
+corresponding to a write command. Is this correct behavior? If not,
+then what should be the latency corresponding to an invalidate
+command?
+Thanks,
+-Gaurav
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

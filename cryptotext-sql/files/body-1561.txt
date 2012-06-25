@@ -1,0 +1,38 @@
+I'm not sure if you figured this out, but I think the problem is that
+you set cmd to a single string.
+You need to separate out your command line arguments as a list:
+cmd = [ 'fft', '8', '32768' ]
+- Show quoted text -
+On Wed, Apr 8, 2009 at 8:54 PM, Fei Hong <tithonus.hf@gmail.com> wrote:
+> Hi all,
+>
+> I searched in the archives about specifying the input arguments. But when I
+> specify the input arguments in "cmd" an error message came out showing that
+> "Can't load object file".
+> For example, the command of running FFT in MiBech is "fft 8 32768 >
+> output_large.txt". So I put "fft 8 32768" into "cmd". Then the error message
+> came out "fatal: Can't load object file
+> /home/fei/M5/m5-2.0b5/MiBench/telecomm/FFT/fft 8 32768".
+> Here is some related infor in config.ini:
+> cmd=/home/fei/M5/m5-2.0b5/MiBench/telecomm/FFT/fft 8 32768
+> executable=/home/fei/M5/m5-2.0b5/MiBench/telecomm/FFT/fft 8 32768
+> output=MiBench/telecomm/FFT/output_large.txt
+>
+> I also tried to make "executable" as
+> "executable=/home/fei/M5/m5-2.0b5/MiBench/telecomm/FFT/fft", but the output
+> file was not right. So can anyone told me how to specify the input
+> arguments?
+>
+> Thanks in advance!!!
+>
+> Fei
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

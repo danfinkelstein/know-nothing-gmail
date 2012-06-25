@@ -1,0 +1,189 @@
+Hi Jiao,
+It appears as though the the web page is a little out of date. I'll
+update it with the contents of this e-mail in a few minutes.
+The patches repository on the website is a mercurial queues repository
+that is supposed to patched on top of the linux mercurial repository.
+The correct way to use the patches repository is the following
+#Get a copy of the linux-2.6 mercurial repository
+hg clone http://www.kernel.org/hg/linux-2.6/
+#Get a copy of our patches to linux
+cd linux-2.6/.hg
+hg clone http://repo.m5sim.org/linux-patches/ patches
+#Return to the root linux directory
+cd ..
+#Update the linux source to the desired version (can take 5 minutes)
+hg update v2.6.XX
+#Select tho appropriate patches for the version of linux you selected
+(currently 13,16,18,22 are available in the linux-patches repository)
+hg qselect 2.6.XX
+# Apply the patches
+hg qpush -a
+#Copy the default configuration file, so it's used
+cp .config.m5 .config
+#Compile the kernel (assuming compiler is in $PATH, otherwise full
+path would need to be specified)
+make ARCH=alpha CROSS_COMPILE=alpha-unknown-linux-gnu- vmlinux
+Now the above listed versions of linux should compile just fine.
+I doubt that the two problems you see running the kernel (hanging and
+loosing an interrupt) have anything to do with the kernel you've
+compiled. You can try the steps above to be sure, but its probably
+either a bug in your changes or a bug in M5. Briefly what area do your
+changes modify?  Are you running with caches at this point? Multiple
+processors? If so there were some bugs in 2.0b4 that could potentially
+be causing that problem. Would it be very difficult to switch to a
+newer version of m5?
+Hope that helps,
+Ali
+- Show quoted text -
+On Oct 27, 2008, at 6:54 AM, jia wang wrote:
+> Hi, Ali:
+>
+> Thanks a lot for your suggestions. I followed your suggestions and
+> M5 webpage: Using Mercurial to build connection with the repository,
+> download linux kernels and linux patches and following the
+> instructions on page "Using linux-dist to Create Disk Images and
+> Kernels for M5" to build the kernel.
+>
+> I first try kernel 22 for several times, but never successful. Since
+> I am an engineer student, something obvious to CS student may not be
+> obvious to me. I tried to use patch "patch_to_2.6.22.2.diff" in the
+> folder "stable" and patch "defaultconfig_2.6.22.diff" in folder "m5"
+> seperately and use them together, but cause several errors. Either
+> the kernel can't be compiled (step 2 of above webpage, I have to
+> comment some source code (even not too much) to make it compiled) or
+> the linux box can't be compiled ("ptxdist go" step). I tried it for
+> several times, either using different patches or using other version
+> of kernel, i.e., kernel 2.6.22.2, but never went through.
+>
+> For kernel 18, if using patch "defaultconfig_2.6.18.diff" only, it
+> can finish all steps on the m5 webpage, but when I load it to
+> m5_2.0.b4 (which I already did some work on it), the kernel can't be
+> loaded, it stop at:
+>
+> PCI: Setting latency timer of device 0000:00:00.0 to 64
+>     ide0: BM-DMA at 0x8400-0x8407, BIOS settings: hda:DMA, hdb:DMA
+>     ide1: BM-DMA at 0x8408-0x840f, BIOS settings: hdc:DMA, hdd:DMA
+>
+> Kernel 13, I believe is the one with m5_2.0.b4 when download (I know
+> it is not the most current version, but sicne I already did some
+> work on it, so prefer stay on it). When I tried to compile kernel
+> 13, I used  most patches in the folder "m5", except those specified
+> for kernel 18 or 22. It went through all steps on abobe m5 webpage,
+> but when I loaded it to m5_2.0.b4, it stop at:
+>
+> PCI: Setting latency timer of device 0000:00:00.0 to 64
+>     ide0: BM-DMA at 0x8400-0x8407, BIOS settings: hda:DMA, hdb:DMA
+>     ide1: BM-DMA at 0x8408-0x840f, BIOS settings: hdc:DMA, hdd:DMA
+> hda: M5 IDE Disk, ATA DISK drive
+> hdb: M5 IDE Disk, ATA DISK drive
+> ide0 at 0x8410-0x8417,0x8422 on irq 15
+> hda: max request size: 128KiB
+> hda: 409248 sectors (209 MB), CHS=406/16/63, UDMA(33)
+> hda: cache flushes not supported
+>  hda:<4>hda: lost interrupt
+>
+> Do you know what is the reason for that? Also could you let me know
+> what patches should I use for different kernel, in what order? Since
+> when I tried different patches on each kernel, some make it go
+> through all steps on m5 webpages, some cause errors uring compiling.
+>
+> Thanks, and your help is really appreciated.
+>
+> Jiao
+>
+> --- On Wed, 10/22/08, Ali Saidi <saidi@umich.edu> wrote:
+> From: Ali Saidi <saidi@umich.edu>
+> Subject: Re: [m5-users] Create Disk Images and Kernels for M5
+> To: jiawang20006@yahoo.com, "M5 users mailing list" <m5-users@m5sim.org
+> >
+> Date: Wednesday, October 22, 2008, 1:06 PM
+>
+> On Oct 22, 2008, at 11:03 AM, jia wang wrote:
+>
+> > For M5 developper or anyone who can help:
+> >
+> > This is Jiao, a student of ECE department of Northeastern Univ., and
+> > I am trying to use M5 full system in my research. It is a great tool
+> > for our research, but if we can have access to the M5 OS (Linux
+> > 2.6.13), that will be much more helpful. I tried to create disk
+> > images and kernel for M5
+>  according to the document from M5 main
+> > website - "Using linux-dist to Create Disk Images and Kernels for
+> > M5", but face the following difficulties:
+> >
+> > There are three steps to build up disk images:
+> >
+> > (1): compile a cross-compiler capable of building alpha binaries.
+> >
+> > In this step, I followed the instructions to use crosstool 0.42,
+> > make change to demo-alpha.sh and gcc-3.4.3-glibc-2.3.5.dat. But when
+> > I run the demo-alpha.sh to install the cross-compiler, it showed
+> > error of "linux-libc-headers-2.6.13.0.tar.bz2 not exist". I went
+> to
+> > the website: ftp://ftp.lfs-matrix.net/pub/linux-libc-headers/ and
+> > found the lastest header is linux-libc-headers-2.6.12.0.tar.bz2.
+> > Could anybody explain to me what this header is for and where to get
+> > the version linux-libc-headers-2.6.13.0.tar.bz2? Since the lastest
+> > version is 2.6.12.0,
+>  so I just use it for demo-alpha.sh and
+> > successfully generate the cross-compiler gcc-3.4.3-glibc-2.3.5.
+> That should be fine.
+>
+> >
+> >
+> > (2):  compile a kernel using this cross-compiler
+> >
+> > For this step, I download kernel linux-2.6.13 and try to use cross-
+> > compiler gcc-3.4.3-glibc-2.3.5 to build it using command:
+> >
+> > make ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-glibc-2.3.5/
+> > alpha-unknown-linux-gnu/bin/alpha-unknown-linux-gnu- vmlinux
+> > But I got the following errors:
+> >
+> > In file included from arch/alpha/kernel/asm-offsets.c:11:
+> > include/asm/io.h: In function `ioport_map':
+> > include/asm/io.h:273: warning: implicit declaration of function
+> > `__IO_PREFIX_ioportmap'
+> > include/asm/io.h:273: warning: return makes pointer from integer
+> > without a cast
+> > include/asm/io.h: In function `ioremap':
+> > include/asm/io.h:282:
+>  warning: implicit declaration of function
+> > `__IO_PREFIX_ioremap'
+> > include/asm/io.h:282: warning: return makes pointer from integer
+> > without a cast
+> > include/asm/io.h: In function `iounmap':
+> > include/asm/io.h:299: warning: implicit declaration of function
+> > `__IO_PREFIX_iounmap'
+> > include/asm/io.h: In function `__is_ioaddr':
+> > include/asm/io.h:304: warning: implicit declaration of function
+> > `__IO_PREFIX_is_ioaddr'
+> > include/asm/io.h: In function `__is_mmio':
+> > include/asm/io.h:310: warning: implicit declaration of function
+> > `__IO_PREFIX_is_mmio'
+> > make[1]: *** [arch/alpha/kernel/asm-offsets.s] Error 1
+> > make: *** [arch/alpha/kernel/asm-offsets.s] Error 2
+> I don't imagine you configured the kernel or copied the .config.m5
+> to .config (assuming you're using our linux-patches repository).
+>
+> >
+> >
+> > Since I use different header in step
+>  1, so I also try the same
+> > command on Linux kernel 2.6.12.0, but got the same error. Does that
+> > because I use the wrong header in step 1 or because I didn't get the
+> > right kernel? If it is kernel probelm, can anyone please let me know
+> > where to get the right kernel?
+> I recommend you get a newer kernel 2.6.18 or 2.6.22 and use the linux
+> patches repository on it. Either way the problem current seems to be
+> that the kernel wasn't configured, __IO_PREIX should get replaced by
+> something like generic_ or tsunami_ if the kernel is configured
+> correctly.
+>
+> Ali
+>
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+- Show quoted text -http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

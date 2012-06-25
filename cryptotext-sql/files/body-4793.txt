@@ -1,0 +1,111 @@
+Hi Kevin,
+well, your ordering seems right, dunno what happened (maybe your "original" file differed?). I have just realized, that your patch did not remove the lines from DefaultFetch() (due to the mismatching diff), so I have done that manually (although the unremoved code should break too much).
+Find a new diff attached (for anyone who needs it).
+   Jonas
+Kevin Lim schrieb:- Show quoted text -
+It should be initStage() that it adds lines to, and removes those same lines from DefaultFetch() (maybe I did the directory ordering backwards?).  The problem with setting the cacheBlkSize at the time of the constructor is that the icache object is not known yet.  I'm glad that you got it working though.  Let us know if you run into any other problems.
+Kevin
+Quoting Jonas Diemer <j.diemer@tu-bs.de>:
+Hi Kevin,
+The patch didn't apply cleanly in my source. It changed InitStage(), not DefaultFetch() (which both set cacheBlkSize). That seemed to fix it though.
+Manually fixing DefaultFetch() according to your diff resulted in a segmentation fault:
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread -1211881808 (LWP 6914)]
+DefaultFetch (this=0x888a8e0, params=0x888a098) at build/ALPHA_SE/mem/port.hh:215
+215         int peerBlockSize() { return peer->deviceBlockSize(); }
+Jonas
+Kevin Lim schrieb:
+Hi Jonas, regarding problem 2 on your list, I forgot to update the O3 CPU's
+code to grab the cache line size from the cache itself.  It was being
+hardcoded to 64 bytes.  This diff below shows how to fix it.  Simple testing
+with 32 byte cache lines works, but let me know if you run into any other
+problems.
+ ...
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+--- m5-2.0b2-orig/src/cpu/o3/fetch_impl.hh      2006-12-06 22:09:55.000000000 +0100
++++ m5-2.0b2/src/cpu/o3/fetch_impl.hh   2006-12-11 18:33:20.869808250 +0100
+@@ -149,37 +149,7 @@
+     } else {
+        fatal("Invalid Fetch Policy. Options Are: {SingleThread,"
+               " RoundRobin,LSQcount,IQcount}\n");
+-    }
+-
+-    // Size of cache block.
+-    cacheBlkSize = 64;
+-
+-    // Create mask to get rid of offset bits.
+-    cacheBlkMask = (cacheBlkSize - 1);
+-
+-    for (int tid=0; tid < numThreads; tid++) {
+-
+-        fetchStatus[tid] = Running;
+-
+-        priorityList.push_back(tid);
+-
+-        memReq[tid] = NULL;
+-
+-        // Create space to store a cache line.
+-        cacheData[tid] = new uint8_t[cacheBlkSize];
+-        cacheDataPC[tid] = 0;
+-        cacheDataValid[tid] = false;
+-
+-       delaySlotInfo[tid].branchSeqNum = -1;
+-        delaySlotInfo[tid].numInsts = 0;
+-       delaySlotInfo[tid].targetAddr = 0;
+-       delaySlotInfo[tid].targetReady = false;
+-
+-        stalls[tid].decode = false;
+-        stalls[tid].rename = false;
+-        stalls[tid].iew = false;
+-        stalls[tid].commit = false;
+-    }
++    }
+     // Get the size of an instruction.
+     instSize = sizeof(TheISA::MachInst);
+@@ -353,6 +323,36 @@
+        nextNPC[tid] = cpu->readNextNPC(tid);
+ #endif
+     }
++
++    // Size of cache block.
++    cacheBlkSize = icachePort->peerBlockSize();
++
++    // Create mask to get rid of offset bits.
++    cacheBlkMask = (cacheBlkSize - 1);
++
++    for (int tid=0; tid < numThreads; tid++) {
++
++        fetchStatus[tid] = Running;
++
++        priorityList.push_back(tid);
++
++        memReq[tid] = NULL;
++
++        // Create space to store a cache line.
++        cacheData[tid] = new uint8_t[cacheBlkSize];
++        cacheDataPC[tid] = 0;
++        cacheDataValid[tid] = false;
++
++       delaySlotInfo[tid].branchSeqNum = -1;
++        delaySlotInfo[tid].numInsts = 0;
++       delaySlotInfo[tid].targetAddr = 0;
++       delaySlotInfo[tid].targetReady = false;
++
++        stalls[tid].decode = false;
++        stalls[tid].rename = false;
++        stalls[tid].iew = false;
++        stalls[tid].commit = false;
++    }
+ }
+ template<class Impl>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

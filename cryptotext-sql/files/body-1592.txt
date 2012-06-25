@@ -1,0 +1,11 @@
+hi everyone,
+While I am working on 8 core and 2 thread in SPECCPU 2006 in SE mode, i am facing panic problem.hello robert white,I saw you M5-users email correspondence with Ali, on this problem. On that email you replied you solved this problem. Could you please help me how to fix this problem, the problem is:
+warn: Increasing stack size by one page.
+panic: Tried to execute unmapped address 0.
+ @ cycle 17190562000
+[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 186]
+Program aborted at cycle 17190562000Thanks in advance,devraj
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

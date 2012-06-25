@@ -1,0 +1,14 @@
+Hi,
+I’m using the precompiled Splash benchmarks for M5 version 1.1 and the SE mode. The problem is that many of these benchmarks eventually deadlock. I have traced the problem to the synchronization functions in alpha_tru64_process.cc. Here, all processors end up calling the m5_cond_waitFunc() method and they all suspend. The really bad thing is that if you simulate for a fixed number of clock cycles, it is very difficult to see that something has gone wrong.
+I’ve added the following code to the end of the m5_cond_waitFunc() method to detect the problem:
+if(process->waitList.size() == process->numCpus()){
+fatal("We have a deadlock");
+}
+Have you seen this problem before?
+I think it might be a problem with the thread library. However, I have not been able to look into this as I do not have a working cross compiler. Have you been able to build a cross compiler for the Splash benchmarks and the thread libraries?
+Regards,
+Magnus Jahre
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

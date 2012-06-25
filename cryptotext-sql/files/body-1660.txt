@@ -1,0 +1,26 @@
+Hello,
+I am following thye m5 wiki to run spec2006
+http://www.m5sim.org/wiki/index.php/SPEC2006_benchmarks
+I have installed spec but I cannot find the alpha.cfg gile, this is
+the list of files I have in config/
+aix-ppc32-XL.cfg           linux-ia64-icc91.cfg
+aix-ppc64-XL.cfg           macosx-ia32-iccifortv91.cfg
+example-medium.cfg         macosx-ppc32-gcc40-nagf95v50.cfg
+example-simple.cfg         sgi_mips32.cfg
+HP-UX_IPF_ILP32.cfg        sgi_mips64.cfg
+HP-UX_IPF_LP64.cfg         solaris-amd64-sunstudio.cfg
+linux32-i386-gcc42.cfg     solaris-sparc-pn2.4.1-fcs.cfg
+linux32-ia32-icl.cfg       solaris-sparc-sunstudio.cfg
+linux64-amd32-gcc42.cfg    windows64-amd64-pgi.cfg
+linux64-amd64-gcc41.cfg    windows-amd64-visualstudio2005.cfg
+linux64-amd64-gcc42.cfg    windows-em64t-icl.cfg
+linux64-amd64-pgi.cfg      windows-ia32-icl.cfg
+linux64-em64t-icl.cfg      windows-ia32-visualstudio2005.cfg
+linux-amd64-pathscale.cfg
+Can anyone please say what file should I use or where can I get the
+alpha.cfg gile?.
+Thanks a lot in advance.
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

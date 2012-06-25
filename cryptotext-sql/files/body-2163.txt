@@ -1,0 +1,63 @@
+Shervin Sharifi wrote:
+> So how can I pass command line arguments to the binary?
+>
+> Thanks
+>    Shervin
+Assuming you are using the script configs/common/example/se.py, you can
+see all the options that the script will accept on behalf of the binary
+near the the top. It has --options parameter to pass in parameters for
+the binary.
+Best,
+-Rick
+>
+>
+>
+> ------------------------------
+> Message: 2
+> Date: Tue, 16 Dec 2008 17:53:14 -0500
+> From: Ali Saidi <saidi@umich.edu <mailto:saidi@umich.edu>>
+> Subject: Re: [m5-users] Passing input file to binary run in SE mode
+> To: M5 users mailing list <m5-users@m5sim.org <mailto:m5-users@m5sim.org>>
+> Message-ID: <8F2703E7-59B7-40C1-BF4D-47BC05D1ABD2@umich.edu
+> <mailto:8F2703E7-59B7-40C1-BF4D-47BC05D1ABD2@umich.edu>>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+>
+> It's not supposed to pass it to the binary, it's supposed to pipe it
+> to the binary.
+>
+> E.g.: some_prog < input_file
+>
+> Ali
+>
+> On Dec 16, 2008, at 5:25 PM, Shervin Sharifi wrote:
+>
+> > Hi,
+> >
+> >  I have a problem regarding giving an input file to the binary run
+> > in SE mode.
+> >  The script se.py in configs/example is supposed to get the input
+> > file with "-i" option, but apparently it doesn't pass it to the
+> > binary.
+> >
+> >  Thanks
+> >  Shervin
+> > ______________________________
+> _________________
+> > m5-users mailing list
+> > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+>
+>
+> ------------------------------
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+- Show quoted text -m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

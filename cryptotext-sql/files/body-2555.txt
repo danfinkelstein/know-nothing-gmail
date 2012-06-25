@@ -1,0 +1,8 @@
+Hello All,I am still having an issue.  G++ is installed on my system, however when I run scons to compile M5, CXX does not get set and I have posted before on this issue and it is still not yet resolved.  Please advise.  I have no idea how to get G++ to set this variable.  
+I have even tried to set this variable manually to $CXX=/usr/bin/g++  but this does not fix the error either.This is the error I am getting.  aswilli@aswilli-laptop:~/m5-stable$ scons build/ALPHA_SE/m5.debugscons: Reading SConscript files ...
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str':  File "/home/aswilli/m5-stable/SConstruct", line 338:    env['GCC'] = subprocess.Popen(env['CXX'] + ' --version', shell=True,
+-- Aaron S. WilliamsGraduate StudentArizona State UniversityDepartment of Electrical Engineeringaswilli@gmail.com
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

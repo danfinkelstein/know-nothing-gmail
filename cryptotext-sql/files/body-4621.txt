@@ -1,0 +1,19 @@
+Sometimes we've seen a problem where scons doesn't properly create symlinks from build/ALPHA_FS/python/*.i -> src/python/swig/*.i Could you try to create these and let us know if that fixes your problem.
+Ali- Show quoted text -
+On Mar 27, 2007, at 10:06 AM, sharookh@ele.uri.edu wrote:
+Hi,
+After updating the SWIG version on the server I keep getting this error when I
+try to compile:
+scons: *** [Errno 2] No such file or directory:
+'build/ALPHA_FS/python/swig/debug.i'
+scons: building terminated because of errors.
+The correct versions of SCONS and SWIG are installed. What is causing this
+error?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

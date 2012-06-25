@@ -1,0 +1,111 @@
+> Nate is going to announce the opening of the m5 repository any minute
+> now and the patches for SCons are applied to that repository.
+>
+>
+> Ali
+>
+So I downloaded and attempted a build and it gets pretty far but  I get
+the following error. Any ideas?
+...
+createSwigParam(["build/ALPHA_SE/params/AddrRange_vptype.i"], ['AddrRange'])
+createSwigParam(["build/ALPHA_SE/params/FUDesc_vptype.i"], ['FUDesc'])
+createSwigParam(["build/ALPHA_SE/params/OpDesc_vptype.i"], ['OpDesc'])
+createSwigParam(["build/ALPHA_SE/params/Process_vptype.i"], ['Process'])
+createSwigParam(["build/ALPHA_SE/params/String_vptype.i"], ['String'])
+swig -c++ -python -modern -templatereduce -Iext/dnet
+-I/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5
+-Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE -outdir
+build/ALPHA_SE/params -o build/ALPHA_SE/params/params_wrap.cc
+build/ALPHA_SE/params/params.i
+build/ALPHA_SE/base/range.hh:80: Warning(362): operator= ignored
+build/ALPHA_SE/base/range.hh:88: Warning(362): operator= ignored
+build/ALPHA_SE/base/range.hh:95: Warning(362): operator= ignored
+g++ -o build/ALPHA_SE/params/params_wrap.do -c -pipe
+-fno-strict-aliasing -Wall -Wno-sign-compare -Werror -Wundef -ggdb3
+-DTHE_ISA=ALPHA_ISA -DDEBUG -DTRACING_ON=1 -Iext/dnet
+-I/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5
+-Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+build/ALPHA_SE/params/params_wrap.cc
+makeSwigInit(["build/ALPHA_SE/swig/init.cc"], ['core', 'debug', 'event',
+'random', 'stats', 'trace', 'params'])
+g++ -o build/ALPHA_SE/swig/init.do -c -pipe -fno-strict-aliasing -Wall
+-Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA -DDEBUG
+-DTRACING_ON=1 -Iext/dnet
+-I/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5
+-Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+build/ALPHA_SE/swig/init.cc
+traceFlagsCC(["build/ALPHA_SE/base/traceflags.cc"], [('Annotate', (),
+''), ('GDBAcc', (), ''), ('GDBExtra', (), ''), ('GDBMisc', (), ''),
+('GDBRead', (), ''), ('GDBRecv', (), ''), ('GDBSend', (), ''),
+('GDBWrite', (), ''), ('SQL', (), ''), ('StatEvents', (), ''),
+('GDBAll', ('GDBMisc', 'GDBAcc', 'GDBRead', 'GDBWrite', 'GDBSend',
+'GDBRecv', 'GDBExtra'), ''), ('Activity', (), ''), ('Commit', (), ''),
+('Context', (), ''), ('Decode', (), ''), ('DynInst', (), ''),
+('ExecEnable', (), ''), ('ExecCPSeq', (), ''), ('ExecEffAddr', (), ''),
+('ExecFetchSeq', (), ''), ('ExecOpClass', (), ''), ('ExecRegDelta', (),
+''), ('ExecResult', (), ''), ('ExecSpeculative', (), ''), ('ExecSymbol',
+(), ''), ('ExecThread', (), ''), ('ExecTicks', (), ''), ('Fetch', (),
+''), ('IntrControl', (), ''), ('PCEvent', (), ''), ('Quiesce', (), ''),
+('Exec', ('ExecEnable', 'ExecTicks', 'ExecOpClass', 'ExecThread',
+'ExecEffAddr', 'ExecResult', 'ExecSymbol'), ''), ('MemTest', (), ''),
+('CommitRate', (), ''), ('IEW', (), ''), ('IQ', (), ''), ('FreeList',
+(), ''), ('LSQ', (), ''), ('LSQUnit', (), ''), ('MemDepUnit', (), ''),
+('O3CPU', (), ''), ('ROB', (), ''), ('Rename', (), ''), ('Scoreboard',
+(), ''), ('StoreSet', (), ''), ('Writeback', (), ''), ('O3CPUAll',
+('Fetch', 'Decode', 'Rename', 'IEW', 'Commit', 'IQ', 'ROB', 'FreeList',
+'LSQ', 'LSQUnit', 'StoreSet', 'MemDepUnit', 'DynInst', 'O3CPU',
+'Activity', 'Scoreboard', 'Writeback'), ''), ('SimpleCPU', (), ''),
+('Bus', (), ''), ('BusAddrRanges', (), ''), ('BusBridge', (), ''),
+('LLSC', (), ''), ('MMU', (), ''), ('MemoryAccess', (), ''), ('Cache',
+(), ''), ('CachePort', (), ''), ('CacheRepl', (), ''), ('HWPrefetch',
+(), ''), ('IIC', (), ''), ('IICMore', (), ''), ('Split', (), ''),
+('Config', (), ''), ('Event', (), ''), ('Fault', (), ''), ('Flow', (),
+''), ('IPI', (), ''), ('IPR', (), ''), ('Interrupt', (), ''), ('Loader',
+(), ''), ('Stack', (), ''), ('SyscallVerbose', (), ''), ('TLB', (), ''),
+('Thread', (), ''), ('Timer', (), ''), ('VtoPhys', (), '')])
+g++ -o build/ALPHA_SE/base/traceflags.do -c -pipe -fno-strict-aliasing
+-Wall -Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA
+-DDEBUG -DTRACING_ON=1 -Iext/dnet
+-I/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5
+-Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+build/ALPHA_SE/base/traceflags.cc
+g++ -o build/ALPHA_SE/base/date.do -c -pipe -fno-strict-aliasing -Wall
+-Wno-sign-compare -Werror -Wundef -ggdb3 -DTHE_ISA=ALPHA_ISA -DDEBUG
+-DTRACING_ON=1 -Iext/dnet
+-I/Library/Frameworks/Python.framework/Versions/2.5/include/python2.5
+-Ibuild/libelf -I/usr/local/mysql/include -Ibuild/ALPHA_SE
+build/ALPHA_SE/base/date.cc
+programInfo(["build/ALPHA_SE/base/program_info.cc"],
+['/Users/rickstrong/Desktop/temp/m5-stable'])
+scons: *** [build/ALPHA_SE/base/program_info.cc] Exception
+Traceback (most recent call last):
+  File "/usr/local/lib/scons-0.98.5/SCons/Taskmaster.py", line 222, in
+execute
+    self.targets[0].build()
+  File "/usr/local/lib/scons-0.98.5/SCons/Node/__init__.py", line 372,
+in build
+    apply(self.get_executor(), (self,), kw)
+  File "/usr/local/lib/scons-0.98.5/SCons/Executor.py", line 145, in
+__call__
+    return self.do_execute(target, kw)
+  File "/usr/local/lib/scons-0.98.5/SCons/Executor.py", line 131, in
+do_execute
+    status = apply(act, (self.targets, self.get_sources(), env), kw)
+  File "/usr/local/lib/scons-0.98.5/SCons/Action.py", line 468, in __call__
+    stat = self.execute(target, source, env)
+  File "/usr/local/lib/scons-0.98.5/SCons/Action.py", line 846, in execute
+    result = self.execfunction(target=target, source=rsources, env=env)
+  File
+"/Users/rickstrong/Desktop/temp/m5-stable/src/python/generate.py", line
+538, in programInfo
+    scons_dir = eval(str(source[0]))
+  File "<string>", line 1
+     /Users/rickstrong/Desktop/temp/m5-stable
+     ^
+ SyntaxError: invalid syntax
+scons: building terminated because of errors.
+make: *** [sedebug] Error 2
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

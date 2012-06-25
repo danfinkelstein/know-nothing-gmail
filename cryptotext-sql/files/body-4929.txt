@@ -1,0 +1,11 @@
+Hi,
+is there a command like cpu.addPrivateSplitL1Caches in m5 1.0 that I can
+use?
+I am trying to add a shared L3 and split the L2 just like the exisiting L1.
+so I was wondering if there is some python command that does that.
+Thanks you
+Forum
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

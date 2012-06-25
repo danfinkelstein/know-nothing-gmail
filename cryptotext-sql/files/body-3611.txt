@@ -1,0 +1,13 @@
+Hi all,
+I want to do some research on the subject of SDRAM fairness of
+multicore and need to make all the threads reach the same max
+instructions. How could I do this with M5? If I set
+max_insts_any_thread the same for all the threads, then when one of
+them reaches the max_insts_any_thread, the simulation will stop.
+Please help me with this.
+Thank you very much!
+Jun
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,10 @@
+What kind of system do you plan to run M5 on? What is the compiler and its version?Leonard2009/12/8 徐敏超 <xu.minchao@stu.xjtu.edu.cn>
+- Show quoted text -when i compiler m5_2.0b4 ,there is error like the following.  Error: Don't know what compiler options to use for your compiler. 
+       Please fix SConstruct and src/SConscript and try again. i do't know how to solve this problem.could you give me some suggestions. thank you  in advance_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

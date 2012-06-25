@@ -1,0 +1,25 @@
+On Nov 5, 2007, at 3:47 AM, <wangx@umd.edu> <wangx@umd.edu> wrote:
+Hi,
+I have compiled a cross compiler(gcc3.4.3-glibc2.3.5),but got
+stuck in compiling linux 2.6.13 kernel. I have download
+linux-2.6.13.tar.gz from kernel.org. Unpack it and in the
+linux-2.6.13 directory, type the following:
+make config ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-
+glibc-2.3.5/.../alpha-unknown-linux-gnu-
+After configuration, type the following to compile the kernel:
+make ARCH=alpha CROSS_COMPILE=/opt/crosstool/gcc-3.4.3-
+glibc-2.3.5/.../alpha-unknown-linux-gnu-
+But I got the error below:
+local symbol 0: discarded in section '.exit.text'....
+I've never seen that error before.
+Could you tell me how you compiled(linux2.6.13?) and got the sample vmlinux?
+Pretty much exactly the way you described compiling it above.
+Another question: Is it necessary to compile linux kernel for
+anyone using the m5 simulator? I mean, can I just build my own
+disk image(contains my benchmark) and make it work with
+Yes, you can make your own disk image and just the vmlinux you got from the website.
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

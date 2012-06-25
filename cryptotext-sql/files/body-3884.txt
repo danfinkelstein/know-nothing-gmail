@@ -1,0 +1,12 @@
+In short yes. It what way does it not work?
+Ali- Show quoted text -
+On Nov 25, 2007, at 6:03 PM, Shoaib Akram wrote:
+I want to add parameter to bus.h so i can recognize when a declared bus in python script is system bus other than a toL2bus etc. I declared a variable in bus.h, used it in bus.cc, and added the following statement in m5.objects in bus.py.  system_bus=Param.Bool(False,"System bus?")....it doesnot seem to work ! Is this the right way to do it??
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

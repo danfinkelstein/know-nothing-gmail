@@ -1,0 +1,12 @@
+> I believe that's a generated file so $self is likely a symptom, not
+> the root problem. Could you show us a portion of that file around
+> where the error happens?
+No, $self is in a .i file.  The problem is the version of swig.  I
+can't remember exactly what version of swig had this problem (can you
+tell me?), but upgrading should fix it.  Removing the $ also works,
+but is not a solution that we can commit to the tree.
+ Nate
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

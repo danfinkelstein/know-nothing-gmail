@@ -1,0 +1,11 @@
+> I compiled and run M5 successfully with the given example scripts. However,
+> the directory "src/python/m5/objects" which is said to contain class
+> definitions and parameters is missing. I cannot find it in the tarball
+> neither. Is it generated during compilation? If yes, how can I generated it?
+Yes, it is generated and it will actually be in the build directory.
+It will automatically be generated when you compile m5.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

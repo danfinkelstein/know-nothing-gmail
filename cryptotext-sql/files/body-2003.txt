@@ -1,0 +1,17 @@
+Hi LisaThanks for your reply. cpu2000.py contains all the simpoint values of all benchmarks that we are using. But while simulation is running and we got some results, then how should we know that we have used the fast forwarding technique and have skipped some instructions, that is, I want to know is there any other file(s) where the description of use of fast forwarding is mentioned or in otherwords confirmation of skipped instructions is mentioned in some file.
+Once again thanksAshutosh Jain- Show quoted text -On Tue, Jan 27, 2009 at 9:36 AM, Lisa Hsu <hsul@eecs.umich.edu> wrote:
+The simpoint value *is* the number of instructions fast forwarded - you can see all the values in cpu2000.py.LisaOn Sat, Jan 24, 2009 at 6:28 PM, Ashutosh Jain <ashujain7@gmail.com> wrote:
+Hi there,I am using fast forwarding technique using simpoint defined in cpu2000.py file. I want to know how should we detect the number of instructions skipped during the fast forwarding after setting the simpoint. 
+Thanks in advance,-- Ashutosh Jain
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

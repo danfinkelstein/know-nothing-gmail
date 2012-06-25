@@ -1,0 +1,12 @@
+> RuntimeError: system.race_v: Cycle found in configuration heirarchy.
+>
+> What's wrong? Does someone have any ideas ? Thanks!
+I must admit that I think the error message is pretty clear.  You've
+created a dependence loop in your objects in the hierarchy which we
+disallow.  We could probably relax that rule now, but there isn't a
+compelling enough reason to put the effort into making that change.
+  Nate
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,44 @@
+Sorry, the patch fixed this bug in example/fs.py but not in
+example/se.py.  Here's the fix:
+===== configs/example/se.py 1.28 vs edited =====
+--- 1.28/configs/example/se.py  2006-08-16 11:42:40 -07:00
++++ edited/configs/example/se.py        2006-08-29 08:03:09 -07:00
+@@ -69,6 +69,7 @@
+                 membus = Bus())
+ system.physmem.port = system.membus.port
+ system.cpu.connectMemPorts(system.membus)
++system.cpu.mem = system.physmem
+ root = Root(system = system)
+- Show quoted text -
+xiaojun.chen wrote:
+> hi
+>
+> I try to run : ./build/ALPHA_SE/m5.debug ./configs/example/se.py  -c tests/test-progs/hello/bin/alpha/linux/hello
+>
+> But I got a error message like below:
+>
+> command line: ./build/ALPHA_SE/m5.debug ./configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+> Error creating object 'system.cpu':
+>       parameter 'mem': not found
+> Program aborted at cycle 0
+> Aborted
+>
+> I have patched my m5_2.0b1 with m5_2.0b1p1-overlay.tgz and recompiled it.
+> Can anyone give me some information?  thanks!
+>
+>
+> xiaojun.chen
+> chenxiaojun@software.ict.ac.cn
+> 2006-08-29
+>
+>
+> ------------------------------------------------------------------------
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

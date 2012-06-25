@@ -1,0 +1,101 @@
+hi!!!here is some part of script for number of threads per cpu--------------------------------------------------------------------------------------------------
+# Set num_thrds_per_cpu
+num_thrds_per_cpu = 1
+ 
+system = System(cpu = [CPUClass(cpu_id = i) for i in
+xrange(np)],
+               
+physmem = PhysicalMemory(range = AddrRange("2GB")),
+                membus
+= ToMemBus(), mem_mode = test_mem_mode)
+ 
+system.physmem.port = system.membus.port------------------------------------------------------------------------------------------------
+# Assign Benchmarks from pre-created benchmark file
+ 
+filename = "/home/hariv/m5-2.0b6/configs/cpu2006/"
++"benchmarks_" + str(np) + "core_" + str(num_thrds_per_cpu)
++ "threadpercore.dat"
+FILE = open(filename, "r")
+Data = FILE.readline()
+#print Data
+FILE.close()
+ Data1 = Data.rsplit('/')
+#print Data1
+count = Data1.index('\n')
+ NumBenchmarks = Data1[0]
+ BenchmarkList = [0] * int(count-1)
+ for i in range(int(count - 1)):
+  BenchmarkList[i] =
+"Mybench." + Data1[i + 1]
+  #print Data1[i + 1]
+  #print
+BenchmarkList[i]
+ print 'num of cpus = %d' %np
+print 'num threads per cpu = %d' %num_thrds_per_cpu
+ k = 0
+for i in xrange(np):
+    expression =
+"system.cpu[" + str(i) + "].workload = ["
+    for j in
+xrange(num_thrds_per_cpu):
+        expression +=
+BenchmarkList[k]
+        k = k + 1
+        if j !=
+(num_thrds_per_cpu - 1):
+               
+expression += ", "
+    expression +=
+"]"
+    print expression
+    exec(expression)
+ root = Root(system = system)
+ Simulation.run(options, root, system, FutureClass)
+----------------------------------------------------------------------------------------------------------------------------Do i need  to hack configs/example/se.py  or use the use the patch by Jiayuan Meng ?
+Thanks HARI- Show quoted text -On Wed, Feb 4, 2009 at 5:32 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+If this is system emulation mode, then Pal is not the cause. How many cpus have results? My theory is that you are not assigning a thread to each CPU.  As most of the m5 scripts in configs/example are setup now, you will only see all cpus being used if the process creates multiple threads. It seems that in your case, you might be trying to assign one process with one thread to multiple CPUs. The result is a bunch of idle cores. You will need to hack configs/example/se.py (assuming this is what you are using) when it assigns the process to the core to assign one process to a number of cores equal to the number of threads it will create.
+Best,
+-Rick
+Hari Kiran wrote:
+hi Rick
+    I am using Syscall Emulation mode, how to make sure all the cpus boot successfully and could you please let me know what is pal code and how to update it.
+Thanks,
+Hari
+On Wed, Feb 4, 2009 at 4:59 PM, Rick Strong <rstrong@cs.ucsd.edu <mailto:rstrong@cs.ucsd.edu>> wrote:
+    If you are using full system alpha mode, make sure all the cpus boot
+    successfully. If not, you might need updated pal code.
+    Best,
+    -Rick
+    Hari Kiran wrote:
+    >
+    > hi
+    >
+    > I am running eight-core system simulation for integer
+    benchmarks. But
+    > i am getting some 0 values for some cores in m5stat.txt.
+    > After  exchanging the benchmarks to different cpu's I am getting the
+    > results. What might be the problem I don't understand. So please
+    help
+    > me out regarding this problem.
+    >
+    > Thanks
+    > HARI
+    >
+    ------------------------------------------------------------------------
+    >
+    > _______________________________________________
+    > m5-users mailing list
+    > m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+    _______________________________________________
+    m5-users mailing list
+    m5-users@m5sim.org <mailto:m5-users@m5sim.org>
+    http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+-- 
+Regards
+H A R I
+-- RegardsH A R I
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

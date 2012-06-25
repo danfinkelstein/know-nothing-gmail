@@ -1,0 +1,13 @@
+Hi,
+I want to know if M5 is a deterministic simulator?
+Is M5 a single-threaded simulator, or if not, how it support deterministic
+simulation (the same result every time running it)? For example, GEMS is
+considered deterministic because it is a single-threaded simulator.
+Is this related to how we implement event queue (one main one or some
+parallel event queues)?
+Thanks,
+Somayeh
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

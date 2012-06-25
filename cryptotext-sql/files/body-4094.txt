@@ -1,0 +1,7 @@
+If you just want to reset some the easiest way is probably to wrap the resetStats() method is swig and then you could call something like test_sys.cpu.dcache.resetStats() in python after the switchover happens.
+that method doesn't actually reset all stats within that object, it is just used to reset any extra variables that might need a reset.  The stats themselves are looped through independent of their parent SimObject.  (I guess it might be nice to change that some day.)
+  Nate- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

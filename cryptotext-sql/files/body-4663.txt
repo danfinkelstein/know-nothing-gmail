@@ -1,0 +1,55 @@
+Hi
+I have installed SWIG versions 1.3.28 or better but while building it does show
+the SWIG version as 1.3.20.
+Sharookh
+- Show quoted text -
+Quoting Steve Reinhardt <stever@eecs.umich.edu>:
+> What version of swig do you have?  I believe stdint.i is part of the
+> standard swig distribution, so perhaps you have an old version or the
+> version you have is not installed properly.
+>
+> Steve
+>
+> sharookh@ele.uri.edu wrote:
+> > Hi,
+> >
+> > I have tried compiling M5 through 'scons build/ALPHA_FS/m5debug' or
+> 'python
+> > scons.py' but I keep getting this error irrespective of the type of
+> simulator
+> > im building:
+> >
+> > scons: Reading SConscript files ...
+> > Checking for C header file fenv.h... (cached) yes
+> > Building in /local/sharookh/m5/build/ALPHA_SE
+> > Using saved options file /local/sharookh/m5/build/options/ALPHA_SE
+> > Compiling in ALPHA_SE with MySQL support.
+> > scons: done reading SConscript files.
+> > scons: Building targets ...
+> > swig -c++ -python -modern -Iext/dnet -I/usr/include/python2.4
+> > -Ibuild/libelf/include -I/usr/include/mysql -Ibuild/ALPHA_SE -outdir
+> > build/ALPHA_SE/python/m5 -o build/ALPHA_SE/python/swig/cc_main_wrap.cc
+> > build/ALPHA_SE/python/swig/cc_main.i
+> > build/ALPHA_SE/python/swig/cc_main.i:11: Unable to find 'stdint.i'
+> > scons: *** [build/ALPHA_SE/python/swig/cc_main_wrap.cc] Error 1
+> > scons: building terminated because of errors.
+> >
+> > Can someone tell me what I am doing wrong.
+> >
+> > Thanks.
+> >
+> >
+> > _______________________________________________
+> > m5-users mailing list
+> > m5-users@m5sim.org
+> > http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

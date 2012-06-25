@@ -1,0 +1,14 @@
+Hi all,
+       I’m trying to implement a memory access scheduling algorism now. I will calculate latency for each packet, and invoke SimpleTimingPort::sendTiming() in my function. I want to add my function into class MemoryPort, but I find that when class PhysicalMemory is constructed, it implements three MemoryPort. Why does a PhysicalMemory need three ports? Is there only one port binding to CPU? Do these three port all have data accessing?
+      I have added my code into src, and run some benchmarks. I find all these three ports have data access to memory at the same time. Multi- recvTiming() are invoked, and program runs wrongly. And when I run M5-2.0.3 originally, SimpleTimingPort::recvTiming() is invoked from only one port sequentially, and it even does not access MemoryPort, just from SimpleTimingPort. I don’t know what make this change. My codes are all added into class MemoryPort, and I want to know if it is right to add here.
+       I will appreciate so much if you can tell me detailedly how it works when one access is sent from CPU to memory. And what is the function of these three ports individually?
+       Thank you all so much!
+ 
+       Lei Yang
+   
+ 
+ 
+网 易 Yeah.net 免 费 邮 箱 全 新 改 版，珍 藏 帐 号 开 放，快 来 抢 注 >> _______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

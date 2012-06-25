@@ -1,0 +1,5 @@
+I am looking in detail the (multi-level)coherence protocol in simulator. One issue I have observed is if I have private L1 and L2 caches and L1 makes a ReadReq, the data is brought in L2 in state 7, which means ( valid,readable,writeable) and in L1 in state 5 (readable,valid, not writeable), then L1 sends a UpgradeReq to L2 which sends it ove the global bus and Physical memory sends an UpgradeResp to L2 which is propagated to L1. If we follow the MOESI protocol, shouldn't the L1 be granted writeable permisson in the first place to avoid a broadcast?
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

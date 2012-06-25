@@ -1,0 +1,26 @@
+I don't believe there's any existing code for flushing the caches.  You'd have to iterate over all the lines in the cache and flush them one at a time.  This is not so hard if you use functional or atomic requests, but would be a pain with timing requests since you will have to suspend and resume the iterations as buffers fill up etc.
+A functional writeback is always safe, but the problem is that this will not affect the coherence state.  So you'd have to "manually" twaek the coherence state as well (e.g., clear the dirty bit), which is certainly feasible but a little inelegant.
+Atomic writebacks are better in that they'd take care of the coherence issues automatically, but since you can't have atomic and timing accesses coexisting, you'd have to drain all the timing accesses, switch to atomic mode, do the writebacks, and switch back.  Probably not worth it.
+Timing mode would be best in terms of realism (since in the other cases you're not accounting for the real-world cost of doing these writebacks) but as I said it would be much more complex, as you'd need to do it in a way that you could suspend and resume the process as buffers fill and drain over time.
+No silver bullet, sorry...Steve- Show quoted text -On Sat, Jul 4, 2009 at 3:53 PM, Meng-Ju Wu <mengjuwu@gmail.com> wrote:
+Hi all,
+I want to implement this year's ISCA paper, "Reactive NUCA" in the M5
+SE mode and compare the results with my research. Basically, the paper
+is dynamically remapping the physical pages. After I change the TLB, I
+need to write the dirty blocks back to main memory directly and set
+the cache block to be invalid.
+What is the best way to implement the writeback? Up to now, I think
+the functional writeback without timing will be fine. Is there a
+function in the cache_impl.hh can be used as an example to implement
+this writeback function? If I check the dirty blocks in L1, then how
+to write the blocks in L1 to memory directly?
+Thanks,
+Meng-Ju
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

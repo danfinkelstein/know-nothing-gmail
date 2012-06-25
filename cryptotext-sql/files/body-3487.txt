@@ -1,0 +1,15 @@
+I don't know that I've ever managed to compile g90.
+Ali
+On Mar 2, 2008, at 3:23 PM, Daniel Alex Finkelstein wrote:
+I've compiled the gcc-4.x series so I could run gfortran on the various .F90 files that died under g77. If you want to hand it out with your alpha cross compiler chunk, you're welcome to it.
+--D
+Daniel Alex Finkelstein
+Ph.D. Candidate (CS)
+Work: +1-718-260-3378
+Mobile: +1-718-246-7421
+Fax: +1-718-260-3609
+Email: dfinke01@cis.poly.edu
+IM: steuben13 (Skype)
+Polytechnic University
+6 MetroTech Center
+Brooklyn, NY 11201 USA

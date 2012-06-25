@@ -1,0 +1,6 @@
+Thought I'd ask locally before sending this to the mercurial list: is there an easy way to get a diff of a version of a file from before it was copied/moved/renamed?  Sort of like the "-f" option to hg log, except that there is no "-f" option to hg diff... if you diff with an old pre-rename changeset it's the same as if the file was newly created (the diff is against /dev/null).
+Steve
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

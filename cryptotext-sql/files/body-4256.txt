@@ -1,0 +1,63 @@
+I met the same problem.
+Does anyone know how to solve this problem?
+Rongrong
+- Show quoted text -
+> Hi,
+>
+> I just downloaded and compiled latest version of
+> M5-2.0b3. Compilation is finishing with no error.
+>
+> But as soon as i invoke m5.opt for running full system
+> in detailed cpu, it is giving following error:
+>
+> ****
+> 136029500: system.sim_console: attach console 0
+> panic: Invalid transition
+>  @ cycle 1814335433002
+> [invalidTransition:build/ALPHA_FS/mem/cache/coherence/coherence_protocol.cc,
+> line 465]
+> Program aborted at cycle 1814335433002
+> Aborted (core dumped)
+>
+> ****
+> In console, the situation is following:
+>
+> ***
+> ip_conntrack version 2.1 (512 buckets, 4096 max) - 296
+> bytes per conntrack
+> ip_tables: (C) 2000-2002 Netfilter core team
+> arp_tables: (C) 2002 David S. Miller
+> TCP bic registered
+> Initializing IPsec netlink socket
+> NET: Registered protocol family 1
+> NET: Registered protocol family 17
+> NET: Registered protocol family 15
+> Bridge firewalling registered
+> 802.1Q VLAN Support v1.8 Ben Greear
+> <greearb@candelatech.com>
+> All bugs added by David S. Miller <davem@redhat.com>
+>
+> ***
+> The command line i am using:
+> build/ALPHA_FS/m5.opt configs/example/fs.py --caches
+> --detailed
+>
+> Can anybody help?
+>
+> -Jose
+>
+>
+>
+> ____________________________________________________________________________________
+> Sé un Mejor Amante del Cine
+> ¿Quieres saber cómo? ¡Deja que otras personas te ayuden!
+> http://advision.webevents.yahoo.com/reto/entretenimiento.html
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

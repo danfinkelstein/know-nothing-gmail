@@ -1,0 +1,91 @@
+Thank you for pointing this out. I can't look at this in detail at the moment,
+but what probably should be changed is the part of getSyscallArg that the ISA
+provides. It should probably truncate the register values as they're retrieved
+for the system call emulation function if it's from a 32 bit application. I'll
+try to look at this more closely soon to give you a more definitive answer and
+hopefully a patch.
+Gabe
+- Show quoted text -
+Quoting Jack Whitham <jack-m5ml@cs.york.ac.uk>:
+> Hi,
+>
+> I have found a bug in the SPARC_SE simulator in the development and
+> stable repositories. The bug could be in one of several places, see
+> below. It manifests itself when a system call uses all 64 bits of an
+> input register even though only 32 bits are valid.
+>
+>
+> The bug is reproduced by the test case at:
+>     http://www.jwhitham.org.uk/ri/sparcse_bugdemo.tar.gz
+>
+> when compiled as follows:
+> >   sparc-unknown-linux-gnu-gcc -o bugdemo bugdemo.c \
+> >   m_swap.c -O3 -g -static -D__BIG_ENDIAN__
+>
+> and then executed as follows:
+> >   build/SPARC_SE/m5.debug --trace-file=/tmp/BUG --trace-flags=Exec \
+> >       configs/example/se.py -c bugdemo
+>
+> using:
+> >   sparc-unknown-linux-gnu-gcc (GCC) 4.1.0
+>
+> The bug causes the following output:
+> >   info: Entering event queue @ 0.  Starting simulation...
+> >   fatal: readBlob(0x5f0100effffc1f, ...) failed
+> >    @ cycle 2061000
+> >   [readBlob:build/SPARC_SE/mem/translating_port.cc, line 72]
+>
+> The left shift operation can shift values into the top 32 bits of
+> each register:
+> >   2046000: system.cpu T0 : @SwapLONG+20 :
+> >           sll   %o0, %o0, %o0 : IntAlu :  D=0x0000005f01000000
+>
+> So the SwapLONG function actually returns 0x005f01000000015f
+> rather than 0x15f. This seems to have no effect on the other
+> instructions (the assert statements all pass).
+>
+> Then the write system call uses these top 32 bits as part of the
+> pointer to be written to stdout:
+> >   2057000: system.cpu T0 : @main+72 :
+> >           add   %o1, %o0, %o1       : IntAlu :  D=0x005f0100effffc1f
+> >   2057500: system.cpu T0 : @main+76 :
+> >           clr   %i0                 : IntAlu :  D=0x0000000000000000
+> >   2058000: system.cpu T0 : @main+80 :
+> >           call   0x25b4c <__libc_write> : IntAlu :  D=0x00000000000102c0
+> >   2058500: system.cpu T0 : @main+84 :
+> >           mov    0x1, %o0           : IntAlu :  D=0x0000000000000001
+>
+>
+> Of course, the address 0x005f0100effffc1f is outside the legal address
+> space, so the simulator crashes. This is not what GCC expects to happen!
+> I notice that GCC has optimised away some of the AND operations in
+> SwapLONG; if these had been kept, the bug would not be triggered, so
+> clearly GCC expected them to have no effect.
+>
+> I don't know whether I should change the implementation of "sll",
+> "write", tc->getSyscallArg(), or regs.readIntReg to fix this. I suppose
+> that the behaviour should change depending on the type of trap used to
+> trigger the system call, since there are two (0x10 -> 32 bit syscall,
+> 0x6d -> 64 bit syscall).
+>
+>
+> Any thoughts on this?
+>
+> Thanks in advance,
+>
+> Jack
+>
+>
+> --
+> Jack Whitham
+> jack@cs.york.ac.uk
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

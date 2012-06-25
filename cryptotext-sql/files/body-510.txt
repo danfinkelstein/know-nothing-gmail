@@ -1,0 +1,13 @@
+> i want to set cache parameters like block size, sets, ways, replace policy and so on. how can i do this with m5?modify configs/common/Caches.py> if i want to statistic the LLC's hits number, miss number and writeback number, how can i get this?
+in the statistics file "stats.txt" that is located in a folder specified by --outdir=${PATH} or "m5out" by defaultLeonard- Show quoted text -On Mon, Feb 22, 2010 at 6:04 PM, sheng qiu <herbert1984106@gmail.com> wrote:
+- Show quoted text -hi all,i want to set cache parameters like block size, sets, ways, replace policy and so on. how can i do this with m5? if i want to statistic the LLC's hits number, miss number and writeback number, how can i get this? if anyone knows, i will be very appreciated.
+Thanks,Sheng-- Sheng QiuTexas A & M UniversityRoom 302 Wisenbaker    email: herbert1984106@gmail.com
+College Station, TX 77843-3259
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users-- Give our ability to our work, but our genius to our life!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

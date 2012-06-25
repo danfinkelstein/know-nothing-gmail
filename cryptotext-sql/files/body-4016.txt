@@ -1,0 +1,61 @@
+Hey Rick,
+you need the set the parameters for the O3CPU inside the se.py file or
+whatever file you are using to configure the simulation.
+But say you are using se.py, then you need to configure the O3CPU once
+the O3CPU is instantiated.
+Around line 63 in se.py there is a line that sets up the CPU model:
+(CPUClass, test_mem_mode, FutureClass) = Simulation.setCPUClass(options)
+The O3CPU is only valid if you selected the 'detailed' option on the
+command line so after that line 63, you could edit the file with
+something like this:
+if options.detailed:
+        CPUclass.smtNumFetchingThreads = 2
+        CPUclass.smtFetchPolicy = "branch"
+        ....
+The different options for fetch policy, lsq policy, and commit policy
+can be found in those implementation files (e.g. fetch_impl.hh,
+lsq_impl.hh, commit_impl.hh, etc.), although they should probably be
+outlined somewhere in the O3CPU.py for easy use.
+Hope that helps!
+Korey.
+- Show quoted text -On Oct 29, 2007 2:37 PM, Rick Strong <rstrong@cs.ucsd.edu> wrote:
+> Hi,
+>
+> I am wondering how to set the parameters in O3CPU.py:
+>
+>     smtNumFetchingThreads = Param.Unsigned("SMT Number of Fetching Threads")
+>     smtFetchPolicy = Param.String("SMT Fetch policy")
+>     smtLSQPolicy    = Param.String("SMT LSQ Sharing Policy")
+>     smtLSQThreshold = Param.String("SMT LSQ Threshold Sharing Parameter")
+>     smtIQPolicy    = Param.String("SMT IQ Sharing Policy")
+>     smtIQThreshold = Param.String("SMT IQ Threshold Sharing Parameter")
+>     smtROBPolicy   = Param.String("SMT ROB Sharing Policy")
+>     smtROBThreshold = Param.String("SMT ROB Threshold Sharing Parameter")
+>     smtCommitPolicy = Param.String("SMT Commit Policy")
+>
+> I want to increase the number of fetching threads, but the parameter
+> smtNumFetchingThreads is not accessible in se.py for the DerivO3CPU
+> class object. Also, I noticed in the script se.py that if
+> options.detailed is set, it checks for ':' in the workload and then
+> makes a SMT workload by putting the LiveProcess() elements into a list.
+> Is the fact that the cpu process is a list mean the execution model used
+> for O3CPU is SMT? Some info on how to set smt parameters, how to know
+> when I am actually running SMT, or a script that plays with these
+> settings would be great.
+>
+> -Richard
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+--
+----------
+Korey L Sewell
+Graduate Student - PhD Candidate
+Computer Science & Engineering
+University of Michigan
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

@@ -1,0 +1,13 @@
+On Monday 31 May 2010 01:50:35 am Ali wrote:
+> Hi Stijn,
+>
+> Obviously we would be very happy to have a parallel version of M5. If we
+>  can do anything to help, please let us know.
+Thanks, I will. However, I'm going to be silent again for the next couple of
+weeks since I have exams. Afterwards I'm will finish my thesis, clean up code
+and hopefully contribute something of value.
+Stijn
+- Show quoted text -_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

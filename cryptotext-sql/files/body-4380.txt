@@ -1,0 +1,60 @@
+Hi all,
+ 
+I encounter an infinte loop when running a 
+multi-threaded program on a multicore simulator with a control processor and 4 
+slave cores. This atomic_add, as printed in the trace, seems to keep accessing 
+the cache forever and I have to aborted the simulation manually. Any clues on 
+it?
+ 
+Thanks a lot!
+ 
+Jiayuan
+ 
+       6 
+685000250000: system.slaves0 T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+12 : 
+stl_c      
+r1,0(r16)       : MemWrite :  
+D=0x00000       7 685000252000: system.slaves0 
+T0 : @_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+beq        r1,0x1200e8144  : IntAlu 
+:       8 685000254000: system.slaves1 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+8 : addl       
+r1,r17,r1       : IntAlu :  
+D=0x00000000       9 685000244000: 
+system.master T1 : @_ZN9__gnu_cxx18__exchange_and_addEPVii+4 : 
+ldl_l      
+r0,0(r16)       : MemRead :  
+D=0x00      10 685000255000: system.slaves1 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+12 : stl_c      
+r1,0(r16)       : MemWrite :  
+D=0x00000      11 685000257000: system.slaves1 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+beq        r1,0x1200e8144  : IntAlu 
+:      12 685000245000: system.slaves3 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+4 : ldl_l      
+r1,0(r16)       : MemRead :  
+D=0x0000000      13 685000257000: system.master T1 
+: @_ZN9__gnu_cxx18__exchange_and_addEPVii+8 : 
+addl       
+r0,r17,r1       : IntAlu :  
+D=0x000      14 685000258000: system.slaves3 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+8 : addl       
+r1,r17,r1       : IntAlu :  
+D=0x00000000      15 685000258000: system.master T1 
+: @_ZN9__gnu_cxx18__exchange_and_addEPVii+12 : 
+stl_c      
+r1,0(r16)       : MemWrite :  
+D=0x      16 685000260000: system.master T1 : 
+@_ZN9__gnu_cxx18__exchange_and_addEPVii+16 : 
+beq        r1,0x1200e8164  : IntAlu 
+:      17 685000259000: system.slaves3 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+12 : stl_c      
+r1,0(r16)       : MemWrite :  
+D=0x00000      18 685000261000: system.slaves3 T0 : 
+@_ZN9__gnu_cxx12__atomic_addEPVii+16 : 
+beq        r1,0x1200e8144  : IntAlu 
+:
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

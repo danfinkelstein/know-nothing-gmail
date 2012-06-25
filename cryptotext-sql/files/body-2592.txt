@@ -1,0 +1,29 @@
+Thanks for your response. I do not use any share cache. In my
+configuration, each processor has private L1 and private L2 cache. Then
+I want to find which pages are accessed by processor 1 or processor 2. In this case, can you give me some ideas?- Show quoted text -On Fri, Aug 29, 2008 at 10:54 PM, nathan binkert <nate@binkert.org> wrote:
+We don't currently record that information.  It would take a bit of
+effort to add that information.  The biggest issue is if you have any
+shared caches, it's hard to even decide which main memory access was
+for what.  Do you want any shared cache?  Do you only want L2 miss (or
+last level cache miss) data and not all accesses?  If you want all
+accesses, you could hack that in pretty easily.
+  Nate
+On Fri, Aug 29, 2008 at 7:42 PM, Gary <ameseacla@gmail.com> wrote:
+> My experiment is based on 2 processors full system simulation. I want to
+> record which pages in the main memory are accessed by processor 1, and which
+> ones are accessed by processor 2. Can you tell me if this is feasible with
+> m5? Thanks a lot.
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

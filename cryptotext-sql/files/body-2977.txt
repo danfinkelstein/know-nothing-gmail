@@ -1,0 +1,10 @@
+i've been trying run the spec benchmarks in the default timing simple cpu. i tried running mgrid and what i get so far after 3 hours iscommand line: ./build/ALPHA_SE/m5.opt tests/run.py long/92.mgrid/alpha/tru-64/simple-atomic
+Global frequency set at 1000000000000 ticks per second0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000warn: Entering event queue @ 0.  Starting simulation...warn: Increasing stack size by one page.
+warn: ignoring syscall sigprocmask(1, 1073070158, ...)warn: ignoring syscall sigprocmask(3, 0, ...)warn: ignoring syscall sigaction(11, 4831387520, ...)warn: ignoring syscall sigaction(5, 4831387520, ...)warn: ignoring syscall sigaction(8, 4831387520, ...)
+warn: ignoring syscall sigaction(6, 4831387520, ...)warn: ignoring syscall sigaction(15, 4831387520, ...)warn: ignoring syscall sigaction(3, 4831387520, ...)warn: ignoring syscall sigaction(2, 4831387520, ...)
+warn: setsysinfo: ignoring ieee_set_fp_control() arg 0x11ff91f98warn: ignoring syscall setrlimit(3, 4831387592, ...)warn: Increasing stack size by one page.does increasing the stack size really take that long? or is this indicative of an error?
+also, should i be concerned about the syscalls that are ignored in this and the other benchmarks?thanks a lot!
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

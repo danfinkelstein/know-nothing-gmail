@@ -1,0 +1,44 @@
+hi: Ali Saidi
+Thank for your reply.
+But I am puzzling about how to link the lib that implemented the function dprintk(...) to my application?
+I am using -static opition when compiling my application with other libs.
+Best Regards For You!
+xiaojun
+chenxiaojun@software.ict.ac.cn
+2006-10-12
+Sender：Ali Saidi
+Sending Date：2006-10-12 04:23:02
+Receiver：M5 users mailing list
+Copy To：
+subject：Re: [m5-users] How to debug my application in full-system simulation
+- Show quoted text -
+Hi,
+So there are a couple of methods that you can use to debug, but they probably will only work with a simple system where a processor is
+directly attached to memory if you're using m5 2.0b. In the future will be fixing it to work no matter what but we haven't gotten around to
+it yet.?
+If you look at one of the kernel we have on the website (e.g. m5base-2.6.13) there is an include file include/linux/m5dprintk.h. If you
+include this header file you can use dprink() just like you would normally use printf() and if you enable the DebugPrintf trace flag in the
+simulator the simulator will trap all calls to dprintk() and print whatever you want to the simulator screen. It will do all the string
+formatting for you so it won't perturb the system much.?
+Another thing you can do is remotely attach a copy of gdb to the simulator. For this to work you need an alpha targeted version of gdb.
+(See http://www.m5sim.org/wiki/index.php/Debugging_M5).
+Ali
+On Oct 10, 2006, at 10:01 PM, 陈晓军 wrote:
+Hi
+I am running my application in fs mode, but?it gave out a segment fault?message(Note: This is not a?fault?of the simulator.).
+I have run it in my real system(x86) successfully.?I want to debug it on the simulated system, but?I just found some dubugging methods that
+debug the simulator itself or debug the linux kernel simulted.
+?
+Is there any method that can debug the application?on the simulated system?
+Thanks a lot!
+?
+xiaojun.chen
+2006-10-11
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

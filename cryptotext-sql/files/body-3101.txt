@@ -1,0 +1,5 @@
+  Hi,     I have used two different apps which work well without m5. But the two apps incurred the same fault. That is:         panic: Page table fault when accessing virtual address 0    When the fault happens the trace output is:    49347000: system.l2: ReadReq 1d020 miss    49347000: system.cpu0.icache-mem_side_port: Address 1d020 was succesful in sending the timing request    It seems like that the app will not try to read memory location 0.     Thank you!   
+送！送！送！正版瑞星2008半年免费！_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

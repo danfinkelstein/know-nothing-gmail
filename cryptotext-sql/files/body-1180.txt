@@ -1,0 +1,5 @@
+Here is what I have:m4 version 1.4.12Python version 2.6.1Scons version 1.2.0Swig version 1.3.31Zlib version 1.2.3
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

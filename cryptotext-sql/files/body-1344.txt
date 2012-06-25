@@ -1,0 +1,8 @@
+Sorry what should I be looking for.
+I failed to find reset.bin or binaries for M5 in OpenSPARC.
+Amr
+- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

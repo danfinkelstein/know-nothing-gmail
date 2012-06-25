@@ -1,0 +1,7 @@
+Hi,I am trying to figure out the flow of instructions through O3CPU pipeline. A couple of questions.1. In which stage are data dependencies resolved? Is it the rename stage?. In other words, does the rename stage sends only those instructions to IEW who have no data dependencies?
+2. When is an instruction removed from IQ. It seems its removed as soon as an execution unit is available and it gets executed. In case we want to re-execute the instruction (because of an error detected during execution) where can we get the instruction from (since its no longer in the IQ).
+I would appreciate if some one can direct me to a paper or document in which the instruction flow through o3cpu is explained.Best,Syed ShazliNortheastern University,Boston, MA
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

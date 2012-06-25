@@ -1,0 +1,11 @@
+On Mar 28, 2008, at 6:43 PM, Jeff Diamond wrote:
+Ali Saidi wrote:
+I should clarify that full-system isn't supported for *SPARC* in our out-of-order model (it does work for syscall emulation), and it could work with full-system, but some of the ASI nastiness would have to be handled. Our out-of-order model simulates Alpha full-system just fine.
+So to clarify your earlier statement, does full system work for a "SPARC" in order model?  That is to say, it's using SPARC binaries?
+Maybe if you haven't had a need to do a full system test in OO mode, then it might not be so critical...
+We can boot a one processor Solaris system on the SPARC architecture as long as the processor is an in-order machine. To do so we model a Sun T2000 machine (Niagara) . Clear?
+Ali- Show quoted text -
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

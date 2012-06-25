@@ -1,0 +1,16 @@
+I don't know the details, but I believe there is some special Fortran runtime code that C doesn't use, and perhaps merely linking with -static doesn't actually get that linked in.
+ 
+I'm surprised you wouldn't get some error or warning about an unimplemented syscall or a file that's not found before you got the segfault though.
+ 
+Steve- Show quoted text -
+On Wed, Feb 18, 2009 at 3:44 AM, Nikolas Galanis <nikolaos@ac.upc.edu> wrote:
+Hi,I have compiled the SPECcpu2000 v1.2 natively on an Alpha machinerunning Linux. All C benchmarks seem to be executing without any problem
+in m5 SE mode. However, when I try to execute any fortran benchmark, Iget an error like the one below:M5 compiled Feb 16 2009 19:27:08M5 revision 5591:be93223fd0c3c8faabbd337db9e5e576c8905397M5 commit date Mon Dec 15 18:10:21 2008 +0100
+M5 started Feb 18 2009 12:36:33M5 executing on nikolas-daccommand line: ../build/ALPHA_SE/m5.debug ../tests/myrun.pycpu2000/galgel/ref/alpha/linux/se_o3_detailedGlobal frequency set at 1000000000000 ticks per second
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000warn: Increasing stack size by one page.panic: Tried to access unmapped address 0x3ffc0096ce0. @ cycle 317500[invoke:build/ALPHA_SE/arch/alpha/faults.cc, line 204]
+Program aborted at cycle 317500AbortedI am using the "ref" inputs for all benchmarks.I have compiled the benchmarks using the script provided with the v1.2distribution adding only the -static flag.
+Am I missing something?Thanks in advance,Nikolas_______________________________________________m5-users mailing listm5-users@m5sim.orghttp://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users

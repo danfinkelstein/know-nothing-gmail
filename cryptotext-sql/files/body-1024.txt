@@ -1,0 +1,359 @@
+Hi Ali,
+       I want to record all memory reads/writes from a particular
+application, running alongside others. I realized that even if I do get the
+memory access info from physmem and check for user/kernel mode, it would be
+missing accesses made to caches. (Is that right?). I hope its clear what I
+am trying to do.
+   Is there another way where I can tap in into the cores itself, and dump
+out any memory references made by a thread, on de-coding the relevant
+instructions?
+Thanks,
+Sujay
+----- Original Message -----
+From: "Ali Saidi" <saidi@umich.edu>
+To: "M5 users mailing list" <m5-users@m5sim.org>
+- Show quoted text -Sent: Monday, August 17, 2009 9:57 PM
+Subject: Re: [m5-users] memory trace and thread ID
+> Well, it is probably the Threadinfo code mis-interpreting part of the
+> structure. I don't know exactly what you want, but it's important to
+> mention that the memory acccesses by the application are only a small
+> part of a networking workload, there are also all the accesses the
+> kernel does on behalf of the application.
+>
+> Ali
+>
+> On Aug 16, 2009, at 6:37 PM, Sujay Phadke wrote:
+>
+>> Ya I was surprised about the -ve start time too. Is is a bug? All of
+>> them
+>> appear that way. Thanks for clarifying about the processor mode. so
+>> wrt your
+>> last statement, I am confused. Will the check for user level mode
+>> help me
+>> with what I want? Do I want to dump all accesses between the start
+>> and end
+>> points of "m5-spec" thread, when the processor is in user level
+>> mode? Or is
+>> there a better way of doing this that you can think of?
+>>
+>> thanks,
+>> Sujay
+>>
+>>
+>> ----- Original Message -----
+>> From: "Ali Saidi" <saidi@umich.edu>
+>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>> Sent: Sunday, August 16, 2009 7:26 PM
+>> Subject: Re: [m5-users] memory trace and thread ID
+>>
+>>
+>>> The time started and pid don't appear to be correct. I'm pretty sure
+>>> the  maximum size a pid can be is 16 bits and the started time should
+>>> be positive. At least you did get the thread names correctly out,
+>>> which might be al that matters. The threadInfo event is printing
+>>> every
+>>> time the kernel changes the user application stack, however that
+>>> doesn't mean that it's executing user level code. If you want a trace
+>>> of user level memory operations you'll need to check if the processor
+>>> is in user mode or kernel mode (there is a helper function in arch/
+>>> alpha to do that). There isn't really any way to know which thread
+>>> the
+>>> kernel is doing a task for (e.g. if it receives a packet while the
+>>> swapper is running, it's quite difficult to attribute that time to
+>>> the
+>>> application that was actually receiving that packet).
+>>>
+>>> Ali
+>>>
+>>>
+>>>
+>>> On Aug 16, 2009, at 6:08 PM, Sujay Phadke wrote:
+>>>
+>>>> Hi,
+>>>>        Thanks Ali. I am using a patched kernel now with the
+>>>> modifications
+>>>> you suggested. Running specweb in FS mode. What I want to do is
+>>>> differentiate memory access of the m5-spec thread from all others
+>>>> (like OS
+>>>> ones). I get the following output:
+>>>>
+>>>> ***
+>>>> 487306156500: threadinfo: Currently Executing Thread swapper, pid
+>>>> 3211264,
+>>>> started at: -4398043299840
+>>>> 487306156500: testsys.physmem: Read of size 4 on address 0x3111a8
+>>>> data
+>>>> 0x6bfa8001
+>>>> 487306157000: testsys.physmem: Read of size 4 on address 0x6b7c1c
+>>>> data
+>>>> 0x27ba001a
+>>>> 487306157500: testsys.physmem: Read of size 4 on address 0x6b7c20
+>>>> data
+>>>> 0xa0680060
+>>>> 487306157500: testsys.physmem: Read of size 4 on address 0x1f03c060
+>>>> data 0x0
+>>>> 487306158000: testsys.physmem: Read of size 4 on address 0x6b7c24
+>>>> data
+>>>> 0x23bd2124
+>>>> 487306158500: testsys.physmem: Read of size 4 on address 0x6b7c28
+>>>> data
+>>>> 0x47e00409
+>>>> 487306159000: testsys.physmem: Read of size 4 on address 0x6b7c2c
+>>>> data
+>>>> 0xa49da718
+>>>> 487306159000: testsys.physmem: Read of size 8 on address 0x854458
+>>>> data
+>>>> 0xfffffc000085e340
+>>>> ***
+>>>> ***
+>>>> 487306811000: threadinfo: Currently Executing Thread m5-spec, pid
+>>>> 3211290,
+>>>> started at: -4398043299840
+>>>> 487306811000: testsys.physmem: Read of size 4 on address 0x3111a8
+>>>> data
+>>>> 0x6bfa8001
+>>>> 487306811500: testsys.physmem: Read of size 4 on address 0x6b7c1c
+>>>> data
+>>>> 0x27ba001a
+>>>> 487306812000: testsys.physmem: Read of size 4 on address 0x6b7c20
+>>>> data
+>>>> 0xa0680060
+>>>> 487306812000: testsys.physmem: Read of size 4 on address 0x814060
+>>>> data 0x0
+>>>> 487306812500: testsys.physmem: Read of size 4 on address 0x6b7c24
+>>>> data
+>>>> 0x23bd2124
+>>>> 487306813000: testsys.physmem: Read of size 4 on address 0x6b7c28
+>>>> data
+>>>> 0x47e00409
+>>>> 487306813500: testsys.physmem: Read of size 4 on address 0x6b7c2c
+>>>> data
+>>>> 0xa49da718
+>>>> 487306813500: testsys.physmem: Read of size 8 on address 0x854458
+>>>> data
+>>>> 0xfffffc000085e340
+>>>> 487306814000: testsys.physmem: Read of size 4 on address 0x6b7c30
+>>>> data 0x486
+>>>>
+>>>> --------
+>>>>
+>>>> So, if the OS thread swapper began at tick "487306156500", and the
+>>>> m5-spec
+>>>> begins at "487306811000" does it mean than all the memory accesses
+>>>> between
+>>>> these time points are that of "swapper"?. And all accesses after
+>>>> 487306811000 are of m5-spec, till a new thread is executed?  Or am I
+>>>> wrong
+>>>> here? If this is right, all I will have to do is right a script
+>>>> which parses
+>>>> this output inline and picks accesses which start when "m5-spec" is
+>>>> started
+>>>> and end at the next thread execution.
+>>>>
+>>>> Thanks,
+>>>> Sujay
+>>>>
+>>>>
+>>>> ----- Original Message -----
+>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>> Sent: Monday, August 10, 2009 5:20 PM
+>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>
+>>>>
+>>>>>
+>>>>> The image doesn't have a kernel in it. You get that separately. Why
+>>>>> don't
+>>>>> you sprinkle some DPRINTFN() calls around the Threading stuff
+>>>>> (threadinfo.hh and the system.cc) and see where it's not working as
+>>>>> it
+>>>>> should? If it's from symbols not being found then no, otherwise the
+>>>>> problem
+>>>>> should be rather apparent.
+>>>>>
+>>>>> Ali
+>>>>>
+>>>>>
+>>>>> On Mon, 10 Aug 2009 17:15:02 -0400, "Sujay Phadke"
+>>>>> <sphadke@eecs.umich.edu>
+>>>>> wrote:
+>>>>>> I am using the linux-latest image available from the M5 website.
+>>>>>> Does
+>>>>> that
+>>>>>> need to be patched?
+>>>>>>
+>>>>>> ----- Original Message -----
+>>>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>>>> Sent: Monday, August 10, 2009 4:10 PM
+>>>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>>>
+>>>>>>
+>>>>>>>
+>>>>>>> The patches I'm referring to are in the linux-patches repository
+>>>>>>> http://repo.m5sim.org/linux-patches. Depending on where you got
+>>>>>>> your
+>>>>>>> kernel
+>>>>>>> from you might need to apply them.
+>>>>>>>
+>>>>>>> Ali
+>>>>>>>
+>>>>>>>
+>>>>>>> On Mon, 10 Aug 2009 15:50:38 -0400, "Sujay Phadke"
+>>>>>>> <sphadke@eecs.umich.edu>
+>>>>>>> wrote:
+>>>>>>>> ----- Original Message -----
+>>>>>>>> From: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>>>>>>>> To: <saidi@umich.edu>
+>>>>>>>> Sent: Monday, August 10, 2009 3:28 PM
+>>>>>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>>>>>
+>>>>>>>>
+>>>>>>>>> I do have the traceflag on. But I dont have the patches
+>>>>>>>>> applied. On the
+>>>>>>> M5
+>>>>>>>>>
+>>>>>>>>> download page, the patches come under the section "Obsolete
+>>>>>>>>> Revisions"
+>>>>>>> and
+>>>>>>>>>
+>>>>>>>>> it says not required. I thought these were there in the m5-
+>>>>>>>>> stable. Do I
+>>>>>>>>> have to manually apply these?
+>>>>>>>>>
+>>>>>>>>> Thanks,
+>>>>>>>>> Sujay
+>>>>>>>>>
+>>>>>>>>> ----- Original Message -----
+>>>>>>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>>>>>>> To: "Sujay Phadke" <sphadke@eecs.umich.edu>
+>>>>>>>>> Sent: Monday, August 10, 2009 2:04 PM
+>>>>>>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Are you running with the Thread traceflag on? You must be
+>>>>>>>>>> using a
+>>>>>>> kernel
+>>>>>>>>>> with the thread_info structure annotated correctly.
+>>>>>>>>>> Specifically,
+>>>>>>>>>> m5struct.diff from the linux-patches repository must have been
+>>>>>>>>>> applied.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Ali
+>>>>>>>>>>
+>>>>>>>>>> On Mon, 10 Aug 2009 13:40:05 -0400, "Sujay Phadke"
+>>>>>>>>>> <sphadke@eecs.umich.edu>
+>>>>>>>>>> wrote:
+>>>>>>>>>>> Thanks. I tried doing this, but this is all I get running
+>>>>>>>>>>> specweb:
+>>>>>>>>>>>
+>>>>>>>>>>> 0: testsys.tsunami.io.rtc: Real-time clock set to Thu Jan  1
+>>>>> 00:00:00
+>>>>>>>>>> 2009
+>>>>>>>>>>> 0: drivesys.tsunami.io.rtc: Real-time clock set to Thu Jan  1
+>>>>>>>>>>> 00:00:00
+>>>>>>>>>> 2009
+>>>>>>>>>>> 4694261844000: drivesys.terminal: attach terminal 0
+>>>>>>>>>>>
+>>>>>>>>>>> nothing more in the file.
+>>>>>>>>>>>
+>>>>>>>>>>> Can any method in threadinfo.hh help?
+>>>>>>>>>>>
+>>>>>>>>>>> - Sujay
+>>>>>>>>>>>
+>>>>>>>>>>> ----- Original Message -----
+>>>>>>>>>>> From: "Ali Saidi" <saidi@umich.edu>
+>>>>>>>>>>> To: "M5 users mailing list" <m5-users@m5sim.org>
+>>>>>>>>>>> Sent: Monday, August 10, 2009 12:48 PM
+>>>>>>>>>>> Subject: Re: [m5-users] memory trace and thread ID
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> Remove the false condition from src/arch/alpha/linux/
+>>>>>>>>>>>> system.cc:139
+>>>>>>> and
+>>>>>>>>>>>> Thread should work.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Ali
+>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> On Mon, 10 Aug 2009 12:10:58 -0400, "Sujay Phadke"
+>>>>>>>>>>>> <sphadke@eecs.umich.edu>
+>>>>>>>>>>>> wrote:
+>>>>>>>>>>>>> Hello,
+>>>>>>>>>>>>>    I want to generate memory traces and associate them
+>>>>>>>>>>>>> with the
+>>>>>>>>>> thread
+>>>>>>>>>>>> ID
+>>>>>>>>>>>>>    or process ID. Is there a way to do this? I am running
+>>>>>>>>>>>>> m5 in
+>>>>>>>>>>>>>    FS
+>>>>>>>>>>>>>    mode
+>>>>>>>>>>>>>    and want to differentiate the memory accesses of a
+>>>>>>>>>>>>> particular
+>>>>>>>>>>>> process
+>>>>>>>>>>>>>    from those of others, including the OS. I looked into
+>>>>>>>>>>>>> the
+>>>>>>>>>>>>> "Thread"
+>>>>>>>>>>>> and
+>>>>>>>>>>>>>    "ExecThread" traceflags but they dont help.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Thanks,
+>>>>>>>>>>>>> Sujay
+>>>>>>>>>>>> _______________________________________________
+>>>>>>>>>>>> m5-users mailing list
+>>>>>>>>>>>> m5-users@m5sim.org
+>>>>>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> _______________________________________________
+>>>>>>>> m5-users mailing list
+>>>>>>>> m5-users@m5sim.org
+>>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>> _______________________________________________
+>>>>>>> m5-users mailing list
+>>>>>>> m5-users@m5sim.org
+>>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>>>
+>>>>>>
+>>>>>> _______________________________________________
+>>>>>> m5-users mailing list
+>>>>>> m5-users@m5sim.org
+>>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>> _______________________________________________
+>>>>> m5-users mailing list
+>>>>> m5-users@m5sim.org
+>>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>>
+>>>>
+>>>> _______________________________________________
+>>>> m5-users mailing list
+>>>> m5-users@m5sim.org
+>>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>>
+>>>
+>>> _______________________________________________
+>>> m5-users mailing list
+>>> m5-users@m5sim.org
+>>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>>
+>>
+>> _______________________________________________
+>> m5-users mailing list
+>> m5-users@m5sim.org
+>> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>>
+>
+> _______________________________________________
+> m5-users mailing list
+> m5-users@m5sim.org
+> http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
+>
+_______________________________________________
+m5-users mailing list
+m5-users@m5sim.org
+http://m5sim.org/cgi-bin/mailman/listinfo/m5-users
