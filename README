@@ -1,0 +1,5 @@
+Know-nothing gmail store for encrypting contents of publicly-hosted email
+servers with a private CA for issuing keys. Clock-cycle measurement
+of performance with LIMIT library (only works on LIMIT-enabled Linux
+kernels).
+
